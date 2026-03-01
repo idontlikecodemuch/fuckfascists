@@ -19,3 +19,6 @@ export const ENTITY_LIST_UPDATE_URL = 'https://raw.githubusercontent.com/[org]/f
 
 // Weekly report card drop schedule — published by a GitHub Action each Monday
 export const DROP_SCHEDULE_URL = 'https://raw.githubusercontent.com/[org]/fuckfascists-data/main/drop-schedule.json';
+
+// Info / FAQ / transparency content — editable in the data repo without an app release
+export const INFO_CONTENT_URL = 'https://raw.githubusercontent.com/[org]/fuckfascists-data/main/info.json';
