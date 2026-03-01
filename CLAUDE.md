@@ -1,0 +1,304 @@
+# F*CK FASCISTS — CLAUDE.md
+> This is the authoritative reference for all AI-assisted development on this project.
+> Read this before writing any code. Follow it strictly.
+
+---
+
+## Project Overview
+
+**F*ck Fascists** is a privacy-first, gamified app that empowers people to exercise their autonomous economic power by avoiding businesses, platforms, and corporations that donate to Republican campaigns and authoritarian political movements.
+
+It is organized as a **nonprofit**. The codebase is **open-source**. The product is **positive-only** — it celebrates avoidance, never logs or surfaces "support" events.
+
+### The Three Products (all launch together at v1.0)
+1. **Mobile app** — iOS + Android (React Native + Expo)
+2. **Browser extension** — Chrome + Firefox (Manifest V3, vanilla JS)
+3. **Shared core** — TypeScript package used by both (entity matching, confidence scoring, caching)
+
+---
+
+## Non-Negotiable Product Principles
+
+These are not preferences. They are constraints. Never violate them.
+
+1. **Avoids only** — The data model cannot contain a "support" event. If a user visited a flagged business or used a flagged platform, nothing is stored. Only affirmative avoidance actions are recorded.
+2. **No geolocation storage** — Location is accessed session-only (on explicit user action). Coordinates are never written to disk or transmitted.
+3. **No browsing history** — The extension detects domains in-memory only. Nothing about what a user browsed is ever persisted.
+4. **No personal identifiers** — No accounts, no emails, no user IDs in MVP. All data is local-only.
+5. **No backend in MVP** — All processing is on-device. The only outbound calls are to the OpenSecrets API (directly from the device) and to fetch the curated entity list update (static file on GitHub/CDN).
+6. **Transparency always** — Every confidence label is shown. Every data source links to OpenSecrets. Nothing is claimed with more certainty than the data supports.
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Mobile framework | React Native + Expo (managed workflow) |
+| Mobile targets | iOS + Android |
+| Maps | React Native Maps (MapKit/iOS, Google Maps SDK/Android) |
+| Location | Expo Location — session-only |
+| Mobile storage | Expo SecureStore + expo-sqlite |
+| Notifications | Expo Notifications — local scheduling only |
+| Report card rendering | react-native-view-shot or React Native Skia |
+| Networking | Native fetch — OpenSecrets API calls only |
+| Extension | Manifest V3, vanilla JS + HTML/CSS |
+| Extension storage | chrome.storage.local / browser.storage.local |
+| Shared core | TypeScript package — /core/matching/, /core/models/, /core/api/ |
+| Build | Expo EAS Build (.ipa + .apk outside app stores) |
+
+---
+
+## Repository Structure
+
+```
+/
+├── CLAUDE.md                        ← this file
+├── app/                             ← React Native app root
+│   ├── navigation/                  ← tab/stack navigation
+│   └── providers/                   ← context, theme, config
+├── features/
+│   ├── Map/                         ← geolocation scan, map display, flagging
+│   ├── Survey/                      ← weekly platform checklist
+│   ├── ReportCard/                  ← generation, drop timing, sharing
+│   ├── Onboarding/                  ← first-run flow
+│   └── Info/                        ← transparency, about, FAQ
+├── core/
+│   ├── matching/                    ← entity matching + confidence scoring (SHARED)
+│   ├── api/                         ← OpenSecrets client, rate limiting
+│   ├── data/                        ← entity list loader, local DB, cache
+│   └── models/                      ← shared TypeScript types
+├── extension/
+│   ├── manifest.json
+│   ├── background/                  ← service worker, session tracking
+│   ├── content/                     ← domain detection on page load
+│   └── popup/                       ← pixel art UI
+├── config/
+│   └── constants.ts                 ← all configurable variables (see below)
+└── assets/
+    └── pixel/                       ← all pixel art assets by type
+```
+
+**File size rule: if any file exceeds 250 lines, stop and refactor it before continuing.**
+
+---
+
+## Configurable Variables
+
+All of these live in `/config/constants.ts`. They can be adjusted post-launch without code changes. Never hardcode these values anywhere else.
+
+```typescript
+// Report card drop window (times in ET)
+export const REPORT_CARD_WINDOW_START_HOUR = 16; // 4pm ET Friday
+export const REPORT_CARD_WINDOW_END_HOUR = 15;   // 3pm ET Saturday
+export const REPORT_CARD_WINDOW_DAY = 5;         // Friday (0 = Sunday)
+
+// Extension flagging frequency
+// Options: 'session' | 'daily' | 'weekly'
+export const EXTENSION_FLAG_FREQUENCY = 'session';
+
+// OpenSecrets API cache TTL
+export const ENTITY_CACHE_TTL_DAYS = 60;
+
+// Confidence score thresholds (0–1 scale)
+export const CONFIDENCE_THRESHOLD_HIGH = 0.85;
+export const CONFIDENCE_THRESHOLD_MEDIUM = 0.60;
+
+// Curated entity list update URL
+export const ENTITY_LIST_UPDATE_URL = 'https://raw.githubusercontent.com/[org]/fuckfascists-data/main/entities.json';
+```
+
+---
+
+## Data Model
+
+### What IS stored (local only)
+
+```typescript
+// A user tapped "Avoided" on a flagged business
+EntityAvoidEvent {
+  entityId: string       // references canonical entity list
+  date: string           // YYYY-MM-DD only — no time, no location
+  count: number          // increment
+}
+
+// A user confirmed they avoided a platform this week
+PlatformAvoidEvent {
+  platformId: string     // references static platform list
+  weekOf: string         // YYYY-MM-DD (Monday of that week)
+}
+
+// Cached OpenSecrets API result
+LocalCache {
+  key: string            // normalized(brandName + areaHash) — NOT lat/long
+  openSecretsOrgId: string
+  donationSummary: object
+  confidence: 'HIGH' | 'MEDIUM'
+  fetchedAt: number      // timestamp for TTL
+}
+```
+
+### What is NEVER stored
+- Any geolocation coordinates
+- Any browsing history or visited URLs
+- Any record of visiting or using a flagged entity ("support" events)
+- Any personal identifier (name, email, device ID)
+- Any data on the server side (MVP has no backend)
+
+---
+
+## Entity Matching Pipeline
+
+This logic lives in `/core/matching/` and is shared between the mobile app and the browser extension. Do not duplicate it.
+
+```
+1. Normalize input name (lowercase, strip punctuation, trim)
+2. Check canonical entity list aliases (exact match → HIGH confidence)
+3. If no match → call OpenSecrets getOrgs with normalized name
+4. Score each result using Jaro-Winkler similarity
+5. Pick best match:
+   - score >= CONFIDENCE_THRESHOLD_HIGH  → HIGH, call orgSummary, display
+   - score >= CONFIDENCE_THRESHOLD_MEDIUM → MEDIUM, call orgSummary, display with disclaimer
+   - score < CONFIDENCE_THRESHOLD_MEDIUM  → no flag, show "Not confidently matched" + OpenSecrets search link
+6. Cache result in LocalCache with TTL
+```
+
+**Never claim certainty the data doesn't support. Always show the confidence label.**
+
+---
+
+## Report Card — Drop Mechanics
+
+The weekly report card is a synchronized global event. Every user receives it at the exact same moment.
+
+- A lightweight scheduled job determines the drop time at the start of each week (random within the configured window, avoiding the previous week's hour)
+- The drop time is published to a read-only config endpoint (or GitHub-hosted JSON) — the app polls this
+- Push notification fires at the exact drop time via Expo Push Notifications
+- If notifications are disabled, the card is waiting when the user opens the app
+- On-demand cards (generated anytime by the user) get a "PREVIEW" pixel art stamp — the weekly drop retains its specialness
+- Extension data is NOT included in the report card (V1) — extension has its own in-popup weekly summary
+
+---
+
+## Browser Extension Behavior
+
+- **Icon turns amber** when user visits a tracked domain — no popup, no banner, no interruption
+- User clicks icon to open popup with business card (donation data, confidence, OpenSecrets link) + "AVOIDED" button
+- Flags **once per session per domain** by default (configurable via EXTENSION_FLAG_FREQUENCY)
+- User can snooze a domain ("don't remind me for 7 days")
+- **No browsing history stored** — domain detection is in-memory only, cleared on session end
+- Extension has its own simple weekly summary in the popup — does not feed into the mobile report card in V1
+
+---
+
+## Canonical Entity List
+
+- Single JSON file covering: top 500 US companies, top 500 retailers, top 500–1,000 GOP-donating orgs
+- Hosted publicly on GitHub — community can view, fork, and submit PRs
+- Bundled with the app at build time (works offline from day one)
+- App fetches updates periodically from ENTITY_LIST_UPDATE_URL and caches locally
+- Domain mappings (amazon.com → Amazon → Jeff Bezos) live in the same list
+
+### Entity schema
+```typescript
+{
+  id: string
+  canonicalName: string          // matches OpenSecrets org name
+  aliases: string[]              // consumer-facing brand names
+  domains: string[]              // for extension matching (e.g. ["amazon.com", "smile.amazon.com"])
+  categoryTags: string[]
+  ceoName: string                // for report card display
+  openSecretsOrgId?: string      // pre-resolved for fast API calls
+  confidenceOverride?: 'HIGH'    // for well-known brands
+  lastVerifiedDate: string
+}
+```
+
+---
+
+## Environments
+
+```typescript
+// Never mock data in dev or prod. Mocks are for tests only.
+// Use real OpenSecrets API in dev with a dev API key.
+// Keep environment config in .env files, never committed.
+
+DEV   — local build, verbose logging on, real API calls
+TEST  — jest, mocked API responses only here
+PROD  — release build, logging off, real API calls
+```
+
+---
+
+## Code Quality Rules
+
+These apply to every file, every PR, every AI-generated change.
+
+- **Prefer the simplest solution** — no over-engineering, no premature abstraction
+- **No duplication** — check the codebase before adding anything. The matching logic in `/core/matching/` is the one source of truth for both mobile and extension
+- **Files over 250 lines must be refactored** — split before continuing
+- **No mock or stub data in dev or prod** — mocks live in tests only
+- **Never overwrite a key file without confirming** — explain why first
+- **Only make requested changes** — do not refactor unrelated code while fixing something else
+- **When fixing a bug** — exhaust the existing pattern before introducing a new one. If you do introduce a new pattern, remove the old implementation
+- **Environments are cleanly separated** — no prod config leaking into dev and vice versa
+- **No one-off scripts in source files** — if a script only runs once, it doesn't belong in the codebase
+
+---
+
+## Accessibility Requirements (non-negotiable)
+
+- Dynamic Type support on all text elements
+- VoiceOver (iOS) and TalkBack (Android) labels on every interactive element
+- High-contrast mode compatibility on all screens
+- Reduced-motion: all pixel art animations must respect the system reduced-motion setting — static pixel art remains, animations are disabled
+- Minimum tap target: 44×44pt on all interactive elements
+- The retro 8-bit aesthetic must never come at the cost of usability
+
+---
+
+## Visual Design System
+
+The entire app is styled as a **vintage 8-bit video game**. This is the foundational design language, not a skin.
+
+- Chunky, pixelated components with hard edges
+- Limited color palettes per screen (4–6 colors, NES/Game Boy era)
+- Pixel art fonts — paired with system fallback for Dynamic Type scaling
+- Pixel art animations for feedback events (avoid taps, streaks, report card reveal)
+- Custom assets designed by the team: logo, CEO avatars, business icons, badges, map markers, report card frame
+- Retro sound effects (optional, off by default, user-toggleable)
+
+---
+
+## Current Sprint Focus
+
+**Phase 1 MVP — build in this order:**
+
+1. `/core/models/` — TypeScript types for all entities, events, cache
+2. `/core/matching/` — entity matching pipeline (test-driven)
+3. `/core/api/` — OpenSecrets client with rate limiting and caching
+4. `/core/data/` — entity list loader, SQLite schema, local DB
+5. `features/Map/` — scan, flag, business card, avoid tap
+6. `features/Survey/` — weekly platform checklist
+7. `features/ReportCard/` — generation, drop timing, sharing
+8. `features/Onboarding/` — first-run flow
+9. `features/Info/` — transparency, about, FAQ
+10. `extension/` — Chrome/Firefox extension using shared core
+
+**Start with the core. Build one vertical slice (Map → flag → avoid tap) end-to-end before moving on.**
+
+---
+
+## Out of Scope (MVP) — Do Not Build
+
+- Background location tracking
+- Storage of browsing history in the extension
+- Storage of any "support" events
+- Owner-level donation inference for unknown businesses
+- Social features or leaderboards
+- Server-side analytics or telemetry
+- Real-time backend services
+- Donation processing (Phase 3)
+- Widgets or Watch integration (Phase 2)
+- Safari extension (Phase 2)
+- Cross-device sync between extension and mobile app (Phase 2)
