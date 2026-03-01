@@ -16,3 +16,6 @@ export const CONFIDENCE_THRESHOLD_MEDIUM = 0.60;
 
 // Curated entity list update URL
 export const ENTITY_LIST_UPDATE_URL = 'https://raw.githubusercontent.com/[org]/fuckfascists-data/main/entities.json';
+
+// Weekly report card drop schedule — published by a GitHub Action each Monday
+export const DROP_SCHEDULE_URL = 'https://raw.githubusercontent.com/[org]/fuckfascists-data/main/drop-schedule.json';
