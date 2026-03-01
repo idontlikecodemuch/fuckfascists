@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>F*CK FASCISTS</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <!-- ── Header ─────────────────────────────────────────────── -->
+  <header class="app-header">
+    <span class="app-title">F*CK FASCISTS</span>
+  </header>
+
+  <!-- ── No-flag state ──────────────────────────────────────── -->
+  <section id="state-clean" class="state" hidden>
+    <div class="clean-icon" aria-hidden="true">✓</div>
+    <p class="clean-msg">No flagged entities detected on this page.</p>
+  </section>
+
+  <!-- ── Flagged state ──────────────────────────────────────── -->
+  <section id="state-flagged" class="state" hidden>
+    <!-- Business card -->
+    <div class="business-card" role="region" aria-label="Flagged entity details">
+      <div class="card-amber-bar" aria-hidden="true">▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓</div>
+
+      <div class="card-body">
+        <p id="entity-name" class="entity-name"></p>
+        <p id="ceo-name" class="ceo-name"></p>
+
+        <div class="donation-row">
+          <span class="donation-label">GOP DONATIONS</span>
+          <span id="donation-repubs" class="donation-amount red"></span>
+        </div>
+        <div class="donation-row">
+          <span class="donation-label">TOTAL CYCLE</span>
+          <span id="donation-total" class="donation-amount"></span>
+        </div>
+        <div class="donation-row">
+          <span class="donation-label">CYCLE</span>
+          <span id="donation-cycle" class="donation-muted"></span>
+        </div>
+
+        <div id="confidence-badge" class="confidence-badge"></div>
+
+        <a id="opensecrets-link" class="source-link" href="#" target="_blank" rel="noopener noreferrer">
+          VIEW ON OPENSECRETS ↗
+        </a>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="action-row">
+      <button id="btn-avoided" class="btn-avoided" aria-label="Mark as avoided">
+        ★ AVOIDED
+      </button>
+    </div>
+    <div class="action-row secondary-actions">
+      <button id="btn-snooze" class="btn-snooze" aria-label="Snooze this domain for 7 days">
+        ZZZ SNOOZE 7d
+      </button>
+    </div>
+  </section>
+
+  <!-- ── Avoided confirmation ────────────────────────────────── -->
+  <section id="state-avoided" class="state" hidden>
+    <div class="avoided-pixel" aria-hidden="true">★</div>
+    <p class="avoided-msg">AVOIDED!</p>
+    <p class="avoided-sub">This one counts.</p>
+  </section>
+
+  <!-- ── Weekly summary (always visible at bottom) ───────────── -->
+  <footer class="weekly-summary" aria-label="This week's avoidance summary">
+    <div class="summary-title">THIS WEEK</div>
+    <div class="summary-stats">
+      <span>BUSINESSES: <strong id="stat-entity">–</strong></span>
+      <span>PLATFORMS: <strong id="stat-platform">–</strong></span>
+    </div>
+    <p id="stat-top" class="summary-top" hidden></p>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>

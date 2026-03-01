@@ -1,0 +1,247 @@
+/* ── Reset ─────────────────────────────────────────────────────────────────── */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Variables ─────────────────────────────────────────────────────────────── */
+
+:root {
+  --black:  #1A1A1A;
+  --white:  #F5F5F0;
+  --red:    #CC0000;
+  --amber:  #FF8C00;
+  --green:  #228B22;
+  --muted:  #888888;
+  --border: #DDDDDD;
+  --mono:   'Courier New', Courier, monospace;
+}
+
+/* ── Base ──────────────────────────────────────────────────────────────────── */
+
+body {
+  width: 320px;
+  background: var(--white);
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--black);
+  image-rendering: pixelated;
+}
+
+/* ── Header ────────────────────────────────────────────────────────────────── */
+
+.app-header {
+  background: var(--black);
+  padding: 10px 14px;
+  border-bottom: 4px solid var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.app-title {
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--white);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+/* ── State sections ────────────────────────────────────────────────────────── */
+
+.state { padding: 16px; }
+
+/* Clean */
+
+.clean-icon {
+  font-size: 32px;
+  color: var(--green);
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.clean-msg {
+  text-align: center;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+/* Avoided */
+
+.avoided-pixel {
+  font-size: 48px;
+  color: var(--amber);
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.avoided-msg {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--green);
+  text-align: center;
+  letter-spacing: 4px;
+}
+
+.avoided-sub {
+  font-size: 11px;
+  color: var(--muted);
+  text-align: center;
+  margin-top: 4px;
+}
+
+/* ── Business card ─────────────────────────────────────────────────────────── */
+
+.business-card {
+  border: 2px solid var(--amber);
+  background: var(--white);
+  margin-bottom: 12px;
+}
+
+.card-amber-bar {
+  background: var(--amber);
+  color: var(--black);
+  font-size: 9px;
+  padding: 2px 0;
+  letter-spacing: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.card-body { padding: 12px; }
+
+.entity-name {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--black);
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+  text-transform: uppercase;
+}
+
+.ceo-name {
+  font-size: 10px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.donation-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.donation-label {
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+
+.donation-amount {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.donation-amount.red { color: var(--red); }
+
+.donation-muted {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.confidence-badge {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 2px 6px;
+  font-size: 9px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  border: 1px solid;
+}
+
+.confidence-badge.HIGH   { color: var(--red);   border-color: var(--red); }
+.confidence-badge.MEDIUM { color: var(--amber);  border-color: var(--amber); }
+
+.source-link {
+  display: block;
+  margin-top: 10px;
+  font-size: 9px;
+  color: #0066CC;
+  text-decoration: underline;
+  letter-spacing: 1px;
+}
+
+/* ── Action buttons ────────────────────────────────────────────────────────── */
+
+.action-row { margin-bottom: 6px; }
+
+.btn-avoided {
+  width: 100%;
+  min-height: 44px;
+  background: var(--black);
+  color: var(--amber);
+  border: 3px solid var(--amber);
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: none;
+}
+
+.btn-avoided:hover   { background: var(--amber); color: var(--black); }
+.btn-avoided:active  { opacity: 0.85; }
+.btn-avoided:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.btn-snooze {
+  width: 100%;
+  min-height: 36px;
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.btn-snooze:hover  { border-color: var(--muted); color: var(--black); }
+.btn-snooze:active { opacity: 0.7; }
+
+/* ── Weekly summary ────────────────────────────────────────────────────────── */
+
+.weekly-summary {
+  background: var(--black);
+  padding: 10px 14px;
+  border-top: 2px solid var(--red);
+}
+
+.summary-title {
+  font-size: 9px;
+  font-weight: bold;
+  color: var(--red);
+  letter-spacing: 3px;
+  margin-bottom: 6px;
+}
+
+.summary-stats {
+  display: flex;
+  gap: 16px;
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.summary-stats strong {
+  color: var(--white);
+  font-weight: bold;
+}
+
+.summary-top {
+  margin-top: 4px;
+  font-size: 9px;
+  color: var(--amber);
+  letter-spacing: 1px;
+}
