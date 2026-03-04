@@ -282,12 +282,28 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
 });
 
 // ── Periodic entity list refresh (once per day) ────────────────────────────────
+//
+// chrome.alarms persists across service worker restarts — the alarm only needs
+// to be created once (on install/update), not on every SW wake-up. Calling
+// chrome.alarms.create() at the top level of the module ran on every wake and
+// threw "Cannot read properties of undefined" in some Chrome initialisation
+// states before the runtime was fully ready. Move creation to onInstalled so
+// it runs exactly once with a fully-initialised runtime.
+//
+// The onAlarm listener MUST stay at the top level (MV3 requirement: all event
+// listeners must be registered synchronously on startup so Chrome can wake the
+// SW when an alarm fires even if it has gone idle).
 
-chrome.alarms.create('entity-list-refresh', { periodInMinutes: 1440 });
 chrome.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name === 'entity-list-refresh') {
     refreshEntityList().catch(() => {/* silently ignore */});
   }
+});
+
+chrome.runtime.onInstalled.addListener(() => {
+  // (Re-)create the alarm on install or extension update. chrome.alarms.create
+  // is idempotent by name — it replaces any existing alarm with the same name.
+  chrome.alarms.create('entity-list-refresh', { periodInMinutes: 1440 });
 });
 
 // ── Initialise ─────────────────────────────────────────────────────────────────
