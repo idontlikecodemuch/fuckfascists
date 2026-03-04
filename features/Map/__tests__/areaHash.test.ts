@@ -12,9 +12,12 @@ describe('toAreaHash', () => {
   });
 
   it('two points in the same ~1km grid produce the same hash', () => {
-    // 0.005 degree difference ≈ 500m — same grid cell
-    const a = toAreaHash(37.7749, -122.4194);
-    const b = toAreaHash(37.7752, -122.4197);
+    // Both coordinates are clearly within the same cell (37.77xx rounds to 37.77,
+    // -122.41xx rounds to -122.41). The original fixture straddled the 37.775
+    // rounding boundary (37.7749 → 37.77, 37.7752 → 37.78), so it picked two
+    // different cells despite being only ~30m apart.
+    const a = toAreaHash(37.7701, -122.4101);
+    const b = toAreaHash(37.7748, -122.4148);
     expect(a).toBe(b);
   });
 
