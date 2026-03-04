@@ -289,6 +289,72 @@ The entire app is styled as a **vintage 8-bit video game**. This is the foundati
 
 ---
 
+## Modern Code Standards
+
+> Apply these to **every file you write or edit**. These are not style preferences — they are correctness requirements. A deprecated API that works today will break on the next SDK update.
+
+### Self-check rule
+After writing any file, scan it once for deprecated APIs, `.then()` chains, `var`, `require()`, and `any`. Rewrite before finishing. If you are genuinely uncertain whether a method is current, flag it with a `// TODO: verify API is current for <package>@<version>` comment rather than silently shipping something that may fail at runtime.
+
+---
+
+### Dependencies
+- Before using any library method, check the installed version in `package.json` and confirm the API is current for that version.
+- Prefer explicit, minimal API calls over convenience wrappers that change between versions.
+- Never install a new dependency without checking: (1) is there an existing dep that already does this? (2) is it actively maintained? (3) does it have a clean audit (`npm audit`)?
+
+---
+
+### Node / TypeScript
+- **ESM only** — `import`/`export`, never `require()`/`module.exports`.
+- **`async`/`await` only** — never `.then()`/`.catch()` chains.
+- **`const` and `let` only** — never `var`.
+- **`unknown` over `any`** — use `unknown` and narrow explicitly; `any` is banned except in test mocks where unavoidable.
+- **`satisfies`** — use where type narrowing improves safety without widening the inferred type.
+- **Optional chaining and nullish coalescing** — use `?.` and `??` where appropriate; avoid verbose `=== null || === undefined` guards.
+- **Strict mode** — `tsconfig.json` has `"strict": true`. Never disable strict checks per-file.
+- Do not use deprecated TypeScript utility types (e.g. `Readonly` is fine; `Extract`/`Exclude` are fine; avoid anything marked `@deprecated` in the TS release notes).
+
+---
+
+### React Native / Expo SDK 52
+- Use **Expo SDK 52** APIs only. Check the SDK 52 changelog before using any Expo module.
+- **Permissions** — use per-module async methods: `Location.requestForegroundPermissionsAsync()`, `Notifications.requestPermissionsAsync()`, etc. Never use the old unified `Permissions` API from `expo-permissions` (removed in SDK 45).
+- **`expo-constants`** — use `Constants.expoConfig` not the deprecated `Constants.manifest`.
+- **`expo-location`** — `getCurrentPositionAsync()` and `watchPositionAsync()` are current. Do not use removed methods.
+- **`expo-sqlite`** — use the current `openDatabaseAsync()` / `SQLiteDatabase` API (SDK 52 switched to an async-first API). Do not use the old synchronous `openDatabase()` from SDK ≤ 50.
+- **`expo-notifications`** — `scheduleNotificationAsync()` with typed trigger objects is current. Use `DateTriggerInput` etc. from the types; do not use the old string-based trigger format.
+- **`expo-secure-store`** — `setItemAsync()` / `getItemAsync()` / `deleteItemAsync()` are current.
+
+---
+
+### Jest 29
+- **`jest.createMockFromModule()`** — use this; never the legacy `jest.genMockFromModule()`.
+- **`.toHaveBeenCalledWith()`** — use this; never the alias `.toBeCalledWith()`.
+- **`.toHaveBeenCalled()`** — use this; never `.toBeCalled()`.
+- **fetch mocking** — assign to `globalThis.fetch = jest.fn()` or use a dedicated mock library. Do not use `jest.spyOn(global, 'fetch')` — it is unreliable across Node versions.
+- **Fake timers** — use `jest.useFakeTimers()` with `jest.runAllTimersAsync()` (Jest 29+); avoid the deprecated `jest.runAllTimers()` for async code.
+- **`beforeEach` cleanup** — always call `jest.clearAllMocks()` (or `jest.resetAllMocks()`) in `beforeEach` to prevent state leaking between tests.
+
+---
+
+### Browser Extension (MV3)
+- **Event listeners must be registered at the top level** of the service worker — never inside `async` functions, `setTimeout`, or `.then()` chains. Chrome terminates the SW between events; listeners not registered synchronously on startup will be missed.
+- **`chrome.alarms`** — create alarms inside `chrome.runtime.onInstalled`, not at the module top level. Alarms persist across SW restarts; re-creating them on every wake is unnecessary and was the cause of a runtime crash (see commit `fad4a0e`).
+- **Async message handlers** — return `true` synchronously from `onMessage` listeners that call `sendResponse` asynchronously, or the message port will close before the response is sent.
+- **`chrome.action.setIcon`** — takes a `path` object keyed by pixel density string (`"16"`, `"32"`, etc.), not a single string.
+- Do not use deprecated MV2 APIs (`chrome.browserAction`, `chrome.pageAction`, `webRequest` blocking mode, etc.).
+
+---
+
+### General
+- **No `console.log` in production paths** — use it only in dev/test; remove or guard with an env check before shipping.
+- **No magic numbers** — any threshold, TTL, size, or timing value belongs in `config/constants.ts`.
+- **Error boundaries** — all async paths in hooks must handle rejection. Use the cancelled-flag pattern for `useEffect` cleanup (see `useInfoContent.ts` for the canonical example).
+- **Update this section** — if you encounter a new deprecation warning, a breaking API change, or a pattern that caused a runtime bug in this project, add it here before finishing the session.
+
+---
+
 ## Out of Scope (MVP) — Do Not Build
 
 - Background location tracking
