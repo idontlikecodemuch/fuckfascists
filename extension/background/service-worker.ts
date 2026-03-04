@@ -35,8 +35,12 @@ let apiClient: OpenSecretsClient | null = null;
 let entities: Entity[] = [];
 
 async function init() {
-  // API key must be stored in extension storage (set during install/onboarding).
-  // Never hard-coded, never committed.
+  // The OpenSecrets API key is stored in chrome.storage.local under
+  // 'opensecrets_api_key'. It must be written there before first use —
+  // either via an options page or an onInstalled prompt (to be built in
+  // pre-launch checklist item). It is NEVER hard-coded or committed to source.
+  // If absent, domain matching still works but no donation data is fetched
+  // (handleCheckDomain returns early at the "no client" guard).
   const result = await chrome.storage.local.get('opensecrets_api_key');
   const apiKey = result['opensecrets_api_key'] as string | undefined;
   if (apiKey) {

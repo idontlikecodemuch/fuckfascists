@@ -25,6 +25,8 @@ const PLATFORM_PREFIX = 'avoid:platform:';
 export class ChromeStorageAdapter implements StorageAdapter {
 
   // ── Cache ───────────────────────────────────────────────────────────────────
+  // These satisfy the StorageAdapter cache contract (core/data/adapters.ts).
+  // The matching pipeline calls these via makeCacheDeps(adapter) — never directly.
 
   async getCacheEntry(key: string): Promise<LocalCache | null> {
     const storageKey = CACHE_KEY(key);
@@ -37,6 +39,12 @@ export class ChromeStorageAdapter implements StorageAdapter {
   }
 
   // ── Entity avoid events ──────────────────────────────────────────────────────
+  // Call via recordEntityAvoid(adapter, entityId) in core/data/eventStore.ts —
+  // never call upsertEntityAvoid directly from feature code.
+  //
+  // Why read-increment-write instead of an atomic increment:
+  // chrome.storage has no SQL-style transactions. The race window is negligible
+  // in practice because avoid events are only written from a single popup context.
 
   async upsertEntityAvoid(event: EntityAvoidEvent): Promise<void> {
     const storageKey = ENTITY_KEY(event.entityId, event.date);
@@ -51,6 +59,8 @@ export class ChromeStorageAdapter implements StorageAdapter {
   }
 
   async getEntityAvoids(entityId?: string): Promise<EntityAvoidEvent[]> {
+    // get(null) returns ALL keys — then we filter by prefix to avoid iterating
+    // chrome.storage keys that belong to snooze records, entity list, etc.
     const all = await chrome.storage.local.get(null);
     return Object.entries(all)
       .filter(([k]) => {
@@ -62,6 +72,8 @@ export class ChromeStorageAdapter implements StorageAdapter {
   }
 
   // ── Platform avoid events ────────────────────────────────────────────────────
+  // Call via recordPlatformAvoid(adapter, platformId) in core/data/eventStore.ts.
+  // Idempotent by key design: same (platformId, weekOf) → same storage key → overwrites.
 
   async upsertPlatformAvoid(event: PlatformAvoidEvent): Promise<void> {
     const storageKey = PLATFORM_KEY(event.platformId, event.weekOf);
@@ -73,6 +85,8 @@ export class ChromeStorageAdapter implements StorageAdapter {
     return Object.entries(all)
       .filter(([k]) => {
         if (!k.startsWith(PLATFORM_PREFIX)) return false;
+        // weekOf filter: key format is "avoid:platform:<id>:<weekOf>" so a
+        // substring match on ":<weekOf>" is sufficient and avoids a full parse.
         if (weekOf) return k.includes(`:${weekOf}`);
         return true;
       })
