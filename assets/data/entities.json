@@ -1,0 +1,288 @@
+[
+  {
+    "id": "walmart",
+    "canonicalName": "Walmart Inc",
+    "aliases": ["Walmart", "Wal-Mart", "Sam's Club", "Walmart Supercenter"],
+    "domains": ["walmart.com", "samsclub.com"],
+    "categoryTags": ["retail"],
+    "ceoName": "Doug McMillon",
+    "confidenceOverride": "HIGH",
+    "lastVerifiedDate": "2026-03-04"
+  },
+  {
+    "id": "amazon",
+    "canonicalName": "Amazon.com Inc",
+    "aliases": [
+      "Amazon", "Amazon.com", "Whole Foods", "Whole Foods Market",
+      "Twitch", "Audible", "Zappos", "Amazon Prime", "Ring", "Woot"
+    ],
+    "domains": [
+      "amazon.com", "wholefoods.com", "twitch.tv",
+      "audible.com", "zappos.com", "goodreads.com",
+      "imdb.com", "ring.com", "woot.com"
+    ],
+    "categoryTags": ["tech", "retail"],
+    "ceoName": "Andy Jassy",
+    "confidenceOverride": "HIGH",
+    "lastVerifiedDate": "2026-03-04"
+  },
+  {
+    "id": "meta",
+    "canonicalName": "Meta Platforms Inc",
+    "aliases": ["Meta", "Facebook", "Instagram", "WhatsApp", "Threads", "Oculus"],
+    "domains": [
+      "facebook.com", "instagram.com", "whatsapp.com",
+      "threads.net", "meta.com", "oculus.com"
+    ],
+    "categoryTags": ["tech", "media"],
+    "ceoName": "Mark Zuckerberg",
+    "confidenceOverride": "HIGH",
+    "lastVerifiedDate": "2026-03-04"
+  },
+  {
+    "id": "x-twitter",
+    "canonicalName": "X Corp",
+    "aliases": ["X", "Twitter", "X.com"],
+    "domains": ["x.com", "twitter.com"],
+    "categoryTags": ["tech", "media"],
+    "ceoName": "Elon Musk",
+    "confidenceOverride": "HIGH",
+    "lastVerifiedDate": "2026-03-04"
+  },
+  {
+    "id": "tesla",
+    "canonicalName": "Tesla Inc",
+    "aliases": ["Tesla", "Tesla Motors", "Tesla Energy"],
+    "domains": ["tesla.com"],
+    "categoryTags": ["automotive", "tech"],
+    "ceoName": "Elon Musk",
+    "confidenceOverride": "HIGH",
+    "lastVerifiedDate": "2026-03-04"
+  },
+  {
+    "id": "spacex",
+    "canonicalName": "Space Exploration Technologies Corp",
+    "aliases": ["SpaceX", "Space Exploration Technologies", "Starlink"],
+    "domains": ["spacex.com", "starlink.com"],
+    "categoryTags": ["tech", "defense"],
+    "ceoName": "Elon Musk",
+    "confidenceOverride": "HIGH",
+    "lastVerifiedDate": "2026-03-04"
+  },
+  {
+    "id": "target",
+    "canonicalName": "Target Corp",
+    "aliases": ["Target", "Target Stores", "Target.com"],
+    "domains": ["target.com"],
+    "categoryTags": ["retail"],
+    "ceoName": "Brian Cornell",
+    "confidenceOverride": "HIGH",
+    "lastVerifiedDate": "2026-03-04"
+  },
+  {
+    "id": "home-depot",
+    "canonicalName": "Home Depot Inc",
+    "aliases": ["Home Depot", "The Home Depot"],
+    "domains": ["homedepot.com"],
+    "categoryTags": ["retail"],
+    "ceoName": "Ted Decker",
+    "confidenceOverride": "HIGH",
+    "lastVerifiedDate": "2026-03-04"
+  },
+  {
+    "id": "lowes",
+    "canonicalName": "Lowe's Companies Inc",
+    "aliases": ["Lowe's", "Lowes", "Lowe's Home Improvement"],
+    "domains": ["lowes.com"],
+    "categoryTags": ["retail"],
+    "ceoName": "Marvin Ellison",
+    "confidenceOverride": "HIGH",
+    "lastVerifiedDate": "2026-03-04"
+  },
+  {
+    "id": "dollar-general",
+    "canonicalName": "Dollar General Corp",
+    "aliases": ["Dollar General", "DG"],
+    "domains": ["dollargeneral.com"],
+    "categoryTags": ["retail"],
+    "ceoName": "Todd Vasos",
+    "confidenceOverride": "HIGH",
+    "lastVerifiedDate": "2026-03-04"
+  },
+  {
+    "id": "hobby-lobby",
+    "canonicalName": "Hobby Lobby Stores Inc",
+    "aliases": ["Hobby Lobby", "Hobby Lobby Stores"],
+    "domains": ["hobbylobby.com"],
+    "categoryTags": ["retail"],
+    "ceoName": "David Green",
+    "confidenceOverride": "HIGH",
+    "lastVerifiedDate": "2026-03-04"
+  },
+  {
+    "id": "att",
+    "canonicalName": "AT&T Inc",
+    "aliases": ["AT&T", "ATT", "AT&T Wireless", "AT&T Mobility", "AT&T Internet"],
+    "domains": ["att.com", "att.net"],
+    "categoryTags": ["telecom"],
+    "ceoName": "John Stankey",
+    "confidenceOverride": "HIGH",
+    "lastVerifiedDate": "2026-03-04"
+  },
+  {
+    "id": "comcast",
+    "canonicalName": "Comcast Corp",
+    "aliases": ["Comcast", "Xfinity", "NBCUniversal", "Peacock", "Universal Pictures"],
+    "domains": ["comcast.com", "xfinity.com", "peacocktv.com", "comcast.net"],
+    "categoryTags": ["telecom", "media"],
+    "ceoName": "Brian Roberts",
+    "confidenceOverride": "HIGH",
+    "lastVerifiedDate": "2026-03-04"
+  },
+  {
+    "id": "chevron",
+    "canonicalName": "Chevron Corp",
+    "aliases": ["Chevron", "Chevron Texaco", "Caltex"],
+    "domains": ["chevron.com"],
+    "categoryTags": ["energy"],
+    "ceoName": "Mike Wirth",
+    "confidenceOverride": "HIGH",
+    "lastVerifiedDate": "2026-03-04"
+  },
+  {
+    "id": "exxonmobil",
+    "canonicalName": "Exxon Mobil Corp",
+    "aliases": ["ExxonMobil", "Exxon", "Mobil", "Esso"],
+    "domains": ["exxonmobil.com", "exxon.com", "mobil.com"],
+    "categoryTags": ["energy"],
+    "ceoName": "Darren Woods",
+    "confidenceOverride": "HIGH",
+    "lastVerifiedDate": "2026-03-04"
+  },
+  {
+    "id": "koch-industries",
+    "canonicalName": "Koch Industries Inc",
+    "aliases": [
+      "Koch Industries", "Koch", "Georgia-Pacific",
+      "Angel Soft", "Brawny", "Dixie", "Quilted Northern", "Molex"
+    ],
+    "domains": ["kochind.com", "gp.com"],
+    "categoryTags": ["energy", "consumer-goods"],
+    "ceoName": "Charles Koch",
+    "confidenceOverride": "HIGH",
+    "lastVerifiedDate": "2026-03-04"
+  },
+  {
+    "id": "goldman-sachs",
+    "canonicalName": "Goldman Sachs Group Inc",
+    "aliases": ["Goldman Sachs", "Goldman", "Marcus by Goldman Sachs", "Marcus"],
+    "domains": ["goldmansachs.com", "marcus.com"],
+    "categoryTags": ["finance"],
+    "ceoName": "David Solomon",
+    "confidenceOverride": "HIGH",
+    "lastVerifiedDate": "2026-03-04"
+  },
+  {
+    "id": "jpmorgan-chase",
+    "canonicalName": "JPMorgan Chase & Co",
+    "aliases": ["JPMorgan Chase", "JPMorgan", "Chase", "Chase Bank", "J.P. Morgan"],
+    "domains": ["jpmorganchase.com", "jpmorgan.com", "chase.com"],
+    "categoryTags": ["finance"],
+    "ceoName": "Jamie Dimon",
+    "confidenceOverride": "HIGH",
+    "lastVerifiedDate": "2026-03-04"
+  },
+  {
+    "id": "blackstone",
+    "canonicalName": "Blackstone Inc",
+    "aliases": ["Blackstone", "Blackstone Group"],
+    "domains": ["blackstone.com"],
+    "categoryTags": ["finance"],
+    "ceoName": "Stephen Schwarzman",
+    "confidenceOverride": "HIGH",
+    "lastVerifiedDate": "2026-03-04"
+  },
+  {
+    "id": "bank-of-america",
+    "canonicalName": "Bank of America Corp",
+    "aliases": ["Bank of America", "BofA", "Merrill Lynch", "Merrill", "Merrill Edge"],
+    "domains": ["bankofamerica.com", "ml.com", "merrilledge.com"],
+    "categoryTags": ["finance"],
+    "ceoName": "Brian Moynihan",
+    "confidenceOverride": "HIGH",
+    "lastVerifiedDate": "2026-03-04"
+  },
+  {
+    "id": "wells-fargo",
+    "canonicalName": "Wells Fargo & Co",
+    "aliases": ["Wells Fargo", "Wells Fargo Bank", "Wells Fargo Advisors"],
+    "domains": ["wellsfargo.com"],
+    "categoryTags": ["finance"],
+    "ceoName": "Charlie Scharf",
+    "confidenceOverride": "HIGH",
+    "lastVerifiedDate": "2026-03-04"
+  },
+  {
+    "id": "mcdonalds",
+    "canonicalName": "McDonald's Corp",
+    "aliases": ["McDonald's", "McDonalds", "Mickey D's"],
+    "domains": ["mcdonalds.com"],
+    "categoryTags": ["food"],
+    "ceoName": "Chris Kempczinski",
+    "confidenceOverride": "HIGH",
+    "lastVerifiedDate": "2026-03-04"
+  },
+  {
+    "id": "tyson-foods",
+    "canonicalName": "Tyson Foods Inc",
+    "aliases": [
+      "Tyson Foods", "Tyson", "Jimmy Dean",
+      "Ball Park", "Hillshire Farm", "Sara Lee", "State Fair"
+    ],
+    "domains": ["tysonfoods.com"],
+    "categoryTags": ["food"],
+    "ceoName": "Donnie King",
+    "confidenceOverride": "HIGH",
+    "lastVerifiedDate": "2026-03-04"
+  },
+  {
+    "id": "fedex",
+    "canonicalName": "FedEx Corp",
+    "aliases": ["FedEx", "FedEx Express", "FedEx Ground", "Federal Express"],
+    "domains": ["fedex.com"],
+    "categoryTags": ["retail"],
+    "ceoName": "Raj Subramaniam",
+    "confidenceOverride": "HIGH",
+    "lastVerifiedDate": "2026-03-04"
+  },
+  {
+    "id": "altria",
+    "canonicalName": "Altria Group Inc",
+    "aliases": ["Altria", "Philip Morris", "Marlboro", "JUUL"],
+    "domains": ["altria.com", "philipmorrisusa.com"],
+    "categoryTags": ["consumer-goods"],
+    "ceoName": "Billy Gifford",
+    "confidenceOverride": "HIGH",
+    "lastVerifiedDate": "2026-03-04"
+  },
+  {
+    "id": "lockheed-martin",
+    "canonicalName": "Lockheed Martin Corp",
+    "aliases": ["Lockheed Martin", "Lockheed", "Sikorsky"],
+    "domains": ["lockheedmartin.com"],
+    "categoryTags": ["defense"],
+    "ceoName": "Jim Taiclet",
+    "confidenceOverride": "HIGH",
+    "lastVerifiedDate": "2026-03-04"
+  },
+  {
+    "id": "uline",
+    "canonicalName": "Uline Inc",
+    "aliases": ["Uline", "Uline Shipping Supplies"],
+    "domains": ["uline.com"],
+    "categoryTags": ["retail"],
+    "ceoName": "Richard Uihlein",
+    "confidenceOverride": "HIGH",
+    "lastVerifiedDate": "2026-03-04"
+  }
+]
