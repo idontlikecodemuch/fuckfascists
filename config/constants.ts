@@ -14,6 +14,9 @@ export const ENTITY_CACHE_TTL_DAYS = 60;
 export const CONFIDENCE_THRESHOLD_HIGH = 0.85;
 export const CONFIDENCE_THRESHOLD_MEDIUM = 0.60;
 
+// OpenFEC API base URL — primary data source as of v1.1
+export const FEC_API_BASE_URL = 'https://api.open.fec.gov/v1';
+
 // Curated entity list update URL
 export const ENTITY_LIST_UPDATE_URL = 'https://raw.githubusercontent.com/[org]/fuckfascists-data/main/entities.json';
 

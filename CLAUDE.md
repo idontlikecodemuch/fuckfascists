@@ -25,8 +25,20 @@ These are not preferences. They are constraints. Never violate them.
 2. **No geolocation storage** — Location is accessed session-only (on explicit user action). Coordinates are never written to disk or transmitted.
 3. **No browsing history** — The extension detects domains in-memory only. Nothing about what a user browsed is ever persisted.
 4. **No personal identifiers** — No accounts, no emails, no user IDs in MVP. All data is local-only.
-5. **No backend in MVP** — All processing is on-device. The only outbound calls are to the OpenSecrets API (directly from the device) and to fetch the curated entity list update (static file on GitHub/CDN).
+5. **No backend in MVP** — All processing is on-device. The only outbound calls are to the OpenFEC API (directly from the device) and to fetch the curated entity list update (static file on GitHub/CDN).
 6. **Transparency always** — Every confidence label is shown. Every data source links to OpenSecrets. Nothing is claimed with more certainty than the data supports.
+
+---
+
+## Security — Read This First
+
+API keys and credentials must **only ever be read from environment variables** (e.g. `process.env.FEC_API_KEY`). This is a hard rule, not a preference.
+
+- **Never hardcode any key, token, or credential** in source files, config files, or comments.
+- **`.env` is gitignored** — it is the only place real keys live. Never commit it.
+- **`.env.example`** shows placeholder values only — never real values.
+- **If you see a hardcoded key in the codebase, treat it as a bug** — remove it immediately and rotate the exposed key.
+- **Constructors that require an API key** must read from `process.env` and throw a typed error at construction time if the key is absent. This makes misconfiguration fail fast rather than silently at call time.
 
 ---
 
@@ -41,7 +53,7 @@ These are not preferences. They are constraints. Never violate them.
 | Mobile storage | Expo SecureStore + expo-sqlite |
 | Notifications | Expo Notifications — local scheduling only |
 | Report card rendering | react-native-view-shot or React Native Skia |
-| Networking | Native fetch — OpenSecrets API calls only |
+| Networking | Native fetch — OpenFEC API (primary); CDN for entity list + drop schedule |
 | Extension | Manifest V3, vanilla JS + HTML/CSS |
 | Extension storage | chrome.storage.local / browser.storage.local |
 | Shared core | TypeScript package — /core/matching/, /core/models/, /core/api/ |
@@ -128,10 +140,10 @@ PlatformAvoidEvent {
   weekOf: string         // YYYY-MM-DD (Monday of that week)
 }
 
-// Cached OpenSecrets API result
+// Cached FEC API result
 LocalCache {
   key: string            // normalized(brandName + areaHash) — NOT lat/long
-  openSecretsOrgId: string
+  openSecretsOrgId: string  // holds FEC committee_id since FEC migration
   donationSummary: object
   confidence: 'HIGH' | 'MEDIUM'
   fetchedAt: number      // timestamp for TTL
@@ -154,7 +166,7 @@ This logic lives in `/core/matching/` and is shared between the mobile app and t
 ```
 1. Normalize input name (lowercase, strip punctuation, trim)
 2. Check canonical entity list aliases (exact match → HIGH confidence)
-3. If no match → call OpenSecrets getOrgs with normalized name
+3. If no match → call FEC searchCommittees with normalized name
 4. Score each result using Jaro-Winkler similarity
 5. Pick best match:
    - score >= CONFIDENCE_THRESHOLD_HIGH  → HIGH, call orgSummary, display
@@ -220,12 +232,12 @@ The weekly report card is a synchronized global event. Every user receives it at
 
 ```typescript
 // Never mock data in dev or prod. Mocks are for tests only.
-// Use real OpenSecrets API in dev with a dev API key.
-// Keep environment config in .env files, never committed.
+// Use real OpenFEC API in dev with a dev API key (FEC_API_KEY in .env).
+// Keep environment config in .env files, never committed. See .env.example.
 
-DEV   — local build, verbose logging on, real API calls
+DEV   — local build, verbose logging on, real API calls (FEC_API_KEY required in .env)
 TEST  — jest, mocked API responses only here
-PROD  — release build, logging off, real API calls
+PROD  — release build, logging off, real API calls (FEC_API_KEY in deployment environment)
 ```
 
 ---
