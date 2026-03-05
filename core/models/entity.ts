@@ -43,10 +43,31 @@ export interface Entity {
 /**
  * Returns the public figure name most associated with this entity's political
  * identity. Falls back to ceoName when publicFigureName is not set.
+ *
+ * When allEntities is provided and the entity has a parentEntityId, ladders
+ * up to the parent's display figure so subsidiaries (e.g. Instagram, LinkedIn)
+ * surface the controlling figure (e.g. Mark Zuckerberg, Satya Nadella).
+ *
  * Pure function — safe to call in any context.
  */
-export function getDisplayFigure(entity: Entity): string {
+export function getDisplayFigure(entity: Entity, allEntities?: Entity[]): string {
+  if (entity.parentEntityId && allEntities) {
+    const parent = allEntities.find((e) => e.id === entity.parentEntityId);
+    if (parent) return getDisplayFigure(parent);
+  }
   return entity.publicFigureName ?? entity.ceoName;
+}
+
+/**
+ * Returns the parent entity for a subsidiary, or undefined if the entity has
+ * no parentEntityId or the parent is not found in allEntities.
+ */
+export function getParentEntity(
+  entity: Entity,
+  allEntities: Entity[]
+): Entity | undefined {
+  if (!entity.parentEntityId) return undefined;
+  return allEntities.find((e) => e.id === entity.parentEntityId);
 }
 
 /**
