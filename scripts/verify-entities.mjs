@@ -67,9 +67,16 @@ function normalize(s) {
 const CORP_SUFFIXES = /\s+(inc|llc|corp|corporation|ltd|co|company|group|holdings|enterprises|international|usa|america|americas)\.?$/i;
 function stripSuffix(s) { return s.replace(CORP_SUFFIXES, '').trim(); }
 
+function sanitizeForFEC(name) {
+  return name
+    .replace(/\./g, ' ').replace(/,/g, ' ').replace(/&/g, 'and')
+    .replace(/[^\w\s-]/g, '').replace(/\s+/g, ' ').trim();
+}
+
 async function searchCommittees(name, apiKey) {
   const params = new URLSearchParams({ q: name, api_key: apiKey, per_page: '10' });
   const res = await fetch(`${FEC_API_BASE}/committees/?${params}`);
+  if (res.status === 422) return null;  // invalid query — caller warns and skips
   if (!res.ok) throw new Error(`FEC API ${res.status}: ${res.statusText}`);
   return (await res.json()).results ?? [];
 }
@@ -103,15 +110,20 @@ async function phase1(entities, apiKey) {
     let best = { bestScore: 0, bestId: null, bestName: null };
 
     for (const q of queries) {
-      if (seen.has(q)) continue;
-      seen.add(q);
+      const sanitized = sanitizeForFEC(q);
+      if (!sanitized || seen.has(sanitized)) continue;
+      seen.add(sanitized);
       try {
-        const results = await searchCommittees(q, apiKey);
+        const results = await searchCommittees(sanitized, apiKey);
         await delay(REQUEST_DELAY_MS);
+        if (results === null) {
+          console.warn(`  ⚠ 422 on query "${sanitized}" — skipping this attempt`);
+          continue;
+        }
         const m = pickBest(results, normCanonical);
         if (m.bestScore > best.bestScore) best = m;
       } catch (err) {
-        console.error(`  ERROR querying FEC for "${q}": ${err.message}`);
+        console.error(`  ERROR querying FEC for "${sanitized}": ${err.message}`);
         await delay(REQUEST_DELAY_MS);
       }
       if (best.bestScore >= THRESHOLD_AUTO) break;
