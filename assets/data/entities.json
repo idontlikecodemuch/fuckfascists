@@ -2056,5 +2056,191 @@
     "matchScore": 1.0,
     "fecCommitteeId": "",
     "lastVerifiedDate": "2026-03-05"
+  },
+  {
+    "id": "unitedhealth-group",
+    "canonicalName": "UnitedHealth Group Inc",
+    "aliases": ["UnitedHealth Group", "UnitedHealthcare", "Optum", "UnitedHealth", "United Healthcare"],
+    "domains": ["unitedhealthgroup.com", "uhc.com", "optum.com"],
+    "categoryTags": ["healthcare", "insurance"],
+    "ceoName": "Andrew Witty",
+    "matchScore": 1.0,
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
+  },
+  {
+    "id": "elevance-health",
+    "canonicalName": "Elevance Health Inc",
+    "aliases": ["Elevance Health", "Anthem", "Anthem Blue Cross", "Anthem Blue Cross Blue Shield", "Empire BlueCross", "HealthLink", "Carelon"],
+    "domains": ["elevancehealth.com", "anthem.com"],
+    "categoryTags": ["healthcare", "insurance"],
+    "ceoName": "Gail Boudreaux",
+    "matchScore": 1.0,
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
+  },
+  {
+    "id": "cigna",
+    "canonicalName": "Cigna Group",
+    "aliases": ["Cigna", "The Cigna Group", "Evernorth", "Express Scripts"],
+    "domains": ["cigna.com", "evernorth.com", "express-scripts.com"],
+    "categoryTags": ["healthcare", "insurance"],
+    "ceoName": "David Cordani",
+    "matchScore": 1.0,
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
+  },
+  {
+    "id": "humana",
+    "canonicalName": "Humana Inc",
+    "aliases": ["Humana", "Humana Insurance"],
+    "domains": ["humana.com"],
+    "categoryTags": ["healthcare", "insurance"],
+    "ceoName": "Jim Rechtin",
+    "matchScore": 1.0,
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
+  },
+  {
+    "id": "mckesson",
+    "canonicalName": "McKesson Corp",
+    "aliases": ["McKesson", "McKesson Medical-Surgical"],
+    "domains": ["mckesson.com"],
+    "categoryTags": ["healthcare"],
+    "ceoName": "Brian Tyler",
+    "matchScore": 1.0,
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
+  },
+  {
+    "id": "cencora",
+    "canonicalName": "Cencora Inc",
+    "aliases": ["Cencora", "AmerisourceBergen", "Amerisource Bergen", "PharMerica"],
+    "domains": ["cencora.com", "amerisourcebergen.com"],
+    "categoryTags": ["healthcare"],
+    "ceoName": "Steve Collis",
+    "matchScore": 1.0,
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
+  },
+  {
+    "id": "cardinal-health",
+    "canonicalName": "Cardinal Health Inc",
+    "aliases": ["Cardinal Health"],
+    "domains": ["cardinalhealth.com"],
+    "categoryTags": ["healthcare"],
+    "ceoName": "Jason Hollar",
+    "matchScore": 1.0,
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
+  },
+  {
+    "id": "johnson-and-johnson",
+    "canonicalName": "Johnson & Johnson",
+    "aliases": ["Johnson & Johnson", "Johnson and Johnson", "J&J", "Kenvue", "Band-Aid", "Tylenol", "Listerine", "Neutrogena", "Janssen"],
+    "domains": ["jnj.com", "kenvue.com"],
+    "categoryTags": ["healthcare", "consumer-goods"],
+    "ceoName": "Joaquin Duato",
+    "matchScore": 1.0,
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
+  },
+  {
+    "id": "pfizer",
+    "canonicalName": "Pfizer Inc",
+    "aliases": ["Pfizer", "Pfizer Inc", "Paxlovid", "Comirnaty"],
+    "domains": ["pfizer.com"],
+    "categoryTags": ["healthcare", "pharma"],
+    "ceoName": "Albert Bourla",
+    "matchScore": 1.0,
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
+  },
+  {
+    "id": "merck",
+    "canonicalName": "Merck & Co Inc",
+    "aliases": ["Merck", "Merck & Co", "MSD", "Keytruda"],
+    "domains": ["merck.com"],
+    "categoryTags": ["healthcare", "pharma"],
+    "ceoName": "Robert Davis",
+    "matchScore": 1.0,
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
+  },
+  {
+    "id": "abbott",
+    "canonicalName": "Abbott Laboratories",
+    "aliases": ["Abbott", "Abbott Laboratories", "FreeStyle Libre", "BinaxNOW", "Ensure"],
+    "domains": ["abbott.com"],
+    "categoryTags": ["healthcare", "pharma"],
+    "ceoName": "Robert Ford",
+    "matchScore": 1.0,
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
+  },
+  {
+    "id": "medtronic",
+    "canonicalName": "Medtronic PLC",
+    "aliases": ["Medtronic"],
+    "domains": ["medtronic.com"],
+    "categoryTags": ["healthcare"],
+    "ceoName": "Geoff Martha",
+    "matchScore": 1.0,
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
+  },
+  {
+    "id": "boston-scientific",
+    "canonicalName": "Boston Scientific Corp",
+    "aliases": ["Boston Scientific"],
+    "domains": ["bostonscientific.com"],
+    "categoryTags": ["healthcare"],
+    "ceoName": "Michael Mahoney",
+    "matchScore": 1.0,
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
+  },
+  {
+    "id": "stryker",
+    "canonicalName": "Stryker Corp",
+    "aliases": ["Stryker"],
+    "domains": ["stryker.com"],
+    "categoryTags": ["healthcare"],
+    "ceoName": "Kevin Lobo",
+    "matchScore": 1.0,
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
+  },
+  {
+    "id": "hca-healthcare",
+    "canonicalName": "HCA Healthcare Inc",
+    "aliases": ["HCA Healthcare", "HCA", "HealthTrust", "Parallon"],
+    "domains": ["hcahealthcare.com"],
+    "categoryTags": ["healthcare"],
+    "ceoName": "Sam Hazen",
+    "matchScore": 1.0,
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
+  },
+  {
+    "id": "tenet-healthcare",
+    "canonicalName": "Tenet Healthcare Corp",
+    "aliases": ["Tenet Healthcare", "Tenet", "United Surgical Partners International", "USPI"],
+    "domains": ["tenethealth.com"],
+    "categoryTags": ["healthcare"],
+    "ceoName": "Saum Sutaria",
+    "matchScore": 1.0,
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
+  },
+  {
+    "id": "community-health-systems",
+    "canonicalName": "Community Health Systems Inc",
+    "aliases": ["Community Health Systems", "CHS"],
+    "domains": ["chs.net"],
+    "categoryTags": ["healthcare"],
+    "ceoName": "Tim Hingtgen",
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
   }
 ]
