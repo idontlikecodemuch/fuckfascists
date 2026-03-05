@@ -34,7 +34,9 @@ export async function generateReportCard(
   const entityAvoids: EntityAvoidSummary[] = Array.from(countMap.entries())
     .map(([entityId, count]) => {
       const entity = entityIndex.get(entityId);
-      return { entityId, name: entity?.canonicalName ?? entityId, count, ceoName: entity ? getDisplayFigure(entity) : undefined };
+      // TODO: group entityAvoids by figure name so subsidiaries of the same parent
+      // collapse under one entry (e.g. "Mark Zuckerberg: Instagram 4× · WhatsApp 2×")
+      return { entityId, name: entity?.canonicalName ?? entityId, count, ceoName: entity ? getDisplayFigure(entity, entities) : undefined };
     })
     .sort((a, b) => b.count - a.count);
 
