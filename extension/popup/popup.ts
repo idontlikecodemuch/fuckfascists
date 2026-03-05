@@ -27,6 +27,7 @@ const donationTotal  = document.getElementById('donation-total')!;
 const donationCycle  = document.getElementById('donation-cycle')!;
 const confidenceBadge = document.getElementById('confidence-badge')!;
 const openSecretsLink = document.getElementById('opensecrets-link') as HTMLAnchorElement;
+const fecLink         = document.getElementById('fec-link')         as HTMLAnchorElement;
 
 const btnAvoided = document.getElementById('btn-avoided') as HTMLButtonElement;
 const btnSnooze  = document.getElementById('btn-snooze')  as HTMLButtonElement;
@@ -66,6 +67,17 @@ function renderFlag(flag: TabFlag) {
   donationTotal.textContent  = formatUSD(flag.donationTotal);
   donationCycle.textContent  = flag.cycle;
   openSecretsLink.href       = flag.sourceUrl;
+
+  // FEC filing link — only show when a committee ID was available.
+  if (flag.fecFilingUrl) {
+    fecLink.hidden = false;
+    fecLink.onclick = (e) => {
+      e.preventDefault();
+      chrome.tabs.create({ url: flag.fecFilingUrl! });
+    };
+  } else {
+    fecLink.hidden = true;
+  }
 
   confidenceBadge.textContent = flag.confidence;
   confidenceBadge.className   = `confidence-badge ${flag.confidence}`;

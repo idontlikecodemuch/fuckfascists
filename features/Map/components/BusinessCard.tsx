@@ -89,7 +89,7 @@ export function BusinessCard({ result, onAvoid, onDismiss }: BusinessCardProps) 
         </Text>
       </View>
 
-      {/* ── Attribution — required by OpenSecrets data terms ── */}
+      {/* ── Attribution — required by FEC/OpenSecrets data terms ── */}
       <Pressable
         onPress={() => Linking.openURL(donationSummary.sourceUrl)}
         accessibilityRole="link"
@@ -100,6 +100,19 @@ export function BusinessCard({ result, onAvoid, onDismiss }: BusinessCardProps) 
           SOURCE: OPENSECRETS.ORG \u2197
         </Text>
       </Pressable>
+
+      {result.fecFilingUrl ? (
+        <Pressable
+          onPress={() => Linking.openURL(result.fecFilingUrl!)}
+          accessibilityRole="link"
+          accessibilityLabel="View FEC filing on fec.gov"
+          hitSlop={{ top: 4, bottom: 4, left: 4, right: 4 }}
+        >
+          <Text style={styles.source} allowFontScaling>
+            VIEW FEC FILING \u2197
+          </Text>
+        </Pressable>
+      ) : null}
 
       {/* ── Actions ── */}
       <View style={styles.actions}>

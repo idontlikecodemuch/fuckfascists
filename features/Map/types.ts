@@ -6,11 +6,13 @@ import type { ConfidenceLevel, DonationSummary, Entity } from '../../core/models
  * derived string. No coordinates. No personal data.
  */
 export interface ScanResult {
-  entityId: string | null;     // null when matched via OpenSecrets but not in curated list
-  canonicalName: string;       // entity.canonicalName, or OpenSecrets orgname as fallback
+  entityId: string | null;     // null when matched via FEC but not in curated list
+  canonicalName: string;       // entity.canonicalName, or FEC orgname as fallback
   confidence: ConfidenceLevel;
   donationSummary: DonationSummary;
-  openSecretsOrgId: string;
+  openSecretsOrgId: string;    // holds FEC committee_id since FEC migration
+  /** FEC filing URL — present when a committee ID is available (curated or live API). */
+  fecFilingUrl: string | null;
   entity: Entity | null;
 }
 

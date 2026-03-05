@@ -24,9 +24,20 @@ export const BUNDLED_CONTENT: InfoContent = {
       id: 'data-source',
       title: 'Where does the data come from?',
       body:
-        'All donation figures come directly from OpenSecrets.org (Center for ' +
-        'Responsive Politics) — the gold standard for US political money data. ' +
-        'Every dollar figure shown in the app links back to its OpenSecrets source page.',
+        'All donation figures come directly from the Federal Election Commission ' +
+        '(FEC) — the official US government source for campaign finance data, ' +
+        'available at fec.gov. Every dollar figure shown in the app links back ' +
+        'to its original FEC filing. OpenSecrets.org (Center for Responsive ' +
+        'Politics) is also credited as a data partner.',
+    },
+    {
+      id: 'fec-filings',
+      title: 'Can I verify the numbers myself?',
+      body:
+        'Yes — every donation figure links directly to the original FEC filing ' +
+        'at fec.gov, the authoritative government source. Tap "VIEW FEC FILING" ' +
+        'on any business card to open the committee\'s official page. You can ' +
+        'verify every number yourself without taking our word for it.',
     },
     {
       id: 'confidence',

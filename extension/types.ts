@@ -55,6 +55,8 @@ export interface TabFlag {
   sourceUrl: string;
   cycle: string;
   confidence: 'HIGH' | 'MEDIUM';
+  /** FEC filing URL for the matched committee, or null when no committee ID is available. */
+  fecFilingUrl: string | null;
   avoided: boolean;
 }
 
