@@ -25,3 +25,10 @@ export const DROP_SCHEDULE_URL = 'https://raw.githubusercontent.com/[org]/fuckfa
 
 // Info / FAQ / transparency content — editable in the data repo without an app release
 export const INFO_CONTENT_URL = 'https://raw.githubusercontent.com/[org]/fuckfascists-data/main/info.json';
+
+// Controls whether the public figure / CEO name is shown in the UI.
+// true = show, false = hide. Compile-time constant — change and rebuild to toggle.
+// SHOW_FIGURE_NAME_IN_CARD: off by default — business card is an informational FEC data screen.
+// SHOW_FIGURE_NAME_IN_POPUP: on by default — extension popup benefits from the confrontational framing.
+export const SHOW_FIGURE_NAME_IN_CARD  = false;
+export const SHOW_FIGURE_NAME_IN_POPUP = true;
