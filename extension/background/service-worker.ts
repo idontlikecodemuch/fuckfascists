@@ -14,6 +14,7 @@
  */
 
 import type { Entity } from '../../core/models';
+import { fecFilingUrl } from '../../core/models';
 import type { ExtensionMsg, TabFlag, WeeklyStats } from '../types';
 import { ChromeStorageAdapter } from '../storage/ChromeStorageAdapter';
 import { findByDomain } from './domainMatch';
@@ -62,10 +63,18 @@ async function refreshEntityList(): Promise<void> {
   try {
     const res = await fetch(ENTITY_LIST_UPDATE_URL);
     if (!res.ok) return;
-    const data = (await res.json()) as Entity[];
-    if (Array.isArray(data) && data.length > 0) {
-      entities = data;
-      await chrome.storage.local.set({ entity_list: data });
+    const raw: unknown = await res.json();
+    // Accept both { _meta, entities: [...] } wrapper and legacy flat array.
+    const arr =
+      typeof raw === 'object' &&
+      raw !== null &&
+      !Array.isArray(raw) &&
+      Array.isArray((raw as Record<string, unknown>)['entities'])
+        ? ((raw as Record<string, unknown>)['entities'] as Entity[])
+        : (raw as Entity[]);
+    if (Array.isArray(arr) && arr.length > 0) {
+      entities = arr;
+      await chrome.storage.local.set({ entity_list: arr });
     }
   } catch {
     // Silently ignore — bundled list (if any) stays active
@@ -158,6 +167,7 @@ async function handleCheckDomain(hostname: string, tabId: number): Promise<void>
     sourceUrl:      donationSummary.sourceUrl,
     cycle:          donationSummary.cycle,
     confidence:     entity.confidenceOverride ?? 'MEDIUM',
+    fecFilingUrl:   entity.fecCommitteeId ? fecFilingUrl(entity.fecCommitteeId) : null,
     avoided: false,
   };
 

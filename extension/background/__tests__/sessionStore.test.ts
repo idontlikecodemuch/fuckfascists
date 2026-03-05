@@ -38,6 +38,7 @@ function makeFlag(overrides: Partial<TabFlag> = {}): TabFlag {
     sourceUrl:      'https://opensecrets.org/orgs/amazon',
     cycle:          '2024',
     confidence:     'HIGH',
+    fecFilingUrl:   null,
     avoided:        false,
     ...overrides,
   };

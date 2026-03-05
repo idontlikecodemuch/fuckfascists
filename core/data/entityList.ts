@@ -24,12 +24,25 @@ export async function fetchEntityList(bundled: Entity[]): Promise<Entity[]> {
 
 /**
  * Parses and validates a raw JSON value into an Entity array.
+ * Accepts both formats:
+ *  - Legacy flat array:          Entity[]
+ *  - Wrapped object:             { _meta: {...}, entities: Entity[] }
  * Entries that fail validation are silently skipped — a partial list is
  * better than crashing the app on a malformed CDN response.
  */
 export function parseEntityList(raw: unknown): Entity[] {
-  if (!Array.isArray(raw)) return [];
-  return raw.filter(isValidEntity);
+  // Unwrap { _meta, entities } object if present
+  let arr: unknown = raw;
+  if (
+    typeof raw === 'object' &&
+    raw !== null &&
+    !Array.isArray(raw) &&
+    Array.isArray((raw as Record<string, unknown>)['entities'])
+  ) {
+    arr = (raw as Record<string, unknown>)['entities'];
+  }
+  if (!Array.isArray(arr)) return [];
+  return arr.filter(isValidEntity);
 }
 
 function isValidEntity(v: unknown): v is Entity {
