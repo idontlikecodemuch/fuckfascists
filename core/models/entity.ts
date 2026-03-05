@@ -14,6 +14,19 @@ export interface Entity {
    * When absent, ceoName is used for display purposes.
    */
   publicFigureName?: string;
+  /**
+   * Optional. The id of the parent entity if this is a subsidiary.
+   * When present, the report card ladders up to the parent's displayFigure
+   * instead of this entity's own ceoName/publicFigureName.
+   * Example: { id: "instagram", parentEntityId: "meta" }
+   */
+  parentEntityId?: string;
+  /**
+   * Optional. IDs referencing entries in assets/data/people.json.
+   * Links this entity to individual executive/donor records for personal
+   * FEC contribution data. Currently unused in display — reserved for future use.
+   */
+  associatedPersonIds?: string[];
   openSecretsOrgId?: string;   // @deprecated — holds FEC committee_id since FEC migration
   fecCommitteeId?: string;     // FEC committee ID — populated by the data pipeline after verification
   /**
