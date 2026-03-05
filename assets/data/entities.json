@@ -291,6 +291,192 @@
     "ceoName": "Richard Uihlein",
     "publicFigureName": "Richard Uihlein",
     "matchScore": 1.0,
+    "fecCommitteeId": "",
     "lastVerifiedDate": "2026-03-04"
+  },
+  {
+    "id": "kroger",
+    "canonicalName": "Kroger Co",
+    "aliases": ["Kroger", "King Soopers", "Ralphs", "Harris Teeter", "Fred Meyer", "Smith's", "Fry's Food", "QFC", "Mariano's", "Dillons", "City Market", "Baker's", "Pay Less"],
+    "domains": ["kroger.com", "kingsoopers.com", "ralphs.com", "harristeeter.com", "fredmeyer.com", "smithsfoodanddrug.com"],
+    "categoryTags": ["retail", "grocery"],
+    "ceoName": "Rodney McMullen",
+    "matchScore": 1.0,
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
+  },
+  {
+    "id": "costco",
+    "canonicalName": "Costco Wholesale Corp",
+    "aliases": ["Costco", "Costco Wholesale", "Costco Business Center", "Kirkland Signature"],
+    "domains": ["costco.com"],
+    "categoryTags": ["retail", "grocery"],
+    "ceoName": "Ron Vachris",
+    "matchScore": 1.0,
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
+  },
+  {
+    "id": "walgreens",
+    "canonicalName": "Walgreens Boots Alliance Inc",
+    "aliases": ["Walgreens", "Walgreens Boots Alliance", "Boots", "Duane Reade", "Walgreens Pharmacy"],
+    "domains": ["walgreens.com", "boots.com"],
+    "categoryTags": ["retail", "healthcare", "pharmacy"],
+    "ceoName": "Tim Wentworth",
+    "matchScore": 1.0,
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
+  },
+  {
+    "id": "cvs-health",
+    "canonicalName": "CVS Health Corp",
+    "aliases": ["CVS", "CVS Health", "CVS Pharmacy", "Caremark", "MinuteClinic", "Signify Health"],
+    "domains": ["cvs.com", "cvshealth.com", "caremark.com"],
+    "categoryTags": ["retail", "healthcare", "pharmacy"],
+    "ceoName": "David Joyner",
+    "matchScore": 1.0,
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
+  },
+  {
+    "id": "best-buy",
+    "canonicalName": "Best Buy Co Inc",
+    "aliases": ["Best Buy", "Geek Squad", "Best Buy Business"],
+    "domains": ["bestbuy.com"],
+    "categoryTags": ["retail", "electronics"],
+    "ceoName": "Corie Barry",
+    "matchScore": 1.0,
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
+  },
+  {
+    "id": "tjx-companies",
+    "canonicalName": "TJX Companies Inc",
+    "aliases": ["TJX", "TJX Companies", "TJ Maxx", "T.J. Maxx", "Marshalls", "HomeGoods", "HomeSense", "Sierra"],
+    "domains": ["tjx.com", "tjmaxx.tjx.com", "marshalls.com", "homegoods.com", "sierra.com"],
+    "categoryTags": ["retail", "apparel"],
+    "ceoName": "Ernie Herrman",
+    "matchScore": 1.0,
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
+  },
+  {
+    "id": "dollar-tree",
+    "canonicalName": "Dollar Tree Inc",
+    "aliases": ["Dollar Tree", "Family Dollar"],
+    "domains": ["dollartree.com", "familydollar.com"],
+    "categoryTags": ["retail"],
+    "ceoName": "Mike Creedon",
+    "matchScore": 1.0,
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
+  },
+  {
+    "id": "albertsons",
+    "canonicalName": "Albertsons Companies Inc",
+    "aliases": ["Albertsons", "Safeway", "Vons", "Jewel-Osco", "Shaw's", "Acme Markets", "Tom Thumb", "Randalls", "United Supermarkets", "Pavilions", "Star Market"],
+    "domains": ["albertsons.com", "safeway.com", "vons.com", "jewelosco.com", "shaws.com", "acmemarkets.com"],
+    "categoryTags": ["retail", "grocery"],
+    "ceoName": "Vivek Sankaran",
+    "matchScore": 1.0,
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
+  },
+  {
+    "id": "publix",
+    "canonicalName": "Publix Super Markets Inc",
+    "aliases": ["Publix", "Publix Super Markets", "Publix Pharmacy"],
+    "domains": ["publix.com"],
+    "categoryTags": ["retail", "grocery"],
+    "ceoName": "Kevin Murphy",
+    "matchScore": 1.0,
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
+  },
+  {
+    "id": "macys",
+    "canonicalName": "Macy's Inc",
+    "aliases": ["Macy's", "Macys", "Bloomingdale's", "Bluemercury"],
+    "domains": ["macys.com", "bloomingdales.com", "bluemercury.com"],
+    "categoryTags": ["retail", "apparel"],
+    "ceoName": "Tony Spring",
+    "matchScore": 1.0,
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
+  },
+  {
+    "id": "gap-inc",
+    "canonicalName": "Gap Inc",
+    "aliases": ["Gap", "Old Navy", "Banana Republic", "Athleta", "Gap Factory", "Banana Republic Factory"],
+    "domains": ["gap.com", "oldnavy.com", "bananarepublic.com", "athleta.com"],
+    "categoryTags": ["retail", "apparel"],
+    "ceoName": "Richard Dickson",
+    "matchScore": 1.0,
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
+  },
+  {
+    "id": "gamestop",
+    "canonicalName": "GameStop Corp",
+    "aliases": ["GameStop", "Game Stop"],
+    "domains": ["gamestop.com"],
+    "categoryTags": ["retail", "gaming"],
+    "ceoName": "Ryan Cohen",
+    "matchScore": 1.0,
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
+  },
+  {
+    "id": "foot-locker",
+    "canonicalName": "Foot Locker Inc",
+    "aliases": ["Foot Locker", "FootLocker", "Champs Sports", "Kids Foot Locker", "WSS", "atmos"],
+    "domains": ["footlocker.com", "champssports.com", "kidsfootlocker.com"],
+    "categoryTags": ["retail", "apparel", "footwear"],
+    "ceoName": "Mary Dillon",
+    "matchScore": 1.0,
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
+  },
+  {
+    "id": "nordstrom",
+    "canonicalName": "Nordstrom Inc",
+    "aliases": ["Nordstrom", "Nordstrom Rack", "HauteLook"],
+    "domains": ["nordstrom.com", "nordstromrack.com"],
+    "categoryTags": ["retail", "apparel"],
+    "ceoName": "Erik Nordstrom",
+    "matchScore": 1.0,
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
+  },
+  {
+    "id": "kohls",
+    "canonicalName": "Kohl's Corp",
+    "aliases": ["Kohl's", "Kohls"],
+    "domains": ["kohls.com"],
+    "categoryTags": ["retail", "apparel"],
+    "ceoName": "Tom Kingsbury",
+    "matchScore": 1.0,
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
+  },
+  {
+    "id": "jcpenney",
+    "canonicalName": "JCPenney",
+    "aliases": ["JCPenney", "JC Penney", "Penney's", "J.C. Penney"],
+    "domains": ["jcpenney.com"],
+    "categoryTags": ["retail", "apparel"],
+    "ceoName": "Marc Rosen",
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
+  },
+  {
+    "id": "grocery-outlet",
+    "canonicalName": "Grocery Outlet Holding Corp",
+    "aliases": ["Grocery Outlet", "Grocery Outlet Bargain Market"],
+    "domains": ["groceryoutlet.com"],
+    "categoryTags": ["retail", "grocery"],
+    "ceoName": "RJ Sheedy",
+    "fecCommitteeId": "",
+    "lastVerifiedDate": "2026-03-05"
   }
 ]
