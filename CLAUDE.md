@@ -372,6 +372,36 @@ After writing any file, scan it once for deprecated APIs, `.then()` chains, `var
 
 ---
 
+## Entity Relationships
+
+### parentEntityId — subsidiary → parent linkage
+- `parentEntityId` links a subsidiary entity to its parent company by id
+- **Report card** ladders up to the parent's `displayFigure` when `parentEntityId` is present — call `getDisplayFigure(entity, allEntities)` and pass the full entity list
+- **Business card** is an informational screen and always shows the entity's own data (canonical name, confidence, FEC record); when `SHOW_FIGURE_NAME_IN_CARD` is true and `parentEntityId` is set, it additionally shows "via [Parent canonicalName]" under the figure name
+- Do not conflate these two contexts — see §7 "CEO name context split" above
+
+### associatedPersonIds — entity → people.json linkage
+- `associatedPersonIds` is an array of ids referencing records in `assets/data/people.json`
+- Currently unused in display — reserved for future individual donor lookup
+- Do not use this field to drive any current UI — wait for the feature to be scoped
+
+### Data file separation
+- `entities.json` + `fecCommitteeId` → **corporate PAC contributions** (FEC committee filings)
+- `people.json` + `fecContributorId` → **individual Schedule A contributions** (personal donations)
+- Do not conflate these two sources; they are queried via different FEC API endpoints:
+  - Corporate: `/committees/{id}/totals/`
+  - Individual: `/schedules/schedule_a/?contributor_name=Last%2C+First`
+
+### people.json schema — `PoliticalPerson`
+- `id`: lowercase-hyphenated (e.g. `"elon-musk"`)
+- `name`: FEC-formatted `"Last, First"` for API query compatibility
+- `fecContributorId`: optional; populated by a future data pipeline step
+- `associatedEntityIds`: list of entity ids this person is linked to
+- `rolesByEntity`: map of entity id → role string (e.g. `{ "tesla": "CEO & Founder" }`)
+- `notes`: freeform (e.g. `"Also donated via America PAC"`)
+
+---
+
 ## Out of Scope (MVP) — Do Not Build
 
 - Background location tracking
