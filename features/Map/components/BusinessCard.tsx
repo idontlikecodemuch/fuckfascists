@@ -2,7 +2,8 @@ import React from 'react';
 import { View, Text, Pressable, StyleSheet, Linking } from 'react-native';
 import type { ScanResult } from '../types';
 import { AvoidButton } from './AvoidButton';
-import { formatDonationAmount, formatCycleLabel, formatActiveCycles, getDisplayFigure } from '../../../core/models';
+import type { Entity } from '../../../core/models';
+import { formatDonationAmount, formatCycleLabel, formatActiveCycles, getDisplayFigure, getParentEntity } from '../../../core/models';
 import { SHOW_FIGURE_NAME_IN_CARD } from '../../../config/constants';
 // Figure name is controlled by SHOW_FIGURE_NAME_IN_CARD (default: false).
 // See CLAUDE.md §7 for the informational vs. confrontational screen split.
@@ -11,6 +12,8 @@ interface BusinessCardProps {
   result: ScanResult;
   onAvoid: () => Promise<void>;
   onDismiss: () => void;
+  /** Full entity list — enables parent attribution when an entity has a parentEntityId. */
+  allEntities?: Entity[];
 }
 
 // ── Sub-components ────────────────────────────────────────────────────────────
@@ -38,7 +41,7 @@ function ConfidenceBadge({ level }: { level: 'HIGH' | 'MEDIUM' }) {
  *  - Never claims more certainty than the data supports.
  *  - Recent cycle is visually prominent; historical totals are secondary.
  */
-export function BusinessCard({ result, onAvoid, onDismiss }: BusinessCardProps) {
+export function BusinessCard({ result, onAvoid, onDismiss, allEntities }: BusinessCardProps) {
   const { canonicalName, confidence, donationSummary, entity } = result;
   const {
     recentCycle, recentRepubs, recentDems,
@@ -71,9 +74,20 @@ export function BusinessCard({ result, onAvoid, onDismiss }: BusinessCardProps) 
         </View>
 
         {SHOW_FIGURE_NAME_IN_CARD && entity && (
-          <Text style={styles.figureName} allowFontScaling>
-            {getDisplayFigure(entity)}
-          </Text>
+          <>
+            <Text style={styles.figureName} allowFontScaling>
+              {getDisplayFigure(entity, allEntities)}
+            </Text>
+            {(() => {
+              const parent = allEntities ? getParentEntity(entity, allEntities) : undefined;
+              if (!parent) return null;
+              return (
+                <Text style={styles.parentAttribution} allowFontScaling>
+                  via {parent.canonicalName}
+                </Text>
+              );
+            })()}
+          </>
         )}
 
         {confidence === 'MEDIUM' && (
@@ -152,7 +166,8 @@ const styles = StyleSheet.create({
   header:         { marginBottom: 12 },
   titleRow:       { flexDirection: 'row', alignItems: 'center', marginBottom: 4 },
   name:           { flex: 1, fontFamily: MONO, fontSize: 18, fontWeight: 'bold', color: BLACK, marginRight: 8 },
-  figureName:     { fontFamily: MONO, fontSize: 12, color: MUTED, marginTop: 2 },
+  figureName:        { fontFamily: MONO, fontSize: 12, color: MUTED, marginTop: 2 },
+  parentAttribution: { fontFamily: MONO, fontSize: 11, color: MUTED, marginTop: 1 },
   disclaimer:     { fontFamily: MONO, fontSize: 11, color: AMBER, marginTop: 4 },
   badge:          { paddingHorizontal: 6, paddingVertical: 2, borderWidth: 2 },
   badgeHigh:      { backgroundColor: RED, borderColor: '#7A0000' },
