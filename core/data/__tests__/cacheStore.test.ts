@@ -20,14 +20,16 @@ function makeAdapter(
 }
 
 const mockSummary = {
-  orgName: 'Walmart Inc',
-  orgId: 'D000000074',
-  total: 5_000_000,
-  dems: 1_500_000,
-  repubs: 3_000_000,
-  lobbying: 500_000,
-  sourceUrl: 'https://www.opensecrets.org/orgs/summary?id=D000000074',
-  cycle: '2024',
+  committeeId:     'D000000074',
+  committeeName:   'Walmart Inc',
+  recentCycle:     2024,
+  recentRepubs:    3_000_000,
+  recentDems:      1_500_000,
+  totalRepubs:     3_000_000,
+  totalDems:       1_500_000,
+  activeCycles:    [2024],
+  lastUpdated:     '2024-01-01',
+  fecCommitteeUrl: 'https://www.fec.gov/data/committee/D000000074/',
 };
 
 const freshEntry: LocalCache = {

@@ -42,7 +42,6 @@ describe('FECClient', () => {
 
     it('prefers explicit apiKey over process.env', () => {
       process.env['FEC_API_KEY'] = 'env-key';
-      // No throw and uses config key (verified indirectly via network call URL)
       expect(() => new FECClient({ apiKey: 'config-key' })).not.toThrow();
       delete process.env['FEC_API_KEY'];
     });
@@ -99,44 +98,122 @@ describe('FECClient', () => {
   // ── getCommitteeTotals ──────────────────────────────────────────────────────
 
   describe('getCommitteeTotals', () => {
-    function mockParallelCalls(partyFull: string, receipts: number, cycle: number) {
-      // Two parallel fetches: details first, totals second (per Promise.all order)
+    /**
+     * Mock two parallel fetches: details + multi-cycle totals.
+     * results array is sorted most-recent-first (the API sorts by -cycle).
+     */
+    function mockMultiCycleCalls(
+      partyFull: string,
+      cycleRows: Array<{ receipts: number; cycle: number }>,
+    ) {
       mockFetch
         .mockResolvedValueOnce(mockJson({ committee_id: 'C001', name: 'ACME PAC', party_full: partyFull }))
-        .mockResolvedValueOnce(mockJson({ results: [{ receipts, cycle }] }));
+        .mockResolvedValueOnce(mockJson({ results: cycleRows }));
     }
 
-    it('maps REPUBLICAN party: repubs=receipts, dems=0', async () => {
-      mockParallelCalls('REPUBLICAN PARTY OF TEXAS', 500_000, 2024);
+    it('recentCycle is the cycle from the first (most recent) result', async () => {
+      mockMultiCycleCalls('REPUBLICAN PARTY', [
+        { receipts: 1_000_000, cycle: 2024 },
+        { receipts: 800_000,  cycle: 2022 },
+        { receipts: 600_000,  cycle: 2020 },
+      ]);
 
       const result = await makeClient().getCommitteeTotals('C001');
 
-      expect(result.repubs).toBe(500_000);
-      expect(result.dems).toBe(0);
-      expect(result.total).toBe(500_000);
-      expect(result.lobbying).toBe(0);
-      expect(result.cycle).toBe('2024');
-      expect(result.sourceUrl).toBe('https://www.fec.gov/data/committee/C001/');
-      expect(result.orgName).toBe('ACME PAC');
-      expect(result.orgId).toBe('C001');
+      expect(result.recentCycle).toBe(2024);
     });
 
-    it('maps DEMOCRAT party: dems=receipts, repubs=0', async () => {
-      mockParallelCalls('DEMOCRATIC PARTY', 300_000, 2024);
+    it('recentRepubs matches the first result only for a Republican committee', async () => {
+      mockMultiCycleCalls('REPUBLICAN PARTY OF TEXAS', [
+        { receipts: 1_000_000, cycle: 2024 },
+        { receipts: 800_000,  cycle: 2022 },
+      ]);
 
       const result = await makeClient().getCommitteeTotals('C001');
 
-      expect(result.dems).toBe(300_000);
-      expect(result.repubs).toBe(0);
+      expect(result.recentRepubs).toBe(1_000_000);
+      expect(result.recentDems).toBe(0);
     });
 
-    it('sets both repubs and dems to 0 for unknown party', async () => {
-      mockParallelCalls('GREEN PARTY', 100_000, 2024);
+    it('recentDems matches the first result only for a Democratic committee', async () => {
+      mockMultiCycleCalls('DEMOCRATIC PARTY', [
+        { receipts: 500_000, cycle: 2024 },
+        { receipts: 400_000, cycle: 2022 },
+      ]);
 
       const result = await makeClient().getCommitteeTotals('C001');
 
-      expect(result.repubs).toBe(0);
-      expect(result.dems).toBe(0);
+      expect(result.recentDems).toBe(500_000);
+      expect(result.recentRepubs).toBe(0);
+    });
+
+    it('totalRepubs sums all results for a Republican committee', async () => {
+      mockMultiCycleCalls('REPUBLICAN PARTY OF TEXAS', [
+        { receipts: 1_000_000, cycle: 2024 },
+        { receipts: 800_000,  cycle: 2022 },
+        { receipts: 600_000,  cycle: 2020 },
+      ]);
+
+      const result = await makeClient().getCommitteeTotals('C001');
+
+      expect(result.totalRepubs).toBe(2_400_000);
+      expect(result.totalDems).toBe(0);
+    });
+
+    it('totalDems sums all results for a Democratic committee', async () => {
+      mockMultiCycleCalls('DEMOCRATIC PARTY', [
+        { receipts: 500_000, cycle: 2024 },
+        { receipts: 400_000, cycle: 2022 },
+      ]);
+
+      const result = await makeClient().getCommitteeTotals('C001');
+
+      expect(result.totalDems).toBe(900_000);
+      expect(result.totalRepubs).toBe(0);
+    });
+
+    it('activeCycles is sorted ascending', async () => {
+      mockMultiCycleCalls('REPUBLICAN PARTY', [
+        { receipts: 1_000_000, cycle: 2024 },
+        { receipts: 800_000,  cycle: 2022 },
+        { receipts: 600_000,  cycle: 2020 },
+        { receipts: 400_000,  cycle: 2018 },
+        { receipts: 200_000,  cycle: 2016 },
+      ]);
+
+      const result = await makeClient().getCommitteeTotals('C001');
+
+      expect(result.activeCycles).toEqual([2016, 2018, 2020, 2022, 2024]);
+    });
+
+    it('activeCycles contains no cycle earlier than 2016', async () => {
+      mockMultiCycleCalls('REPUBLICAN PARTY', [
+        { receipts: 500_000, cycle: 2024 },
+        { receipts: 400_000, cycle: 2016 },
+      ]);
+
+      const result = await makeClient().getCommitteeTotals('C001');
+
+      expect(result.activeCycles.every((c) => c >= 2016)).toBe(true);
+    });
+
+    it('sets totalRepubs and totalDems to 0 for unknown party', async () => {
+      mockMultiCycleCalls('GREEN PARTY', [
+        { receipts: 100_000, cycle: 2024 },
+      ]);
+
+      const result = await makeClient().getCommitteeTotals('C001');
+
+      expect(result.totalRepubs).toBe(0);
+      expect(result.totalDems).toBe(0);
+    });
+
+    it('fecCommitteeUrl is the canonical FEC committee URL', async () => {
+      mockMultiCycleCalls('REPUBLICAN PARTY', [{ receipts: 500_000, cycle: 2024 }]);
+
+      const result = await makeClient().getCommitteeTotals('C001');
+
+      expect(result.fecCommitteeUrl).toBe('https://www.fec.gov/data/committee/C001/');
     });
 
     it('throws FECParseError when totals results is empty', async () => {
@@ -148,11 +225,12 @@ describe('FECClient', () => {
     });
 
     it('fetchOrgSummary is an alias for getCommitteeTotals', async () => {
-      mockParallelCalls('REPUBLICAN', 200_000, 2022);
+      mockMultiCycleCalls('REPUBLICAN PARTY', [{ receipts: 200_000, cycle: 2022 }]);
 
       const result = await makeClient().fetchOrgSummary('C001');
 
-      expect(result.total).toBe(200_000);
+      expect(result.recentCycle).toBe(2022);
+      expect(result.totalRepubs).toBe(200_000);
     });
   });
 
