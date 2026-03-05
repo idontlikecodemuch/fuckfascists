@@ -20,14 +20,13 @@ const stateClean   = document.getElementById('state-clean')!;
 const stateFlagged = document.getElementById('state-flagged')!;
 const stateAvoided = document.getElementById('state-avoided')!;
 
-const entityNameEl   = document.getElementById('entity-name')!;
-const ceoNameEl      = document.getElementById('ceo-name')!;
-const donationRepubs = document.getElementById('donation-repubs')!;
-const donationTotal  = document.getElementById('donation-total')!;
-const donationCycle  = document.getElementById('donation-cycle')!;
+const entityNameEl    = document.getElementById('entity-name')!;
+const ceoNameEl       = document.getElementById('ceo-name')!;
+const recentAmountEl  = document.getElementById('recent-amount')!;
+const recentCycleEl   = document.getElementById('recent-cycle')!;
+const totalSince2016  = document.getElementById('total-since-2016')!;
 const confidenceBadge = document.getElementById('confidence-badge')!;
-const openSecretsLink = document.getElementById('opensecrets-link') as HTMLAnchorElement;
-const fecLink         = document.getElementById('fec-link')         as HTMLAnchorElement;
+const fecLink         = document.getElementById('fec-link') as HTMLAnchorElement;
 
 const btnAvoided = document.getElementById('btn-avoided') as HTMLButtonElement;
 const btnSnooze  = document.getElementById('btn-snooze')  as HTMLButtonElement;
@@ -50,6 +49,12 @@ function formatUSD(amount: number): string {
   return `$${amount.toFixed(0)}`;
 }
 
+function formatCycleLabel(cycle: number): string {
+  const startYear = cycle - 1;
+  const endTwoDigit = String(cycle).slice(2);
+  return `${startYear}–${endTwoDigit}`;
+}
+
 function getMondayOf(date: Date): string {
   const d = new Date(date);
   const day = d.getUTCDay();
@@ -61,29 +66,43 @@ function getMondayOf(date: Date): string {
 // ── Render ────────────────────────────────────────────────────────────────────
 
 function renderFlag(flag: TabFlag) {
-  entityNameEl.textContent  = flag.canonicalName.toUpperCase();
-  ceoNameEl.textContent     = `CEO: ${flag.ceoName}`;
-  donationRepubs.textContent = formatUSD(flag.donationRepubs);
-  donationTotal.textContent  = formatUSD(flag.donationTotal);
-  donationCycle.textContent  = flag.cycle;
-  openSecretsLink.href       = flag.sourceUrl;
+  entityNameEl.textContent = flag.canonicalName.toUpperCase();
 
-  // FEC filing link — only show when a committee ID was available.
-  if (flag.fecFilingUrl) {
-    fecLink.hidden = false;
-    fecLink.onclick = (e) => {
-      e.preventDefault();
-      chrome.tabs.create({ url: flag.fecFilingUrl! });
-    };
+  if (flag.ceoName) {
+    ceoNameEl.textContent = `CEO: ${flag.ceoName}`;
+    ceoNameEl.hidden = false;
   } else {
-    fecLink.hidden = true;
+    ceoNameEl.hidden = true;
   }
+
+  // Recent cycle — prominent line
+  const hasRecentRepubs = flag.recentRepubs > 0;
+  const hasRecentDems   = flag.recentDems > 0;
+
+  if (hasRecentRepubs || hasRecentDems) {
+    const gopPart = hasRecentRepubs ? `${formatUSD(flag.recentRepubs)} GOP` : '';
+    const demPart = hasRecentDems   ? `${formatUSD(flag.recentDems)} DEM`  : '';
+    recentAmountEl.textContent = [gopPart, demPart].filter(Boolean).join('  ·  ');
+    recentCycleEl.textContent  = `in ${formatCycleLabel(flag.recentCycle)}`;
+    recentAmountEl.hidden = false;
+    recentCycleEl.hidden  = false;
+  } else {
+    recentAmountEl.hidden = true;
+    recentCycleEl.hidden  = true;
+  }
+
+  // Totals since 2016
+  totalSince2016.textContent =
+    `Total since 2016: ${formatUSD(flag.totalRepubs)} GOP · ${formatUSD(flag.totalDems)} DEM`;
+
+  // FEC record link
+  fecLink.href = flag.fecCommitteeUrl;
 
   confidenceBadge.textContent = flag.confidence;
   confidenceBadge.className   = `confidence-badge ${flag.confidence}`;
 
   if (flag.confidence === 'MEDIUM') {
-    confidenceBadge.title = 'MEDIUM confidence — data may not be exact. Always verify at OpenSecrets.';
+    confidenceBadge.title = 'MEDIUM confidence — data may not be exact. Always verify at FEC.';
   }
 
   showOnly(stateFlagged);

@@ -50,13 +50,14 @@ export interface TabFlag {
   entityId: string;
   canonicalName: string;
   ceoName: string;
-  donationTotal: number;
-  donationRepubs: number;
-  sourceUrl: string;
-  cycle: string;
+  recentCycle: number;
+  recentRepubs: number;
+  recentDems: number;
+  totalRepubs: number;
+  totalDems: number;
+  activeCycles: number[];
+  fecCommitteeUrl: string;
   confidence: 'HIGH' | 'MEDIUM';
-  /** FEC filing URL for the matched committee, or null when no committee ID is available. */
-  fecFilingUrl: string | null;
   avoided: boolean;
 }
 

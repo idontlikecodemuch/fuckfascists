@@ -26,28 +26,20 @@
 
       <div class="card-body">
         <p id="entity-name" class="entity-name"></p>
-        <p id="ceo-name" class="ceo-name"></p>
-
-        <div class="donation-row">
-          <span class="donation-label">GOP DONATIONS</span>
-          <span id="donation-repubs" class="donation-amount red"></span>
-        </div>
-        <div class="donation-row">
-          <span class="donation-label">TOTAL CYCLE</span>
-          <span id="donation-total" class="donation-amount"></span>
-        </div>
-        <div class="donation-row">
-          <span class="donation-label">CYCLE</span>
-          <span id="donation-cycle" class="donation-muted"></span>
-        </div>
+        <p id="ceo-name" class="ceo-name" hidden></p>
 
         <div id="confidence-badge" class="confidence-badge"></div>
 
-        <a id="opensecrets-link" class="source-link" href="#" target="_blank" rel="noopener noreferrer">
-          VIEW ON OPENSECRETS ↗
-        </a>
-        <a id="fec-link" class="source-link" href="#" aria-label="View FEC filing on fec.gov" hidden>
-          VIEW FEC FILING ↗
+        <!-- Recent cycle — prominent -->
+        <p id="recent-amount" class="recent-amount"></p>
+        <p id="recent-cycle" class="recent-cycle"></p>
+
+        <!-- Totals since 2016 — contextual -->
+        <p id="total-since-2016" class="total-since-2016"></p>
+
+        <!-- FEC record link -->
+        <a id="fec-link" class="source-link" href="#" target="_blank" rel="noopener noreferrer">
+          See FEC record ↗
         </a>
       </div>
     </div>

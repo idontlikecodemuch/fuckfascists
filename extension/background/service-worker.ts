@@ -14,7 +14,6 @@
  */
 
 import type { Entity } from '../../core/models';
-import { fecFilingUrl } from '../../core/models';
 import type { ExtensionMsg, TabFlag, WeeklyStats } from '../types';
 import { ChromeStorageAdapter } from '../storage/ChromeStorageAdapter';
 import { findByDomain } from './domainMatch';
@@ -23,29 +22,28 @@ import {
   getLastFlagged, recordFlagged, setSnoozed, isSnoozed,
 } from './sessionStore';
 import { makeCacheDeps } from '../../core/data/cacheStore';
-import { OpenSecretsClient } from '../../core/api/client';
-import { getMondayOf, toDateString } from '../../core/data/eventStore';
-import { recordEntityAvoid } from '../../core/data/eventStore';
+import { FECClient } from '../../core/api';
+import { getMondayOf, recordEntityAvoid } from '../../core/data/eventStore';
 import { ENTITY_LIST_UPDATE_URL, EXTENSION_FLAG_FREQUENCY, ENTITY_CACHE_TTL_DAYS } from '../../config/constants';
 
 // ─── Globals (re-initialised after SW wake) ────────────────────────────────────
 
 const adapter = new ChromeStorageAdapter();
 const cacheDeps = makeCacheDeps(adapter);
-let apiClient: OpenSecretsClient | null = null;
+let apiClient: FECClient | null = null;
 let entities: Entity[] = [];
 
 async function init() {
-  // The OpenSecrets API key is stored in chrome.storage.local under
-  // 'opensecrets_api_key'. It must be written there before first use —
-  // either via an options page or an onInstalled prompt (to be built in
-  // pre-launch checklist item). It is NEVER hard-coded or committed to source.
-  // If absent, domain matching still works but no donation data is fetched
-  // (handleCheckDomain returns early at the "no client" guard).
-  const result = await chrome.storage.local.get('opensecrets_api_key');
-  const apiKey = result['opensecrets_api_key'] as string | undefined;
+  // The FEC API key is stored in chrome.storage.local under 'fec_api_key'.
+  // It must be written there before first use — either via an options page or
+  // an onInstalled prompt (to be built in pre-launch checklist item). It is
+  // NEVER hard-coded or committed to source. If absent, domain matching still
+  // works but no donation data is fetched (handleCheckDomain returns early at
+  // the "no client" guard).
+  const result = await chrome.storage.local.get('fec_api_key');
+  const apiKey = result['fec_api_key'] as string | undefined;
   if (apiKey) {
-    apiClient = new OpenSecretsClient({ apiKey });
+    apiClient = new FECClient({ apiKey });
   }
 
   // Load entity list from storage (written by the entity list refresher).
@@ -141,7 +139,7 @@ async function handleCheckDomain(hostname: string, tabId: number): Promise<void>
     donationSummary = cached.donationSummary;
   } else if (apiClient && entity.openSecretsOrgId) {
     try {
-      donationSummary = await apiClient.getOrgSummary(entity.openSecretsOrgId);
+      donationSummary = await apiClient.fetchOrgSummary(entity.openSecretsOrgId);
       await cacheDeps.setCache({
         key: cacheKey,
         openSecretsOrgId: entity.openSecretsOrgId,
@@ -159,16 +157,18 @@ async function handleCheckDomain(hostname: string, tabId: number): Promise<void>
 
   const flag: TabFlag = {
     hostname,
-    entityId: entity.id,
-    canonicalName: entity.canonicalName,
-    ceoName: entity.ceoName,
-    donationTotal:  donationSummary.total,
-    donationRepubs: donationSummary.repubs,
-    sourceUrl:      donationSummary.sourceUrl,
-    cycle:          donationSummary.cycle,
+    entityId:       entity.id,
+    canonicalName:  entity.canonicalName,
+    ceoName:        entity.ceoName,
+    recentCycle:    donationSummary.recentCycle,
+    recentRepubs:   donationSummary.recentRepubs,
+    recentDems:     donationSummary.recentDems,
+    totalRepubs:    donationSummary.totalRepubs,
+    totalDems:      donationSummary.totalDems,
+    activeCycles:   donationSummary.activeCycles,
+    fecCommitteeUrl: donationSummary.fecCommitteeUrl,
     confidence:     entity.confidenceOverride ?? 'MEDIUM',
-    fecFilingUrl:   entity.fecCommitteeId ? fecFilingUrl(entity.fecCommitteeId) : null,
-    avoided: false,
+    avoided:        false,
   };
 
   setTabFlag(tabId, flag);

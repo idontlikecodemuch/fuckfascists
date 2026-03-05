@@ -29,17 +29,19 @@ const chromeMock = {
 
 function makeFlag(overrides: Partial<TabFlag> = {}): TabFlag {
   return {
-    hostname:       'amazon.com',
-    entityId:       'amazon',
-    canonicalName:  'Amazon',
-    ceoName:        'Andy Jassy',
-    donationTotal:  5_000_000,
-    donationRepubs: 4_200_000,
-    sourceUrl:      'https://opensecrets.org/orgs/amazon',
-    cycle:          '2024',
-    confidence:     'HIGH',
-    fecFilingUrl:   null,
-    avoided:        false,
+    hostname:        'amazon.com',
+    entityId:        'amazon',
+    canonicalName:   'Amazon',
+    ceoName:         'Andy Jassy',
+    recentCycle:     2024,
+    recentRepubs:    1_200_000,
+    recentDems:      0,
+    totalRepubs:     4_200_000,
+    totalDems:       800_000,
+    activeCycles:    [2016, 2018, 2020, 2022, 2024],
+    fecCommitteeUrl: 'https://www.fec.gov/data/committee/C00431171/',
+    confidence:      'HIGH',
+    avoided:         false,
     ...overrides,
   };
 }

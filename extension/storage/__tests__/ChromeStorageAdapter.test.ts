@@ -60,8 +60,10 @@ describe('ChromeStorageAdapter', () => {
         key: 'test-key',
         openSecretsOrgId: 'org123',
         donationSummary: {
-          orgName: 'Acme', orgId: 'org123', total: 1000, dems: 100,
-          repubs: 900, lobbying: 0, sourceUrl: 'https://os.com', cycle: '2024',
+          committeeId: 'org123', committeeName: 'Acme', recentCycle: 2024,
+          recentRepubs: 900, recentDems: 100, totalRepubs: 900, totalDems: 100,
+          activeCycles: [2024], lastUpdated: '2024-01-01',
+          fecCommitteeUrl: 'https://www.fec.gov/data/committee/org123/',
         },
         confidence: 'HIGH',
         fetchedAt: Date.now(),
