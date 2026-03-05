@@ -23,6 +23,7 @@
     ],
     "categoryTags": ["tech", "retail"],
     "ceoName": "Andy Jassy",
+    "publicFigureName": "Jeff Bezos",
     "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   },
@@ -36,6 +37,7 @@
     ],
     "categoryTags": ["tech", "media"],
     "ceoName": "Mark Zuckerberg",
+    "publicFigureName": "Mark Zuckerberg",
     "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   },
@@ -46,6 +48,7 @@
     "domains": ["x.com", "twitter.com"],
     "categoryTags": ["tech", "media"],
     "ceoName": "Elon Musk",
+    "publicFigureName": "Elon Musk",
     "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   },
@@ -56,6 +59,7 @@
     "domains": ["tesla.com"],
     "categoryTags": ["automotive", "tech"],
     "ceoName": "Elon Musk",
+    "publicFigureName": "Elon Musk",
     "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   },
@@ -66,6 +70,7 @@
     "domains": ["spacex.com", "starlink.com"],
     "categoryTags": ["tech", "defense"],
     "ceoName": "Elon Musk",
+    "publicFigureName": "Elon Musk",
     "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   },
@@ -116,6 +121,7 @@
     "domains": ["hobbylobby.com"],
     "categoryTags": ["retail"],
     "ceoName": "David Green",
+    "publicFigureName": "David Green",
     "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   },
@@ -169,6 +175,7 @@
     "domains": ["kochind.com", "gp.com"],
     "categoryTags": ["energy", "consumer-goods"],
     "ceoName": "Charles Koch",
+    "publicFigureName": "Charles Koch",
     "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   },
@@ -282,6 +289,7 @@
     "domains": ["uline.com"],
     "categoryTags": ["retail"],
     "ceoName": "Richard Uihlein",
+    "publicFigureName": "Richard Uihlein",
     "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   }
