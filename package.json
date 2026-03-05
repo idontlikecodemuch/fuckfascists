@@ -14,6 +14,7 @@
     "verify:entities": "node scripts/verify-entities.mjs"
   },
   "dependencies": {
+    "dotenv": "^17.3.1",
     "expo": "~52.0.0",
     "expo-location": "~18.0.0",
     "expo-notifications": "~0.29.0",
