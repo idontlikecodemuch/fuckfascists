@@ -1,3 +1,4 @@
+// Data source: OpenFEC API via FECClient (core/api/FECClient.ts)
 export { matchEntity } from './pipeline';
 export { normalize } from './normalize';
 export { jaro, jaroWinkler } from './jaroWinkler';
