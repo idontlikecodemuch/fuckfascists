@@ -7,7 +7,5 @@ export { RateLimiter, OPENSECRETS_DEFAULT_LIMITS } from './rateLimit';
 export type { RateLimiterConfig } from './rateLimit';
 export { RateLimitError } from './errors';
 
-// @deprecated — OpenSecretsClient will be removed once all callers migrate to FECClient.
-export { OpenSecretsClient } from './OpenSecretsClient.legacy';
-export type { OpenSecretsClientConfig } from './OpenSecretsClient.legacy';
+// Legacy error classes kept for any external code that may catch them.
 export { OpenSecretsError, ApiError, ParseError } from './errors';
