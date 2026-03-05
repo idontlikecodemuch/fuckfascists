@@ -1,184 +1,237 @@
 import 'dotenv/config';
 /**
- * verify-entities.mjs
+ * verify-entities.mjs — three-phase FEC committee verification
  *
- * For each entity in assets/data/entities.json where fecCommitteeId is empty,
- * queries the FEC API to find the best-matching committee by canonicalName.
- * If a match with Jaro-Winkler similarity > 0.85 is found, writes the
- * committee_id back to the entity. Otherwise, logs the entity name to
- * scripts/unverified-entities.txt.
+ * Phase 1: Auto-verify (>= 0.78), near-miss queue (>= 0.65), unverified log.
+ * Phase 2: Interactive near-miss review (y/n/o/q).
+ * Phase 3: Save entities.json, optional git commit + push.
  *
- * Usage:
- *   FEC_API_KEY=your_key node scripts/verify-entities.mjs
- *
- * Never run in CI — this is a manual data-pipeline tool.
- * Never hardcode the API key.
+ * Usage: npm run verify:entities
+ * Never run in CI. Never hardcode the API key.
  */
 
 import { readFile, writeFile } from 'node:fs/promises';
+import { execSync } from 'node:child_process';
+import { createInterface } from 'node:readline';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const __dirname       = path.dirname(fileURLToPath(import.meta.url));
 const ENTITIES_PATH   = path.join(__dirname, '../assets/data/entities.json');
 const UNVERIFIED_PATH = path.join(__dirname, 'unverified-entities.txt');
+const NEAR_MISS_PATH  = path.join(__dirname, 'near-miss-entities.txt');
 const FEC_API_BASE    = 'https://api.open.fec.gov/v1';
-const SIMILARITY_THRESHOLD = 0.85;
-const REQUEST_DELAY_MS     = 200;
-
-// ── Jaro-Winkler (inline — script is standalone, cannot import TypeScript) ──────
+const THRESHOLD_AUTO  = 0.78;   // auto-populate fecCommitteeId
+const THRESHOLD_NEAR  = 0.65;   // queue for interactive review
+const REQUEST_DELAY_MS = 3600;  // ~1,000 req/hr — FEC free-tier limit
+const DIV = '─'.repeat(45);
 
 function jaro(a, b) {
   if (a === b) return 1;
   const maxDist = Math.floor(Math.max(a.length, b.length) / 2) - 1;
   if (maxDist < 0) return 0;
-
-  const aMatched = new Array(a.length).fill(false);
-  const bMatched = new Array(b.length).fill(false);
+  const aM = new Array(a.length).fill(false);
+  const bM = new Array(b.length).fill(false);
   let matches = 0;
-
   for (let i = 0; i < a.length; i++) {
-    const start = Math.max(0, i - maxDist);
-    const end   = Math.min(i + maxDist + 1, b.length);
-    for (let j = start; j < end; j++) {
-      if (!bMatched[j] && a[i] === b[j]) {
-        aMatched[i] = true;
-        bMatched[j] = true;
-        matches++;
-        break;
-      }
+    const s = Math.max(0, i - maxDist), e = Math.min(i + maxDist + 1, b.length);
+    for (let j = s; j < e; j++) {
+      if (!bM[j] && a[i] === b[j]) { aM[i] = true; bM[j] = true; matches++; break; }
     }
   }
-
   if (matches === 0) return 0;
-
-  let transpositions = 0;
-  let k = 0;
+  let t = 0, k = 0;
   for (let i = 0; i < a.length; i++) {
-    if (!aMatched[i]) continue;
-    while (!bMatched[k]) k++;
-    if (a[i] !== b[k]) transpositions++;
+    if (!aM[i]) continue;
+    while (!bM[k]) k++;
+    if (a[i] !== b[k]) t++;
     k++;
   }
-
-  return (matches / a.length + matches / b.length + (matches - transpositions / 2) / matches) / 3;
+  return (matches / a.length + matches / b.length + (matches - t / 2) / matches) / 3;
 }
 
 function jaroWinkler(a, b, p = 0.1) {
   const j = jaro(a, b);
   let prefix = 0;
   for (let i = 0; i < Math.min(4, Math.min(a.length, b.length)); i++) {
-    if (a[i] === b[i]) prefix++;
-    else break;
+    if (a[i] === b[i]) prefix++; else break;
   }
   return j + prefix * p * (1 - j);
 }
 
 function normalize(s) {
-  return s
-    .toLowerCase()
-    .replace(/[']/g, '')
-    .replace(/[&\-]/g, '')
-    .replace(/[^\w\s]/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
+  return s.toLowerCase().replace(/[']/g, '').replace(/[&\-]/g, '')
+    .replace(/[^\w\s]/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
-// ── FEC API ──────────────────────────────────────────────────────────────────
+const CORP_SUFFIXES = /\s+(inc|llc|corp|corporation|ltd|co|company|group|holdings|enterprises|international|usa|america|americas)\.?$/i;
+function stripSuffix(s) { return s.replace(CORP_SUFFIXES, '').trim(); }
 
 async function searchCommittees(name, apiKey) {
-  const params = new URLSearchParams({
-    q: name,
-    api_key: apiKey,
-    per_page: '3',
-  });
+  const params = new URLSearchParams({ q: name, api_key: apiKey, per_page: '10' });
   const res = await fetch(`${FEC_API_BASE}/committees/?${params}`);
   if (!res.ok) throw new Error(`FEC API ${res.status}: ${res.statusText}`);
-  const data = await res.json();
-  return data.results ?? [];
+  return (await res.json()).results ?? [];
 }
 
-function delay(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
+function delay(ms) { return new Promise((r) => setTimeout(r, ms)); }
 
-// ── Main ─────────────────────────────────────────────────────────────────────
-
-async function main() {
-  const apiKey = process.env['FEC_API_KEY'];
-  if (!apiKey) {
-    console.error('ERROR: FEC_API_KEY environment variable is not set.');
-    process.exit(1);
+function pickBest(results, normalizedQuery) {
+  let bestScore = 0, bestId = null, bestName = null;
+  for (const r of results) {
+    const score = jaroWinkler(normalizedQuery, normalize(r.name));
+    if (score > bestScore) { bestScore = score; bestId = r.committee_id; bestName = r.name; }
   }
+  return { bestScore, bestId, bestName };
+}
 
-  const raw = await readFile(ENTITIES_PATH, 'utf8');
-  const parsed = JSON.parse(raw);
-  // Support both flat array and { _meta, entities } wrapped format
-  const entities = Array.isArray(parsed) ? parsed : parsed.entities;
-
-  const unverified = [];
-  let verified = 0;
-  let skipped  = 0;
+async function phase1(entities, apiKey) {
+  const nearMisses = [], unverified = [];
+  let autoVerified = 0, skipped = 0;
 
   for (const entity of entities) {
-    if (entity.fecCommitteeId) {
-      skipped++;
-      continue;
-    }
+    if (entity.fecCommitteeId) { skipped++; continue; }
 
-    const normalizedCanonical = normalize(entity.canonicalName);
+    const normCanonical = normalize(entity.canonicalName);
+    const stripped = stripSuffix(entity.canonicalName);
+    const queries = [entity.canonicalName,
+      stripped !== entity.canonicalName ? stripped : null,
+      ...(entity.aliases ?? []).slice(0, 2),
+    ].filter(Boolean);
 
-    let results;
-    try {
-      results = await searchCommittees(entity.canonicalName, apiKey);
-    } catch (err) {
-      console.error(`  ERROR querying FEC for "${entity.canonicalName}": ${err.message}`);
-      unverified.push(entity.canonicalName);
-      await delay(REQUEST_DELAY_MS);
-      continue;
-    }
+    const seen = new Set();
+    let best = { bestScore: 0, bestId: null, bestName: null };
 
-    // Find best match by Jaro-Winkler similarity
-    let bestScore = 0;
-    let bestId    = null;
-
-    for (const result of results) {
-      const score = jaroWinkler(normalizedCanonical, normalize(result.name));
-      if (score > bestScore) {
-        bestScore = score;
-        bestId    = result.committee_id;
+    for (const q of queries) {
+      if (seen.has(q)) continue;
+      seen.add(q);
+      try {
+        const results = await searchCommittees(q, apiKey);
+        await delay(REQUEST_DELAY_MS);
+        const m = pickBest(results, normCanonical);
+        if (m.bestScore > best.bestScore) best = m;
+      } catch (err) {
+        console.error(`  ERROR querying FEC for "${q}": ${err.message}`);
+        await delay(REQUEST_DELAY_MS);
       }
+      if (best.bestScore >= THRESHOLD_AUTO) break;
     }
 
-    if (bestScore >= SIMILARITY_THRESHOLD && bestId) {
-      entity.fecCommitteeId = bestId;
-      verified++;
-      console.log(`  ✓ ${entity.canonicalName} → ${bestId} (score: ${bestScore.toFixed(3)})`);
+    if (best.bestScore >= THRESHOLD_AUTO && best.bestId) {
+      entity.fecCommitteeId = best.bestId;
+      autoVerified++;
+      console.log(`  ✓ ${entity.canonicalName} → ${best.bestId} (${best.bestScore.toFixed(3)})`);
+    } else if (best.bestScore >= THRESHOLD_NEAR && best.bestId) {
+      nearMisses.push({ entity, bestId: best.bestId, bestName: best.bestName, bestScore: best.bestScore });
+      console.log(`  ~ ${entity.canonicalName} — near-miss (${best.bestScore.toFixed(3)})`);
     } else {
       unverified.push(entity.canonicalName);
-      console.log(`  ✗ ${entity.canonicalName} — no confident match (best score: ${bestScore.toFixed(3)})`);
+      console.log(`  ✗ ${entity.canonicalName} — no match (best: ${best.bestScore.toFixed(3)})`);
     }
-
-    await delay(REQUEST_DELAY_MS);
   }
 
-  // Write updated entities.json — preserve _meta wrapper if present
+  return { nearMisses, unverified, autoVerified, skipped };
+}
+
+async function phase2(nearMisses, autoVerified) {
+  const rl = createInterface({ input: process.stdin, output: process.stdout });
+  const ask = (prompt) => new Promise((resolve) => rl.question(prompt, resolve));
+
+  console.log(`\n${DIV}`);
+  console.log(`Phase 1 complete. ${autoVerified} verified automatically.`);
+  console.log(`${nearMisses.length} near-misses need your review.`);
+  console.log(`Press enter to start review, or Ctrl+C to skip.`);
+  await ask('');
+
+  let manualVerified = 0;
+  const deferred = [];
+
+  for (let i = 0; i < nearMisses.length; i++) {
+    const { entity, bestId, bestName, bestScore } = nearMisses[i];
+    const fecUrl = `https://www.fec.gov/data/committee/${bestId}/`;
+    let done = false;
+
+    while (!done) {
+      console.log(`\n${DIV}`);
+      console.log(`[${i + 1} of ${nearMisses.length}] ${entity.canonicalName}`);
+      console.log(`Candidate: ${bestName}`);
+      console.log(`Committee ID: ${bestId}`);
+      console.log(`Score: ${bestScore.toFixed(2)}`);
+      console.log(`FEC page: ${fecUrl}`);
+      console.log(`\n(y) Accept   (n) Skip   (o) Open in browser   (q) Quit review`);
+      const ans = (await ask('→ ')).trim().toLowerCase();
+
+      if (ans === 'y') {
+        entity.fecCommitteeId = bestId;
+        manualVerified++;
+        console.log(`  ✓ Accepted.`);
+        done = true;
+      } else if (ans === 'n') {
+        deferred.push(entity.canonicalName);
+        done = true;
+      } else if (ans === 'o') {
+        try { execSync(`open "${fecUrl}"`); } catch { /* non-mac: ignore */ }
+      } else if (ans === 'q') {
+        for (let j = i; j < nearMisses.length; j++) deferred.push(nearMisses[j].entity.canonicalName);
+        rl.close();
+        return { manualVerified, deferred };
+      }
+    }
+  }
+
+  rl.close();
+  return { manualVerified, deferred };
+}
+
+async function phase3(parsed, entities, { autoVerified, manualVerified, deferred, unverified, skipped }) {
   const output = Array.isArray(parsed)
     ? entities
     : { ...parsed, _meta: { ...parsed._meta, totalEntities: entities.length, updatedAt: new Date().toISOString().slice(0, 10) }, entities };
   await writeFile(ENTITIES_PATH, JSON.stringify(output, null, 2) + '\n', 'utf8');
+  if (unverified.length > 0) await writeFile(UNVERIFIED_PATH, unverified.join('\n') + '\n', 'utf8');
+  if (deferred.length > 0)   await writeFile(NEAR_MISS_PATH,  deferred.join('\n')   + '\n', 'utf8');
 
-  // Write unverified list
-  if (unverified.length > 0) {
-    const lines = unverified.join('\n') + '\n';
-    await writeFile(UNVERIFIED_PATH, lines, 'utf8');
-    console.log(`\nUnverified list written to scripts/unverified-entities.txt`);
+  console.log(`\n${DIV}`);
+  console.log(`✓ Auto-verified:     ${autoVerified}`);
+  console.log(`✓ Manually verified: ${manualVerified}`);
+  console.log(`~ Skipped/deferred:  ${deferred.length}${deferred.length > 0 ? ' (scripts/near-miss-entities.txt)' : ''}`);
+  console.log(`✗ Unverified:        ${unverified.length}${unverified.length > 0 ? ' (scripts/unverified-entities.txt)' : ''}`);
+  console.log(`- Already had ID:    ${skipped}`);
+  console.log(DIV);
+
+  const rl = createInterface({ input: process.stdin, output: process.stdout });
+  const ans = await new Promise((resolve) => rl.question('Commit results? (y/n) → ', resolve));
+  rl.close();
+
+  if (ans.trim().toLowerCase() === 'y') {
+    execSync('git add assets/data/entities.json', { stdio: 'inherit' });
+    execSync('git commit -m "feat(entities): populate fecCommitteeId via FEC API verification"', { stdio: 'inherit' });
+    execSync('git push origin main', { stdio: 'inherit' });
+    console.log('Done. Pushed to main.');
+  } else {
+    console.log('entities.json saved locally. Commit manually when ready.');
   }
-
-  console.log(`\nSummary: ${verified} verified, ${unverified.length} unverified, ${skipped} skipped (already had fecCommitteeId)`);
 }
 
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+async function main() {
+  const apiKey = process.env['FEC_API_KEY'];
+  if (!apiKey) { console.error('ERROR: FEC_API_KEY environment variable is not set.'); process.exit(1); }
+
+  const raw      = await readFile(ENTITIES_PATH, 'utf8');
+  const parsed   = JSON.parse(raw);
+  const entities = Array.isArray(parsed) ? parsed : parsed.entities;
+  console.log(`Loaded ${entities.length} entities. Starting Phase 1...\n`);
+
+  const { nearMisses, unverified, autoVerified, skipped } = await phase1(entities, apiKey);
+  let manualVerified = 0, deferred = [];
+
+  if (nearMisses.length > 0) {
+    ({ manualVerified, deferred } = await phase2(nearMisses, autoVerified));
+  } else {
+    console.log('\nNo near-misses. Skipping Phase 2.');
+  }
+
+  await phase3(parsed, entities, { autoVerified, manualVerified, deferred, unverified, skipped });
+}
+
+main().catch((err) => { console.error(err); process.exit(1); });
