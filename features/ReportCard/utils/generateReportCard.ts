@@ -1,4 +1,5 @@
 import type { Entity } from '../../../core/models';
+import { getDisplayFigure } from '../../../core/models';
 import type { StorageAdapter } from '../../../core/data';
 import { getAllEntityAvoids, getPlatformAvoidsForWeek } from '../../../core/data';
 import type { Platform } from '../../Survey/types';
@@ -33,7 +34,7 @@ export async function generateReportCard(
   const entityAvoids: EntityAvoidSummary[] = Array.from(countMap.entries())
     .map(([entityId, count]) => {
       const entity = entityIndex.get(entityId);
-      return { entityId, name: entity?.canonicalName ?? entityId, count, ceoName: entity?.ceoName };
+      return { entityId, name: entity?.canonicalName ?? entityId, count, ceoName: entity ? getDisplayFigure(entity) : undefined };
     })
     .sort((a, b) => b.count - a.count);
 

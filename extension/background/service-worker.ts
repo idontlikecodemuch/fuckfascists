@@ -14,6 +14,7 @@
  */
 
 import type { Entity } from '../../core/models';
+import { getDisplayFigure } from '../../core/models';
 import type { ExtensionMsg, TabFlag, WeeklyStats } from '../types';
 import { ChromeStorageAdapter } from '../storage/ChromeStorageAdapter';
 import { findByDomain } from './domainMatch';
@@ -171,6 +172,7 @@ async function handleCheckDomain(hostname: string, tabId: number): Promise<void>
     hostname,
     entityId:       entity.id,
     canonicalName:  entity.canonicalName,
+    displayFigure:  getDisplayFigure(entity),
     recentCycle:    donationSummary.recentCycle,
     recentRepubs:   donationSummary.recentRepubs,
     recentDems:     donationSummary.recentDems,

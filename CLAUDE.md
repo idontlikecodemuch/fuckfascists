@@ -216,14 +216,18 @@ The weekly report card is a synchronized global event. Every user receives it at
 ```typescript
 {
   id: string
-  canonicalName: string          // matches OpenSecrets org name
+  canonicalName: string          // matches FEC committee/organization name
   aliases: string[]              // consumer-facing brand names
   domains: string[]              // for extension matching (e.g. ["amazon.com", "smile.amazon.com"])
   categoryTags: string[]
-  ceoName: string                // for report card display
-  openSecretsOrgId?: string      // pre-resolved for fast API calls
-  confidenceOverride?: 'HIGH'    // for well-known brands
-  lastVerifiedDate: string
+  ceoName: string                // operational CEO — for report card display
+  publicFigureName?: string      // founder/owner when more culturally recognizable than CEO
+                                 // (e.g. Jeff Bezos for Amazon, Rupert Murdoch for Fox/News Corp)
+                                 // getDisplayFigure(entity) returns this when present, ceoName otherwise
+  openSecretsOrgId?: string      // @deprecated — holds FEC committee_id since FEC migration
+  fecCommitteeId?: string        // FEC committee ID — populated by verify-entities.mjs
+  matchScore?: number            // 0–1 override; 1.0 = exact/certain; omit for normal scoring
+  lastVerifiedDate: string       // YYYY-MM-DD
 }
 ```
 

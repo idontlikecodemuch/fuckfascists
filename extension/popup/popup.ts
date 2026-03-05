@@ -13,6 +13,7 @@
  */
 
 import type { TabFlag, WeeklyStats, GetCurrentFlagMsg, AvoidEntityMsg, SnoozeDomainMsg, GetWeeklyStatsMsg } from '../types';
+import { SHOW_FIGURE_NAME_IN_POPUP } from '../../config/constants';
 
 // ── DOM refs ───────────────────────────────────────────────────────────────────
 
@@ -20,8 +21,9 @@ const stateClean   = document.getElementById('state-clean')!;
 const stateFlagged = document.getElementById('state-flagged')!;
 const stateAvoided = document.getElementById('state-avoided')!;
 
-// CEO names are intentionally absent — this is an informational FEC data tool (see CLAUDE.md).
+// Figure name visibility is controlled by SHOW_FIGURE_NAME_IN_POPUP (see config/constants.ts).
 const entityNameEl    = document.getElementById('entity-name')!;
+const figureNameEl    = document.getElementById('figure-name')!;
 const recentAmountEl  = document.getElementById('recent-amount')!;
 const recentCycleEl   = document.getElementById('recent-cycle')!;
 const totalSince2016  = document.getElementById('total-since-2016')!;
@@ -67,6 +69,13 @@ function getMondayOf(date: Date): string {
 
 function renderFlag(flag: TabFlag) {
   entityNameEl.textContent = flag.canonicalName.toUpperCase();
+
+  if (SHOW_FIGURE_NAME_IN_POPUP && flag.displayFigure) {
+    figureNameEl.textContent = flag.displayFigure;
+    figureNameEl.hidden = false;
+  } else {
+    figureNameEl.hidden = true;
+  }
 
   // Recent cycle — prominent line
   const hasRecentRepubs = flag.recentRepubs > 0;

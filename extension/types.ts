@@ -49,6 +49,8 @@ export interface TabFlag {
   hostname: string;
   entityId: string;
   canonicalName: string;
+  /** Pre-computed getDisplayFigure() result — publicFigureName if set, otherwise ceoName. */
+  displayFigure: string;
   recentCycle: number;
   recentRepubs: number;
   recentDems: number;
