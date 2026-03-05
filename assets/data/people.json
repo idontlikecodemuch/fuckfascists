@@ -1,0 +1,10 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "updatedAt": "2026-03-05",
+    "description": "Individual executive and donor records for personal FEC contribution tracking. Separate from corporate PAC data in entities.json.",
+    "source": "FEC individual contributions API: /schedules/schedule_a/",
+    "totalPeople": 0
+  },
+  "people": []
+}
