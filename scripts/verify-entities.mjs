@@ -111,7 +111,9 @@ async function main() {
   }
 
   const raw = await readFile(ENTITIES_PATH, 'utf8');
-  const entities = JSON.parse(raw);
+  const parsed = JSON.parse(raw);
+  // Support both flat array and { _meta, entities } wrapped format
+  const entities = Array.isArray(parsed) ? parsed : parsed.entities;
 
   const unverified = [];
   let verified = 0;
@@ -159,8 +161,11 @@ async function main() {
     await delay(REQUEST_DELAY_MS);
   }
 
-  // Write updated entities.json
-  await writeFile(ENTITIES_PATH, JSON.stringify(entities, null, 2) + '\n', 'utf8');
+  // Write updated entities.json — preserve _meta wrapper if present
+  const output = Array.isArray(parsed)
+    ? entities
+    : { ...parsed, _meta: { ...parsed._meta, totalEntities: entities.length, updatedAt: new Date().toISOString().slice(0, 10) }, entities };
+  await writeFile(ENTITIES_PATH, JSON.stringify(output, null, 2) + '\n', 'utf8');
 
   // Write unverified list
   if (unverified.length > 0) {
