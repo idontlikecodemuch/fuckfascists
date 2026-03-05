@@ -3,6 +3,8 @@ import { View, Text, Pressable, StyleSheet, Linking } from 'react-native';
 import type { ScanResult } from '../types';
 import { AvoidButton } from './AvoidButton';
 import { formatDonationAmount, formatCycleLabel, formatActiveCycles } from '../../../core/models';
+// CEO names are intentionally absent — this is an informational FEC data screen.
+// CEO names belong in report card and avoid tap feedback only (see CLAUDE.md).
 
 interface BusinessCardProps {
   result: ScanResult;
@@ -36,7 +38,7 @@ function ConfidenceBadge({ level }: { level: 'HIGH' | 'MEDIUM' }) {
  *  - Recent cycle is visually prominent; historical totals are secondary.
  */
 export function BusinessCard({ result, onAvoid, onDismiss }: BusinessCardProps) {
-  const { canonicalName, confidence, donationSummary, entity } = result;
+  const { canonicalName, confidence, donationSummary } = result;
   const {
     recentCycle, recentRepubs, recentDems,
     totalRepubs, totalDems,
@@ -66,10 +68,6 @@ export function BusinessCard({ result, onAvoid, onDismiss }: BusinessCardProps) 
           </Text>
           <ConfidenceBadge level={confidence} />
         </View>
-
-        {entity?.ceoName ? (
-          <Text style={styles.ceo} allowFontScaling>CEO: {entity.ceoName}</Text>
-        ) : null}
 
         {confidence === 'MEDIUM' && (
           <Text style={styles.disclaimer} accessibilityRole="alert" allowFontScaling>
@@ -147,7 +145,6 @@ const styles = StyleSheet.create({
   header:         { marginBottom: 12 },
   titleRow:       { flexDirection: 'row', alignItems: 'center', marginBottom: 4 },
   name:           { flex: 1, fontFamily: MONO, fontSize: 18, fontWeight: 'bold', color: BLACK, marginRight: 8 },
-  ceo:            { fontFamily: MONO, fontSize: 11, color: '#555', marginBottom: 2 },
   disclaimer:     { fontFamily: MONO, fontSize: 11, color: AMBER, marginTop: 4 },
   badge:          { paddingHorizontal: 6, paddingVertical: 2, borderWidth: 2 },
   badgeHigh:      { backgroundColor: RED, borderColor: '#7A0000' },

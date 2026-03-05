@@ -49,7 +49,6 @@ export interface TabFlag {
   hostname: string;
   entityId: string;
   canonicalName: string;
-  ceoName: string;
   recentCycle: number;
   recentRepubs: number;
   recentDems: number;

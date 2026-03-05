@@ -32,7 +32,6 @@ function makeFlag(overrides: Partial<TabFlag> = {}): TabFlag {
     hostname:        'amazon.com',
     entityId:        'amazon',
     canonicalName:   'Amazon',
-    ceoName:         'Andy Jassy',
     recentCycle:     2024,
     recentRepubs:    1_200_000,
     recentDems:      0,

@@ -20,8 +20,8 @@ const stateClean   = document.getElementById('state-clean')!;
 const stateFlagged = document.getElementById('state-flagged')!;
 const stateAvoided = document.getElementById('state-avoided')!;
 
+// CEO names are intentionally absent — this is an informational FEC data tool (see CLAUDE.md).
 const entityNameEl    = document.getElementById('entity-name')!;
-const ceoNameEl       = document.getElementById('ceo-name')!;
 const recentAmountEl  = document.getElementById('recent-amount')!;
 const recentCycleEl   = document.getElementById('recent-cycle')!;
 const totalSince2016  = document.getElementById('total-since-2016')!;
@@ -67,13 +67,6 @@ function getMondayOf(date: Date): string {
 
 function renderFlag(flag: TabFlag) {
   entityNameEl.textContent = flag.canonicalName.toUpperCase();
-
-  if (flag.ceoName) {
-    ceoNameEl.textContent = `CEO: ${flag.ceoName}`;
-    ceoNameEl.hidden = false;
-  } else {
-    ceoNameEl.hidden = true;
-  }
 
   // Recent cycle — prominent line
   const hasRecentRepubs = flag.recentRepubs > 0;
