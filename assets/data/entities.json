@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "totalEntities": 313,
+    "totalEntities": 449,
     "updatedAt": "2026-03-05",
     "formatVersion": "1.0"
   },
@@ -22,8 +22,9 @@
         "retail"
       ],
       "ceoName": "Doug McMillon",
-      "matchScore": 1.0,
-      "lastVerifiedDate": "2026-03-04"
+      "matchScore": 1,
+      "lastVerifiedDate": "2026-03-04",
+      "fecCommitteeId": "C00093054"
     },
     {
       "id": "amazon",
@@ -57,7 +58,7 @@
       ],
       "ceoName": "Andy Jassy",
       "publicFigureName": "Jeff Bezos",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "lastVerifiedDate": "2026-03-04"
     },
     {
@@ -85,8 +86,9 @@
       ],
       "ceoName": "Mark Zuckerberg",
       "publicFigureName": "Mark Zuckerberg",
-      "matchScore": 1.0,
-      "lastVerifiedDate": "2026-03-04"
+      "matchScore": 1,
+      "lastVerifiedDate": "2026-03-04",
+      "fecCommitteeId": "C00502906"
     },
     {
       "id": "x-twitter",
@@ -106,7 +108,7 @@
       ],
       "ceoName": "Elon Musk",
       "publicFigureName": "Elon Musk",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "lastVerifiedDate": "2026-03-04"
     },
     {
@@ -126,7 +128,7 @@
       ],
       "ceoName": "Elon Musk",
       "publicFigureName": "Elon Musk",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "lastVerifiedDate": "2026-03-04"
     },
     {
@@ -147,8 +149,9 @@
       ],
       "ceoName": "Elon Musk",
       "publicFigureName": "Elon Musk",
-      "matchScore": 1.0,
-      "lastVerifiedDate": "2026-03-04"
+      "matchScore": 1,
+      "lastVerifiedDate": "2026-03-04",
+      "fecCommitteeId": "C00411116"
     },
     {
       "id": "target",
@@ -165,7 +168,7 @@
         "retail"
       ],
       "ceoName": "Brian Cornell",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "lastVerifiedDate": "2026-03-04"
     },
     {
@@ -182,7 +185,7 @@
         "retail"
       ],
       "ceoName": "Ted Decker",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "lastVerifiedDate": "2026-03-04"
     },
     {
@@ -200,8 +203,9 @@
         "retail"
       ],
       "ceoName": "Marvin Ellison",
-      "matchScore": 1.0,
-      "lastVerifiedDate": "2026-03-04"
+      "matchScore": 1,
+      "lastVerifiedDate": "2026-03-04",
+      "fecCommitteeId": "C00251751"
     },
     {
       "id": "dollar-general",
@@ -219,7 +223,7 @@
         "retail"
       ],
       "ceoName": "Todd Vasos",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "lastVerifiedDate": "2026-03-04"
     },
     {
@@ -237,7 +241,7 @@
       ],
       "ceoName": "David Green",
       "publicFigureName": "David Green",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "lastVerifiedDate": "2026-03-04"
     },
     {
@@ -258,7 +262,7 @@
         "telecom"
       ],
       "ceoName": "John Stankey",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "lastVerifiedDate": "2026-03-04"
     },
     {
@@ -282,7 +286,7 @@
         "media"
       ],
       "ceoName": "Brian Roberts",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "lastVerifiedDate": "2026-03-04"
     },
     {
@@ -300,7 +304,7 @@
         "energy"
       ],
       "ceoName": "Mike Wirth",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "lastVerifiedDate": "2026-03-04"
     },
     {
@@ -321,8 +325,9 @@
         "energy"
       ],
       "ceoName": "Darren Woods",
-      "matchScore": 1.0,
-      "lastVerifiedDate": "2026-03-04"
+      "matchScore": 1,
+      "lastVerifiedDate": "2026-03-04",
+      "fecCommitteeId": "C00457523"
     },
     {
       "id": "koch-industries",
@@ -353,8 +358,9 @@
       ],
       "ceoName": "Charles Koch",
       "publicFigureName": "Charles Koch",
-      "matchScore": 1.0,
-      "lastVerifiedDate": "2026-03-04"
+      "matchScore": 1,
+      "lastVerifiedDate": "2026-03-04",
+      "fecCommitteeId": "C70005079"
     },
     {
       "id": "goldman-sachs",
@@ -373,7 +379,7 @@
         "finance"
       ],
       "ceoName": "David Solomon",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "lastVerifiedDate": "2026-03-04"
     },
     {
@@ -395,8 +401,9 @@
         "finance"
       ],
       "ceoName": "Jamie Dimon",
-      "matchScore": 1.0,
-      "lastVerifiedDate": "2026-03-04"
+      "matchScore": 1,
+      "lastVerifiedDate": "2026-03-04",
+      "fecCommitteeId": "C00128512"
     },
     {
       "id": "blackstone",
@@ -412,7 +419,7 @@
         "finance"
       ],
       "ceoName": "Stephen Schwarzman",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "lastVerifiedDate": "2026-03-04"
     },
     {
@@ -434,8 +441,9 @@
         "finance"
       ],
       "ceoName": "Brian Moynihan",
-      "matchScore": 1.0,
-      "lastVerifiedDate": "2026-03-04"
+      "matchScore": 1,
+      "lastVerifiedDate": "2026-03-04",
+      "fecCommitteeId": "C00364778"
     },
     {
       "id": "wells-fargo",
@@ -452,7 +460,7 @@
         "finance"
       ],
       "ceoName": "Charlie Scharf",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "lastVerifiedDate": "2026-03-04"
     },
     {
@@ -470,7 +478,7 @@
         "food"
       ],
       "ceoName": "Chris Kempczinski",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "lastVerifiedDate": "2026-03-04"
     },
     {
@@ -492,8 +500,9 @@
         "food"
       ],
       "ceoName": "Donnie King",
-      "matchScore": 1.0,
-      "lastVerifiedDate": "2026-03-04"
+      "matchScore": 1,
+      "lastVerifiedDate": "2026-03-04",
+      "fecCommitteeId": "C00169821"
     },
     {
       "id": "fedex",
@@ -511,7 +520,7 @@
         "retail"
       ],
       "ceoName": "Raj Subramaniam",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "lastVerifiedDate": "2026-03-04"
     },
     {
@@ -531,8 +540,9 @@
         "consumer-goods"
       ],
       "ceoName": "Billy Gifford",
-      "matchScore": 1.0,
-      "lastVerifiedDate": "2026-03-04"
+      "matchScore": 1,
+      "lastVerifiedDate": "2026-03-04",
+      "fecCommitteeId": "C00089136"
     },
     {
       "id": "lockheed-martin",
@@ -549,8 +559,9 @@
         "defense"
       ],
       "ceoName": "Jim Taiclet",
-      "matchScore": 1.0,
-      "lastVerifiedDate": "2026-03-04"
+      "matchScore": 1,
+      "lastVerifiedDate": "2026-03-04",
+      "fecCommitteeId": "C00303024"
     },
     {
       "id": "uline",
@@ -567,7 +578,7 @@
       ],
       "ceoName": "Richard Uihlein",
       "publicFigureName": "Richard Uihlein",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-04"
     },
@@ -602,7 +613,7 @@
         "grocery"
       ],
       "ceoName": "Rodney McMullen",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -623,7 +634,7 @@
         "grocery"
       ],
       "ceoName": "Ron Vachris",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -647,7 +658,7 @@
         "pharmacy"
       ],
       "ceoName": "Tim Wentworth",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -673,7 +684,7 @@
         "pharmacy"
       ],
       "ceoName": "David Joyner",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -693,8 +704,8 @@
         "electronics"
       ],
       "ceoName": "Corie Barry",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00405076",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -722,7 +733,7 @@
         "apparel"
       ],
       "ceoName": "Ernie Herrman",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -741,8 +752,8 @@
         "retail"
       ],
       "ceoName": "Mike Creedon",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00657858",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -774,7 +785,7 @@
         "grocery"
       ],
       "ceoName": "Vivek Sankaran",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -794,8 +805,8 @@
         "grocery"
       ],
       "ceoName": "Kevin Murphy",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00400705",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -817,8 +828,8 @@
         "apparel"
       ],
       "ceoName": "Tony Spring",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00144311",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -843,8 +854,8 @@
         "apparel"
       ],
       "ceoName": "Richard Dickson",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00257246",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -862,7 +873,7 @@
         "gaming"
       ],
       "ceoName": "Ryan Cohen",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -888,7 +899,7 @@
         "footwear"
       ],
       "ceoName": "Mary Dillon",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -909,7 +920,7 @@
         "apparel"
       ],
       "ceoName": "Erik Nordstrom",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -928,7 +939,7 @@
         "apparel"
       ],
       "ceoName": "Tom Kingsbury",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -986,7 +997,7 @@
         "crafts"
       ],
       "ceoName": "Ashley Buchanan",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1006,7 +1017,7 @@
         "crafts"
       ],
       "ceoName": "Chris DiTullio",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1036,7 +1047,7 @@
         "home"
       ],
       "ceoName": "Laura Alber",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1074,7 +1085,7 @@
         "retail"
       ],
       "ceoName": "Joel Anderson",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1093,7 +1104,7 @@
         "grocery"
       ],
       "ceoName": "Jason Hart",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1129,7 +1140,7 @@
         "grocery"
       ],
       "ceoName": "Bryan Palbaum",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1149,7 +1160,7 @@
         "grocery"
       ],
       "ceoName": "Bob Eddy",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1169,7 +1180,7 @@
       ],
       "ceoName": "John Menard Jr",
       "publicFigureName": "John Menard Jr",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1188,7 +1199,7 @@
         "home-improvement"
       ],
       "ceoName": "John Venhuizen",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1229,8 +1240,8 @@
         "home-improvement"
       ],
       "ceoName": "Heidi Petz",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00170027",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -1249,7 +1260,7 @@
         "beauty"
       ],
       "ceoName": "Kecia Steelman",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1267,9 +1278,10 @@
         "beauty"
       ],
       "ceoName": "Guillaume Motte",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "parentEntityId": "lvmh"
     },
     {
       "id": "barnes-and-noble",
@@ -1289,7 +1301,7 @@
         "books"
       ],
       "ceoName": "James Daunt",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1307,7 +1319,7 @@
         "pets"
       ],
       "ceoName": "Sumit Singh",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1333,7 +1345,7 @@
         "home"
       ],
       "ceoName": "Niraj Shah",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1355,7 +1367,7 @@
         "marketplace"
       ],
       "ceoName": "Josh Silverman",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1374,7 +1386,7 @@
         "marketplace"
       ],
       "ceoName": "Jamie Iannone",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1394,7 +1406,7 @@
         "apparel"
       ],
       "ceoName": "Sky Xu",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1420,14 +1432,14 @@
         "retail",
         "apparel"
       ],
-      "ceoName": "Daniel Erv\u00e9r",
-      "matchScore": 1.0,
+      "ceoName": "Daniel Ervér",
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
     {
       "id": "zara",
-      "canonicalName": "Industria de Dise\u00f1o Textil SA",
+      "canonicalName": "Industria de Diseño Textil SA",
       "aliases": [
         "Zara",
         "Inditex",
@@ -1445,7 +1457,7 @@
         "apparel"
       ],
       "ceoName": "Oscar Garcia Maceiras",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1464,7 +1476,7 @@
         "apparel"
       ],
       "ceoName": "Daniel Kulle",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1487,7 +1499,7 @@
         "apparel"
       ],
       "ceoName": "Jay Schottenstein",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1511,7 +1523,7 @@
         "apparel"
       ],
       "ceoName": "Fran Horowitz",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1548,7 +1560,7 @@
         "retail"
       ],
       "ceoName": "Bruce Thorn",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1559,7 +1571,7 @@
         "Winn-Dixie",
         "Winn Dixie",
         "Harveys Supermarket",
-        "Fresco y M\u00e1s"
+        "Fresco y Más"
       ],
       "domains": [
         "winndixie.com"
@@ -1569,9 +1581,10 @@
         "grocery"
       ],
       "ceoName": "Anthony Hucker",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "parentEntityId": "aldi"
     },
     {
       "id": "food-lion",
@@ -1587,9 +1600,10 @@
         "grocery"
       ],
       "ceoName": "Meg Ham",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "parentEntityId": "ahold-delhaize"
     },
     {
       "id": "hy-vee",
@@ -1623,7 +1637,7 @@
         "grocery"
       ],
       "ceoName": "Rick Keyes",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1642,8 +1656,8 @@
         "automotive"
       ],
       "ceoName": "Phil Daniele",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00233056",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -1663,7 +1677,7 @@
         "automotive"
       ],
       "ceoName": "Brad Beckham",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1684,7 +1698,7 @@
         "automotive"
       ],
       "ceoName": "Shane O'Kelly",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1703,8 +1717,8 @@
         "retail"
       ],
       "ceoName": "Mike Manley",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00330514",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -1722,7 +1736,7 @@
         "retail"
       ],
       "ceoName": "Bill Nash",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1740,7 +1754,7 @@
         "retail"
       ],
       "ceoName": "Ernie Garcia III",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1760,7 +1774,7 @@
         "sporting"
       ],
       "ceoName": "Eric Artz",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1784,7 +1798,7 @@
         "sporting"
       ],
       "ceoName": "Lauren Hobart",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1810,7 +1824,7 @@
         "sporting"
       ],
       "ceoName": "Elliott Hill",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1834,7 +1848,7 @@
         "sporting"
       ],
       "ceoName": "Bjorn Gulden",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1854,7 +1868,7 @@
         "sporting"
       ],
       "ceoName": "Kevin Plank",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1873,8 +1887,8 @@
         "outdoor"
       ],
       "ceoName": "Ryan Gellert",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C90018193",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -1898,7 +1912,7 @@
         "outdoor"
       ],
       "ceoName": "Tim Boyle",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1916,7 +1930,7 @@
         "footwear"
       ],
       "ceoName": "Robert Greenberg",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1938,7 +1952,7 @@
         "footwear"
       ],
       "ceoName": "Doug Howe",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1957,7 +1971,7 @@
         "furniture"
       ],
       "ceoName": "Jeff Seaman",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1977,7 +1991,7 @@
         "furniture"
       ],
       "ceoName": "Todd Wanek",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -1998,7 +2012,7 @@
         "furniture"
       ],
       "ceoName": "Melinda Whittington",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2022,7 +2036,7 @@
         "home"
       ],
       "ceoName": "Gary Friedman",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2042,7 +2056,7 @@
         "home"
       ],
       "ceoName": "Javier Quinones",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2061,7 +2075,7 @@
         "home-improvement"
       ],
       "ceoName": "Tom Taylor",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2083,7 +2097,7 @@
         "furniture"
       ],
       "ceoName": "Mitch Fadel",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2103,7 +2117,7 @@
         "furniture"
       ],
       "ceoName": "Douglas Lindsay",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2125,8 +2139,8 @@
         "pets"
       ],
       "ceoName": "Hal Lawton",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00763664",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -2144,8 +2158,8 @@
         "pets"
       ],
       "ceoName": "J.K. Symancyk",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00669473",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -2163,7 +2177,7 @@
         "pets"
       ],
       "ceoName": "Joel Anderson",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2184,7 +2198,7 @@
         "apparel"
       ],
       "ceoName": "Barbara Rentler",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2204,7 +2218,7 @@
         "apparel"
       ],
       "ceoName": "Michael O'Sullivan",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2224,7 +2238,7 @@
         "beauty"
       ],
       "ceoName": "Gina Boswell",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2245,7 +2259,7 @@
         "apparel"
       ],
       "ceoName": "Hillary Super",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2264,8 +2278,8 @@
         "energy"
       ],
       "ceoName": "Ryan Lance",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00112896",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -2286,8 +2300,8 @@
         "energy"
       ],
       "ceoName": "Mark Lashier",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00513549",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -2305,7 +2319,7 @@
         "energy"
       ],
       "ceoName": "Lane Riggs",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2326,7 +2340,7 @@
         "energy"
       ],
       "ceoName": "Maryann Mannen",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2345,7 +2359,7 @@
         "defense"
       ],
       "ceoName": "Jeff Miller",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2363,7 +2377,7 @@
         "energy"
       ],
       "ceoName": "Lorenzo Simonelli",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2381,7 +2395,7 @@
         "energy"
       ],
       "ceoName": "Rick Muncrief",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2418,7 +2432,7 @@
         "utilities"
       ],
       "ceoName": "Harry Sideris",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2442,7 +2456,7 @@
         "utilities"
       ],
       "ceoName": "Chris Womack",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2462,7 +2476,7 @@
         "utilities"
       ],
       "ceoName": "Robert Blue",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2490,7 +2504,7 @@
         "utilities"
       ],
       "ceoName": "Calvin Butler",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2513,7 +2527,7 @@
         "utilities"
       ],
       "ceoName": "John Ketchum",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2535,7 +2549,7 @@
         "utilities"
       ],
       "ceoName": "Bob Frenzel",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2559,7 +2573,7 @@
         "utilities"
       ],
       "ceoName": "Brian Tierney",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2581,7 +2595,7 @@
         "utilities"
       ],
       "ceoName": "Andrew Marsh",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2602,7 +2616,7 @@
         "utilities"
       ],
       "ceoName": "Timothy Cawley",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2623,7 +2637,7 @@
         "utilities"
       ],
       "ceoName": "Patti Poppe",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2646,8 +2660,8 @@
         "finance"
       ],
       "ceoName": "Jane Fraser",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00039305",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -2667,7 +2681,7 @@
         "finance"
       ],
       "ceoName": "Ted Pick",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2686,7 +2700,7 @@
         "finance"
       ],
       "ceoName": "Stephen Squeri",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2706,7 +2720,7 @@
         "finance"
       ],
       "ceoName": "Richard Fairbank",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2726,7 +2740,7 @@
         "finance"
       ],
       "ceoName": "Michael Rhodes",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2746,7 +2760,7 @@
         "finance"
       ],
       "ceoName": "Brian Doubles",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2766,7 +2780,7 @@
         "finance"
       ],
       "ceoName": "Michael Rhodes",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2785,7 +2799,7 @@
         "finance"
       ],
       "ceoName": "Larry Fink",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2805,7 +2819,7 @@
       ],
       "ceoName": "Abigail Johnson",
       "publicFigureName": "Abigail Johnson",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2825,7 +2839,7 @@
         "finance"
       ],
       "ceoName": "Rick Wurster",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2852,7 +2866,7 @@
       ],
       "ceoName": "Warren Buffett",
       "publicFigureName": "Warren Buffett",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2871,7 +2885,7 @@
         "finance"
       ],
       "ceoName": "Ryan McInerney",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2890,7 +2904,7 @@
         "finance"
       ],
       "ceoName": "Michael Miebach",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2913,7 +2927,7 @@
         "tech"
       ],
       "ceoName": "Alex Chriss",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2940,7 +2954,7 @@
       ],
       "ceoName": "Jack Dorsey",
       "publicFigureName": "Jack Dorsey",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2958,8 +2972,8 @@
         "tech"
       ],
       "ceoName": "Patrick Collison",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00883116",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -2978,7 +2992,7 @@
         "finance"
       ],
       "ceoName": "Bill Rogers",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -2999,7 +3013,7 @@
         "finance"
       ],
       "ceoName": "Andy Cecere",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3018,7 +3032,7 @@
         "finance"
       ],
       "ceoName": "Bill Demchak",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3037,7 +3051,7 @@
         "finance"
       ],
       "ceoName": "John Turner",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3061,7 +3075,7 @@
         "tech"
       ],
       "ceoName": "Tim Cook",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3094,7 +3108,7 @@
         "tech"
       ],
       "ceoName": "Satya Nadella",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3128,7 +3142,7 @@
         "media"
       ],
       "ceoName": "Sundar Pichai",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3146,7 +3160,7 @@
         "media"
       ],
       "ceoName": "Greg Peters",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3169,7 +3183,7 @@
         "transportation"
       ],
       "ceoName": "Dara Khosrowshahi",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3187,7 +3201,7 @@
         "transportation"
       ],
       "ceoName": "David Risher",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3206,7 +3220,7 @@
         "travel"
       ],
       "ceoName": "Brian Chesky",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3230,7 +3244,7 @@
         "tech"
       ],
       "ceoName": "Marc Benioff",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3253,7 +3267,7 @@
       ],
       "ceoName": "Safra Catz",
       "publicFigureName": "Larry Ellison",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3275,7 +3289,7 @@
         "tech"
       ],
       "ceoName": "Arvind Krishna",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3295,7 +3309,7 @@
         "tech"
       ],
       "ceoName": "Lip-Bu Tan",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3313,7 +3327,7 @@
         "tech"
       ],
       "ceoName": "Cristiano Amon",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3335,7 +3349,7 @@
         "tech"
       ],
       "ceoName": "Lisa Su",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3355,7 +3369,7 @@
         "tech"
       ],
       "ceoName": "Jensen Huang",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3380,8 +3394,8 @@
       ],
       "ceoName": "Michael Dell",
       "publicFigureName": "Michael Dell",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00369751",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -3400,7 +3414,7 @@
         "tech"
       ],
       "ceoName": "Enrique Lores",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3423,7 +3437,7 @@
         "tech"
       ],
       "ceoName": "Chuck Robbins",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3444,7 +3458,7 @@
         "tech"
       ],
       "ceoName": "Hock Tan",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3462,7 +3476,7 @@
         "tech"
       ],
       "ceoName": "Bill McDermott",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3479,7 +3493,7 @@
         "tech"
       ],
       "ceoName": "Carl Eschenbach",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3502,7 +3516,7 @@
       ],
       "ceoName": "Alex Karp",
       "publicFigureName": "Peter Thiel",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3519,7 +3533,7 @@
         "tech"
       ],
       "ceoName": "Sridhar Ramaswamy",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3540,7 +3554,7 @@
         "food"
       ],
       "ceoName": "Tony Xu",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3559,7 +3573,7 @@
         "grocery"
       ],
       "ceoName": "Fidji Simo",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3583,7 +3597,7 @@
         "media"
       ],
       "ceoName": "Hans Vestberg",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3606,7 +3620,7 @@
         "telecom"
       ],
       "ceoName": "Mike Sievert",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3632,7 +3646,7 @@
         "media"
       ],
       "ceoName": "Chris Winfrey",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3654,7 +3668,7 @@
         "telecom"
       ],
       "ceoName": "Mark Greatrex",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3676,7 +3690,7 @@
         "telecom"
       ],
       "ceoName": "Kate Johnson",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3700,7 +3714,7 @@
         "media"
       ],
       "ceoName": "Hamid Akhavan",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3720,7 +3734,7 @@
         "media"
       ],
       "ceoName": "Bill Morrow",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3749,7 +3763,7 @@
       ],
       "ceoName": "Lachlan Murdoch",
       "publicFigureName": "Rupert Murdoch",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3779,7 +3793,7 @@
       ],
       "ceoName": "Robert Thomson",
       "publicFigureName": "Rupert Murdoch",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3801,7 +3815,7 @@
       ],
       "ceoName": "Chris Ripley",
       "publicFigureName": "David Smith",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3824,7 +3838,7 @@
         "media"
       ],
       "ceoName": "Bob Pittman",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3864,7 +3878,7 @@
         "media"
       ],
       "ceoName": "Perry Sook",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -3895,8 +3909,8 @@
         "gaming"
       ],
       "ceoName": "Bill Hornbuckle",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00299321",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -3922,8 +3936,8 @@
         "gaming"
       ],
       "ceoName": "Tom Reeg",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00342311",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -3946,8 +3960,8 @@
       ],
       "ceoName": "Rob Goldstein",
       "publicFigureName": "Sheldon Adelson",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00399642",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -3981,7 +3995,7 @@
         "entertainment"
       ],
       "ceoName": "Bob Iger",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -4016,7 +4030,7 @@
         "entertainment"
       ],
       "ceoName": "David Zaslav",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -4049,8 +4063,8 @@
         "entertainment"
       ],
       "ceoName": "George Cheeks",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00167759",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -4073,8 +4087,8 @@
         "insurance"
       ],
       "ceoName": "Andrew Witty",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00274431",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -4098,8 +4112,8 @@
         "insurance"
       ],
       "ceoName": "Gail Boudreaux",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00197228",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -4121,7 +4135,7 @@
         "insurance"
       ],
       "ceoName": "David Cordani",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -4140,8 +4154,8 @@
         "insurance"
       ],
       "ceoName": "Jim Rechtin",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00271007",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -4158,8 +4172,8 @@
         "healthcare"
       ],
       "ceoName": "Brian Tyler",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00108035",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -4179,8 +4193,8 @@
         "healthcare"
       ],
       "ceoName": "Steve Collis",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00400929",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -4196,8 +4210,8 @@
         "healthcare"
       ],
       "ceoName": "Jason Hollar",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00332833",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -4223,7 +4237,7 @@
         "consumer-goods"
       ],
       "ceoName": "Joaquin Duato",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -4244,8 +4258,8 @@
         "pharma"
       ],
       "ceoName": "Albert Bourla",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00016683",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -4265,7 +4279,7 @@
         "pharma"
       ],
       "ceoName": "Robert Davis",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -4287,7 +4301,7 @@
         "pharma"
       ],
       "ceoName": "Robert Ford",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -4304,7 +4318,7 @@
         "healthcare"
       ],
       "ceoName": "Geoff Martha",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -4321,7 +4335,7 @@
         "healthcare"
       ],
       "ceoName": "Michael Mahoney",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -4338,7 +4352,7 @@
         "healthcare"
       ],
       "ceoName": "Kevin Lobo",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -4358,7 +4372,7 @@
         "healthcare"
       ],
       "ceoName": "Sam Hazen",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -4378,7 +4392,7 @@
         "healthcare"
       ],
       "ceoName": "Saum Sutaria",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -4430,7 +4444,7 @@
         "beverage"
       ],
       "ceoName": "Ramon Laguarta",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -4462,7 +4476,7 @@
         "beverage"
       ],
       "ceoName": "James Quincey",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -4482,7 +4496,7 @@
         "agriculture"
       ],
       "ceoName": "Juan Luciano",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -4511,7 +4525,7 @@
         "food"
       ],
       "ceoName": "Carlos Abrams-Rivera",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -4540,8 +4554,8 @@
         "food"
       ],
       "ceoName": "Dirk Van de Put",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00529073",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -4556,7 +4570,7 @@
         "Betty Crocker",
         "Pillsbury",
         "Yoplait",
-        "H\u00e4agen-Dazs",
+        "Häagen-Dazs",
         "Nature Valley",
         "Progresso",
         "Annie's"
@@ -4568,8 +4582,8 @@
         "food"
       ],
       "ceoName": "Jeff Harmening",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00062646",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -4597,9 +4611,10 @@
         "food"
       ],
       "ceoName": "Steve Cahillane",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "parentEntityId": "mars"
     },
     {
       "id": "campbell-soup",
@@ -4622,8 +4637,8 @@
         "food"
       ],
       "ceoName": "Mark Clouse",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00415166",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -4650,8 +4665,8 @@
         "food"
       ],
       "ceoName": "Sean Connolly",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00087874",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -4675,7 +4690,7 @@
         "food"
       ],
       "ceoName": "Jim Snee",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -4698,8 +4713,8 @@
         "food"
       ],
       "ceoName": "Shane Smith",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00359075",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -4719,7 +4734,7 @@
         "food"
       ],
       "ceoName": "Randy Day",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -4750,7 +4765,7 @@
         "beverage"
       ],
       "ceoName": "Michel Doukeris",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -4776,7 +4791,7 @@
         "beverage"
       ],
       "ceoName": "Gavin Hattersley",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -4803,7 +4818,7 @@
         "beverage"
       ],
       "ceoName": "Bill Newlands",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -4831,7 +4846,7 @@
         "beverage"
       ],
       "ceoName": "Lawson Whiting",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -4850,7 +4865,7 @@
         "beverage"
       ],
       "ceoName": "Brian Niccol",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -4870,7 +4885,7 @@
       ],
       "ceoName": "Andrew Cathy",
       "publicFigureName": "S. Truett Cathy",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -4887,7 +4902,7 @@
         "food"
       ],
       "ceoName": "Walt Ehmer",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -4907,7 +4922,7 @@
       ],
       "ceoName": "Lynsi Snyder",
       "publicFigureName": "Lynsi Snyder",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -4933,8 +4948,8 @@
         "food"
       ],
       "ceoName": "David Gibbs",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00329474",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -4959,7 +4974,7 @@
         "food"
       ],
       "ceoName": "Josh Kobza",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -4977,7 +4992,7 @@
         "food"
       ],
       "ceoName": "Kirk Tanner",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5005,8 +5020,8 @@
         "food"
       ],
       "ceoName": "Rick Cardenas",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00108282",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -5023,7 +5038,7 @@
         "food"
       ],
       "ceoName": "Julie Masino",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5041,7 +5056,7 @@
         "food"
       ],
       "ceoName": "Kelli Valade",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5064,7 +5079,7 @@
         "food"
       ],
       "ceoName": "John Peyton",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5088,7 +5103,7 @@
         "automotive"
       ],
       "ceoName": "Jim Farley",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5117,7 +5132,7 @@
         "automotive"
       ],
       "ceoName": "Mary Barra",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5134,7 +5149,7 @@
         "Alfa Romeo",
         "Maserati",
         "Peugeot",
-        "Citro\u00ebn",
+        "Citroën",
         "Opel",
         "Vauxhall"
       ],
@@ -5150,7 +5165,7 @@
         "automotive"
       ],
       "ceoName": "Carlos Tavares",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5169,7 +5184,7 @@
         "automotive"
       ],
       "ceoName": "Mark Stewart",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5189,8 +5204,8 @@
         "automotive"
       ],
       "ceoName": "Paolo Ferrari",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00371948",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -5211,7 +5226,7 @@
         "automotive"
       ],
       "ceoName": "Alexis Garcin",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5236,7 +5251,7 @@
         "defense"
       ],
       "ceoName": "Greg Hayes",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5257,7 +5272,7 @@
         "aerospace"
       ],
       "ceoName": "Kelly Ortberg",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5278,7 +5293,7 @@
         "defense"
       ],
       "ceoName": "Phebe Novakovic",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5296,7 +5311,7 @@
         "defense"
       ],
       "ceoName": "Kathy Warden",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5316,7 +5331,7 @@
         "consulting"
       ],
       "ceoName": "Horacio Rozanski",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5337,7 +5352,7 @@
         "Springhill Suites",
         "Delta Hotels",
         "St. Regis",
-        "Le M\u00e9ridien",
+        "Le Méridien",
         "Autograph Collection",
         "Renaissance Hotels"
       ],
@@ -5351,7 +5366,7 @@
         "travel"
       ],
       "ceoName": "Anthony Capuano",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5381,7 +5396,7 @@
         "travel"
       ],
       "ceoName": "Christopher Nassetta",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5409,7 +5424,7 @@
         "travel"
       ],
       "ceoName": "Mark Hoplamazian",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5437,8 +5452,8 @@
         "travel"
       ],
       "ceoName": "Geoff Ballotti",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00679910",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -5469,7 +5484,7 @@
         "travel"
       ],
       "ceoName": "Elie Maalouf",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5498,7 +5513,7 @@
         "tech"
       ],
       "ceoName": "Ariane Gorin",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5526,7 +5541,7 @@
         "tech"
       ],
       "ceoName": "Glenn Fogel",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5548,8 +5563,8 @@
         "travel"
       ],
       "ceoName": "Jason Liberty",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00869230",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -5575,7 +5590,7 @@
         "travel"
       ],
       "ceoName": "Josh Weinstein",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5596,8 +5611,8 @@
         "transportation"
       ],
       "ceoName": "Ed Bastian",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00076133",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -5617,7 +5632,7 @@
         "transportation"
       ],
       "ceoName": "Scott Kirby",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5639,7 +5654,7 @@
         "transportation"
       ],
       "ceoName": "Robert Isom",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5660,7 +5675,7 @@
         "transportation"
       ],
       "ceoName": "Bob Jordan",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5682,7 +5697,7 @@
         "transportation"
       ],
       "ceoName": "Gil West",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5709,7 +5724,7 @@
       ],
       "ceoName": "Chrissy Taylor",
       "publicFigureName": "Jack Taylor",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5734,7 +5749,7 @@
         "transportation"
       ],
       "ceoName": "Joe Ferraro",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5767,7 +5782,7 @@
         "beverage"
       ],
       "ceoName": "Paul Brown",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5787,7 +5802,7 @@
         "food"
       ],
       "ceoName": "Darin Harris",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5809,7 +5824,7 @@
         "food"
       ],
       "ceoName": "Ned Lyerly",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5826,7 +5841,7 @@
         "food"
       ],
       "ceoName": "Ed Nelson",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5845,7 +5860,7 @@
       ],
       "ceoName": "Matt Murrell",
       "publicFigureName": "Jerry Murrell",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5862,7 +5877,7 @@
         "food"
       ],
       "ceoName": "Randy Garutti",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5885,9 +5900,10 @@
         "beverage"
       ],
       "ceoName": "Jose Alberto Duenas",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "parentEntityId": "jab-holding"
     },
     {
       "id": "panda-express",
@@ -5905,7 +5921,7 @@
       ],
       "ceoName": "Andrew Cherng",
       "publicFigureName": "Andrew Cherng",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5923,7 +5939,7 @@
         "food"
       ],
       "ceoName": "Scott Boatwright",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5943,7 +5959,7 @@
         "food"
       ],
       "ceoName": "Russell Weiner",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5962,7 +5978,7 @@
         "food"
       ],
       "ceoName": "Todd Penegor",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -5982,7 +5998,7 @@
       ],
       "ceoName": "Dave Scrivano",
       "publicFigureName": "Mike Ilitch",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -6001,7 +6017,7 @@
         "food"
       ],
       "ceoName": "John Chidsey",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -6021,7 +6037,7 @@
       ],
       "ceoName": "Peter Cancro",
       "publicFigureName": "Peter Cancro",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -6038,7 +6054,7 @@
         "food"
       ],
       "ceoName": "Michael Skipworth",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -6058,7 +6074,7 @@
       ],
       "ceoName": "Todd Graves",
       "publicFigureName": "Todd Graves",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -6078,7 +6094,7 @@
         "beverage"
       ],
       "ceoName": "Christine Barone",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -6098,9 +6114,10 @@
         "beverage"
       ],
       "ceoName": "Dave Burwick",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "parentEntityId": "jab-holding"
     },
     {
       "id": "krispy-kreme",
@@ -6117,9 +6134,10 @@
         "beverage"
       ],
       "ceoName": "Josh Charlesworth",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "parentEntityId": "jab-holding"
     },
     {
       "id": "focus-brands",
@@ -6154,7 +6172,7 @@
         "beverage"
       ],
       "ceoName": "Jim Holthouser",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -6172,7 +6190,7 @@
         "food"
       ],
       "ceoName": "Jennifer Schuler",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -6191,7 +6209,7 @@
         "food"
       ],
       "ceoName": "Jerry Morgan",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -6209,7 +6227,7 @@
         "food"
       ],
       "ceoName": "G.J. Hart",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -6228,7 +6246,7 @@
         "food"
       ],
       "ceoName": "Ray Blanchette",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -6251,7 +6269,7 @@
         "food"
       ],
       "ceoName": "Kevin Hochman",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -6268,7 +6286,7 @@
         "food"
       ],
       "ceoName": "Damola Adamolekun",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -6294,8 +6312,8 @@
         "food"
       ],
       "ceoName": "Michael Spanos",
-      "matchScore": 1.0,
-      "fecCommitteeId": "",
+      "matchScore": 1,
+      "fecCommitteeId": "C00253153",
       "lastVerifiedDate": "2026-03-05"
     },
     {
@@ -6348,7 +6366,7 @@
         "food"
       ],
       "ceoName": "Drew Madsen",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -6405,9 +6423,10 @@
         "convenience"
       ],
       "ceoName": "Joe DePinto",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "parentEntityId": "seven-and-i"
     },
     {
       "id": "circle-k",
@@ -6428,7 +6447,7 @@
         "convenience"
       ],
       "ceoName": "Brian Hannasch",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -6447,7 +6466,7 @@
         "food"
       ],
       "ceoName": "Chris Gheysens",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -6467,7 +6486,7 @@
       ],
       "ceoName": "Travis Sheetz",
       "publicFigureName": "Travis Sheetz",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -6488,7 +6507,7 @@
         "food"
       ],
       "ceoName": "Darren Rebelez",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -6508,7 +6527,7 @@
         "convenience"
       ],
       "ceoName": "Chet Cadieux",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -6531,9 +6550,10 @@
       ],
       "ceoName": "Shameek Konar",
       "publicFigureName": "Jim Haslam",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "parentEntityId": "berkshire-hathaway"
     },
     {
       "id": "loves-travel-stops",
@@ -6554,7 +6574,7 @@
       ],
       "ceoName": "Tom Love",
       "publicFigureName": "Tom Love",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -6587,7 +6607,7 @@
         "fitness"
       ],
       "ceoName": "Colleen Keating",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -6606,7 +6626,7 @@
         "fitness"
       ],
       "ceoName": "Louis Welch",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -6625,7 +6645,7 @@
         "fitness"
       ],
       "ceoName": "Chuck Runyon",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -6643,7 +6663,7 @@
         "fitness"
       ],
       "ceoName": "Adam Zeitsiff",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -6665,7 +6685,7 @@
         "services"
       ],
       "ceoName": "Jeff Jones",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -6684,7 +6704,7 @@
         "services"
       ],
       "ceoName": "Greg Macfarlane",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -6702,7 +6722,7 @@
         "wellness"
       ],
       "ceoName": "Todd Leff",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -6719,7 +6739,7 @@
         "services"
       ],
       "ceoName": "Steve Hockett",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -6737,7 +6757,7 @@
         "services"
       ],
       "ceoName": "Edward Logan",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -6761,7 +6781,7 @@
         "services"
       ],
       "ceoName": "Matthew Doctor",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -6788,7 +6808,7 @@
         "services"
       ],
       "ceoName": "Erik Olsen",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -6807,9 +6827,10 @@
         "services"
       ],
       "ceoName": "Patrick Southwell",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "parentEntityId": "shell"
     },
     {
       "id": "pep-boys",
@@ -6827,7 +6848,7 @@
         "services"
       ],
       "ceoName": "Brian Kaner",
-      "matchScore": 1.0,
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     },
@@ -6848,7 +6869,3210 @@
       ],
       "ceoName": "David Sorbaro",
       "publicFigureName": "David Sorbaro",
-      "matchScore": 1.0,
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "spotify",
+      "canonicalName": "Spotify AB",
+      "aliases": [
+        "Spotify",
+        "Spotify Music",
+        "Spotify Podcasts",
+        "Spotify Premium"
+      ],
+      "domains": [
+        "spotify.com",
+        "open.spotify.com",
+        "podcasters.spotify.com"
+      ],
+      "categoryTags": [
+        "streaming",
+        "music",
+        "podcasts",
+        "entertainment"
+      ],
+      "ceoName": "Daniel Ek",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "twitch",
+      "canonicalName": "Twitch Interactive Inc",
+      "aliases": [
+        "Twitch",
+        "Twitch.tv",
+        "Twitch Prime"
+      ],
+      "domains": [
+        "twitch.tv",
+        "clips.twitch.tv"
+      ],
+      "categoryTags": [
+        "streaming",
+        "gaming",
+        "live-video",
+        "entertainment"
+      ],
+      "ceoName": "Dan Clancy",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05",
+      "parentEntityId": "amazon"
+    },
+    {
+      "id": "siriusxm",
+      "canonicalName": "Sirius XM Holdings Inc",
+      "aliases": [
+        "SiriusXM",
+        "Sirius XM",
+        "Sirius Satellite Radio",
+        "XM Radio",
+        "XM Satellite Radio",
+        "Pandora"
+      ],
+      "domains": [
+        "siriusxm.com",
+        "pandora.com"
+      ],
+      "categoryTags": [
+        "streaming",
+        "music",
+        "radio",
+        "entertainment"
+      ],
+      "ceoName": "Jennifer Witz",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "crunchyroll",
+      "canonicalName": "Crunchyroll LLC",
+      "aliases": [
+        "Crunchyroll",
+        "Crunchyroll Premium"
+      ],
+      "domains": [
+        "crunchyroll.com"
+      ],
+      "categoryTags": [
+        "streaming",
+        "anime",
+        "entertainment"
+      ],
+      "ceoName": "Rahul Purini",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05",
+      "parentEntityId": "sony-group"
+    },
+    {
+      "id": "amc-theatres",
+      "canonicalName": "AMC Entertainment Holdings Inc",
+      "aliases": [
+        "AMC Theatres",
+        "AMC",
+        "AMC Stubs",
+        "AMC Cinemas"
+      ],
+      "domains": [
+        "amctheatres.com"
+      ],
+      "categoryTags": [
+        "entertainment",
+        "movie-theatres"
+      ],
+      "ceoName": "Adam Aron",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "cinemark",
+      "canonicalName": "Cinemark Holdings Inc",
+      "aliases": [
+        "Cinemark",
+        "Cinemark Theatres",
+        "Century Theatres",
+        "CinéArts"
+      ],
+      "domains": [
+        "cinemark.com"
+      ],
+      "categoryTags": [
+        "entertainment",
+        "movie-theatres"
+      ],
+      "ceoName": "Sean Gamble",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "gannett",
+      "canonicalName": "Gannett Co Inc",
+      "aliases": [
+        "Gannett",
+        "USA Today",
+        "USATODAY.com"
+      ],
+      "domains": [
+        "usatoday.com",
+        "gannett.com"
+      ],
+      "categoryTags": [
+        "news",
+        "media",
+        "publishing"
+      ],
+      "ceoName": "Mike Reed",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "conde-nast",
+      "canonicalName": "Condé Nast International Ltd",
+      "aliases": [
+        "Condé Nast",
+        "Conde Nast",
+        "Vogue",
+        "The New Yorker",
+        "GQ",
+        "Wired",
+        "Vanity Fair",
+        "Architectural Digest",
+        "Bon Appétit",
+        "Allure",
+        "Self"
+      ],
+      "domains": [
+        "condenast.com",
+        "vogue.com",
+        "newyorker.com",
+        "gq.com",
+        "wired.com",
+        "vanityfair.com",
+        "architecturaldigest.com",
+        "bonappetit.com",
+        "allure.com",
+        "self.com"
+      ],
+      "categoryTags": [
+        "media",
+        "publishing",
+        "magazines"
+      ],
+      "ceoName": "Roger Lynch",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "hearst",
+      "canonicalName": "Hearst Communications Inc",
+      "aliases": [
+        "Hearst",
+        "Hearst Magazines",
+        "Cosmopolitan",
+        "Elle",
+        "Esquire",
+        "Harpers Bazaar",
+        "Popular Mechanics",
+        "Car and Driver",
+        "Road and Track"
+      ],
+      "domains": [
+        "hearst.com",
+        "cosmopolitan.com",
+        "elle.com",
+        "esquire.com",
+        "harpersbazaar.com",
+        "popularmechanics.com",
+        "caranddriver.com"
+      ],
+      "categoryTags": [
+        "media",
+        "publishing",
+        "magazines"
+      ],
+      "ceoName": "Steven Swartz",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "dotdash-meredith",
+      "canonicalName": "Dotdash Meredith Inc",
+      "aliases": [
+        "Dotdash Meredith",
+        "Dotdash",
+        "Meredith",
+        "People",
+        "People Magazine",
+        "InStyle",
+        "Better Homes & Gardens",
+        "Allrecipes",
+        "Investopedia",
+        "The Spruce",
+        "Verywell",
+        "Dotdash Media"
+      ],
+      "domains": [
+        "dotdashmeredith.com",
+        "people.com",
+        "allrecipes.com",
+        "investopedia.com",
+        "thespruce.com",
+        "verywellfit.com",
+        "verywellhealth.com",
+        "betterhomesandgardens.com",
+        "instyle.com"
+      ],
+      "categoryTags": [
+        "media",
+        "publishing",
+        "digital-media"
+      ],
+      "ceoName": "Neil Vogel",
+      "publicFigureName": "Barry Diller",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05",
+      "parentEntityId": "iac"
+    },
+    {
+      "id": "buzzfeed",
+      "canonicalName": "BuzzFeed Inc",
+      "aliases": [
+        "BuzzFeed",
+        "BuzzFeed News",
+        "HuffPost",
+        "Complex Networks",
+        "Tasty"
+      ],
+      "domains": [
+        "buzzfeed.com",
+        "huffpost.com"
+      ],
+      "categoryTags": [
+        "news",
+        "media",
+        "digital-media"
+      ],
+      "ceoName": "Jonah Peretti",
+      "publicFigureName": "Jonah Peretti",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "grubhub",
+      "canonicalName": "Wonder Group Inc",
+      "aliases": [
+        "Grubhub",
+        "Grubhub+",
+        "Seamless",
+        "LevelUp",
+        "Wonder"
+      ],
+      "domains": [
+        "grubhub.com",
+        "seamless.com",
+        "order.wonder.com"
+      ],
+      "categoryTags": [
+        "food-delivery",
+        "restaurant",
+        "gig-economy"
+      ],
+      "ceoName": "Howard Migdal",
+      "publicFigureName": "Marc Lore",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "gopuff",
+      "canonicalName": "GoBrands Inc",
+      "aliases": [
+        "Gopuff",
+        "goPuff",
+        "BevMo"
+      ],
+      "domains": [
+        "gopuff.com"
+      ],
+      "categoryTags": [
+        "food-delivery",
+        "convenience",
+        "gig-economy"
+      ],
+      "ceoName": "Yakir Gola",
+      "fecCommitteeId": "C00757856",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "thumbtack",
+      "canonicalName": "Thumbtack Inc",
+      "aliases": [
+        "Thumbtack"
+      ],
+      "domains": [
+        "thumbtack.com",
+        "pro.thumbtack.com"
+      ],
+      "categoryTags": [
+        "home-services",
+        "gig-economy",
+        "marketplace"
+      ],
+      "ceoName": "Marco Zappacosta",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "trip-com",
+      "canonicalName": "Trip.com Group Ltd",
+      "aliases": [
+        "Trip.com",
+        "Ctrip",
+        "Skyscanner"
+      ],
+      "domains": [
+        "trip.com",
+        "skyscanner.com",
+        "ctrip.com"
+      ],
+      "categoryTags": [
+        "travel",
+        "booking",
+        "flights",
+        "hotels"
+      ],
+      "ceoName": "Jane Sun",
+      "publicFigureName": "James Liang",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "greyhound-flixbus",
+      "canonicalName": "FlixMobility GmbH",
+      "aliases": [
+        "Greyhound",
+        "FlixBus",
+        "Flix",
+        "Greyhound Lines",
+        "FlixTrain"
+      ],
+      "domains": [
+        "greyhound.com",
+        "flixbus.com",
+        "flix.com"
+      ],
+      "categoryTags": [
+        "travel",
+        "transportation",
+        "bus"
+      ],
+      "ceoName": "André Schwämmlein",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "amtrak",
+      "canonicalName": "National Railroad Passenger Corporation",
+      "aliases": [
+        "Amtrak",
+        "Amtrak Guest Rewards",
+        "Acela"
+      ],
+      "domains": [
+        "amtrak.com"
+      ],
+      "categoryTags": [
+        "travel",
+        "transportation",
+        "rail",
+        "government"
+      ],
+      "ceoName": "Stephen Gardner",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "robinhood",
+      "canonicalName": "Robinhood Markets Inc",
+      "aliases": [
+        "Robinhood",
+        "Robinhood Gold",
+        "Robinhood Crypto",
+        "Robinhood Banking"
+      ],
+      "domains": [
+        "robinhood.com",
+        "joinrobinhood.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "investing",
+        "fintech",
+        "crypto"
+      ],
+      "ceoName": "Vlad Tenev",
+      "publicFigureName": "Vlad Tenev",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "coinbase",
+      "canonicalName": "Coinbase Global Inc",
+      "aliases": [
+        "Coinbase",
+        "Coinbase Pro",
+        "Coinbase One",
+        "Coinbase Wallet",
+        "Base"
+      ],
+      "domains": [
+        "coinbase.com",
+        "pro.coinbase.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "crypto",
+        "fintech"
+      ],
+      "ceoName": "Brian Armstrong",
+      "publicFigureName": "Brian Armstrong",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "kraken",
+      "canonicalName": "Payward Inc",
+      "aliases": [
+        "Kraken",
+        "Kraken Pro",
+        "NinjaTrader"
+      ],
+      "domains": [
+        "kraken.com",
+        "pro.kraken.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "crypto",
+        "fintech"
+      ],
+      "ceoName": "Arjun Sethi",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "nerdwallet",
+      "canonicalName": "NerdWallet Inc",
+      "aliases": [
+        "NerdWallet",
+        "Fundera by NerdWallet"
+      ],
+      "domains": [
+        "nerdwallet.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "fintech",
+        "personal-finance"
+      ],
+      "ceoName": "Tim Chen",
+      "publicFigureName": "Tim Chen",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "lendingtree",
+      "canonicalName": "LendingTree LLC",
+      "aliases": [
+        "LendingTree",
+        "Lending Tree",
+        "ValuePenguin",
+        "MagnifyMoney"
+      ],
+      "domains": [
+        "lendingtree.com",
+        "valuepenguin.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "fintech",
+        "loans",
+        "mortgages"
+      ],
+      "ceoName": "Doug Lebda",
+      "publicFigureName": "Doug Lebda",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "rocket-companies",
+      "canonicalName": "Rocket Companies Inc",
+      "aliases": [
+        "Rocket Mortgage",
+        "Rocket Loans",
+        "Rocket Money",
+        "Rocket Homes",
+        "Quicken Loans",
+        "Rocket Companies"
+      ],
+      "domains": [
+        "rocketmortgage.com",
+        "rocketloans.com",
+        "rocketmoney.com",
+        "rocketcompanies.com",
+        "quickenloans.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "mortgages",
+        "fintech",
+        "loans"
+      ],
+      "ceoName": "Varun Krishna",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "sofi",
+      "canonicalName": "SoFi Technologies Inc",
+      "aliases": [
+        "SoFi",
+        "SoFi Bank",
+        "SoFi Invest",
+        "SoFi Money",
+        "SoFi Credit Card"
+      ],
+      "domains": [
+        "sofi.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "fintech",
+        "banking"
+      ],
+      "ceoName": "Anthony Noto",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "chime",
+      "canonicalName": "Chime Financial Inc",
+      "aliases": [
+        "Chime",
+        "Chime Bank",
+        "Chime SpotMe"
+      ],
+      "domains": [
+        "chime.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking",
+        "fintech"
+      ],
+      "ceoName": "Chris Britt",
+      "publicFigureName": "Chris Britt",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "dave-fintech",
+      "canonicalName": "Dave Inc",
+      "aliases": [
+        "Dave",
+        "Dave Banking",
+        "Dave ExtraCash"
+      ],
+      "domains": [
+        "dave.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking",
+        "fintech"
+      ],
+      "ceoName": "Jason Wilk",
+      "publicFigureName": "Jason Wilk",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "acorns",
+      "canonicalName": "Acorns Grow Inc",
+      "aliases": [
+        "Acorns",
+        "Acorns Invest",
+        "Acorns Early"
+      ],
+      "domains": [
+        "acorns.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "investing",
+        "fintech"
+      ],
+      "ceoName": "Noah Kerner",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "betterment",
+      "canonicalName": "Betterment Holdings Inc",
+      "aliases": [
+        "Betterment",
+        "Betterment Investing",
+        "Betterment Advisor Solutions",
+        "Betterment at Work"
+      ],
+      "domains": [
+        "betterment.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "investing",
+        "fintech",
+        "robo-advisor"
+      ],
+      "ceoName": "Sarah Kirshbaum Levy",
+      "publicFigureName": "Jon Stein",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "zelle",
+      "canonicalName": "Early Warning Services LLC",
+      "aliases": [
+        "Zelle",
+        "Zelle Pay"
+      ],
+      "domains": [
+        "zellepay.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "payments",
+        "fintech"
+      ],
+      "ceoName": "Al Ko",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "teladoc",
+      "canonicalName": "Teladoc Health Inc",
+      "aliases": [
+        "Teladoc",
+        "Teladoc Health",
+        "BetterHelp",
+        "Livongo",
+        "Teladoc Medical Experts"
+      ],
+      "domains": [
+        "teladochealth.com",
+        "teladoc.com",
+        "betterhelp.com",
+        "livongo.com"
+      ],
+      "categoryTags": [
+        "health",
+        "telehealth",
+        "mental-health"
+      ],
+      "ceoName": "Chuck Divita",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "hims-hers",
+      "canonicalName": "Hims & Hers Health Inc",
+      "aliases": [
+        "Hims",
+        "Hers",
+        "Hims & Hers",
+        "Hims&Hers"
+      ],
+      "domains": [
+        "forhims.com",
+        "forhers.com",
+        "hims.com"
+      ],
+      "categoryTags": [
+        "health",
+        "telehealth",
+        "wellness",
+        "pharmacy"
+      ],
+      "ceoName": "Andrew Dudum",
+      "publicFigureName": "Andrew Dudum",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "ro-health",
+      "canonicalName": "Roman Health Ventures Inc",
+      "aliases": [
+        "Ro",
+        "Roman",
+        "Roman Health",
+        "Zero",
+        "Plenity by Ro"
+      ],
+      "domains": [
+        "ro.co",
+        "getroman.com"
+      ],
+      "categoryTags": [
+        "health",
+        "telehealth",
+        "wellness",
+        "pharmacy"
+      ],
+      "ceoName": "Zachariah Reitano",
+      "publicFigureName": "Zachariah Reitano",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "noom",
+      "canonicalName": "Noom Inc",
+      "aliases": [
+        "Noom",
+        "Noom Weight"
+      ],
+      "domains": [
+        "noom.com"
+      ],
+      "categoryTags": [
+        "health",
+        "wellness",
+        "fitness",
+        "weight-management"
+      ],
+      "ceoName": "Geoff Cook",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "ww-international",
+      "canonicalName": "WW International Inc",
+      "aliases": [
+        "WW",
+        "WeightWatchers",
+        "Weight Watchers",
+        "WeightWatchers.com"
+      ],
+      "domains": [
+        "weightwatchers.com",
+        "ww.com"
+      ],
+      "categoryTags": [
+        "health",
+        "wellness",
+        "weight-management"
+      ],
+      "ceoName": "Tara Comonte",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "peloton",
+      "canonicalName": "Peloton Interactive Inc",
+      "aliases": [
+        "Peloton",
+        "Peloton Bike",
+        "Peloton Tread",
+        "Peloton Row",
+        "Peloton App"
+      ],
+      "domains": [
+        "onepeloton.com",
+        "pelotoncycle.com"
+      ],
+      "categoryTags": [
+        "fitness",
+        "health",
+        "wellness",
+        "streaming"
+      ],
+      "ceoName": "Peter Stern",
+      "publicFigureName": "John Foley",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "calm",
+      "canonicalName": "Calm.com Inc",
+      "aliases": [
+        "Calm",
+        "Calm App",
+        "Calm Premium"
+      ],
+      "domains": [
+        "calm.com"
+      ],
+      "categoryTags": [
+        "health",
+        "mental-health",
+        "wellness",
+        "meditation"
+      ],
+      "ceoName": "David Ko",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "goodrx",
+      "canonicalName": "GoodRx Holdings Inc",
+      "aliases": [
+        "GoodRx",
+        "GoodRx Gold",
+        "GoodRx Care"
+      ],
+      "domains": [
+        "goodrx.com"
+      ],
+      "categoryTags": [
+        "health",
+        "pharmacy",
+        "wellness"
+      ],
+      "ceoName": "Wendy Barnes",
+      "publicFigureName": "Trevor Bezdek",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "public-storage",
+      "canonicalName": "Public Storage",
+      "aliases": [
+        "Public Storage",
+        "PS",
+        "PODS"
+      ],
+      "domains": [
+        "publicstorage.com",
+        "pods.com"
+      ],
+      "categoryTags": [
+        "storage",
+        "self-storage",
+        "moving"
+      ],
+      "ceoName": "Joseph Russell",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "extra-space-storage",
+      "canonicalName": "Extra Space Storage Inc",
+      "aliases": [
+        "Extra Space Storage",
+        "Extra Space",
+        "Life Storage",
+        "Storage Express"
+      ],
+      "domains": [
+        "extraspace.com",
+        "lifestorage.com"
+      ],
+      "categoryTags": [
+        "storage",
+        "self-storage"
+      ],
+      "ceoName": "Joe Margolis",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "cubesmart",
+      "canonicalName": "CubeSmart",
+      "aliases": [
+        "CubeSmart",
+        "Cube Smart",
+        "CubeSmart Self Storage"
+      ],
+      "domains": [
+        "cubesmart.com"
+      ],
+      "categoryTags": [
+        "storage",
+        "self-storage"
+      ],
+      "ceoName": "Christopher Marr",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "uhaul",
+      "canonicalName": "AMERCO",
+      "aliases": [
+        "U-Haul",
+        "U Haul",
+        "UHaul",
+        "U-Haul Moving & Storage"
+      ],
+      "domains": [
+        "uhaul.com"
+      ],
+      "categoryTags": [
+        "moving",
+        "storage",
+        "rental"
+      ],
+      "ceoName": "Joe Shoen",
+      "publicFigureName": "Joe Shoen",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "two-men-and-a-truck",
+      "canonicalName": "Two Men and a Truck International Inc",
+      "aliases": [
+        "Two Men and a Truck",
+        "Two Men & a Truck",
+        "2 Men and a Truck"
+      ],
+      "domains": [
+        "twomenandatruck.com"
+      ],
+      "categoryTags": [
+        "moving",
+        "logistics"
+      ],
+      "ceoName": "Randy Shacka",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "1800-got-junk",
+      "canonicalName": "O2E Brands",
+      "aliases": [
+        "1-800-GOT-JUNK",
+        "1800 GOT JUNK",
+        "WOW 1 DAY PAINTING",
+        "You Move Me"
+      ],
+      "domains": [
+        "1800gotjunk.com"
+      ],
+      "categoryTags": [
+        "junk-removal",
+        "home-services"
+      ],
+      "ceoName": "Brian Scudamore",
+      "publicFigureName": "Brian Scudamore",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "angi",
+      "canonicalName": "Angi Inc",
+      "aliases": [
+        "Angi",
+        "Angi Homeservices",
+        "HomeAdvisor",
+        "Angie's List",
+        "Angi Ads"
+      ],
+      "domains": [
+        "angi.com",
+        "homeadvisor.com",
+        "angieslist.com"
+      ],
+      "categoryTags": [
+        "home-services",
+        "marketplace"
+      ],
+      "ceoName": "Jeffrey Kip",
+      "publicFigureName": "Barry Diller",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "adt",
+      "canonicalName": "ADT Inc",
+      "aliases": [
+        "ADT",
+        "ADT Security",
+        "ADT Home Security",
+        "ADT Smart Home"
+      ],
+      "domains": [
+        "adt.com"
+      ],
+      "categoryTags": [
+        "home-security",
+        "home-services"
+      ],
+      "ceoName": "Jim DeVries",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "vivint",
+      "canonicalName": "Vivint Smart Home Inc",
+      "aliases": [
+        "Vivint",
+        "Vivint Smart Home",
+        "Vivint Security"
+      ],
+      "domains": [
+        "vivint.com"
+      ],
+      "categoryTags": [
+        "home-security",
+        "smart-home"
+      ],
+      "ceoName": "David Porter",
+      "publicFigureName": "Todd Pedersen",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "simplisafe",
+      "canonicalName": "SimpliSafe Inc",
+      "aliases": [
+        "SimpliSafe",
+        "Simpli.Safe",
+        "SimpliSafe Security"
+      ],
+      "domains": [
+        "simplisafe.com"
+      ],
+      "categoryTags": [
+        "home-security"
+      ],
+      "ceoName": "Christian Cerda",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "rollins-orkin",
+      "canonicalName": "Rollins Inc",
+      "aliases": [
+        "Orkin",
+        "Rollins",
+        "Western Pest Services",
+        "HomeTeam Pest Defense",
+        "Clark Pest Control"
+      ],
+      "domains": [
+        "orkin.com",
+        "rollins.com"
+      ],
+      "categoryTags": [
+        "pest-control",
+        "home-services"
+      ],
+      "ceoName": "Jerry Gahlhoff",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "trugreen",
+      "canonicalName": "TruGreen Holdings LLC",
+      "aliases": [
+        "TruGreen",
+        "TruGreen Lawn Care"
+      ],
+      "domains": [
+        "trugreen.com"
+      ],
+      "categoryTags": [
+        "lawn-care",
+        "home-services"
+      ],
+      "ceoName": "John Reardon",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "rentokil-terminix",
+      "canonicalName": "Rentokil Initial PLC",
+      "aliases": [
+        "Terminix",
+        "Rentokil",
+        "Mosquito Joe",
+        "Nomor",
+        "Copesan"
+      ],
+      "domains": [
+        "terminix.com",
+        "rentokil.com"
+      ],
+      "categoryTags": [
+        "pest-control",
+        "home-services"
+      ],
+      "ceoName": "Andy Ransom",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "consumer-cellular",
+      "canonicalName": "Consumer Cellular Inc",
+      "aliases": [
+        "Consumer Cellular"
+      ],
+      "domains": [
+        "consumercellular.com"
+      ],
+      "categoryTags": [
+        "wireless",
+        "telecom"
+      ],
+      "ceoName": "John Marick",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "mercari",
+      "canonicalName": "Mercari Inc",
+      "aliases": [
+        "Mercari",
+        "Mercari US"
+      ],
+      "domains": [
+        "mercari.com"
+      ],
+      "categoryTags": [
+        "marketplace",
+        "resale",
+        "shopping"
+      ],
+      "ceoName": "John Lagerling",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "poshmark",
+      "canonicalName": "Poshmark Inc",
+      "aliases": [
+        "Poshmark"
+      ],
+      "domains": [
+        "poshmark.com"
+      ],
+      "categoryTags": [
+        "marketplace",
+        "resale",
+        "fashion",
+        "shopping"
+      ],
+      "ceoName": "Manish Chandra",
+      "publicFigureName": "Manish Chandra",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05",
+      "parentEntityId": "naver"
+    },
+    {
+      "id": "thredup",
+      "canonicalName": "ThredUp Inc",
+      "aliases": [
+        "ThredUp",
+        "thredUP"
+      ],
+      "domains": [
+        "thredup.com"
+      ],
+      "categoryTags": [
+        "resale",
+        "fashion",
+        "marketplace",
+        "shopping"
+      ],
+      "ceoName": "James Reinhart",
+      "publicFigureName": "James Reinhart",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "stockx",
+      "canonicalName": "StockX LLC",
+      "aliases": [
+        "StockX"
+      ],
+      "domains": [
+        "stockx.com"
+      ],
+      "categoryTags": [
+        "marketplace",
+        "resale",
+        "sneakers",
+        "shopping"
+      ],
+      "ceoName": "Scott Cutler",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "goat",
+      "canonicalName": "GOAT Group",
+      "aliases": [
+        "GOAT",
+        "GOAT App",
+        "Flight Club"
+      ],
+      "domains": [
+        "goat.com",
+        "flightclub.com"
+      ],
+      "categoryTags": [
+        "marketplace",
+        "resale",
+        "sneakers",
+        "shopping"
+      ],
+      "ceoName": "Eddy Lu",
+      "publicFigureName": "Eddy Lu",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "temu",
+      "canonicalName": "PDD Holdings Inc",
+      "aliases": [
+        "Temu",
+        "Pinduoduo"
+      ],
+      "domains": [
+        "temu.com",
+        "pinduoduo.com"
+      ],
+      "categoryTags": [
+        "shopping",
+        "marketplace",
+        "e-commerce"
+      ],
+      "ceoName": "Chen Lei",
+      "publicFigureName": "Colin Huang",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "ibotta",
+      "canonicalName": "Ibotta Inc",
+      "aliases": [
+        "Ibotta",
+        "Ibotta Performance Network"
+      ],
+      "domains": [
+        "ibotta.com"
+      ],
+      "categoryTags": [
+        "shopping",
+        "cashback",
+        "rewards"
+      ],
+      "ceoName": "Bryan Leach",
+      "publicFigureName": "Bryan Leach",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "rakuten-us",
+      "canonicalName": "Rakuten Americas Inc",
+      "aliases": [
+        "Rakuten",
+        "Rakuten Cash Back",
+        "Ebates"
+      ],
+      "domains": [
+        "rakuten.com",
+        "ebates.com"
+      ],
+      "categoryTags": [
+        "shopping",
+        "cashback",
+        "rewards"
+      ],
+      "ceoName": "Stuart Soppe",
+      "publicFigureName": "Mickey Mikitani",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "duolingo",
+      "canonicalName": "Duolingo Inc",
+      "aliases": [
+        "Duolingo",
+        "Duolingo Plus",
+        "Duolingo Max",
+        "Duolingo Super"
+      ],
+      "domains": [
+        "duolingo.com"
+      ],
+      "categoryTags": [
+        "education",
+        "language-learning",
+        "edtech"
+      ],
+      "ceoName": "Luis von Ahn",
+      "publicFigureName": "Luis von Ahn",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "coursera",
+      "canonicalName": "Coursera Inc",
+      "aliases": [
+        "Coursera",
+        "Coursera Plus"
+      ],
+      "domains": [
+        "coursera.org"
+      ],
+      "categoryTags": [
+        "education",
+        "edtech",
+        "online-learning"
+      ],
+      "ceoName": "Jeff Maggioncalda",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "udemy",
+      "canonicalName": "Udemy Inc",
+      "aliases": [
+        "Udemy",
+        "Udemy Business"
+      ],
+      "domains": [
+        "udemy.com"
+      ],
+      "categoryTags": [
+        "education",
+        "edtech",
+        "online-learning"
+      ],
+      "ceoName": "Greg Brown",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "chegg",
+      "canonicalName": "Chegg Inc",
+      "aliases": [
+        "Chegg",
+        "Chegg Study",
+        "Chegg Tutors",
+        "Busuu"
+      ],
+      "domains": [
+        "chegg.com",
+        "busuu.com"
+      ],
+      "categoryTags": [
+        "education",
+        "edtech",
+        "student-services"
+      ],
+      "ceoName": "Dan Rosensweig",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "pearson",
+      "canonicalName": "Pearson PLC",
+      "aliases": [
+        "Pearson",
+        "MyLab",
+        "Mastering",
+        "Revel",
+        "eText"
+      ],
+      "domains": [
+        "pearson.com",
+        "pearsonhighered.com",
+        "mypearsonstore.com"
+      ],
+      "categoryTags": [
+        "education",
+        "publishing",
+        "edtech"
+      ],
+      "ceoName": "Omar Abbosh",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "masterclass",
+      "canonicalName": "MasterClass Inc",
+      "aliases": [
+        "MasterClass",
+        "MasterClass Annual Membership"
+      ],
+      "domains": [
+        "masterclass.com"
+      ],
+      "categoryTags": [
+        "education",
+        "edtech",
+        "online-learning",
+        "streaming"
+      ],
+      "ceoName": "David Rogier",
+      "publicFigureName": "David Rogier",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "quizlet",
+      "canonicalName": "Quizlet Inc",
+      "aliases": [
+        "Quizlet",
+        "Quizlet Plus",
+        "Quizlet Learn"
+      ],
+      "domains": [
+        "quizlet.com"
+      ],
+      "categoryTags": [
+        "education",
+        "edtech",
+        "studying"
+      ],
+      "ceoName": "Kurt Beidler",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "khan-academy",
+      "canonicalName": "Khan Academy Inc",
+      "aliases": [
+        "Khan Academy",
+        "Khanmigo"
+      ],
+      "domains": [
+        "khanacademy.org"
+      ],
+      "categoryTags": [
+        "education",
+        "edtech",
+        "nonprofit"
+      ],
+      "ceoName": "Sal Khan",
+      "publicFigureName": "Sal Khan",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "zoom",
+      "canonicalName": "Zoom Video Communications Inc",
+      "aliases": [
+        "Zoom",
+        "Zoom Meetings",
+        "Zoom Phone",
+        "Zoom Webinars",
+        "Zoom AI Companion"
+      ],
+      "domains": [
+        "zoom.us",
+        "zoom.com"
+      ],
+      "categoryTags": [
+        "productivity",
+        "communications",
+        "b2b"
+      ],
+      "ceoName": "Eric Yuan",
+      "publicFigureName": "Eric Yuan",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "dropbox",
+      "canonicalName": "Dropbox Inc",
+      "aliases": [
+        "Dropbox",
+        "Dropbox Plus",
+        "Dropbox Business",
+        "Dropbox Paper"
+      ],
+      "domains": [
+        "dropbox.com"
+      ],
+      "categoryTags": [
+        "productivity",
+        "cloud-storage",
+        "b2b"
+      ],
+      "ceoName": "Drew Houston",
+      "publicFigureName": "Drew Houston",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "docusign",
+      "canonicalName": "DocuSign Inc",
+      "aliases": [
+        "DocuSign",
+        "Docusign eSignature",
+        "Docusign IAM"
+      ],
+      "domains": [
+        "docusign.com"
+      ],
+      "categoryTags": [
+        "productivity",
+        "legal-tech",
+        "b2b"
+      ],
+      "ceoName": "Allan Thygesen",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "squarespace",
+      "canonicalName": "Squarespace Inc",
+      "aliases": [
+        "Squarespace",
+        "Squarespace Commerce"
+      ],
+      "domains": [
+        "squarespace.com"
+      ],
+      "categoryTags": [
+        "productivity",
+        "website-builder",
+        "e-commerce"
+      ],
+      "ceoName": "Anthony Casalena",
+      "publicFigureName": "Anthony Casalena",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "wix",
+      "canonicalName": "Wix.com Ltd",
+      "aliases": [
+        "Wix",
+        "Wix Studio",
+        "Wix Commerce"
+      ],
+      "domains": [
+        "wix.com"
+      ],
+      "categoryTags": [
+        "productivity",
+        "website-builder",
+        "e-commerce"
+      ],
+      "ceoName": "Avishai Abrahami",
+      "publicFigureName": "Avishai Abrahami",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "godaddy",
+      "canonicalName": "GoDaddy Inc",
+      "aliases": [
+        "GoDaddy",
+        "GoDaddy Domains",
+        "GoDaddy Websites + Marketing"
+      ],
+      "domains": [
+        "godaddy.com"
+      ],
+      "categoryTags": [
+        "productivity",
+        "web-hosting",
+        "domains",
+        "e-commerce"
+      ],
+      "ceoName": "Aman Bhutani",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "shopify",
+      "canonicalName": "Shopify Inc",
+      "aliases": [
+        "Shopify",
+        "Shopify Plus",
+        "Shopify POS",
+        "Shop App"
+      ],
+      "domains": [
+        "shopify.com",
+        "shop.app"
+      ],
+      "categoryTags": [
+        "e-commerce",
+        "retail-tech",
+        "b2b"
+      ],
+      "ceoName": "Tobi Lütke",
+      "publicFigureName": "Tobi Lütke",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "intuit",
+      "canonicalName": "Intuit Inc",
+      "aliases": [
+        "Intuit",
+        "TurboTax",
+        "QuickBooks",
+        "Credit Karma",
+        "Mailchimp",
+        "Mint"
+      ],
+      "domains": [
+        "intuit.com",
+        "turbotax.intuit.com",
+        "quickbooks.intuit.com",
+        "creditkarma.com",
+        "mailchimp.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "fintech",
+        "tax",
+        "small-business",
+        "productivity"
+      ],
+      "ceoName": "Sasan Goodarzi",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "ring",
+      "canonicalName": "Ring LLC",
+      "aliases": [
+        "Ring",
+        "Ring Video Doorbell",
+        "Ring Alarm",
+        "Ring Indoor Camera"
+      ],
+      "domains": [
+        "ring.com"
+      ],
+      "categoryTags": [
+        "home-security",
+        "smart-home"
+      ],
+      "ceoName": "Liz Hamren",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05",
+      "parentEntityId": "amazon"
+    },
+    {
+      "id": "tripadvisor",
+      "canonicalName": "Tripadvisor Inc",
+      "aliases": [
+        "TripAdvisor",
+        "Tripadvisor",
+        "Viator",
+        "TheFork",
+        "Cruise Critic"
+      ],
+      "domains": [
+        "tripadvisor.com",
+        "viator.com",
+        "thefork.com"
+      ],
+      "categoryTags": [
+        "travel",
+        "hospitality"
+      ],
+      "ceoName": "Matt Goldberg",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "concentra",
+      "canonicalName": "Concentra Group Holdings Inc",
+      "aliases": [
+        "Concentra",
+        "Concentra Urgent Care",
+        "Concentra Medical Centers"
+      ],
+      "domains": [
+        "concentra.com"
+      ],
+      "categoryTags": [
+        "health",
+        "urgent-care",
+        "occupational-health"
+      ],
+      "ceoName": "Keith Newton",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "mcgraw-hill",
+      "canonicalName": "McGraw Hill LLC",
+      "aliases": [
+        "McGraw Hill",
+        "McGraw-Hill Education",
+        "ALEKS",
+        "Connect"
+      ],
+      "domains": [
+        "mheducation.com"
+      ],
+      "categoryTags": [
+        "education",
+        "publishing",
+        "edtech"
+      ],
+      "ceoName": "Simon Allen",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "cengage",
+      "canonicalName": "Cengage Group",
+      "aliases": [
+        "Cengage",
+        "Cengage Learning",
+        "MindTap",
+        "SAM",
+        "WebAssign"
+      ],
+      "domains": [
+        "cengage.com",
+        "mindtapngl.com"
+      ],
+      "categoryTags": [
+        "education",
+        "publishing",
+        "edtech"
+      ],
+      "ceoName": "Michael Hansen",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "nextdoor",
+      "canonicalName": "Nextdoor Holdings Inc",
+      "aliases": [
+        "Nextdoor"
+      ],
+      "domains": [
+        "nextdoor.com"
+      ],
+      "categoryTags": [
+        "social-media",
+        "community"
+      ],
+      "ceoName": "Nirav Tolia",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "skillshare",
+      "canonicalName": "Skillshare Inc",
+      "aliases": [
+        "Skillshare",
+        "Skillshare Premium"
+      ],
+      "domains": [
+        "skillshare.com"
+      ],
+      "categoryTags": [
+        "education",
+        "edtech",
+        "online-learning"
+      ],
+      "ceoName": "Matt Cooper",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "iac",
+      "canonicalName": "IAC Inc",
+      "aliases": [
+        "IAC",
+        "InterActiveCorp",
+        "IAC/InterActiveCorp",
+        "Dotdash Meredith"
+      ],
+      "domains": [
+        "iac.com"
+      ],
+      "categoryTags": [
+        "media",
+        "digital",
+        "holding-company"
+      ],
+      "ceoName": "Barry Diller",
+      "publicFigureName": "Barry Diller",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "sony-group",
+      "canonicalName": "Sony Group Corp",
+      "aliases": [
+        "Sony",
+        "Sony Group",
+        "Sony Corporation",
+        "PlayStation",
+        "Sony Pictures"
+      ],
+      "domains": [
+        "sony.com",
+        "playstation.com",
+        "sonymusic.com"
+      ],
+      "categoryTags": [
+        "technology",
+        "entertainment",
+        "gaming",
+        "electronics"
+      ],
+      "ceoName": "Hiroki Totoki",
+      "publicFigureName": "Kenichiro Yoshida",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "ahold-delhaize",
+      "canonicalName": "Ahold Delhaize NV",
+      "aliases": [
+        "Ahold Delhaize",
+        "Stop & Shop",
+        "Giant Food",
+        "Hannaford",
+        "Food Lion",
+        "Peapod"
+      ],
+      "domains": [
+        "aholddelhaize.com",
+        "stopandshop.com",
+        "giantfood.com",
+        "hannaford.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "ceoName": "Frans Muller",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "seven-and-i",
+      "canonicalName": "Seven & i Holdings Co Ltd",
+      "aliases": [
+        "Seven & i Holdings",
+        "Seven-Eleven Japan",
+        "Ito-Yokado",
+        "7-Eleven Holdings"
+      ],
+      "domains": [
+        "7iholdings.co.jp"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience",
+        "holding-company"
+      ],
+      "ceoName": "Ryuichi Isaka",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "mars",
+      "canonicalName": "Mars Incorporated",
+      "aliases": [
+        "Mars",
+        "Mars Inc",
+        "M&M's",
+        "Snickers",
+        "Twix",
+        "Pedigree",
+        "Wrigley",
+        "Kind Snacks",
+        "Kellanova"
+      ],
+      "domains": [
+        "mars.com"
+      ],
+      "categoryTags": [
+        "food",
+        "consumer-goods",
+        "petcare"
+      ],
+      "ceoName": "Poul Weihrauch",
+      "publicFigureName": "Mars Family",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "jab-holding",
+      "canonicalName": "JAB Holding Company SARL",
+      "aliases": [
+        "JAB Holding",
+        "JAB",
+        "JAB Consumer Fund",
+        "Reimann Family"
+      ],
+      "domains": [
+        "jabholco.com"
+      ],
+      "categoryTags": [
+        "food",
+        "beverage",
+        "holding-company"
+      ],
+      "ceoName": "Joachim Creus",
+      "publicFigureName": "Peter Harf",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "shell",
+      "canonicalName": "Shell plc",
+      "aliases": [
+        "Shell",
+        "Shell Oil",
+        "Shell Gas",
+        "Jiffy Lube",
+        "Shell Energy"
+      ],
+      "domains": [
+        "shell.com",
+        "shell.us"
+      ],
+      "categoryTags": [
+        "energy",
+        "oil-gas"
+      ],
+      "ceoName": "Wael Sawan",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "recruit-holdings",
+      "canonicalName": "Recruit Holdings Co Ltd",
+      "aliases": [
+        "Recruit Holdings",
+        "Recruit",
+        "Indeed",
+        "Glassdoor"
+      ],
+      "domains": [
+        "recruit-holdings.com"
+      ],
+      "categoryTags": [
+        "technology",
+        "hr-tech",
+        "job-search",
+        "holding-company"
+      ],
+      "ceoName": "Hisayuki Idekoba",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "bytedance",
+      "canonicalName": "ByteDance Ltd",
+      "aliases": [
+        "ByteDance",
+        "Byte Dance",
+        "TikTok",
+        "Douyin",
+        "CapCut",
+        "Lemon8"
+      ],
+      "domains": [
+        "bytedance.com"
+      ],
+      "categoryTags": [
+        "technology",
+        "social-media",
+        "video",
+        "ai"
+      ],
+      "ceoName": "Liang Rubo",
+      "publicFigureName": "Zhang Yiming",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "reddit",
+      "canonicalName": "Reddit Inc",
+      "aliases": [
+        "Reddit",
+        "Reddit.com",
+        "r/"
+      ],
+      "domains": [
+        "reddit.com",
+        "redd.it"
+      ],
+      "categoryTags": [
+        "social-media",
+        "community",
+        "news"
+      ],
+      "ceoName": "Steve Huffman",
+      "publicFigureName": "Steve Huffman",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "tiktok",
+      "canonicalName": "TikTok Inc",
+      "aliases": [
+        "TikTok",
+        "TikTok US",
+        "Douyin"
+      ],
+      "domains": [
+        "tiktok.com"
+      ],
+      "categoryTags": [
+        "social-media",
+        "video",
+        "entertainment"
+      ],
+      "ceoName": "Shou Zi Chew",
+      "publicFigureName": "Shou Zi Chew",
+      "matchScore": 1,
+      "parentEntityId": "bytedance",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "pinterest",
+      "canonicalName": "Pinterest Inc",
+      "aliases": [
+        "Pinterest",
+        "Pinterest.com"
+      ],
+      "domains": [
+        "pinterest.com"
+      ],
+      "categoryTags": [
+        "social-media",
+        "visual-discovery",
+        "ecommerce"
+      ],
+      "ceoName": "Bill Ready",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "snap",
+      "canonicalName": "Snap Inc",
+      "aliases": [
+        "Snap",
+        "Snapchat",
+        "Snap Inc",
+        "Spectacles"
+      ],
+      "domains": [
+        "snap.com",
+        "snapchat.com"
+      ],
+      "categoryTags": [
+        "social-media",
+        "messaging",
+        "camera"
+      ],
+      "ceoName": "Evan Spiegel",
+      "publicFigureName": "Evan Spiegel",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "discord",
+      "canonicalName": "Discord Inc",
+      "aliases": [
+        "Discord",
+        "Discord.com",
+        "Discord Nitro"
+      ],
+      "domains": [
+        "discord.com",
+        "discord.gg"
+      ],
+      "categoryTags": [
+        "social-media",
+        "messaging",
+        "gaming",
+        "community"
+      ],
+      "ceoName": "Jason Citron",
+      "publicFigureName": "Jason Citron",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "openai",
+      "canonicalName": "OpenAI OpCo LLC",
+      "aliases": [
+        "OpenAI",
+        "ChatGPT",
+        "OpenAI GPT",
+        "DALL-E",
+        "Sora",
+        "OpenAI API"
+      ],
+      "domains": [
+        "openai.com",
+        "chatgpt.com"
+      ],
+      "categoryTags": [
+        "technology",
+        "ai",
+        "software"
+      ],
+      "ceoName": "Sam Altman",
+      "publicFigureName": "Sam Altman",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "yahoo",
+      "canonicalName": "Yahoo Inc",
+      "aliases": [
+        "Yahoo",
+        "Yahoo.com",
+        "Yahoo Finance",
+        "Yahoo Mail",
+        "Yahoo Sports",
+        "AOL"
+      ],
+      "domains": [
+        "yahoo.com",
+        "aol.com",
+        "techcrunch.com"
+      ],
+      "categoryTags": [
+        "media",
+        "news",
+        "search",
+        "finance"
+      ],
+      "ceoName": "Jim Lanzone",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "adobe",
+      "canonicalName": "Adobe Inc",
+      "aliases": [
+        "Adobe",
+        "Adobe Creative Cloud",
+        "Photoshop",
+        "Illustrator",
+        "Acrobat",
+        "Premiere Pro",
+        "Figma"
+      ],
+      "domains": [
+        "adobe.com",
+        "behance.net"
+      ],
+      "categoryTags": [
+        "technology",
+        "software",
+        "creative",
+        "saas"
+      ],
+      "ceoName": "Shantanu Narayen",
+      "publicFigureName": "Shantanu Narayen",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "canva",
+      "canonicalName": "Canva Pty Ltd",
+      "aliases": [
+        "Canva",
+        "Canva Pro",
+        "Canva for Teams",
+        "Canva Print"
+      ],
+      "domains": [
+        "canva.com"
+      ],
+      "categoryTags": [
+        "technology",
+        "software",
+        "creative",
+        "saas"
+      ],
+      "ceoName": "Melanie Perkins",
+      "publicFigureName": "Melanie Perkins",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "roblox",
+      "canonicalName": "Roblox Corp",
+      "aliases": [
+        "Roblox",
+        "Roblox Studio",
+        "Robux"
+      ],
+      "domains": [
+        "roblox.com"
+      ],
+      "categoryTags": [
+        "gaming",
+        "entertainment",
+        "metaverse"
+      ],
+      "ceoName": "David Baszucki",
+      "publicFigureName": "David Baszucki",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "new-york-times",
+      "canonicalName": "The New York Times Co",
+      "aliases": [
+        "New York Times",
+        "NYT",
+        "NYTimes",
+        "The Athletic",
+        "New York Times Cooking"
+      ],
+      "domains": [
+        "nytimes.com",
+        "theathletic.com"
+      ],
+      "categoryTags": [
+        "news",
+        "media",
+        "journalism"
+      ],
+      "ceoName": "Meredith Kopit Levien",
+      "publicFigureName": "A.G. Sulzberger",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "zillow",
+      "canonicalName": "Zillow Group Inc",
+      "aliases": [
+        "Zillow",
+        "Zillow.com",
+        "Trulia",
+        "StreetEasy",
+        "HotPads",
+        "Zillow Offers"
+      ],
+      "domains": [
+        "zillow.com",
+        "trulia.com",
+        "streeteasy.com"
+      ],
+      "categoryTags": [
+        "real-estate",
+        "technology"
+      ],
+      "ceoName": "Jeremy Wacksman",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "craigslist",
+      "canonicalName": "Craigslist Inc",
+      "aliases": [
+        "Craigslist",
+        "Craigslist.org",
+        "CL"
+      ],
+      "domains": [
+        "craigslist.org"
+      ],
+      "categoryTags": [
+        "classifieds",
+        "marketplace"
+      ],
+      "ceoName": "Jim Buckmaster",
+      "publicFigureName": "Craig Newmark",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "linkedin",
+      "canonicalName": "LinkedIn Corp",
+      "aliases": [
+        "LinkedIn",
+        "LinkedIn Premium",
+        "LinkedIn Learning",
+        "LinkedIn Recruiter"
+      ],
+      "domains": [
+        "linkedin.com"
+      ],
+      "categoryTags": [
+        "social-media",
+        "professional-networking",
+        "hr-tech"
+      ],
+      "ceoName": "Ryan Roslansky",
+      "matchScore": 1,
+      "parentEntityId": "microsoft",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "github",
+      "canonicalName": "GitHub Inc",
+      "aliases": [
+        "GitHub",
+        "GitHub Copilot",
+        "GitHub Actions",
+        "GitHub Pages"
+      ],
+      "domains": [
+        "github.com",
+        "github.io"
+      ],
+      "categoryTags": [
+        "technology",
+        "developer-tools",
+        "software"
+      ],
+      "ceoName": "Thomas Dohmke",
+      "matchScore": 1,
+      "parentEntityId": "microsoft",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "indeed",
+      "canonicalName": "Indeed Inc",
+      "aliases": [
+        "Indeed",
+        "Indeed.com",
+        "Indeed Flex"
+      ],
+      "domains": [
+        "indeed.com"
+      ],
+      "categoryTags": [
+        "job-search",
+        "hr-tech",
+        "recruiting"
+      ],
+      "ceoName": "Chris Hyams",
+      "matchScore": 1,
+      "parentEntityId": "recruit-holdings",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "glassdoor",
+      "canonicalName": "Glassdoor Inc",
+      "aliases": [
+        "Glassdoor",
+        "Glassdoor.com"
+      ],
+      "domains": [
+        "glassdoor.com"
+      ],
+      "categoryTags": [
+        "job-search",
+        "hr-tech",
+        "reviews"
+      ],
+      "ceoName": "Christian Sutherland-Wong",
+      "matchScore": 1,
+      "parentEntityId": "recruit-holdings",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "figma",
+      "canonicalName": "Figma Inc",
+      "aliases": [
+        "Figma",
+        "Figma Design",
+        "FigJam",
+        "Figma Slides"
+      ],
+      "domains": [
+        "figma.com"
+      ],
+      "categoryTags": [
+        "technology",
+        "design",
+        "software",
+        "saas"
+      ],
+      "ceoName": "Dylan Field",
+      "publicFigureName": "Dylan Field",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "automattic",
+      "canonicalName": "Automattic Inc",
+      "aliases": [
+        "Automattic",
+        "WordPress.com",
+        "WordPress",
+        "Tumblr",
+        "WooCommerce",
+        "Jetpack",
+        "Gravatar"
+      ],
+      "domains": [
+        "wordpress.com",
+        "tumblr.com",
+        "woocommerce.com",
+        "automattic.com"
+      ],
+      "categoryTags": [
+        "technology",
+        "cms",
+        "blogging",
+        "ecommerce"
+      ],
+      "ceoName": "Matt Mullenweg",
+      "publicFigureName": "Matt Mullenweg",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "duckduckgo",
+      "canonicalName": "DuckDuckGo Inc",
+      "aliases": [
+        "DuckDuckGo",
+        "DDG",
+        "DuckDuckGo Privacy Browser",
+        "Duck.com"
+      ],
+      "domains": [
+        "duckduckgo.com",
+        "duck.com"
+      ],
+      "categoryTags": [
+        "search",
+        "privacy",
+        "technology"
+      ],
+      "ceoName": "Gabriel Weinberg",
+      "publicFigureName": "Gabriel Weinberg",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "anthropic",
+      "canonicalName": "Anthropic PBC",
+      "aliases": [
+        "Anthropic",
+        "Claude",
+        "Claude AI",
+        "Claude.ai",
+        "Claude Code"
+      ],
+      "domains": [
+        "anthropic.com",
+        "claude.ai"
+      ],
+      "categoryTags": [
+        "technology",
+        "ai",
+        "software",
+        "research"
+      ],
+      "ceoName": "Dario Amodei",
+      "publicFigureName": "Dario Amodei",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "xai",
+      "canonicalName": "X.AI Corp",
+      "aliases": [
+        "xAI",
+        "Grok",
+        "Grok AI",
+        "Grokipedia",
+        "Colossus"
+      ],
+      "domains": [
+        "x.ai",
+        "grok.com"
+      ],
+      "categoryTags": [
+        "technology",
+        "ai",
+        "software"
+      ],
+      "ceoName": "Elon Musk",
+      "publicFigureName": "Elon Musk",
+      "matchScore": 1,
+      "parentEntityId": "spacex",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "perplexity-ai",
+      "canonicalName": "Perplexity AI Inc",
+      "aliases": [
+        "Perplexity",
+        "Perplexity AI",
+        "Perplexity Pro",
+        "Perplexity Search",
+        "Perplexity Comet"
+      ],
+      "domains": [
+        "perplexity.ai"
+      ],
+      "categoryTags": [
+        "technology",
+        "ai",
+        "search"
+      ],
+      "ceoName": "Aravind Srinivas",
+      "publicFigureName": "Aravind Srinivas",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "google-deepmind",
+      "canonicalName": "Google DeepMind",
+      "aliases": [
+        "Google DeepMind",
+        "DeepMind",
+        "Gemini",
+        "Google Gemini",
+        "Gemini AI"
+      ],
+      "domains": [
+        "deepmind.google",
+        "gemini.google.com"
+      ],
+      "categoryTags": [
+        "technology",
+        "ai",
+        "research"
+      ],
+      "ceoName": "Demis Hassabis",
+      "publicFigureName": "Demis Hassabis",
+      "matchScore": 1,
+      "parentEntityId": "google-alphabet",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "lvmh",
+      "canonicalName": "LVMH Moët Hennessy Louis Vuitton SE",
+      "aliases": [
+        "LVMH",
+        "Louis Vuitton",
+        "Moët Hennessy",
+        "Christian Dior",
+        "Tiffany & Co",
+        "Sephora",
+        "Givenchy",
+        "Fendi"
+      ],
+      "domains": [
+        "lvmh.com"
+      ],
+      "categoryTags": [
+        "luxury",
+        "retail",
+        "fashion",
+        "consumer-goods",
+        "holding-company"
+      ],
+      "ceoName": "Bernard Arnault",
+      "publicFigureName": "Bernard Arnault",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "naver",
+      "canonicalName": "Naver Corp",
+      "aliases": [
+        "Naver",
+        "Naver Corp",
+        "LINE",
+        "Snow",
+        "Poshmark"
+      ],
+      "domains": [
+        "navercorp.com",
+        "naver.com"
+      ],
+      "categoryTags": [
+        "technology",
+        "search",
+        "social-media",
+        "ecommerce",
+        "holding-company"
+      ],
+      "ceoName": "Choi Soo-yeon",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "wikimedia",
+      "canonicalName": "Wikimedia Foundation Inc",
+      "aliases": [
+        "Wikipedia",
+        "Wikimedia",
+        "Wikimedia Foundation",
+        "Wiktionary",
+        "Wikimedia Commons"
+      ],
+      "domains": [
+        "wikipedia.org",
+        "wikimedia.org",
+        "wiktionary.org"
+      ],
+      "categoryTags": [
+        "media",
+        "nonprofit",
+        "education",
+        "reference"
+      ],
+      "ceoName": "Bernadette Meehan",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "washington-post",
+      "canonicalName": "WP Company LLC",
+      "aliases": [
+        "Washington Post",
+        "The Washington Post",
+        "WashingtonPost.com",
+        "washpost"
+      ],
+      "domains": [
+        "washingtonpost.com"
+      ],
+      "categoryTags": [
+        "news",
+        "media",
+        "journalism"
+      ],
+      "ceoName": "Will Lewis",
+      "publicFigureName": "Jeff Bezos",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "cloudflare",
+      "canonicalName": "Cloudflare Inc",
+      "aliases": [
+        "Cloudflare",
+        "Cloudflare Workers",
+        "Cloudflare Pages",
+        "1.1.1.1"
+      ],
+      "domains": [
+        "cloudflare.com",
+        "1.1.1.1"
+      ],
+      "categoryTags": [
+        "technology",
+        "internet-infrastructure",
+        "security",
+        "saas"
+      ],
+      "ceoName": "Matthew Prince",
+      "publicFigureName": "Matthew Prince",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "substack",
+      "canonicalName": "Substack Inc",
+      "aliases": [
+        "Substack",
+        "Substack Notes",
+        "Substack Pro"
+      ],
+      "domains": [
+        "substack.com"
+      ],
+      "categoryTags": [
+        "media",
+        "publishing",
+        "newsletter",
+        "social-media"
+      ],
+      "ceoName": "Chris Best",
+      "publicFigureName": "Chris Best",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "medium",
+      "canonicalName": "A Medium Corp",
+      "aliases": [
+        "Medium",
+        "Medium.com"
+      ],
+      "domains": [
+        "medium.com"
+      ],
+      "categoryTags": [
+        "media",
+        "publishing",
+        "blogging"
+      ],
+      "ceoName": "Tony Stubblebine",
+      "publicFigureName": "Ev Williams",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "npr",
+      "canonicalName": "National Public Radio Inc",
+      "aliases": [
+        "NPR",
+        "National Public Radio",
+        "NPR News",
+        "Morning Edition",
+        "All Things Considered",
+        "Fresh Air",
+        "Planet Money"
+      ],
+      "domains": [
+        "npr.org"
+      ],
+      "categoryTags": [
+        "news",
+        "media",
+        "radio",
+        "nonprofit",
+        "journalism"
+      ],
+      "ceoName": "Katherine Maher",
+      "publicFigureName": "Katherine Maher",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "pbs",
+      "canonicalName": "Public Broadcasting Service",
+      "aliases": [
+        "PBS",
+        "PBS NewsHour",
+        "Frontline",
+        "NOVA",
+        "Masterpiece",
+        "Sesame Street",
+        "PBS Kids"
+      ],
+      "domains": [
+        "pbs.org"
+      ],
+      "categoryTags": [
+        "news",
+        "media",
+        "television",
+        "nonprofit"
+      ],
+      "ceoName": "Paula Kerger",
+      "publicFigureName": "Paula Kerger",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "vox-media",
+      "canonicalName": "Vox Media Inc",
+      "aliases": [
+        "Vox Media",
+        "Vox",
+        "The Verge",
+        "New York Magazine",
+        "Vulture",
+        "The Cut",
+        "Eater",
+        "Polygon",
+        "SB Nation",
+        "Curbed",
+        "Grub Street",
+        "Intelligencer"
+      ],
+      "domains": [
+        "voxmedia.com",
+        "vox.com",
+        "theverge.com",
+        "nymag.com",
+        "vulture.com",
+        "thecut.com",
+        "eater.com",
+        "polygon.com"
+      ],
+      "categoryTags": [
+        "news",
+        "media",
+        "publishing",
+        "technology",
+        "journalism"
+      ],
+      "ceoName": "Jim Bankoff",
+      "publicFigureName": "Jim Bankoff",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "axios",
+      "canonicalName": "Axios Media Inc",
+      "aliases": [
+        "Axios",
+        "Axios AM",
+        "Axios Pro",
+        "Axios HQ"
+      ],
+      "domains": [
+        "axios.com"
+      ],
+      "categoryTags": [
+        "news",
+        "media",
+        "journalism",
+        "newsletter"
+      ],
+      "ceoName": "Jim VandeHei",
+      "publicFigureName": "Jim VandeHei",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "the-atlantic",
+      "canonicalName": "The Atlantic Monthly Group LLC",
+      "aliases": [
+        "The Atlantic",
+        "Atlantic Monthly",
+        "TheAtlantic.com"
+      ],
+      "domains": [
+        "theatlantic.com"
+      ],
+      "categoryTags": [
+        "news",
+        "media",
+        "journalism",
+        "publishing"
+      ],
+      "ceoName": "Nicholas Thompson",
+      "publicFigureName": "Laurene Powell Jobs",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "the-guardian",
+      "canonicalName": "Guardian Media Group PLC",
+      "aliases": [
+        "The Guardian",
+        "Guardian Media Group",
+        "Guardian US",
+        "theguardian.com"
+      ],
+      "domains": [
+        "theguardian.com"
+      ],
+      "categoryTags": [
+        "news",
+        "media",
+        "journalism",
+        "nonprofit"
+      ],
+      "ceoName": "Anna Bateson",
+      "publicFigureName": "Katharine Viner",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "propublica",
+      "canonicalName": "ProPublica Inc",
+      "aliases": [
+        "ProPublica",
+        "Pro Publica",
+        "propublica.org"
+      ],
+      "domains": [
+        "propublica.org"
+      ],
+      "categoryTags": [
+        "news",
+        "media",
+        "journalism",
+        "nonprofit"
+      ],
+      "ceoName": "Stephen Engelberg",
+      "publicFigureName": "Stephen Engelberg",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "the-intercept",
+      "canonicalName": "First Look Media Works Inc",
+      "aliases": [
+        "The Intercept",
+        "theintercept.com",
+        "First Look Media"
+      ],
+      "domains": [
+        "theintercept.com",
+        "firstlook.org"
+      ],
+      "categoryTags": [
+        "news",
+        "media",
+        "journalism",
+        "nonprofit"
+      ],
+      "ceoName": "Betsy Reed",
+      "publicFigureName": "Betsy Reed",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "mother-jones",
+      "canonicalName": "Foundation for National Progress",
+      "aliases": [
+        "Mother Jones",
+        "MoJo",
+        "motherjones.com"
+      ],
+      "domains": [
+        "motherjones.com"
+      ],
+      "categoryTags": [
+        "news",
+        "media",
+        "journalism",
+        "nonprofit",
+        "magazine"
+      ],
+      "ceoName": "Monika Bauerlein",
+      "publicFigureName": "Monika Bauerlein",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "axel-springer",
+      "canonicalName": "Axel Springer SE",
+      "aliases": [
+        "Axel Springer",
+        "Axel Springer SE",
+        "Business Insider",
+        "Insider",
+        "BILD",
+        "Die Welt",
+        "Morning Brew"
+      ],
+      "domains": [
+        "axelspringer.com",
+        "businessinsider.com",
+        "insider.com",
+        "morningbrew.com"
+      ],
+      "categoryTags": [
+        "news",
+        "media",
+        "publishing",
+        "holding-company"
+      ],
+      "ceoName": "Mathias Döpfner",
+      "publicFigureName": "Mathias Döpfner",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "politico",
+      "canonicalName": "Politico LLC",
+      "aliases": [
+        "Politico",
+        "POLITICO",
+        "Politico Pro",
+        "Politico Playbook",
+        "Politico Europe"
+      ],
+      "domains": [
+        "politico.com"
+      ],
+      "categoryTags": [
+        "news",
+        "media",
+        "journalism",
+        "politics"
+      ],
+      "ceoName": "Goli Sheikholeslami",
+      "publicFigureName": "Goli Sheikholeslami",
+      "matchScore": 1,
+      "parentEntityId": "axel-springer",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "los-angeles-times",
+      "canonicalName": "Los Angeles Times Communications LLC",
+      "aliases": [
+        "Los Angeles Times",
+        "LA Times",
+        "latimes.com",
+        "LAT"
+      ],
+      "domains": [
+        "latimes.com"
+      ],
+      "categoryTags": [
+        "news",
+        "media",
+        "journalism",
+        "newspaper"
+      ],
+      "ceoName": "Patrick Soon-Shiong",
+      "publicFigureName": "Patrick Soon-Shiong",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "penske-media",
+      "canonicalName": "Penske Media Corp",
+      "aliases": [
+        "Penske Media",
+        "PMC",
+        "Rolling Stone",
+        "Variety",
+        "The Hollywood Reporter",
+        "Deadline",
+        "WWD",
+        "Billboard",
+        "Vibe"
+      ],
+      "domains": [
+        "pmc.com",
+        "rollingstone.com",
+        "variety.com",
+        "hollywoodreporter.com",
+        "deadline.com",
+        "billboard.com"
+      ],
+      "categoryTags": [
+        "news",
+        "media",
+        "publishing",
+        "entertainment",
+        "holding-company"
+      ],
+      "ceoName": "Jay Penske",
+      "publicFigureName": "Jay Penske",
+      "matchScore": 1,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "graham-holdings",
+      "canonicalName": "Graham Holdings Co",
+      "aliases": [
+        "Graham Holdings",
+        "Slate",
+        "Slate Magazine",
+        "Kaplan",
+        "slate.com",
+        "Washington Post Company"
+      ],
+      "domains": [
+        "grahamholdings.com",
+        "slate.com"
+      ],
+      "categoryTags": [
+        "media",
+        "publishing",
+        "education",
+        "holding-company"
+      ],
+      "ceoName": "Tim O'Shaughnessy",
+      "publicFigureName": "Tim O'Shaughnessy",
+      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
     }
