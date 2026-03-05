@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "totalEntities": 258,
+    "totalEntities": 313,
     "updatedAt": "2026-03-05",
     "formatVersion": "1.0"
   },
@@ -208,10 +208,12 @@
       "canonicalName": "Dollar General Corp",
       "aliases": [
         "Dollar General",
-        "DG"
+        "DG",
+        "Popshelf"
       ],
       "domains": [
-        "dollargeneral.com"
+        "dollargeneral.com",
+        "popshelf.com"
       ],
       "categoryTags": [
         "retail"
@@ -5732,6 +5734,1120 @@
         "transportation"
       ],
       "ceoName": "Joe Ferraro",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "dunkin",
+      "canonicalName": "Inspire Brands Inc",
+      "aliases": [
+        "Dunkin'",
+        "Dunkin",
+        "Dunkin' Donuts",
+        "Dunkin Donuts",
+        "Sonic",
+        "Sonic Drive-In",
+        "Jimmy John's",
+        "Buffalo Wild Wings",
+        "BWW",
+        "Arby's",
+        "Arbys",
+        "Rusty Taco"
+      ],
+      "domains": [
+        "dunkindonuts.com",
+        "sonicdrivein.com",
+        "jimmyjohns.com",
+        "buffalowildwings.com",
+        "arbys.com"
+      ],
+      "categoryTags": [
+        "food",
+        "beverage"
+      ],
+      "ceoName": "Paul Brown",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "jack-in-the-box",
+      "canonicalName": "Jack in the Box Inc",
+      "aliases": [
+        "Jack in the Box",
+        "Jack in the Box Inc",
+        "Del Taco"
+      ],
+      "domains": [
+        "jackinthebox.com",
+        "deltaco.com"
+      ],
+      "categoryTags": [
+        "food"
+      ],
+      "ceoName": "Darin Harris",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "carls-jr-hardees",
+      "canonicalName": "CKE Restaurants Holdings Inc",
+      "aliases": [
+        "Carl's Jr",
+        "Carls Jr",
+        "Hardee's",
+        "Hardees",
+        "CKE Restaurants"
+      ],
+      "domains": [
+        "carlsjr.com",
+        "hardees.com"
+      ],
+      "categoryTags": [
+        "food"
+      ],
+      "ceoName": "Ned Lyerly",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "whataburger",
+      "canonicalName": "Whataburger Restaurants LLC",
+      "aliases": [
+        "Whataburger"
+      ],
+      "domains": [
+        "whataburger.com"
+      ],
+      "categoryTags": [
+        "food"
+      ],
+      "ceoName": "Ed Nelson",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "five-guys",
+      "canonicalName": "Five Guys Enterprises LLC",
+      "aliases": [
+        "Five Guys",
+        "Five Guys Burgers and Fries"
+      ],
+      "domains": [
+        "fiveguys.com"
+      ],
+      "categoryTags": [
+        "food"
+      ],
+      "ceoName": "Matt Murrell",
+      "publicFigureName": "Jerry Murrell",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "shake-shack",
+      "canonicalName": "Shake Shack Inc",
+      "aliases": [
+        "Shake Shack"
+      ],
+      "domains": [
+        "shakeshack.com"
+      ],
+      "categoryTags": [
+        "food"
+      ],
+      "ceoName": "Randy Garutti",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "panera-bread",
+      "canonicalName": "Panera Brands Inc",
+      "aliases": [
+        "Panera Bread",
+        "Panera",
+        "Panera Brands",
+        "Caribou Coffee"
+      ],
+      "domains": [
+        "panerabread.com",
+        "panera.com",
+        "cariboucoffee.com"
+      ],
+      "categoryTags": [
+        "food",
+        "beverage"
+      ],
+      "ceoName": "Jose Alberto Duenas",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "panda-express",
+      "canonicalName": "Panda Restaurant Group Inc",
+      "aliases": [
+        "Panda Express",
+        "Panda Restaurant Group",
+        "Panda Inn"
+      ],
+      "domains": [
+        "pandaexpress.com"
+      ],
+      "categoryTags": [
+        "food"
+      ],
+      "ceoName": "Andrew Cherng",
+      "publicFigureName": "Andrew Cherng",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "chipotle",
+      "canonicalName": "Chipotle Mexican Grill Inc",
+      "aliases": [
+        "Chipotle",
+        "Chipotle Mexican Grill"
+      ],
+      "domains": [
+        "chipotle.com"
+      ],
+      "categoryTags": [
+        "food"
+      ],
+      "ceoName": "Scott Boatwright",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "dominos",
+      "canonicalName": "Domino's Pizza Inc",
+      "aliases": [
+        "Domino's",
+        "Dominos",
+        "Domino's Pizza"
+      ],
+      "domains": [
+        "dominos.com",
+        "dominos.com"
+      ],
+      "categoryTags": [
+        "food"
+      ],
+      "ceoName": "Russell Weiner",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "papa-johns",
+      "canonicalName": "Papa John's International Inc",
+      "aliases": [
+        "Papa John's",
+        "Papa Johns",
+        "Papa John's Pizza"
+      ],
+      "domains": [
+        "papajohns.com"
+      ],
+      "categoryTags": [
+        "food"
+      ],
+      "ceoName": "Todd Penegor",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "little-caesars",
+      "canonicalName": "Little Caesar Enterprises Inc",
+      "aliases": [
+        "Little Caesars",
+        "Little Caesar's",
+        "Little Caesars Pizza"
+      ],
+      "domains": [
+        "littlecaesars.com"
+      ],
+      "categoryTags": [
+        "food"
+      ],
+      "ceoName": "Dave Scrivano",
+      "publicFigureName": "Mike Ilitch",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "subway",
+      "canonicalName": "Subway IP LLC",
+      "aliases": [
+        "Subway",
+        "Subway Restaurants",
+        "Subway Sandwiches"
+      ],
+      "domains": [
+        "subway.com"
+      ],
+      "categoryTags": [
+        "food"
+      ],
+      "ceoName": "John Chidsey",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "jersey-mikes",
+      "canonicalName": "Jersey Mike's Franchise Systems Inc",
+      "aliases": [
+        "Jersey Mike's",
+        "Jersey Mikes",
+        "Jersey Mike's Subs"
+      ],
+      "domains": [
+        "jerseymikes.com"
+      ],
+      "categoryTags": [
+        "food"
+      ],
+      "ceoName": "Peter Cancro",
+      "publicFigureName": "Peter Cancro",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "wingstop",
+      "canonicalName": "Wingstop Inc",
+      "aliases": [
+        "Wingstop"
+      ],
+      "domains": [
+        "wingstop.com"
+      ],
+      "categoryTags": [
+        "food"
+      ],
+      "ceoName": "Michael Skipworth",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "raising-canes",
+      "canonicalName": "Raising Cane's Restaurants LLC",
+      "aliases": [
+        "Raising Cane's",
+        "Raising Canes",
+        "Cane's"
+      ],
+      "domains": [
+        "raisingcanes.com"
+      ],
+      "categoryTags": [
+        "food"
+      ],
+      "ceoName": "Todd Graves",
+      "publicFigureName": "Todd Graves",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "dutch-bros",
+      "canonicalName": "Dutch Bros Inc",
+      "aliases": [
+        "Dutch Bros",
+        "Dutch Bros Coffee",
+        "Dutch Bros."
+      ],
+      "domains": [
+        "dutchbros.com"
+      ],
+      "categoryTags": [
+        "food",
+        "beverage"
+      ],
+      "ceoName": "Christine Barone",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "peets-coffee",
+      "canonicalName": "Peet's Coffee Inc",
+      "aliases": [
+        "Peet's Coffee",
+        "Peets Coffee",
+        "Peet's Coffee & Tea"
+      ],
+      "domains": [
+        "peets.com"
+      ],
+      "categoryTags": [
+        "food",
+        "beverage"
+      ],
+      "ceoName": "Dave Burwick",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "krispy-kreme",
+      "canonicalName": "Krispy Kreme Inc",
+      "aliases": [
+        "Krispy Kreme",
+        "Krispy Kreme Doughnuts"
+      ],
+      "domains": [
+        "krispykreme.com"
+      ],
+      "categoryTags": [
+        "food",
+        "beverage"
+      ],
+      "ceoName": "Josh Charlesworth",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "focus-brands",
+      "canonicalName": "Focus Brands LLC",
+      "aliases": [
+        "Focus Brands",
+        "Cinnabon",
+        "Auntie Anne's",
+        "Auntie Annes",
+        "McAlister's Deli",
+        "McAlisters Deli",
+        "Moe's Southwest Grill",
+        "Moes Southwest Grill",
+        "Jamba",
+        "Jamba Juice",
+        "Schlotzsky's",
+        "Schlotzkys",
+        "Carvel",
+        "Seattle's Best Coffee"
+      ],
+      "domains": [
+        "focusbrands.com",
+        "cinnabon.com",
+        "auntieannes.com",
+        "mcalistersdeli.com",
+        "moes.com",
+        "jamba.com",
+        "schlotzskys.com"
+      ],
+      "categoryTags": [
+        "food",
+        "beverage"
+      ],
+      "ceoName": "Jim Holthouser",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "wetzels-pretzels",
+      "canonicalName": "Wetzel's Pretzels LLC",
+      "aliases": [
+        "Wetzel's Pretzels",
+        "Wetzels Pretzels"
+      ],
+      "domains": [
+        "wetzels.com"
+      ],
+      "categoryTags": [
+        "food"
+      ],
+      "ceoName": "Jennifer Schuler",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "texas-roadhouse",
+      "canonicalName": "Texas Roadhouse Inc",
+      "aliases": [
+        "Texas Roadhouse",
+        "Bubba's 33",
+        "Jaggers"
+      ],
+      "domains": [
+        "texasroadhouse.com"
+      ],
+      "categoryTags": [
+        "food"
+      ],
+      "ceoName": "Jerry Morgan",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "red-robin",
+      "canonicalName": "Red Robin Gourmet Burgers Inc",
+      "aliases": [
+        "Red Robin",
+        "Red Robin Gourmet Burgers"
+      ],
+      "domains": [
+        "redrobin.com"
+      ],
+      "categoryTags": [
+        "food"
+      ],
+      "ceoName": "G.J. Hart",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "tgi-fridays",
+      "canonicalName": "TGI Friday's Inc",
+      "aliases": [
+        "TGI Fridays",
+        "TGI Friday's",
+        "TGIF"
+      ],
+      "domains": [
+        "tgifridays.com"
+      ],
+      "categoryTags": [
+        "food"
+      ],
+      "ceoName": "Ray Blanchette",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "chilis",
+      "canonicalName": "Brinker International Inc",
+      "aliases": [
+        "Chili's",
+        "Chilis",
+        "Chili's Grill & Bar",
+        "Maggiano's Little Italy",
+        "Maggianos"
+      ],
+      "domains": [
+        "chilis.com",
+        "maggianos.com",
+        "brinker.com"
+      ],
+      "categoryTags": [
+        "food"
+      ],
+      "ceoName": "Kevin Hochman",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "red-lobster",
+      "canonicalName": "Red Lobster Management LLC",
+      "aliases": [
+        "Red Lobster"
+      ],
+      "domains": [
+        "redlobster.com"
+      ],
+      "categoryTags": [
+        "food"
+      ],
+      "ceoName": "Damola Adamolekun",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "outback-steakhouse",
+      "canonicalName": "Bloomin' Brands Inc",
+      "aliases": [
+        "Outback Steakhouse",
+        "Bloomin Brands",
+        "Carrabba's Italian Grill",
+        "Carrabbas",
+        "Bonefish Grill",
+        "Fleming's Prime Steakhouse"
+      ],
+      "domains": [
+        "outback.com",
+        "bloominbrands.com",
+        "carrabbas.com",
+        "bonefishgrill.com",
+        "flemingssteakhouse.com"
+      ],
+      "categoryTags": [
+        "food"
+      ],
+      "ceoName": "Michael Spanos",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "bob-evans",
+      "canonicalName": "Bob Evans Restaurants LLC",
+      "aliases": [
+        "Bob Evans",
+        "Bob Evans Restaurants"
+      ],
+      "domains": [
+        "bobevans.com"
+      ],
+      "categoryTags": [
+        "food"
+      ],
+      "ceoName": "Bret Halverson",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "perkins",
+      "canonicalName": "Perkins LLC",
+      "aliases": [
+        "Perkins",
+        "Perkins Restaurant & Bakery",
+        "Perkins Family Restaurant"
+      ],
+      "domains": [
+        "perkinsrestaurants.com"
+      ],
+      "categoryTags": [
+        "food"
+      ],
+      "ceoName": "Jonathan Wasvick",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "noodles-and-company",
+      "canonicalName": "Noodles & Company",
+      "aliases": [
+        "Noodles & Company",
+        "Noodles and Company",
+        "Noodles"
+      ],
+      "domains": [
+        "noodles.com"
+      ],
+      "categoryTags": [
+        "food"
+      ],
+      "ceoName": "Drew Madsen",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "jasons-deli",
+      "canonicalName": "Jason's Deli",
+      "aliases": [
+        "Jason's Deli",
+        "Jasons Deli"
+      ],
+      "domains": [
+        "jasonsdeli.com"
+      ],
+      "categoryTags": [
+        "food"
+      ],
+      "ceoName": "Joe Tortorice Jr",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "corner-bakery",
+      "canonicalName": "Corner Bakery Cafe LLC",
+      "aliases": [
+        "Corner Bakery",
+        "Corner Bakery Cafe"
+      ],
+      "domains": [
+        "cornerbakerycafe.com"
+      ],
+      "categoryTags": [
+        "food"
+      ],
+      "ceoName": "Jodi Boyce",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "7-eleven",
+      "canonicalName": "7-Eleven Inc",
+      "aliases": [
+        "7-Eleven",
+        "7 Eleven",
+        "Speedway",
+        "Stripes",
+        "Laredo Taco Company"
+      ],
+      "domains": [
+        "7-eleven.com",
+        "speedway.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "ceoName": "Joe DePinto",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "circle-k",
+      "canonicalName": "Alimentation Couche-Tard Inc",
+      "aliases": [
+        "Circle K",
+        "Couche-Tard",
+        "Holiday Stationstores",
+        "Mac's",
+        "Corner Store"
+      ],
+      "domains": [
+        "circlek.com",
+        "couche-tard.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "ceoName": "Brian Hannasch",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "wawa",
+      "canonicalName": "Wawa Inc",
+      "aliases": [
+        "Wawa"
+      ],
+      "domains": [
+        "wawa.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience",
+        "food"
+      ],
+      "ceoName": "Chris Gheysens",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "sheetz",
+      "canonicalName": "Sheetz Inc",
+      "aliases": [
+        "Sheetz"
+      ],
+      "domains": [
+        "sheetz.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience",
+        "food"
+      ],
+      "ceoName": "Travis Sheetz",
+      "publicFigureName": "Travis Sheetz",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "caseys-general-store",
+      "canonicalName": "Casey's General Stores Inc",
+      "aliases": [
+        "Casey's General Store",
+        "Casey's",
+        "Caseys General Store"
+      ],
+      "domains": [
+        "caseys.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience",
+        "food"
+      ],
+      "ceoName": "Darren Rebelez",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "quiktrip",
+      "canonicalName": "QuikTrip Corp",
+      "aliases": [
+        "QuikTrip",
+        "QT",
+        "Quik Trip"
+      ],
+      "domains": [
+        "quiktrip.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "ceoName": "Chet Cadieux",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "pilot-flying-j",
+      "canonicalName": "Pilot Travel Centers LLC",
+      "aliases": [
+        "Pilot Flying J",
+        "Pilot",
+        "Flying J",
+        "Pilot Travel Centers"
+      ],
+      "domains": [
+        "pilotflyingj.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience",
+        "travel"
+      ],
+      "ceoName": "Shameek Konar",
+      "publicFigureName": "Jim Haslam",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "loves-travel-stops",
+      "canonicalName": "Love's Travel Stops & Country Stores Inc",
+      "aliases": [
+        "Love's Travel Stops",
+        "Loves Travel Stops",
+        "Love's",
+        "Loves Country Stores"
+      ],
+      "domains": [
+        "loves.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience",
+        "travel"
+      ],
+      "ceoName": "Tom Love",
+      "publicFigureName": "Tom Love",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "tuesday-morning",
+      "canonicalName": "Tuesday Morning Corp",
+      "aliases": [
+        "Tuesday Morning"
+      ],
+      "domains": [
+        "tuesdaymorning.com"
+      ],
+      "categoryTags": [
+        "retail"
+      ],
+      "ceoName": "Fred Hand",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "planet-fitness",
+      "canonicalName": "Planet Fitness Inc",
+      "aliases": [
+        "Planet Fitness"
+      ],
+      "domains": [
+        "planetfitness.com"
+      ],
+      "categoryTags": [
+        "fitness"
+      ],
+      "ceoName": "Colleen Keating",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "la-fitness",
+      "canonicalName": "LA Fitness International LLC",
+      "aliases": [
+        "LA Fitness",
+        "LAFitness",
+        "Esporta Fitness"
+      ],
+      "domains": [
+        "lafitness.com"
+      ],
+      "categoryTags": [
+        "fitness"
+      ],
+      "ceoName": "Louis Welch",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "anytime-fitness",
+      "canonicalName": "Self Esteem Brands LLC",
+      "aliases": [
+        "Anytime Fitness",
+        "Waxing the City",
+        "Basecamp Fitness"
+      ],
+      "domains": [
+        "anytimefitness.com"
+      ],
+      "categoryTags": [
+        "fitness"
+      ],
+      "ceoName": "Chuck Runyon",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "golds-gym",
+      "canonicalName": "Gold's Gym International Inc",
+      "aliases": [
+        "Gold's Gym",
+        "Golds Gym"
+      ],
+      "domains": [
+        "goldsgym.com"
+      ],
+      "categoryTags": [
+        "fitness"
+      ],
+      "ceoName": "Adam Zeitsiff",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "hr-block",
+      "canonicalName": "H&R Block Inc",
+      "aliases": [
+        "H&R Block",
+        "HR Block",
+        "H and R Block",
+        "Block Advisors"
+      ],
+      "domains": [
+        "hrblock.com",
+        "blockadvisors.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "services"
+      ],
+      "ceoName": "Jeff Jones",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "jackson-hewitt",
+      "canonicalName": "Jackson Hewitt Tax Service Inc",
+      "aliases": [
+        "Jackson Hewitt",
+        "Jackson Hewitt Tax Service"
+      ],
+      "domains": [
+        "jacksonhewitt.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "services"
+      ],
+      "ceoName": "Greg Macfarlane",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "massage-envy",
+      "canonicalName": "Massage Envy Franchising LLC",
+      "aliases": [
+        "Massage Envy"
+      ],
+      "domains": [
+        "massageenvy.com"
+      ],
+      "categoryTags": [
+        "services",
+        "wellness"
+      ],
+      "ceoName": "Todd Leff",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "great-clips",
+      "canonicalName": "Great Clips Inc",
+      "aliases": [
+        "Great Clips"
+      ],
+      "domains": [
+        "greatclips.com"
+      ],
+      "categoryTags": [
+        "services"
+      ],
+      "ceoName": "Steve Hockett",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "sport-clips",
+      "canonicalName": "Sport Clips Inc",
+      "aliases": [
+        "Sport Clips",
+        "Sport Clips Haircuts"
+      ],
+      "domains": [
+        "sportclips.com"
+      ],
+      "categoryTags": [
+        "services"
+      ],
+      "ceoName": "Edward Logan",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "supercuts",
+      "canonicalName": "Regis Corp",
+      "aliases": [
+        "Supercuts",
+        "Regis Salon",
+        "SmartStyle",
+        "Cost Cutters",
+        "First Choice Haircutters"
+      ],
+      "domains": [
+        "supercuts.com",
+        "regiscorp.com",
+        "smartstyle.com",
+        "costcutters.com"
+      ],
+      "categoryTags": [
+        "services"
+      ],
+      "ceoName": "Matthew Doctor",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "midas",
+      "canonicalName": "TBC Corp",
+      "aliases": [
+        "Midas",
+        "Midas Auto Service",
+        "National Tire & Battery",
+        "NTB",
+        "Tire Kingdom",
+        "Big O Tires",
+        "Merchant's Tire & Auto Centers"
+      ],
+      "domains": [
+        "midas.com",
+        "ntb.com",
+        "tirekingdom.com",
+        "bigotires.com"
+      ],
+      "categoryTags": [
+        "automotive",
+        "services"
+      ],
+      "ceoName": "Erik Olsen",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "jiffy-lube",
+      "canonicalName": "Jiffy Lube International Inc",
+      "aliases": [
+        "Jiffy Lube",
+        "Jiffy Lube International"
+      ],
+      "domains": [
+        "jiffylube.com"
+      ],
+      "categoryTags": [
+        "automotive",
+        "services"
+      ],
+      "ceoName": "Patrick Southwell",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "pep-boys",
+      "canonicalName": "Pep Boys - Manny Moe & Jack",
+      "aliases": [
+        "Pep Boys",
+        "Pep Boys Auto",
+        "Manny Moe & Jack"
+      ],
+      "domains": [
+        "pepboys.com"
+      ],
+      "categoryTags": [
+        "automotive",
+        "services"
+      ],
+      "ceoName": "Brian Kaner",
+      "matchScore": 1.0,
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-03-05"
+    },
+    {
+      "id": "mavis-discount-tire",
+      "canonicalName": "Mavis Tire Supply LLC",
+      "aliases": [
+        "Mavis Discount Tire",
+        "Mavis Tires & Brakes",
+        "Mavis"
+      ],
+      "domains": [
+        "mavistire.com"
+      ],
+      "categoryTags": [
+        "automotive",
+        "services"
+      ],
+      "ceoName": "David Sorbaro",
+      "publicFigureName": "David Sorbaro",
       "matchScore": 1.0,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05"
