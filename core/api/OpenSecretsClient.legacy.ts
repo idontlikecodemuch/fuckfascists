@@ -1,3 +1,8 @@
+/**
+ * @legacy — OpenSecretsClient is superseded by FECClient (OpenFEC API).
+ * This file is kept only for the deprecation export in index.ts.
+ * Delete once all callers have migrated to FECClient.
+ */
 import type { DonationSummary } from '../models';
 import type { OpenSecretsOrg } from '../matching/types';
 import type { GetOrgsResponse, GetOrgSummaryResponse } from './types';
