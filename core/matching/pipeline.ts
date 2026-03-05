@@ -1,9 +1,27 @@
-import type { LocalCache } from '../models';
+import type { ConfidenceLevel, LocalCache } from '../models';
 import type { MatchResult, MatchingDeps } from './types';
 import { normalize } from './normalize';
 import { findByAlias } from './aliasMatch';
 import { pickBestMatch } from './scorer';
-import { ENTITY_CACHE_TTL_DAYS } from '../../config/constants';
+import {
+  CONFIDENCE_THRESHOLD_HIGH,
+  CONFIDENCE_THRESHOLD_MEDIUM,
+  ENTITY_CACHE_TTL_DAYS,
+} from '../../config/constants';
+
+/**
+ * Maps an entity's optional matchScore to a ConfidenceLevel.
+ * - undefined (not set) → 'HIGH': exact alias match always qualifies
+ * - score ≥ HIGH threshold → 'HIGH'
+ * - score ≥ MEDIUM threshold → 'MEDIUM'
+ * - score < MEDIUM threshold → null (entity should not be flagged)
+ */
+function scoreToConfidence(matchScore: number | undefined): ConfidenceLevel | null {
+  if (matchScore === undefined) return 'HIGH';
+  if (matchScore >= CONFIDENCE_THRESHOLD_HIGH) return 'HIGH';
+  if (matchScore >= CONFIDENCE_THRESHOLD_MEDIUM) return 'MEDIUM';
+  return null;
+}
 
 function buildCacheKey(normalizedName: string, areaHash: string): string {
   return normalize(normalizedName + areaHash);
@@ -58,8 +76,10 @@ export async function matchEntity(
 
     if (!orgId) return { matched: false, normalizedInput };
 
+    const confidence = scoreToConfidence(aliasMatch.matchScore);
+    if (confidence === null) return { matched: false, normalizedInput };
+
     const donationSummary = await deps.fetchOrgSummary(orgId);
-    const confidence = aliasMatch.confidenceOverride ?? 'HIGH';
 
     await deps.setCache({
       key: cacheKey,

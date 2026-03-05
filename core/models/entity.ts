@@ -7,7 +7,14 @@ export interface Entity {
   ceoName: string;             // for report card display
   openSecretsOrgId?: string;   // @deprecated — holds FEC committee_id since FEC migration
   fecCommitteeId?: string;     // FEC committee ID — populated by the data pipeline after verification
-  confidenceOverride?: 'HIGH'; // for well-known brands where false positive is impossible
+  /**
+   * Optional override score between 0 and 1.
+   * When present, the pipeline uses this instead of computing Jaro-Winkler.
+   * A value of 1.0 means exact/certain match.
+   * Omit entirely when the pipeline should score normally.
+   * Only use 1.0 for nationally unambiguous brands.
+   */
+  matchScore?: number;
   lastVerifiedDate: string;    // YYYY-MM-DD
 }
 

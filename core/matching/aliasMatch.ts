@@ -4,7 +4,7 @@ import { normalize } from './normalize';
 /**
  * Checks the canonical entity list for an exact alias or canonical-name match.
  * Both the input and stored names are normalized before comparison.
- * An exact match always yields HIGH confidence (or confidenceOverride if set).
+ * An exact match yields HIGH confidence by default (or the level mapped from matchScore if set).
  */
 export function findByAlias(
   normalizedInput: string,

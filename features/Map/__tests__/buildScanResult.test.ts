@@ -12,7 +12,7 @@ const walmartEntity: Entity = {
   categoryTags: ['retail'],
   ceoName: 'Doug McMillon',
   openSecretsOrgId: 'D000000074',
-  confidenceOverride: 'HIGH',
+  matchScore: 1.0,
   lastVerifiedDate: '2024-01-01',
 };
 

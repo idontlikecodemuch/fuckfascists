@@ -24,7 +24,19 @@ import {
 import { makeCacheDeps } from '../../core/data/cacheStore';
 import { FECClient } from '../../core/api';
 import { getMondayOf, recordEntityAvoid } from '../../core/data/eventStore';
-import { ENTITY_LIST_UPDATE_URL, EXTENSION_FLAG_FREQUENCY, ENTITY_CACHE_TTL_DAYS } from '../../config/constants';
+import {
+  ENTITY_LIST_UPDATE_URL,
+  EXTENSION_FLAG_FREQUENCY,
+  ENTITY_CACHE_TTL_DAYS,
+  CONFIDENCE_THRESHOLD_HIGH,
+  CONFIDENCE_THRESHOLD_MEDIUM,
+} from '../../config/constants';
+
+function entityConfidence(matchScore: number | undefined): 'HIGH' | 'MEDIUM' {
+  if (matchScore === undefined || matchScore >= CONFIDENCE_THRESHOLD_HIGH) return 'HIGH';
+  if (matchScore >= CONFIDENCE_THRESHOLD_MEDIUM) return 'MEDIUM';
+  return 'MEDIUM'; // floor at MEDIUM — entities below threshold should not be in the list
+}
 
 // ─── Globals (re-initialised after SW wake) ────────────────────────────────────
 
@@ -144,7 +156,7 @@ async function handleCheckDomain(hostname: string, tabId: number): Promise<void>
         key: cacheKey,
         openSecretsOrgId: entity.openSecretsOrgId,
         donationSummary,
-        confidence: entity.confidenceOverride ?? 'MEDIUM',
+        confidence: entityConfidence(entity.matchScore),
         fetchedAt: Date.now(),
       });
     } catch {
@@ -159,7 +171,6 @@ async function handleCheckDomain(hostname: string, tabId: number): Promise<void>
     hostname,
     entityId:       entity.id,
     canonicalName:  entity.canonicalName,
-    ceoName:        entity.ceoName,
     recentCycle:    donationSummary.recentCycle,
     recentRepubs:   donationSummary.recentRepubs,
     recentDems:     donationSummary.recentDems,
@@ -167,7 +178,7 @@ async function handleCheckDomain(hostname: string, tabId: number): Promise<void>
     totalDems:      donationSummary.totalDems,
     activeCycles:   donationSummary.activeCycles,
     fecCommitteeUrl: donationSummary.fecCommitteeUrl,
-    confidence:     entity.confidenceOverride ?? 'MEDIUM',
+    confidence:     entityConfidence(entity.matchScore),
     avoided:        false,
   };
 

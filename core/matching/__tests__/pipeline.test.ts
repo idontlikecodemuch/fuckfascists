@@ -12,7 +12,7 @@ const walmartEntity: Entity = {
   categoryTags: ['retail'],
   ceoName: 'Doug McMillon',
   openSecretsOrgId: 'D000000074',
-  confidenceOverride: 'HIGH',
+  matchScore: 1.0,
   lastVerifiedDate: '2024-01-01',
 };
 
@@ -212,5 +212,53 @@ describe('fuzzy match', () => {
     expect(deps.setCache).toHaveBeenCalledWith(
       expect.objectContaining({ openSecretsOrgId: 'D000000074' })
     );
+  });
+});
+
+// ─── matchScore override ──────────────────────────────────────────────────────
+
+describe('matchScore override', () => {
+  it('returns HIGH confidence when matchScore is 1.0 without calling Jaro-Winkler', async () => {
+    // walmartEntity fixture has matchScore: 1.0
+    const deps = makeDeps();
+
+    const result = await matchEntity('Walmart', deps);
+
+    expect(result.matched).toBe(true);
+    if (result.matched) {
+      expect(result.confidence).toBe('HIGH');
+    }
+    // Jaro-Winkler would only be called via fetchOrgs → scoreAll; it must not be called
+    expect(deps.fetchOrgs).not.toHaveBeenCalled();
+  });
+
+  it('returns MEDIUM confidence when matchScore is 0.75', async () => {
+    const mediumEntity: Entity = {
+      ...walmartEntity,
+      id: 'medium-test',
+      matchScore: 0.75,
+    };
+    const deps = makeDeps({ entities: [mediumEntity] });
+
+    const result = await matchEntity('Walmart', deps);
+
+    expect(result.matched).toBe(true);
+    if (result.matched) {
+      expect(result.confidence).toBe('MEDIUM');
+    }
+    expect(deps.fetchOrgs).not.toHaveBeenCalled();
+  });
+
+  it('returns MatchFailure when matchScore is below the MEDIUM threshold', async () => {
+    const lowScoreEntity: Entity = {
+      ...walmartEntity,
+      id: 'low-score-test',
+      matchScore: 0.4,
+    };
+    const deps = makeDeps({ entities: [lowScoreEntity] });
+
+    const result = await matchEntity('Walmart', deps);
+
+    expect(result.matched).toBe(false);
   });
 });

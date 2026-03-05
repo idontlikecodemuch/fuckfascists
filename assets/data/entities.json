@@ -6,7 +6,7 @@
     "domains": ["walmart.com", "samsclub.com"],
     "categoryTags": ["retail"],
     "ceoName": "Doug McMillon",
-    "confidenceOverride": "HIGH",
+    "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   },
   {
@@ -23,7 +23,7 @@
     ],
     "categoryTags": ["tech", "retail"],
     "ceoName": "Andy Jassy",
-    "confidenceOverride": "HIGH",
+    "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   },
   {
@@ -36,7 +36,7 @@
     ],
     "categoryTags": ["tech", "media"],
     "ceoName": "Mark Zuckerberg",
-    "confidenceOverride": "HIGH",
+    "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   },
   {
@@ -46,7 +46,7 @@
     "domains": ["x.com", "twitter.com"],
     "categoryTags": ["tech", "media"],
     "ceoName": "Elon Musk",
-    "confidenceOverride": "HIGH",
+    "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   },
   {
@@ -56,7 +56,7 @@
     "domains": ["tesla.com"],
     "categoryTags": ["automotive", "tech"],
     "ceoName": "Elon Musk",
-    "confidenceOverride": "HIGH",
+    "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   },
   {
@@ -66,7 +66,7 @@
     "domains": ["spacex.com", "starlink.com"],
     "categoryTags": ["tech", "defense"],
     "ceoName": "Elon Musk",
-    "confidenceOverride": "HIGH",
+    "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   },
   {
@@ -76,7 +76,7 @@
     "domains": ["target.com"],
     "categoryTags": ["retail"],
     "ceoName": "Brian Cornell",
-    "confidenceOverride": "HIGH",
+    "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   },
   {
@@ -86,7 +86,7 @@
     "domains": ["homedepot.com"],
     "categoryTags": ["retail"],
     "ceoName": "Ted Decker",
-    "confidenceOverride": "HIGH",
+    "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   },
   {
@@ -96,7 +96,7 @@
     "domains": ["lowes.com"],
     "categoryTags": ["retail"],
     "ceoName": "Marvin Ellison",
-    "confidenceOverride": "HIGH",
+    "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   },
   {
@@ -106,7 +106,7 @@
     "domains": ["dollargeneral.com"],
     "categoryTags": ["retail"],
     "ceoName": "Todd Vasos",
-    "confidenceOverride": "HIGH",
+    "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   },
   {
@@ -116,7 +116,7 @@
     "domains": ["hobbylobby.com"],
     "categoryTags": ["retail"],
     "ceoName": "David Green",
-    "confidenceOverride": "HIGH",
+    "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   },
   {
@@ -126,7 +126,7 @@
     "domains": ["att.com", "att.net"],
     "categoryTags": ["telecom"],
     "ceoName": "John Stankey",
-    "confidenceOverride": "HIGH",
+    "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   },
   {
@@ -136,7 +136,7 @@
     "domains": ["comcast.com", "xfinity.com", "peacocktv.com", "comcast.net"],
     "categoryTags": ["telecom", "media"],
     "ceoName": "Brian Roberts",
-    "confidenceOverride": "HIGH",
+    "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   },
   {
@@ -146,7 +146,7 @@
     "domains": ["chevron.com"],
     "categoryTags": ["energy"],
     "ceoName": "Mike Wirth",
-    "confidenceOverride": "HIGH",
+    "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   },
   {
@@ -156,7 +156,7 @@
     "domains": ["exxonmobil.com", "exxon.com", "mobil.com"],
     "categoryTags": ["energy"],
     "ceoName": "Darren Woods",
-    "confidenceOverride": "HIGH",
+    "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   },
   {
@@ -169,7 +169,7 @@
     "domains": ["kochind.com", "gp.com"],
     "categoryTags": ["energy", "consumer-goods"],
     "ceoName": "Charles Koch",
-    "confidenceOverride": "HIGH",
+    "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   },
   {
@@ -179,7 +179,7 @@
     "domains": ["goldmansachs.com", "marcus.com"],
     "categoryTags": ["finance"],
     "ceoName": "David Solomon",
-    "confidenceOverride": "HIGH",
+    "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   },
   {
@@ -189,7 +189,7 @@
     "domains": ["jpmorganchase.com", "jpmorgan.com", "chase.com"],
     "categoryTags": ["finance"],
     "ceoName": "Jamie Dimon",
-    "confidenceOverride": "HIGH",
+    "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   },
   {
@@ -199,7 +199,7 @@
     "domains": ["blackstone.com"],
     "categoryTags": ["finance"],
     "ceoName": "Stephen Schwarzman",
-    "confidenceOverride": "HIGH",
+    "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   },
   {
@@ -209,7 +209,7 @@
     "domains": ["bankofamerica.com", "ml.com", "merrilledge.com"],
     "categoryTags": ["finance"],
     "ceoName": "Brian Moynihan",
-    "confidenceOverride": "HIGH",
+    "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   },
   {
@@ -219,7 +219,7 @@
     "domains": ["wellsfargo.com"],
     "categoryTags": ["finance"],
     "ceoName": "Charlie Scharf",
-    "confidenceOverride": "HIGH",
+    "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   },
   {
@@ -229,7 +229,7 @@
     "domains": ["mcdonalds.com"],
     "categoryTags": ["food"],
     "ceoName": "Chris Kempczinski",
-    "confidenceOverride": "HIGH",
+    "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   },
   {
@@ -242,7 +242,7 @@
     "domains": ["tysonfoods.com"],
     "categoryTags": ["food"],
     "ceoName": "Donnie King",
-    "confidenceOverride": "HIGH",
+    "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   },
   {
@@ -252,7 +252,7 @@
     "domains": ["fedex.com"],
     "categoryTags": ["retail"],
     "ceoName": "Raj Subramaniam",
-    "confidenceOverride": "HIGH",
+    "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   },
   {
@@ -262,7 +262,7 @@
     "domains": ["altria.com", "philipmorrisusa.com"],
     "categoryTags": ["consumer-goods"],
     "ceoName": "Billy Gifford",
-    "confidenceOverride": "HIGH",
+    "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   },
   {
@@ -272,7 +272,7 @@
     "domains": ["lockheedmartin.com"],
     "categoryTags": ["defense"],
     "ceoName": "Jim Taiclet",
-    "confidenceOverride": "HIGH",
+    "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   },
   {
@@ -282,7 +282,7 @@
     "domains": ["uline.com"],
     "categoryTags": ["retail"],
     "ceoName": "Richard Uihlein",
-    "confidenceOverride": "HIGH",
+    "matchScore": 1.0,
     "lastVerifiedDate": "2026-03-04"
   }
 ]
