@@ -27,6 +27,7 @@ These are not preferences. They are constraints. Never violate them.
 4. **No personal identifiers** — No accounts, no emails, no user IDs in MVP. All data is local-only.
 5. **No backend in MVP** — All processing is on-device. The only outbound calls are to the OpenFEC API (directly from the device) and to fetch the curated entity list update (static file on GitHub/CDN).
 6. **Transparency always** — Every confidence label is shown. Every data source links to OpenSecrets. Nothing is claimed with more certainty than the data supports.
+7. **CEO name context split** — CEO names are intentional in the report card and avoid tap feedback — these are designed to be confrontational and shareable. CEO names are intentionally absent from the business card and extension popup — these are informational tools displaying public FEC data. Do not conflate these two design contexts.
 
 ---
 
