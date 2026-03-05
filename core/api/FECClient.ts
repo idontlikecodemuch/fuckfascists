@@ -1,4 +1,5 @@
 import type { DonationSummary } from '../models';
+import { makeFecCommitteeUrl } from '../models';
 import type { OpenSecretsOrg } from '../matching/types';
 import { RateLimiter } from './rateLimit';
 import { RateLimitError } from './errors'; // eslint-disable-line @typescript-eslint/no-unused-vars -- re-thrown by RateLimiter
@@ -35,6 +36,9 @@ export const FEC_DEFAULT_LIMITS = {
   windowMs: 3_600_000, // 1 hour
 };
 
+// Cycles to fetch — 2016 through 2024 (update when a new cycle begins).
+const CYCLES_SINCE_2016 = [2016, 2018, 2020, 2022, 2024] as const;
+
 // ── FEC API response shapes ────────────────────────────────────────────────────
 
 interface FECSearchResponse {
@@ -47,8 +51,13 @@ interface FECDetailsResponse {
   party_full?: string;
 }
 
+interface FECTotalsResult {
+  receipts?: number;
+  cycle?: number;
+}
+
 interface FECTotalsResponse {
-  results: Array<{ receipts?: number; cycle?: number }>;
+  results: FECTotalsResult[];
 }
 
 // ── Client ─────────────────────────────────────────────────────────────────────
@@ -108,36 +117,66 @@ export class FECClient {
   }
 
   /**
-   * Fetches donation totals for `committeeId`.
-   * Makes two parallel API calls: committee details (name + party) + cycle totals.
-   * Throws RateLimitError (from RateLimiter) or FECParseError if data is missing.
+   * Fetches donation totals for `committeeId` across all cycles from 2016 onward.
+   * Makes two parallel API calls: committee details (name + party) + multi-cycle totals.
+   *
+   * - recentCycle / recentRepubs / recentDems: first (most recent) result only
+   * - totalRepubs / totalDems: summed across all returned results
+   * - activeCycles: all cycle years present in results, sorted ascending
    */
   async getCommitteeTotals(committeeId: string): Promise<DonationSummary> {
     const id = encodeURIComponent(committeeId);
+    const cycleParams = CYCLES_SINCE_2016.map((c) => `cycle=${c}`).join('&');
     const keyParam = `api_key=${encodeURIComponent(this.apiKey)}`;
 
     const [details, totalsData] = await Promise.all([
       this.get<FECDetailsResponse>(`/committees/${id}/?${keyParam}`),
-      this.get<FECTotalsResponse>(`/committees/${id}/totals/?${keyParam}&per_page=1`),
+      this.get<FECTotalsResponse>(
+        `/committees/${id}/totals/?${keyParam}&per_page=10&sort=-cycle&${cycleParams}`
+      ),
     ]);
 
-    const totals = totalsData.results[0];
-    if (!totals) {
+    const results = totalsData.results;
+    if (results.length === 0) {
       throw new FECParseError(`No totals data for committee ${committeeId}`);
     }
 
-    const receipts = totals.receipts ?? 0;
     const party = (details.party_full ?? '').toUpperCase();
+    const isRepublican = party.includes('REPUBLICAN');
+    const isDemocrat   = party.includes('DEMOCRAT');
+
+    // Most recent cycle (first result — API sorts by -cycle)
+    const recent = results[0]!;
+    const recentReceipts = recent.receipts ?? 0;
+    const recentCycle    = recent.cycle ?? 0;
+
+    // Sum across all cycles
+    let totalRepubs = 0;
+    let totalDems   = 0;
+    const activeCycles: number[] = [];
+
+    for (const row of results) {
+      const receipts = row.receipts ?? 0;
+      if (isRepublican) totalRepubs += receipts;
+      if (isDemocrat)   totalDems   += receipts;
+      if (row.cycle != null) activeCycles.push(row.cycle);
+    }
+
+    activeCycles.sort((a, b) => a - b);
+
+    const today = new Date().toISOString().slice(0, 10);
 
     return {
-      orgName:    details.name,
-      orgId:      committeeId,
-      total:      receipts,
-      repubs:     party.includes('REPUBLICAN') ? receipts : 0,
-      dems:       party.includes('DEMOCRAT')   ? receipts : 0,
-      lobbying:   0, // FEC does not track lobbying separately
-      sourceUrl:  `https://www.fec.gov/data/committee/${committeeId}/`,
-      cycle:      totals.cycle != null ? String(totals.cycle) : '',
+      committeeId,
+      committeeName:   details.name,
+      recentCycle,
+      recentRepubs:    isRepublican ? recentReceipts : 0,
+      recentDems:      isDemocrat   ? recentReceipts : 0,
+      totalRepubs,
+      totalDems,
+      activeCycles,
+      lastUpdated:     today,
+      fecCommitteeUrl: makeFecCommitteeUrl(committeeId),
     };
   }
 
