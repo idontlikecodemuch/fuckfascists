@@ -94,8 +94,9 @@
       "id": "x-twitter",
       "canonicalName": "X Corp",
       "aliases": [
-        "X",
+        "Twitter Inc",
         "Twitter",
+        "X",
         "X.com"
       ],
       "domains": [
@@ -129,6 +130,8 @@
       "ceoName": "Elon Musk",
       "publicFigureName": "Elon Musk",
       "matchScore": 1,
+      "notes": "No corporate PAC — Elon Musk donates personally via America PAC. See people.json for individual donations.",
+      "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-04"
     },
     {

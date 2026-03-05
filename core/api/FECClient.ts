@@ -94,8 +94,11 @@ export class FECClient {
   /**
    * Fetches donation summary for a committee.
    * Satisfies MatchingDeps.fetchOrgSummary.
+   *
+   * Returns null when committeeId is null (confirmed no PAC — no API call made).
    */
-  async fetchOrgSummary(committeeId: string): Promise<DonationSummary> {
+  async fetchOrgSummary(committeeId: string | null): Promise<DonationSummary | null> {
+    if (committeeId === null) return null;
     return this.getCommitteeTotals(committeeId);
   }
 

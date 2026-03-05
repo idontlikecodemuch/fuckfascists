@@ -28,7 +28,13 @@ export interface Entity {
    */
   associatedPersonIds?: string[];
   openSecretsOrgId?: string;   // @deprecated — holds FEC committee_id since FEC migration
-  fecCommitteeId?: string;     // FEC committee ID — populated by the data pipeline after verification
+  /**
+   * FEC committee ID, with three distinct states:
+   *   string  — committee ID confirmed and populated by the data pipeline
+   *   null    — confirmed no corporate PAC (e.g. Tesla; see notes field)
+   *   ""      — not yet verified (default; pipeline will attempt to fill)
+   */
+  fecCommitteeId?: string | null;
   /**
    * Optional override score between 0 and 1.
    * When present, the pipeline uses this instead of computing Jaro-Winkler.

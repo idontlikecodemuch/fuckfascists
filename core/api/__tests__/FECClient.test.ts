@@ -229,8 +229,9 @@ describe('FECClient', () => {
 
       const result = await makeClient().fetchOrgSummary('C001');
 
-      expect(result.recentCycle).toBe(2022);
-      expect(result.totalRepubs).toBe(200_000);
+      expect(result).not.toBeNull();
+      expect(result!.recentCycle).toBe(2022);
+      expect(result!.totalRepubs).toBe(200_000);
     });
   });
 
