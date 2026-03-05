@@ -10,7 +10,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "build:ext": "node scripts/build-extension.mjs",
-    "build:ext:watch": "node scripts/build-extension.mjs --watch"
+    "build:ext:watch": "node scripts/build-extension.mjs --watch",
+    "verify:entities": "node scripts/verify-entities.mjs"
   },
   "dependencies": {
     "expo": "~52.0.0",
