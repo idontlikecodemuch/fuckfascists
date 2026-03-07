@@ -270,7 +270,8 @@
       "ceoName": "John Stankey",
       "matchScore": 1,
       "lastVerifiedDate": "2026-03-04",
-      "fecCommitteeId": "C00545277"
+      "fecCommitteeId": "C00545277",
+      "notes": "PAC dissolved, historical data still accessible via FEC"
     },
     {
       "id": "comcast",
@@ -336,7 +337,8 @@
       "ceoName": "Darren Woods",
       "matchScore": 1,
       "lastVerifiedDate": "2026-03-04",
-      "fecCommitteeId": "C00457523"
+      "fecCommitteeId": "C00457523",
+      "notes": "PAC dissolved, historical data still accessible via FEC"
     },
     {
       "id": "koch-industries",
@@ -369,7 +371,8 @@
       "publicFigureName": "Charles Koch",
       "matchScore": 1,
       "lastVerifiedDate": "2026-03-04",
-      "fecCommitteeId": "C70005079"
+      "fecCommitteeId": "C70005079",
+      "notes": "PAC dissolved, historical data still accessible via FEC"
     },
     {
       "id": "goldman-sachs",
@@ -390,7 +393,8 @@
       "ceoName": "David Solomon",
       "matchScore": 1,
       "lastVerifiedDate": "2026-03-04",
-      "fecCommitteeId": "C00456210"
+      "fecCommitteeId": "C00456210",
+      "notes": "PAC dissolved, historical data still accessible via FEC"
     },
     {
       "id": "jpmorgan-chase",
@@ -472,7 +476,8 @@
       "ceoName": "Charlie Scharf",
       "matchScore": 1,
       "lastVerifiedDate": "2026-03-04",
-      "fecCommitteeId": "C00142844"
+      "fecCommitteeId": "C00142844",
+      "notes": "PAC dissolved, historical data still accessible via FEC"
     },
     {
       "id": "mcdonalds",
@@ -1255,7 +1260,8 @@
       "ceoName": "Heidi Petz",
       "matchScore": 1,
       "fecCommitteeId": "C00170027",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "notes": "PAC dissolved, historical data still accessible via FEC"
     },
     {
       "id": "ulta-beauty",
@@ -1514,7 +1520,8 @@
       "ceoName": "Jay Schottenstein",
       "matchScore": 1,
       "fecCommitteeId": "C00237040",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "notes": "PAC dissolved, historical data still accessible via FEC"
     },
     {
       "id": "abercrombie-fitch",
@@ -1927,7 +1934,8 @@
       "ceoName": "Tim Boyle",
       "matchScore": 1,
       "fecCommitteeId": "C00123737",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "notes": "PAC dissolved, historical data still accessible via FEC"
     },
     {
       "id": "skechers",
@@ -2233,7 +2241,8 @@
       "ceoName": "Michael O'Sullivan",
       "matchScore": 1,
       "fecCommitteeId": "C00004960",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "notes": "PAC dissolved, historical data still accessible via FEC"
     },
     {
       "id": "bath-body-works",
@@ -2392,7 +2401,8 @@
       "ceoName": "Lorenzo Simonelli",
       "matchScore": 1,
       "fecCommitteeId": "C00042010",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "notes": "PAC dissolved, historical data still accessible via FEC"
     },
     {
       "id": "devon-energy",
@@ -2447,7 +2457,8 @@
       "ceoName": "Harry Sideris",
       "matchScore": 1,
       "fecCommitteeId": "C00091884",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "notes": "PAC dissolved, historical data still accessible via FEC"
     },
     {
       "id": "southern-company",
@@ -2652,7 +2663,8 @@
       "ceoName": "Patti Poppe",
       "matchScore": 1,
       "fecCommitteeId": "C00003780",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "notes": "PAC dissolved, historical data still accessible via FEC"
     },
     {
       "id": "citigroup",
@@ -3028,7 +3040,8 @@
       "ceoName": "Andy Cecere",
       "matchScore": 1,
       "fecCommitteeId": "C00225946",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "notes": "PAC dissolved, historical data still accessible via FEC"
     },
     {
       "id": "pnc-financial",
@@ -3047,7 +3060,8 @@
       "ceoName": "Bill Demchak",
       "matchScore": 1,
       "fecCommitteeId": "C00509315",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "notes": "PAC dissolved, historical data still accessible via FEC"
     },
     {
       "id": "regions-financial",
@@ -3090,7 +3104,8 @@
       "ceoName": "Tim Cook",
       "matchScore": 1,
       "fecCommitteeId": "C00349928",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "notes": "PAC dissolved, historical data still accessible via FEC"
     },
     {
       "id": "microsoft",
@@ -3612,7 +3627,8 @@
       "ceoName": "Hans Vestberg",
       "matchScore": 1,
       "fecCommitteeId": "C00025163",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "notes": "PAC dissolved, historical data still accessible via FEC"
     },
     {
       "id": "t-mobile",
@@ -3661,7 +3677,8 @@
       "ceoName": "Chris Winfrey",
       "matchScore": 1,
       "fecCommitteeId": "C00356808",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "notes": "PAC dissolved, historical data still accessible via FEC"
     },
     {
       "id": "cox-communications",
@@ -3830,7 +3847,8 @@
       "publicFigureName": "David Smith",
       "matchScore": 1,
       "fecCommitteeId": "C00327361",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "notes": "PAC dissolved, historical data still accessible via FEC"
     },
     {
       "id": "iheartmedia",
@@ -3951,7 +3969,8 @@
       "ceoName": "Tom Reeg",
       "matchScore": 1,
       "fecCommitteeId": "C00342311",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "notes": "PAC dissolved, historical data still accessible via FEC"
     },
     {
       "id": "las-vegas-sands",
@@ -4540,7 +4559,8 @@
       "ceoName": "Carlos Abrams-Rivera",
       "matchScore": 1,
       "fecCommitteeId": "C00272039",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "notes": "PAC dissolved, historical data still accessible via FEC"
     },
     {
       "id": "mondelez",
@@ -4900,7 +4920,8 @@
       "publicFigureName": "S. Truett Cathy",
       "matchScore": 1,
       "fecCommitteeId": "C00323287",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "notes": "PAC dissolved, historical data still accessible via FEC"
     },
     {
       "id": "waffle-house",
@@ -5035,7 +5056,8 @@
       "ceoName": "Rick Cardenas",
       "matchScore": 1,
       "fecCommitteeId": "C00108282",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "notes": "PAC dissolved, historical data still accessible via FEC"
     },
     {
       "id": "cracker-barrel",
@@ -5626,7 +5648,8 @@
       "ceoName": "Ed Bastian",
       "matchScore": 1,
       "fecCommitteeId": "C00076133",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "notes": "PAC dissolved, historical data still accessible via FEC"
     },
     {
       "id": "united-airlines",
@@ -7748,7 +7771,8 @@
       ],
       "ceoName": "David Ko",
       "fecCommitteeId": "C00312629",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "notes": "PAC dissolved, historical data still accessible via FEC"
     },
     {
       "id": "goodrx",
@@ -8782,7 +8806,8 @@
       "publicFigureName": "Kenichiro Yoshida",
       "matchScore": 1,
       "fecCommitteeId": "C00513978",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "notes": "PAC dissolved, historical data still accessible via FEC"
     },
     {
       "id": "ahold-delhaize",
