@@ -85,9 +85,11 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
   }, [status, result, location.coords]);
 
   const handleSearch = useCallback(async () => {
+    // DIAGNOSTIC — remove before ship
+    console.log('[MapScreen] handleSearch fired — searchText:', JSON.stringify(searchText), 'entities:', entities.length, 'status:', status);
     if (!searchText.trim()) return;
     await scan(searchText);
-  }, [searchText, scan]);
+  }, [searchText, scan, entities.length, status]);
 
   const handleAvoid = useCallback(async () => {
     if (!activeResult) return;
