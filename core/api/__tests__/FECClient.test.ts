@@ -1,11 +1,5 @@
-import {
-  FECClient,
-  FECError,
-  FECNetworkError,
-  FECParseError,
-  FEC_DEFAULT_LIMITS,
-} from '../FECClient';
-import { RateLimiter } from '../rateLimit';
+import { FECClient, FECError, FECNetworkError, FECParseError } from '../FECClient';
+import { RateLimiter, FEC_DEFAULT_LIMITS } from '../rateLimit';
 import { RateLimitError } from '../errors';
 
 const mockFetch = jest.fn();
@@ -27,10 +21,10 @@ describe('FECClient', () => {
   // ── Constructor ─────────────────────────────────────────────────────────────
 
   describe('constructor', () => {
-    it('throws FECError when no API key is available', () => {
+    it('initializes in anonymous mode when no API key is available', () => {
       const original = process.env['FEC_API_KEY'];
       delete process.env['FEC_API_KEY'];
-      expect(() => new FECClient()).toThrow(FECError);
+      expect(() => new FECClient()).not.toThrow();
       if (original !== undefined) process.env['FEC_API_KEY'] = original;
     });
 
@@ -107,7 +101,7 @@ describe('FECClient', () => {
       cycleRows: Array<{ receipts: number; cycle: number }>,
     ) {
       mockFetch
-        .mockResolvedValueOnce(mockJson({ committee_id: 'C001', name: 'ACME PAC', party_full: partyFull }))
+        .mockResolvedValueOnce(mockJson({ results: [{ committee_id: 'C001', name: 'ACME PAC', party_full: partyFull }] }))
         .mockResolvedValueOnce(mockJson({ results: cycleRows }));
     }
 
@@ -218,7 +212,7 @@ describe('FECClient', () => {
 
     it('throws FECParseError when totals results is empty', async () => {
       mockFetch
-        .mockResolvedValueOnce(mockJson({ committee_id: 'C001', name: 'ACME PAC', party_full: 'REPUBLICAN' }))
+        .mockResolvedValueOnce(mockJson({ results: [{ committee_id: 'C001', name: 'ACME PAC', party_full: 'REPUBLICAN' }] }))
         .mockResolvedValueOnce(mockJson({ results: [] }));
 
       await expect(makeClient().getCommitteeTotals('C001')).rejects.toThrow(FECParseError);

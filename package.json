@@ -11,18 +11,22 @@
     "ios": "expo start --ios",
     "build:ext": "node scripts/build-extension.mjs",
     "build:ext:watch": "node scripts/build-extension.mjs --watch",
-    "verify:entities": "node scripts/verify-entities.mjs"
+    "verify:entities": "node scripts/verify-entities.mjs",
+    "fetch:donations": "node scripts/fetch-donation-data.mjs"
   },
   "dependencies": {
+    "@expo/vector-icons": "^15.1.1",
     "dotenv": "^17.3.1",
     "expo": "~52.0.0",
+    "expo-asset": "~11.0.5",
     "expo-location": "~18.0.0",
     "expo-notifications": "~0.29.0",
     "expo-secure-store": "~14.0.0",
     "expo-sqlite": "~15.0.0",
     "react": "18.3.1",
     "react-native": "0.76.0",
-    "react-native-maps": "1.18.0"
+    "react-native-maps": "1.18.0",
+    "react-native-safe-area-context": "^5.7.0"
   },
   "overrides": {
     "tar": "^7.0.0"

@@ -1,0 +1,13 @@
+{
+  "expo": {
+    "name": "F*ck Fascists",
+    "slug": "fuckfascists",
+    "version": "0.0.1",
+    "newArchEnabled": true,
+    "platforms": ["ios", "android"],
+    "plugins": [
+      "expo-asset",
+      "expo-secure-store"
+    ]
+  }
+}

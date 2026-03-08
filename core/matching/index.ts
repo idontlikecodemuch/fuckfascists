@@ -5,7 +5,7 @@ export { jaro, jaroWinkler } from './jaroWinkler';
 export { findByAlias } from './aliasMatch';
 export { scoreAll, pickBestMatch } from './scorer';
 export type {
-  OpenSecretsOrg,
+  FECCommittee,
   MatchResult,
   MatchSuccess,
   MatchFailure,

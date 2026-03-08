@@ -58,14 +58,14 @@ describe('ChromeStorageAdapter', () => {
     it('returns the entry after setCacheEntry', async () => {
       const entry: LocalCache = {
         key: 'test-key',
-        openSecretsOrgId: 'org123',
+        fecCommitteeId: 'org123',
         donationSummary: {
           committeeId: 'org123', committeeName: 'Acme', recentCycle: 2024,
           recentRepubs: 900, recentDems: 100, totalRepubs: 900, totalDems: 100,
           activeCycles: [2024], lastUpdated: '2024-01-01',
           fecCommitteeUrl: 'https://www.fec.gov/data/committee/org123/',
         },
-        confidence: 'HIGH',
+        confidence: 1.0,
         fetchedAt: Date.now(),
       };
       await adapter.setCacheEntry(entry);

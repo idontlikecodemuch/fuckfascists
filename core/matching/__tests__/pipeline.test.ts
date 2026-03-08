@@ -11,7 +11,7 @@ const walmartEntity: Entity = {
   domains: ['walmart.com'],
   categoryTags: ['retail'],
   ceoName: 'Doug McMillon',
-  openSecretsOrgId: 'D000000074',
+  fecCommitteeId: 'D000000074',
   matchScore: 1.0,
   lastVerifiedDate: '2024-01-01',
 };
@@ -56,9 +56,9 @@ describe('cache hit', () => {
   it('returns cached result without calling API', async () => {
     const cached: LocalCache = {
       key: 'walmart',
-      openSecretsOrgId: 'D000000074',
+      fecCommitteeId: 'D000000074',
       donationSummary: mockDonationSummary,
-      confidence: 'HIGH',
+      confidence: 1.0,
       fetchedAt: Date.now(),
     };
     const deps = makeDeps({ getCache: jest.fn().mockResolvedValue(cached) });
@@ -68,7 +68,7 @@ describe('cache hit', () => {
     expect(result.matched).toBe(true);
     if (result.matched) {
       expect(result.fromCache).toBe(true);
-      expect(result.confidence).toBe('HIGH');
+      expect(result.confidence).toBeGreaterThanOrEqual(0.85);
       expect(result.entity).toBe(walmartEntity);
     }
     expect(deps.fetchOrgs).not.toHaveBeenCalled();
@@ -78,9 +78,9 @@ describe('cache hit', () => {
   it('ignores expired cache and falls through to alias match', async () => {
     const expired: LocalCache = {
       key: 'walmart',
-      openSecretsOrgId: 'D000000074',
+      fecCommitteeId: 'D000000074',
       donationSummary: mockDonationSummary,
-      confidence: 'HIGH',
+      confidence: 1.0,
       fetchedAt: 0, // epoch — definitely expired
     };
     const deps = makeDeps({ getCache: jest.fn().mockResolvedValue(expired) });
@@ -104,9 +104,9 @@ describe('alias match', () => {
 
     expect(result.matched).toBe(true);
     if (result.matched) {
-      expect(result.confidence).toBe('HIGH');
+      expect(result.confidence).toBeGreaterThanOrEqual(0.85);
       expect(result.entity).toBe(walmartEntity);
-      expect(result.openSecretsOrgId).toBe('D000000074');
+      expect(result.fecCommitteeId).toBe('D000000074');
       expect(result.fromCache).toBe(false);
     }
     // No need to call getOrgs when orgId is already in the entity
@@ -120,13 +120,13 @@ describe('alias match', () => {
 
     expect(deps.setCache).toHaveBeenCalledWith(
       expect.objectContaining({
-        openSecretsOrgId: 'D000000074',
-        confidence: 'HIGH',
+        fecCommitteeId: 'D000000074',
+        confidence: 1.0,
       })
     );
   });
 
-  it('resolves orgId via API when entity lacks openSecretsOrgId', async () => {
+  it('resolves orgId via API when entity lacks fecCommitteeId', async () => {
     const deps = makeDeps({
       entities: [entityWithoutOrgId],
       fetchOrgs: jest
@@ -138,7 +138,7 @@ describe('alias match', () => {
 
     expect(result.matched).toBe(true);
     if (result.matched) {
-      expect(result.openSecretsOrgId).toBe('D000000999');
+      expect(result.fecCommitteeId).toBe('D000000999');
     }
     expect(deps.fetchOrgs).toHaveBeenCalled();
   });
@@ -155,10 +155,10 @@ describe('alias match', () => {
   });
 });
 
-// ─── Fuzzy (OpenSecrets) match ────────────────────────────────────────────────
+// ─── Fuzzy FEC committee match ────────────────────────────────────────────────
 
 describe('fuzzy match', () => {
-  it('returns HIGH confidence when best score clears the high threshold', async () => {
+  it('returns confidence score >= HIGH threshold when best score clears the high threshold', async () => {
     const deps = makeDeps({
       entities: [],
       fetchOrgs: jest
@@ -170,8 +170,8 @@ describe('fuzzy match', () => {
 
     expect(result.matched).toBe(true);
     if (result.matched) {
-      expect(result.confidence).toBe('HIGH');
-      expect(result.openSecretsOrgId).toBe('D000000074');
+      expect(result.confidence).toBeGreaterThanOrEqual(0.85);
+      expect(result.fecCommitteeId).toBe('D000000074');
     }
   });
 
@@ -191,7 +191,7 @@ describe('fuzzy match', () => {
     }
   });
 
-  it('returns MatchFailure when OpenSecrets returns no results', async () => {
+  it('returns MatchFailure when FEC returns no results', async () => {
     const deps = makeDeps({ entities: [], fetchOrgs: jest.fn().mockResolvedValue([]) });
 
     const result = await matchEntity('some obscure shop', deps);
@@ -210,7 +210,7 @@ describe('fuzzy match', () => {
     await matchEntity('Walmart', deps);
 
     expect(deps.setCache).toHaveBeenCalledWith(
-      expect.objectContaining({ openSecretsOrgId: 'D000000074' })
+      expect.objectContaining({ fecCommitteeId: 'D000000074' })
     );
   });
 });
@@ -226,7 +226,7 @@ describe('matchScore override', () => {
 
     expect(result.matched).toBe(true);
     if (result.matched) {
-      expect(result.confidence).toBe('HIGH');
+      expect(result.confidence).toBeGreaterThanOrEqual(0.85);
     }
     // Jaro-Winkler would only be called via fetchOrgs → scoreAll; it must not be called
     expect(deps.fetchOrgs).not.toHaveBeenCalled();
@@ -244,7 +244,8 @@ describe('matchScore override', () => {
 
     expect(result.matched).toBe(true);
     if (result.matched) {
-      expect(result.confidence).toBe('MEDIUM');
+      expect(result.confidence).toBeGreaterThanOrEqual(0.60);
+      expect(result.confidence).toBeLessThan(0.85);
     }
     expect(deps.fetchOrgs).not.toHaveBeenCalled();
   });

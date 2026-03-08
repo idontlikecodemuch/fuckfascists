@@ -26,7 +26,7 @@ These are not preferences. They are constraints. Never violate them.
 3. **No browsing history** — The extension detects domains in-memory only. Nothing about what a user browsed is ever persisted.
 4. **No personal identifiers** — No accounts, no emails, no user IDs in MVP. All data is local-only.
 5. **No backend in MVP** — All processing is on-device. The only outbound calls are to the OpenFEC API (directly from the device) and to fetch the curated entity list update (static file on GitHub/CDN).
-6. **Transparency always** — Every confidence label is shown. Every data source links to OpenSecrets. Nothing is claimed with more certainty than the data supports.
+6. **Transparency always** — Every confidence label is shown. Every data source links to FEC.gov. Nothing is claimed with more certainty than the data supports.
 7. **CEO name context split** — CEO names are intentional in the report card and avoid tap feedback — these are designed to be confrontational and shareable. CEO names are intentionally absent from the business card and extension popup — these are informational tools displaying public FEC data. Do not conflate these two design contexts.
 
 ---
@@ -39,7 +39,8 @@ API keys and credentials must **only ever be read from environment variables** (
 - **`.env` is gitignored** — it is the only place real keys live. Never commit it.
 - **`.env.example`** shows placeholder values only — never real values.
 - **If you see a hardcoded key in the codebase, treat it as a bug** — remove it immediately and rotate the exposed key.
-- **Constructors that require an API key** must read from `process.env` and throw a typed error at construction time if the key is absent. This makes misconfiguration fail fast rather than silently at call time.
+- **`FECClient` supports anonymous mode** — the constructor reads `FEC_API_KEY` from `process.env` but does not throw when absent. Without a key, requests are made without an `api_key` param (the FEC API allows this at lower rate limits). A `console.warn` is emitted in non-production environments so the omission is visible during development.
+- **`FEC_API_KEY` is required for data pipeline scripts** (`npm run fetch:donations`, `npm run verify:entities`) — these make hundreds of requests and will hit anonymous rate limits. Scripts exit with an error when the key is missing.
 
 ---
 
@@ -69,7 +70,8 @@ API keys and credentials must **only ever be read from environment variables** (
 ├── CLAUDE.md                        ← this file
 ├── app/                             ← React Native app root
 │   ├── navigation/                  ← tab/stack navigation
-│   └── providers/                   ← context, theme, config
+│   ├── providers/                   ← context, theme, config
+│   └── storage/                     ← SqliteAdapter.ts (expo-sqlite SDK 52, mobile only)
 ├── features/
 │   ├── Map/                         ← geolocation scan, map display, flagging
 │   ├── Survey/                      ← weekly platform checklist
@@ -78,7 +80,7 @@ API keys and credentials must **only ever be read from environment variables** (
 │   └── Info/                        ← transparency, about, FAQ
 ├── core/
 │   ├── matching/                    ← entity matching + confidence scoring (SHARED)
-│   ├── api/                         ← OpenSecrets client, rate limiting
+│   ├── api/                         ← FEC API client, rate limiting
 │   ├── data/                        ← entity list loader, local DB, cache
 │   └── models/                      ← shared TypeScript types
 ├── extension/
@@ -88,6 +90,9 @@ API keys and credentials must **only ever be read from environment variables** (
 │   └── popup/                       ← pixel art UI
 ├── config/
 │   └── constants.ts                 ← all configurable variables (see below)
+├── scripts/
+│   ├── fetch-donation-data.mjs      ← pre-fetches FEC donation data into entities.json
+│   └── verify-entities.mjs          ← verifies fecCommitteeId for each entity via FEC API
 └── assets/
     └── pixel/                       ← all pixel art assets by type
 ```
@@ -110,15 +115,30 @@ export const REPORT_CARD_WINDOW_DAY = 5;         // Friday (0 = Sunday)
 // Options: 'session' | 'daily' | 'weekly'
 export const EXTENSION_FLAG_FREQUENCY = 'session';
 
-// OpenSecrets API cache TTL
+// FEC API cache TTL
 export const ENTITY_CACHE_TTL_DAYS = 60;
 
 // Confidence score thresholds (0–1 scale)
 export const CONFIDENCE_THRESHOLD_HIGH = 0.85;
 export const CONFIDENCE_THRESHOLD_MEDIUM = 0.60;
 
-// Curated entity list update URL
+// OpenFEC API base URL — primary data source
+export const FEC_API_BASE_URL = 'https://api.open.fec.gov/v1';
+
+// Curated entity list update URL — [org] placeholder; update before v1.0 launch
 export const ENTITY_LIST_UPDATE_URL = 'https://raw.githubusercontent.com/[org]/fuckfascists-data/main/entities.json';
+
+// Weekly report card drop schedule — published by a GitHub Action each Monday
+export const DROP_SCHEDULE_URL = 'https://raw.githubusercontent.com/[org]/fuckfascists-data/main/drop-schedule.json';
+
+// Info / FAQ / transparency content — editable in the data repo without an app release
+export const INFO_CONTENT_URL = 'https://raw.githubusercontent.com/[org]/fuckfascists-data/main/info.json';
+
+// Controls whether the public figure / CEO name is shown in specific UI contexts.
+// SHOW_FIGURE_NAME_IN_CARD: false — business card is an informational FEC data screen.
+// SHOW_FIGURE_NAME_IN_POPUP: true — extension popup benefits from confrontational framing.
+export const SHOW_FIGURE_NAME_IN_CARD  = false;
+export const SHOW_FIGURE_NAME_IN_POPUP = true;
 ```
 
 ---
@@ -143,11 +163,13 @@ PlatformAvoidEvent {
 
 // Cached FEC API result
 LocalCache {
-  key: string            // normalized(brandName + areaHash) — NOT lat/long
-  openSecretsOrgId: string  // holds FEC committee_id since FEC migration
-  donationSummary: object
-  confidence: 'HIGH' | 'MEDIUM'
-  fetchedAt: number      // timestamp for TTL
+  key: string                        // normalized(brandName + areaHash) — NOT lat/long
+  fecCommitteeId: string             // FEC committee ID
+  donationSummary: DonationSummary | null
+  confidence: number                 // 0–1 numeric score (ConfidenceLevel type alias)
+                                     // compare against CONFIDENCE_THRESHOLD_HIGH / _MEDIUM
+                                     // to derive display labels at render time
+  fetchedAt: number                  // Unix timestamp — checked against ENTITY_CACHE_TTL_DAYS
 }
 ```
 
@@ -166,17 +188,42 @@ This logic lives in `/core/matching/` and is shared between the mobile app and t
 
 ```
 1. Normalize input name (lowercase, strip punctuation, trim)
-2. Check canonical entity list aliases (exact match → HIGH confidence)
+2. Check canonical entity list aliases (exact match → confidence 1.0)
 3. If no match → call FEC searchCommittees with normalized name
 4. Score each result using Jaro-Winkler similarity
 5. Pick best match:
-   - score >= CONFIDENCE_THRESHOLD_HIGH  → HIGH, call orgSummary, display
-   - score >= CONFIDENCE_THRESHOLD_MEDIUM → MEDIUM, call orgSummary, display with disclaimer
-   - score < CONFIDENCE_THRESHOLD_MEDIUM  → no flag, show "Not confidently matched" + OpenSecrets search link
+   - score >= CONFIDENCE_THRESHOLD_HIGH (0.85)  → call orgSummary, display
+   - score >= CONFIDENCE_THRESHOLD_MEDIUM (0.60) → call orgSummary, display with disclaimer
+   - score < CONFIDENCE_THRESHOLD_MEDIUM (0.60)  → no flag, show "Not confidently matched" + FEC.gov search link
 6. Cache result in LocalCache with TTL
 ```
 
 **Never claim certainty the data doesn't support. Always show the confidence label.**
+
+---
+
+## Data Pipeline Scripts
+
+These scripts are run locally by maintainers — never in CI. Both require `FEC_API_KEY` in `.env`.
+
+### `npm run verify:entities`
+Verifies `fecCommitteeId` for each entity in `assets/data/entities.json` via the FEC API.
+Searches by canonical name, scores results with Jaro-Winkler, and populates `fecCommitteeId`
+when a confident match is found. Marks confirmed no-PAC entities with `fecCommitteeId: null`.
+
+### `npm run fetch:donations`
+Pre-fetches FEC donation totals for all entities that have a verified `fecCommitteeId` and
+writes the result to `entity.donationSummary` in `entities.json`. The matching pipeline reads
+bundled `donationSummary` directly when present and fresh, skipping the live FEC API call.
+
+- Fresh entries (within `ENTITY_CACHE_TTL_DAYS` of `lastVerifiedDate`) are skipped automatically.
+- Pass `--force` to re-fetch everything: `npm run fetch:donations -- --force`
+- Dissolved/new committees with no recorded activity produce a zeroed summary (`activeCycles: []`).
+- Entities in `SEARCH_BY_NAME` (currently `google-alphabet`, `uber`) get a name-based pre-pass
+  to correct suspect committee IDs before the main fetch loop.
+
+Run `fetch:donations` after `verify:entities` whenever the entity list is updated.
+Commit `entities.json` manually after reviewing the output.
 
 ---
 
@@ -196,7 +243,7 @@ The weekly report card is a synchronized global event. Every user receives it at
 ## Browser Extension Behavior
 
 - **Icon turns amber** when user visits a tracked domain — no popup, no banner, no interruption
-- User clicks icon to open popup with business card (donation data, confidence, OpenSecrets link) + "AVOIDED" button
+- User clicks icon to open popup with business card (donation data, confidence, FEC link) + "AVOIDED" button
 - Flags **once per session per domain** by default (configurable via EXTENSION_FLAG_FREQUENCY)
 - User can snooze a domain ("don't remind me for 7 days")
 - **No browsing history stored** — domain detection is in-memory only, cleared on session end
@@ -224,9 +271,16 @@ The weekly report card is a synchronized global event. Every user receives it at
   publicFigureName?: string      // founder/owner when more culturally recognizable than CEO
                                  // (e.g. Jeff Bezos for Amazon, Rupert Murdoch for Fox/News Corp)
                                  // getDisplayFigure(entity) returns this when present, ceoName otherwise
-  openSecretsOrgId?: string      // @deprecated — holds FEC committee_id since FEC migration
-  fecCommitteeId?: string        // FEC committee ID — populated by verify-entities.mjs
+  parentEntityId?: string        // links subsidiary to parent entity by id
+  associatedPersonIds?: string[] // ids referencing assets/data/people.json (unused in display, V1)
+  fecCommitteeId?: string | null // three-state:
+                                 //   string — confirmed committee ID (populated by verify-entities.mjs)
+                                 //   null   — confirmed no corporate PAC (see notes field)
+                                 //   ""     — not yet verified (pipeline will attempt to fill)
   matchScore?: number            // 0–1 override; 1.0 = exact/certain; omit for normal scoring
+  donationSummary?: DonationSummary // bundled by fetch-donation-data.mjs; pipeline uses this
+                                 // directly when present and fresh (within ENTITY_CACHE_TTL_DAYS
+                                 // of lastVerifiedDate), skipping the live FEC API call
   lastVerifiedDate: string       // YYYY-MM-DD
 }
 ```
@@ -238,11 +292,13 @@ The weekly report card is a synchronized global event. Every user receives it at
 ```typescript
 // Never mock data in dev or prod. Mocks are for tests only.
 // Use real OpenFEC API in dev with a dev API key (FEC_API_KEY in .env).
+// FEC_API_KEY is optional for the app — FECClient runs in anonymous mode when absent.
+// FEC_API_KEY is required for data pipeline scripts (fetch:donations, verify:entities).
 // Keep environment config in .env files, never committed. See .env.example.
 
-DEV   — local build, verbose logging on, real API calls (FEC_API_KEY required in .env)
+DEV   — local build, verbose logging on, real API calls (FEC_API_KEY recommended in .env)
 TEST  — jest, mocked API responses only here
-PROD  — release build, logging off, real API calls (FEC_API_KEY in deployment environment)
+PROD  — release build, logging off, real API calls (FEC_API_KEY optional — anonymous mode available)
 ```
 
 ---
@@ -291,18 +347,33 @@ The entire app is styled as a **vintage 8-bit video game**. This is the foundati
 
 **Phase 1 MVP — build in this order:**
 
-1. `/core/models/` — TypeScript types for all entities, events, cache
-2. `/core/matching/` — entity matching pipeline (test-driven)
-3. `/core/api/` — OpenSecrets client with rate limiting and caching
-4. `/core/data/` — entity list loader, SQLite schema, local DB
-5. `features/Map/` — scan, flag, business card, avoid tap
-6. `features/Survey/` — weekly platform checklist
-7. `features/ReportCard/` — generation, drop timing, sharing
-8. `features/Onboarding/` — first-run flow
-9. `features/Info/` — transparency, about, FAQ
-10. `extension/` — Chrome/Firefox extension using shared core
+1. `/core/models/` — TypeScript types for all entities, events, cache ✅
+2. `/core/matching/` — entity matching pipeline (test-driven) ✅
+3. `/core/api/` — FEC API client with rate limiting and caching ✅
+4. `/core/data/` — entity list loader, SQLite schema, local DB ✅
+5. `features/Map/` — scan, flag, business card, avoid tap ✅
+6. `features/Survey/` — weekly platform checklist ✅
+7. `features/ReportCard/` — generation, drop timing, sharing ✅
+8. `features/Onboarding/` — first-run flow ✅
+9. `features/Info/` — transparency, about, FAQ ✅
+10. `extension/` — Chrome/Firefox extension using shared core ✅
 
 **Start with the core. Build one vertical slice (Map → flag → avoid tap) end-to-end before moving on.**
+
+### Feature Status
+
+| Feature / Milestone | Status |
+|---|---|
+| Core models, matching pipeline, FEC API client | ✅ Done |
+| SQLite adapter (`app/storage/SqliteAdapter.ts`) | ✅ Done |
+| Map scan, flag, business card, avoid tap | ✅ Done |
+| Survey, Report Card, Onboarding, Info screens | ✅ Done |
+| Browser extension (MV3, Chrome + Firefox) | ✅ Done |
+| FEC entity verification run (`verify:entities`) | ✅ Done |
+| Donation data bundled into `entities.json` | ✅ Done |
+| Anonymous FEC API mode (no key required in app) | ✅ Done |
+| App tested on physical device | 🔄 In progress |
+| Extension tested in Chrome | ✅ Done |
 
 ---
 
@@ -369,6 +440,7 @@ After writing any file, scan it once for deprecated APIs, `.then()` chains, `var
 - **No magic numbers** — any threshold, TTL, size, or timing value belongs in `config/constants.ts`.
 - **Error boundaries** — all async paths in hooks must handle rejection. Use the cancelled-flag pattern for `useEffect` cleanup (see `useInfoContent.ts` for the canonical example).
 - **Update this section** — if you encounter a new deprecation warning, a breaking API change, or a pattern that caused a runtime bug in this project, add it here before finishing the session.
+- **V2 cleanup — extension confidence CSS classes** — `extension/popup/popup.ts` derives `'HIGH'`/`'MEDIUM'` strings from the numeric confidence score solely to drive CSS class names (`confidence-badge HIGH`, `confidence-badge MEDIUM`). The display logic is correct, but the class names are legacy string-label artifacts. In V2, rename the classes to `confidence-badge--high` / `confidence-badge--medium` (BEM) and update the corresponding CSS. Not blocking for MVP.
 
 ---
 
@@ -415,3 +487,45 @@ After writing any file, scan it once for deprecated APIs, `.then()` chains, `var
 - Widgets or Watch integration (Phase 2)
 - Safari extension (Phase 2)
 - Cross-device sync between extension and mobile app (Phase 2)
+
+---
+
+## Known Limitations / Pre-V2 Technical Debt
+
+### Multi-PAC entities (Priority: Pre-V2)
+Some entities have dissolved a former PAC and registered a new one. The current
+schema only supports a single `fecCommitteeId`. This means either historical data
+(from the old PAC) or current data (from the new PAC) may be missing depending
+on which ID is stored.
+
+Proposed V2 schema addition to Entity:
+
+```typescript
+interface FecCommitteeRecord {
+  id: string                  // e.g. "C00545277"
+  status: 'active' | 'dissolved'
+  registeredYear?: number     // e.g. 2025
+  dissolvedYear?: number      // e.g. 2022
+}
+
+fecCommitteeRecords?: FecCommitteeRecord[]
+```
+
+This allows V2 to aggregate totals across all PAC records, filter by cycle year
+against registeredYear/dissolvedYear to avoid double-counting, and surface
+"formerly known as X PAC" in the UI if useful.
+
+The existing `fecCommitteeId` field stays as the primary active ID for MVP.
+`fecCommitteeRecords` is additive and ignored until V2 builds support for it.
+
+Note: Rarely, a single entity may have more than one simultaneously active PAC
+(e.g. separate PACs for divisions). The array structure handles this case.
+When encountered, decide whether to aggregate both or use the primary/largest.
+
+Affected entities known so far: att, exxonmobil, verizon, wells-fargo,
+goldman-sachs, apple, koch-industries — all currently storing dissolved PAC IDs.
+
+`CYCLES_SINCE_2016` in `scripts/fetch-donation-data.mjs` and `CYCLES_SINCE_2016`
+in `core/api/FECClient.ts` must be updated manually when a new election cycle begins.
+Both constants are candidates for renaming to `CYCLES_TO_FETCH` (more accurate now that 2026
+is included) — not blocking for MVP but should be done alongside the next cycle update.

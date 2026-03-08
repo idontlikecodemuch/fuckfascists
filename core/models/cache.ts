@@ -15,8 +15,8 @@ export interface DonationSummary {
 
 export interface LocalCache {
   key: string;                    // normalized(brandName + areaHash) — NOT lat/long coords
-  openSecretsOrgId: string;
-  donationSummary: DonationSummary;
+  fecCommitteeId: string;
+  donationSummary: DonationSummary | null;
   confidence: ConfidenceLevel;
   fetchedAt: number;              // Unix timestamp — checked against ENTITY_CACHE_TTL_DAYS
 }

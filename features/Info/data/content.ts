@@ -27,8 +27,7 @@ export const BUNDLED_CONTENT: InfoContent = {
         'All donation figures come directly from the Federal Election Commission ' +
         '(FEC) — the official US government source for campaign finance data, ' +
         'available at fec.gov. Every dollar figure shown in the app links back ' +
-        'to its original FEC filing. OpenSecrets.org (Center for Responsive ' +
-        'Politics) is also credited as a data partner.',
+        'to its original FEC filing.',
     },
     {
       id: 'fec-filings',
@@ -43,10 +42,10 @@ export const BUNDLED_CONTENT: InfoContent = {
       id: 'confidence',
       title: 'What do HIGH and MEDIUM confidence mean?',
       body:
-        'When you scan a business, we match its name against OpenSecrets using ' +
-        'a Jaro-Winkler similarity score. HIGH (≥ 0.85) means a near-certain ' +
-        'match. MEDIUM (≥ 0.60) means a likely match — always shown with a ' +
-        'disclaimer and a link to verify. We never claim more certainty than the data supports.',
+        'When you scan a business, we match its name against the FEC committee ' +
+        'database using a Jaro-Winkler similarity score. HIGH (≥ 0.85) means a ' +
+        'near-certain match. MEDIUM (≥ 0.60) means a likely match — always shown ' +
+        'with a disclaimer and a link to verify. We never claim more certainty than the data supports.',
     },
     {
       id: 'entity-list',
@@ -70,9 +69,9 @@ export const BUNDLED_CONTENT: InfoContent = {
       id: 'no-server',
       title: 'Is there a server?',
       body:
-        'Not in v1. The only outbound calls are to the OpenSecrets API (from ' +
-        'your device directly) and to fetch the entity list / drop schedule from ' +
-        'GitHub. There is no backend, no telemetry, and no analytics.',
+        'Not in v1. The only outbound calls are to the FEC API (from your device ' +
+        'directly) and to fetch the entity list / drop schedule from GitHub. ' +
+        'There is no backend, no telemetry, and no analytics.',
     },
   ],
 
@@ -81,16 +80,16 @@ export const BUNDLED_CONTENT: InfoContent = {
       id: 'trust',
       q: 'Why should I trust this data?',
       a:
-        'Every figure comes from OpenSecrets.org, which has tracked US political ' +
-        'money since 1983. The app always shows the confidence level of each match ' +
-        'and links directly to the source. We never show data we cannot cite.',
+        'Every figure comes directly from FEC.gov — the official US government ' +
+        'record of campaign finance. The app always shows the confidence level ' +
+        'of each match and links directly to the FEC source. We never show data we cannot cite.',
     },
     {
       id: 'wrong-match',
       q: 'What if a business is misidentified?',
       a:
         'MEDIUM-confidence matches always show a "verify before acting" warning. ' +
-        'Tap the OpenSecrets link to check the source yourself. If something is ' +
+        'Tap the FEC.gov link to check the source yourself. If something is ' +
         'wrong, please open an issue or PR in the data repo — the community ' +
         'maintains the entity list.',
     },
@@ -109,23 +108,23 @@ export const BUNDLED_CONTENT: InfoContent = {
         'The app is built on the premise that donations to the Republican Party ' +
         'and aligned PACs since 2015 have funded an authoritarian political ' +
         'project. Users can review the data and draw their own conclusions — ' +
-        'every figure links to OpenSecrets so nothing is taken on faith.',
+        'every figure links to its source on FEC.gov so nothing is taken on faith.',
     },
     {
       id: 'add-business',
       q: 'Can I add a business or correct an entry?',
       a:
         'Yes. The entity list is open-source on GitHub. Open a pull request with ' +
-        'the canonical name, aliases, domains, and OpenSecrets org ID. The ' +
+        'the canonical name, aliases, domains, and FEC committee ID. The ' +
         'community reviews all submissions.',
     },
     {
       id: 'medium-confidence',
       q: 'What should I do with a MEDIUM confidence match?',
       a:
-        'Tap the "SOURCE: OPENSECRETS.ORG" link in the business card and verify ' +
-        'the match yourself before tapping "Avoided". MEDIUM means the name ' +
-        'similarity is strong but not conclusive.',
+        'Tap the "VIEW FEC FILING" link in the business card and verify the match ' +
+        'yourself before tapping "Avoided". MEDIUM means the name similarity is ' +
+        'strong but not conclusive.',
     },
     {
       id: 'free',
@@ -146,7 +145,7 @@ export const BUNDLED_CONTENT: InfoContent = {
   ],
 
   links: [
-    { id: 'opensecrets',  label: 'OpenSecrets.org',          url: 'https://www.opensecrets.org',                              category: 'source' },
+    { id: 'fec',          label: 'FEC.gov (campaign finance data)', url: 'https://www.fec.gov',                                   category: 'source' },
     { id: 'source-code',  label: 'Source code (GitHub)',      url: 'https://github.com/[org]/fuckfascists',                   category: 'community' },
     { id: 'data-repo',    label: 'Entity list (GitHub)',      url: 'https://github.com/[org]/fuckfascists-data',              category: 'community' },
     { id: 'issues',       label: 'Report a bug or correction', url: 'https://github.com/[org]/fuckfascists/issues',           category: 'community' },

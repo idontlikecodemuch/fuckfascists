@@ -13,7 +13,7 @@
  */
 
 import type { TabFlag, WeeklyStats, GetCurrentFlagMsg, AvoidEntityMsg, SnoozeDomainMsg, GetWeeklyStatsMsg } from '../types';
-import { SHOW_FIGURE_NAME_IN_POPUP } from '../../config/constants';
+import { SHOW_FIGURE_NAME_IN_POPUP, CONFIDENCE_THRESHOLD_HIGH } from '../../config/constants';
 
 // ── DOM refs ───────────────────────────────────────────────────────────────────
 
@@ -100,10 +100,11 @@ function renderFlag(flag: TabFlag) {
   // FEC record link
   fecLink.href = flag.fecCommitteeUrl;
 
-  confidenceBadge.textContent = flag.confidence;
-  confidenceBadge.className   = `confidence-badge ${flag.confidence}`;
+  const confidenceLabel = flag.confidence >= CONFIDENCE_THRESHOLD_HIGH ? 'HIGH' : 'MEDIUM';
+  confidenceBadge.textContent = confidenceLabel;
+  confidenceBadge.className   = `confidence-badge ${confidenceLabel}`;
 
-  if (flag.confidence === 'MEDIUM') {
+  if (flag.confidence < CONFIDENCE_THRESHOLD_HIGH) {
     confidenceBadge.title = 'MEDIUM confidence — data may not be exact. Always verify at FEC.';
   }
 

@@ -33,11 +33,9 @@ describe('TRACKED_PLATFORMS', () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
-  it('confidenceOverride is either HIGH or absent', () => {
+  it('no platform has a confidenceOverride field', () => {
     TRACKED_PLATFORMS.forEach((p) => {
-      if (p.confidenceOverride !== undefined) {
-        expect(p.confidenceOverride).toBe('HIGH');
-      }
+      expect((p as unknown as Record<string, unknown>)['confidenceOverride']).toBeUndefined();
     });
   });
 });

@@ -1,4 +1,4 @@
-import { RateLimiter, OPENSECRETS_DEFAULT_LIMITS } from '../rateLimit';
+import { RateLimiter, FEC_DEFAULT_LIMITS } from '../rateLimit';
 import { RateLimitError } from '../errors';
 
 describe('RateLimiter', () => {
@@ -67,8 +67,8 @@ describe('RateLimiter', () => {
     jest.useRealTimers();
   });
 
-  it('uses OpenSecrets defaults when constructed with no arguments', () => {
+  it('uses FEC defaults when constructed with no arguments', () => {
     const limiter = new RateLimiter();
-    expect(limiter.remaining).toBe(OPENSECRETS_DEFAULT_LIMITS.maxRequests);
+    expect(limiter.remaining).toBe(FEC_DEFAULT_LIMITS.maxRequests);
   });
 });

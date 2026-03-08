@@ -29,14 +29,10 @@ import {
   ENTITY_LIST_UPDATE_URL,
   EXTENSION_FLAG_FREQUENCY,
   ENTITY_CACHE_TTL_DAYS,
-  CONFIDENCE_THRESHOLD_HIGH,
-  CONFIDENCE_THRESHOLD_MEDIUM,
 } from '../../config/constants';
 
-function entityConfidence(matchScore: number | undefined): 'HIGH' | 'MEDIUM' {
-  if (matchScore === undefined || matchScore >= CONFIDENCE_THRESHOLD_HIGH) return 'HIGH';
-  if (matchScore >= CONFIDENCE_THRESHOLD_MEDIUM) return 'MEDIUM';
-  return 'MEDIUM'; // floor at MEDIUM — entities below threshold should not be in the list
+function entityConfidence(matchScore: number | undefined): number {
+  return matchScore ?? 1.0; // no override → full confidence for curated alias match
 }
 
 // ─── Globals (re-initialised after SW wake) ────────────────────────────────────
@@ -59,14 +55,37 @@ async function init() {
     apiClient = new FECClient({ apiKey });
   }
 
-  // Load entity list from storage (written by the entity list refresher).
+  // Load entity list: prefer a CDN-refreshed copy in storage, fall back to the
+  // bundled file. The bundled file is the source of truth until a real CDN URL
+  // is configured (ENTITY_LIST_UPDATE_URL currently contains a placeholder).
   const listResult = await chrome.storage.local.get('entity_list');
   const stored = listResult['entity_list'] as Entity[] | undefined;
   if (stored?.length) {
     entities = stored;
   } else {
-    // First run: fetch and cache the entity list from CDN.
-    await refreshEntityList();
+    await loadBundledEntityList();
+  }
+}
+
+/** Loads the entity list bundled at build time (assets/data/entities.json). */
+async function loadBundledEntityList(): Promise<void> {
+  try {
+    const url = chrome.runtime.getURL('assets/data/entities.json');
+    const res = await fetch(url);
+    if (!res.ok) return;
+    const raw: unknown = await res.json();
+    const arr =
+      typeof raw === 'object' &&
+      raw !== null &&
+      !Array.isArray(raw) &&
+      Array.isArray((raw as Record<string, unknown>)['entities'])
+        ? ((raw as Record<string, unknown>)['entities'] as Entity[])
+        : (raw as Entity[]);
+    if (Array.isArray(arr) && arr.length > 0) {
+      entities = arr;
+    }
+  } catch {
+    // Bundled file missing — extension will not flag until CDN refresh succeeds
   }
 }
 
@@ -147,26 +166,29 @@ async function handleCheckDomain(hostname: string, tabId: number): Promise<void>
 
   let donationSummary = null;
 
+  const committeeId = entity.fecCommitteeId ?? null;
+
   const cached = await cacheDeps.getCache(cacheKey);
   if (cached && Date.now() - cached.fetchedAt < CACHE_TTL_MS) {
     donationSummary = cached.donationSummary;
-  } else if (apiClient && entity.openSecretsOrgId) {
+  } else if (apiClient && committeeId) {
     try {
-      donationSummary = await apiClient.fetchOrgSummary(entity.openSecretsOrgId);
+      donationSummary = await apiClient.fetchOrgSummary(committeeId);
       await cacheDeps.setCache({
         key: cacheKey,
-        openSecretsOrgId: entity.openSecretsOrgId,
+        fecCommitteeId: committeeId,
         donationSummary,
         confidence: entityConfidence(entity.matchScore),
         fetchedAt: Date.now(),
       });
     } catch {
-      // Don't flag without data — silently skip
-      return;
+      // API unavailable — fall through and flag with no donation data
     }
-  } else {
-    return; // no client or org ID — can't show data
   }
+
+  // Flag the tab regardless of whether donation data loaded. The amber icon
+  // fires on any confirmed entity match; data is surfaced in the popup if
+  // available.
 
   const flag: TabFlag = {
     hostname,

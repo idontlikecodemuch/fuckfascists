@@ -5,7 +5,7 @@ import { ENTITY_CACHE_TTL_DAYS } from '../../config/constants';
 /**
  * Returns a valid (non-expired) cache entry for `key`, or null.
  * Expired entries are treated the same as absent entries — the caller
- * will re-fetch from OpenSecrets and overwrite.
+ * will re-fetch from the FEC API and overwrite.
  *
  * Satisfies the `getCache` side of MatchingDeps.
  */

@@ -73,9 +73,9 @@ describe('BUNDLED_CONTENT structure', () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
-  it('includes a mention of OpenSecrets in transparency', () => {
+  it('includes a mention of FEC in transparency', () => {
     const text = BUNDLED_CONTENT.transparency.map((p) => p.body).join(' ');
-    expect(text.toLowerCase()).toContain('opensecrets');
+    expect(text.toLowerCase()).toContain('fec');
   });
 
   it('includes a tracking FAQ entry', () => {

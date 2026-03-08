@@ -35,8 +35,12 @@ export function PermissionScreen({
   async function handleAllow() {
     if (requesting) return;
     setRequesting(true);
-    await onAllow();
-    // onAllow is responsible for advancing the step
+    try {
+      await onAllow();
+      // onAllow is responsible for advancing the step
+    } finally {
+      setRequesting(false);
+    }
   }
 
   return (

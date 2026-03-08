@@ -1,5 +1,4 @@
-import type { ConfidenceLevel } from '../models';
-import type { OpenSecretsOrg } from './types';
+import type { FECCommittee } from './types';
 import { normalize } from './normalize';
 import { jaroWinkler } from './jaroWinkler';
 import {
@@ -8,23 +7,23 @@ import {
 } from '../../config/constants';
 
 export interface ScoredCandidate {
-  org: OpenSecretsOrg;
+  org: FECCommittee;
   score: number;
 }
 
 export interface BestMatch {
-  org: OpenSecretsOrg;
+  org: FECCommittee;
   score: number;
-  confidence: ConfidenceLevel;
+  confidence: number; // 0–1 score passed through from the JW scoring step
 }
 
 /**
- * Scores all OpenSecrets candidates against the normalized query.
+ * Scores all FEC committee candidates against the normalized query.
  * Returns candidates sorted by score descending.
  */
 export function scoreAll(
   normalizedQuery: string,
-  candidates: OpenSecretsOrg[]
+  candidates: FECCommittee[]
 ): ScoredCandidate[] {
   return candidates
     .map((org) => ({
@@ -40,18 +39,15 @@ export function scoreAll(
  */
 export function pickBestMatch(
   normalizedQuery: string,
-  candidates: OpenSecretsOrg[]
+  candidates: FECCommittee[]
 ): BestMatch | null {
   const scored = scoreAll(normalizedQuery, candidates);
   if (scored.length === 0) return null;
 
   const best = scored[0];
 
-  if (best.score >= CONFIDENCE_THRESHOLD_HIGH) {
-    return { ...best, confidence: 'HIGH' };
-  }
   if (best.score >= CONFIDENCE_THRESHOLD_MEDIUM) {
-    return { ...best, confidence: 'MEDIUM' };
+    return { ...best, confidence: best.score };
   }
   return null;
 }

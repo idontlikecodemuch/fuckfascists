@@ -12,7 +12,7 @@ const POINTS = [
   { label: 'NO HISTORY',     detail: 'The app never records which businesses you visited or used — only the ones you actively avoided.' },
   { label: 'ON-DEVICE ONLY', detail: 'All data stays on your phone. No backend, no syncing in v1.' },
   { label: 'OPEN SOURCE',    detail: 'Every line of code is public. Check it yourself.' },
-  { label: 'DATA: OPENSECRETS.ORG', detail: 'Donation data comes from the nonpartisan Center for Responsive Politics. Every figure links to its source.' },
+  { label: 'DATA: FEC.GOV', detail: 'Donation data comes directly from the Federal Election Commission — the official US government source for campaign finance data.' },
 ] as const;
 
 export function PrivacyScreen({ onNext }: PrivacyScreenProps) {

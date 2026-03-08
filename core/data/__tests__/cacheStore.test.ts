@@ -34,9 +34,9 @@ const mockSummary = {
 
 const freshEntry: LocalCache = {
   key: 'walmart',
-  openSecretsOrgId: 'D000000074',
+  fecCommitteeId: 'D000000074',
   donationSummary: mockSummary,
-  confidence: 'HIGH',
+  confidence: 1.0,
   fetchedAt: Date.now(),
 };
 

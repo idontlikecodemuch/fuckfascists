@@ -108,11 +108,11 @@ describe('parseEntityList', () => {
     expect(parseEntityList([bad])).toHaveLength(0);
   });
 
-  it('accepts entities with optional openSecretsOrgId', () => {
-    const withOrgId = { ...validEntity, openSecretsOrgId: 'D000000074' };
-    const result = parseEntityList([withOrgId]);
+  it('accepts entities with optional fecCommitteeId', () => {
+    const withCommitteeId = { ...validEntity, fecCommitteeId: 'D000000074' };
+    const result = parseEntityList([withCommitteeId]);
     expect(result).toHaveLength(1);
-    expect(result[0].openSecretsOrgId).toBe('D000000074');
+    expect(result[0].fecCommitteeId).toBe('D000000074');
   });
 
   it('skips invalid entries while keeping valid ones', () => {

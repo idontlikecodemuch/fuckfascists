@@ -79,6 +79,14 @@ async function copyStaticAssets() {
     // No icons yet — placeholder PNGs need to be added before publishing
     console.warn('[build-extension] Warning: extension/icons/ not found — add pixel art icons before release');
   }
+
+  // Entity list — bundle the curated list so the extension works offline from
+  // day one without waiting for a CDN fetch.
+  await mkdir(resolve(OUT, 'assets/data'), { recursive: true });
+  await copyFile(
+    resolve(ROOT, 'assets/data/entities.json'),
+    resolve(OUT, 'assets/data/entities.json'),
+  );
 }
 
 if (watch) {

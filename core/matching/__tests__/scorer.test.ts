@@ -1,9 +1,9 @@
 import { scoreAll, pickBestMatch } from '../scorer';
-import type { OpenSecretsOrg } from '../types';
+import type { FECCommittee } from '../types';
 
-const walmart: OpenSecretsOrg = { orgid: 'D000000074', orgname: 'Walmart Inc' };
-const walgreens: OpenSecretsOrg = { orgid: 'D000000123', orgname: 'Walgreens Boots Alliance' };
-const unrelated: OpenSecretsOrg = { orgid: 'D000000999', orgname: 'XYZ Holdings Corp' };
+const walmart: FECCommittee = { orgid: 'D000000074', orgname: 'Walmart Inc' };
+const walgreens: FECCommittee = { orgid: 'D000000123', orgname: 'Walgreens Boots Alliance' };
+const unrelated: FECCommittee = { orgid: 'D000000999', orgname: 'XYZ Holdings Corp' };
 
 describe('scoreAll', () => {
   it('returns candidates sorted by score descending', () => {
@@ -17,17 +17,18 @@ describe('scoreAll', () => {
   });
 
   it('assigns score 1 for exact normalized match', () => {
-    const exact: OpenSecretsOrg = { orgid: 'X', orgname: 'walmart' };
+    const exact: FECCommittee = { orgid: 'X', orgname: 'walmart' };
     const [top] = scoreAll('walmart', [exact]);
     expect(top.score).toBe(1.0);
   });
 });
 
 describe('pickBestMatch', () => {
-  it('returns HIGH confidence for a strong match', () => {
+  it('returns high confidence score for a strong match', () => {
     const result = pickBestMatch('walmart', [walmart, walgreens, unrelated]);
     expect(result).not.toBeNull();
-    expect(result!.confidence).toBe('HIGH');
+    expect(result!.confidence).toBeGreaterThanOrEqual(0.85); // CONFIDENCE_THRESHOLD_HIGH
+    expect(result!.confidence).toBeLessThanOrEqual(1.0);
     expect(result!.org).toBe(walmart);
   });
 
@@ -40,10 +41,11 @@ describe('pickBestMatch', () => {
     expect(pickBestMatch('walmart', [])).toBeNull();
   });
 
-  it('returns MEDIUM confidence for a partial match above medium threshold', () => {
-    // "walgreens" vs "walgreens boots alliance" — should score MEDIUM or HIGH
+  it('returns a confidence score >= medium threshold for a partial match', () => {
+    // "walgreens" vs "walgreens boots alliance" — should score at or above MEDIUM
     const result = pickBestMatch('walgreens', [walgreens, unrelated]);
     expect(result).not.toBeNull();
-    expect(['HIGH', 'MEDIUM']).toContain(result!.confidence);
+    expect(result!.confidence).toBeGreaterThanOrEqual(0.60); // CONFIDENCE_THRESHOLD_MEDIUM
+    expect(result!.confidence).toBeLessThanOrEqual(1.0);
   });
 });

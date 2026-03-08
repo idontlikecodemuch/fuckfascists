@@ -11,7 +11,7 @@ const walmartEntity: Entity = {
   domains: ['walmart.com'],
   categoryTags: ['retail'],
   ceoName: 'Doug McMillon',
-  openSecretsOrgId: 'D000000074',
+  fecCommitteeId: 'D000000074',
   matchScore: 1.0,
   lastVerifiedDate: '2024-01-01',
 };
@@ -33,8 +33,8 @@ function makeMatch(overrides: Partial<MatchSuccess> = {}): MatchSuccess {
   return {
     matched: true,
     entity: walmartEntity,
-    confidence: 'HIGH',
-    openSecretsOrgId: 'D000000074',
+    confidence: 1.0,
+    fecCommitteeId: 'D000000074',
     donationSummary: mockSummary,
     fromCache: false,
     ...overrides,
@@ -50,9 +50,9 @@ describe('buildScanResult', () => {
     expect(result.canonicalName).toBe('Walmart Inc');
   });
 
-  it('uses openSecretsOrgId as canonicalName fallback when entity is null', () => {
+  it('uses fecCommitteeId as canonicalName fallback when entity is null', () => {
     const result = buildScanResult(
-      makeMatch({ entity: null, openSecretsOrgId: 'D000000999' })
+      makeMatch({ entity: null, fecCommitteeId: 'D000000999' })
     );
     expect(result.entityId).toBeNull();
     expect(result.canonicalName).toBe('D000000999');
@@ -64,8 +64,8 @@ describe('buildScanResult', () => {
   });
 
   it('copies confidence level from the match', () => {
-    expect(buildScanResult(makeMatch({ confidence: 'HIGH' })).confidence).toBe('HIGH');
-    expect(buildScanResult(makeMatch({ confidence: 'MEDIUM' })).confidence).toBe('MEDIUM');
+    expect(buildScanResult(makeMatch({ confidence: 1.0 })).confidence).toBe(1.0);
+    expect(buildScanResult(makeMatch({ confidence: 0.7 })).confidence).toBe(0.7);
   });
 
   it('copies donationSummary reference unchanged', () => {
@@ -73,9 +73,9 @@ describe('buildScanResult', () => {
     expect(result.donationSummary).toBe(mockSummary);
   });
 
-  it('copies openSecretsOrgId', () => {
-    const result = buildScanResult(makeMatch({ openSecretsOrgId: 'D000000074' }));
-    expect(result.openSecretsOrgId).toBe('D000000074');
+  it('copies fecCommitteeId', () => {
+    const result = buildScanResult(makeMatch({ fecCommitteeId: 'D000000074' }));
+    expect(result.fecCommitteeId).toBe('D000000074');
   });
 
   it('copies entity reference unchanged', () => {

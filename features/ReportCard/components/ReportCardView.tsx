@@ -76,7 +76,7 @@ export const ReportCardView = forwardRef<View, ReportCardViewProps>(
         {/* ── Footer ── */}
         <View style={styles.footer}>
           <Text style={styles.footerText} allowFontScaling={false}>
-            fuckfascists.org · DATA: OPENSECRETS.ORG
+            fuckfascists.org · DATA: FEC.GOV
           </Text>
         </View>
       </View>

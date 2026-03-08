@@ -5,11 +5,10 @@
 export interface Platform {
   id: string;
   name: string;            // consumer-facing display name
-  parentCompany: string;   // legal entity, matches OpenSecrets org name
+  parentCompany: string;   // legal entity name used for FEC committee matching
   ceoName: string;
   categoryTags: string[];  // e.g. ['social', 'shopping', 'streaming']
-  openSecretsOrgId?: string; // pre-resolved for faster API calls
-  confidenceOverride?: 'HIGH';
+  fecCommitteeId?: string; // pre-resolved for faster API calls
 }
 
 /**

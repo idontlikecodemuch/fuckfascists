@@ -39,16 +39,16 @@ export const DDL_PLATFORM_AVOIDS = `
 
 /**
  * cache
- * Stores OpenSecrets API results keyed by normalize(brandName + areaHash).
+ * Stores FEC API results keyed by normalize(brandName + areaHash).
  * The key never contains raw coordinates — areaHash is a rough-area token.
  * fetched_at is a Unix timestamp in milliseconds used for TTL comparisons.
  */
 export const DDL_CACHE = `
   CREATE TABLE IF NOT EXISTS ${TABLE_CACHE} (
     key                   TEXT    PRIMARY KEY,
-    opensecrets_org_id    TEXT    NOT NULL,
+    fec_committee_id      TEXT    NOT NULL,
     donation_summary_json TEXT    NOT NULL,
-    confidence            TEXT    NOT NULL CHECK (confidence IN ('HIGH', 'MEDIUM')),
+    confidence            REAL    NOT NULL CHECK (confidence >= 0.0 AND confidence <= 1.0),
     fetched_at            INTEGER NOT NULL
   );
 `;

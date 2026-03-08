@@ -1,3 +1,5 @@
+import type { DonationSummary } from './cache';
+
 export interface Entity {
   id: string;
   canonicalName: string;       // matches FEC committee/organization name
@@ -27,7 +29,6 @@ export interface Entity {
    * FEC contribution data. Currently unused in display — reserved for future use.
    */
   associatedPersonIds?: string[];
-  openSecretsOrgId?: string;   // @deprecated — holds FEC committee_id since FEC migration
   /**
    * FEC committee ID, with three distinct states:
    *   string  — committee ID confirmed and populated by the data pipeline
@@ -43,6 +44,12 @@ export interface Entity {
    * Only use 1.0 for nationally unambiguous brands.
    */
   matchScore?: number;
+  /**
+   * Optional. Bundled donation summary from the curated data pipeline.
+   * When present and fresh (within ENTITY_CACHE_TTL_DAYS of lastVerifiedDate),
+   * the matching pipeline uses this directly and skips the live FEC API call.
+   */
+  donationSummary?: DonationSummary;
   lastVerifiedDate: string;    // YYYY-MM-DD
 }
 

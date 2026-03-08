@@ -40,7 +40,7 @@ function makeFlag(overrides: Partial<TabFlag> = {}): TabFlag {
     totalDems:       800_000,
     activeCycles:    [2016, 2018, 2020, 2022, 2024],
     fecCommitteeUrl: 'https://www.fec.gov/data/committee/C00431171/',
-    confidence:      'HIGH',
+    confidence:      1.0,
     avoided:         false,
     ...overrides,
   };

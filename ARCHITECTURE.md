@@ -150,9 +150,9 @@ PlatformAvoidEvent {
 
 LocalCache {
   key: string              // normalized(name) + ":" + areaHash — NOT lat/lng
-  openSecretsOrgId: string
+  fecCommitteeId: string
   donationSummary: DonationSummary
-  confidence: 'HIGH' | 'MEDIUM'
+  confidence: number       // 0–1 numeric score
   fetchedAt: number        // epoch ms, checked against ENTITY_CACHE_TTL_DAYS
 }
 ```
@@ -164,13 +164,13 @@ LocalCache {
 
 Entity {
   id: string
-  canonicalName: string        // matches OpenSecrets org name
+  canonicalName: string        // matches FEC committee name
   aliases: string[]            // consumer brand names (for alias matching)
   domains: string[]            // for extension domain lookup
   categoryTags: string[]
   ceoName: string
-  openSecretsOrgId?: string    // pre-resolved for fast API calls
-  confidenceOverride?: 'HIGH'  // for well-known brands (skips fuzzy scoring)
+  fecCommitteeId?: string      // pre-resolved FEC committee ID
+  matchScore?: number          // 0–1 override; 1.0 = exact/certain
   lastVerifiedDate: string
 }
 ```
@@ -433,7 +433,7 @@ service-worker.ts:handleCheckDomain(hostname, tabId)
     │
     ├─ cache check  ← getCache('ext:' + entity.id)
     │   hit + within TTL → use cached DonationSummary
-    │   miss → OpenSecretsClient.getOrgSummary(openSecretsOrgId)
+    │   miss → FECClient.fetchOrgSummary(fecCommitteeId)
     │
     ├─ setTabFlag(tabId, flag)    ← in-memory only
     ├─ recordFlagged(hostname)    ← in-memory only

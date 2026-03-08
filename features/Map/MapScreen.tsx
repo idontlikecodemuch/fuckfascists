@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import {
   View,
   TextInput,
@@ -18,7 +18,9 @@ import { useLocation } from './hooks/useLocation';
 import { useEntityScan } from './hooks/useEntityScan';
 import { BusinessCard } from './components/BusinessCard';
 import { FlagMarker } from './components/MapMarker';
-import type { MapPin } from './types';
+import type { MapPin, ScanResult } from './types';
+import { MapControls } from './components/MapControls';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface MapScreenProps {
   entities: Entity[];
@@ -45,9 +47,10 @@ const DEFAULT_REGION: Region = {
  * They are never written to disk, transmitted, or passed to core/data.
  */
 export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: MapScreenProps) {
+  const insets = useSafeAreaInsets();
   const [searchText, setSearchText] = useState('');
   const [pins, setPins] = useState<MapPin[]>([]);
-  const [activePin, setActivePin] = useState<MapPin | null>(null);
+  const [activeResult, setActiveResult] = useState<ScanResult | null>(null);
 
   const location = useLocation();
 
@@ -58,11 +61,16 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
 
   const { status, result, scan, reset } = useEntityScan(deps, location.areaHash ?? '');
 
-  // When the pipeline returns a match, pin it on the map.
+  // Card effect — show BusinessCard whenever a match result arrives, regardless of GPS.
+  useEffect(() => {
+    if (status !== 'matched' || !result) return;
+    setActiveResult(result);
+  }, [status, result]);
+
+  // Pin effect — place a map marker only when coords are also available.
   useEffect(() => {
     if (status !== 'matched' || !result || !location.coords) return;
-
-    const id = result.entityId ?? result.openSecretsOrgId;
+    const id = result.entityId ?? result.fecCommitteeId;
     const newPin: MapPin = {
       id,
       name: result.canonicalName,
@@ -70,12 +78,10 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
       result,
       avoided: false,
     };
-
     setPins((prev) => {
       const exists = prev.some((p) => p.id === id);
       return exists ? prev : [...prev, newPin];
     });
-    setActivePin(newPin);
   }, [status, result, location.coords]);
 
   const handleSearch = useCallback(async () => {
@@ -84,39 +90,60 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
   }, [searchText, scan]);
 
   const handleAvoid = useCallback(async () => {
-    if (!activePin) return;
-    const entityId = activePin.result.entityId ?? activePin.result.openSecretsOrgId;
+    if (!activeResult) return;
+    const entityId = activeResult.entityId ?? activeResult.fecCommitteeId;
     await recordEntityAvoid(adapter, entityId);
 
     setPins((prev) =>
-      prev.map((p) => (p.id === activePin.id ? { ...p, avoided: true } : p))
+      prev.map((p) => (p.id === entityId ? { ...p, avoided: true } : p))
     );
-    setActivePin(null);
+    setActiveResult(null);
     reset();
     setSearchText('');
-  }, [activePin, adapter, reset]);
+  }, [activeResult, adapter, reset]);
 
   const handleDismiss = useCallback(() => {
-    setActivePin(null);
+    setActiveResult(null);
     reset();
   }, [reset]);
 
   const handleOpenSearch = useCallback(() => {
     const q = encodeURIComponent(searchText || '');
-    Linking.openURL(`https://www.opensecrets.org/orgs/list?search=${q}`);
+    Linking.openURL(`https://www.fec.gov/data/committees/?q=${q}`);
     reset();
   }, [searchText, reset]);
 
-  const mapRegion: Region | undefined = location.coords
-    ? { ...location.coords, latitudeDelta: 0.02, longitudeDelta: 0.02 }
-    : undefined;
+  const mapRef = useRef<MapView>(null);
+  const [currentRegion, setCurrentRegion] = useState<Region>(DEFAULT_REGION);
+
+  // Animate to user's location whenever it is (re-)acquired.
+  useEffect(() => {
+    if (!location.coords) return;
+    const next: Region = { ...location.coords, latitudeDelta: 0.02, longitudeDelta: 0.02 };
+    setCurrentRegion(next);
+    mapRef.current?.animateToRegion(next, 400);
+  }, [location.coords]);
+
+  const handleZoomIn = useCallback(() => {
+    const next: Region = { ...currentRegion, latitudeDelta: currentRegion.latitudeDelta / 2, longitudeDelta: currentRegion.longitudeDelta / 2 };
+    setCurrentRegion(next);
+    mapRef.current?.animateToRegion(next, 200);
+  }, [currentRegion]);
+
+  const handleZoomOut = useCallback(() => {
+    const next: Region = { ...currentRegion, latitudeDelta: Math.min(currentRegion.latitudeDelta * 2, 90), longitudeDelta: Math.min(currentRegion.longitudeDelta * 2, 90) };
+    setCurrentRegion(next);
+    mapRef.current?.animateToRegion(next, 200);
+  }, [currentRegion]);
 
   return (
     <SafeAreaView style={styles.container}>
       <MapView
+        ref={mapRef}
         style={styles.map}
         provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : undefined}
-        region={mapRegion ?? DEFAULT_REGION}
+        initialRegion={DEFAULT_REGION}
+        onRegionChangeComplete={setCurrentRegion}
         showsUserLocation
         showsMyLocationButton={false}
         accessibilityLabel="Map showing nearby flagged businesses"
@@ -128,13 +155,13 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
             name={pin.name}
             confidence={pin.result.confidence}
             avoided={pin.avoided}
-            onPress={() => setActivePin(pin)}
+            onPress={() => setActiveResult(pin.result)}
           />
         ))}
       </MapView>
 
       {/* ── Search bar ── */}
-      <View style={styles.searchContainer}>
+      <View style={[styles.searchContainer, { top: insets.top + 16 }]}>
         <TextInput
           style={styles.searchInput}
           value={searchText}
@@ -161,25 +188,19 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
         </Pressable>
       </View>
 
-      {/* ── Location button ── */}
-      <Pressable
-        onPress={location.requestLocation}
-        style={styles.locationButton}
-        accessibilityRole="button"
-        accessibilityLabel="Center map on my location"
-        disabled={location.loading}
-        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-      >
-        <Text style={styles.locationIcon} allowFontScaling>
-          {location.loading ? '\u2026' : '\u2295'}
-        </Text>
-      </Pressable>
+      {/* ── Map controls (zoom in, zoom out, location) ── */}
+      <MapControls
+        onZoomIn={handleZoomIn}
+        onZoomOut={handleZoomOut}
+        onLocation={location.requestLocation}
+        locationLoading={location.loading}
+      />
 
       {/* ── Business card ── */}
-      {activePin && (
+      {activeResult && (
         <View style={styles.cardContainer}>
           <BusinessCard
-            result={activePin.result}
+            result={activeResult}
             onAvoid={handleAvoid}
             onDismiss={handleDismiss}
           />
@@ -195,10 +216,10 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
           <Pressable
             onPress={handleOpenSearch}
             accessibilityRole="link"
-            accessibilityLabel="Search OpenSecrets directly"
+            accessibilityLabel="Search FEC.gov directly"
           >
             <Text style={styles.bannerLink} allowFontScaling>
-              Search OpenSecrets \u2197
+              Search FEC.gov ↗
             </Text>
           </Pressable>
         </View>
@@ -221,8 +242,6 @@ const styles = StyleSheet.create({
   searchButton:       { width: 44, height: 44, backgroundColor: BLACK, alignItems: 'center', justifyContent: 'center', borderWidth: 3, borderColor: WHITE },
   searchButtonBusy:   { backgroundColor: '#555' },
   searchButtonText:   { color: WHITE, fontSize: 20 },
-  locationButton:     { position: 'absolute', bottom: 120, right: 16, width: 44, height: 44, backgroundColor: WHITE, borderWidth: 3, borderColor: BLACK, alignItems: 'center', justifyContent: 'center' },
-  locationIcon:       { fontSize: 22, color: BLACK },
   cardContainer:      { position: 'absolute', bottom: 0, left: 0, right: 0 },
   banner:             { position: 'absolute', bottom: 80, left: 16, right: 16, backgroundColor: WHITE, borderWidth: 3, borderColor: '#CC7A00', padding: 12, flexDirection: 'row', flexWrap: 'wrap' },
   bannerText:         { fontFamily: MONO, fontSize: 12, color: BLACK },

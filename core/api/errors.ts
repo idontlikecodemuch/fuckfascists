@@ -1,30 +1,30 @@
-export class OpenSecretsError extends Error {
+export class FECApiError extends Error {
   constructor(message: string) {
     super(message);
-    this.name = 'OpenSecretsError';
+    this.name = 'FECApiError';
   }
 }
 
-export class RateLimitError extends OpenSecretsError {
+export class RateLimitError extends FECApiError {
   constructor() {
-    super('OpenSecrets API daily rate limit reached. Try again tomorrow.');
+    super('FEC API rate limit reached. Try again later.');
     this.name = 'RateLimitError';
   }
 }
 
-export class ApiError extends OpenSecretsError {
+export class ApiError extends FECApiError {
   constructor(
     public readonly status: number,
     statusText: string
   ) {
-    super(`OpenSecrets API error ${status}: ${statusText}`);
+    super(`FEC API error ${status}: ${statusText}`);
     this.name = 'ApiError';
   }
 }
 
-export class ParseError extends OpenSecretsError {
+export class ParseError extends FECApiError {
   constructor(detail: string) {
-    super(`Failed to parse OpenSecrets response: ${detail}`);
+    super(`Failed to parse FEC API response: ${detail}`);
     this.name = 'ParseError';
   }
 }

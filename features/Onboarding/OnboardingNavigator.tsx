@@ -45,7 +45,7 @@ export function OnboardingNavigator({ onComplete }: OnboardingNavigatorProps) {
         <PermissionScreen
           stepIndex={3}
           title="FIND NEARBY BUSINESSES"
-          icon="\u{1F4CD}" // 📍
+          icon="📍"
           why="We use your location to center the map on your neighborhood so you can spot flagged businesses nearby."
           promise="Your GPS coordinates are held in memory only — never stored, never transmitted. We derive a rough area code for caching. That's it."
           allowLabel="ALLOW LOCATION"
@@ -62,7 +62,7 @@ export function OnboardingNavigator({ onComplete }: OnboardingNavigatorProps) {
         <PermissionScreen
           stepIndex={4}
           title="NEVER MISS THE DROP"
-          icon="\u{1F514}" // 🔔
+          icon="🔔"
           why="Your weekly report card drops at a synchronized moment every Friday. Enable notifications so you never miss it."
           promise="Notifications are local-only and scheduled on your device. We never send push messages from a server."
           allowLabel="ALLOW NOTIFICATIONS"

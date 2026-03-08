@@ -1,4 +1,4 @@
-import type { ConfidenceLevel, LocalCache } from '../models';
+import type { LocalCache, DonationSummary } from '../models';
 import type { MatchResult, MatchingDeps } from './types';
 import { normalize } from './normalize';
 import { findByAlias } from './aliasMatch';
@@ -10,16 +10,14 @@ import {
 } from '../../config/constants';
 
 /**
- * Maps an entity's optional matchScore to a ConfidenceLevel.
- * - undefined (not set) → 'HIGH': exact alias match always qualifies
- * - score ≥ HIGH threshold → 'HIGH'
- * - score ≥ MEDIUM threshold → 'MEDIUM'
+ * Maps an entity's optional matchScore to a numeric confidence value (0–1).
+ * - undefined (not set) → 1.0: exact alias match with no override = full confidence
+ * - score ≥ MEDIUM threshold → score passed through as-is
  * - score < MEDIUM threshold → null (entity should not be flagged)
  */
-function scoreToConfidence(matchScore: number | undefined): ConfidenceLevel | null {
-  if (matchScore === undefined) return 'HIGH';
-  if (matchScore >= CONFIDENCE_THRESHOLD_HIGH) return 'HIGH';
-  if (matchScore >= CONFIDENCE_THRESHOLD_MEDIUM) return 'MEDIUM';
+function scoreToConfidence(matchScore: number | undefined): number | null {
+  if (matchScore === undefined) return 1.0;
+  if (matchScore >= CONFIDENCE_THRESHOLD_MEDIUM) return matchScore;
   return null;
 }
 
@@ -32,12 +30,17 @@ function isCacheExpired(fetchedAt: number): boolean {
   return Date.now() - fetchedAt > ttlMs;
 }
 
+/** True when an entity's bundled donationSummary is still within the cache TTL window. */
+function isBundledSummaryFresh(lastVerifiedDate: string): boolean {
+  return !isCacheExpired(new Date(lastVerifiedDate).getTime());
+}
+
 /**
  * Full entity matching pipeline. Steps:
  *  1. Normalize input
  *  2. Check LocalCache — return immediately on a valid hit
  *  3. Exact alias match against canonical entity list → HIGH confidence
- *  4. OpenSecrets getOrgs → Jaro-Winkler scoring → pick best match
+ *  4. FEC searchCommittees → Jaro-Winkler scoring → pick best match
  *  5. Cache result and return MatchSuccess | MatchFailure
  *
  * @param rawInput  Raw business or platform name from the user / extension
@@ -56,13 +59,13 @@ export async function matchEntity(
   const cached = await deps.getCache(cacheKey);
   if (cached && !isCacheExpired(cached.fetchedAt)) {
     const entity =
-      deps.entities.find((e) => e.openSecretsOrgId === cached.openSecretsOrgId) ??
+      deps.entities.find((e) => e.fecCommitteeId === cached.fecCommitteeId) ??
       null;
     return {
       matched: true,
       entity,
       confidence: cached.confidence,
-      openSecretsOrgId: cached.openSecretsOrgId,
+      fecCommitteeId: cached.fecCommitteeId,
       donationSummary: cached.donationSummary,
       fromCache: true,
     };
@@ -71,64 +74,91 @@ export async function matchEntity(
   // Step 2: Exact alias match
   const aliasMatch = findByAlias(normalizedInput, deps.entities);
   if (aliasMatch) {
+    // Fix A: explicit check — empty string ("unverified") must not fall through to resolveOrgId
     const orgId =
-      aliasMatch.openSecretsOrgId ?? (await resolveOrgId(aliasMatch.canonicalName, deps));
+      (aliasMatch.fecCommitteeId != null && aliasMatch.fecCommitteeId !== '')
+        ? aliasMatch.fecCommitteeId
+        : await resolveOrgId(aliasMatch.canonicalName, deps);
 
     if (!orgId) return { matched: false, normalizedInput };
 
     const confidence = scoreToConfidence(aliasMatch.matchScore);
     if (confidence === null) return { matched: false, normalizedInput };
 
-    const donationSummary = await deps.fetchOrgSummary(orgId);
+    // Use bundled donationSummary when present and fresh — skips live API call.
+    let donationSummary: DonationSummary | null = null;
+    if (aliasMatch.donationSummary && isBundledSummaryFresh(aliasMatch.lastVerifiedDate)) {
+      donationSummary = aliasMatch.donationSummary;
+    } else {
+      try {
+        donationSummary = await deps.fetchOrgSummary(orgId);
+      } catch {
+        // API unavailable — match still succeeds; card shows without donation data
+      }
+    }
 
-    await deps.setCache({
-      key: cacheKey,
-      openSecretsOrgId: orgId,
-      donationSummary,
-      confidence,
-      fetchedAt: Date.now(),
-    });
+    if (donationSummary) {
+      await deps.setCache({
+        key: cacheKey,
+        fecCommitteeId: orgId,
+        donationSummary,
+        confidence,
+        fetchedAt: Date.now(),
+      });
+    }
 
     return {
       matched: true,
       entity: aliasMatch,
       confidence,
-      openSecretsOrgId: orgId,
+      fecCommitteeId: orgId,
       donationSummary,
       fromCache: false,
     };
   }
 
-  // Step 3: Fuzzy OpenSecrets search
+  // Step 3: Fuzzy FEC committee search
   const candidates = await deps.fetchOrgs(normalizedInput);
   const best = pickBestMatch(normalizedInput, candidates);
 
   if (!best) return { matched: false, normalizedInput };
 
-  const donationSummary = await deps.fetchOrgSummary(best.org.orgid);
-
-  await deps.setCache({
-    key: cacheKey,
-    openSecretsOrgId: best.org.orgid,
-    donationSummary,
-    confidence: best.confidence,
-    fetchedAt: Date.now(),
-  });
-
   const entity =
-    deps.entities.find((e) => e.openSecretsOrgId === best.org.orgid) ?? null;
+    deps.entities.find((e) => e.fecCommitteeId === best.org.orgid) ?? null;
+
+  // Use bundled donationSummary when present and fresh — skips live API call.
+  let donationSummary: DonationSummary | null = null;
+  if (entity?.donationSummary && isBundledSummaryFresh(entity.lastVerifiedDate)) {
+    donationSummary = entity.donationSummary;
+  } else {
+    try {
+      donationSummary = await deps.fetchOrgSummary(best.org.orgid);
+    } catch {
+      // API unavailable — match still succeeds; card shows without donation data
+    }
+  }
+
+  if (donationSummary) {
+    await deps.setCache({
+      key: cacheKey,
+      fecCommitteeId: best.org.orgid,
+      donationSummary,
+      confidence: best.confidence,
+      fetchedAt: Date.now(),
+    });
+  }
 
   return {
     matched: true,
     entity,
     confidence: best.confidence,
-    openSecretsOrgId: best.org.orgid,
+    fecCommitteeId: best.org.orgid,
     donationSummary,
     fromCache: false,
   };
 }
 
-/** Resolves an OpenSecrets org ID for an entity that lacks one. */
+/** Resolves a FEC committee ID for an entity that lacks one. */
 async function resolveOrgId(
   canonicalName: string,
   deps: MatchingDeps

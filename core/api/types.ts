@@ -1,4 +1,4 @@
-// Raw JSON shapes returned by the OpenSecrets API (?output=json).
+// Legacy raw JSON shapes from the old OpenSecrets API — no longer used by FECClient.
 // These are internal to core/api — callers work with domain types from core/models.
 
 interface RawOrgAttributes {
@@ -10,8 +10,8 @@ interface RawOrgEntry {
   '@attributes': RawOrgAttributes;
 }
 
-// OpenSecrets returns a single object when there is exactly one result
-// and an array when there are multiple. Both cases must be handled.
+// The old OpenSecrets API returned a single object for one result and an array
+// for multiple. Both cases were handled here.
 export interface GetOrgsResponse {
   response: {
     organization?: RawOrgEntry | RawOrgEntry[];

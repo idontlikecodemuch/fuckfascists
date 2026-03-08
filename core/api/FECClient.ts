@@ -1,7 +1,7 @@
 import type { DonationSummary } from '../models';
 import { makeFecCommitteeUrl } from '../models';
-import type { OpenSecretsOrg } from '../matching/types';
-import { RateLimiter } from './rateLimit';
+import type { FECCommittee } from '../matching/types';
+import { RateLimiter, FEC_DEFAULT_LIMITS } from './rateLimit';
 import { RateLimitError } from './errors'; // eslint-disable-line @typescript-eslint/no-unused-vars -- re-thrown by RateLimiter
 import { FEC_API_BASE_URL } from '../../config/constants';
 
@@ -28,14 +28,6 @@ export class FECParseError extends FECError {
   }
 }
 
-// ── Rate limit config ──────────────────────────────────────────────────────────
-
-// OpenFEC allows 1,000 requests per hour with an API key.
-export const FEC_DEFAULT_LIMITS = {
-  maxRequests: 1_000,
-  windowMs: 3_600_000, // 1 hour
-};
-
 // Cycles to fetch — 2016 through 2024 (update when a new cycle begins).
 const CYCLES_SINCE_2016 = [2016, 2018, 2020, 2022, 2024] as const;
 
@@ -46,9 +38,7 @@ interface FECSearchResponse {
 }
 
 interface FECDetailsResponse {
-  committee_id: string;
-  name: string;
-  party_full?: string;
+  results: Array<{ committee_id: string; name: string; party_full?: string }>;
 }
 
 interface FECTotalsResult {
@@ -63,21 +53,19 @@ interface FECTotalsResponse {
 // ── Client ─────────────────────────────────────────────────────────────────────
 
 export interface FECClientConfig {
-  /** Defaults to process.env.FEC_API_KEY — throws FECError at construction if absent. */
+  /** Defaults to process.env.FEC_API_KEY. When absent, client runs in anonymous mode (no api_key param). */
   apiKey?: string;
   rateLimiter?: RateLimiter;
 }
 
 export class FECClient {
-  private readonly apiKey: string;
+  private readonly apiKey: string | null;
   private readonly rateLimiter: RateLimiter;
 
   constructor(config: FECClientConfig = {}) {
-    const key = config.apiKey ?? process.env['FEC_API_KEY'];
-    if (!key) {
-      throw new FECError(
-        'FEC_API_KEY is not set. Add it to your .env file (see .env.example).'
-      );
+    const key = config.apiKey ?? process.env['FEC_API_KEY'] ?? null;
+    if (!key && process.env['NODE_ENV'] !== 'production') {
+      console.warn('[FECClient] No FEC_API_KEY found — running in anonymous mode. Rate limits may be stricter.');
     }
     this.apiKey = key;
     this.rateLimiter = config.rateLimiter ?? new RateLimiter(FEC_DEFAULT_LIMITS);
@@ -87,7 +75,7 @@ export class FECClient {
    * Searches FEC committees by name.
    * Satisfies MatchingDeps.fetchOrgs — returns orgid/orgname pairs.
    */
-  async fetchOrgs(name: string): Promise<OpenSecretsOrg[]> {
+  async fetchOrgs(name: string): Promise<FECCommittee[]> {
     return this.searchCommittees(name);
   }
 
@@ -106,12 +94,9 @@ export class FECClient {
    * Searches FEC for committees matching `name`.
    * Returns up to 20 results as orgid/orgname pairs for the matching pipeline.
    */
-  async searchCommittees(name: string): Promise<OpenSecretsOrg[]> {
-    const params = new URLSearchParams({
-      q: name,
-      api_key: this.apiKey,
-      per_page: '20',
-    });
+  async searchCommittees(name: string): Promise<FECCommittee[]> {
+    const params = new URLSearchParams({ q: name, per_page: '20' });
+    if (this.apiKey) params.set('api_key', this.apiKey);
     const data = await this.get<FECSearchResponse>(`/committees/?${params}`);
     return (data.results ?? []).map((c) => ({
       orgid: c.committee_id,
@@ -130,21 +115,26 @@ export class FECClient {
   async getCommitteeTotals(committeeId: string): Promise<DonationSummary> {
     const id = encodeURIComponent(committeeId);
     const cycleParams = CYCLES_SINCE_2016.map((c) => `cycle=${c}`).join('&');
-    const keyParam = `api_key=${encodeURIComponent(this.apiKey)}`;
+    const keyParam = this.apiKey ? `&api_key=${encodeURIComponent(this.apiKey)}` : '';
 
-    const [details, totalsData] = await Promise.all([
-      this.get<FECDetailsResponse>(`/committees/${id}/?${keyParam}`),
+    const [detailsData, totalsData] = await Promise.all([
+      this.get<FECDetailsResponse>(`/committee/${id}/?per_page=1${keyParam}`),
       this.get<FECTotalsResponse>(
-        `/committees/${id}/totals/?${keyParam}&per_page=10&sort=-cycle&${cycleParams}`
+        `/committee/${id}/totals/?per_page=10&sort=-cycle&${cycleParams}${keyParam}`
       ),
     ]);
+
+    const detailsRow = (detailsData.results ?? [])[0];
+    if (!detailsRow) {
+      throw new FECParseError(`No details returned for committee ${committeeId}`);
+    }
 
     const results = totalsData.results;
     if (results.length === 0) {
       throw new FECParseError(`No totals data for committee ${committeeId}`);
     }
 
-    const party = (details.party_full ?? '').toUpperCase();
+    const party = (detailsRow.party_full ?? '').toUpperCase();
     const isRepublican = party.includes('REPUBLICAN');
     const isDemocrat   = party.includes('DEMOCRAT');
 
@@ -171,7 +161,7 @@ export class FECClient {
 
     return {
       committeeId,
-      committeeName:   details.name,
+      committeeName:   detailsRow.name,
       recentCycle,
       recentRepubs:    isRepublican ? recentReceipts : 0,
       recentDems:      isDemocrat   ? recentReceipts : 0,

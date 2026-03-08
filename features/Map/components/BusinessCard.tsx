@@ -4,7 +4,7 @@ import type { ScanResult } from '../types';
 import { AvoidButton } from './AvoidButton';
 import type { Entity } from '../../../core/models';
 import { formatDonationAmount, formatCycleLabel, formatActiveCycles, getDisplayFigure, getParentEntity } from '../../../core/models';
-import { SHOW_FIGURE_NAME_IN_CARD } from '../../../config/constants';
+import { SHOW_FIGURE_NAME_IN_CARD, CONFIDENCE_THRESHOLD_HIGH } from '../../../config/constants';
 // Figure name is controlled by SHOW_FIGURE_NAME_IN_CARD (default: false).
 // See CLAUDE.md §7 for the informational vs. confrontational screen split.
 
@@ -18,13 +18,14 @@ interface BusinessCardProps {
 
 // ── Sub-components ────────────────────────────────────────────────────────────
 
-function ConfidenceBadge({ level }: { level: 'HIGH' | 'MEDIUM' }) {
+function ConfidenceBadge({ level }: { level: number }) {
+  const label = level >= CONFIDENCE_THRESHOLD_HIGH ? 'HIGH' : 'MEDIUM';
   return (
     <View
-      style={[styles.badge, level === 'HIGH' ? styles.badgeHigh : styles.badgeMedium]}
-      accessibilityLabel={`Confidence: ${level}`}
+      style={[styles.badge, level >= CONFIDENCE_THRESHOLD_HIGH ? styles.badgeHigh : styles.badgeMedium]}
+      accessibilityLabel={`Confidence: ${label}`}
     >
-      <Text style={styles.badgeText}>{level}</Text>
+      <Text style={styles.badgeText}>{label}</Text>
     </View>
   );
 }
@@ -36,26 +37,24 @@ function ConfidenceBadge({ level }: { level: 'HIGH' | 'MEDIUM' }) {
  *
  * Design rules enforced here:
  *  - Confidence label is ALWAYS visible (never hidden).
- *  - OpenSecrets attribution link is ALWAYS shown (required by data terms).
+ *  - FEC attribution link is ALWAYS shown.
  *  - MEDIUM matches always show the "verify before acting" disclaimer.
  *  - Never claims more certainty than the data supports.
  *  - Recent cycle is visually prominent; historical totals are secondary.
  */
 export function BusinessCard({ result, onAvoid, onDismiss, allEntities }: BusinessCardProps) {
-  const { canonicalName, confidence, donationSummary, entity } = result;
-  const {
-    recentCycle, recentRepubs, recentDems,
-    totalRepubs, totalDems,
-    activeCycles, fecCommitteeUrl,
-  } = donationSummary;
+  const { canonicalName, confidence, donationSummary, entity, fecFilingUrl } = result;
 
-  const hasRecentRepubs = recentRepubs > 0;
-  const hasRecentDems   = recentDems > 0;
+  // Prefer donationSummary's URL (has verified committee ID); fall back to ScanResult's fecFilingUrl.
+  const fecUrl = donationSummary?.fecCommitteeUrl ?? fecFilingUrl;
+
+  const hasRecentRepubs   = (donationSummary?.recentRepubs ?? 0) > 0;
+  const hasRecentDems     = (donationSummary?.recentDems ?? 0) > 0;
   const showRecentSection = hasRecentRepubs || hasRecentDems;
 
   const recentLabel = hasRecentRepubs
-    ? `${formatDonationAmount(recentRepubs)} to Republicans`
-    : `${formatDonationAmount(recentDems)} to Democrats`;
+    ? `${formatDonationAmount(donationSummary?.recentRepubs ?? 0)} to Republicans`
+    : `${formatDonationAmount(donationSummary?.recentDems ?? 0)} to Democrats`;
 
   return (
     <View style={styles.card}>
@@ -90,49 +89,62 @@ export function BusinessCard({ result, onAvoid, onDismiss, allEntities }: Busine
           </>
         )}
 
-        {confidence === 'MEDIUM' && (
+        {confidence < CONFIDENCE_THRESHOLD_HIGH && (
           <Text style={styles.disclaimer} accessibilityRole="alert" allowFontScaling>
-            \u26a0 MEDIUM confidence \u2014 verify before acting.
+            ⚠ MEDIUM confidence — verify before acting.
           </Text>
         )}
       </View>
 
-      {/* ── Recent cycle (prominent) ── */}
-      {showRecentSection && (
-        <View style={styles.recentSection}>
-          <Text style={styles.recentAmount} allowFontScaling>
-            {recentLabel}
-          </Text>
-          <Text style={styles.recentCycleLabel} allowFontScaling>
-            in {formatCycleLabel(recentCycle)}
+      {/* ── Donation data (null when API unavailable) ── */}
+      {donationSummary ? (
+        <>
+          {/* ── Recent cycle (prominent) ── */}
+          {showRecentSection && (
+            <View style={styles.recentSection}>
+              <Text style={styles.recentAmount} allowFontScaling>
+                {recentLabel}
+              </Text>
+              <Text style={styles.recentCycleLabel} allowFontScaling>
+                in {formatCycleLabel(donationSummary.recentCycle)}
+              </Text>
+            </View>
+          )}
+
+          {/* ── Since 2016 totals (contextual) ── */}
+          <View style={styles.totalsSection}>
+            <Text style={styles.totalsRow} allowFontScaling>
+              Total since 2016:{'\u2002'}GOP {formatDonationAmount(donationSummary.totalRepubs)}{'\u00b7'}DEM {formatDonationAmount(donationSummary.totalDems)}
+            </Text>
+            {donationSummary.activeCycles.length > 0 && (
+              <Text style={styles.totalsRow} allowFontScaling>
+                Active cycles: {formatActiveCycles(donationSummary.activeCycles)}
+              </Text>
+            )}
+          </View>
+        </>
+      ) : (
+        <View style={styles.unavailableSection}>
+          <Text style={styles.unavailableText} allowFontScaling>
+            Donation data temporarily unavailable.
           </Text>
         </View>
       )}
 
-      {/* ── Since 2016 totals (contextual) ── */}
-      <View style={styles.totalsSection}>
-        <Text style={styles.totalsRow} allowFontScaling>
-          Total since 2016:{'\u2002'}GOP {formatDonationAmount(totalRepubs)}{'\u00b7'}DEM {formatDonationAmount(totalDems)}
-        </Text>
-        {activeCycles.length > 0 && (
-          <Text style={styles.totalsRow} allowFontScaling>
-            Active cycles: {formatActiveCycles(activeCycles)}
-          </Text>
-        )}
-      </View>
-
       {/* ── FEC record link ── */}
-      <Pressable
-        onPress={() => Linking.openURL(fecCommitteeUrl)}
-        accessibilityRole="link"
-        accessibilityLabel="See full FEC record on fec.gov"
-        hitSlop={{ top: 4, bottom: 4, left: 4, right: 4 }}
-        style={styles.fecLinkRow}
-      >
-        <Text style={styles.fecLink} allowFontScaling>
-          See full FEC record \u2192
-        </Text>
-      </Pressable>
+      {fecUrl && (
+        <Pressable
+          onPress={() => Linking.openURL(fecUrl)}
+          accessibilityRole="link"
+          accessibilityLabel="See full FEC record on fec.gov"
+          hitSlop={{ top: 4, bottom: 4, left: 4, right: 4 }}
+          style={styles.fecLinkRow}
+        >
+          <Text style={styles.fecLink} allowFontScaling>
+            See full FEC record →
+          </Text>
+        </Pressable>
+      )}
 
       {/* ── Actions ── */}
       <View style={styles.actions}>
@@ -182,6 +194,9 @@ const styles = StyleSheet.create({
   // Since 2016 totals — smaller, contextual
   totalsSection:  { marginBottom: 10 },
   totalsRow:      { fontFamily: MONO, fontSize: 12, color: BLACK, marginBottom: 2 },
+
+  unavailableSection: { borderTopWidth: 2, borderColor: BLACK, paddingTop: 10, marginBottom: 10 },
+  unavailableText:    { fontFamily: MONO, fontSize: 13, color: MUTED },
 
   fecLinkRow:     { marginBottom: 12 },
   fecLink:        { fontFamily: MONO, fontSize: 11, color: BLUE, textDecorationLine: 'underline' },

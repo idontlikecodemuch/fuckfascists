@@ -8,7 +8,7 @@ interface HowItWorksScreenProps {
 
 const FEATURES = [
   {
-    icon: '\u{1F5FA}',  // 🗺
+    icon: '🗺',
     title: 'MAP',
     desc:  'Scan nearby businesses. Flag GOP donors on your map. Tap AVOIDED and move on.',
   },
@@ -18,7 +18,7 @@ const FEATURES = [
     desc:  'Check off the platforms and services you skipped this week.',
   },
   {
-    icon: '\u{1F4CB}', // 📋
+    icon: '📋',
     title: 'REPORT CARD',
     desc:  'Every Friday, your weekly impact drops — see it, share it, own it.',
   },

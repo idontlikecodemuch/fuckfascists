@@ -4,9 +4,9 @@ import type { Platform } from '../types';
  * Curated list of digital platforms and services tracked by the weekly survey.
  * Covers social media, shopping, streaming, rideshare, and news platforms.
  *
- * OpenSecrets org IDs are pre-populated where known; others are resolved at
+ * FEC committee IDs are pre-populated where known; others are resolved at
  * runtime via the matching pipeline. lastVerifiedDate marks when each entry
- * was last checked against OpenSecrets data.
+ * was last checked against FEC data.
  *
  * This list is intentionally separate from the main entity list — the Survey
  * focuses on platforms people interact with digitally every week, while the
@@ -19,7 +19,6 @@ export const TRACKED_PLATFORMS: Platform[] = [
     parentCompany: 'X Corp',
     ceoName: 'Linda Yaccarino',
     categoryTags: ['social'],
-    confidenceOverride: 'HIGH',
   },
   {
     id: 'facebook',
@@ -27,7 +26,6 @@ export const TRACKED_PLATFORMS: Platform[] = [
     parentCompany: 'Meta Platforms',
     ceoName: 'Mark Zuckerberg',
     categoryTags: ['social'],
-    confidenceOverride: 'HIGH',
   },
   {
     id: 'instagram',
@@ -35,7 +33,6 @@ export const TRACKED_PLATFORMS: Platform[] = [
     parentCompany: 'Meta Platforms',
     ceoName: 'Mark Zuckerberg',
     categoryTags: ['social'],
-    confidenceOverride: 'HIGH',
   },
   {
     id: 'amazon',
@@ -43,7 +40,6 @@ export const TRACKED_PLATFORMS: Platform[] = [
     parentCompany: 'Amazon.com Inc',
     ceoName: 'Andy Jassy',
     categoryTags: ['shopping', 'streaming'],
-    confidenceOverride: 'HIGH',
   },
   {
     id: 'youtube',
@@ -51,7 +47,6 @@ export const TRACKED_PLATFORMS: Platform[] = [
     parentCompany: 'Alphabet Inc',
     ceoName: 'Sundar Pichai',
     categoryTags: ['streaming', 'social'],
-    confidenceOverride: 'HIGH',
   },
   {
     id: 'uber',
@@ -73,7 +68,6 @@ export const TRACKED_PLATFORMS: Platform[] = [
     parentCompany: 'Walmart Inc',
     ceoName: 'Doug McMillon',
     categoryTags: ['shopping'],
-    confidenceOverride: 'HIGH',
   },
   {
     id: 'home-depot',
@@ -81,7 +75,6 @@ export const TRACKED_PLATFORMS: Platform[] = [
     parentCompany: 'Home Depot Inc',
     ceoName: 'Ted Decker',
     categoryTags: ['shopping'],
-    confidenceOverride: 'HIGH',
   },
   {
     id: 'fox-news',
@@ -89,7 +82,6 @@ export const TRACKED_PLATFORMS: Platform[] = [
     parentCompany: 'Fox Corp',
     ceoName: 'Lachlan Murdoch',
     categoryTags: ['news'],
-    confidenceOverride: 'HIGH',
   },
   {
     id: 'reddit',
@@ -104,6 +96,5 @@ export const TRACKED_PLATFORMS: Platform[] = [
     parentCompany: 'Amazon.com Inc',
     ceoName: 'Andy Jassy',
     categoryTags: ['streaming'],
-    confidenceOverride: 'HIGH',
   },
 ];

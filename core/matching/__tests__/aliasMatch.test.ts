@@ -9,7 +9,7 @@ const walmart: Entity = {
   domains: ['walmart.com'],
   categoryTags: ['retail'],
   ceoName: 'Doug McMillon',
-  openSecretsOrgId: 'D000000074',
+  fecCommitteeId: 'D000000074',
   matchScore: 1.0,
   lastVerifiedDate: '2024-01-01',
 };

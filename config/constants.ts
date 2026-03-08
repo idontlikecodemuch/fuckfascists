@@ -7,7 +7,7 @@ export const REPORT_CARD_WINDOW_DAY = 5;         // Friday (0 = Sunday)
 // Options: 'session' | 'daily' | 'weekly'
 export const EXTENSION_FLAG_FREQUENCY = 'session' as const;
 
-// OpenSecrets API cache TTL
+// FEC API cache TTL
 export const ENTITY_CACHE_TTL_DAYS = 60;
 
 // Confidence score thresholds (0–1 scale)

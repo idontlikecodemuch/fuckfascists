@@ -1,22 +1,20 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Marker } from 'react-native-maps';
-import type { ConfidenceLevel } from '../../../core/models';
+import { CONFIDENCE_THRESHOLD_HIGH } from '../../../config/constants';
 
 interface FlagMarkerProps {
   coordinate: { latitude: number; longitude: number };
   name: string;
-  confidence: ConfidenceLevel;
+  confidence: number; // 0–1 score
   avoided: boolean;
   onPress: () => void;
 }
 
 // 8-bit palette: red = HIGH confidence flagged, amber = MEDIUM, green = avoided
-const COLORS: Record<string, { bg: string; border: string }> = {
-  HIGH:    { bg: '#CC0000', border: '#7A0000' },
-  MEDIUM:  { bg: '#CC7A00', border: '#7A4800' },
-  AVOIDED: { bg: '#228B22', border: '#0D3D16' },
-};
+const COLOR_HIGH    = { bg: '#CC0000', border: '#7A0000' };
+const COLOR_MEDIUM  = { bg: '#CC7A00', border: '#7A4800' };
+const COLOR_AVOIDED = { bg: '#228B22', border: '#0D3D16' };
 
 /**
  * Pixel art–style map marker for a flagged (or avoided) business.
@@ -30,7 +28,8 @@ export function FlagMarker({
   avoided,
   onPress,
 }: FlagMarkerProps) {
-  const colors = avoided ? COLORS.AVOIDED : COLORS[confidence];
+  const confidenceLabel = confidence >= CONFIDENCE_THRESHOLD_HIGH ? 'HIGH' : 'MEDIUM';
+  const colors = avoided ? COLOR_AVOIDED : (confidence >= CONFIDENCE_THRESHOLD_HIGH ? COLOR_HIGH : COLOR_MEDIUM);
 
   return (
     <Marker
@@ -39,7 +38,7 @@ export function FlagMarker({
       accessibilityLabel={
         avoided
           ? `Avoided: ${name}`
-          : `Flagged business: ${name}. Confidence: ${confidence}. Tap for details.`
+          : `Flagged business: ${name}. Confidence: ${confidenceLabel}. Tap for details.`
       }
     >
       <View
