@@ -277,6 +277,16 @@ The weekly report card is a synchronized global event. Every user receives it at
                                  //   string — confirmed committee ID (populated by verify-entities.mjs)
                                  //   null   — confirmed no corporate PAC (see notes field)
                                  //   ""     — not yet verified (pipeline will attempt to fill)
+                                 // When fecCommitteeRecords is present, kept in sync with the active record's id.
+  fecCommitteeRecords?: FecCommitteeRecord[] // optional; full history of PAC records for this entity.
+                                 // The data pipeline uses the active record's id as the primary fetch target
+                                 // and logs dissolved records without fetching their data. Allows accurate
+                                 // data for entities with dissolved/re-registered PACs (e.g. att, verizon,
+                                 // exxonmobil, wells-fargo, goldman-sachs, apple, koch-industries).
+                                 // interface FecCommitteeRecord {
+                                 //   id: string; status: 'active' | 'dissolved';
+                                 //   registeredYear?: number; dissolvedYear?: number;
+                                 // }
   matchScore?: number            // 0–1 override; 1.0 = exact/certain; omit for normal scoring
   donationSummary?: DonationSummary // bundled by fetch-donation-data.mjs; pipeline uses this
                                  // directly when present and fresh (within ENTITY_CACHE_TTL_DAYS
@@ -490,40 +500,7 @@ After writing any file, scan it once for deprecated APIs, `.then()` chains, `var
 
 ---
 
-## Known Limitations / Pre-V2 Technical Debt
-
-### Multi-PAC entities (Priority: Pre-V2)
-Some entities have dissolved a former PAC and registered a new one. The current
-schema only supports a single `fecCommitteeId`. This means either historical data
-(from the old PAC) or current data (from the new PAC) may be missing depending
-on which ID is stored.
-
-Proposed V2 schema addition to Entity:
-
-```typescript
-interface FecCommitteeRecord {
-  id: string                  // e.g. "C00545277"
-  status: 'active' | 'dissolved'
-  registeredYear?: number     // e.g. 2025
-  dissolvedYear?: number      // e.g. 2022
-}
-
-fecCommitteeRecords?: FecCommitteeRecord[]
-```
-
-This allows V2 to aggregate totals across all PAC records, filter by cycle year
-against registeredYear/dissolvedYear to avoid double-counting, and surface
-"formerly known as X PAC" in the UI if useful.
-
-The existing `fecCommitteeId` field stays as the primary active ID for MVP.
-`fecCommitteeRecords` is additive and ignored until V2 builds support for it.
-
-Note: Rarely, a single entity may have more than one simultaneously active PAC
-(e.g. separate PACs for divisions). The array structure handles this case.
-When encountered, decide whether to aggregate both or use the primary/largest.
-
-Affected entities known so far: att, exxonmobil, verizon, wells-fargo,
-goldman-sachs, apple, koch-industries — all currently storing dissolved PAC IDs.
+## Known Limitations / Technical Debt
 
 `CYCLES_SINCE_2016` in `scripts/fetch-donation-data.mjs` and `CYCLES_SINCE_2016`
 in `core/api/FECClient.ts` must be updated manually when a new election cycle begins.

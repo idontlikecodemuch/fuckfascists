@@ -1,5 +1,20 @@
 import type { DonationSummary } from './cache';
 
+/**
+ * A single FEC committee record for an entity. Entities may have more than one
+ * PAC over time (dissolved + re-registered), or in rare cases multiple simultaneously
+ * active PACs (e.g. separate PACs for divisions).
+ *
+ * The data pipeline uses the active record's id as the primary fecCommitteeId for
+ * fetching. Dissolved records are logged but not fetched.
+ */
+export interface FecCommitteeRecord {
+  id: string;                        // e.g. "C00545277"
+  status: 'active' | 'dissolved';
+  registeredYear?: number;           // e.g. 2025
+  dissolvedYear?: number;            // e.g. 2022
+}
+
 export interface Entity {
   id: string;
   canonicalName: string;       // matches FEC committee/organization name
@@ -34,8 +49,22 @@ export interface Entity {
    *   string  — committee ID confirmed and populated by the data pipeline
    *   null    — confirmed no corporate PAC (e.g. Tesla; see notes field)
    *   ""      — not yet verified (default; pipeline will attempt to fill)
+   *
+   * When fecCommitteeRecords is present, the data pipeline uses the active
+   * record's id here as the primary fetch target.
    */
   fecCommitteeId?: string | null;
+  /**
+   * Optional. Full list of known FEC committee records for this entity, covering
+   * dissolved and active PACs. When present, the data pipeline uses the active
+   * record's id as the primary fecCommitteeId for fetching and logs dissolved
+   * records without fetching their data.
+   *
+   * Enables accurate data for entities that have dissolved a former PAC and
+   * registered a new one (e.g. att, exxonmobil, verizon, wells-fargo,
+   * goldman-sachs, apple, koch-industries).
+   */
+  fecCommitteeRecords?: FecCommitteeRecord[];
   /**
    * Optional override score between 0 and 1.
    * When present, the pipeline uses this instead of computing Jaro-Winkler.

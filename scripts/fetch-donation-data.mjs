@@ -256,22 +256,40 @@ async function main() {
   const failedIds = [];
 
   for (const entity of candidates) {
+    // If fecCommitteeRecords is present, use the active record's id for fetching.
+    // Log dissolved records and skip them — do not fetch their data.
+    let committeIdToFetch = entity.fecCommitteeId;
+    if (Array.isArray(entity.fecCommitteeRecords) && entity.fecCommitteeRecords.length > 0) {
+      const dissolved = entity.fecCommitteeRecords.filter((r) => r.status === 'dissolved');
+      const active    = entity.fecCommitteeRecords.filter((r) => r.status === 'active');
+      if (dissolved.length > 0) {
+        console.log(`  ↷ ${entity.id}: skipping ${dissolved.length} dissolved record(s): ${dissolved.map((r) => r.id).join(', ')}`);
+      }
+      if (active.length > 0) {
+        committeIdToFetch = active[0].id;
+        if (committeIdToFetch !== entity.fecCommitteeId) {
+          console.log(`  → ${entity.id}: using active fecCommitteeRecords id ${committeIdToFetch} (primary fecCommitteeId was ${entity.fecCommitteeId})`);
+          entity.fecCommitteeId = committeIdToFetch;
+        }
+      }
+    }
+
     if (!force && isFresh(entity)) {
       skipped++;
       continue;
     }
 
     try {
-      const summary = await fetchCommitteeTotals(entity.fecCommitteeId, apiKey);
+      const summary = await fetchCommitteeTotals(committeIdToFetch, apiKey);
       entity.donationSummary  = summary;
       entity.lastVerifiedDate = today();
       fetched++;
       const activityNote = summary.activeCycles.length === 0 ? ' (no activity on record)' : '';
-      console.log(`  ✓ ${entity.id} (${entity.fecCommitteeId}) — ${summary.committeeName}${activityNote}`);
+      console.log(`  ✓ ${entity.id} (${committeIdToFetch}) — ${summary.committeeName}${activityNote}`);
     } catch (err) {
       failed++;
       failedIds.push(entity.id);
-      console.error(`  ✗ ${entity.id} (${entity.fecCommitteeId}) — ${err.message}`);
+      console.error(`  ✗ ${entity.id} (${committeIdToFetch}) — ${err.message}`);
     }
 
     await delay(REQUEST_DELAY_MS);
