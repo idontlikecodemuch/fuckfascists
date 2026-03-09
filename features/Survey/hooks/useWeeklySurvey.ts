@@ -8,6 +8,7 @@ export interface WeeklySurveyState {
   weekOf: string;
   items: SurveyItem[];
   loading: boolean;
+  error: string | null;
   /** Marks a platform as avoided for the current week and persists immediately. */
   avoid: (platformId: string) => Promise<void>;
 }
@@ -26,27 +27,39 @@ export function useWeeklySurvey(
   const weekOf = getMondayOf(new Date());
   const [avoidedIds, setAvoidedIds] = useState<ReadonlySet<string>>(new Set());
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
-    adapter.getPlatformAvoids(weekOf).then((events) => {
-      if (cancelled) return;
-      setAvoidedIds(new Set(events.map((e) => e.platformId)));
-      setLoading(false);
-    });
+    (async () => {
+      try {
+        const events = await adapter.getPlatformAvoids(weekOf);
+        if (cancelled) return;
+        setAvoidedIds(new Set(events.map((e) => e.platformId)));
+        setLoading(false);
+      } catch (err) {
+        if (cancelled) return;
+        setLoading(false);
+        setError((err as Error).message);
+      }
+    })();
     return () => { cancelled = true; };
   }, [adapter, weekOf]);
 
   const avoid = useCallback(
     async (platformId: string) => {
       if (avoidedIds.has(platformId)) return; // idempotent
-      await recordPlatformAvoid(adapter, platformId);
-      setAvoidedIds((prev) => new Set([...prev, platformId]));
+      try {
+        await recordPlatformAvoid(adapter, platformId);
+        setAvoidedIds((prev) => new Set([...prev, platformId]));
+      } catch (err) {
+        setError((err as Error).message);
+      }
     },
     [adapter, avoidedIds]
   );
 
   const items = buildSurveyItems(platforms, avoidedIds);
 
-  return { weekOf, items, loading, avoid };
+  return { weekOf, items, loading, error, avoid };
 }

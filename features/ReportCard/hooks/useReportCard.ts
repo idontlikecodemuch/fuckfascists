@@ -15,24 +15,32 @@ export function useReportCard(
   platforms: Platform[],
   weekOf: string,
   isPreview: boolean
-): { data: ReportCardData | null; loading: boolean } {
+): { data: ReportCardData | null; loading: boolean; error: string | null } {
   const [data, setData] = useState<ReportCardData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
     setData(null);
+    setError(null);
 
-    generateReportCard(adapter, entities, platforms, weekOf, isPreview).then((card) => {
-      if (!cancelled) {
+    (async () => {
+      try {
+        const card = await generateReportCard(adapter, entities, platforms, weekOf, isPreview);
+        if (cancelled) return;
         setData(card);
         setLoading(false);
+      } catch (err) {
+        if (cancelled) return;
+        setLoading(false);
+        setError((err as Error).message);
       }
-    });
+    })();
 
     return () => { cancelled = true; };
   }, [adapter, entities, platforms, weekOf, isPreview]);
 
-  return { data, loading };
+  return { data, loading, error };
 }

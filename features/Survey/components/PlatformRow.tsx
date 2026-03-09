@@ -4,7 +4,7 @@ import type { SurveyItem } from '../types';
 
 interface PlatformRowProps {
   item: SurveyItem;
-  onAvoid: () => void;
+  onAvoid: () => Promise<void>;
 }
 
 /**
@@ -17,7 +17,7 @@ export function PlatformRow({ item, onAvoid }: PlatformRowProps) {
 
   return (
     <Pressable
-      onPress={avoided ? undefined : onAvoid}
+      onPress={avoided ? undefined : async () => { await onAvoid(); }}
       disabled={avoided}
       style={[styles.row, avoided && styles.rowAvoided]}
       accessibilityRole="checkbox"
