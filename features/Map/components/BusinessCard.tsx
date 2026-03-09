@@ -11,6 +11,8 @@ import { SHOW_FIGURE_NAME_IN_CARD, CONFIDENCE_THRESHOLD_HIGH } from '../../../co
 interface BusinessCardProps {
   result: ScanResult;
   onAvoid: () => Promise<void>;
+  /** When true, the avoid button is disabled (e.g. entity not in curated list). */
+  avoidDisabled?: boolean;
   onDismiss: () => void;
   /** Full entity list — enables parent attribution when an entity has a parentEntityId. */
   allEntities?: Entity[];
@@ -43,7 +45,7 @@ function ConfidenceBadge({ level }: { level: number }) {
  *  - Never claims more certainty than the data supports.
  *  - Recent cycle is visually prominent; historical totals are secondary.
  */
-export function BusinessCard({ result, onAvoid, onDismiss, allEntities }: BusinessCardProps) {
+export function BusinessCard({ result, onAvoid, avoidDisabled = false, onDismiss, allEntities }: BusinessCardProps) {
   const { canonicalName, confidence, donationSummary, entity, fecFilingUrl } = result;
 
   // Prefer donationSummary's URL (has verified committee ID); fall back to ScanResult's fecFilingUrl.
@@ -149,7 +151,7 @@ export function BusinessCard({ result, onAvoid, onDismiss, allEntities }: Busine
 
       {/* ── Actions ── */}
       <View style={styles.actions}>
-        <AvoidButton onPress={onAvoid} />
+        <AvoidButton onPress={onAvoid} disabled={avoidDisabled} />
         <Pressable
           onPress={onDismiss}
           style={styles.dismissButton}

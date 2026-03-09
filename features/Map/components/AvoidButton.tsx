@@ -17,25 +17,35 @@ interface AvoidButtonProps {
  */
 export function AvoidButton({ onPress, disabled = false }: AvoidButtonProps) {
   const [confirmed, setConfirmed] = useState(false);
+  const [error, setError] = useState(false);
 
   async function handlePress() {
     if (confirmed || disabled) return;
     setConfirmed(true);
-    await onPress();
+    setError(false);
+    try {
+      await onPress();
+    } catch {
+      setConfirmed(false);
+      setError(true);
+    }
   }
+
+  const label = error ? 'Try again' : confirmed ? '\u2713 AVOIDED' : 'AVOIDED';
+  const accessLabel = error ? 'Avoid failed — try again' : confirmed ? 'Avoided — confirmed' : 'Mark as avoided';
 
   return (
     <Pressable
       onPress={handlePress}
       disabled={confirmed || disabled}
-      style={[styles.button, confirmed && styles.confirmed]}
+      style={[styles.button, confirmed && styles.confirmed, error && styles.errored]}
       accessibilityRole="button"
-      accessibilityLabel={confirmed ? 'Avoided — confirmed' : 'Mark as avoided'}
+      accessibilityLabel={accessLabel}
       accessibilityState={{ disabled: confirmed || disabled }}
       hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
     >
       <Text style={styles.label} allowFontScaling>
-        {confirmed ? '\u2713 AVOIDED' : 'AVOIDED'}
+        {label}
       </Text>
     </Pressable>
   );
@@ -56,6 +66,10 @@ const styles = StyleSheet.create({
   confirmed: {
     backgroundColor: '#228B22',
     borderColor: '#0D3D16',
+  },
+  errored: {
+    backgroundColor: '#CC7A00',
+    borderColor: '#7A4800',
   },
   label: {
     fontFamily: 'monospace',

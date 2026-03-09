@@ -97,6 +97,8 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
 
   const handleAvoid = useCallback(async () => {
     if (!activeResult) return;
+    // V2: allow fuzzy-matched avoidance with committee ID as fallback key
+    if (!activeResult.entity) return;
     const entityId = activeResult.entityId ?? activeResult.fecCommitteeId;
     await recordEntityAvoid(adapter, entityId);
 
@@ -208,6 +210,7 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
           <BusinessCard
             result={activeResult}
             onAvoid={handleAvoid}
+            avoidDisabled={!activeResult.entity}
             onDismiss={handleDismiss}
           />
         </View>
