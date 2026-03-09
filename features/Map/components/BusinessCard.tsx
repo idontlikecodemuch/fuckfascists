@@ -19,10 +19,11 @@ interface BusinessCardProps {
 // ── Sub-components ────────────────────────────────────────────────────────────
 
 function ConfidenceBadge({ level }: { level: number }) {
-  const label = level >= CONFIDENCE_THRESHOLD_HIGH ? 'HIGH' : 'MEDIUM';
+  const isVerified = level === 1.0;
+  const label = isVerified ? 'VERIFIED' : 'MATCHED';
   return (
     <View
-      style={[styles.badge, level >= CONFIDENCE_THRESHOLD_HIGH ? styles.badgeHigh : styles.badgeMedium]}
+      style={[styles.badge, isVerified ? styles.badgeVerified : styles.badgeMatched]}
       accessibilityLabel={`Confidence: ${label}`}
     >
       <Text style={styles.badgeText}>{label}</Text>
@@ -182,8 +183,8 @@ const styles = StyleSheet.create({
   parentAttribution: { fontFamily: MONO, fontSize: 11, color: MUTED, marginTop: 1 },
   disclaimer:     { fontFamily: MONO, fontSize: 11, color: AMBER, marginTop: 4 },
   badge:          { paddingHorizontal: 6, paddingVertical: 2, borderWidth: 2 },
-  badgeHigh:      { backgroundColor: RED, borderColor: '#7A0000' },
-  badgeMedium:    { backgroundColor: AMBER, borderColor: '#7A4800' },
+  badgeVerified:  { backgroundColor: '#2E7D32', borderColor: '#1B5E20' },
+  badgeMatched:   { backgroundColor: AMBER, borderColor: '#7A4800' },
   badgeText:      { fontFamily: MONO, fontSize: 10, color: WHITE, fontWeight: 'bold' },
 
   // Recent cycle — visually prominent

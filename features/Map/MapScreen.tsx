@@ -88,8 +88,12 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
     // DIAGNOSTIC — remove before ship
     console.log('[MapScreen] handleSearch fired — searchText:', JSON.stringify(searchText), 'entities:', entities.length, 'status:', status);
     if (!searchText.trim()) return;
+    // Clear previous card, pins, and scan state before each new search.
+    setActiveResult(null);
+    setPins([]);
+    reset();
     await scan(searchText);
-  }, [searchText, scan, entities.length, status]);
+  }, [searchText, scan, reset, entities.length, status]);
 
   const handleAvoid = useCallback(async () => {
     if (!activeResult) return;
