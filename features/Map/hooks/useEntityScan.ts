@@ -45,6 +45,8 @@ export function useEntityScan(deps: MatchingDeps, areaHash: string) {
           error: null,
         });
       } catch (err) {
+        // DIAGNOSTIC — remove before ship
+        console.error('[useEntityScan] matchEntity threw:', err);
         setState({
           status: 'error',
           result: null,
