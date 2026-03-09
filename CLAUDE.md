@@ -278,15 +278,15 @@ The weekly report card is a synchronized global event. Every user receives it at
                                  //   null   — confirmed no corporate PAC (see notes field)
                                  //   ""     — not yet verified (pipeline will attempt to fill)
                                  // When fecCommitteeRecords is present, kept in sync with the active record's id.
-  fecCommitteeRecords?: FecCommitteeRecord[] // optional; full history of PAC records for this entity.
-                                 // The data pipeline uses the active record's id as the primary fetch target
-                                 // and logs dissolved records without fetching their data. Allows accurate
-                                 // data for entities with dissolved/re-registered PACs (e.g. att, verizon,
-                                 // exxonmobil, wells-fargo, goldman-sachs, apple, koch-industries).
-                                 // interface FecCommitteeRecord {
-                                 //   id: string; status: 'active' | 'dissolved';
-                                 //   registeredYear?: number; dissolvedYear?: number;
-                                 // }
+  fecCommitteeRecords?: FecCommitteeRecord[] // full history of PAC records for this entity
+                                 // (dissolved + active). When present, the data pipeline uses
+                                 // the active record's id as the primary fecCommitteeId fetch
+                                 // target and logs dissolved records without fetching their data.
+                                 // Handles entities that dissolved a former PAC and registered a
+                                 // new one (e.g. att, exxonmobil, verizon, wells-fargo,
+                                 // goldman-sachs, apple, koch-industries).
+                                 // FecCommitteeRecord: { id, status: 'active'|'dissolved',
+                                 //   registeredYear?, dissolvedYear? }
   verificationStatus: 'manual' | 'pipeline' | 'unverified'
                                  //   'manual'     — set by a human maintainer; pipeline skips unless --force
                                  //   'pipeline'   — confirmed by verify-entities.mjs via FEC API + JW score
