@@ -10,6 +10,7 @@ const validEntity: Entity = {
   domains: ['walmart.com'],
   categoryTags: ['retail'],
   ceoName: 'Doug McMillon',
+  verificationStatus: 'unverified',
   lastVerifiedDate: '2024-01-01',
 };
 

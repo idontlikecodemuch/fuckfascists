@@ -12,7 +12,7 @@ const walmartEntity: Entity = {
   categoryTags: ['retail'],
   ceoName: 'Doug McMillon',
   fecCommitteeId: 'D000000074',
-  matchScore: 1.0,
+  verificationStatus: 'pipeline',
   lastVerifiedDate: '2024-01-01',
 };
 
@@ -23,6 +23,7 @@ const entityWithoutOrgId: Entity = {
   domains: [],
   categoryTags: ['food'],
   ceoName: 'Jane Doe',
+  verificationStatus: 'unverified',
   lastVerifiedDate: '2024-01-01',
 };
 
@@ -232,34 +233,15 @@ describe('matchScore override', () => {
     expect(deps.fetchOrgs).not.toHaveBeenCalled();
   });
 
-  it('returns MEDIUM confidence when matchScore is 0.75', async () => {
-    const mediumEntity: Entity = {
-      ...walmartEntity,
-      id: 'medium-test',
-      matchScore: 0.75,
-    };
-    const deps = makeDeps({ entities: [mediumEntity] });
+  it('returns HIGH confidence (1.0) for all curated alias matches', async () => {
+    const deps = makeDeps({ entities: [walmartEntity] });
 
     const result = await matchEntity('Walmart', deps);
 
     expect(result.matched).toBe(true);
     if (result.matched) {
-      expect(result.confidence).toBeGreaterThanOrEqual(0.60);
-      expect(result.confidence).toBeLessThan(0.85);
+      expect(result.confidence).toBe(1.0);
     }
     expect(deps.fetchOrgs).not.toHaveBeenCalled();
-  });
-
-  it('returns MatchFailure when matchScore is below the MEDIUM threshold', async () => {
-    const lowScoreEntity: Entity = {
-      ...walmartEntity,
-      id: 'low-score-test',
-      matchScore: 0.4,
-    };
-    const deps = makeDeps({ entities: [lowScoreEntity] });
-
-    const result = await matchEntity('Walmart', deps);
-
-    expect(result.matched).toBe(false);
   });
 });

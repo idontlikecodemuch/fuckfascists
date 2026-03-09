@@ -22,7 +22,6 @@
         "retail"
       ],
       "ceoName": "Doug McMillon",
-      "matchScore": 1,
       "lastVerifiedDate": "2026-03-09",
       "fecCommitteeId": "C00093054",
       "donationSummary": {
@@ -42,7 +41,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00093054/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "amazon",
@@ -76,7 +76,6 @@
       ],
       "ceoName": "Andy Jassy",
       "publicFigureName": "Jeff Bezos",
-      "matchScore": 1,
       "lastVerifiedDate": "2026-03-09",
       "fecCommitteeId": "C00360354",
       "donationSummary": {
@@ -96,7 +95,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00360354/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "meta",
@@ -123,7 +123,6 @@
       ],
       "ceoName": "Mark Zuckerberg",
       "publicFigureName": "Mark Zuckerberg",
-      "matchScore": 1,
       "lastVerifiedDate": "2026-03-09",
       "fecCommitteeId": "C00502906",
       "donationSummary": {
@@ -143,7 +142,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00502906/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "x-twitter",
@@ -164,8 +164,8 @@
       ],
       "ceoName": "Elon Musk",
       "publicFigureName": "Elon Musk",
-      "matchScore": 1,
-      "lastVerifiedDate": "2026-03-04"
+      "lastVerifiedDate": "2026-03-04",
+      "verificationStatus": "unverified"
     },
     {
       "id": "tesla",
@@ -184,10 +184,10 @@
       ],
       "ceoName": "Elon Musk",
       "publicFigureName": "Elon Musk",
-      "matchScore": 1,
       "notes": "No corporate PAC — Elon Musk donates personally via America PAC. See people.json for individual donations.",
       "fecCommitteeId": null,
-      "lastVerifiedDate": "2026-03-04"
+      "lastVerifiedDate": "2026-03-04",
+      "verificationStatus": "manual"
     },
     {
       "id": "spacex",
@@ -207,7 +207,6 @@
       ],
       "ceoName": "Elon Musk",
       "publicFigureName": "Elon Musk",
-      "matchScore": 1,
       "lastVerifiedDate": "2026-03-09",
       "fecCommitteeId": "C00411116",
       "donationSummary": {
@@ -227,7 +226,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00411116/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "target",
@@ -244,7 +244,6 @@
         "retail"
       ],
       "ceoName": "Brian Cornell",
-      "matchScore": 1,
       "lastVerifiedDate": "2026-03-09",
       "fecCommitteeId": "C00098061",
       "donationSummary": {
@@ -264,7 +263,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00098061/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "home-depot",
@@ -280,7 +280,6 @@
         "retail"
       ],
       "ceoName": "Ted Decker",
-      "matchScore": 1,
       "lastVerifiedDate": "2026-03-09",
       "fecCommitteeId": "C00284885",
       "donationSummary": {
@@ -300,7 +299,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00284885/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "lowes",
@@ -317,7 +317,6 @@
         "retail"
       ],
       "ceoName": "Marvin Ellison",
-      "matchScore": 1,
       "lastVerifiedDate": "2026-03-09",
       "fecCommitteeId": "C00251751",
       "donationSummary": {
@@ -337,7 +336,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00251751/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "dollar-general",
@@ -355,8 +355,8 @@
         "retail"
       ],
       "ceoName": "Todd Vasos",
-      "matchScore": 1,
-      "lastVerifiedDate": "2026-03-04"
+      "lastVerifiedDate": "2026-03-04",
+      "verificationStatus": "unverified"
     },
     {
       "id": "hobby-lobby",
@@ -373,8 +373,8 @@
       ],
       "ceoName": "David Green",
       "publicFigureName": "David Green",
-      "matchScore": 1,
-      "lastVerifiedDate": "2026-03-04"
+      "lastVerifiedDate": "2026-03-04",
+      "verificationStatus": "unverified"
     },
     {
       "id": "att",
@@ -394,7 +394,6 @@
         "telecom"
       ],
       "ceoName": "John Stankey",
-      "matchScore": 1,
       "lastVerifiedDate": "2026-03-09",
       "fecCommitteeId": "C00545277",
       "notes": "PAC dissolved, historical data still accessible via FEC | Former PAC: C00545277 (dissolved) | Active PAC ID unverified",
@@ -409,7 +408,8 @@
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00545277/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "comcast",
@@ -432,7 +432,6 @@
         "media"
       ],
       "ceoName": "Brian Roberts",
-      "matchScore": 1,
       "lastVerifiedDate": "2026-03-09",
       "fecCommitteeId": "C00248716",
       "donationSummary": {
@@ -452,7 +451,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00248716/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "chevron",
@@ -469,7 +469,6 @@
         "energy"
       ],
       "ceoName": "Mike Wirth",
-      "matchScore": 1,
       "lastVerifiedDate": "2026-03-09",
       "fecCommitteeId": "C00035006",
       "donationSummary": {
@@ -489,7 +488,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00035006/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "exxonmobil",
@@ -509,7 +509,6 @@
         "energy"
       ],
       "ceoName": "Darren Woods",
-      "matchScore": 1,
       "lastVerifiedDate": "2026-03-09",
       "fecCommitteeId": "C00457523",
       "notes": "PAC dissolved, historical data still accessible via FEC | Former PAC: C00457523 (dissolved) | Active PAC ID unverified",
@@ -524,7 +523,8 @@
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00457523/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "koch-industries",
@@ -555,7 +555,6 @@
       ],
       "ceoName": "Charles Koch",
       "publicFigureName": "Charles Koch",
-      "matchScore": 1,
       "lastVerifiedDate": "2026-03-09",
       "fecCommitteeId": "C70005079",
       "notes": "PAC dissolved, historical data still accessible via FEC | Former PAC: C70005079 (dissolved) | Active PAC ID unverified",
@@ -570,7 +569,8 @@
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C70005079/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "goldman-sachs",
@@ -589,7 +589,6 @@
         "finance"
       ],
       "ceoName": "David Solomon",
-      "matchScore": 1,
       "lastVerifiedDate": "2026-03-09",
       "fecCommitteeId": "C00456210",
       "notes": "PAC dissolved, historical data still accessible via FEC | Former PAC: C00456210 (dissolved) | Active PAC ID unverified",
@@ -604,7 +603,8 @@
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00456210/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "jpmorgan-chase",
@@ -625,7 +625,6 @@
         "finance"
       ],
       "ceoName": "Jamie Dimon",
-      "matchScore": 1,
       "lastVerifiedDate": "2026-03-09",
       "fecCommitteeId": "C00128512",
       "donationSummary": {
@@ -645,7 +644,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00128512/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "blackstone",
@@ -661,8 +661,8 @@
         "finance"
       ],
       "ceoName": "Stephen Schwarzman",
-      "matchScore": 1,
-      "lastVerifiedDate": "2026-03-04"
+      "lastVerifiedDate": "2026-03-04",
+      "verificationStatus": "unverified"
     },
     {
       "id": "bank-of-america",
@@ -683,7 +683,6 @@
         "finance"
       ],
       "ceoName": "Brian Moynihan",
-      "matchScore": 1,
       "lastVerifiedDate": "2026-03-09",
       "fecCommitteeId": "C00364778",
       "donationSummary": {
@@ -703,7 +702,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00364778/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "wells-fargo",
@@ -720,7 +720,6 @@
         "finance"
       ],
       "ceoName": "Charlie Scharf",
-      "matchScore": 1,
       "lastVerifiedDate": "2026-03-09",
       "fecCommitteeId": "C00142844",
       "notes": "PAC dissolved, historical data still accessible via FEC | Former PAC: C00142844 (dissolved) | Active PAC ID unverified",
@@ -735,7 +734,8 @@
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00142844/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "mcdonalds",
@@ -752,7 +752,6 @@
         "food"
       ],
       "ceoName": "Chris Kempczinski",
-      "matchScore": 1,
       "lastVerifiedDate": "2026-03-09",
       "fecCommitteeId": "C00063164",
       "donationSummary": {
@@ -772,7 +771,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00063164/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "tyson-foods",
@@ -793,7 +793,6 @@
         "food"
       ],
       "ceoName": "Donnie King",
-      "matchScore": 1,
       "lastVerifiedDate": "2026-03-09",
       "fecCommitteeId": "C00169821",
       "donationSummary": {
@@ -813,7 +812,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00169821/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "fedex",
@@ -831,7 +831,6 @@
         "retail"
       ],
       "ceoName": "Raj Subramaniam",
-      "matchScore": 1,
       "lastVerifiedDate": "2026-03-09",
       "fecCommitteeId": "C00068692",
       "donationSummary": {
@@ -851,7 +850,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00068692/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "altria",
@@ -870,7 +870,6 @@
         "consumer-goods"
       ],
       "ceoName": "Billy Gifford",
-      "matchScore": 1,
       "lastVerifiedDate": "2026-03-09",
       "fecCommitteeId": "C00089136",
       "donationSummary": {
@@ -890,7 +889,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00089136/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "lockheed-martin",
@@ -907,7 +907,6 @@
         "defense"
       ],
       "ceoName": "Jim Taiclet",
-      "matchScore": 1,
       "lastVerifiedDate": "2026-03-09",
       "fecCommitteeId": "C00303024",
       "donationSummary": {
@@ -927,7 +926,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00303024/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "uline",
@@ -944,9 +944,9 @@
       ],
       "ceoName": "Richard Uihlein",
       "publicFigureName": "Richard Uihlein",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-04"
+      "lastVerifiedDate": "2026-03-04",
+      "verificationStatus": "unverified"
     },
     {
       "id": "kroger",
@@ -979,9 +979,9 @@
         "grocery"
       ],
       "ceoName": "Rodney McMullen",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "costco",
@@ -1000,9 +1000,9 @@
         "grocery"
       ],
       "ceoName": "Ron Vachris",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "walgreens",
@@ -1024,7 +1024,6 @@
         "pharmacy"
       ],
       "ceoName": "Tim Wentworth",
-      "matchScore": 1,
       "fecCommitteeId": "C00160770",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -1044,7 +1043,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00160770/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "cvs-health",
@@ -1068,7 +1068,6 @@
         "pharmacy"
       ],
       "ceoName": "David Joyner",
-      "matchScore": 1,
       "fecCommitteeId": "C00384818",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -1088,7 +1087,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00384818/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "best-buy",
@@ -1106,7 +1106,6 @@
         "electronics"
       ],
       "ceoName": "Corie Barry",
-      "matchScore": 1,
       "fecCommitteeId": "C00405076",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -1126,7 +1125,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00405076/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "tjx-companies",
@@ -1153,9 +1153,9 @@
         "apparel"
       ],
       "ceoName": "Ernie Herrman",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "dollar-tree",
@@ -1172,7 +1172,6 @@
         "retail"
       ],
       "ceoName": "Mike Creedon",
-      "matchScore": 1,
       "fecCommitteeId": "C00657858",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -1191,7 +1190,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00657858/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "albertsons",
@@ -1222,9 +1222,9 @@
         "grocery"
       ],
       "ceoName": "Vivek Sankaran",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "publix",
@@ -1242,7 +1242,6 @@
         "grocery"
       ],
       "ceoName": "Kevin Murphy",
-      "matchScore": 1,
       "fecCommitteeId": "C00400705",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -1262,7 +1261,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00400705/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "macys",
@@ -1283,7 +1283,6 @@
         "apparel"
       ],
       "ceoName": "Tony Spring",
-      "matchScore": 1,
       "fecCommitteeId": "C00144311",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -1303,7 +1302,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00144311/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "gap-inc",
@@ -1327,7 +1327,6 @@
         "apparel"
       ],
       "ceoName": "Richard Dickson",
-      "matchScore": 1,
       "fecCommitteeId": "C00257246",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -1347,7 +1346,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00257246/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "gamestop",
@@ -1364,9 +1364,9 @@
         "gaming"
       ],
       "ceoName": "Ryan Cohen",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "foot-locker",
@@ -1390,9 +1390,9 @@
         "footwear"
       ],
       "ceoName": "Mary Dillon",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "nordstrom",
@@ -1411,9 +1411,9 @@
         "apparel"
       ],
       "ceoName": "Erik Nordstrom",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "kohls",
@@ -1430,9 +1430,9 @@
         "apparel"
       ],
       "ceoName": "Tom Kingsbury",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "jcpenney",
@@ -1452,7 +1452,8 @@
       ],
       "ceoName": "Marc Rosen",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "grocery-outlet",
@@ -1470,7 +1471,8 @@
       ],
       "ceoName": "RJ Sheedy",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "michaels",
@@ -1488,7 +1490,6 @@
         "crafts"
       ],
       "ceoName": "Ashley Buchanan",
-      "matchScore": 1,
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -1503,7 +1504,8 @@
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00417410/"
       },
-      "note": "Confirmed no corporate PAC — false positive match to MICHAELS FOR CONGRESS (congressional campaign)"
+      "note": "Confirmed no corporate PAC — false positive match to MICHAELS FOR CONGRESS (congressional campaign)",
+      "verificationStatus": "manual"
     },
     {
       "id": "jo-ann",
@@ -1521,7 +1523,6 @@
         "crafts"
       ],
       "ceoName": "Chris DiTullio",
-      "matchScore": 1,
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -1536,7 +1537,8 @@
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00832998/"
       },
-      "note": "Confirmed no corporate PAC — false positive match to JOANNA RODRIGUEZ (individual campaign)"
+      "note": "Confirmed no corporate PAC — false positive match to JOANNA RODRIGUEZ (individual campaign)",
+      "verificationStatus": "manual"
     },
     {
       "id": "williams-sonoma",
@@ -1564,9 +1566,9 @@
         "home"
       ],
       "ceoName": "Laura Alber",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "crate-and-barrel",
@@ -1587,7 +1589,8 @@
       ],
       "ceoName": "Janet Hayes",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "five-below",
@@ -1602,9 +1605,9 @@
         "retail"
       ],
       "ceoName": "Joel Anderson",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "aldi",
@@ -1621,9 +1624,9 @@
         "grocery"
       ],
       "ceoName": "Jason Hart",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "lidl",
@@ -1640,7 +1643,8 @@
       ],
       "ceoName": "Joel Rampoldt",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "trader-joes",
@@ -1657,9 +1661,9 @@
         "grocery"
       ],
       "ceoName": "Bryan Palbaum",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "bjs-wholesale",
@@ -1677,9 +1681,9 @@
         "grocery"
       ],
       "ceoName": "Bob Eddy",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "menards",
@@ -1697,9 +1701,9 @@
       ],
       "ceoName": "John Menard Jr",
       "publicFigureName": "John Menard Jr",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "ace-hardware",
@@ -1716,7 +1720,6 @@
         "home-improvement"
       ],
       "ceoName": "John Venhuizen",
-      "matchScore": 1,
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -1731,7 +1734,8 @@
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00927723/"
       },
-      "note": "Confirmed no corporate PAC — false positive match to ACE PARSI FOR CONGRESS (WV congressional candidate)"
+      "note": "Confirmed no corporate PAC — false positive match to ACE PARSI FOR CONGRESS (WV congressional candidate)",
+      "verificationStatus": "manual"
     },
     {
       "id": "true-value",
@@ -1762,7 +1766,8 @@
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00925933/"
       },
-      "note": "Confirmed no corporate PAC — false positive match to TRUE TEXAS VALUES PAC (unrelated advocacy PAC)"
+      "note": "Confirmed no corporate PAC — false positive match to TRUE TEXAS VALUES PAC (unrelated advocacy PAC)",
+      "verificationStatus": "manual"
     },
     {
       "id": "sherwin-williams",
@@ -1783,7 +1788,6 @@
         "home-improvement"
       ],
       "ceoName": "Heidi Petz",
-      "matchScore": 1,
       "fecCommitteeId": "C00170027",
       "lastVerifiedDate": "2026-03-09",
       "notes": "PAC dissolved, historical data still accessible via FEC",
@@ -1798,7 +1802,8 @@
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00170027/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "ulta-beauty",
@@ -1816,9 +1821,9 @@
         "beauty"
       ],
       "ceoName": "Kecia Steelman",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "sephora",
@@ -1834,10 +1839,10 @@
         "beauty"
       ],
       "ceoName": "Guillaume Motte",
-      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05",
-      "parentEntityId": "lvmh"
+      "parentEntityId": "lvmh",
+      "verificationStatus": "unverified"
     },
     {
       "id": "barnes-and-noble",
@@ -1857,9 +1862,9 @@
         "books"
       ],
       "ceoName": "James Daunt",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "chewy",
@@ -1875,9 +1880,9 @@
         "pets"
       ],
       "ceoName": "Sumit Singh",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "wayfair",
@@ -1901,7 +1906,6 @@
         "home"
       ],
       "ceoName": "Niraj Shah",
-      "matchScore": 1,
       "fecCommitteeId": "C00689752",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -1920,7 +1924,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00689752/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "etsy",
@@ -1940,9 +1945,9 @@
         "marketplace"
       ],
       "ceoName": "Josh Silverman",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "ebay",
@@ -1959,7 +1964,6 @@
         "marketplace"
       ],
       "ceoName": "Jamie Iannone",
-      "matchScore": 1,
       "fecCommitteeId": "C00342394",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -1979,7 +1983,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00342394/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "shein",
@@ -1997,7 +2002,6 @@
         "apparel"
       ],
       "ceoName": "Sky Xu",
-      "matchScore": 1,
       "fecCommitteeId": "C00900340",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -2011,7 +2015,8 @@
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00900340/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "hm",
@@ -2036,9 +2041,9 @@
         "apparel"
       ],
       "ceoName": "Daniel Ervér",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "zara",
@@ -2060,9 +2065,9 @@
         "apparel"
       ],
       "ceoName": "Oscar Garcia Maceiras",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "forever-21",
@@ -2079,9 +2084,9 @@
         "apparel"
       ],
       "ceoName": "Daniel Kulle",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "american-eagle",
@@ -2102,7 +2107,6 @@
         "apparel"
       ],
       "ceoName": "Jay Schottenstein",
-      "matchScore": 1,
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-09",
       "notes": "PAC dissolved, historical data still accessible via FEC",
@@ -2118,7 +2122,8 @@
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00237040/"
       },
-      "note": "Confirmed no corporate PAC — false positive match to AMERICAN EAGLES; THE (unrelated)"
+      "note": "Confirmed no corporate PAC — false positive match to AMERICAN EAGLES; THE (unrelated)",
+      "verificationStatus": "manual"
     },
     {
       "id": "abercrombie-fitch",
@@ -2140,9 +2145,9 @@
         "apparel"
       ],
       "ceoName": "Fran Horowitz",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "hot-topic",
@@ -2162,7 +2167,8 @@
       ],
       "ceoName": "Kathryn Merrical",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "big-lots",
@@ -2177,9 +2183,9 @@
         "retail"
       ],
       "ceoName": "Bruce Thorn",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "winn-dixie",
@@ -2198,10 +2204,10 @@
         "grocery"
       ],
       "ceoName": "Anthony Hucker",
-      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05",
-      "parentEntityId": "aldi"
+      "parentEntityId": "aldi",
+      "verificationStatus": "unverified"
     },
     {
       "id": "food-lion",
@@ -2217,10 +2223,10 @@
         "grocery"
       ],
       "ceoName": "Meg Ham",
-      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05",
-      "parentEntityId": "ahold-delhaize"
+      "parentEntityId": "ahold-delhaize",
+      "verificationStatus": "unverified"
     },
     {
       "id": "hy-vee",
@@ -2256,7 +2262,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00243659/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "meijer",
@@ -2272,7 +2279,6 @@
         "grocery"
       ],
       "ceoName": "Rick Keyes",
-      "matchScore": 1,
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -2289,7 +2295,8 @@
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00855668/"
       },
-      "note": "Confirmed no corporate PAC — false positive match to MEIJER FOR SENATE INC (Peter Meijer Senate campaign)"
+      "note": "Confirmed no corporate PAC — false positive match to MEIJER FOR SENATE INC (Peter Meijer Senate campaign)",
+      "verificationStatus": "manual"
     },
     {
       "id": "autozone",
@@ -2306,7 +2313,6 @@
         "automotive"
       ],
       "ceoName": "Phil Daniele",
-      "matchScore": 1,
       "fecCommitteeId": "C00233056",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -2326,7 +2332,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00233056/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "oreilly-auto",
@@ -2345,9 +2352,9 @@
         "automotive"
       ],
       "ceoName": "Brad Beckham",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "advance-auto-parts",
@@ -2366,9 +2373,9 @@
         "automotive"
       ],
       "ceoName": "Shane O'Kelly",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "autonation",
@@ -2385,7 +2392,6 @@
         "retail"
       ],
       "ceoName": "Mike Manley",
-      "matchScore": 1,
       "fecCommitteeId": "C00330514",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -2405,7 +2411,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00330514/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "carmax",
@@ -2422,9 +2429,9 @@
         "retail"
       ],
       "ceoName": "Bill Nash",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "carvana",
@@ -2440,9 +2447,9 @@
         "retail"
       ],
       "ceoName": "Ernie Garcia III",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "rei",
@@ -2460,9 +2467,9 @@
         "sporting"
       ],
       "ceoName": "Eric Artz",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "dicks-sporting-goods",
@@ -2484,9 +2491,9 @@
         "sporting"
       ],
       "ceoName": "Lauren Hobart",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "nike",
@@ -2510,7 +2517,6 @@
         "sporting"
       ],
       "ceoName": "Elliott Hill",
-      "matchScore": 1,
       "fecCommitteeId": "C00142786",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -2530,7 +2536,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00142786/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "adidas",
@@ -2552,9 +2559,9 @@
         "sporting"
       ],
       "ceoName": "Bjorn Gulden",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "under-armour",
@@ -2572,9 +2579,9 @@
         "sporting"
       ],
       "ceoName": "Kevin Plank",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "patagonia",
@@ -2591,7 +2598,6 @@
         "outdoor"
       ],
       "ceoName": "Ryan Gellert",
-      "matchScore": 1,
       "fecCommitteeId": "C90018193",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -2608,7 +2614,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C90018193/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "columbia-sportswear",
@@ -2631,7 +2638,6 @@
         "outdoor"
       ],
       "ceoName": "Tim Boyle",
-      "matchScore": 1,
       "fecCommitteeId": "C00123737",
       "lastVerifiedDate": "2026-03-09",
       "notes": "PAC dissolved, historical data still accessible via FEC",
@@ -2646,7 +2652,8 @@
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00123737/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "skechers",
@@ -2662,9 +2669,9 @@
         "footwear"
       ],
       "ceoName": "Robert Greenberg",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "dsw",
@@ -2684,9 +2691,9 @@
         "footwear"
       ],
       "ceoName": "Doug Howe",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "rooms-to-go",
@@ -2703,9 +2710,9 @@
         "furniture"
       ],
       "ceoName": "Jeff Seaman",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "ashley-furniture",
@@ -2723,9 +2730,9 @@
         "furniture"
       ],
       "ceoName": "Todd Wanek",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "la-z-boy",
@@ -2744,9 +2751,9 @@
         "furniture"
       ],
       "ceoName": "Melinda Whittington",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "rh",
@@ -2768,9 +2775,9 @@
         "home"
       ],
       "ceoName": "Gary Friedman",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "ikea-usa",
@@ -2788,9 +2795,9 @@
         "home"
       ],
       "ceoName": "Javier Quinones",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "floor-and-decor",
@@ -2807,9 +2814,9 @@
         "home-improvement"
       ],
       "ceoName": "Tom Taylor",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "rent-a-center",
@@ -2829,9 +2836,9 @@
         "furniture"
       ],
       "ceoName": "Mitch Fadel",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "aarons",
@@ -2849,9 +2856,9 @@
         "furniture"
       ],
       "ceoName": "Douglas Lindsay",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "tractor-supply",
@@ -2871,7 +2878,6 @@
         "pets"
       ],
       "ceoName": "Hal Lawton",
-      "matchScore": 1,
       "fecCommitteeId": "C00763664",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -2889,7 +2895,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00763664/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "petsmart",
@@ -2906,7 +2913,6 @@
         "pets"
       ],
       "ceoName": "J.K. Symancyk",
-      "matchScore": 1,
       "fecCommitteeId": "C00669473",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -2925,7 +2931,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00669473/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "petco",
@@ -2942,9 +2949,9 @@
         "pets"
       ],
       "ceoName": "Joel Anderson",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "ross-stores",
@@ -2963,9 +2970,9 @@
         "apparel"
       ],
       "ceoName": "Barbara Rentler",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "burlington",
@@ -2983,7 +2990,6 @@
         "apparel"
       ],
       "ceoName": "Michael O'Sullivan",
-      "matchScore": 1,
       "fecCommitteeId": "C00004960",
       "lastVerifiedDate": "2026-03-09",
       "notes": "PAC dissolved, historical data still accessible via FEC",
@@ -2998,7 +3004,8 @@
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00004960/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "bath-body-works",
@@ -3016,9 +3023,9 @@
         "beauty"
       ],
       "ceoName": "Gina Boswell",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "victorias-secret",
@@ -3037,9 +3044,9 @@
         "apparel"
       ],
       "ceoName": "Hillary Super",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "conocophillips",
@@ -3056,7 +3063,6 @@
         "energy"
       ],
       "ceoName": "Ryan Lance",
-      "matchScore": 1,
       "fecCommitteeId": "C00112896",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -3076,7 +3082,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00112896/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "phillips-66",
@@ -3096,7 +3103,6 @@
         "energy"
       ],
       "ceoName": "Mark Lashier",
-      "matchScore": 1,
       "fecCommitteeId": "C00513549",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -3116,7 +3122,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00513549/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "valero-energy",
@@ -3133,7 +3140,6 @@
         "energy"
       ],
       "ceoName": "Lane Riggs",
-      "matchScore": 1,
       "fecCommitteeId": "C00109546",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -3153,7 +3159,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00109546/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "marathon-petroleum",
@@ -3172,7 +3179,6 @@
         "energy"
       ],
       "ceoName": "Maryann Mannen",
-      "matchScore": 1,
       "fecCommitteeId": "C00496307",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -3192,7 +3198,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00496307/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "halliburton",
@@ -3209,7 +3216,6 @@
         "defense"
       ],
       "ceoName": "Jeff Miller",
-      "matchScore": 1,
       "fecCommitteeId": "C00035691",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -3229,7 +3235,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00035691/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "baker-hughes",
@@ -3245,7 +3252,6 @@
         "energy"
       ],
       "ceoName": "Lorenzo Simonelli",
-      "matchScore": 1,
       "fecCommitteeId": "C00042010",
       "lastVerifiedDate": "2026-03-09",
       "notes": "PAC dissolved, historical data still accessible via FEC",
@@ -3260,7 +3266,8 @@
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00042010/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "devon-energy",
@@ -3276,7 +3283,6 @@
         "energy"
       ],
       "ceoName": "Rick Muncrief",
-      "matchScore": 1,
       "fecCommitteeId": "C00354753",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -3296,7 +3302,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00354753/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "pioneer-natural-resources",
@@ -3331,7 +3338,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00420950/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "duke-energy",
@@ -3349,7 +3357,6 @@
         "utilities"
       ],
       "ceoName": "Harry Sideris",
-      "matchScore": 1,
       "fecCommitteeId": "C00091884",
       "lastVerifiedDate": "2026-03-09",
       "notes": "PAC dissolved, historical data still accessible via FEC",
@@ -3364,7 +3371,8 @@
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00091884/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "southern-company",
@@ -3386,7 +3394,6 @@
         "utilities"
       ],
       "ceoName": "Chris Womack",
-      "matchScore": 1,
       "fecCommitteeId": "C00144774",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -3406,7 +3413,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00144774/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "dominion-energy",
@@ -3424,7 +3432,6 @@
         "utilities"
       ],
       "ceoName": "Robert Blue",
-      "matchScore": 1,
       "fecCommitteeId": "C00545319",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -3441,7 +3448,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00545319/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "exelon",
@@ -3467,7 +3475,6 @@
         "utilities"
       ],
       "ceoName": "Calvin Butler",
-      "matchScore": 1,
       "fecCommitteeId": "C00141218",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -3487,7 +3494,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00141218/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "nextera-energy",
@@ -3508,7 +3516,6 @@
         "utilities"
       ],
       "ceoName": "John Ketchum",
-      "matchScore": 1,
       "fecCommitteeId": "C00064774",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -3528,7 +3535,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00064774/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "xcel-energy",
@@ -3548,7 +3556,6 @@
         "utilities"
       ],
       "ceoName": "Bob Frenzel",
-      "matchScore": 1,
       "fecCommitteeId": "C00107771",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -3568,7 +3575,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00107771/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "firstenergy",
@@ -3590,7 +3598,6 @@
         "utilities"
       ],
       "ceoName": "Brian Tierney",
-      "matchScore": 1,
       "fecCommitteeId": "C00140855",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -3610,7 +3617,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00140855/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "entergy",
@@ -3630,7 +3638,6 @@
         "utilities"
       ],
       "ceoName": "Andrew Marsh",
-      "matchScore": 1,
       "fecCommitteeId": "C00363879",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -3650,7 +3657,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00363879/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "consolidated-edison",
@@ -3669,7 +3677,6 @@
         "utilities"
       ],
       "ceoName": "Timothy Cawley",
-      "matchScore": 1,
       "fecCommitteeId": "C00407635",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -3689,7 +3696,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00407635/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "pacific-gas-electric",
@@ -3708,7 +3716,6 @@
         "utilities"
       ],
       "ceoName": "Patti Poppe",
-      "matchScore": 1,
       "fecCommitteeId": "C00003780",
       "lastVerifiedDate": "2026-03-09",
       "notes": "PAC dissolved, historical data still accessible via FEC",
@@ -3723,7 +3730,8 @@
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00003780/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "citigroup",
@@ -3744,7 +3752,6 @@
         "finance"
       ],
       "ceoName": "Jane Fraser",
-      "matchScore": 1,
       "fecCommitteeId": "C00039305",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -3764,7 +3771,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00039305/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "morgan-stanley",
@@ -3783,7 +3791,6 @@
         "finance"
       ],
       "ceoName": "Ted Pick",
-      "matchScore": 1,
       "fecCommitteeId": "C00337626",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -3803,7 +3810,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00337626/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "american-express",
@@ -3820,7 +3828,6 @@
         "finance"
       ],
       "ceoName": "Stephen Squeri",
-      "matchScore": 1,
       "fecCommitteeId": "C00040535",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -3840,7 +3847,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00040535/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "capital-one",
@@ -3858,7 +3866,6 @@
         "finance"
       ],
       "ceoName": "Richard Fairbank",
-      "matchScore": 1,
       "fecCommitteeId": "C00326595",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -3878,7 +3885,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00326595/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "discover-financial",
@@ -3896,7 +3904,6 @@
         "finance"
       ],
       "ceoName": "Michael Rhodes",
-      "matchScore": 1,
       "fecCommitteeId": "C00438051",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -3916,7 +3923,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00438051/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "synchrony-financial",
@@ -3934,7 +3942,6 @@
         "finance"
       ],
       "ceoName": "Brian Doubles",
-      "matchScore": 1,
       "fecCommitteeId": "C00589119",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -3954,7 +3961,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00589119/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "ally-financial",
@@ -3972,7 +3980,6 @@
         "finance"
       ],
       "ceoName": "Michael Rhodes",
-      "matchScore": 1,
       "fecCommitteeId": "C00579540",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -3992,7 +3999,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00579540/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "blackrock",
@@ -4009,7 +4017,6 @@
         "finance"
       ],
       "ceoName": "Larry Fink",
-      "matchScore": 1,
       "fecCommitteeId": "C00679175",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -4023,7 +4030,8 @@
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00679175/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "fidelity",
@@ -4041,7 +4049,6 @@
       ],
       "ceoName": "Abigail Johnson",
       "publicFigureName": "Abigail Johnson",
-      "matchScore": 1,
       "fecCommitteeId": "C00380550",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -4061,7 +4068,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00380550/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "charles-schwab",
@@ -4079,7 +4087,6 @@
         "finance"
       ],
       "ceoName": "Rick Wurster",
-      "matchScore": 1,
       "fecCommitteeId": "C00370114",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -4098,7 +4105,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00370114/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "berkshire-hathaway",
@@ -4123,7 +4131,6 @@
       ],
       "ceoName": "Warren Buffett",
       "publicFigureName": "Warren Buffett",
-      "matchScore": 1,
       "fecCommitteeId": "C00324483",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -4143,7 +4150,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00324483/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "visa",
@@ -4160,7 +4168,6 @@
         "finance"
       ],
       "ceoName": "Ryan McInerney",
-      "matchScore": 1,
       "fecCommitteeId": "C00365122",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -4180,7 +4187,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00365122/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "mastercard",
@@ -4197,7 +4205,6 @@
         "finance"
       ],
       "ceoName": "Michael Miebach",
-      "matchScore": 1,
       "fecCommitteeId": "C00410274",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -4217,7 +4224,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00410274/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "paypal",
@@ -4238,7 +4246,6 @@
         "tech"
       ],
       "ceoName": "Alex Chriss",
-      "matchScore": 1,
       "fecCommitteeId": "C00581686",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -4258,7 +4265,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00581686/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "block",
@@ -4283,7 +4291,6 @@
       ],
       "ceoName": "Jack Dorsey",
       "publicFigureName": "Jack Dorsey",
-      "matchScore": 1,
       "fecCommitteeId": "C00739920",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -4300,7 +4307,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00739920/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "stripe",
@@ -4316,7 +4324,6 @@
         "tech"
       ],
       "ceoName": "Patrick Collison",
-      "matchScore": 1,
       "fecCommitteeId": "C00883116",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -4332,7 +4339,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00883116/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "truist",
@@ -4350,7 +4358,6 @@
         "finance"
       ],
       "ceoName": "Bill Rogers",
-      "matchScore": 1,
       "fecCommitteeId": "C00386524",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -4370,7 +4377,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00386524/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "us-bancorp",
@@ -4389,7 +4397,6 @@
         "finance"
       ],
       "ceoName": "Andy Cecere",
-      "matchScore": 1,
       "fecCommitteeId": "C00225946",
       "lastVerifiedDate": "2026-03-09",
       "notes": "PAC dissolved, historical data still accessible via FEC",
@@ -4404,7 +4411,8 @@
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00225946/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "pnc-financial",
@@ -4421,7 +4429,6 @@
         "finance"
       ],
       "ceoName": "Bill Demchak",
-      "matchScore": 1,
       "fecCommitteeId": "C00509315",
       "lastVerifiedDate": "2026-03-09",
       "notes": "PAC dissolved, historical data still accessible via FEC",
@@ -4436,7 +4443,8 @@
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00509315/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "regions-financial",
@@ -4453,7 +4461,6 @@
         "finance"
       ],
       "ceoName": "John Turner",
-      "matchScore": 1,
       "fecCommitteeId": "C00432252",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -4473,7 +4480,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00432252/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "apple",
@@ -4495,7 +4503,6 @@
         "tech"
       ],
       "ceoName": "Tim Cook",
-      "matchScore": 1,
       "fecCommitteeId": "C00349928",
       "lastVerifiedDate": "2026-03-09",
       "notes": "PAC dissolved, historical data still accessible via FEC | Former PAC: C00349928 (dissolved) | Active PAC ID unverified",
@@ -4510,7 +4517,8 @@
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00349928/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "microsoft",
@@ -4541,7 +4549,6 @@
         "tech"
       ],
       "ceoName": "Satya Nadella",
-      "matchScore": 1,
       "fecCommitteeId": "C00227546",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -4561,7 +4568,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00227546/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "google-alphabet",
@@ -4593,7 +4601,6 @@
         "media"
       ],
       "ceoName": "Sundar Pichai",
-      "matchScore": 1,
       "fecCommitteeId": "C00428623",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -4613,7 +4620,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00428623/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "netflix",
@@ -4629,7 +4637,6 @@
         "media"
       ],
       "ceoName": "Greg Peters",
-      "matchScore": 1,
       "fecCommitteeId": "C00518233",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -4649,7 +4656,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00518233/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "uber",
@@ -4670,7 +4678,6 @@
         "transportation"
       ],
       "ceoName": "Dara Khosrowshahi",
-      "matchScore": 1,
       "fecCommitteeId": "C00907683",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -4684,7 +4691,8 @@
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00907683/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "lyft",
@@ -4700,7 +4708,6 @@
         "transportation"
       ],
       "ceoName": "David Risher",
-      "matchScore": 1,
       "fecCommitteeId": "C00743823",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -4718,7 +4725,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00743823/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "airbnb",
@@ -4735,7 +4743,6 @@
         "travel"
       ],
       "ceoName": "Brian Chesky",
-      "matchScore": 1,
       "fecCommitteeId": "C00731000",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -4753,7 +4760,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00731000/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "salesforce",
@@ -4775,7 +4783,6 @@
         "tech"
       ],
       "ceoName": "Marc Benioff",
-      "matchScore": 1,
       "fecCommitteeId": "C00511600",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -4795,7 +4802,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00511600/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "oracle",
@@ -4816,7 +4824,6 @@
       ],
       "ceoName": "Safra Catz",
       "publicFigureName": "Larry Ellison",
-      "matchScore": 1,
       "fecCommitteeId": "C00323048",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -4836,7 +4843,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00323048/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "ibm",
@@ -4856,9 +4864,9 @@
         "tech"
       ],
       "ceoName": "Arvind Krishna",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "intel",
@@ -4876,7 +4884,6 @@
         "tech"
       ],
       "ceoName": "Lip-Bu Tan",
-      "matchScore": 1,
       "fecCommitteeId": "C00125641",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -4896,7 +4903,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00125641/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "qualcomm",
@@ -4912,7 +4920,6 @@
         "tech"
       ],
       "ceoName": "Cristiano Amon",
-      "matchScore": 1,
       "fecCommitteeId": "C00339085",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -4932,7 +4939,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00339085/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "amd",
@@ -4952,7 +4960,6 @@
         "tech"
       ],
       "ceoName": "Lisa Su",
-      "matchScore": 1,
       "fecCommitteeId": "C00404483",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -4972,7 +4979,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00404483/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "nvidia",
@@ -4990,9 +4998,9 @@
         "tech"
       ],
       "ceoName": "Jensen Huang",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "dell-technologies",
@@ -5015,7 +5023,6 @@
       ],
       "ceoName": "Michael Dell",
       "publicFigureName": "Michael Dell",
-      "matchScore": 1,
       "fecCommitteeId": "C00369751",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -5035,7 +5042,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00369751/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "hp-inc",
@@ -5053,7 +5061,6 @@
         "tech"
       ],
       "ceoName": "Enrique Lores",
-      "matchScore": 1,
       "fecCommitteeId": "C00626648",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -5072,7 +5079,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00626648/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "cisco",
@@ -5093,7 +5101,6 @@
         "tech"
       ],
       "ceoName": "Chuck Robbins",
-      "matchScore": 1,
       "fecCommitteeId": "C00362707",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -5113,7 +5120,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00362707/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "broadcom",
@@ -5132,7 +5140,6 @@
         "tech"
       ],
       "ceoName": "Hock Tan",
-      "matchScore": 1,
       "fecCommitteeId": "C00680504",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -5151,7 +5158,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00680504/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "servicenow",
@@ -5167,9 +5175,9 @@
         "tech"
       ],
       "ceoName": "Bill McDermott",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "workday",
@@ -5184,9 +5192,9 @@
         "tech"
       ],
       "ceoName": "Carl Eschenbach",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "palantir",
@@ -5207,7 +5215,6 @@
       ],
       "ceoName": "Alex Karp",
       "publicFigureName": "Peter Thiel",
-      "matchScore": 1,
       "fecCommitteeId": "C00498691",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -5227,7 +5234,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00498691/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "snowflake",
@@ -5242,9 +5250,9 @@
         "tech"
       ],
       "ceoName": "Sridhar Ramaswamy",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "doordash",
@@ -5263,7 +5271,6 @@
         "food"
       ],
       "ceoName": "Tony Xu",
-      "matchScore": 1,
       "fecCommitteeId": "C00820167",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -5280,7 +5287,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00820167/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "instacart",
@@ -5297,9 +5305,9 @@
         "grocery"
       ],
       "ceoName": "Fidji Simo",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "verizon",
@@ -5321,7 +5329,6 @@
         "media"
       ],
       "ceoName": "Hans Vestberg",
-      "matchScore": 1,
       "fecCommitteeId": "C00025163",
       "lastVerifiedDate": "2026-03-09",
       "notes": "PAC dissolved, historical data still accessible via FEC | Former PAC: C00025163 (dissolved) | Active PAC ID unverified",
@@ -5336,7 +5343,8 @@
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00025163/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "t-mobile",
@@ -5357,7 +5365,6 @@
         "telecom"
       ],
       "ceoName": "Mike Sievert",
-      "matchScore": 1,
       "fecCommitteeId": "C00361758",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -5377,7 +5384,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00361758/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "charter-communications",
@@ -5401,7 +5409,6 @@
         "media"
       ],
       "ceoName": "Chris Winfrey",
-      "matchScore": 1,
       "fecCommitteeId": "C00356808",
       "lastVerifiedDate": "2026-03-09",
       "notes": "PAC dissolved, historical data still accessible via FEC",
@@ -5416,7 +5423,8 @@
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00356808/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "cox-communications",
@@ -5436,9 +5444,9 @@
         "telecom"
       ],
       "ceoName": "Mark Greatrex",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "lumen",
@@ -5458,7 +5466,6 @@
         "telecom"
       ],
       "ceoName": "Kate Johnson",
-      "matchScore": 1,
       "fecCommitteeId": "C00419911",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -5478,7 +5485,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00419911/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "dish-network",
@@ -5500,9 +5508,9 @@
         "media"
       ],
       "ceoName": "Hamid Akhavan",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "directv",
@@ -5520,7 +5528,6 @@
         "media"
       ],
       "ceoName": "Bill Morrow",
-      "matchScore": 1,
       "fecCommitteeId": "C00331991",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -5537,7 +5544,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00331991/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "fox-corporation",
@@ -5564,7 +5572,6 @@
       ],
       "ceoName": "Lachlan Murdoch",
       "publicFigureName": "Rupert Murdoch",
-      "matchScore": 1,
       "fecCommitteeId": "C00693002",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -5583,7 +5590,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00693002/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "news-corp",
@@ -5611,7 +5619,6 @@
       ],
       "ceoName": "Robert Thomson",
       "publicFigureName": "Rupert Murdoch",
-      "matchScore": 1,
       "fecCommitteeId": "C00546101",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -5631,7 +5638,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00546101/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "sinclair-broadcast",
@@ -5651,7 +5659,6 @@
       ],
       "ceoName": "Chris Ripley",
       "publicFigureName": "David Smith",
-      "matchScore": 1,
       "fecCommitteeId": "C00327361",
       "lastVerifiedDate": "2026-03-09",
       "notes": "PAC dissolved, historical data still accessible via FEC",
@@ -5666,7 +5673,8 @@
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00327361/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "iheartmedia",
@@ -5687,7 +5695,6 @@
         "media"
       ],
       "ceoName": "Bob Pittman",
-      "matchScore": 1,
       "fecCommitteeId": "C00279216",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -5707,7 +5714,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00279216/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "cumulus-media",
@@ -5725,7 +5733,8 @@
       ],
       "ceoName": "Mary Berner",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "nexstar-media",
@@ -5745,7 +5754,6 @@
         "media"
       ],
       "ceoName": "Perry Sook",
-      "matchScore": 1,
       "fecCommitteeId": "C00567388",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -5765,7 +5773,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00567388/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "mgm-resorts",
@@ -5794,7 +5803,6 @@
         "gaming"
       ],
       "ceoName": "Bill Hornbuckle",
-      "matchScore": 1,
       "fecCommitteeId": "C00299321",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -5814,7 +5822,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00299321/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "caesars-entertainment",
@@ -5839,7 +5848,6 @@
         "gaming"
       ],
       "ceoName": "Tom Reeg",
-      "matchScore": 1,
       "fecCommitteeId": "C00342311",
       "lastVerifiedDate": "2026-03-09",
       "notes": "PAC dissolved, historical data still accessible via FEC",
@@ -5854,7 +5862,8 @@
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00342311/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "las-vegas-sands",
@@ -5876,7 +5885,6 @@
       ],
       "ceoName": "Rob Goldstein",
       "publicFigureName": "Sheldon Adelson",
-      "matchScore": 1,
       "fecCommitteeId": "C00399642",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -5896,7 +5904,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00399642/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "disney",
@@ -5929,9 +5938,9 @@
         "entertainment"
       ],
       "ceoName": "Bob Iger",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "warner-bros-discovery",
@@ -5964,9 +5973,9 @@
         "entertainment"
       ],
       "ceoName": "David Zaslav",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "paramount",
@@ -5997,7 +6006,6 @@
         "entertainment"
       ],
       "ceoName": "George Cheeks",
-      "matchScore": 1,
       "fecCommitteeId": "C00167759",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -6017,7 +6025,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00167759/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "unitedhealth-group",
@@ -6039,7 +6048,6 @@
         "insurance"
       ],
       "ceoName": "Andrew Witty",
-      "matchScore": 1,
       "fecCommitteeId": "C00274431",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -6059,7 +6067,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00274431/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "elevance-health",
@@ -6082,7 +6091,6 @@
         "insurance"
       ],
       "ceoName": "Gail Boudreaux",
-      "matchScore": 1,
       "fecCommitteeId": "C00197228",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -6102,7 +6110,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00197228/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "cigna",
@@ -6123,9 +6132,9 @@
         "insurance"
       ],
       "ceoName": "David Cordani",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "humana",
@@ -6142,7 +6151,6 @@
         "insurance"
       ],
       "ceoName": "Jim Rechtin",
-      "matchScore": 1,
       "fecCommitteeId": "C00271007",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -6162,7 +6170,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00271007/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "mckesson",
@@ -6178,7 +6187,6 @@
         "healthcare"
       ],
       "ceoName": "Brian Tyler",
-      "matchScore": 1,
       "fecCommitteeId": "C00108035",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -6198,7 +6206,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00108035/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "cencora",
@@ -6217,7 +6226,6 @@
         "healthcare"
       ],
       "ceoName": "Steve Collis",
-      "matchScore": 1,
       "fecCommitteeId": "C00400929",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -6237,7 +6245,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00400929/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "cardinal-health",
@@ -6252,7 +6261,6 @@
         "healthcare"
       ],
       "ceoName": "Jason Hollar",
-      "matchScore": 1,
       "fecCommitteeId": "C00332833",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -6272,7 +6280,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00332833/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "johnson-and-johnson",
@@ -6297,9 +6306,9 @@
         "consumer-goods"
       ],
       "ceoName": "Joaquin Duato",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "pfizer",
@@ -6318,7 +6327,6 @@
         "pharma"
       ],
       "ceoName": "Albert Bourla",
-      "matchScore": 1,
       "fecCommitteeId": "C00016683",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -6338,7 +6346,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00016683/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "merck",
@@ -6357,7 +6366,6 @@
         "pharma"
       ],
       "ceoName": "Robert Davis",
-      "matchScore": 1,
       "fecCommitteeId": "C00863134",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -6371,7 +6379,8 @@
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00863134/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "abbott",
@@ -6391,7 +6400,6 @@
         "pharma"
       ],
       "ceoName": "Robert Ford",
-      "matchScore": 1,
       "fecCommitteeId": "C00040279",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -6411,7 +6419,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00040279/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "medtronic",
@@ -6426,7 +6435,6 @@
         "healthcare"
       ],
       "ceoName": "Geoff Martha",
-      "matchScore": 1,
       "fecCommitteeId": "C00311878",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -6446,7 +6454,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00311878/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "boston-scientific",
@@ -6461,7 +6470,6 @@
         "healthcare"
       ],
       "ceoName": "Michael Mahoney",
-      "matchScore": 1,
       "fecCommitteeId": "C00357863",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -6481,7 +6489,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00357863/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "stryker",
@@ -6496,9 +6505,9 @@
         "healthcare"
       ],
       "ceoName": "Kevin Lobo",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "hca-healthcare",
@@ -6516,7 +6525,6 @@
         "healthcare"
       ],
       "ceoName": "Sam Hazen",
-      "matchScore": 1,
       "fecCommitteeId": "C00067231",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -6536,7 +6544,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00067231/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "tenet-healthcare",
@@ -6554,7 +6563,6 @@
         "healthcare"
       ],
       "ceoName": "Saum Sutaria",
-      "matchScore": 1,
       "fecCommitteeId": "C00119354",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -6574,7 +6582,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00119354/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "community-health-systems",
@@ -6609,7 +6618,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00485896/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "pepsico",
@@ -6642,7 +6652,6 @@
         "beverage"
       ],
       "ceoName": "Ramon Laguarta",
-      "matchScore": 1,
       "fecCommitteeId": "C00039321",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -6662,7 +6671,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00039321/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "coca-cola",
@@ -6692,7 +6702,6 @@
         "beverage"
       ],
       "ceoName": "James Quincey",
-      "matchScore": 1,
       "fecCommitteeId": "C00540104",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -6712,7 +6721,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00540104/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "archer-daniels-midland",
@@ -6730,7 +6740,6 @@
         "agriculture"
       ],
       "ceoName": "Juan Luciano",
-      "matchScore": 1,
       "fecCommitteeId": "C00093963",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -6750,7 +6759,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00093963/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "kraft-heinz",
@@ -6777,7 +6787,6 @@
         "food"
       ],
       "ceoName": "Carlos Abrams-Rivera",
-      "matchScore": 1,
       "fecCommitteeId": "C00077701",
       "lastVerifiedDate": "2026-03-09",
       "notes": "PAC dissolved, historical data still accessible via FEC",
@@ -6793,7 +6802,8 @@
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00272039/"
       },
-      "note": "Active PAC verified March 2026"
+      "note": "Active PAC verified March 2026",
+      "verificationStatus": "pipeline"
     },
     {
       "id": "mondelez",
@@ -6820,7 +6830,6 @@
         "food"
       ],
       "ceoName": "Dirk Van de Put",
-      "matchScore": 1,
       "fecCommitteeId": "C00529073",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -6840,7 +6849,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00529073/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "general-mills",
@@ -6866,7 +6876,6 @@
         "food"
       ],
       "ceoName": "Jeff Harmening",
-      "matchScore": 1,
       "fecCommitteeId": "C00062646",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -6886,7 +6895,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00062646/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "kellanova",
@@ -6913,7 +6923,6 @@
         "food"
       ],
       "ceoName": "Steve Cahillane",
-      "matchScore": 1,
       "fecCommitteeId": "C00039552",
       "lastVerifiedDate": "2026-03-09",
       "parentEntityId": "mars",
@@ -6934,7 +6943,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00039552/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "campbell-soup",
@@ -6957,7 +6967,6 @@
         "food"
       ],
       "ceoName": "Mark Clouse",
-      "matchScore": 1,
       "fecCommitteeId": "C00415166",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -6975,7 +6984,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00415166/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "conagra",
@@ -7001,7 +7011,6 @@
         "food"
       ],
       "ceoName": "Sean Connolly",
-      "matchScore": 1,
       "fecCommitteeId": "C00087874",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -7021,7 +7030,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00087874/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "hormel",
@@ -7044,7 +7054,6 @@
         "food"
       ],
       "ceoName": "Jim Snee",
-      "matchScore": 1,
       "fecCommitteeId": "C00282863",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -7064,7 +7073,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00282863/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "smithfield-foods",
@@ -7085,7 +7095,6 @@
         "food"
       ],
       "ceoName": "Shane Smith",
-      "matchScore": 1,
       "fecCommitteeId": "C00359075",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -7105,7 +7114,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00359075/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "perdue-farms",
@@ -7124,7 +7134,6 @@
         "food"
       ],
       "ceoName": "Randy Day",
-      "matchScore": 1,
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -7144,7 +7153,8 @@
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00547570/"
       },
-      "note": "Confirmed no corporate PAC — false positive match to PERDUE FOR SENATE (David Perdue Senate campaign)"
+      "note": "Confirmed no corporate PAC — false positive match to PERDUE FOR SENATE (David Perdue Senate campaign)",
+      "verificationStatus": "manual"
     },
     {
       "id": "anheuser-busch-inbev",
@@ -7173,9 +7183,9 @@
         "beverage"
       ],
       "ceoName": "Michel Doukeris",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "molson-coors",
@@ -7199,7 +7209,6 @@
         "beverage"
       ],
       "ceoName": "Gavin Hattersley",
-      "matchScore": 1,
       "fecCommitteeId": "C00457697",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -7219,7 +7228,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00457697/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "constellation-brands",
@@ -7244,7 +7254,6 @@
         "beverage"
       ],
       "ceoName": "Bill Newlands",
-      "matchScore": 1,
       "fecCommitteeId": "C00304832",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -7264,7 +7273,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00304832/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "brown-forman",
@@ -7290,7 +7300,6 @@
         "beverage"
       ],
       "ceoName": "Lawson Whiting",
-      "matchScore": 1,
       "fecCommitteeId": "C00059733",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -7310,7 +7319,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00059733/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "starbucks",
@@ -7327,9 +7337,9 @@
         "beverage"
       ],
       "ceoName": "Brian Niccol",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "chick-fil-a",
@@ -7347,7 +7357,6 @@
       ],
       "ceoName": "Andrew Cathy",
       "publicFigureName": "S. Truett Cathy",
-      "matchScore": 1,
       "fecCommitteeId": "C00323287",
       "lastVerifiedDate": "2026-03-09",
       "notes": "PAC dissolved, historical data still accessible via FEC",
@@ -7362,7 +7371,8 @@
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00323287/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "waffle-house",
@@ -7377,7 +7387,6 @@
         "food"
       ],
       "ceoName": "Walt Ehmer",
-      "matchScore": 1,
       "fecCommitteeId": "C00326330",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -7395,7 +7404,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00326330/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "in-n-out-burger",
@@ -7413,9 +7423,9 @@
       ],
       "ceoName": "Lynsi Snyder",
       "publicFigureName": "Lynsi Snyder",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "yum-brands",
@@ -7439,7 +7449,6 @@
         "food"
       ],
       "ceoName": "David Gibbs",
-      "matchScore": 1,
       "fecCommitteeId": "C00329474",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -7459,7 +7468,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00329474/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "restaurant-brands-international",
@@ -7483,9 +7493,9 @@
         "food"
       ],
       "ceoName": "Josh Kobza",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "wendys",
@@ -7501,9 +7511,9 @@
         "food"
       ],
       "ceoName": "Kirk Tanner",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "darden-restaurants",
@@ -7529,7 +7539,6 @@
         "food"
       ],
       "ceoName": "Rick Cardenas",
-      "matchScore": 1,
       "fecCommitteeId": "C00108282",
       "lastVerifiedDate": "2026-03-09",
       "notes": "PAC dissolved, historical data still accessible via FEC",
@@ -7546,7 +7555,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00108282/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "cracker-barrel",
@@ -7562,9 +7572,9 @@
         "food"
       ],
       "ceoName": "Julie Masino",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "dennys",
@@ -7580,9 +7590,9 @@
         "food"
       ],
       "ceoName": "Kelli Valade",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "dine-brands",
@@ -7603,9 +7613,9 @@
         "food"
       ],
       "ceoName": "John Peyton",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "ford",
@@ -7627,7 +7637,6 @@
         "automotive"
       ],
       "ceoName": "Jim Farley",
-      "matchScore": 1,
       "fecCommitteeId": "C00046474",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -7647,7 +7656,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00046474/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "general-motors",
@@ -7674,9 +7684,9 @@
         "automotive"
       ],
       "ceoName": "Mary Barra",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "stellantis",
@@ -7707,9 +7717,9 @@
         "automotive"
       ],
       "ceoName": "Carlos Tavares",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "goodyear",
@@ -7726,9 +7736,9 @@
         "automotive"
       ],
       "ceoName": "Mark Stewart",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "bridgestone-usa",
@@ -7746,7 +7756,6 @@
         "automotive"
       ],
       "ceoName": "Paolo Ferrari",
-      "matchScore": 1,
       "fecCommitteeId": "C00371948",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -7766,7 +7775,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00371948/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "michelin-usa",
@@ -7786,9 +7796,9 @@
         "automotive"
       ],
       "ceoName": "Alexis Garcin",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "rtx",
@@ -7811,9 +7821,9 @@
         "defense"
       ],
       "ceoName": "Greg Hayes",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "boeing",
@@ -7832,9 +7842,9 @@
         "aerospace"
       ],
       "ceoName": "Kelly Ortberg",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "general-dynamics",
@@ -7853,9 +7863,9 @@
         "defense"
       ],
       "ceoName": "Phebe Novakovic",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "northrop-grumman",
@@ -7871,9 +7881,9 @@
         "defense"
       ],
       "ceoName": "Kathy Warden",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "booz-allen-hamilton",
@@ -7891,9 +7901,9 @@
         "consulting"
       ],
       "ceoName": "Horacio Rozanski",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "marriott",
@@ -7926,7 +7936,6 @@
         "travel"
       ],
       "ceoName": "Anthony Capuano",
-      "matchScore": 1,
       "fecCommitteeId": "C00284810",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -7946,7 +7955,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00284810/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "hilton",
@@ -7974,7 +7984,6 @@
         "travel"
       ],
       "ceoName": "Christopher Nassetta",
-      "matchScore": 1,
       "fecCommitteeId": "C00213074",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -7994,7 +8003,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00213074/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "hyatt",
@@ -8020,9 +8030,9 @@
         "travel"
       ],
       "ceoName": "Mark Hoplamazian",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "wyndham",
@@ -8048,7 +8058,6 @@
         "travel"
       ],
       "ceoName": "Geoff Ballotti",
-      "matchScore": 1,
       "fecCommitteeId": "C00679910",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -8067,7 +8076,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00679910/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "ihg",
@@ -8097,9 +8107,9 @@
         "travel"
       ],
       "ceoName": "Elie Maalouf",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "expedia",
@@ -8126,9 +8136,9 @@
         "tech"
       ],
       "ceoName": "Ariane Gorin",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "booking-holdings",
@@ -8154,9 +8164,9 @@
         "tech"
       ],
       "ceoName": "Glenn Fogel",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "royal-caribbean",
@@ -8176,7 +8186,6 @@
         "travel"
       ],
       "ceoName": "Jason Liberty",
-      "matchScore": 1,
       "fecCommitteeId": "C00869230",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -8192,7 +8201,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00869230/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "carnival",
@@ -8217,9 +8227,9 @@
         "travel"
       ],
       "ceoName": "Josh Weinstein",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "delta-air-lines",
@@ -8238,7 +8248,6 @@
         "transportation"
       ],
       "ceoName": "Ed Bastian",
-      "matchScore": 1,
       "fecCommitteeId": "C00076133",
       "lastVerifiedDate": "2026-03-09",
       "notes": "PAC dissolved, historical data still accessible via FEC",
@@ -8253,7 +8262,8 @@
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00076133/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "united-airlines",
@@ -8272,9 +8282,9 @@
         "transportation"
       ],
       "ceoName": "Scott Kirby",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "american-airlines",
@@ -8294,9 +8304,9 @@
         "transportation"
       ],
       "ceoName": "Robert Isom",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "southwest-airlines",
@@ -8315,9 +8325,9 @@
         "transportation"
       ],
       "ceoName": "Bob Jordan",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "hertz",
@@ -8337,9 +8347,9 @@
         "transportation"
       ],
       "ceoName": "Gil West",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "enterprise-holdings",
@@ -8364,9 +8374,9 @@
       ],
       "ceoName": "Chrissy Taylor",
       "publicFigureName": "Jack Taylor",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "avis-budget",
@@ -8389,9 +8399,9 @@
         "transportation"
       ],
       "ceoName": "Joe Ferraro",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "dunkin",
@@ -8422,9 +8432,9 @@
         "beverage"
       ],
       "ceoName": "Paul Brown",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "jack-in-the-box",
@@ -8442,9 +8452,9 @@
         "food"
       ],
       "ceoName": "Darin Harris",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "carls-jr-hardees",
@@ -8464,9 +8474,9 @@
         "food"
       ],
       "ceoName": "Ned Lyerly",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "whataburger",
@@ -8481,9 +8491,9 @@
         "food"
       ],
       "ceoName": "Ed Nelson",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "five-guys",
@@ -8500,9 +8510,9 @@
       ],
       "ceoName": "Matt Murrell",
       "publicFigureName": "Jerry Murrell",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "shake-shack",
@@ -8517,9 +8527,9 @@
         "food"
       ],
       "ceoName": "Randy Garutti",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "panera-bread",
@@ -8540,10 +8550,10 @@
         "beverage"
       ],
       "ceoName": "Jose Alberto Duenas",
-      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05",
-      "parentEntityId": "jab-holding"
+      "parentEntityId": "jab-holding",
+      "verificationStatus": "unverified"
     },
     {
       "id": "panda-express",
@@ -8561,9 +8571,9 @@
       ],
       "ceoName": "Andrew Cherng",
       "publicFigureName": "Andrew Cherng",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "chipotle",
@@ -8579,9 +8589,9 @@
         "food"
       ],
       "ceoName": "Scott Boatwright",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "dominos",
@@ -8599,9 +8609,9 @@
         "food"
       ],
       "ceoName": "Russell Weiner",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "papa-johns",
@@ -8618,9 +8628,9 @@
         "food"
       ],
       "ceoName": "Todd Penegor",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "little-caesars",
@@ -8638,9 +8648,9 @@
       ],
       "ceoName": "Dave Scrivano",
       "publicFigureName": "Mike Ilitch",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "subway",
@@ -8657,9 +8667,9 @@
         "food"
       ],
       "ceoName": "John Chidsey",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "jersey-mikes",
@@ -8677,9 +8687,9 @@
       ],
       "ceoName": "Peter Cancro",
       "publicFigureName": "Peter Cancro",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "wingstop",
@@ -8694,9 +8704,9 @@
         "food"
       ],
       "ceoName": "Michael Skipworth",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "raising-canes",
@@ -8714,9 +8724,9 @@
       ],
       "ceoName": "Todd Graves",
       "publicFigureName": "Todd Graves",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "dutch-bros",
@@ -8734,9 +8744,9 @@
         "beverage"
       ],
       "ceoName": "Christine Barone",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "peets-coffee",
@@ -8754,10 +8764,10 @@
         "beverage"
       ],
       "ceoName": "Dave Burwick",
-      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05",
-      "parentEntityId": "jab-holding"
+      "parentEntityId": "jab-holding",
+      "verificationStatus": "unverified"
     },
     {
       "id": "krispy-kreme",
@@ -8774,10 +8784,10 @@
         "beverage"
       ],
       "ceoName": "Josh Charlesworth",
-      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05",
-      "parentEntityId": "jab-holding"
+      "parentEntityId": "jab-holding",
+      "verificationStatus": "unverified"
     },
     {
       "id": "focus-brands",
@@ -8812,9 +8822,9 @@
         "beverage"
       ],
       "ceoName": "Jim Holthouser",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "wetzels-pretzels",
@@ -8830,9 +8840,9 @@
         "food"
       ],
       "ceoName": "Jennifer Schuler",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "texas-roadhouse",
@@ -8849,9 +8859,9 @@
         "food"
       ],
       "ceoName": "Jerry Morgan",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "red-robin",
@@ -8867,9 +8877,9 @@
         "food"
       ],
       "ceoName": "G.J. Hart",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "tgi-fridays",
@@ -8886,9 +8896,9 @@
         "food"
       ],
       "ceoName": "Ray Blanchette",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "chilis",
@@ -8909,9 +8919,9 @@
         "food"
       ],
       "ceoName": "Kevin Hochman",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "red-lobster",
@@ -8926,9 +8936,9 @@
         "food"
       ],
       "ceoName": "Damola Adamolekun",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "outback-steakhouse",
@@ -8952,7 +8962,6 @@
         "food"
       ],
       "ceoName": "Michael Spanos",
-      "matchScore": 1,
       "fecCommitteeId": "C00253153",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -8972,7 +8981,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00253153/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "bob-evans",
@@ -8989,7 +8999,8 @@
       ],
       "ceoName": "Bret Halverson",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "perkins",
@@ -9007,7 +9018,8 @@
       ],
       "ceoName": "Jonathan Wasvick",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "noodles-and-company",
@@ -9024,9 +9036,9 @@
         "food"
       ],
       "ceoName": "Drew Madsen",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "jasons-deli",
@@ -9043,7 +9055,8 @@
       ],
       "ceoName": "Joe Tortorice Jr",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "corner-bakery",
@@ -9060,7 +9073,8 @@
       ],
       "ceoName": "Jodi Boyce",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "7-eleven",
@@ -9081,10 +9095,10 @@
         "convenience"
       ],
       "ceoName": "Joe DePinto",
-      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05",
-      "parentEntityId": "seven-and-i"
+      "parentEntityId": "seven-and-i",
+      "verificationStatus": "unverified"
     },
     {
       "id": "circle-k",
@@ -9105,9 +9119,9 @@
         "convenience"
       ],
       "ceoName": "Brian Hannasch",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "wawa",
@@ -9124,9 +9138,9 @@
         "food"
       ],
       "ceoName": "Chris Gheysens",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "sheetz",
@@ -9144,9 +9158,9 @@
       ],
       "ceoName": "Travis Sheetz",
       "publicFigureName": "Travis Sheetz",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "caseys-general-store",
@@ -9165,9 +9179,9 @@
         "food"
       ],
       "ceoName": "Darren Rebelez",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "quiktrip",
@@ -9185,9 +9199,9 @@
         "convenience"
       ],
       "ceoName": "Chet Cadieux",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "pilot-flying-j",
@@ -9208,10 +9222,10 @@
       ],
       "ceoName": "Shameek Konar",
       "publicFigureName": "Jim Haslam",
-      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05",
-      "parentEntityId": "berkshire-hathaway"
+      "parentEntityId": "berkshire-hathaway",
+      "verificationStatus": "unverified"
     },
     {
       "id": "loves-travel-stops",
@@ -9232,9 +9246,9 @@
       ],
       "ceoName": "Tom Love",
       "publicFigureName": "Tom Love",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "tuesday-morning",
@@ -9250,7 +9264,8 @@
       ],
       "ceoName": "Fred Hand",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "planet-fitness",
@@ -9265,9 +9280,9 @@
         "fitness"
       ],
       "ceoName": "Colleen Keating",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "la-fitness",
@@ -9284,9 +9299,9 @@
         "fitness"
       ],
       "ceoName": "Louis Welch",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "anytime-fitness",
@@ -9303,9 +9318,9 @@
         "fitness"
       ],
       "ceoName": "Chuck Runyon",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "golds-gym",
@@ -9321,9 +9336,9 @@
         "fitness"
       ],
       "ceoName": "Adam Zeitsiff",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "hr-block",
@@ -9343,9 +9358,9 @@
         "services"
       ],
       "ceoName": "Jeff Jones",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "jackson-hewitt",
@@ -9362,9 +9377,9 @@
         "services"
       ],
       "ceoName": "Greg Macfarlane",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "massage-envy",
@@ -9380,9 +9395,9 @@
         "wellness"
       ],
       "ceoName": "Todd Leff",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "great-clips",
@@ -9397,9 +9412,9 @@
         "services"
       ],
       "ceoName": "Steve Hockett",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "sport-clips",
@@ -9415,9 +9430,9 @@
         "services"
       ],
       "ceoName": "Edward Logan",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "supercuts",
@@ -9439,9 +9454,9 @@
         "services"
       ],
       "ceoName": "Matthew Doctor",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "midas",
@@ -9466,7 +9481,6 @@
         "services"
       ],
       "ceoName": "Erik Olsen",
-      "matchScore": 1,
       "fecCommitteeId": "C00908939",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -9480,7 +9494,8 @@
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00908939/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "jiffy-lube",
@@ -9497,10 +9512,10 @@
         "services"
       ],
       "ceoName": "Patrick Southwell",
-      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05",
-      "parentEntityId": "shell"
+      "parentEntityId": "shell",
+      "verificationStatus": "unverified"
     },
     {
       "id": "pep-boys",
@@ -9518,9 +9533,9 @@
         "services"
       ],
       "ceoName": "Brian Kaner",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "mavis-discount-tire",
@@ -9539,9 +9554,9 @@
       ],
       "ceoName": "David Sorbaro",
       "publicFigureName": "David Sorbaro",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "spotify",
@@ -9564,9 +9579,9 @@
         "entertainment"
       ],
       "ceoName": "Daniel Ek",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "twitch",
@@ -9589,7 +9604,8 @@
       "ceoName": "Dan Clancy",
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05",
-      "parentEntityId": "amazon"
+      "parentEntityId": "amazon",
+      "verificationStatus": "unverified"
     },
     {
       "id": "siriusxm",
@@ -9613,7 +9629,6 @@
         "entertainment"
       ],
       "ceoName": "Jennifer Witz",
-      "matchScore": 1,
       "fecCommitteeId": "C00569285",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -9633,7 +9648,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00569285/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "crunchyroll",
@@ -9653,7 +9669,8 @@
       "ceoName": "Rahul Purini",
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05",
-      "parentEntityId": "sony-group"
+      "parentEntityId": "sony-group",
+      "verificationStatus": "unverified"
     },
     {
       "id": "amc-theatres",
@@ -9672,9 +9689,9 @@
         "movie-theatres"
       ],
       "ceoName": "Adam Aron",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "cinemark",
@@ -9693,9 +9710,9 @@
         "movie-theatres"
       ],
       "ceoName": "Sean Gamble",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "gannett",
@@ -9716,7 +9733,8 @@
       ],
       "ceoName": "Mike Reed",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "conde-nast",
@@ -9753,7 +9771,8 @@
       ],
       "ceoName": "Roger Lynch",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "hearst",
@@ -9785,7 +9804,8 @@
       ],
       "ceoName": "Steven Swartz",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "dotdash-meredith",
@@ -9824,7 +9844,8 @@
       "publicFigureName": "Barry Diller",
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05",
-      "parentEntityId": "iac"
+      "parentEntityId": "iac",
+      "verificationStatus": "unverified"
     },
     {
       "id": "buzzfeed",
@@ -9848,7 +9869,8 @@
       "ceoName": "Jonah Peretti",
       "publicFigureName": "Jonah Peretti",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "grubhub",
@@ -9872,9 +9894,9 @@
       ],
       "ceoName": "Howard Migdal",
       "publicFigureName": "Marc Lore",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "gopuff",
@@ -9910,7 +9932,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00757856/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "thumbtack",
@@ -9929,7 +9952,8 @@
       ],
       "ceoName": "Marco Zappacosta",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "trip-com",
@@ -9953,7 +9977,8 @@
       "ceoName": "Jane Sun",
       "publicFigureName": "James Liang",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "greyhound-flixbus",
@@ -9977,7 +10002,8 @@
       ],
       "ceoName": "André Schwämmlein",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "amtrak",
@@ -9997,9 +10023,9 @@
         "government"
       ],
       "ceoName": "Stephen Gardner",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "robinhood",
@@ -10022,9 +10048,9 @@
       ],
       "ceoName": "Vlad Tenev",
       "publicFigureName": "Vlad Tenev",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "coinbase",
@@ -10047,9 +10073,9 @@
       ],
       "ceoName": "Brian Armstrong",
       "publicFigureName": "Brian Armstrong",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "kraken",
@@ -10070,7 +10096,8 @@
       ],
       "ceoName": "Arjun Sethi",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "nerdwallet",
@@ -10089,9 +10116,9 @@
       ],
       "ceoName": "Tim Chen",
       "publicFigureName": "Tim Chen",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "lendingtree",
@@ -10115,7 +10142,8 @@
       "ceoName": "Doug Lebda",
       "publicFigureName": "Doug Lebda",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "rocket-companies",
@@ -10142,9 +10170,9 @@
         "loans"
       ],
       "ceoName": "Varun Krishna",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "sofi",
@@ -10165,9 +10193,9 @@
         "banking"
       ],
       "ceoName": "Anthony Noto",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "chime",
@@ -10187,9 +10215,9 @@
       ],
       "ceoName": "Chris Britt",
       "publicFigureName": "Chris Britt",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "dave-fintech",
@@ -10210,7 +10238,8 @@
       "ceoName": "Jason Wilk",
       "publicFigureName": "Jason Wilk",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "acorns",
@@ -10230,7 +10259,8 @@
       ],
       "ceoName": "Noah Kerner",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "betterment",
@@ -10253,7 +10283,8 @@
       "ceoName": "Sarah Kirshbaum Levy",
       "publicFigureName": "Jon Stein",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "zelle",
@@ -10271,9 +10302,9 @@
         "fintech"
       ],
       "ceoName": "Al Ko",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "teladoc",
@@ -10297,9 +10328,9 @@
         "mental-health"
       ],
       "ceoName": "Chuck Divita",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "hims-hers",
@@ -10324,7 +10355,8 @@
       "ceoName": "Andrew Dudum",
       "publicFigureName": "Andrew Dudum",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "ro-health",
@@ -10361,7 +10393,8 @@
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00937144/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "noom",
@@ -10381,7 +10414,8 @@
       ],
       "ceoName": "Geoff Cook",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "ww-international",
@@ -10402,9 +10436,9 @@
         "weight-management"
       ],
       "ceoName": "Tara Comonte",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "peloton",
@@ -10428,9 +10462,9 @@
       ],
       "ceoName": "Peter Stern",
       "publicFigureName": "John Foley",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "calm",
@@ -10464,7 +10498,8 @@
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00312629/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "goodrx",
@@ -10484,9 +10519,9 @@
       ],
       "ceoName": "Wendy Barnes",
       "publicFigureName": "Trevor Bezdek",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "public-storage",
@@ -10506,9 +10541,9 @@
         "moving"
       ],
       "ceoName": "Joseph Russell",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "extra-space-storage",
@@ -10528,9 +10563,9 @@
         "self-storage"
       ],
       "ceoName": "Joe Margolis",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "cubesmart",
@@ -10549,7 +10584,8 @@
       ],
       "ceoName": "Christopher Marr",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "uhaul",
@@ -10570,9 +10606,9 @@
       ],
       "ceoName": "Joe Shoen",
       "publicFigureName": "Joe Shoen",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "two-men-and-a-truck",
@@ -10591,7 +10627,8 @@
       ],
       "ceoName": "Randy Shacka",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "1800-got-junk",
@@ -10612,7 +10649,8 @@
       "ceoName": "Brian Scudamore",
       "publicFigureName": "Brian Scudamore",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "angi",
@@ -10635,9 +10673,9 @@
       ],
       "ceoName": "Jeffrey Kip",
       "publicFigureName": "Barry Diller",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "adt",
@@ -10656,9 +10694,9 @@
         "home-services"
       ],
       "ceoName": "Jim DeVries",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "vivint",
@@ -10677,9 +10715,9 @@
       ],
       "ceoName": "David Porter",
       "publicFigureName": "Todd Pedersen",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "simplisafe",
@@ -10697,7 +10735,8 @@
       ],
       "ceoName": "Christian Cerda",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "rollins-orkin",
@@ -10718,9 +10757,9 @@
         "home-services"
       ],
       "ceoName": "Jerry Gahlhoff",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "trugreen",
@@ -10738,7 +10777,8 @@
       ],
       "ceoName": "John Reardon",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "rentokil-terminix",
@@ -10759,9 +10799,9 @@
         "home-services"
       ],
       "ceoName": "Andy Ransom",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "consumer-cellular",
@@ -10778,7 +10818,8 @@
       ],
       "ceoName": "John Marick",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "mercari",
@@ -10797,7 +10838,8 @@
       ],
       "ceoName": "John Lagerling",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "poshmark",
@@ -10816,10 +10858,10 @@
       ],
       "ceoName": "Manish Chandra",
       "publicFigureName": "Manish Chandra",
-      "matchScore": 1,
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05",
-      "parentEntityId": "naver"
+      "parentEntityId": "naver",
+      "verificationStatus": "unverified"
     },
     {
       "id": "thredup",
@@ -10840,7 +10882,8 @@
       "ceoName": "James Reinhart",
       "publicFigureName": "James Reinhart",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "stockx",
@@ -10859,7 +10902,8 @@
       ],
       "ceoName": "Scott Cutler",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "goat",
@@ -10882,7 +10926,8 @@
       "ceoName": "Eddy Lu",
       "publicFigureName": "Eddy Lu",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "temu",
@@ -10902,9 +10947,9 @@
       ],
       "ceoName": "Chen Lei",
       "publicFigureName": "Colin Huang",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "ibotta",
@@ -10924,7 +10969,8 @@
       "ceoName": "Bryan Leach",
       "publicFigureName": "Bryan Leach",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "rakuten-us",
@@ -10946,7 +10992,8 @@
       "ceoName": "Stuart Soppe",
       "publicFigureName": "Mickey Mikitani",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "duolingo",
@@ -10967,9 +11014,9 @@
       ],
       "ceoName": "Luis von Ahn",
       "publicFigureName": "Luis von Ahn",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "coursera",
@@ -10988,7 +11035,8 @@
       ],
       "ceoName": "Jeff Maggioncalda",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "udemy",
@@ -11006,9 +11054,9 @@
         "online-learning"
       ],
       "ceoName": "Greg Brown",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "chegg",
@@ -11030,7 +11078,8 @@
       ],
       "ceoName": "Dan Rosensweig",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "pearson",
@@ -11054,7 +11103,8 @@
       ],
       "ceoName": "Omar Abbosh",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "masterclass",
@@ -11075,7 +11125,8 @@
       "ceoName": "David Rogier",
       "publicFigureName": "David Rogier",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "quizlet",
@@ -11095,7 +11146,8 @@
       ],
       "ceoName": "Kurt Beidler",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "khan-academy",
@@ -11114,9 +11166,9 @@
       ],
       "ceoName": "Sal Khan",
       "publicFigureName": "Sal Khan",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "zoom",
@@ -11139,9 +11191,9 @@
       ],
       "ceoName": "Eric Yuan",
       "publicFigureName": "Eric Yuan",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "dropbox",
@@ -11162,9 +11214,9 @@
       ],
       "ceoName": "Drew Houston",
       "publicFigureName": "Drew Houston",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "docusign",
@@ -11183,9 +11235,9 @@
         "b2b"
       ],
       "ceoName": "Allan Thygesen",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "squarespace",
@@ -11205,7 +11257,8 @@
       "ceoName": "Anthony Casalena",
       "publicFigureName": "Anthony Casalena",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "wix",
@@ -11225,9 +11278,9 @@
       ],
       "ceoName": "Avishai Abrahami",
       "publicFigureName": "Avishai Abrahami",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "godaddy",
@@ -11247,9 +11300,9 @@
         "e-commerce"
       ],
       "ceoName": "Aman Bhutani",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "shopify",
@@ -11271,9 +11324,9 @@
       ],
       "ceoName": "Tobi Lütke",
       "publicFigureName": "Tobi Lütke",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "intuit",
@@ -11301,9 +11354,9 @@
         "productivity"
       ],
       "ceoName": "Sasan Goodarzi",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "ring",
@@ -11324,7 +11377,8 @@
       "ceoName": "Liz Hamren",
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-03-05",
-      "parentEntityId": "amazon"
+      "parentEntityId": "amazon",
+      "verificationStatus": "unverified"
     },
     {
       "id": "tripadvisor",
@@ -11346,9 +11400,9 @@
         "hospitality"
       ],
       "ceoName": "Matt Goldberg",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "concentra",
@@ -11368,7 +11422,8 @@
       ],
       "ceoName": "Keith Newton",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "mcgraw-hill",
@@ -11389,7 +11444,8 @@
       ],
       "ceoName": "Simon Allen",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "cengage",
@@ -11412,7 +11468,8 @@
       ],
       "ceoName": "Michael Hansen",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "nextdoor",
@@ -11429,7 +11486,8 @@
       ],
       "ceoName": "Nirav Tolia",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "skillshare",
@@ -11448,7 +11506,8 @@
       ],
       "ceoName": "Matt Cooper",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "iac",
@@ -11469,7 +11528,6 @@
       ],
       "ceoName": "Barry Diller",
       "publicFigureName": "Barry Diller",
-      "matchScore": 1,
       "fecCommitteeId": "C00371088",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -11489,7 +11547,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00371088/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "sony-group",
@@ -11514,7 +11573,6 @@
       ],
       "ceoName": "Hiroki Totoki",
       "publicFigureName": "Kenichiro Yoshida",
-      "matchScore": 1,
       "fecCommitteeId": "C00513978",
       "lastVerifiedDate": "2026-03-09",
       "notes": "PAC dissolved, historical data still accessible via FEC",
@@ -11529,7 +11587,8 @@
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00513978/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "ahold-delhaize",
@@ -11553,9 +11612,9 @@
         "grocery"
       ],
       "ceoName": "Frans Muller",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "seven-and-i",
@@ -11575,9 +11634,9 @@
         "holding-company"
       ],
       "ceoName": "Ryuichi Isaka",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "mars",
@@ -11603,9 +11662,9 @@
       ],
       "ceoName": "Poul Weihrauch",
       "publicFigureName": "Mars Family",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "jab-holding",
@@ -11626,9 +11685,9 @@
       ],
       "ceoName": "Joachim Creus",
       "publicFigureName": "Peter Harf",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "shell",
@@ -11649,9 +11708,9 @@
         "oil-gas"
       ],
       "ceoName": "Wael Sawan",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "recruit-holdings",
@@ -11672,9 +11731,9 @@
         "holding-company"
       ],
       "ceoName": "Hisayuki Idekoba",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "bytedance",
@@ -11698,9 +11757,9 @@
       ],
       "ceoName": "Liang Rubo",
       "publicFigureName": "Zhang Yiming",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "reddit",
@@ -11721,9 +11780,9 @@
       ],
       "ceoName": "Steve Huffman",
       "publicFigureName": "Steve Huffman",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "tiktok",
@@ -11743,10 +11802,10 @@
       ],
       "ceoName": "Shou Zi Chew",
       "publicFigureName": "Shou Zi Chew",
-      "matchScore": 1,
       "parentEntityId": "bytedance",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "pinterest",
@@ -11764,9 +11823,9 @@
         "ecommerce"
       ],
       "ceoName": "Bill Ready",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "snap",
@@ -11788,9 +11847,9 @@
       ],
       "ceoName": "Evan Spiegel",
       "publicFigureName": "Evan Spiegel",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "discord",
@@ -11812,9 +11871,9 @@
       ],
       "ceoName": "Jason Citron",
       "publicFigureName": "Jason Citron",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "openai",
@@ -11838,9 +11897,9 @@
       ],
       "ceoName": "Sam Altman",
       "publicFigureName": "Sam Altman",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "yahoo",
@@ -11865,7 +11924,6 @@
         "finance"
       ],
       "ceoName": "Jim Lanzone",
-      "matchScore": 1,
       "fecCommitteeId": "C00380535",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
@@ -11884,7 +11942,8 @@
         ],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00380535/"
-      }
+      },
+      "verificationStatus": "pipeline"
     },
     {
       "id": "adobe",
@@ -11910,9 +11969,9 @@
       ],
       "ceoName": "Shantanu Narayen",
       "publicFigureName": "Shantanu Narayen",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "canva",
@@ -11934,9 +11993,9 @@
       ],
       "ceoName": "Melanie Perkins",
       "publicFigureName": "Melanie Perkins",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "roblox",
@@ -11956,9 +12015,9 @@
       ],
       "ceoName": "David Baszucki",
       "publicFigureName": "David Baszucki",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "new-york-times",
@@ -11981,9 +12040,9 @@
       ],
       "ceoName": "Meredith Kopit Levien",
       "publicFigureName": "A.G. Sulzberger",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "zillow",
@@ -12006,9 +12065,9 @@
         "technology"
       ],
       "ceoName": "Jeremy Wacksman",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "craigslist",
@@ -12027,9 +12086,9 @@
       ],
       "ceoName": "Jim Buckmaster",
       "publicFigureName": "Craig Newmark",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "linkedin",
@@ -12049,10 +12108,10 @@
         "hr-tech"
       ],
       "ceoName": "Ryan Roslansky",
-      "matchScore": 1,
       "parentEntityId": "microsoft",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "github",
@@ -12073,10 +12132,10 @@
         "software"
       ],
       "ceoName": "Thomas Dohmke",
-      "matchScore": 1,
       "parentEntityId": "microsoft",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "indeed",
@@ -12095,10 +12154,10 @@
         "recruiting"
       ],
       "ceoName": "Chris Hyams",
-      "matchScore": 1,
       "parentEntityId": "recruit-holdings",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "glassdoor",
@@ -12116,10 +12175,10 @@
         "reviews"
       ],
       "ceoName": "Christian Sutherland-Wong",
-      "matchScore": 1,
       "parentEntityId": "recruit-holdings",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "figma",
@@ -12141,9 +12200,9 @@
       ],
       "ceoName": "Dylan Field",
       "publicFigureName": "Dylan Field",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "automattic",
@@ -12171,9 +12230,9 @@
       ],
       "ceoName": "Matt Mullenweg",
       "publicFigureName": "Matt Mullenweg",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "duckduckgo",
@@ -12195,9 +12254,9 @@
       ],
       "ceoName": "Gabriel Weinberg",
       "publicFigureName": "Gabriel Weinberg",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "anthropic",
@@ -12221,9 +12280,9 @@
       ],
       "ceoName": "Dario Amodei",
       "publicFigureName": "Dario Amodei",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "xai",
@@ -12246,10 +12305,10 @@
       ],
       "ceoName": "Elon Musk",
       "publicFigureName": "Elon Musk",
-      "matchScore": 1,
       "parentEntityId": "spacex",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "perplexity-ai",
@@ -12271,9 +12330,9 @@
       ],
       "ceoName": "Aravind Srinivas",
       "publicFigureName": "Aravind Srinivas",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "google-deepmind",
@@ -12296,10 +12355,10 @@
       ],
       "ceoName": "Demis Hassabis",
       "publicFigureName": "Demis Hassabis",
-      "matchScore": 1,
       "parentEntityId": "google-alphabet",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "lvmh",
@@ -12326,9 +12385,9 @@
       ],
       "ceoName": "Bernard Arnault",
       "publicFigureName": "Bernard Arnault",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "naver",
@@ -12352,9 +12411,9 @@
         "holding-company"
       ],
       "ceoName": "Choi Soo-yeon",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "wikimedia",
@@ -12378,9 +12437,9 @@
         "reference"
       ],
       "ceoName": "Bernadette Meehan",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "washington-post",
@@ -12401,9 +12460,9 @@
       ],
       "ceoName": "Will Lewis",
       "publicFigureName": "Jeff Bezos",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "cloudflare",
@@ -12426,9 +12485,9 @@
       ],
       "ceoName": "Matthew Prince",
       "publicFigureName": "Matthew Prince",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "substack",
@@ -12449,9 +12508,9 @@
       ],
       "ceoName": "Chris Best",
       "publicFigureName": "Chris Best",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "medium",
@@ -12470,9 +12529,9 @@
       ],
       "ceoName": "Tony Stubblebine",
       "publicFigureName": "Ev Williams",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "npr",
@@ -12498,9 +12557,9 @@
       ],
       "ceoName": "Katherine Maher",
       "publicFigureName": "Katherine Maher",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "pbs",
@@ -12525,9 +12584,9 @@
       ],
       "ceoName": "Paula Kerger",
       "publicFigureName": "Paula Kerger",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "vox-media",
@@ -12565,9 +12624,9 @@
       ],
       "ceoName": "Jim Bankoff",
       "publicFigureName": "Jim Bankoff",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "axios",
@@ -12589,9 +12648,9 @@
       ],
       "ceoName": "Jim VandeHei",
       "publicFigureName": "Jim VandeHei",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "the-atlantic",
@@ -12612,9 +12671,9 @@
       ],
       "ceoName": "Nicholas Thompson",
       "publicFigureName": "Laurene Powell Jobs",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "the-guardian",
@@ -12636,9 +12695,9 @@
       ],
       "ceoName": "Anna Bateson",
       "publicFigureName": "Katharine Viner",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "propublica",
@@ -12659,9 +12718,9 @@
       ],
       "ceoName": "Stephen Engelberg",
       "publicFigureName": "Stephen Engelberg",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "the-intercept",
@@ -12683,9 +12742,9 @@
       ],
       "ceoName": "Betsy Reed",
       "publicFigureName": "Betsy Reed",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "mother-jones",
@@ -12707,9 +12766,9 @@
       ],
       "ceoName": "Monika Bauerlein",
       "publicFigureName": "Monika Bauerlein",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "axel-springer",
@@ -12737,9 +12796,9 @@
       ],
       "ceoName": "Mathias Döpfner",
       "publicFigureName": "Mathias Döpfner",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "politico",
@@ -12762,10 +12821,10 @@
       ],
       "ceoName": "Goli Sheikholeslami",
       "publicFigureName": "Goli Sheikholeslami",
-      "matchScore": 1,
       "parentEntityId": "axel-springer",
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "los-angeles-times",
@@ -12787,9 +12846,9 @@
       ],
       "ceoName": "Patrick Soon-Shiong",
       "publicFigureName": "Patrick Soon-Shiong",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "penske-media",
@@ -12822,9 +12881,9 @@
       ],
       "ceoName": "Jay Penske",
       "publicFigureName": "Jay Penske",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     },
     {
       "id": "graham-holdings",
@@ -12849,9 +12908,9 @@
       ],
       "ceoName": "Tim O'Shaughnessy",
       "publicFigureName": "Tim O'Shaughnessy",
-      "matchScore": 1,
       "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-05"
+      "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "unverified"
     }
   ]
 }

@@ -15,12 +15,14 @@ import 'dotenv/config';
  * Never run in CI. Never hardcode the API key.
  */
 
-import { readFile, writeFile } from 'node:fs/promises';
+import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
 const __dirname      = path.dirname(fileURLToPath(import.meta.url));
 const ENTITIES_PATH  = path.join(__dirname, '../assets/data/entities.json');
+const OUTPUT_DIR     = path.join(__dirname, 'output');
+const PAC_REVIEW_PATH = path.join(OUTPUT_DIR, 'pac-review.json');
 const FEC_API_BASE   = 'https://api.open.fec.gov/v1';
 const CACHE_TTL_DAYS = 60;
 const REQUEST_DELAY_MS = 500;
@@ -293,6 +295,25 @@ async function main() {
     }
 
     await delay(REQUEST_DELAY_MS);
+  }
+
+  // ── Post-pass: write dissolved/inactive PAC watchlist ───────────────────────
+  // Entities that have a committee ID (non-manual) but returned no activity.
+  const pacReview = entities
+    .filter(
+      (e) =>
+        e.verificationStatus !== 'manual' &&
+        typeof e.fecCommitteeId === 'string' &&
+        e.fecCommitteeId !== '' &&
+        Array.isArray(e.donationSummary?.activeCycles) &&
+        e.donationSummary.activeCycles.length === 0
+    )
+    .map((e) => ({ id: e.id, fecCommitteeId: e.fecCommitteeId }));
+
+  if (pacReview.length > 0) {
+    await mkdir(OUTPUT_DIR, { recursive: true });
+    await writeFile(PAC_REVIEW_PATH, JSON.stringify(pacReview, null, 2) + '\n', 'utf8');
+    console.log(`\n⚠ ${pacReview.length} entities have no recorded PAC activity → scripts/output/pac-review.json`);
   }
 
   // Write back — preserve { _meta, entities } wrapper if present.

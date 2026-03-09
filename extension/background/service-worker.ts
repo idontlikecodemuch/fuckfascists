@@ -178,7 +178,7 @@ async function handleCheckDomain(hostname: string, tabId: number): Promise<void>
         key: cacheKey,
         fecCommitteeId: committeeId,
         donationSummary,
-        confidence: entityConfidence(entity.matchScore),
+        confidence: entityConfidence(undefined),
         fetchedAt: Date.now(),
       });
     } catch {
@@ -202,7 +202,7 @@ async function handleCheckDomain(hostname: string, tabId: number): Promise<void>
     totalDems:      donationSummary.totalDems,
     activeCycles:   donationSummary.activeCycles,
     fecCommitteeUrl: donationSummary.fecCommitteeUrl,
-    confidence:     entityConfidence(entity.matchScore),
+    confidence:     entityConfidence(undefined),
     avoided:        false,
   };
 

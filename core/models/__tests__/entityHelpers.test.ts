@@ -9,6 +9,7 @@ function makeEntity(overrides: Partial<Entity> & { id: string; ceoName: string }
     aliases: [],
     domains: [],
     categoryTags: [],
+    verificationStatus: 'unverified',
     lastVerifiedDate: '2026-01-01',
     ...overrides,
   };

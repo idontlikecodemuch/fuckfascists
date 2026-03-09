@@ -10,11 +10,13 @@ const WEEK = '2024-03-11'; // Monday
 
 const walmart: Entity = {
   id: 'walmart', canonicalName: 'Walmart Inc', aliases: [],
-  domains: [], categoryTags: [], ceoName: 'Doug McMillon', lastVerifiedDate: '2024-01-01',
+  domains: [], categoryTags: [], ceoName: 'Doug McMillon',
+  verificationStatus: 'unverified', lastVerifiedDate: '2024-01-01',
 };
 const target: Entity = {
   id: 'target', canonicalName: 'Target Corp', aliases: [],
-  domains: [], categoryTags: [], ceoName: 'Brian Cornell', lastVerifiedDate: '2024-01-01',
+  domains: [], categoryTags: [], ceoName: 'Brian Cornell',
+  verificationStatus: 'unverified', lastVerifiedDate: '2024-01-01',
 };
 
 const twitter: Platform = {

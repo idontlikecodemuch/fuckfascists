@@ -10,7 +10,7 @@ const walmart: Entity = {
   categoryTags: ['retail'],
   ceoName: 'Doug McMillon',
   fecCommitteeId: 'D000000074',
-  matchScore: 1.0,
+  verificationStatus: 'pipeline',
   lastVerifiedDate: '2024-01-01',
 };
 
@@ -21,6 +21,7 @@ const mcdonalds: Entity = {
   domains: ['mcdonalds.com'],
   categoryTags: ['food'],
   ceoName: 'Chris Kempczinski',
+  verificationStatus: 'unverified',
   lastVerifiedDate: '2024-01-01',
 };
 

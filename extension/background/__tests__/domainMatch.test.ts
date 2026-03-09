@@ -11,6 +11,7 @@ function makeEntity(overrides: Partial<Entity> = {}): Entity {
     domains: ['acme.com', 'www.acme.com', 'shop.acme.com'],
     categoryTags: [],
     ceoName: 'Jane Doe',
+    verificationStatus: 'unverified',
     lastVerifiedDate: '2024-01-01',
     ...overrides,
   };

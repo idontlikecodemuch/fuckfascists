@@ -12,7 +12,7 @@ const walmartEntity: Entity = {
   categoryTags: ['retail'],
   ceoName: 'Doug McMillon',
   fecCommitteeId: 'D000000074',
-  matchScore: 1.0,
+  verificationStatus: 'pipeline',
   lastVerifiedDate: '2024-01-01',
 };
 

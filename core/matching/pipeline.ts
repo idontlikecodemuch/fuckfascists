@@ -82,7 +82,7 @@ export async function matchEntity(
 
     if (!orgId) return { matched: false, normalizedInput };
 
-    const confidence = scoreToConfidence(aliasMatch.matchScore);
+    const confidence = 1.0; // alias matches are always exact — full confidence
     if (confidence === null) return { matched: false, normalizedInput };
 
     // Use bundled donationSummary when present and fresh — skips live API call.

@@ -287,7 +287,10 @@ The weekly report card is a synchronized global event. Every user receives it at
                                  //   id: string; status: 'active' | 'dissolved';
                                  //   registeredYear?: number; dissolvedYear?: number;
                                  // }
-  matchScore?: number            // 0–1 override; 1.0 = exact/certain; omit for normal scoring
+  verificationStatus: 'manual' | 'pipeline' | 'unverified'
+                                 //   'manual'     — set by a human maintainer; pipeline skips unless --force
+                                 //   'pipeline'   — confirmed by verify-entities.mjs via FEC API + JW score
+                                 //   'unverified' — default; pipeline will attempt to fill fecCommitteeId
   donationSummary?: DonationSummary // bundled by fetch-donation-data.mjs; pipeline uses this
                                  // directly when present and fresh (within ENTITY_CACHE_TTL_DAYS
                                  // of lastVerifiedDate), skipping the live FEC API call

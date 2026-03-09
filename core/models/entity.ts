@@ -66,13 +66,12 @@ export interface Entity {
    */
   fecCommitteeRecords?: FecCommitteeRecord[];
   /**
-   * Optional override score between 0 and 1.
-   * When present, the pipeline uses this instead of computing Jaro-Winkler.
-   * A value of 1.0 means exact/certain match.
-   * Omit entirely when the pipeline should score normally.
-   * Only use 1.0 for nationally unambiguous brands.
+   * How the fecCommitteeId was established for this entity.
+   *   'manual'     — set by a human maintainer; pipeline skips unless --force
+   *   'pipeline'   — confirmed by verify-entities.mjs via FEC API + Jaro-Winkler
+   *   'unverified' — default; pipeline will attempt to fill fecCommitteeId
    */
-  matchScore?: number;
+  verificationStatus: 'manual' | 'pipeline' | 'unverified';
   /**
    * Optional. Bundled donation summary from the curated data pipeline.
    * When present and fresh (within ENTITY_CACHE_TTL_DAYS of lastVerifiedDate),

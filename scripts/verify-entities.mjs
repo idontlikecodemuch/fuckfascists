@@ -92,12 +92,17 @@ function pickBest(results, normalizedQuery) {
   return { bestScore, bestId, bestName };
 }
 
-async function phase1(entities, apiKey) {
+async function phase1(entities, apiKey, force) {
   const nearMisses = [], unverified = [];
   let autoVerified = 0, skipped = 0;
 
   for (const entity of entities) {
-    if (entity.fecCommitteeId) { skipped++; continue; }
+    // Always skip manual entries (human-verified) unless --force.
+    // Also skip entities that already have a committee ID set by the pipeline.
+    if (!force && (entity.verificationStatus === 'manual' || entity.fecCommitteeId)) {
+      skipped++;
+      continue;
+    }
 
     const normCanonical = normalize(entity.canonicalName);
     const stripped = stripSuffix(entity.canonicalName);
@@ -131,6 +136,7 @@ async function phase1(entities, apiKey) {
 
     if (best.bestScore >= THRESHOLD_AUTO && best.bestId) {
       entity.fecCommitteeId = best.bestId;
+      entity.verificationStatus = 'pipeline';
       autoVerified++;
       console.log(`  ✓ ${entity.canonicalName} → ${best.bestId} (${best.bestScore.toFixed(3)})`);
     } else if (best.bestScore >= THRESHOLD_NEAR && best.bestId) {
@@ -175,6 +181,7 @@ async function phase2(nearMisses, autoVerified) {
 
       if (ans === 'y') {
         entity.fecCommitteeId = bestId;
+        entity.verificationStatus = 'pipeline';
         manualVerified++;
         console.log(`  ✓ Accepted.`);
         done = true;
@@ -229,12 +236,15 @@ async function main() {
   const apiKey = process.env['FEC_API_KEY'];
   if (!apiKey) { console.error('ERROR: FEC_API_KEY environment variable is not set.'); process.exit(1); }
 
+  const force = process.argv.includes('--force');
+  if (force) console.log('--force flag set: re-verifying all entities including manual.\n');
+
   const raw      = await readFile(ENTITIES_PATH, 'utf8');
   const parsed   = JSON.parse(raw);
   const entities = Array.isArray(parsed) ? parsed : parsed.entities;
   console.log(`Loaded ${entities.length} entities. Starting Phase 1...\n`);
 
-  const { nearMisses, unverified, autoVerified, skipped } = await phase1(entities, apiKey);
+  const { nearMisses, unverified, autoVerified, skipped } = await phase1(entities, apiKey, force);
   let manualVerified = 0, deferred = [];
 
   if (nearMisses.length > 0) {
