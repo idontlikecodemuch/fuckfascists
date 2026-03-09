@@ -1,5 +1,5 @@
 import type { LocalCache, DonationSummary } from '../models';
-import type { MatchResult, MatchingDeps } from './types';
+import type { FECCommittee, MatchResult, MatchingDeps } from './types';
 import { normalize } from './normalize';
 import { findByAlias } from './aliasMatch';
 import { pickBestMatch } from './scorer';
@@ -118,7 +118,13 @@ export async function matchEntity(
   }
 
   // Step 3: Fuzzy FEC committee search
-  const candidates = await deps.fetchOrgs(normalizedInput);
+  // fetchOrgs can 403 in anonymous mode — treat as no candidates rather than a hard error.
+  let candidates: FECCommittee[] = [];
+  try {
+    candidates = await deps.fetchOrgs(normalizedInput);
+  } catch {
+    return { matched: false, normalizedInput };
+  }
   const best = pickBestMatch(normalizedInput, candidates);
 
   if (!best) return { matched: false, normalizedInput };
@@ -164,7 +170,12 @@ async function resolveOrgId(
   deps: MatchingDeps
 ): Promise<string | null> {
   const normalized = normalize(canonicalName);
-  const candidates = await deps.fetchOrgs(normalized);
+  let candidates: FECCommittee[] = [];
+  try {
+    candidates = await deps.fetchOrgs(normalized);
+  } catch {
+    return null;
+  }
   const best = pickBestMatch(normalized, candidates);
   return best?.org.orgid ?? null;
 }

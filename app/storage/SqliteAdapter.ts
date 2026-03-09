@@ -43,13 +43,36 @@ interface PlatformAvoidRow {
 export class SqliteAdapter implements StorageAdapter {
   private constructor(private readonly db: SQLite.SQLiteDatabase) {}
 
-  /** Opens the database and runs all DDL migrations. */
+  /** Current schema version — increment whenever DDL changes. */
+  private static readonly SCHEMA_VERSION = 1;
+
+  /** Opens the database and runs schema migrations. */
   static async open(name = 'fuckfascists.db'): Promise<SqliteAdapter> {
     const db = await SQLite.openDatabaseAsync(name);
+    await SqliteAdapter.runMigrations(db);
+    return new SqliteAdapter(db);
+  }
+
+  /**
+   * Version-gated migrations. Safe to call on every open.
+   *
+   * The cache table is a local optimization (not user data) — it is safe
+   * to drop and recreate on a schema version bump. The avoid event tables
+   * contain user data and are never dropped here.
+   */
+  private static async runMigrations(db: SQLite.SQLiteDatabase): Promise<void> {
+    const row = await db.getFirstAsync<{ user_version: number }>('PRAGMA user_version');
+    const installedVersion = row?.user_version ?? 0;
+
+    if (installedVersion < SqliteAdapter.SCHEMA_VERSION) {
+      // Drop the cache table so CREATE TABLE IF NOT EXISTS rebuilds it with the current schema.
+      await db.execAsync(`DROP TABLE IF EXISTS ${TABLE_CACHE}`);
+      await db.execAsync(`PRAGMA user_version = ${SqliteAdapter.SCHEMA_VERSION}`);
+    }
+
     for (const ddl of ALL_DDL) {
       await db.execAsync(ddl);
     }
-    return new SqliteAdapter(db);
   }
 
   // ── Cache ──────────────────────────────────────────────────────────────────
