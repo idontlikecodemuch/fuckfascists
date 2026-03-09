@@ -329,6 +329,7 @@ These apply to every file, every PR, every AI-generated change.
 - **When fixing a bug** — exhaust the existing pattern before introducing a new one. If you do introduce a new pattern, remove the old implementation
 - **Environments are cleanly separated** — no prod config leaking into dev and vice versa
 - **No one-off scripts in source files** — if a script only runs once, it doesn't belong in the codebase
+- **No script execution in CC** — never run npm scripts, shell commands, or data pipeline scripts (fetch:donations, verify:entities, tsc, etc.) from within a CC session. Scripts are run manually by the developer. CC handles code changes only.
 
 ---
 
