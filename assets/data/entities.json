@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "totalEntities": 449,
+    "totalEntities": 448,
     "updatedAt": "2026-03-09",
     "formatVersion": "1.0"
   },
@@ -137,7 +137,8 @@
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00502906/"
       },
-      "verificationStatus": "pipeline"
+      "verificationStatus": "pipeline",
+      "notes": "C00502906 confirmed correct. Active through 2025-2026 cycle. Prior no-activity flag was incorrect."
     },
     {
       "id": "x-twitter",
@@ -783,8 +784,8 @@
       ],
       "ceoName": "Charlie Scharf",
       "lastVerifiedDate": "2026-03-09",
-      "fecCommitteeId": "C00142844",
-      "notes": "PAC dissolved, historical data still accessible via FEC | Former PAC: C00142844 (dissolved) | Active PAC ID unverified",
+      "fecCommitteeId": "C00034595",
+      "notes": "C00142844 was terminated NM state PAC. C00034595 is WELLS FARGO AND COMPANY EMPLOYEE PAC, primary active federal SSF, active through 2025-2026",
       "donationSummary": {
         "committeeId": "C00142844",
         "committeeName": "WELLS FARGO AND COMPANY-NEW MEXICO PAC",
@@ -2688,40 +2689,6 @@
       "verificationStatus": "manual"
     },
     {
-      "id": "patagonia",
-      "canonicalName": "Patagonia Inc",
-      "aliases": [
-        "Patagonia"
-      ],
-      "domains": [
-        "patagonia.com"
-      ],
-      "categoryTags": [
-        "retail",
-        "apparel",
-        "outdoor"
-      ],
-      "ceoName": "Ryan Gellert",
-      "fecCommitteeId": "C90018193",
-      "lastVerifiedDate": "2026-03-09",
-      "donationSummary": {
-        "committeeId": "C90018193",
-        "committeeName": "PATAGONIA INC.",
-        "recentCycle": 2020,
-        "recentRepubs": 0,
-        "recentDems": 0,
-        "totalRepubs": 0,
-        "totalDems": 0,
-        "activeCycles": [
-          2018,
-          2020
-        ],
-        "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C90018193/"
-      },
-      "verificationStatus": "pipeline"
-    },
-    {
       "id": "columbia-sportswear",
       "canonicalName": "Columbia Sportswear Co",
       "aliases": [
@@ -2742,9 +2709,9 @@
         "outdoor"
       ],
       "ceoName": "Tim Boyle",
-      "fecCommitteeId": "C00123737",
+      "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-09",
-      "notes": "PAC dissolved, historical data still accessible via FEC",
+      "notes": "C00123737 is COLUMBIA COMPANIES PAC — unrelated entity. No federal SSF found for Columbia Sportswear.",
       "donationSummary": {
         "committeeId": "C00123737",
         "committeeName": "COLUMBIA COMPANIES PAC",
@@ -2757,7 +2724,7 @@
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00123737/"
       },
-      "verificationStatus": "pipeline"
+      "verificationStatus": "manual"
     },
     {
       "id": "skechers",
@@ -3462,9 +3429,9 @@
         "utilities"
       ],
       "ceoName": "Harry Sideris",
-      "fecCommitteeId": "C00091884",
+      "fecCommitteeId": "C00083535",
       "lastVerifiedDate": "2026-03-09",
-      "notes": "PAC dissolved, historical data still accessible via FEC",
+      "notes": "C00091884 was legacy Carolina Power & Light predecessor PAC. C00083535 is active DUKE ENERGY CORPORATION PAC through 2025-2026",
       "donationSummary": {
         "committeeId": "C00091884",
         "committeeName": "DUKE ENERGY CORPORATION PROGRESS PAC",

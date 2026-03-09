@@ -511,6 +511,20 @@ in `core/api/FECClient.ts` must be updated manually when a new election cycle be
 Both constants are candidates for renaming to `CYCLES_TO_FETCH` (more accurate now that 2026
 is included) — not blocking for MVP but should be done alongside the next cycle update.
 
+### Independent Expenditures — IE tracking (Priority: V3)
+The current data pipeline covers two FEC data sources:
+- Corporate PAC contributions: Schedule B via `/committees/{id}/totals/`
+- Individual donations: Schedule A via `/schedules/schedule_a/`
+
+Independent Expenditures (Schedule E) are not currently tracked. IEs are spending by outside
+groups — including corporate-affiliated ones — to support or oppose candidates, and are reported
+separately from PAC contributions. For high-profile individuals (Musk, Bezos etc.) IE data may
+represent their most significant political activity.
+
+V3 should add an `ieContributions` field to both `Entity` and `PoliticalPerson` and query
+`/schedules/schedule_e/` accordingly. Note: IE data requires a different query pattern — filer
+is the spender, not the recipient. Do not conflate with Schedule A or B data.
+
 ---
 
 ## Data Maintenance / AI Verification Process
