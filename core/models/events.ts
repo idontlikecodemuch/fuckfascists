@@ -4,7 +4,7 @@
 export interface EntityAvoidEvent {
   entityId: string; // references canonical entity list
   date: string;     // YYYY-MM-DD only — no time, no location
-  count: number;    // incremented on each avoid tap
+  count: number;    // accumulated avoid count — set by DB on read, not by callers on write
 }
 
 export interface PlatformAvoidEvent {

@@ -61,35 +61,18 @@ describe('getMondayOf', () => {
 // ─── recordEntityAvoid ────────────────────────────────────────────────────────
 
 describe('recordEntityAvoid', () => {
-  it('inserts a new avoid event with count 1 when none exists today', async () => {
+  it('calls upsertEntityAvoid with the entityId and today\'s date', async () => {
     const adapter = makeAdapter();
-    await recordEntityAvoid(adapter, 'walmart');
-
-    expect(adapter.upsertEntityAvoid).toHaveBeenCalledWith(
-      expect.objectContaining({ entityId: 'walmart', count: 1 })
-    );
-  });
-
-  it('increments count when an avoid event already exists today', async () => {
     const today = toDateString(new Date());
-    const existing: EntityAvoidEvent = { entityId: 'walmart', date: today, count: 3 };
-    const adapter = makeAdapter({
-      getEntityAvoids: jest.fn().mockResolvedValue([existing]),
-    });
-
     await recordEntityAvoid(adapter, 'walmart');
 
     expect(adapter.upsertEntityAvoid).toHaveBeenCalledWith(
-      expect.objectContaining({ entityId: 'walmart', date: today, count: 4 })
+      expect.objectContaining({ entityId: 'walmart', date: today })
     );
   });
 
-  it('does not increment when the existing event is from a different day', async () => {
-    const yesterday: EntityAvoidEvent = { entityId: 'walmart', date: '2000-01-01', count: 5 };
-    const adapter = makeAdapter({
-      getEntityAvoids: jest.fn().mockResolvedValue([yesterday]),
-    });
-
+  it('always passes count: 1 — DB owns the increment atomically', async () => {
+    const adapter = makeAdapter();
     await recordEntityAvoid(adapter, 'walmart');
 
     expect(adapter.upsertEntityAvoid).toHaveBeenCalledWith(
@@ -97,11 +80,11 @@ describe('recordEntityAvoid', () => {
     );
   });
 
-  it('queries only events for the given entityId', async () => {
+  it('does not pre-read existing events — no getEntityAvoids call', async () => {
     const adapter = makeAdapter();
     await recordEntityAvoid(adapter, 'target');
 
-    expect(adapter.getEntityAvoids).toHaveBeenCalledWith('target');
+    expect(adapter.getEntityAvoids).not.toHaveBeenCalled();
   });
 });
 

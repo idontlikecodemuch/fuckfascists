@@ -15,14 +15,8 @@ export async function recordEntityAvoid(
   entityId: string
 ): Promise<void> {
   const date = toDateString(new Date());
-  const existing = await adapter.getEntityAvoids(entityId);
-  const today = existing.find((e) => e.date === date);
-
-  if (today) {
-    await adapter.upsertEntityAvoid({ entityId, date, count: today.count + 1 });
-  } else {
-    await adapter.upsertEntityAvoid({ entityId, date, count: 1 });
-  }
+  // count: 1 is a placeholder — the DB owns the increment atomically (ON CONFLICT DO UPDATE SET count = count + 1).
+  await adapter.upsertEntityAvoid({ entityId, date, count: 1 });
 }
 
 /** Returns all stored entity avoid events — used for report card generation. */

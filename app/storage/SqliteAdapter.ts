@@ -109,6 +109,7 @@ export class SqliteAdapter implements StorageAdapter {
 
   // ── Entity avoid events ────────────────────────────────────────────────────
 
+  // count is managed atomically by the DB — caller does not control increment
   async upsertEntityAvoid(event: EntityAvoidEvent): Promise<void> {
     await this.db.runAsync(
       `INSERT INTO ${TABLE_ENTITY_AVOIDS} (entity_id, date, count)
