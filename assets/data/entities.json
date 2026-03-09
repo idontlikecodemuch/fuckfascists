@@ -128,18 +128,12 @@
       "donationSummary": {
         "committeeId": "C00502906",
         "committeeName": "META PLATFORMS, INC. PAC",
-        "recentCycle": 2024,
+        "recentCycle": 0,
         "recentRepubs": 0,
         "recentDems": 0,
         "totalRepubs": 0,
         "totalDems": 0,
-        "activeCycles": [
-          2016,
-          2018,
-          2020,
-          2022,
-          2024
-        ],
+        "activeCycles": [],
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00502906/"
       },
@@ -399,18 +393,24 @@
       "ceoName": "John Stankey",
       "lastVerifiedDate": "2026-03-09",
       "fecCommitteeId": "C00109017",
-      "notes": "CORRECTED: C00545277 was ATTAIN LLC PAC (name mismatch). Active: AT&T INC. EMPLOYEE FEDERAL PAC.",
+      "notes": "Replaced ATTAIN LLC PAC (wrong entity) with AT&T Inc. PAC",
       "donationSummary": {
-        "committeeId": "C00545277",
-        "committeeName": "ATTAIN LLC PAC",
-        "recentCycle": 0,
+        "committeeId": "C00109017",
+        "committeeName": "AT&T INC. EMPLOYEE FEDERAL POLITICAL ACTION COMMITTEE (AT&T EMPLOYEE FEDERAL PAC)",
+        "recentCycle": 2024,
         "recentRepubs": 0,
         "recentDems": 0,
         "totalRepubs": 0,
         "totalDems": 0,
-        "activeCycles": [],
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00545277/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00109017/"
       },
       "verificationStatus": "pipeline",
       "fecCommitteeRecords": [
@@ -524,18 +524,24 @@
       "ceoName": "Darren Woods",
       "lastVerifiedDate": "2026-03-09",
       "fecCommitteeId": "C00121368",
-      "notes": "CORRECTED: C00457523 was Super PAC (dissolved). Active: EXXONMOBIL PAC.",
+      "notes": "Replaced dissolved Super PAC with active ExxonMobil PAC",
       "donationSummary": {
-        "committeeId": "C00457523",
-        "committeeName": "EXXON MOBIL CORPORATION SHAREHOLDERS SUPER PAC",
-        "recentCycle": 0,
+        "committeeId": "C00121368",
+        "committeeName": "EXXON MOBIL CORPORATION POLITICAL ACTION COMMITTEE (EXXONMOBIL PAC)",
+        "recentCycle": 2024,
         "recentRepubs": 0,
         "recentDems": 0,
         "totalRepubs": 0,
         "totalDems": 0,
-        "activeCycles": [],
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00457523/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00121368/"
       },
       "verificationStatus": "pipeline",
       "fecCommitteeRecords": [
@@ -580,18 +586,24 @@
       "publicFigureName": "Charles Koch",
       "lastVerifiedDate": "2026-03-09",
       "fecCommitteeId": "C00236489",
-      "notes": "CORRECTED: C70005079 dissolved. Active: KOCHPAC (Koch, Inc. rebranded).",
+      "notes": "Replaced dissolved entity with active KOCHPAC under Koch Inc",
       "donationSummary": {
-        "committeeId": "C70005079",
-        "committeeName": "KOCH INDUSTRIES INC",
-        "recentCycle": 0,
+        "committeeId": "C00236489",
+        "committeeName": "KOCH, INC. POLITICAL ACTION COMMITTEE (KOCHPAC)",
+        "recentCycle": 2024,
         "recentRepubs": 0,
         "recentDems": 0,
         "totalRepubs": 0,
         "totalDems": 0,
-        "activeCycles": [],
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C70005079/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00236489/"
       },
       "verificationStatus": "pipeline",
       "fecCommitteeRecords": [
@@ -624,18 +636,24 @@
       "ceoName": "David Solomon",
       "lastVerifiedDate": "2026-03-09",
       "fecCommitteeId": "C00350744",
-      "notes": "CORRECTED: C00456210 was Super PAC (dissolved). Active: THE GOLDMAN SACHS GROUP, INC. PAC.",
+      "notes": "Replaced dissolved Super PAC with active Goldman Sachs PAC",
       "donationSummary": {
-        "committeeId": "C00456210",
-        "committeeName": "GOLDMAN SACHS GROUP INVESTORS SUPER PAC",
-        "recentCycle": 0,
+        "committeeId": "C00350744",
+        "committeeName": "THE GOLDMAN SACHS GROUP, INC. POLITICAL ACTION COMMITTEE",
+        "recentCycle": 2024,
         "recentRepubs": 0,
         "recentDems": 0,
         "totalRepubs": 0,
         "totalDems": 0,
-        "activeCycles": [],
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00456210/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00350744/"
       },
       "verificationStatus": "pipeline",
       "fecCommitteeRecords": [
@@ -1024,8 +1042,26 @@
       ],
       "ceoName": "Rodney McMullen",
       "fecCommitteeId": "C00059238",
-      "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "pipeline"
+      "lastVerifiedDate": "2026-03-09",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00059238",
+        "committeeName": "THE KROGER CO. POLITICAL ACTION COMMITTEE",
+        "recentCycle": 2024,
+        "recentRepubs": 0,
+        "recentDems": 0,
+        "totalRepubs": 0,
+        "totalDems": 0,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
+        "lastUpdated": "2026-03-09",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00059238/"
+      }
     },
     {
       "id": "costco",
@@ -1267,8 +1303,26 @@
       ],
       "ceoName": "Vivek Sankaran",
       "fecCommitteeId": "C00194084",
-      "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "pipeline"
+      "lastVerifiedDate": "2026-03-09",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00194084",
+        "committeeName": "THE ALBERTSONS COMPANIES, INC. POLITICAL ACTION COMMITTEE (ACI PAC)",
+        "recentCycle": 2024,
+        "recentRepubs": 0,
+        "recentDems": 0,
+        "totalRepubs": 0,
+        "totalDems": 0,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
+        "lastUpdated": "2026-03-09",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00194084/"
+      }
     },
     {
       "id": "publix",
@@ -1549,7 +1603,8 @@
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00417410/"
       },
       "note": "Confirmed no corporate PAC — false positive match to MICHAELS FOR CONGRESS (congressional campaign)",
-      "verificationStatus": "manual"
+      "verificationStatus": "manual",
+      "notes": "MICHAELS FOR CONGRESS is a candidate committee, not a corporate PAC"
     },
     {
       "id": "jo-ann",
@@ -1582,7 +1637,8 @@
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00832998/"
       },
       "note": "Confirmed no corporate PAC — false positive match to JOANNA RODRIGUEZ (individual campaign)",
-      "verificationStatus": "manual"
+      "verificationStatus": "manual",
+      "notes": "JOANNA RODRIGUEZ is a candidate committee, not a corporate PAC"
     },
     {
       "id": "williams-sonoma",
@@ -1779,7 +1835,8 @@
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00927723/"
       },
       "note": "Confirmed no corporate PAC — false positive match to ACE PARSI FOR CONGRESS (WV congressional candidate)",
-      "verificationStatus": "manual"
+      "verificationStatus": "manual",
+      "notes": "ACE PARSI FOR CONGRESS is a candidate committee, not a corporate PAC"
     },
     {
       "id": "true-value",
@@ -1811,7 +1868,8 @@
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00925933/"
       },
       "note": "Confirmed no corporate PAC — false positive match to TRUE TEXAS VALUES PAC (unrelated advocacy PAC)",
-      "verificationStatus": "manual"
+      "verificationStatus": "manual",
+      "notes": "TRUE TEXAS VALUES PAC is unrelated to True Value hardware"
     },
     {
       "id": "sherwin-williams",
@@ -2154,7 +2212,7 @@
       "ceoName": "Jay Schottenstein",
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-09",
-      "notes": "PAC dissolved, historical data still accessible via FEC",
+      "notes": "AMERICAN EAGLES is unrelated to American Eagle Outfitters",
       "donationSummary": {
         "committeeId": "C00237040",
         "committeeName": "AMERICAN EAGLES; THE",
@@ -2341,7 +2399,8 @@
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00855668/"
       },
       "note": "Confirmed no corporate PAC — false positive match to MEIJER FOR SENATE INC (Peter Meijer Senate campaign)",
-      "verificationStatus": "manual"
+      "verificationStatus": "manual",
+      "notes": "MEIJER FOR SENATE is a candidate committee, not a corporate PAC"
     },
     {
       "id": "autozone",
@@ -3036,9 +3095,9 @@
         "apparel"
       ],
       "ceoName": "Michael O'Sullivan",
-      "fecCommitteeId": "C00004960",
+      "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-09",
-      "notes": "PAC dissolved, historical data still accessible via FEC",
+      "notes": "BURLINGTON RESOURCES INC PAC is an oil and gas company acquired by ConocoPhillips in 2006 — unrelated to Burlington Stores (clothing retailer)",
       "donationSummary": {
         "committeeId": "C00004960",
         "committeeName": "BURLINGTON RESOURCES INC. PAC (BRPAC)",
@@ -3051,7 +3110,7 @@
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00004960/"
       },
-      "verificationStatus": "pipeline"
+      "verificationStatus": "manual"
     },
     {
       "id": "bath-body-works",
@@ -4066,19 +4125,25 @@
       "fecCommitteeId": "C00479246",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
-        "committeeId": "C00679175",
-        "committeeName": "BLACKROCK INSTITUTE",
-        "recentCycle": 0,
+        "committeeId": "C00479246",
+        "committeeName": "BLACKROCK FUNDS SERVICES GROUP LLC POLITICAL ACTION COMMITTEE (BLACKROCK PAC)",
+        "recentCycle": 2024,
         "recentRepubs": 0,
         "recentDems": 0,
         "totalRepubs": 0,
         "totalDems": 0,
-        "activeCycles": [],
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00679175/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00479246/"
       },
       "verificationStatus": "pipeline",
-      "notes": "CORRECTED: C00679175 name mismatch. Active: BLACKROCK FUNDS SERVICES GROUP PAC ($672k in 2023-2024).",
+      "notes": "Replaced BLACKROCK INSTITUTE (name mismatch) with BlackRock Inc PAC",
       "fecCommitteeRecords": [
         {
           "id": "C00679175",
@@ -4350,7 +4415,7 @@
       ],
       "ceoName": "Jack Dorsey",
       "publicFigureName": "Jack Dorsey",
-      "fecCommitteeId": "",
+      "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
         "committeeId": "C00739920",
@@ -4367,8 +4432,8 @@
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00739920/"
       },
-      "verificationStatus": "unverified",
-      "notes": "C00739920 is BLOCKCHAIN OF COMMAND PAC - name mismatch. No confirmed Block Inc corporate PAC."
+      "verificationStatus": "manual",
+      "notes": "BLOCKCHAIN OF COMMAND is unrelated to Block Inc"
     },
     {
       "id": "stripe",
@@ -4461,16 +4526,22 @@
       "lastVerifiedDate": "2026-03-09",
       "notes": "CORRECTED: C00225946 dissolved. Active: US BANCORP PAC (563 donors in 2023-2024).",
       "donationSummary": {
-        "committeeId": "C00225946",
-        "committeeName": "U S BANCORP PAC-OREGON",
-        "recentCycle": 0,
+        "committeeId": "C00488882",
+        "committeeName": "U.S. BANCORP FEDERAL POLITICAL ACTION COMMITTEE",
+        "recentCycle": 2024,
         "recentRepubs": 0,
         "recentDems": 0,
         "totalRepubs": 0,
         "totalDems": 0,
-        "activeCycles": [],
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00225946/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00488882/"
       },
       "verificationStatus": "pipeline",
       "fecCommitteeRecords": [
@@ -4503,16 +4574,22 @@
       "lastVerifiedDate": "2026-03-09",
       "notes": "CORRECTED: C00509315 dissolved. Active: PNC BANK CORP PAC.",
       "donationSummary": {
-        "committeeId": "C00509315",
-        "committeeName": "PNC FINANCIAL SERVICES GROUP INC PAC-MICHIGAN AKA PNC PAC-MICHIGAN; THE",
-        "recentCycle": 0,
+        "committeeId": "C00035519",
+        "committeeName": "BIPARTISAN VOLUNTARY PUBLIC AFFAIRS COMMITTEE OF THE PNC FINANCIAL SERVICES GROUP, INC. (PNC PAC)",
+        "recentCycle": 2024,
         "recentRepubs": 0,
         "recentDems": 0,
         "totalRepubs": 0,
         "totalDems": 0,
-        "activeCycles": [],
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00509315/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00035519/"
       },
       "verificationStatus": "pipeline",
       "fecCommitteeRecords": [
@@ -4585,7 +4662,7 @@
       "ceoName": "Tim Cook",
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-09",
-      "notes": "CORRECTED: C00349928 was APPLEJAM INC (name mismatch). Apple Inc has no corporate PAC.",
+      "notes": "APPLEJAM INC is unrelated to Apple Inc",
       "donationSummary": {
         "committeeId": "C00349928",
         "committeeName": "APPLEJAM INC GOOD GOVERNMENT POLITICAL ACTION COMMITTEE INC",
@@ -5415,16 +5492,22 @@
       "lastVerifiedDate": "2026-03-09",
       "notes": "CORRECTED: C00025163 dissolved. Active: VERIZON COMMUNICATIONS PAC.",
       "donationSummary": {
-        "committeeId": "C00025163",
-        "committeeName": "VERIZON COMMUNICATIONS INC POLITICAL ACTION COMMITTEE",
-        "recentCycle": 0,
+        "committeeId": "C00186288",
+        "committeeName": "VERIZON COMMUNICATIONS, INC. POLITICAL ACTION COMMITTEE (VERIZON PAC)",
+        "recentCycle": 2024,
         "recentRepubs": 0,
         "recentDems": 0,
         "totalRepubs": 0,
         "totalDems": 0,
-        "activeCycles": [],
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00025163/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00186288/"
       },
       "verificationStatus": "pipeline",
       "fecCommitteeRecords": [
@@ -5505,16 +5588,22 @@
       "lastVerifiedDate": "2026-03-09",
       "notes": "CORRECTED: C00356808 dissolved. Active: CHARTER COMMUNICATIONS PAC.",
       "donationSummary": {
-        "committeeId": "C00356808",
-        "committeeName": "CHARTER COMMUNICATIONS INC. PAC (CHARTERPAC)",
-        "recentCycle": 0,
+        "committeeId": "C00426775",
+        "committeeName": "CHARTER COMMUNICATIONS INC. POLITICAL ACTION COMMITTEE",
+        "recentCycle": 2024,
         "recentRepubs": 0,
         "recentDems": 0,
         "totalRepubs": 0,
         "totalDems": 0,
-        "activeCycles": [],
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00356808/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00426775/"
       },
       "verificationStatus": "pipeline",
       "fecCommitteeRecords": [
@@ -5547,8 +5636,26 @@
       ],
       "ceoName": "Mark Greatrex",
       "fecCommitteeId": "C00477653",
-      "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "pipeline"
+      "lastVerifiedDate": "2026-03-09",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00477653",
+        "committeeName": "COX ENTERPRISES PAC (COXPAC) INC.",
+        "recentCycle": 2024,
+        "recentRepubs": 0,
+        "recentDems": 0,
+        "totalRepubs": 0,
+        "totalDems": 0,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
+        "lastUpdated": "2026-03-09",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00477653/"
+      }
     },
     {
       "id": "lumen",
@@ -5611,8 +5718,26 @@
       ],
       "ceoName": "Hamid Akhavan",
       "fecCommitteeId": "C00330647",
-      "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "pipeline"
+      "lastVerifiedDate": "2026-03-09",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00330647",
+        "committeeName": "ECHOSTAR CORPORATION AND DISH NETWORK CORPORATION PAC (ECHOSTAR DISH NETWORK PAC)",
+        "recentCycle": 2024,
+        "recentRepubs": 0,
+        "recentDems": 0,
+        "totalRepubs": 0,
+        "totalDems": 0,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
+        "lastUpdated": "2026-03-09",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00330647/"
+      }
     },
     {
       "id": "directv",
@@ -5766,16 +5891,22 @@
       "lastVerifiedDate": "2026-03-09",
       "notes": "CORRECTED: C00327361 dissolved. Active: SINCLAIR BROADCAST GROUP PAC.",
       "donationSummary": {
-        "committeeId": "C00327361",
-        "committeeName": "SINCLAIR BROADCAST GROUP INC POLITICAL ACTION COMMITTEE",
-        "recentCycle": 0,
+        "committeeId": "C00562660",
+        "committeeName": "SINCLAIR BROADCAST GROUP PAC",
+        "recentCycle": 2024,
         "recentRepubs": 0,
         "recentDems": 0,
         "totalRepubs": 0,
         "totalDems": 0,
-        "activeCycles": [],
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00327361/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00562660/"
       },
       "verificationStatus": "pipeline",
       "fecCommitteeRecords": [
@@ -6052,8 +6183,26 @@
       ],
       "ceoName": "Bob Iger",
       "fecCommitteeId": "C00197749",
-      "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "pipeline"
+      "lastVerifiedDate": "2026-03-09",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00197749",
+        "committeeName": "TWDC ENTERPRISES 18 CORP. EMPLOYEES PAC AKA 'THE WALT DISNEY COMPANY EMPLOYEES PAC' OR 'DISNEY PAC'",
+        "recentCycle": 2024,
+        "recentRepubs": 0,
+        "recentDems": 0,
+        "totalRepubs": 0,
+        "totalDems": 0,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
+        "lastUpdated": "2026-03-09",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00197749/"
+      }
     },
     {
       "id": "warner-bros-discovery",
@@ -6087,9 +6236,25 @@
       ],
       "ceoName": "David Zaslav",
       "fecCommitteeId": "C00719393",
-      "lastVerifiedDate": "2026-03-05",
+      "lastVerifiedDate": "2026-03-09",
       "verificationStatus": "pipeline",
-      "notes": "Formerly Discovery Communications LLC PAC; rebranded post-merger."
+      "notes": "Formerly Discovery Communications LLC PAC; rebranded post-merger.",
+      "donationSummary": {
+        "committeeId": "C00719393",
+        "committeeName": "DISCOVERY COMMUNICATIONS, LLC PAC (WBD PAC)",
+        "recentCycle": 2024,
+        "recentRepubs": 0,
+        "recentDems": 0,
+        "totalRepubs": 0,
+        "totalDems": 0,
+        "activeCycles": [
+          2020,
+          2022,
+          2024
+        ],
+        "lastUpdated": "2026-03-09",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00719393/"
+      }
     },
     {
       "id": "paramount",
@@ -6247,8 +6412,26 @@
       ],
       "ceoName": "David Cordani",
       "fecCommitteeId": "C00085316",
-      "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "pipeline"
+      "lastVerifiedDate": "2026-03-09",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00085316",
+        "committeeName": "THE CIGNA GROUP EMPLOYEE POLITICAL ACTION COMMITTEE",
+        "recentCycle": 2024,
+        "recentRepubs": 0,
+        "recentDems": 0,
+        "totalRepubs": 0,
+        "totalDems": 0,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
+        "lastUpdated": "2026-03-09",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00085316/"
+      }
     },
     {
       "id": "humana",
@@ -6421,8 +6604,26 @@
       ],
       "ceoName": "Joaquin Duato",
       "fecCommitteeId": "C00010983",
-      "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "pipeline"
+      "lastVerifiedDate": "2026-03-09",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00010983",
+        "committeeName": "JOHNSON & JOHNSON POLITICAL ACTION COMMITTEE",
+        "recentCycle": 2024,
+        "recentRepubs": 0,
+        "recentDems": 0,
+        "totalRepubs": 0,
+        "totalDems": 0,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
+        "lastUpdated": "2026-03-09",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00010983/"
+      }
     },
     {
       "id": "pfizer",
@@ -6483,19 +6684,25 @@
       "fecCommitteeId": "C00097485",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
-        "committeeId": "C00863134",
-        "committeeName": "MERCK TRUCKING LLC",
-        "recentCycle": 0,
+        "committeeId": "C00097485",
+        "committeeName": "MERCK & CO., INC., EMPLOYEES POLITICAL ACTION COMMITTEE (MERCK PAC)",
+        "recentCycle": 2024,
         "recentRepubs": 0,
         "recentDems": 0,
         "totalRepubs": 0,
         "totalDems": 0,
-        "activeCycles": [],
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00863134/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00097485/"
       },
       "verificationStatus": "pipeline",
-      "notes": "CORRECTED: C00863134 was MERCK TRUCKING LLC (name mismatch). Active: MERCK & CO PAC ($1.4M in 2023-2024).",
+      "notes": "Replaced MERCK TRUCKING LLC (wrong entity) with Merck & Co PAC",
       "fecCommitteeRecords": [
         {
           "id": "C00863134",
@@ -6830,8 +7037,8 @@
       "fecCommitteeId": "C00012468",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
-        "committeeId": "C00540104",
-        "committeeName": "COCA-COLA CONSOLIDATED, INC. POLITICAL ACTION COMMITTEE",
+        "committeeId": "C00012468",
+        "committeeName": "THE COCA-COLA COMPANY NONPARTISAN COMMITTEE FOR GOOD GOVERNMENT",
         "recentCycle": 2024,
         "recentRepubs": 0,
         "recentDems": 0,
@@ -6845,10 +7052,10 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00540104/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00012468/"
       },
       "verificationStatus": "pipeline",
-      "notes": "CORRECTED: C00540104 was Coca-Cola Consolidated bottler PAC. Active: THE COCA-COLA COMPANY NONPARTISAN COMMITTEE FOR GOOD GOVERNMENT.",
+      "notes": "Replaced bottler PAC with The Coca-Cola Company PAC",
       "fecCommitteeRecords": [
         {
           "id": "C00540104",
@@ -6925,18 +7132,24 @@
       "ceoName": "Carlos Abrams-Rivera",
       "fecCommitteeId": "C00077701",
       "lastVerifiedDate": "2026-03-09",
-      "notes": "PAC dissolved, historical data still accessible via FEC",
+      "notes": "Replaced KRAFT FOR CONGRESS (candidate committee) with Kraft Heinz PAC",
       "donationSummary": {
-        "committeeId": "C00272039",
-        "committeeName": "KRAFT FOR CONGRESS",
-        "recentCycle": 0,
+        "committeeId": "C00077701",
+        "committeeName": "THE KRAFT HEINZ COMPANY POLITICAL ACTION COMMITTEE (KRAFTHEINZPAC)",
+        "recentCycle": 2024,
         "recentRepubs": 0,
         "recentDems": 0,
         "totalRepubs": 0,
         "totalDems": 0,
-        "activeCycles": [],
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00272039/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00077701/"
       },
       "note": "Active PAC verified March 2026",
       "verificationStatus": "pipeline"
@@ -7290,7 +7503,8 @@
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00547570/"
       },
       "note": "Confirmed no corporate PAC — false positive match to PERDUE FOR SENATE (David Perdue Senate campaign)",
-      "verificationStatus": "manual"
+      "verificationStatus": "manual",
+      "notes": "PERDUE FOR SENATE is a candidate committee, not a corporate PAC"
     },
     {
       "id": "anheuser-busch-inbev",
@@ -7320,9 +7534,27 @@
       ],
       "ceoName": "Michel Doukeris",
       "fecCommitteeId": "C00034488",
-      "lastVerifiedDate": "2026-03-05",
+      "lastVerifiedDate": "2026-03-09",
       "verificationStatus": "pipeline",
-      "notes": "US subsidiary Anheuser-Busch LLC PAC ($504,631 in 2023-2024)."
+      "notes": "US subsidiary Anheuser-Busch LLC PAC ($504,631 in 2023-2024).",
+      "donationSummary": {
+        "committeeId": "C00034488",
+        "committeeName": "ANHEUSER-BUSCH COMPANIES LLC POLITICAL ACTION COMMITTEE",
+        "recentCycle": 2024,
+        "recentRepubs": 0,
+        "recentDems": 0,
+        "totalRepubs": 0,
+        "totalDems": 0,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
+        "lastUpdated": "2026-03-09",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00034488/"
+      }
     },
     {
       "id": "molson-coors",
@@ -7649,8 +7881,26 @@
       ],
       "ceoName": "Kirk Tanner",
       "fecCommitteeId": "C00369090",
-      "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "pipeline"
+      "lastVerifiedDate": "2026-03-09",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00369090",
+        "committeeName": "THE WENDYS COMPANY POLITICAL ACTION COMMITTEE",
+        "recentCycle": 2024,
+        "recentRepubs": 0,
+        "recentDems": 0,
+        "totalRepubs": 0,
+        "totalDems": 0,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
+        "lastUpdated": "2026-03-09",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00369090/"
+      }
     },
     {
       "id": "darden-restaurants",
@@ -7710,8 +7960,22 @@
       ],
       "ceoName": "Julie Masino",
       "fecCommitteeId": "C00252791",
-      "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "pipeline"
+      "lastVerifiedDate": "2026-03-09",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00252791",
+        "committeeName": "CRACKER BARREL OLD COUNTRY STORE, INC. PAC",
+        "recentCycle": 2016,
+        "recentRepubs": 0,
+        "recentDems": 0,
+        "totalRepubs": 0,
+        "totalDems": 0,
+        "activeCycles": [
+          2016
+        ],
+        "lastUpdated": "2026-03-09",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00252791/"
+      }
     },
     {
       "id": "dennys",
@@ -7824,8 +8088,26 @@
       ],
       "ceoName": "Mary Barra",
       "fecCommitteeId": "C00076810",
-      "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "pipeline"
+      "lastVerifiedDate": "2026-03-09",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00076810",
+        "committeeName": "GENERAL MOTORS COMPANY POLITICAL ACTION COMMITTEE (GM PAC)",
+        "recentCycle": 2024,
+        "recentRepubs": 0,
+        "recentDems": 0,
+        "totalRepubs": 0,
+        "totalDems": 0,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
+        "lastUpdated": "2026-03-09",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00076810/"
+      }
     },
     {
       "id": "stellantis",
@@ -7962,8 +8244,26 @@
       ],
       "ceoName": "Greg Hayes",
       "fecCommitteeId": "C00097568",
-      "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "pipeline"
+      "lastVerifiedDate": "2026-03-09",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00097568",
+        "committeeName": "EMPLOYEES OF RTX CORPORATION POLITICAL ACTION COMMITTEE",
+        "recentCycle": 2024,
+        "recentRepubs": 0,
+        "recentDems": 0,
+        "totalRepubs": 0,
+        "totalDems": 0,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
+        "lastUpdated": "2026-03-09",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00097568/"
+      }
     },
     {
       "id": "boeing",
@@ -7983,8 +8283,26 @@
       ],
       "ceoName": "Kelly Ortberg",
       "fecCommitteeId": "C00142711",
-      "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "pipeline"
+      "lastVerifiedDate": "2026-03-09",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00142711",
+        "committeeName": "THE BOEING COMPANY PAC",
+        "recentCycle": 2024,
+        "recentRepubs": 0,
+        "recentDems": 0,
+        "totalRepubs": 0,
+        "totalDems": 0,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
+        "lastUpdated": "2026-03-09",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00142711/"
+      }
     },
     {
       "id": "general-dynamics",
@@ -8004,8 +8322,26 @@
       ],
       "ceoName": "Phebe Novakovic",
       "fecCommitteeId": "C00078451",
-      "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "pipeline"
+      "lastVerifiedDate": "2026-03-09",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00078451",
+        "committeeName": "GENERAL DYNAMICS CORPORATION POLITICAL ACTION COMMITTEE (GENERAL DYNAMICS EMPLOYEE PAC)",
+        "recentCycle": 2024,
+        "recentRepubs": 0,
+        "recentDems": 0,
+        "totalRepubs": 0,
+        "totalDems": 0,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
+        "lastUpdated": "2026-03-09",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00078451/"
+      }
     },
     {
       "id": "northrop-grumman",
@@ -8022,8 +8358,26 @@
       ],
       "ceoName": "Kathy Warden",
       "fecCommitteeId": "C00088591",
-      "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "pipeline"
+      "lastVerifiedDate": "2026-03-09",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00088591",
+        "committeeName": "EMPLOYEES OF NORTHROP GRUMMAN CORPORATION PAC",
+        "recentCycle": 2024,
+        "recentRepubs": 0,
+        "recentDems": 0,
+        "totalRepubs": 0,
+        "totalDems": 0,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
+        "lastUpdated": "2026-03-09",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00088591/"
+      }
     },
     {
       "id": "booz-allen-hamilton",
@@ -8042,8 +8396,24 @@
       ],
       "ceoName": "Horacio Rozanski",
       "fecCommitteeId": "C00709816",
-      "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "pipeline"
+      "lastVerifiedDate": "2026-03-09",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00709816",
+        "committeeName": "BOOZ ALLEN HAMILTON INC. PAC (BOOZ ALLEN PAC)",
+        "recentCycle": 2024,
+        "recentRepubs": 0,
+        "recentDems": 0,
+        "totalRepubs": 0,
+        "totalDems": 0,
+        "activeCycles": [
+          2020,
+          2022,
+          2024
+        ],
+        "lastUpdated": "2026-03-09",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00709816/"
+      }
     },
     {
       "id": "marriott",
@@ -8393,16 +8763,22 @@
       "lastVerifiedDate": "2026-03-09",
       "notes": "CORRECTED: C00076133 wrong ID. Active: DELTA AIR LINES PAC.",
       "donationSummary": {
-        "committeeId": "C00076133",
-        "committeeName": "DELTA  AIR LINES INC POLITICAL ACTION COMMITTEE",
-        "recentCycle": 0,
+        "committeeId": "C00104802",
+        "committeeName": "DELTA AIR LINES PAC",
+        "recentCycle": 2024,
         "recentRepubs": 0,
         "recentDems": 0,
         "totalRepubs": 0,
         "totalDems": 0,
-        "activeCycles": [],
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00076133/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00104802/"
       },
       "verificationStatus": "pipeline",
       "fecCommitteeRecords": [
@@ -8434,8 +8810,26 @@
       ],
       "ceoName": "Scott Kirby",
       "fecCommitteeId": "C00101766",
-      "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "pipeline"
+      "lastVerifiedDate": "2026-03-09",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00101766",
+        "committeeName": "UNITED AIRLINES, INC. POLITICAL ACTION COMMITTEE (UAPAC)",
+        "recentCycle": 2024,
+        "recentRepubs": 0,
+        "recentDems": 0,
+        "totalRepubs": 0,
+        "totalDems": 0,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
+        "lastUpdated": "2026-03-09",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00101766/"
+      }
     },
     {
       "id": "american-airlines",
@@ -8456,8 +8850,26 @@
       ],
       "ceoName": "Robert Isom",
       "fecCommitteeId": "C00107300",
-      "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "pipeline"
+      "lastVerifiedDate": "2026-03-09",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00107300",
+        "committeeName": "AMERICAN AIRLINES INC. POLITICAL ACTION COMMITTEE (AAPAC)",
+        "recentCycle": 2024,
+        "recentRepubs": 0,
+        "recentDems": 0,
+        "totalRepubs": 0,
+        "totalDems": 0,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
+        "lastUpdated": "2026-03-09",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00107300/"
+      }
     },
     {
       "id": "southwest-airlines",
@@ -8477,8 +8889,26 @@
       ],
       "ceoName": "Bob Jordan",
       "fecCommitteeId": "C00341602",
-      "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "pipeline"
+      "lastVerifiedDate": "2026-03-09",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00341602",
+        "committeeName": "SOUTHWEST AIRLINES CO. POLITICAL ACTION COMMITTEE (SWAPAC)",
+        "recentCycle": 2024,
+        "recentRepubs": 0,
+        "recentDems": 0,
+        "totalRepubs": 0,
+        "totalDems": 0,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
+        "lastUpdated": "2026-03-09",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00341602/"
+      }
     },
     {
       "id": "hertz",
@@ -9632,7 +10062,7 @@
         "services"
       ],
       "ceoName": "Erik Olsen",
-      "fecCommitteeId": "",
+      "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
         "committeeId": "C00908939",
@@ -9646,8 +10076,8 @@
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00908939/"
       },
-      "verificationStatus": "unverified",
-      "notes": "C00908939 requires name verification."
+      "verificationStatus": "manual",
+      "notes": "TBC FOR CONGRESS is a candidate committee, not a corporate PAC"
     },
     {
       "id": "jiffy-lube",
@@ -10532,7 +10962,7 @@
       ],
       "ceoName": "Zachariah Reitano",
       "publicFigureName": "Zachariah Reitano",
-      "fecCommitteeId": "",
+      "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
         "committeeId": "C00937144",
@@ -10546,8 +10976,8 @@
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00937144/"
       },
-      "verificationStatus": "unverified",
-      "notes": "C00937144 requires name verification. Private company."
+      "verificationStatus": "manual",
+      "notes": "ROMAN AGUILERA FOR CONGRESS is a candidate committee, not a corporate PAC"
     },
     {
       "id": "noom",
@@ -10637,9 +11067,9 @@
         "meditation"
       ],
       "ceoName": "David Ko",
-      "fecCommitteeId": "",
+      "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-09",
-      "notes": "C00312629 requires name verification. Likely wrong entity.",
+      "notes": "CALMAT INC is unrelated to Calm app",
       "donationSummary": {
         "committeeId": "C00312629",
         "committeeName": "CALMAT INC POLITICAL ACTION COMMITTEE",
@@ -10652,7 +11082,7 @@
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00312629/"
       },
-      "verificationStatus": "unverified"
+      "verificationStatus": "manual"
     },
     {
       "id": "goodrx",
@@ -11726,9 +12156,9 @@
       ],
       "ceoName": "Hiroki Totoki",
       "publicFigureName": "Kenichiro Yoshida",
-      "fecCommitteeId": "",
+      "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-09",
-      "notes": "Japanese parent Sony Group. C00513978 requires name verification.",
+      "notes": "SONYA HOLMES FOR CONGRESS is a candidate committee, not a corporate PAC",
       "donationSummary": {
         "committeeId": "C00513978",
         "committeeName": "SONYA HOLMES FOR CONGRESS",
@@ -11741,7 +12171,7 @@
         "lastUpdated": "2026-03-09",
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00513978/"
       },
-      "verificationStatus": "unverified"
+      "verificationStatus": "manual"
     },
     {
       "id": "ahold-delhaize",
