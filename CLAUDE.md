@@ -17,6 +17,25 @@ It is organized as a **nonprofit**. The codebase is **open-source**. The product
 
 ---
 
+## Project Documentation
+
+These documents are the authoritative reference for the project. New instances should read them in order before starting any session.
+
+| Document | Location | Purpose |
+|---|---|---|
+| App Spec (original) | /docs/FuckFascists_AppSpec_ORIGINAL.docx | Canonical product vision as originally written — do not modify |
+| README | /README.md | Plain-English public overview — keep current with major feature changes |
+| Spec vs. Current State | /docs/SPEC_VS_CURRENT.md | Living document tracking alignment, deviations, and open decisions — update when architectural decisions are made |
+| CLAUDE.md | /CLAUDE.md | Technical reference for AI agents — update continuously |
+
+**Update cadence:**
+- README.md — update when a major feature ships or product framing changes
+- SPEC_VS_CURRENT.md — update any time a specced feature is built, deferred, or a decision is resolved
+- FuckFascists_AppSpec_ORIGINAL.docx — never modified
+- CLAUDE.md — updated continuously as the source of truth for implementation
+
+---
+
 ## Non-Negotiable Product Principles
 
 These are not preferences. They are constraints. Never violate them.
