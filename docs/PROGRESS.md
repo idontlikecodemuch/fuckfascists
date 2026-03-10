@@ -1,0 +1,143 @@
+# F*ck Fascists — Progress & Current State
+
+This document is updated continuously. New instances should read this first — it tells you where we are, what was just done, and what needs to happen next.
+
+---
+
+## Current Sprint: MVP V1 — Core Vertical Slice
+
+**Overall status:** Feature-complete, stabilizing data pipeline, map POI tap pending.
+
+---
+
+## Last 5 Sessions (most recent first)
+
+### Session: March 10, 2026
+**Focus:** Data pipeline stabilization, documentation
+
+**Completed:**
+- Fixed Schedule B field name mapping (`line_number` was hardcoded as empty string)
+- Fixed raw[] aggregation — now one FECLineItem per unique `line_number:cycle` pair
+- Added `FETCH_SCHEDULE_B_DELAY_MS: 2000` for Schedule B-specific rate limiting
+- Added per-minute rate limit protection in `fetch-donation-data.mjs` — serialized details + totals calls (removed Promise.all), increased `FETCH_DELAY_MS` to 1000ms, retry backoff increased to 5000ms (note: `FECClient.ts` runtime client still had Promise.all at end of session — serialized in follow-up commit)
+- Fixed freshness bug — failed entities now have `lastVerifiedDate` cleared so they retry on next plain run
+- Manually cleared `lastVerifiedDate` for 54 entities that failed before the fix landed
+- Fetch run result: 107/161 fetched clean, 54 failed (rate limiting) — retry in progress
+- Created PROJECT_SYSTEM_PROMPT.md, CODEX_ONBOARDING.md, WORKING_WITH_CHRISTOPHER.md for agent onboarding
+- Created README.md (public-facing), SPEC_VS_CURRENT.md (deviation tracking)
+- Added Project Documentation section to CLAUDE.md (pending CC commit)
+- Added Progress doc to CLAUDE.md (pending CC commit)
+
+**In progress:**
+- Fetch retry run for 54 failed entities — running now
+
+**Pending CC commits:**
+- CLAUDE.md Project Documentation section
+- CLAUDE.md Progress doc reference
+- Batch cooldown (FETCH_BATCH_SIZE: 40, FETCH_BATCH_COOLDOWN_MS: 60000) — not yet sent to CC
+
+### Session: March 9, 2026
+**Focus:** Entity data cleaning, schema evolution, bug fixes
+
+**Completed:**
+- Full 449-entity audit — 161 pipeline, 274 manual, 14 unverified
+- 13 FEC committee ID corrections with fecCommitteeRecords for dissolved PACs
+- verificationStatus schema added ('manual' | 'pipeline' | 'unverified')
+- matchScore removed from Entity type and all entities.json entries
+- DonationSummary refactored — removed nonpartisan fields, added raw: FECLineItem[]
+- Refactored donation attribution from committee totals to Schedule B disbursements
+- Fixed async error handling (useWeeklySurvey, useReportCard, PlatformRow)
+- Fixed avoid tap — gated to curated entities only, AvoidButton optimistic recovery
+- Removed redundant pre-read from recordEntityAvoid
+- Vertical slice tested end-to-end on device
+
+---
+
+## Test Status
+
+| Suite | Count | Status |
+|---|---|---|
+| Total passing | 259 | ✅ Clean |
+| Last tsc run | — | ✅ Zero errors |
+
+---
+
+## Data Status
+
+| Metric | Count |
+|---|---|
+| Total entities | 448 |
+| Verified PAC (pipeline) | 161 |
+| Confirmed no PAC (manual) | ~274 |
+| Unverified | ~14 |
+| Last fetch: successful | 107 |
+| Last fetch: failed (retry pending) | 54 |
+| PAC review flagged (no activity) | 4–6 |
+
+---
+
+## What's Working
+
+- Avoid tap → survey → report card vertical slice ✅
+- Extension built and tested on walmart.com ✅
+- Geolocation (simulator — SF drop) ✅ / physical device TBD
+- Entity matching with confidence labels ✅
+- Browser extension bundles entities.json at build time ✅
+- Rate limiting with retry logic ✅
+- Freshness cache with auto-retry on failure ✅
+
+## What's Not Working / Not Yet Built
+
+| Item | Status | Priority |
+|---|---|---|
+| Donation amounts showing in BusinessCard | $0 — fetch verification pending | 🔴 V1 blocker |
+| Map POI tap → entity matching | Not built | 🔴 V1 needed |
+| Physical device geolocation test | Not done | 🟡 V1 needed |
+| Batch cooldown for --force runs | Not sent to CC yet | 🟡 Nice to have |
+| people.json individual donor data | Not started | 🟠 V1.5 |
+| Report card sharing / social export | Not built | 🟠 V2 |
+| ENTITY_LIST_UPDATE_URL | Placeholder [org] | 🟠 Pre-launch |
+
+---
+
+## Immediate Next Steps (in order)
+
+1. **Confirm donation amounts populate** — verify Walmart and Marriott show non-zero totalRepubs/totalDems in simulator after fetch completes
+2. **Map POI tap** — architect decision needed first: full pipeline match vs. curated-only for V1, then greenfield build
+3. **Physical device geolocation** — test on hardware, not simulator
+4. **Batch cooldown CC prompt** — add FETCH_BATCH_SIZE/FETCH_BATCH_COOLDOWN_MS so --force runs are reliable
+5. **UX/UI + Content pass** — new agent instance, full analysis, 8-bit design system, user journey, copy rewrite
+
+---
+
+## Open Architectural Decisions
+
+| Decision | Context | Status |
+|---|---|---|
+| Map POI tap scope | Full FEC pipeline vs. curated list only for V1 | ❓ Pending |
+| Extension + report card unification | QR code bridge or permanently separate | ❓ Deferred V2 |
+| App Store name | "F*ck Fascists" will be rejected — need clean submission name | ❓ Not resolved |
+| Uber entity | No PAC found, name-based match failing | ❓ Needs manual research |
+
+---
+
+## Agent Roster
+
+| Agent | Current task |
+|---|---|
+| Lead Architect (this session) | Documentation, decisions, CC prompt generation |
+| Claude Code | Implementation — awaiting next prompt |
+| Codex | Not yet onboarded — use for data cleaning and pipeline work |
+| Web Agent | Idle — next task: Hyatt subsidiary PAC verification |
+
+---
+
+## Recently Resolved Decisions
+
+- OpenSecrets → FEC.gov as primary data source ✅
+- Schedule B disbursements for partisan attribution (not committee totals) ✅
+- fecCommitteeId three-state schema (string / null / "") ✅
+- verificationStatus numeric migration ✅
+- matchScore removed from Entity type ✅
+- Tesla → null (no corporate PAC, Musk donates personally) ✅
+- Patagonia → removed (IE filer only, no Republican history) ✅

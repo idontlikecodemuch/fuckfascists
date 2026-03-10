@@ -137,13 +137,12 @@ export class FECClient {
     const cycleParams = CYCLES_SINCE_2016.map((c) => `cycle=${c}`).join('&');
     const keyParam = this.apiKey ? `&api_key=${encodeURIComponent(this.apiKey)}` : '';
 
-    // Details + totals in parallel — totals used for activeCycles/recentCycle only.
-    const [detailsData, totalsData] = await Promise.all([
-      this.get<FECDetailsResponse>(`/committee/${id}/?per_page=1${keyParam}`),
-      this.get<FECTotalsResponse>(
-        `/committee/${id}/totals/?per_page=10&sort=-cycle&${cycleParams}${keyParam}`
-      ),
-    ]);
+    // Details then totals — serialized to avoid per-minute rate limit spikes.
+    // Each this.get() call passes through the RateLimiter; no extra delay needed.
+    const detailsData = await this.get<FECDetailsResponse>(`/committee/${id}/?per_page=1${keyParam}`);
+    const totalsData  = await this.get<FECTotalsResponse>(
+      `/committee/${id}/totals/?per_page=10&sort=-cycle&${cycleParams}${keyParam}`
+    );
 
     const detailsRow = (detailsData.results ?? [])[0];
     if (!detailsRow) {
