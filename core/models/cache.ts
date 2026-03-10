@@ -1,16 +1,23 @@
 import type { ConfidenceLevel } from './confidence';
 
+export interface FECLineItem {
+  lineNumber: string;    // e.g. "F3X-23"
+  description: string;  // e.g. "Contributions to federal candidates"
+  amount: number;
+  cycle: number;
+  isReceipt: boolean;   // true = Schedule A, false = Schedule B
+}
+
 export interface DonationSummary {
   committeeId: string;
   committeeName: string;
   recentCycle: number;           // most recent election year e.g. 2024
   recentRepubs: number;          // Republican donations in most recent cycle only
   recentDems: number;            // Democrat donations in most recent cycle only
-  recentNonpartisan: number;     // nonpartisan / corporate SSF donations in most recent cycle
   totalRepubs: number;           // total Republican donations from 2016 onward
   totalDems: number;             // total Democrat donations from 2016 onward
-  totalNonpartisan: number;      // total nonpartisan / corporate SSF donations from 2016 onward
   activeCycles: number[];        // all cycles with activity since 2016, ascending
+  raw: FECLineItem[];            // non-Republican non-Democrat line items; stored for future use
   lastUpdated: string;           // YYYY-MM-DD
   fecCommitteeUrl: string;       // https://www.fec.gov/data/committee/{committeeId}/
 }

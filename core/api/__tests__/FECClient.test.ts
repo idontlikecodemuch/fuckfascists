@@ -191,7 +191,7 @@ describe('FECClient', () => {
       expect(result.activeCycles.every((c) => c >= 2016)).toBe(true);
     });
 
-    it('attributes third-party committee receipts to totalNonpartisan', async () => {
+    it('stores third-party committee receipts as raw line items', async () => {
       mockMultiCycleCalls('GREEN PARTY', [
         { receipts: 100_000, cycle: 2024 },
       ]);
@@ -200,10 +200,11 @@ describe('FECClient', () => {
 
       expect(result.totalRepubs).toBe(0);
       expect(result.totalDems).toBe(0);
-      expect(result.totalNonpartisan).toBe(100_000);
+      expect(result.raw).toHaveLength(1);
+      expect(result.raw[0]).toMatchObject({ amount: 100_000, cycle: 2024, isReceipt: true });
     });
 
-    it('attributes corporate SSF receipts (empty party_full) to totalNonpartisan', async () => {
+    it('stores corporate SSF receipts (empty party_full) as raw line items', async () => {
       mockMultiCycleCalls('', [
         { receipts: 100_000, cycle: 2024 },
         { receipts: 80_000,  cycle: 2022 },
@@ -213,9 +214,9 @@ describe('FECClient', () => {
 
       expect(result.totalRepubs).toBe(0);
       expect(result.totalDems).toBe(0);
-      expect(result.totalNonpartisan).toBe(180_000);
-      expect(result.recentNonpartisan).toBe(100_000);
       expect(result.recentRepubs).toBe(0);
+      expect(result.raw).toHaveLength(2);
+      expect(result.raw.reduce((s, i) => s + i.amount, 0)).toBe(180_000);
     });
 
     it('fecCommitteeUrl is the canonical FEC committee URL', async () => {

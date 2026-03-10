@@ -61,9 +61,9 @@ describe('ChromeStorageAdapter', () => {
         fecCommitteeId: 'org123',
         donationSummary: {
           committeeId: 'org123', committeeName: 'Acme', recentCycle: 2024,
-          recentRepubs: 900, recentDems: 100, recentNonpartisan: 0,
-          totalRepubs: 900, totalDems: 100, totalNonpartisan: 0,
-          activeCycles: [2024], lastUpdated: '2024-01-01',
+          recentRepubs: 900, recentDems: 100,
+          totalRepubs: 900, totalDems: 100,
+          activeCycles: [2024], raw: [], lastUpdated: '2024-01-01',
           fecCommitteeUrl: 'https://www.fec.gov/data/committee/org123/',
         },
         confidence: 1.0,

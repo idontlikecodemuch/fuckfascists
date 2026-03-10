@@ -146,10 +146,11 @@ async function fetchCommitteeTotals(committeeId, apiKey) {
   // Graceful fallback when details are missing (shouldn't happen for valid IDs,
   // but covers edge cases with newly registered or data-sparse committees).
   const committeeName = detailsRow?.name ?? committeeId;
-  const party = (detailsRow?.party_full ?? '').toUpperCase();
-  const isRepublican   = party.includes('REPUBLICAN');
-  const isDemocrat     = party.includes('DEMOCRAT');
-  const isNonpartisan  = !isRepublican && !isDemocrat;
+  const partyFull = detailsRow?.party_full ?? '';
+  const party = partyFull.toUpperCase();
+  const isRepublican  = party.includes('REPUBLICAN');
+  const isDemocrat    = party.includes('DEMOCRAT');
+  const isNonpartisan = !isRepublican && !isDemocrat;
 
   // Totals: 404 or empty results both mean "no recorded activity" — not an error.
   let results = [];
@@ -163,16 +164,15 @@ async function fetchCommitteeTotals(committeeId, apiKey) {
     return {
       committeeId,
       committeeName,
-      recentCycle:        0,
-      recentRepubs:       0,
-      recentDems:         0,
-      recentNonpartisan:  0,
-      totalRepubs:        0,
-      totalDems:          0,
-      totalNonpartisan:   0,
-      activeCycles:       [],
-      lastUpdated:        today(),
-      fecCommitteeUrl:    `https://www.fec.gov/data/committee/${committeeId}/`,
+      recentCycle:  0,
+      recentRepubs: 0,
+      recentDems:   0,
+      totalRepubs:  0,
+      totalDems:    0,
+      activeCycles: [],
+      raw:          [],
+      lastUpdated:  today(),
+      fecCommitteeUrl: `https://www.fec.gov/data/committee/${committeeId}/`,
     };
   }
 
@@ -180,16 +180,24 @@ async function fetchCommitteeTotals(committeeId, apiKey) {
   const recentReceipts = recent.receipts ?? 0;
   const recentCycle    = recent.cycle ?? 0;
 
-  let totalRepubs      = 0;
-  let totalDems        = 0;
-  let totalNonpartisan = 0;
-  const activeCycles   = [];
+  let totalRepubs = 0;
+  let totalDems   = 0;
+  const activeCycles = [];
+  const raw = [];
 
   for (const row of results) {
     const receipts = row.receipts ?? 0;
-    if (isRepublican)  totalRepubs      += receipts;
-    if (isDemocrat)    totalDems        += receipts;
-    if (isNonpartisan) totalNonpartisan += receipts;
+    if (isRepublican) totalRepubs += receipts;
+    if (isDemocrat)   totalDems   += receipts;
+    if (isNonpartisan && receipts > 0 && row.cycle != null) {
+      raw.push({
+        lineNumber:  '',
+        description: partyFull,
+        amount:      receipts,
+        cycle:       row.cycle,
+        isReceipt:   true,
+      });
+    }
     if (row.cycle != null) activeCycles.push(row.cycle);
   }
 
@@ -199,15 +207,14 @@ async function fetchCommitteeTotals(committeeId, apiKey) {
     committeeId,
     committeeName,
     recentCycle,
-    recentRepubs:       isRepublican  ? recentReceipts : 0,
-    recentDems:         isDemocrat    ? recentReceipts : 0,
-    recentNonpartisan:  isNonpartisan ? recentReceipts : 0,
+    recentRepubs: isRepublican ? recentReceipts : 0,
+    recentDems:   isDemocrat   ? recentReceipts : 0,
     totalRepubs,
     totalDems,
-    totalNonpartisan,
     activeCycles,
-    lastUpdated:        today(),
-    fecCommitteeUrl:    `https://www.fec.gov/data/committee/${committeeId}/`,
+    raw,
+    lastUpdated:  today(),
+    fecCommitteeUrl: `https://www.fec.gov/data/committee/${committeeId}/`,
   };
 }
 

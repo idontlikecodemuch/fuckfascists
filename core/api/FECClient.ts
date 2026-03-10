@@ -1,4 +1,4 @@
-import type { DonationSummary } from '../models';
+import type { DonationSummary, FECLineItem } from '../models';
 import { makeFecCommitteeUrl } from '../models';
 import type { FECCommittee } from '../matching/types';
 import { RateLimiter, FEC_DEFAULT_LIMITS } from './rateLimit';
@@ -135,10 +135,8 @@ export class FECClient {
     }
 
     const party = (detailsRow.party_full ?? '').toUpperCase();
-    const isRepublican  = party.includes('REPUBLICAN');
-    const isDemocrat    = party.includes('DEMOCRAT');
-    // Everything else (empty party_full on corporate SSFs, third-party, etc.)
-    // goes into the nonpartisan bucket. Display layer shows it separately.
+    const isRepublican = party.includes('REPUBLICAN');
+    const isDemocrat   = party.includes('DEMOCRAT');
     const isNonpartisan = !isRepublican && !isDemocrat;
 
     // Most recent cycle (first result — API sorts by -cycle)
@@ -147,16 +145,24 @@ export class FECClient {
     const recentCycle    = recent.cycle ?? 0;
 
     // Sum across all cycles
-    let totalRepubs      = 0;
-    let totalDems        = 0;
-    let totalNonpartisan = 0;
+    let totalRepubs = 0;
+    let totalDems   = 0;
     const activeCycles: number[] = [];
+    const raw: FECLineItem[]     = [];
 
     for (const row of results) {
       const receipts = row.receipts ?? 0;
-      if (isRepublican)  totalRepubs      += receipts;
-      if (isDemocrat)    totalDems        += receipts;
-      if (isNonpartisan) totalNonpartisan += receipts;
+      if (isRepublican) totalRepubs += receipts;
+      if (isDemocrat)   totalDems   += receipts;
+      if (isNonpartisan && receipts > 0 && row.cycle != null) {
+        raw.push({
+          lineNumber:  '',
+          description: detailsRow.party_full ?? '',
+          amount:      receipts,
+          cycle:       row.cycle,
+          isReceipt:   true,
+        });
+      }
       if (row.cycle != null) activeCycles.push(row.cycle);
     }
 
@@ -166,17 +172,16 @@ export class FECClient {
 
     return {
       committeeId,
-      committeeName:      detailsRow.name,
+      committeeName: detailsRow.name,
       recentCycle,
-      recentRepubs:       isRepublican  ? recentReceipts : 0,
-      recentDems:         isDemocrat    ? recentReceipts : 0,
-      recentNonpartisan:  isNonpartisan ? recentReceipts : 0,
+      recentRepubs:  isRepublican ? recentReceipts : 0,
+      recentDems:    isDemocrat   ? recentReceipts : 0,
       totalRepubs,
       totalDems,
-      totalNonpartisan,
       activeCycles,
-      lastUpdated:        today,
-      fecCommitteeUrl:    makeFecCommitteeUrl(committeeId),
+      raw,
+      lastUpdated:     today,
+      fecCommitteeUrl: makeFecCommitteeUrl(committeeId),
     };
   }
 

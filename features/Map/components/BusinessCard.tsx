@@ -51,10 +51,6 @@ export function BusinessCard({ result, onAvoid, avoidDisabled = false, onDismiss
   // Prefer donationSummary's URL (has verified committee ID); fall back to ScanResult's fecFilingUrl.
   const fecUrl = donationSummary?.fecCommitteeUrl ?? fecFilingUrl;
 
-  const showNonpartisan =
-    (donationSummary?.recentNonpartisan ?? 0) > 0 ||
-    (donationSummary?.totalNonpartisan ?? 0) > 0;
-
   return (
     <View style={styles.card}>
       {/* ── Header ── */}
@@ -106,11 +102,6 @@ export function BusinessCard({ result, onAvoid, avoidDisabled = false, onDismiss
             <Text style={styles.recentAmount} allowFontScaling>
               DEM {formatDonationAmount(donationSummary.recentDems)}
             </Text>
-            {showNonpartisan && (
-              <Text style={styles.recentAmount} allowFontScaling>
-                NONPARTISAN {formatDonationAmount(donationSummary.recentNonpartisan)}
-              </Text>
-            )}
             <Text style={styles.recentCycleLabel} allowFontScaling>
               in {formatCycleLabel(donationSummary.recentCycle)}
             </Text>
@@ -121,11 +112,6 @@ export function BusinessCard({ result, onAvoid, avoidDisabled = false, onDismiss
             <Text style={styles.totalsRow} allowFontScaling>
               Total since 2016:{'\u2002'}GOP {formatDonationAmount(donationSummary.totalRepubs)}{'\u00b7'}DEM {formatDonationAmount(donationSummary.totalDems)}
             </Text>
-            {showNonpartisan && (
-              <Text style={styles.totalsRow} allowFontScaling>
-                Nonpartisan:{'\u2002'}{formatDonationAmount(donationSummary.totalNonpartisan)}
-              </Text>
-            )}
             {donationSummary.activeCycles.length > 0 && (
               <Text style={styles.totalsRow} allowFontScaling>
                 Active cycles: {formatActiveCycles(donationSummary.activeCycles)}
