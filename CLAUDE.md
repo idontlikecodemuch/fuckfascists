@@ -23,16 +23,23 @@ These documents are the authoritative reference for the project. New instances s
 
 | Document | Location | Purpose |
 |---|---|---|
+| Progress & Current State | /docs/PROGRESS.md | Read this first — current sprint status, last sessions, immediate next steps |
 | App Spec (original) | /docs/FuckFascists_AppSpec_ORIGINAL.docx | Canonical product vision as originally written — do not modify |
 | README | /README.md | Plain-English public overview — keep current with major feature changes |
-| Spec vs. Current State | /docs/SPEC_VS_CURRENT.md | Living document tracking alignment, deviations, and open decisions — update when architectural decisions are made |
+| Spec vs. Current State | /docs/SPEC_VS_CURRENT.md | Living document tracking alignment, deviations, and open decisions |
 | CLAUDE.md | /CLAUDE.md | Technical reference for AI agents — update continuously |
 
 **Update cadence:**
+- PROGRESS.md — update at the end of every session with what was completed and what's next
 - README.md — update when a major feature ships or product framing changes
 - SPEC_VS_CURRENT.md — update any time a specced feature is built, deferred, or a decision is resolved
 - FuckFascists_AppSpec_ORIGINAL.docx — never modified
 - CLAUDE.md — updated continuously as the source of truth for implementation
+
+**New instance checklist:**
+1. Read PROGRESS.md — understand current state and immediate priorities
+2. Read CLAUDE.md — understand technical constraints and working rules
+3. Check SPEC_VS_CURRENT.md open decisions — don't re-litigate resolved ones
 
 ---
 
