@@ -401,6 +401,8 @@ async function main() {
     } catch (err) {
       failed++;
       failedIds.push(entity.id);
+      // Clear lastVerifiedDate so this entity is not treated as fresh on the next run.
+      entity.lastVerifiedDate = '';
       console.error(`  ✗ ${entity.id} (${committeIdToFetch}) — ${err.message}`);
     }
 
