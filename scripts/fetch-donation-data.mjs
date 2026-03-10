@@ -25,8 +25,9 @@ const OUTPUT_DIR     = path.join(__dirname, 'output');
 const PAC_REVIEW_PATH = path.join(OUTPUT_DIR, 'pac-review.json');
 const FEC_API_BASE   = 'https://api.open.fec.gov/v1';
 const CACHE_TTL_DAYS = 60;
-const FETCH_DELAY_MS = 500;      // mirrors config/constants.ts FETCH_DELAY_MS
-const RETRY_DELAY_MS = 2_000;    // wait before a single 429 retry
+const FETCH_DELAY_MS            = 500;    // mirrors config/constants.ts FETCH_DELAY_MS
+const FETCH_SCHEDULE_B_DELAY_MS = 2_000;  // mirrors config/constants.ts FETCH_SCHEDULE_B_DELAY_MS
+const RETRY_DELAY_MS            = 2_000;  // wait before a single 429 retry
 const CYCLES_SINCE_2016 = [2016, 2018, 2020, 2022, 2024];
 
 /**
@@ -240,7 +241,8 @@ async function fetchCommitteeTotals(committeeId, apiKey, existingSummary = null)
     .sort((a, b) => a - b);
 
   // Schedule B: actual candidate contributions — source of party attribution.
-  await delay(FETCH_DELAY_MS);
+  // Extra delay before Schedule B — it is a heavier endpoint than the standard committee endpoints.
+  await delay(FETCH_DELAY_MS + FETCH_SCHEDULE_B_DELAY_MS);
   const sbRecords = await fetchScheduleBContributions(committeeId, apiKey);
 
   // Schedule B rate-limited — preserve existing donation amounts and skip recalculation.

@@ -13,6 +13,9 @@ export const ENTITY_CACHE_TTL_DAYS = 60;
 // Delay between entity fetches in the data pipeline (ms)
 export const FETCH_DELAY_MS = 500;
 
+// Additional delay before each Schedule B request (ms) — Schedule B is a heavier endpoint
+export const FETCH_SCHEDULE_B_DELAY_MS = 2_000;
+
 // Confidence score thresholds (0–1 scale)
 export const CONFIDENCE_THRESHOLD_HIGH = 0.85;
 export const CONFIDENCE_THRESHOLD_MEDIUM = 0.60;
