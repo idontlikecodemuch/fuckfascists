@@ -28,16 +28,18 @@ const entityWithoutOrgId: Entity = {
 };
 
 const mockDonationSummary: DonationSummary = {
-  committeeId:     'D000000074',
-  committeeName:   'Walmart Inc',
-  recentCycle:     2024,
-  recentRepubs:    3_000_000,
-  recentDems:      1_500_000,
-  totalRepubs:     3_000_000,
-  totalDems:       1_500_000,
-  activeCycles:    [2024],
-  lastUpdated:     '2024-01-01',
-  fecCommitteeUrl: 'https://www.fec.gov/data/committee/D000000074/',
+  committeeId:      'D000000074',
+  committeeName:    'Walmart Inc',
+  recentCycle:      2024,
+  recentRepubs:     3_000_000,
+  recentDems:       1_500_000,
+  recentNonpartisan: 0,
+  totalRepubs:      3_000_000,
+  totalDems:        1_500_000,
+  totalNonpartisan: 0,
+  activeCycles:     [2024],
+  lastUpdated:      '2024-01-01',
+  fecCommitteeUrl:  'https://www.fec.gov/data/committee/D000000074/',
 };
 
 function makeDeps(overrides: Partial<MatchingDeps> = {}): jest.Mocked<MatchingDeps> {

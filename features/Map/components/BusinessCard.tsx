@@ -51,13 +51,9 @@ export function BusinessCard({ result, onAvoid, avoidDisabled = false, onDismiss
   // Prefer donationSummary's URL (has verified committee ID); fall back to ScanResult's fecFilingUrl.
   const fecUrl = donationSummary?.fecCommitteeUrl ?? fecFilingUrl;
 
-  const hasRecentRepubs   = (donationSummary?.recentRepubs ?? 0) > 0;
-  const hasRecentDems     = (donationSummary?.recentDems ?? 0) > 0;
-  const showRecentSection = hasRecentRepubs || hasRecentDems;
-
-  const recentLabel = hasRecentRepubs
-    ? `${formatDonationAmount(donationSummary?.recentRepubs ?? 0)} to Republicans`
-    : `${formatDonationAmount(donationSummary?.recentDems ?? 0)} to Democrats`;
+  const showNonpartisan =
+    (donationSummary?.recentNonpartisan ?? 0) > 0 ||
+    (donationSummary?.totalNonpartisan ?? 0) > 0;
 
   return (
     <View style={styles.card}>
@@ -102,23 +98,34 @@ export function BusinessCard({ result, onAvoid, avoidDisabled = false, onDismiss
       {/* ── Donation data (null when API unavailable) ── */}
       {donationSummary ? (
         <>
-          {/* ── Recent cycle (prominent) ── */}
-          {showRecentSection && (
-            <View style={styles.recentSection}>
+          {/* ── Recent cycle (prominent, always shown) ── */}
+          <View style={styles.recentSection}>
+            <Text style={styles.recentAmount} allowFontScaling>
+              GOP {formatDonationAmount(donationSummary.recentRepubs)}
+            </Text>
+            <Text style={styles.recentAmount} allowFontScaling>
+              DEM {formatDonationAmount(donationSummary.recentDems)}
+            </Text>
+            {showNonpartisan && (
               <Text style={styles.recentAmount} allowFontScaling>
-                {recentLabel}
+                NONPARTISAN {formatDonationAmount(donationSummary.recentNonpartisan)}
               </Text>
-              <Text style={styles.recentCycleLabel} allowFontScaling>
-                in {formatCycleLabel(donationSummary.recentCycle)}
-              </Text>
-            </View>
-          )}
+            )}
+            <Text style={styles.recentCycleLabel} allowFontScaling>
+              in {formatCycleLabel(donationSummary.recentCycle)}
+            </Text>
+          </View>
 
           {/* ── Since 2016 totals (contextual) ── */}
           <View style={styles.totalsSection}>
             <Text style={styles.totalsRow} allowFontScaling>
               Total since 2016:{'\u2002'}GOP {formatDonationAmount(donationSummary.totalRepubs)}{'\u00b7'}DEM {formatDonationAmount(donationSummary.totalDems)}
             </Text>
+            {showNonpartisan && (
+              <Text style={styles.totalsRow} allowFontScaling>
+                Nonpartisan:{'\u2002'}{formatDonationAmount(donationSummary.totalNonpartisan)}
+              </Text>
+            )}
             {donationSummary.activeCycles.length > 0 && (
               <Text style={styles.totalsRow} allowFontScaling>
                 Active cycles: {formatActiveCycles(donationSummary.activeCycles)}

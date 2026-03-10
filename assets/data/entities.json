@@ -40,7 +40,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00093054/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00093054/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -94,7 +96,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00360354/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00360354/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -128,14 +132,22 @@
       "donationSummary": {
         "committeeId": "C00502906",
         "committeeName": "META PLATFORMS, INC. PAC",
-        "recentCycle": 0,
+        "recentCycle": 2024,
         "recentRepubs": 0,
         "recentDems": 0,
         "totalRepubs": 0,
         "totalDems": 0,
-        "activeCycles": [],
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00502906/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00502906/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline",
       "notes": "C00502906 confirmed correct. Active through 2025-2026 cycle. Prior no-activity flag was incorrect."
@@ -221,7 +233,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00411116/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00411116/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -258,7 +272,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00098061/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00098061/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -294,7 +310,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00284885/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00284885/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -331,7 +349,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00251751/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00251751/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -411,7 +431,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00109017/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00109017/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline",
       "fecCommitteeRecords": [
@@ -464,7 +486,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00248716/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00248716/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -501,7 +525,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00035006/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00035006/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -542,7 +568,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00121368/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00121368/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline",
       "fecCommitteeRecords": [
@@ -604,7 +632,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00236489/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00236489/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline",
       "fecCommitteeRecords": [
@@ -654,7 +684,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00350744/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00350744/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline",
       "fecCommitteeRecords": [
@@ -705,7 +737,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00128512/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00128512/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -764,7 +798,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00364778/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00364778/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -787,16 +823,24 @@
       "fecCommitteeId": "C00034595",
       "notes": "C00142844 was terminated NM state PAC. C00034595 is WELLS FARGO AND COMPANY EMPLOYEE PAC, primary active federal SSF, active through 2025-2026",
       "donationSummary": {
-        "committeeId": "C00142844",
-        "committeeName": "WELLS FARGO AND COMPANY-NEW MEXICO PAC",
-        "recentCycle": 0,
+        "committeeId": "C00034595",
+        "committeeName": "WELLS FARGO AND COMPANY EMPLOYEE PAC (AKA WELLS FARGO EMPLOYEE PAC)",
+        "recentCycle": 2024,
         "recentRepubs": 0,
         "recentDems": 0,
         "totalRepubs": 0,
         "totalDems": 0,
-        "activeCycles": [],
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00142844/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00034595/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -833,7 +877,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00063164/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00063164/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -874,7 +920,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00169821/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00169821/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -912,7 +960,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00068692/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00068692/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -951,7 +1001,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00089136/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00089136/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -988,7 +1040,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00303024/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00303024/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -1061,7 +1115,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00059238/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00059238/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       }
     },
     {
@@ -1123,7 +1179,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00160770/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00160770/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -1167,7 +1225,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00384818/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00384818/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -1205,7 +1265,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00405076/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00405076/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -1270,7 +1332,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00657858/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00657858/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -1322,7 +1386,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00194084/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00194084/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       }
     },
     {
@@ -1359,7 +1425,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00400705/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00400705/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -1400,7 +1468,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00144311/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00144311/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -1444,7 +1514,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00257246/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00257246/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -1601,7 +1673,9 @@
         "totalDems": 0,
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00417410/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00417410/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "note": "Confirmed no corporate PAC — false positive match to MICHAELS FOR CONGRESS (congressional campaign)",
       "verificationStatus": "manual",
@@ -1635,7 +1709,9 @@
         "totalDems": 0,
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00832998/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00832998/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "note": "Confirmed no corporate PAC — false positive match to JOANNA RODRIGUEZ (individual campaign)",
       "verificationStatus": "manual",
@@ -1833,7 +1909,9 @@
         "totalDems": 0,
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00927723/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00927723/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "note": "Confirmed no corporate PAC — false positive match to ACE PARSI FOR CONGRESS (WV congressional candidate)",
       "verificationStatus": "manual",
@@ -1866,7 +1944,9 @@
         "totalDems": 0,
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00925933/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00925933/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "note": "Confirmed no corporate PAC — false positive match to TRUE TEXAS VALUES PAC (unrelated advocacy PAC)",
       "verificationStatus": "manual",
@@ -1904,7 +1984,9 @@
         "totalDems": 0,
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00170027/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00170027/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -2026,7 +2108,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00689752/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00689752/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -2085,7 +2169,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00342394/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00342394/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -2117,7 +2203,9 @@
         "totalDems": 0,
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00900340/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00900340/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "unverified",
       "notes": "Chinese parent. C00900340 requires name verification."
@@ -2224,7 +2312,9 @@
         "totalDems": 0,
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00237040/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00237040/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "note": "Confirmed no corporate PAC — false positive match to AMERICAN EAGLES; THE (unrelated)",
       "verificationStatus": "manual"
@@ -2365,7 +2455,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00243659/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00243659/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -2397,7 +2489,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00855668/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00855668/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "note": "Confirmed no corporate PAC — false positive match to MEIJER FOR SENATE INC (Peter Meijer Senate campaign)",
       "verificationStatus": "manual",
@@ -2436,7 +2530,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00233056/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00233056/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -2515,7 +2611,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00330514/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00330514/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -2640,7 +2738,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00142786/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00142786/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -2722,7 +2822,9 @@
         "totalDems": 0,
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00123737/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00123737/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "manual"
     },
@@ -2965,7 +3067,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00763664/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00763664/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -3001,7 +3105,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00669473/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00669473/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -3075,7 +3181,9 @@
         "totalDems": 0,
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00004960/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00004960/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "manual"
     },
@@ -3153,7 +3261,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00112896/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00112896/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -3193,7 +3303,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00513549/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00513549/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -3230,7 +3342,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00109546/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00109546/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -3269,7 +3383,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00496307/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00496307/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -3306,7 +3422,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00035691/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00035691/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -3337,7 +3455,9 @@
         "totalDems": 0,
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00042010/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00042010/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -3373,7 +3493,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00354753/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00354753/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -3409,7 +3531,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00420950/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00420950/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -3433,16 +3557,24 @@
       "lastVerifiedDate": "2026-03-09",
       "notes": "C00091884 was legacy Carolina Power & Light predecessor PAC. C00083535 is active DUKE ENERGY CORPORATION PAC through 2025-2026",
       "donationSummary": {
-        "committeeId": "C00091884",
-        "committeeName": "DUKE ENERGY CORPORATION PROGRESS PAC",
-        "recentCycle": 0,
+        "committeeId": "C00083535",
+        "committeeName": "DUKE ENERGY CORPORATION EMPLOYEE POLITICAL ACTION COMMITTEE (DUKEPAC)",
+        "recentCycle": 2024,
         "recentRepubs": 0,
         "recentDems": 0,
         "totalRepubs": 0,
         "totalDems": 0,
-        "activeCycles": [],
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00091884/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00083535/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -3484,7 +3616,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00144774/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00144774/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -3519,7 +3653,9 @@
           2018
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00545319/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00545319/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -3565,7 +3701,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00141218/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00141218/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -3606,7 +3744,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00064774/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00064774/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -3646,7 +3786,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00107771/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00107771/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -3688,7 +3830,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00140855/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00140855/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -3728,7 +3872,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00363879/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00363879/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -3767,7 +3913,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00407635/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00407635/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -3801,7 +3949,9 @@
         "totalDems": 0,
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00003780/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00003780/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "unverified"
     },
@@ -3842,7 +3992,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00039305/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00039305/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -3881,7 +4033,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00337626/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00337626/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -3918,7 +4072,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00040535/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00040535/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -3956,7 +4112,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00326595/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00326595/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -3994,7 +4152,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00438051/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00438051/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -4032,7 +4192,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00589119/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00589119/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -4070,7 +4232,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00579540/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00579540/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -4107,7 +4271,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00479246/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00479246/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline",
       "notes": "Replaced BLACKROCK INSTITUTE (name mismatch) with BlackRock Inc PAC",
@@ -4156,7 +4322,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00380550/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00380550/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -4193,7 +4361,9 @@
           2022
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00370114/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00370114/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "unverified",
       "notes": "C00370114 did not exist in 2023-2024 cycle per OpenSecrets. Last active 2019-2020."
@@ -4239,7 +4409,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00324483/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00324483/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "unverified",
       "notes": "C00324483 is BERKSHIRE HATHAWAY ENERGY COMPANY PAC (subsidiary only). No confirmed holding company PAC."
@@ -4277,7 +4449,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00365122/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00365122/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -4314,7 +4488,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00410274/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00410274/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -4355,7 +4531,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00581686/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00581686/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -4397,7 +4575,9 @@
           2022
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00739920/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00739920/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "manual",
       "notes": "BLOCKCHAIN OF COMMAND is unrelated to Block Inc"
@@ -4430,7 +4610,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00883116/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00883116/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -4468,7 +4650,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00386524/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00386524/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -4508,7 +4692,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00488882/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00488882/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline",
       "fecCommitteeRecords": [
@@ -4556,7 +4742,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00035519/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00035519/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline",
       "fecCommitteeRecords": [
@@ -4603,7 +4791,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00432252/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00432252/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -4640,7 +4830,9 @@
         "totalDems": 0,
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00349928/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00349928/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "manual"
     },
@@ -4691,7 +4883,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00227546/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00227546/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -4743,7 +4937,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00428623/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00428623/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -4779,7 +4975,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00518233/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00518233/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -4814,7 +5012,9 @@
         "totalDems": 0,
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00907683/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00907683/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "unverified",
       "notes": "C00907683 reported no activity in 2023-2024 per prior research."
@@ -4849,7 +5049,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00743823/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00743823/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -4884,7 +5086,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00731000/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00731000/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -4926,7 +5130,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00511600/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00511600/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -4967,7 +5173,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00323048/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00323048/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -5027,7 +5235,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00125641/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00125641/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -5063,7 +5273,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00339085/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00339085/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -5103,7 +5315,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00404483/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00404483/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -5166,7 +5380,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00369751/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00369751/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -5203,7 +5419,9 @@
           2022
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00626648/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00626648/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "unverified",
       "notes": "C00626648 last active 2021-2022. No confirmed 2024 activity."
@@ -5245,7 +5463,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00362707/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00362707/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -5283,7 +5503,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00680504/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00680504/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -5359,7 +5581,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00498691/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00498691/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -5412,7 +5636,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00820167/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00820167/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -5474,7 +5700,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00186288/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00186288/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline",
       "fecCommitteeRecords": [
@@ -5525,7 +5753,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00361758/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00361758/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -5570,7 +5800,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00426775/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00426775/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline",
       "fecCommitteeRecords": [
@@ -5621,7 +5853,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00477653/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00477653/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       }
     },
     {
@@ -5660,7 +5894,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00419911/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00419911/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -5703,7 +5939,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00330647/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00330647/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       }
     },
     {
@@ -5737,7 +5975,9 @@
           2018
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00331991/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00331991/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "unverified",
       "notes": "C00331991 last active 2018. DirecTV spun off from AT&T 2021. No confirmed active PAC."
@@ -5784,7 +6024,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00693002/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00693002/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -5832,7 +6074,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00546101/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00546101/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -5873,7 +6117,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00562660/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00562660/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline",
       "fecCommitteeRecords": [
@@ -5924,7 +6170,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00279216/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00279216/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -5983,7 +6231,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00567388/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00567388/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -6032,7 +6282,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00299321/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00299321/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -6072,7 +6324,9 @@
         "totalDems": 0,
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00342311/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00342311/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "unverified"
     },
@@ -6114,7 +6368,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00399642/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00399642/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -6168,7 +6424,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00197749/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00197749/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       }
     },
     {
@@ -6220,7 +6478,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00719393/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00719393/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       }
     },
     {
@@ -6270,7 +6530,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00167759/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00167759/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -6312,7 +6574,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00274431/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00274431/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -6355,7 +6619,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00197228/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00197228/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -6397,7 +6663,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00085316/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00085316/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       }
     },
     {
@@ -6433,7 +6701,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00271007/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00271007/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -6469,7 +6739,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00108035/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00108035/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -6508,7 +6780,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00400929/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00400929/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -6543,7 +6817,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00332833/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00332833/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -6589,7 +6865,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00010983/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00010983/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       }
     },
     {
@@ -6627,7 +6905,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00016683/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00016683/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -6666,7 +6946,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00097485/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00097485/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline",
       "notes": "Replaced MERCK TRUCKING LLC (wrong entity) with Merck & Co PAC",
@@ -6717,7 +6999,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00040279/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00040279/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -6752,7 +7036,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00311878/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00311878/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -6787,7 +7073,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00357863/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00357863/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -6842,7 +7130,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00067231/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00067231/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -6880,7 +7170,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00119354/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00119354/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -6916,7 +7208,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00485896/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00485896/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -6969,7 +7263,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00039321/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00039321/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -7019,7 +7315,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00012468/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00012468/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline",
       "notes": "Replaced bottler PAC with The Coca-Cola Company PAC",
@@ -7068,7 +7366,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00093963/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00093963/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -7116,7 +7416,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00077701/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00077701/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "note": "Active PAC verified March 2026",
       "verificationStatus": "pipeline"
@@ -7164,7 +7466,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00529073/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00529073/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -7210,7 +7514,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00062646/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00062646/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -7258,7 +7564,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00039552/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00039552/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -7299,7 +7607,9 @@
           2020
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00415166/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00415166/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "manual"
     },
@@ -7345,7 +7655,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00087874/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00087874/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -7388,7 +7700,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00282863/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00282863/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -7429,7 +7743,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00359075/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00359075/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -7467,7 +7783,9 @@
           2022
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00547570/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00547570/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "note": "Confirmed no corporate PAC — false positive match to PERDUE FOR SENATE (David Perdue Senate campaign)",
       "verificationStatus": "manual",
@@ -7520,7 +7838,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00034488/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00034488/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       }
     },
     {
@@ -7563,7 +7883,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00457697/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00457697/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -7608,7 +7930,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00304832/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00304832/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -7654,7 +7978,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00059733/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00059733/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -7706,7 +8032,9 @@
         "totalDems": 0,
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00323287/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00323287/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "manual"
     },
@@ -7739,7 +8067,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00326330/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00326330/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -7803,7 +8133,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00329474/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00329474/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -7866,7 +8198,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00369090/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00369090/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       }
     },
     {
@@ -7908,7 +8242,9 @@
           2016
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00108282/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00108282/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "manual"
     },
@@ -7941,7 +8277,9 @@
           2016
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00252791/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00252791/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       }
     },
     {
@@ -8025,7 +8363,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00046474/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00046474/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -8073,7 +8413,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00076810/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00076810/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       }
     },
     {
@@ -8163,7 +8505,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00371948/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00371948/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -8229,7 +8573,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00097568/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00097568/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       }
     },
     {
@@ -8268,7 +8614,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00142711/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00142711/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       }
     },
     {
@@ -8307,7 +8655,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00078451/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00078451/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       }
     },
     {
@@ -8343,7 +8693,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00088591/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00088591/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       }
     },
     {
@@ -8379,7 +8731,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00709816/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00709816/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       }
     },
     {
@@ -8431,7 +8785,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00284810/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00284810/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -8479,7 +8835,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00213074/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00213074/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -8552,7 +8910,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00679910/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00679910/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -8677,7 +9037,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00869230/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00869230/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "unverified",
       "notes": "Liberian/Cayman incorporated. C00869230 requires name verification."
@@ -8745,7 +9107,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00104802/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00104802/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline",
       "fecCommitteeRecords": [
@@ -8795,7 +9159,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00101766/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00101766/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       }
     },
     {
@@ -8835,7 +9201,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00107300/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00107300/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       }
     },
     {
@@ -8874,7 +9242,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00341602/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00341602/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       }
     },
     {
@@ -9528,7 +9898,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00253153/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00253153/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -10041,7 +10413,9 @@
         "totalDems": 0,
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00908939/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00908939/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "manual",
       "notes": "TBC FOR CONGRESS is a candidate committee, not a corporate PAC"
@@ -10196,7 +10570,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00569285/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00569285/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -10480,7 +10856,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00757856/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00757856/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -10941,7 +11319,9 @@
         "totalDems": 0,
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00937144/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00937144/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "manual",
       "notes": "ROMAN AGUILERA FOR CONGRESS is a candidate committee, not a corporate PAC"
@@ -11047,7 +11427,9 @@
         "totalDems": 0,
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00312629/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00312629/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "manual"
     },
@@ -12096,7 +12478,9 @@
           2024
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00371088/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00371088/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
@@ -12136,7 +12520,9 @@
         "totalDems": 0,
         "activeCycles": [],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00513978/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00513978/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "manual"
     },
@@ -12491,7 +12877,9 @@
           2022
         ],
         "lastUpdated": "2026-03-09",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00380535/"
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00380535/",
+        "recentNonpartisan": 0,
+        "totalNonpartisan": 0
       },
       "verificationStatus": "pipeline"
     },
