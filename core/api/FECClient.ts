@@ -50,6 +50,26 @@ interface FECTotalsResponse {
   results: FECTotalsResult[];
 }
 
+interface FECScheduleBResult {
+  line_number?: string;
+  disbursement_amount?: number;
+  two_year_transaction_period?: number;
+  candidate_party_affiliation?: string;
+  disbursement_description?: string;
+}
+
+interface FECScheduleBResponse {
+  results: FECScheduleBResult[];
+  pagination?: {
+    last_indexes?: {
+      last_index?: string;
+      last_disbursement_date?: string;
+    } | null;
+    pages?: number;
+    count?: number;
+  };
+}
+
 // ── Client ─────────────────────────────────────────────────────────────────────
 
 export interface FECClientConfig {
@@ -106,17 +126,18 @@ export class FECClient {
 
   /**
    * Fetches donation totals for `committeeId` across all cycles from 2016 onward.
-   * Makes two parallel API calls: committee details (name + party) + multi-cycle totals.
    *
-   * - recentCycle / recentRepubs / recentDems: first (most recent) result only
-   * - totalRepubs / totalDems: summed across all returned results
-   * - activeCycles: all cycle years present in results, sorted ascending
+   * - activeCycles / recentCycle: from /committee/{id}/totals/ (aggregate activity)
+   * - recentRepubs / recentDems / totalRepubs / totalDems: from /schedules/schedule_b/
+   *   filtered to candidate recipients (recipient_type=P), attributed by
+   *   candidate_party_affiliation (REP → repubs, DEM → dems, other → raw[])
    */
   async getCommitteeTotals(committeeId: string): Promise<DonationSummary> {
     const id = encodeURIComponent(committeeId);
     const cycleParams = CYCLES_SINCE_2016.map((c) => `cycle=${c}`).join('&');
     const keyParam = this.apiKey ? `&api_key=${encodeURIComponent(this.apiKey)}` : '';
 
+    // Details + totals in parallel — totals used for activeCycles/recentCycle only.
     const [detailsData, totalsData] = await Promise.all([
       this.get<FECDetailsResponse>(`/committee/${id}/?per_page=1${keyParam}`),
       this.get<FECTotalsResponse>(
@@ -129,53 +150,66 @@ export class FECClient {
       throw new FECParseError(`No details returned for committee ${committeeId}`);
     }
 
-    const results = totalsData.results;
-    if (results.length === 0) {
+    const totalsResults = totalsData.results;
+    if (totalsResults.length === 0) {
       throw new FECParseError(`No totals data for committee ${committeeId}`);
     }
 
-    const party = (detailsRow.party_full ?? '').toUpperCase();
-    const isRepublican = party.includes('REPUBLICAN');
-    const isDemocrat   = party.includes('DEMOCRAT');
-    const isNonpartisan = !isRepublican && !isDemocrat;
+    // activeCycles and recentCycle from totals (API sorts by -cycle).
+    const recentCycle = totalsResults[0]!.cycle ?? 0;
+    const activeCycles: number[] = totalsResults
+      .filter((r) => r.cycle != null)
+      .map((r) => r.cycle!)
+      .sort((a, b) => a - b);
 
-    // Most recent cycle (first result — API sorts by -cycle)
-    const recent = results[0]!;
-    const recentReceipts = recent.receipts ?? 0;
-    const recentCycle    = recent.cycle ?? 0;
+    // Schedule B: actual candidate contributions — source of party attribution.
+    const sbRecords = await this.fetchScheduleB(committeeId);
 
-    // Sum across all cycles
-    let totalRepubs = 0;
-    let totalDems   = 0;
-    const activeCycles: number[] = [];
-    const raw: FECLineItem[]     = [];
+    let totalRepubs  = 0;
+    let totalDems    = 0;
+    let recentRepubs = 0;
+    let recentDems   = 0;
+    const rawMap = new Map<string, FECLineItem>();
 
-    for (const row of results) {
-      const receipts = row.receipts ?? 0;
-      if (isRepublican) totalRepubs += receipts;
-      if (isDemocrat)   totalDems   += receipts;
-      if (isNonpartisan && receipts > 0 && row.cycle != null) {
-        raw.push({
-          lineNumber:  '',
-          description: detailsRow.party_full ?? '',
-          amount:      receipts,
-          cycle:       row.cycle,
-          isReceipt:   true,
-        });
+    for (const rec of sbRecords) {
+      const amount     = rec.disbursement_amount ?? 0;
+      const cycle      = rec.two_year_transaction_period ?? 0;
+      const party      = (rec.candidate_party_affiliation ?? '').toUpperCase();
+      const lineNumber = rec.line_number ?? '';
+
+      if (party === 'REP') {
+        totalRepubs += amount;
+        if (cycle === recentCycle) recentRepubs += amount;
+      } else if (party === 'DEM') {
+        totalDems += amount;
+        if (cycle === recentCycle) recentDems += amount;
+      } else if (amount > 0) {
+        const key      = `${lineNumber}:${cycle}`;
+        const existing = rawMap.get(key);
+        if (existing) {
+          existing.amount += amount;
+        } else {
+          rawMap.set(key, {
+            lineNumber,
+            description: rec.disbursement_description ?? '',
+            amount,
+            cycle,
+            isReceipt:   false,
+          });
+        }
       }
-      if (row.cycle != null) activeCycles.push(row.cycle);
     }
 
-    activeCycles.sort((a, b) => a - b);
+    const raw: FECLineItem[] = Array.from(rawMap.values());
 
     const today = new Date().toISOString().slice(0, 10);
 
     return {
       committeeId,
-      committeeName: detailsRow.name,
+      committeeName:   detailsRow.name,
       recentCycle,
-      recentRepubs:  isRepublican ? recentReceipts : 0,
-      recentDems:    isDemocrat   ? recentReceipts : 0,
+      recentRepubs,
+      recentDems,
       totalRepubs,
       totalDems,
       activeCycles,
@@ -183,6 +217,36 @@ export class FECClient {
       lastUpdated:     today,
       fecCommitteeUrl: makeFecCommitteeUrl(committeeId),
     };
+  }
+
+  /**
+   * Paginates through /schedules/schedule_b/ for candidate contributions from
+   * the given committee. Uses cursor-based pagination (last_index + last_disbursement_date).
+   */
+  private async fetchScheduleB(committeeId: string): Promise<FECScheduleBResult[]> {
+    const id            = encodeURIComponent(committeeId);
+    const sbCycleParams = CYCLES_SINCE_2016.map((c) => `two_year_transaction_period=${c}`).join('&');
+    const keyParam      = this.apiKey ? `&api_key=${encodeURIComponent(this.apiKey)}` : '';
+
+    const records: FECScheduleBResult[] = [];
+    let cursor = '';
+
+    while (true) {
+      const data = await this.get<FECScheduleBResponse>(
+        `/schedules/schedule_b/?committee_id=${id}&recipient_type=P&per_page=100&sort=-disbursement_date&${sbCycleParams}${keyParam}${cursor}`
+      );
+      const batch = data.results ?? [];
+      records.push(...batch);
+
+      const lastIndexes = data.pagination?.last_indexes;
+      if (!lastIndexes?.last_index || batch.length < 100) break;
+
+      const li = encodeURIComponent(lastIndexes.last_index);
+      const ld = encodeURIComponent(lastIndexes.last_disbursement_date ?? '');
+      cursor = `&last_index=${li}&last_disbursement_date=${ld}`;
+    }
+
+    return records;
   }
 
   private async get<T>(path: string): Promise<T> {

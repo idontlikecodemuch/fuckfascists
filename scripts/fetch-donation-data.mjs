@@ -101,6 +101,46 @@ async function findBestCommitteeId(term, currentId, apiKey) {
   return null;
 }
 
+/**
+ * Paginates through /schedules/schedule_b/ and returns all candidate-contribution
+ * disbursement records for the given committee since 2016.
+ * Uses cursor-based pagination (last_index + last_disbursement_date).
+ */
+async function fetchScheduleBContributions(committeeId, apiKey) {
+  const id            = encodeURIComponent(committeeId);
+  const keyParam      = apiKey ? `&api_key=${encodeURIComponent(apiKey)}` : '';
+  const sbCycleParams = CYCLES_SINCE_2016.map((c) => `two_year_transaction_period=${c}`).join('&');
+
+  const records = [];
+  let cursor = '';
+
+  while (true) {
+    const url = `${FEC_API_BASE}/schedules/schedule_b/?committee_id=${id}&recipient_type=P&per_page=100&sort=-disbursement_date&${sbCycleParams}${keyParam}${cursor}`;
+    const res = await fetch(url);
+
+    if (!res.ok) {
+      if (res.status === 404) break; // no records — not an error
+      console.warn(`  ⚠ Schedule B for ${committeeId} returned HTTP ${res.status}`);
+      break;
+    }
+
+    const data = await res.json();
+    const batch = data.results ?? [];
+    records.push(...batch);
+
+    const lastIndexes = data.pagination?.last_indexes;
+    if (!lastIndexes?.last_index || batch.length < 100) break;
+
+    const li = encodeURIComponent(lastIndexes.last_index);
+    const ld = encodeURIComponent(lastIndexes.last_disbursement_date ?? '');
+    cursor = `&last_index=${li}&last_disbursement_date=${ld}`;
+
+    await delay(REQUEST_DELAY_MS);
+  }
+
+  return records;
+}
+
 /** Returns true if the committee has at least one cycle of totals data. */
 async function committeeHasTotals(committeeId, apiKey) {
   const id = encodeURIComponent(committeeId);
@@ -115,22 +155,22 @@ async function committeeHasTotals(committeeId, apiKey) {
 }
 
 /**
- * Fetches donation totals for a single FEC committee ID.
- * Makes two parallel requests: committee details (name + party) + multi-cycle totals.
- * Returns a DonationSummary-shaped object.
+ * Fetches donation data for a single FEC committee ID.
+ *
+ * - committee details → committeeName
+ * - /committee/{id}/totals/ → activeCycles, recentCycle (aggregate activity only)
+ * - /schedules/schedule_b/ (candidate recipients) → party-attributed totals:
+ *     candidate_party_affiliation REP → repubs, DEM → dems, other → raw[]
  *
  * Graceful handling for dissolved / new-with-no-history committees:
- *   - If details results[] is empty → use committeeId as committeeName fallback,
- *     treat party as unknown (all donation amounts 0).
- *   - If totals endpoint returns 404 or empty results[] → build a zeroed summary
- *     with activeCycles: [] (committee exists but has no recorded activity).
+ *   - If totals results[] is empty → zeroed summary (committee has no recorded activity).
  */
 async function fetchCommitteeTotals(committeeId, apiKey) {
-  const id = encodeURIComponent(committeeId);
+  const id       = encodeURIComponent(committeeId);
   const keyParam = apiKey ? `&api_key=${encodeURIComponent(apiKey)}` : '';
   const cycleParams = CYCLES_SINCE_2016.map((c) => `cycle=${c}`).join('&');
 
-  // Note: FEC single-entity endpoints use singular /committee/{id}/ (not plural /committees/).
+  // Details + totals in parallel — totals used for activeCycles/recentCycle only.
   const [detailsRes, totalsRes] = await Promise.all([
     fetch(`${FEC_API_BASE}/committee/${id}/?per_page=1${keyParam}`),
     fetch(`${FEC_API_BASE}/committee/${id}/totals/?per_page=10&sort=-cycle&${cycleParams}${keyParam}`),
@@ -141,26 +181,18 @@ async function fetchCommitteeTotals(committeeId, apiKey) {
   }
 
   const detailsData = await detailsRes.json();
-  const detailsRow = (detailsData.results ?? [])[0] ?? null;
-
-  // Graceful fallback when details are missing (shouldn't happen for valid IDs,
-  // but covers edge cases with newly registered or data-sparse committees).
+  const detailsRow  = (detailsData.results ?? [])[0] ?? null;
   const committeeName = detailsRow?.name ?? committeeId;
-  const partyFull = detailsRow?.party_full ?? '';
-  const party = partyFull.toUpperCase();
-  const isRepublican  = party.includes('REPUBLICAN');
-  const isDemocrat    = party.includes('DEMOCRAT');
-  const isNonpartisan = !isRepublican && !isDemocrat;
 
   // Totals: 404 or empty results both mean "no recorded activity" — not an error.
-  let results = [];
+  let totalsResults = [];
   if (totalsRes.ok) {
     const totalsData = await totalsRes.json();
-    results = totalsData.results ?? [];
+    totalsResults = totalsData.results ?? [];
   }
 
-  // Zero summary for dissolved / pre-activity committees.
-  if (results.length === 0) {
+  // Zero summary for dissolved / pre-activity committees — skip Schedule B fetch.
+  if (totalsResults.length === 0) {
     return {
       committeeId,
       committeeName,
@@ -176,39 +208,69 @@ async function fetchCommitteeTotals(committeeId, apiKey) {
     };
   }
 
-  const recent = results[0];
-  const recentReceipts = recent.receipts ?? 0;
-  const recentCycle    = recent.cycle ?? 0;
+  // activeCycles and recentCycle from totals (sorted -cycle by API).
+  const recentCycle = totalsResults[0].cycle ?? 0;
+  const activeCycles = totalsResults
+    .filter((r) => r.cycle != null)
+    .map((r) => r.cycle)
+    .sort((a, b) => a - b);
 
-  let totalRepubs = 0;
-  let totalDems   = 0;
-  const activeCycles = [];
-  const raw = [];
+  // Schedule B: actual candidate contributions — source of party attribution.
+  await delay(REQUEST_DELAY_MS);
+  const sbRecords = await fetchScheduleBContributions(committeeId, apiKey);
 
-  for (const row of results) {
-    const receipts = row.receipts ?? 0;
-    if (isRepublican) totalRepubs += receipts;
-    if (isDemocrat)   totalDems   += receipts;
-    if (isNonpartisan && receipts > 0 && row.cycle != null) {
-      raw.push({
-        lineNumber:  '',
-        description: partyFull,
-        amount:      receipts,
-        cycle:       row.cycle,
-        isReceipt:   true,
-      });
+  // DIAGNOSTIC — log first Schedule B record fields for Walmart to verify field names.
+  if (committeeId === 'C00093054' && sbRecords.length > 0) {
+    console.log(`  [DIAG] Walmart Schedule B record[0] keys/values:`);
+    const sample = sbRecords[0];
+    for (const [k, v] of Object.entries(sample)) {
+      console.log(`    ${k}: ${JSON.stringify(v)}`);
     }
-    if (row.cycle != null) activeCycles.push(row.cycle);
   }
 
-  activeCycles.sort((a, b) => a - b);
+  let totalRepubs  = 0;
+  let totalDems    = 0;
+  let recentRepubs = 0;
+  let recentDems   = 0;
+  const rawMap = new Map();
+
+  for (const rec of sbRecords) {
+    const amount     = rec.disbursement_amount ?? 0;
+    const cycle      = rec.two_year_transaction_period ?? 0;
+    const party      = (rec.candidate_party_affiliation ?? '').toUpperCase();
+    const lineNumber = rec.line_number ?? '';
+
+    if (party === 'REP') {
+      totalRepubs += amount;
+      if (cycle === recentCycle) recentRepubs += amount;
+    } else if (party === 'DEM') {
+      totalDems += amount;
+      if (cycle === recentCycle) recentDems += amount;
+    } else if (amount > 0) {
+      const key      = `${lineNumber}:${cycle}`;
+      const existing = rawMap.get(key);
+      if (existing) {
+        existing.amount += amount;
+      } else {
+        rawMap.set(key, {
+          lineNumber,
+          description: rec.disbursement_description ?? '',
+          amount,
+          cycle,
+          isReceipt:   false,
+        });
+      }
+    }
+  }
+
+  const raw = Array.from(rawMap.values());
 
   return {
     committeeId,
     committeeName,
     recentCycle,
-    recentRepubs: isRepublican ? recentReceipts : 0,
-    recentDems:   isDemocrat   ? recentReceipts : 0,
+    recentRepubs,
+    recentDems,
     totalRepubs,
     totalDems,
     activeCycles,
