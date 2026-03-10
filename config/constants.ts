@@ -10,6 +10,9 @@ export const EXTENSION_FLAG_FREQUENCY = 'session' as const;
 // FEC API cache TTL
 export const ENTITY_CACHE_TTL_DAYS = 60;
 
+// Delay between entity fetches in the data pipeline (ms)
+export const FETCH_DELAY_MS = 500;
+
 // Confidence score thresholds (0–1 scale)
 export const CONFIDENCE_THRESHOLD_HIGH = 0.85;
 export const CONFIDENCE_THRESHOLD_MEDIUM = 0.60;

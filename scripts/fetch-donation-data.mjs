@@ -25,7 +25,8 @@ const OUTPUT_DIR     = path.join(__dirname, 'output');
 const PAC_REVIEW_PATH = path.join(OUTPUT_DIR, 'pac-review.json');
 const FEC_API_BASE   = 'https://api.open.fec.gov/v1';
 const CACHE_TTL_DAYS = 60;
-const REQUEST_DELAY_MS = 500;
+const FETCH_DELAY_MS = 500;      // mirrors config/constants.ts FETCH_DELAY_MS
+const RETRY_DELAY_MS = 2_000;    // wait before a single 429 retry
 const CYCLES_SINCE_2016 = [2016, 2018, 2020, 2022, 2024];
 
 /**
@@ -45,6 +46,19 @@ const SEARCH_BY_NAME = {
 
 function delay(ms) {
   return new Promise((r) => setTimeout(r, ms));
+}
+
+/**
+ * Wraps fetch with a single 429 retry.
+ * On a 429 response, waits RETRY_DELAY_MS then retries once.
+ * Returns the final Response (which may still be 429 if the retry also failed).
+ */
+async function fetchWithRetry(url) {
+  const res = await fetch(url);
+  if (res.status !== 429) return res;
+  console.warn(`  ⚠ Rate limited (429) on ${url.split('?')[0]} — waiting ${RETRY_DELAY_MS}ms and retrying`);
+  await delay(RETRY_DELAY_MS);
+  return fetch(url);
 }
 
 function today() {
@@ -71,7 +85,7 @@ async function findBestCommitteeId(term, currentId, apiKey) {
   const params = new URLSearchParams({ q: term, committee_type: 'Q', per_page: '10' });
   if (apiKey) params.set('api_key', apiKey);
 
-  const res = await fetch(`${FEC_API_BASE}/committees/?${params}`);
+  const res = await fetchWithRetry(`${FEC_API_BASE}/committees/?${params}`);
   if (!res.ok) {
     console.warn(`    ⚠ Name search for "${term}" returned HTTP ${res.status} — keeping existing ID`);
     return null;
@@ -90,7 +104,7 @@ async function findBestCommitteeId(term, currentId, apiKey) {
     const id = candidate.committee_id;
     if (id === currentId) continue; // already know this one fails
     const hasTotals = await committeeHasTotals(id, apiKey);
-    await delay(REQUEST_DELAY_MS);
+    await delay(FETCH_DELAY_MS);
     if (hasTotals) {
       console.log(`    → Found better ID for "${term}": ${id} (${candidate.name})`);
       return id;
@@ -116,7 +130,13 @@ async function fetchScheduleBContributions(committeeId, apiKey) {
 
   while (true) {
     const url = `${FEC_API_BASE}/schedules/schedule_b/?committee_id=${id}&recipient_type=P&per_page=100&sort=-disbursement_date&${sbCycleParams}${keyParam}${cursor}`;
-    const res = await fetch(url);
+    const res = await fetchWithRetry(url);
+
+    if (res.status === 429) {
+      // Retry also hit 429 — skip Schedule B for this entity.
+      console.warn(`  ⚠ Schedule B for ${committeeId} still rate-limited after retry — skipping`);
+      return null;
+    }
 
     if (!res.ok) {
       if (res.status === 404) break; // no records — not an error
@@ -135,7 +155,7 @@ async function fetchScheduleBContributions(committeeId, apiKey) {
     const ld = encodeURIComponent(lastIndexes.last_disbursement_date ?? '');
     cursor = `&last_index=${li}&last_disbursement_date=${ld}`;
 
-    await delay(REQUEST_DELAY_MS);
+    await delay(FETCH_DELAY_MS);
   }
 
   return records;
@@ -146,7 +166,7 @@ async function committeeHasTotals(committeeId, apiKey) {
   const id = encodeURIComponent(committeeId);
   const keyParam = apiKey ? `&api_key=${encodeURIComponent(apiKey)}` : '';
   const cycleParams = CYCLES_SINCE_2016.map((c) => `cycle=${c}`).join('&');
-  const res = await fetch(
+  const res = await fetchWithRetry(
     `${FEC_API_BASE}/committee/${id}/totals/?per_page=1&sort=-cycle&${cycleParams}${keyParam}`
   );
   if (!res.ok) return false;
@@ -165,19 +185,23 @@ async function committeeHasTotals(committeeId, apiKey) {
  * Graceful handling for dissolved / new-with-no-history committees:
  *   - If totals results[] is empty → zeroed summary (committee has no recorded activity).
  */
-async function fetchCommitteeTotals(committeeId, apiKey) {
+async function fetchCommitteeTotals(committeeId, apiKey, existingSummary = null) {
   const id       = encodeURIComponent(committeeId);
   const keyParam = apiKey ? `&api_key=${encodeURIComponent(apiKey)}` : '';
   const cycleParams = CYCLES_SINCE_2016.map((c) => `cycle=${c}`).join('&');
 
   // Details + totals in parallel — totals used for activeCycles/recentCycle only.
   const [detailsRes, totalsRes] = await Promise.all([
-    fetch(`${FEC_API_BASE}/committee/${id}/?per_page=1${keyParam}`),
-    fetch(`${FEC_API_BASE}/committee/${id}/totals/?per_page=10&sort=-cycle&${cycleParams}${keyParam}`),
+    fetchWithRetry(`${FEC_API_BASE}/committee/${id}/?per_page=1${keyParam}`),
+    fetchWithRetry(`${FEC_API_BASE}/committee/${id}/totals/?per_page=10&sort=-cycle&${cycleParams}${keyParam}`),
   ]);
 
   if (!detailsRes.ok) {
     throw new Error(`FEC details API ${detailsRes.status}: ${detailsRes.statusText}`);
+  }
+
+  if (totalsRes.status === 429) {
+    throw new Error(`FEC totals API rate limited (429)`);
   }
 
   const detailsData = await detailsRes.json();
@@ -216,16 +240,25 @@ async function fetchCommitteeTotals(committeeId, apiKey) {
     .sort((a, b) => a - b);
 
   // Schedule B: actual candidate contributions — source of party attribution.
-  await delay(REQUEST_DELAY_MS);
+  await delay(FETCH_DELAY_MS);
   const sbRecords = await fetchScheduleBContributions(committeeId, apiKey);
 
-  // DIAGNOSTIC — log first Schedule B record fields for Walmart to verify field names.
-  if (committeeId === 'C00093054' && sbRecords.length > 0) {
-    console.log(`  [DIAG] Walmart Schedule B record[0] keys/values:`);
-    const sample = sbRecords[0];
-    for (const [k, v] of Object.entries(sample)) {
-      console.log(`    ${k}: ${JSON.stringify(v)}`);
-    }
+  // Schedule B rate-limited — preserve existing donation amounts and skip recalculation.
+  if (sbRecords === null) {
+    console.warn(`  ⚠ ${committeeId}: Schedule B skipped — preserving previous donation amounts`);
+    return {
+      committeeId,
+      committeeName,
+      recentCycle,
+      recentRepubs:  existingSummary?.recentRepubs  ?? 0,
+      recentDems:    existingSummary?.recentDems    ?? 0,
+      totalRepubs:   existingSummary?.totalRepubs   ?? 0,
+      totalDems:     existingSummary?.totalDems     ?? 0,
+      activeCycles,
+      raw:           existingSummary?.raw           ?? [],
+      lastUpdated:   today(),
+      fecCommitteeUrl: `https://www.fec.gov/data/committee/${committeeId}/`,
+    };
   }
 
   let totalRepubs  = 0;
@@ -315,7 +348,7 @@ async function main() {
       } else {
         console.log(`  – ${entity.id}: current ID is already the best match`);
       }
-      await delay(REQUEST_DELAY_MS);
+      await delay(FETCH_DELAY_MS);
     }
     console.log('');
   }
@@ -358,7 +391,7 @@ async function main() {
     }
 
     try {
-      const summary = await fetchCommitteeTotals(committeIdToFetch, apiKey);
+      const summary = await fetchCommitteeTotals(committeIdToFetch, apiKey, entity.donationSummary ?? null);
       entity.donationSummary  = summary;
       entity.lastVerifiedDate = today();
       fetched++;
@@ -370,7 +403,7 @@ async function main() {
       console.error(`  ✗ ${entity.id} (${committeIdToFetch}) — ${err.message}`);
     }
 
-    await delay(REQUEST_DELAY_MS);
+    await delay(FETCH_DELAY_MS);
   }
 
   // ── Post-pass: write dissolved/inactive PAC watchlist ───────────────────────
