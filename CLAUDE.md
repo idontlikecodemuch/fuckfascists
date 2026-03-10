@@ -333,6 +333,14 @@ These apply to every file, every PR, every AI-generated change.
 
 ---
 
+## AI Agent Efficiency
+
+- **Minimize token-heavy payloads** — never paste full JSON entities or complete fetch output into the lead architect session. Ask CC to report specific field values inline. Truncate fetch outputs to the first 10 lines + summary footer.
+- **Delegate diagnostics to CC** — use the lead architect for decisions and prompts; use CC for investigation and reporting findings in summary form only.
+- **Status updates should be minimal** — "Done, clean" is sufficient when there are no issues. Only report exceptions and errors in full.
+
+---
+
 ## Accessibility Requirements (non-negotiable)
 
 - Dynamic Type support on all text elements
@@ -510,6 +518,12 @@ After writing any file, scan it once for deprecated APIs, `.then()` chains, `var
 in `core/api/FECClient.ts` must be updated manually when a new election cycle begins.
 Both constants are candidates for renaming to `CYCLES_TO_FETCH` (more accurate now that 2026
 is included) — not blocking for MVP but should be done alongside the next cycle update.
+
+### raw line items — committee ID attribution (Priority: V2)
+`FECLineItem` currently stores `lineNumber`, `description`, `amount`, `cycle`, and `isReceipt`.
+When an entity has multiple `fecCommitteeRecords` (dissolved + active PACs), raw line
+items from different committees are indistinguishable — there is no `committeeId` field
+on `FECLineItem`.
 
 ### Independent Expenditures — IE tracking (Priority: V3)
 The current data pipeline covers two FEC data sources:
