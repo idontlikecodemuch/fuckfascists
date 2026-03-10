@@ -11,7 +11,7 @@ export const EXTENSION_FLAG_FREQUENCY = 'session' as const;
 export const ENTITY_CACHE_TTL_DAYS = 60;
 
 // Delay between entity fetches in the data pipeline (ms)
-export const FETCH_DELAY_MS = 500;
+export const FETCH_DELAY_MS = 1_000;
 
 // Additional delay before each Schedule B request (ms) — Schedule B is a heavier endpoint
 export const FETCH_SCHEDULE_B_DELAY_MS = 2_000;

@@ -25,9 +25,9 @@ const OUTPUT_DIR     = path.join(__dirname, 'output');
 const PAC_REVIEW_PATH = path.join(OUTPUT_DIR, 'pac-review.json');
 const FEC_API_BASE   = 'https://api.open.fec.gov/v1';
 const CACHE_TTL_DAYS = 60;
-const FETCH_DELAY_MS            = 500;    // mirrors config/constants.ts FETCH_DELAY_MS
+const FETCH_DELAY_MS            = 1_000;  // mirrors config/constants.ts FETCH_DELAY_MS
 const FETCH_SCHEDULE_B_DELAY_MS = 2_000;  // mirrors config/constants.ts FETCH_SCHEDULE_B_DELAY_MS
-const RETRY_DELAY_MS            = 2_000;  // wait before a single 429 retry
+const RETRY_DELAY_MS            = 5_000;  // wait before a single 429 retry
 const CYCLES_SINCE_2016 = [2016, 2018, 2020, 2022, 2024];
 
 /**
@@ -191,25 +191,24 @@ async function fetchCommitteeTotals(committeeId, apiKey, existingSummary = null)
   const keyParam = apiKey ? `&api_key=${encodeURIComponent(apiKey)}` : '';
   const cycleParams = CYCLES_SINCE_2016.map((c) => `cycle=${c}`).join('&');
 
-  // Details + totals in parallel — totals used for activeCycles/recentCycle only.
-  const [detailsRes, totalsRes] = await Promise.all([
-    fetchWithRetry(`${FEC_API_BASE}/committee/${id}/?per_page=1${keyParam}`),
-    fetchWithRetry(`${FEC_API_BASE}/committee/${id}/totals/?per_page=10&sort=-cycle&${cycleParams}${keyParam}`),
-  ]);
-
+  // Details first, then totals — serialized to avoid per-minute rate limit spikes.
+  const detailsRes = await fetchWithRetry(`${FEC_API_BASE}/committee/${id}/?per_page=1${keyParam}`);
   if (!detailsRes.ok) {
     throw new Error(`FEC details API ${detailsRes.status}: ${detailsRes.statusText}`);
   }
+  const detailsData   = await detailsRes.json();
+  const detailsRow    = (detailsData.results ?? [])[0] ?? null;
+  const committeeName = detailsRow?.name ?? committeeId;
 
+  await delay(FETCH_DELAY_MS);
+
+  // Totals: 404 or empty results both mean "no recorded activity" — not an error.
+  const totalsRes = await fetchWithRetry(
+    `${FEC_API_BASE}/committee/${id}/totals/?per_page=10&sort=-cycle&${cycleParams}${keyParam}`
+  );
   if (totalsRes.status === 429) {
     throw new Error(`FEC totals API rate limited (429)`);
   }
-
-  const detailsData = await detailsRes.json();
-  const detailsRow  = (detailsData.results ?? [])[0] ?? null;
-  const committeeName = detailsRow?.name ?? committeeId;
-
-  // Totals: 404 or empty results both mean "no recorded activity" — not an error.
   let totalsResults = [];
   if (totalsRes.ok) {
     const totalsData = await totalsRes.json();
