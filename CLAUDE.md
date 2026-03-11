@@ -362,26 +362,11 @@ PROD  — release build, logging off, real API calls (FEC_API_KEY optional — a
 
 ---
 
-## Architectural Judgement — Read Before Every Change
-
-Before touching any file, answer these questions in order:
-
-1. **What is the actual intent?** Understand the goal, not just the symptom. A bug in a pipeline script might be a symptom of wrong architecture, not a missing `if` statement.
-
-2. **Does the architecture need to change?** If the current design cannot correctly support the intent — not just today's patch but the general case — then patching is the wrong move. Incremental fixes on a broken foundation compound debt. A rewrite is sometimes the shorter path.
-
-3. **Is the change worth the disruption?** Architectural changes have real cost: more review surface, more risk of regression, more context needed. A small patch is preferable when the architecture is sound and the scope is genuinely narrow. Do not rewrite things that don't need it.
-
-4. **If a structural change is needed — flag it first.** Do not silently restructure. State clearly: what the current design is, why it cannot correctly solve the problem, what the proposed change is, and what the tradeoff is. Get confirmation before executing. This is non-negotiable for changes that affect more than one file or alter a core flow.
-
-**The session history on `fetch-donation-data.mjs` is the canonical example of what to avoid:** five incremental patches (fixed delays, batch cooldowns, retry tweaks, pre-pass cooldowns) were applied to a script whose fundamental approach — adding delays *after* requests to enforce a count-based rate limit — was architecturally wrong. Each patch appeared to fix the problem and then failed. The correct move was to stop after the second failure, diagnose the root cause, and rewrite. Recognize that pattern early.
-
----
-
 ## Code Quality Rules
 
 These apply to every file, every PR, every AI-generated change.
 
+- **Architecture before patches** — before changing anything, ask whether the design itself is the problem. Incremental fixes on a broken foundation compound debt. If a structural change is needed, flag it and explain why before executing — never silently restructure.
 - **Prefer the simplest solution** — no over-engineering, no premature abstraction
 - **No duplication** — check the codebase before adding anything. The matching logic in `/core/matching/` is the one source of truth for both mobile and extension
 - **Files over 250 lines must be refactored** — split before continuing
