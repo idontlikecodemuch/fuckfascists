@@ -24,11 +24,13 @@ This document is updated continuously. New instances should read this first — 
 - Fixed party attribution: added `recipient_committee.party` as fallback when `candidate_party_affiliation` is blank — applied identically in both files
 - Added test for `recipient_committee.party` fallback (24 tests total, all passing)
 - Fixed `looksSuspiciouslyZeroed` bug in `pipeline.ts` — `rawItems.length >= 0` was always true, causing entities with non-empty `raw[]` (e.g. Walmart) to have their bundled summary rejected and fall back to a failing live API call, showing "donation data temporarily unavailable"
-- Reduced `fetch:donations` runtime: removed redundant inter-call delay between details/totals; reduced `FETCH_SCHEDULE_B_DELAY_MS` 2000 → 1000ms; expected --force runtime ~8–10 min vs. ~60+ min
+- Reduced `fetch:donations` runtime: removed redundant inter-call delay between details/totals; reduced `FETCH_SCHEDULE_B_DELAY_MS` 2000 → 1000ms
+- Diagnosed persistent 429s: `/schedules/schedule_b/` has a stricter per-minute rate limit than committee endpoints; 13 entities succeed before hitting threshold; 5s retry wait was far too short for a 60s window to clear
+- Added adaptive batch cooldown: every 10 entities, script pauses until 60s has elapsed since batch start (fully resets per-minute window); increased `RETRY_DELAY_MS` 5s → 15s; expected --force runtime ~26 min with zero 429s
 - Updated CLAUDE.md: Schedule B attribution rules documented, wrong endpoint reference corrected, pipeline timing notes updated
 
 **Pending:**
-- Run `npm run fetch:donations -- --force` to repopulate all 161 entities with corrected partisan totals (--force required because 107 "succeeded" entities have recent lastVerifiedDate despite wrong $0 data)
+- Run `npm run fetch:donations -- --force` to repopulate all 161 entities with corrected partisan totals (~26 min; --force required because 107 "succeeded" entities have recent lastVerifiedDate despite wrong $0 data)
 
 ---
 

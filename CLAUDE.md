@@ -250,8 +250,11 @@ bundled `donationSummary` directly when present and fresh, skipping the live FEC
   to correct suspect committee IDs before the main fetch loop.
 - On fetch failure, `lastVerifiedDate` is cleared to `""` so the entity is retried on the next
   plain run without needing `--force`.
-- Expected runtime: ~8–10 min for a full `--force` run (161 entities × ~3s deliberate delay
-  per entity). Calls are fully serialized; 429 retries add 5s each but should be rare.
+- Expected runtime: ~26 min for a full `--force` run. Calls are fully serialized.
+  A batch cooldown fires every `FETCH_BATCH_SIZE` (10) entities — the script pauses until
+  `FETCH_BATCH_COOLDOWN_MS` (60s) has elapsed since the batch started, fully resetting the
+  FEC per-minute rate-limit window. `/schedules/schedule_b/` has a stricter per-minute cap
+  than the committee endpoints; the cooldown keeps all request rates well under it.
   Use `--force` when re-running after an attribution or filter fix — entities that "succeeded"
   with wrong data keep a fresh `lastVerifiedDate` and are skipped on plain runs.
 

@@ -27,7 +27,9 @@ const FEC_API_BASE   = 'https://api.open.fec.gov/v1';
 const CACHE_TTL_DAYS = 60;
 const FETCH_DELAY_MS            = 1_000;  // mirrors config/constants.ts FETCH_DELAY_MS
 const FETCH_SCHEDULE_B_DELAY_MS = 1_000;  // mirrors config/constants.ts FETCH_SCHEDULE_B_DELAY_MS
-const RETRY_DELAY_MS            = 5_000;  // wait before a single 429 retry
+const FETCH_BATCH_SIZE          = 10;     // mirrors config/constants.ts FETCH_BATCH_SIZE
+const FETCH_BATCH_COOLDOWN_MS   = 60_000; // mirrors config/constants.ts FETCH_BATCH_COOLDOWN_MS
+const RETRY_DELAY_MS            = 15_000; // wait before a single 429 retry (must be >> per-minute window)
 const CYCLES_SINCE_2016 = [2016, 2018, 2020, 2022, 2024];
 
 /**
@@ -368,6 +370,10 @@ async function main() {
   let failed   = 0;
   const failedIds = [];
 
+  // Batch cooldown tracking — resets the per-minute rate-limit window.
+  let fetchedSinceCooldown = 0;
+  let batchStartTime = Date.now();
+
   for (const entity of candidates) {
     // If fecCommitteeRecords is present, use the active record's id for fetching.
     // Log dissolved records and skip them — do not fetch their data.
@@ -408,6 +414,21 @@ async function main() {
     }
 
     await delay(FETCH_DELAY_MS);
+    fetchedSinceCooldown++;
+
+    // After every FETCH_BATCH_SIZE attempts, pause until FETCH_BATCH_COOLDOWN_MS has
+    // elapsed since the batch started. This fully resets the FEC per-minute rate-limit
+    // window — /schedules/schedule_b/ has a stricter limit than the committee endpoints.
+    if (fetchedSinceCooldown >= FETCH_BATCH_SIZE) {
+      const elapsed   = Date.now() - batchStartTime;
+      const remaining = FETCH_BATCH_COOLDOWN_MS - elapsed;
+      if (remaining > 0) {
+        console.log(`\n  ⏸  ${FETCH_BATCH_SIZE} entities — waiting ${Math.ceil(remaining / 1000)}s to reset rate-limit window...\n`);
+        await delay(remaining);
+      }
+      fetchedSinceCooldown = 0;
+      batchStartTime = Date.now();
+    }
   }
 
   // ── Post-pass: write dissolved/inactive PAC watchlist ───────────────────────
