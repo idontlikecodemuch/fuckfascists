@@ -26,11 +26,12 @@ This document is updated continuously. New instances should read this first — 
 - Fixed `looksSuspiciouslyZeroed` bug in `pipeline.ts` — `rawItems.length >= 0` was always true, causing entities with non-empty `raw[]` (e.g. Walmart) to have their bundled summary rejected and fall back to a failing live API call, showing "donation data temporarily unavailable"
 - Reduced `fetch:donations` runtime: removed redundant inter-call delay between details/totals; reduced `FETCH_SCHEDULE_B_DELAY_MS` 2000 → 1000ms
 - Diagnosed persistent 429s: `/schedules/schedule_b/` has a stricter per-minute rate limit than committee endpoints; 13 entities succeed before hitting threshold; 5s retry wait was far too short for a 60s window to clear
-- Added adaptive batch cooldown: every 10 entities, script pauses until 60s has elapsed since batch start (fully resets per-minute window); increased `RETRY_DELAY_MS` 5s → 15s; expected --force runtime ~26 min with zero 429s
+- Added adaptive batch cooldown: every 10 entities, script pauses until 60s has elapsed since batch start (fully resets per-minute window); increased `RETRY_DELAY_MS` 5s → 15s
+- Fixed second 429 source: pre-pass (SEARCH_BY_NAME entities) fires ~11 requests per entity before the main loop starts, eating into the rate budget and causing immediate 429s on the first main-loop entity; added matching cooldown after pre-pass completes
 - Updated CLAUDE.md: Schedule B attribution rules documented, wrong endpoint reference corrected, pipeline timing notes updated
 
 **Pending:**
-- Run `npm run fetch:donations -- --force` to repopulate all 161 entities with corrected partisan totals (~26 min; --force required because 107 "succeeded" entities have recent lastVerifiedDate despite wrong $0 data)
+- Run `npm run fetch:donations -- --force` to repopulate all 161 entities with corrected partisan totals; wait 3 min after last interrupted run before starting (`sleep 180 && npm run fetch:donations -- --force`)
 
 ---
 
