@@ -109,8 +109,7 @@ This document is updated continuously. New instances should read this first — 
 | Verified PAC (pipeline) | 161 |
 | Confirmed no PAC (manual) | ~274 |
 | Unverified | ~14 |
-| Last fetch: successful | 107 |
-| Last fetch: failed (retry pending) | 54 |
+| Last fetch: --force run in progress | 161 entities, corrected attribution |
 | PAC review flagged (no activity) | 4–6 |
 
 ---
@@ -130,7 +129,7 @@ This document is updated continuously. New instances should read this first — 
 
 | Item | Status | Priority |
 |---|---|---|
-| Donation amounts showing in BusinessCard | $0 — fetch verification pending | 🔴 V1 blocker |
+| Donation amounts showing in BusinessCard | Verified working (Walmart: $3.65M R / $3.1M D) | ✅ Resolved |
 | Map POI tap → entity matching | Not built | 🔴 V1 needed |
 | Physical device geolocation test | Not done | 🟡 V1 needed |
 | Batch cooldown for --force runs | Not sent to CC yet | 🟡 Nice to have |
@@ -142,11 +141,10 @@ This document is updated continuously. New instances should read this first — 
 
 ## Immediate Next Steps (in order)
 
-1. **Confirm donation amounts populate** — verify Walmart and Marriott show non-zero totalRepubs/totalDems in simulator after fetch completes
+1. **Commit entities.json** — once the running --force fetch completes: `git add assets/data/entities.json && git commit -m "data: repopulate all entities with corrected partisan totals"`
 2. **Map POI tap** — architect decision needed first: full pipeline match vs. curated-only for V1, then greenfield build
 3. **Physical device geolocation** — test on hardware, not simulator
-4. **Batch cooldown CC prompt** — add FETCH_BATCH_SIZE/FETCH_BATCH_COOLDOWN_MS so --force runs are reliable
-5. **UX/UI + Content pass** — new agent instance, full analysis, 8-bit design system, user journey, copy rewrite
+4. **UX/UI + Content pass** — new agent instance, full analysis, 8-bit design system, user journey, copy rewrite
 
 ---
 

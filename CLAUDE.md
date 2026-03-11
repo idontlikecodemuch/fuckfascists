@@ -263,10 +263,21 @@ bundled `donationSummary` directly when present and fresh, skipping the live FEC
 
 **Schedule B attribution** — party is resolved via two fields in priority order:
 1. `candidate_party_affiliation` on the disbursement record (sparse — often blank in FEC responses)
-2. `recipient_committee.party` on the nested recipient committee object (reliably populated)
-The endpoint is filtered to `recipient_committee_type=H|S|P` (House, Senate, Presidential
-candidate committees only) to exclude operating expenses, bank fees, and non-federal contributions
-that leaked through the former `recipient_type=P` filter.
+2. `recipient_committee.party` on the nested recipient committee object (reliably populated for H/S/P type recipients)
+
+The API call passes `recipient_committee_type=H|S|P` but **this parameter does nothing** — the FEC
+API silently ignores it (verified: filtered and unfiltered requests return identical record counts).
+Party attribution works anyway because the response data includes `recipient_committee_type` on each
+record. Operating expense records (line 29) and non-federal contributions have no `recipient_committee`
+object, so their party resolves to `''` and they land in `raw[]`. Direct candidate committee
+contributions (type H/S/P) have `recipient_committee.party` populated and are correctly attributed.
+Leadership PAC contributions (type Q) also have no party and land in `raw[]` — this is correct
+behaviour since leadership PAC party affiliation cannot be reliably determined from disbursement data.
+
+**Known performance issue**: the broken filter means all Schedule B disbursements are fetched and
+filtered client-side. Large PACs with high operating spend (e.g. Walmart: ~9,500 records) are
+significantly slower than most entities. The fix — using `by_recipient_id` aggregation + party
+lookup — is identified but deferred (see Known Limitations).
 
 Run `fetch:donations` after `verify:entities` whenever the entity list is updated.
 Commit `entities.json` manually after reviewing the output.
@@ -565,6 +576,15 @@ After writing any file, scan it once for deprecated APIs, `.then()` chains, `var
 in `core/api/FECClient.ts` must be updated manually when a new election cycle begins.
 Both constants are candidates for renaming to `CYCLES_TO_FETCH` (more accurate now that 2026
 is included) — not blocking for MVP but should be done alongside the next cycle update.
+
+### Schedule B filter non-functional — pipeline performance (Priority: V1.5)
+`recipient_committee_type=H|S|P` in the Schedule B API call does nothing — the FEC API ignores it.
+All disbursements (operating expenses, vendor payments, candidate contributions) are fetched and
+filtered client-side. Large PACs with high operating spend fetch thousands of records unnecessarily
+(Walmart: ~9,500). The fix is to switch from the itemized Schedule B endpoint to
+`/schedules/schedule_b/by_recipient_id/` (server-side aggregation by recipient committee) + a
+single party lookup per unique recipient ID. This would reduce Walmart from ~96 API pages to ~2.
+Not blocking for MVP — the current approach produces correct totals, just slowly.
 
 ### raw line items — committee ID attribution (Priority: V2)
 `FECLineItem` currently stores `lineNumber`, `description`, `amount`, `cycle`, and `isReceipt`.
