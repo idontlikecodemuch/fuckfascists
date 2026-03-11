@@ -36,6 +36,56 @@ function isBundledSummaryFresh(lastVerifiedDate: string): boolean {
 }
 
 /**
+ * Treat clearly broken bundled summaries as stale so the app re-fetches live data.
+ *
+ * This guards against pipeline runs that wrote activeCycles/recentCycle metadata
+ * but left partisan totals zeroed, which causes the UI to render "$0" cards
+ * even though the committee has recorded activity.
+ */
+function shouldUseBundledSummary(
+  donationSummary: DonationSummary | undefined,
+  lastVerifiedDate: string
+): donationSummary is DonationSummary {
+  if (!donationSummary) return false;
+  if (!isBundledSummaryFresh(lastVerifiedDate)) return false;
+
+  const rawItems = Array.isArray(donationSummary.raw) ? donationSummary.raw : [];
+  // Suspicious = committee has active cycles and a recent cycle but zero partisan totals
+  // AND zero raw items — meaning the pipeline ran but attributed nothing at all.
+  // Entities with non-empty raw[] (e.g. pre-attribution-fix runs) are not suspicious —
+  // they fetched real data; the attribution just landed in raw instead of partisan buckets.
+  const looksSuspiciouslyZeroed =
+    donationSummary.activeCycles.length > 0 &&
+    donationSummary.recentCycle > 0 &&
+    donationSummary.recentRepubs === 0 &&
+    donationSummary.recentDems === 0 &&
+    donationSummary.totalRepubs === 0 &&
+    donationSummary.totalDems === 0 &&
+    rawItems.length === 0;
+
+  return !looksSuspiciouslyZeroed;
+}
+
+function shouldUseCachedSummary(cached: LocalCache): boolean {
+  if (isCacheExpired(cached.fetchedAt)) return false;
+
+  const donationSummary = cached.donationSummary;
+  if (!donationSummary) return true;
+
+  const rawItems = Array.isArray(donationSummary.raw) ? donationSummary.raw : [];
+  const looksSuspiciouslyZeroed =
+    donationSummary.activeCycles.length > 0 &&
+    donationSummary.recentCycle > 0 &&
+    donationSummary.recentRepubs === 0 &&
+    donationSummary.recentDems === 0 &&
+    donationSummary.totalRepubs === 0 &&
+    donationSummary.totalDems === 0 &&
+    rawItems.length === 0;
+
+  return !looksSuspiciouslyZeroed;
+}
+
+/**
  * Full entity matching pipeline. Steps:
  *  1. Normalize input
  *  2. Check LocalCache — return immediately on a valid hit
@@ -57,7 +107,7 @@ export async function matchEntity(
 
   // Step 1: Cache check
   const cached = await deps.getCache(cacheKey);
-  if (cached && !isCacheExpired(cached.fetchedAt)) {
+  if (cached && shouldUseCachedSummary(cached)) {
     const entity =
       deps.entities.find((e) => e.fecCommitteeId === cached.fecCommitteeId) ??
       null;
@@ -87,7 +137,7 @@ export async function matchEntity(
 
     // Use bundled donationSummary when present and fresh — skips live API call.
     let donationSummary: DonationSummary | null = null;
-    if (aliasMatch.donationSummary && isBundledSummaryFresh(aliasMatch.lastVerifiedDate)) {
+    if (shouldUseBundledSummary(aliasMatch.donationSummary, aliasMatch.lastVerifiedDate)) {
       donationSummary = aliasMatch.donationSummary;
     } else {
       try {
@@ -134,7 +184,7 @@ export async function matchEntity(
 
   // Use bundled donationSummary when present and fresh — skips live API call.
   let donationSummary: DonationSummary | null = null;
-  if (entity?.donationSummary && isBundledSummaryFresh(entity.lastVerifiedDate)) {
+  if (entity && shouldUseBundledSummary(entity.donationSummary, entity.lastVerifiedDate)) {
     donationSummary = entity.donationSummary;
   } else {
     try {
