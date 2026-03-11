@@ -340,6 +340,7 @@ async function main() {
   const searchCandidates = entities.filter((e) => SEARCH_BY_NAME[e.id]);
   if (searchCandidates.length > 0) {
     console.log(`Running name-based ID refresh for ${searchCandidates.length} entities...\n`);
+    const prePassStart = Date.now();
     for (const entity of searchCandidates) {
       const term = SEARCH_BY_NAME[entity.id];
       console.log(`  Searching for better committee ID for ${entity.id} (current: ${entity.fecCommitteeId})...`);
@@ -353,6 +354,14 @@ async function main() {
         console.log(`  – ${entity.id}: current ID is already the best match`);
       }
       await delay(FETCH_DELAY_MS);
+    }
+    // Full cooldown after pre-pass — it fires many requests per entity and must not
+    // eat into the main loop's rate-limit budget.
+    const prePassElapsed  = Date.now() - prePassStart;
+    const prePassRemaining = FETCH_BATCH_COOLDOWN_MS - prePassElapsed;
+    if (prePassRemaining > 0) {
+      console.log(`\n  ⏸  Pre-pass complete — waiting ${Math.ceil(prePassRemaining / 1000)}s before main fetch loop...\n`);
+      await delay(prePassRemaining);
     }
     console.log('');
   }
