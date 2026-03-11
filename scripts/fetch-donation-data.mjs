@@ -66,6 +66,20 @@ function isFresh(entity) {
   return Date.now() - verifiedMs <= CACHE_TTL_DAYS * 24 * 60 * 60 * 1_000;
 }
 
+/** Format a dollar amount compactly: $1.2M, $450k, $0 */
+function fmtAmt(n) {
+  if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(1)}M`;
+  if (n >= 1_000)     return `$${Math.round(n / 1_000)}k`;
+  return `$${n}`;
+}
+
+/** Format an election cycle range: "2016–2024", "2024", or "none" */
+function fmtCycles(cycles) {
+  if (cycles.length === 0) return 'none';
+  if (cycles.length === 1) return `${cycles[0]}`;
+  return `${cycles[0]}–${cycles[cycles.length - 1]}`;
+}
+
 // ── Rate limiting ─────────────────────────────────────────────────────────────
 
 /**
@@ -76,12 +90,14 @@ function isFresh(entity) {
  * as long as needed for the oldest in-window timestamp to expire.
  */
 class RateLimiter {
+  #name;
   #maxPerMinute;
   #windowMs = 60_000;
   #timestamps = [];
 
-  constructor(maxPerMinute) {
+  constructor(maxPerMinute, name = 'api') {
     this.#maxPerMinute = maxPerMinute;
+    this.#name = name;
   }
 
   async throttle() {
@@ -91,7 +107,7 @@ class RateLimiter {
       // Wait until the oldest in-window timestamp exits the window (+200 ms margin).
       const waitMs = this.#windowMs - (now - this.#timestamps[0]) + 200;
       if (waitMs > 0) {
-        console.log(`  ⏸  Rate limit (${this.#maxPerMinute}/min) — waiting ${Math.ceil(waitMs / 1000)}s`);
+        console.log(`  ⏸  ${this.#name} rate limit (${this.#maxPerMinute}/min) — waiting ${Math.ceil(waitMs / 1000)}s`);
         await delay(waitMs);
         const after = Date.now();
         this.#timestamps = this.#timestamps.filter((t) => after - t < this.#windowMs);
@@ -102,8 +118,8 @@ class RateLimiter {
 }
 
 // Module-level singletons — one limiter per endpoint family, shared across all calls.
-const committeeLimiter = new RateLimiter(COMMITTEE_RPM);
-const sbLimiter        = new RateLimiter(SCHEDULE_B_RPM);
+const committeeLimiter = new RateLimiter(COMMITTEE_RPM, 'committee');
+const sbLimiter        = new RateLimiter(SCHEDULE_B_RPM, 'schedule_b');
 
 /**
  * Rate-limited fetch with exponential backoff on 429.
@@ -365,8 +381,11 @@ async function main() {
 
   let fetched = 0, skipped = 0, failed = 0;
   const failedIds = [];
+  let position = 0; // tracks position in candidates for [N/total] display
 
   for (const entity of candidates) {
+    position++;
+
     // When fecCommitteeRecords is present, use the active record's id.
     // Log dissolved records — do not fetch their historical data.
     let committeeIdToFetch = entity.fecCommitteeId;
@@ -390,25 +409,37 @@ async function main() {
       continue;
     }
 
+    const tag = `[${position}/${candidates.length}]`;
+    console.log(`${tag} ${entity.id} (${committeeIdToFetch})...`);
+
     try {
       const summary = await fetchCommitteeTotals(committeeIdToFetch, apiKey, entity.donationSummary ?? null);
       entity.donationSummary  = summary;
       entity.lastVerifiedDate = today();
       fetched++;
-      const activityNote = summary.activeCycles.length === 0 ? ' (no activity on record)' : '';
-      console.log(`  ✓ ${entity.id} (${committeeIdToFetch}) — ${summary.committeeName}${activityNote}`);
+
+      let resultLine;
+      if (summary.activeCycles.length === 0) {
+        resultLine = `  ✓ ${tag} ${entity.id} — ${summary.committeeName}  (no activity on record)`;
+      } else {
+        const rLine = summary.totalRepubs > 0 ? `  R:${fmtAmt(summary.totalRepubs)}` : '';
+        const dLine = summary.totalDems   > 0 ? `  D:${fmtAmt(summary.totalDems)}`   : '';
+        const rOrD  = rLine || dLine ? `${rLine}${dLine}` : '  $0 attributed';
+        resultLine = `  ✓ ${tag} ${entity.id} — ${summary.committeeName}${rOrD}  cycles:${fmtCycles(summary.activeCycles)}`;
+      }
+      console.log(resultLine);
 
       // Incremental save every WRITE_INTERVAL successes — preserves progress on interruption.
       if (fetched % WRITE_INTERVAL === 0) {
         await writeEntities(parsed, entities);
-        console.log(`  💾 Progress saved (${fetched} fetched so far)\n`);
+        console.log(`  💾 saved (${fetched}/${candidates.length - skipped} fetched)\n`);
       }
     } catch (err) {
       failed++;
       failedIds.push(entity.id);
       // Clear lastVerifiedDate so this entity is not skipped as fresh on the next run.
       entity.lastVerifiedDate = '';
-      console.error(`  ✗ ${entity.id} (${committeeIdToFetch}) — ${err.message}`);
+      console.error(`  ✗ ${tag} ${entity.id} — ${err.message}`);
     }
   }
 
