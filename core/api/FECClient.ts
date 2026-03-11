@@ -56,6 +56,8 @@ interface FECScheduleBResult {
   two_year_transaction_period?: number;
   candidate_party_affiliation?: string;
   disbursement_description?: string;
+  /** Nested recipient committee — carries party when candidate_party_affiliation is absent. */
+  recipient_committee?: { party?: string };
 }
 
 interface FECScheduleBResponse {
@@ -129,8 +131,10 @@ export class FECClient {
    *
    * - activeCycles / recentCycle: from /committee/{id}/totals/ (aggregate activity)
    * - recentRepubs / recentDems / totalRepubs / totalDems: from /schedules/schedule_b/
-   *   filtered to candidate recipients (recipient_type=P), attributed by
-   *   candidate_party_affiliation (REP → repubs, DEM → dems, other → raw[])
+   *   filtered to candidate committee recipients (recipient_committee_type=H|S|P), attributed by:
+   *     1. candidate_party_affiliation (primary — sparse on FEC responses)
+   *     2. recipient_committee.party (fallback — reliably populated on candidate committee records)
+   *   REP → repubs, DEM → dems, other → raw[]
    */
   async getCommitteeTotals(committeeId: string): Promise<DonationSummary> {
     const id = encodeURIComponent(committeeId);
@@ -173,7 +177,7 @@ export class FECClient {
     for (const rec of sbRecords) {
       const amount     = rec.disbursement_amount ?? 0;
       const cycle      = rec.two_year_transaction_period ?? 0;
-      const party      = (rec.candidate_party_affiliation ?? '').toUpperCase();
+      const party      = (rec.candidate_party_affiliation || rec.recipient_committee?.party || '').toUpperCase();
       const lineNumber = rec.line_number ?? '';
 
       if (party === 'REP') {
@@ -221,10 +225,16 @@ export class FECClient {
   /**
    * Paginates through /schedules/schedule_b/ for candidate contributions from
    * the given committee. Uses cursor-based pagination (last_index + last_disbursement_date).
+   *
+   * Filters to disbursements to candidate committees only:
+   *   recipient_committee_type=H (House), S (Senate), P (Presidential)
+   * This eliminates operating expenses, non-federal contributions, and refunds
+   * that leaked through the former recipient_type=P filter.
    */
   private async fetchScheduleB(committeeId: string): Promise<FECScheduleBResult[]> {
     const id            = encodeURIComponent(committeeId);
     const sbCycleParams = CYCLES_SINCE_2016.map((c) => `two_year_transaction_period=${c}`).join('&');
+    const sbTypeParams  = ['H', 'S', 'P'].map((t) => `recipient_committee_type=${t}`).join('&');
     const keyParam      = this.apiKey ? `&api_key=${encodeURIComponent(this.apiKey)}` : '';
 
     const records: FECScheduleBResult[] = [];
@@ -232,7 +242,7 @@ export class FECClient {
 
     while (true) {
       const data = await this.get<FECScheduleBResponse>(
-        `/schedules/schedule_b/?committee_id=${id}&recipient_type=P&per_page=100&sort=-disbursement_date&${sbCycleParams}${keyParam}${cursor}`
+        `/schedules/schedule_b/?committee_id=${id}&${sbTypeParams}&per_page=100&sort=-disbursement_date&${sbCycleParams}${keyParam}${cursor}`
       );
       const batch = data.results ?? [];
       records.push(...batch);

@@ -221,6 +221,25 @@ describe('FECClient', () => {
       expect(result.raw).toHaveLength(0);
     });
 
+    it('falls back to recipient_committee.party when candidate_party_affiliation is blank', async () => {
+      mockFetch
+        .mockResolvedValueOnce(mockJson({ results: [{ committee_id: 'C001', name: 'ACME PAC', party_full: '' }] }))
+        .mockResolvedValueOnce(mockJson({ results: [{ receipts: 0, cycle: 2024 }] }))
+        .mockResolvedValueOnce(mockJson({
+          results: [
+            { disbursement_amount: 500_000, two_year_transaction_period: 2024, candidate_party_affiliation: '', recipient_committee: { party: 'REP' } },
+            { disbursement_amount: 300_000, two_year_transaction_period: 2024, candidate_party_affiliation: '', recipient_committee: { party: 'DEM' } },
+          ],
+          pagination: { last_indexes: null },
+        }));
+
+      const result = await makeClient().getCommitteeTotals('C001');
+
+      expect(result.totalRepubs).toBe(500_000);
+      expect(result.totalDems).toBe(300_000);
+      expect(result.raw).toHaveLength(0);
+    });
+
     it('stores non-REP/DEM Schedule B disbursements as raw line items', async () => {
       mockAllCalls(
         [{ cycle: 2024 }],

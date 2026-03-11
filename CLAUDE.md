@@ -54,6 +54,7 @@ These are not preferences. They are constraints. Never violate them.
 5. **No backend in MVP** — All processing is on-device. The only outbound calls are to the OpenFEC API (directly from the device) and to fetch the curated entity list update (static file on GitHub/CDN).
 6. **Transparency always** — Every confidence label is shown. Every data source links to FEC.gov. Nothing is claimed with more certainty than the data supports.
 7. **CEO name context split** — CEO names are intentional in the report card and avoid tap feedback — these are designed to be confrontational and shareable. CEO names are intentionally absent from the business card and extension popup — these are informational tools displaying public FEC data. Do not conflate these two design contexts.
+8. **Cross-surface data parity** — When a material data or transparency change is made to the app business card or the extension popup, carry the underlying data behavior to both surfaces unless there is an explicit documented V2 divergence decision. UI treatment may differ by surface; confidence labels, donation availability handling, FEC links, and core attribution rules must not silently drift.
 
 ---
 
@@ -247,6 +248,15 @@ bundled `donationSummary` directly when present and fresh, skipping the live FEC
 - Dissolved/new committees with no recorded activity produce a zeroed summary (`activeCycles: []`).
 - Entities in `SEARCH_BY_NAME` (currently `google-alphabet`, `uber`) get a name-based pre-pass
   to correct suspect committee IDs before the main fetch loop.
+- On fetch failure, `lastVerifiedDate` is cleared to `""` so the entity is retried on the next
+  plain run without needing `--force`.
+
+**Schedule B attribution** — party is resolved via two fields in priority order:
+1. `candidate_party_affiliation` on the disbursement record (sparse — often blank in FEC responses)
+2. `recipient_committee.party` on the nested recipient committee object (reliably populated)
+The endpoint is filtered to `recipient_committee_type=H|S|P` (House, Senate, Presidential
+candidate committees only) to exclude operating expenses, bank fees, and non-federal contributions
+that leaked through the former `recipient_type=P` filter.
 
 Run `fetch:donations` after `verify:entities` whenever the entity list is updated.
 Commit `entities.json` manually after reviewing the output.
@@ -553,7 +563,7 @@ on `FECLineItem`.
 
 ### Independent Expenditures — IE tracking (Priority: V3)
 The current data pipeline covers two FEC data sources:
-- Corporate PAC contributions: Schedule B via `/committees/{id}/totals/`
+- Corporate PAC contributions: Schedule B via `/schedules/schedule_b/` (filtered to candidate committee recipients)
 - Individual donations: Schedule A via `/schedules/schedule_a/`
 
 Independent Expenditures (Schedule E) are not currently tracked. IEs are spending by outside

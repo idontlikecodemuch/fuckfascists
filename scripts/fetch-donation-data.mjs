@@ -125,12 +125,15 @@ async function fetchScheduleBContributions(committeeId, apiKey) {
   const id            = encodeURIComponent(committeeId);
   const keyParam      = apiKey ? `&api_key=${encodeURIComponent(apiKey)}` : '';
   const sbCycleParams = CYCLES_SINCE_2016.map((c) => `two_year_transaction_period=${c}`).join('&');
+  // Filter to candidate committee recipients only (H=House, S=Senate, P=Presidential).
+  // Replaces the former recipient_type=P which was returning all disbursements unfiltered.
+  const sbTypeParams  = ['H', 'S', 'P'].map((t) => `recipient_committee_type=${t}`).join('&');
 
   const records = [];
   let cursor = '';
 
   while (true) {
-    const url = `${FEC_API_BASE}/schedules/schedule_b/?committee_id=${id}&recipient_type=P&per_page=100&sort=-disbursement_date&${sbCycleParams}${keyParam}${cursor}`;
+    const url = `${FEC_API_BASE}/schedules/schedule_b/?committee_id=${id}&${sbTypeParams}&per_page=100&sort=-disbursement_date&${sbCycleParams}${keyParam}${cursor}`;
     const res = await fetchWithRetry(url);
 
     if (res.status === 429) {
@@ -271,7 +274,7 @@ async function fetchCommitteeTotals(committeeId, apiKey, existingSummary = null)
   for (const rec of sbRecords) {
     const amount     = rec.disbursement_amount ?? 0;
     const cycle      = rec.two_year_transaction_period ?? 0;
-    const party      = (rec.candidate_party_affiliation ?? '').toUpperCase();
+    const party      = (rec.candidate_party_affiliation || rec.recipient_committee?.party || '').toUpperCase();
     const lineNumber = rec.line_number ?? '';
 
     if (party === 'REP') {

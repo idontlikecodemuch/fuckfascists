@@ -12,6 +12,36 @@ This document is updated continuously. New instances should read this first — 
 
 ## Last 5 Sessions (most recent first)
 
+### Session: March 11, 2026
+**Focus:** Schedule B attribution root-cause fix
+
+**Completed:**
+- Diagnosed why partisan donation totals were $0 for all major entities (Walmart, Home Depot, Amazon, etc.):
+  - `recipient_type=P` was not filtering to presidential candidates — it was returning all Schedule B disbursements (bank fees, merchant fees, nonfederal contributions leaked through)
+  - `candidate_party_affiliation` is blank on FEC Schedule B responses even for legitimate candidate contributions
+  - Result: 158 of 161 entities had zero partisan totals; all candidate contributions falling into `raw[]`
+- Fixed Schedule B filter: `recipient_type=P` → `recipient_committee_type=H&recipient_committee_type=S&recipient_committee_type=P` (House, Senate, Presidential candidate committees only) in both `FECClient.ts` and `fetch-donation-data.mjs`
+- Fixed party attribution: added `recipient_committee.party` as fallback when `candidate_party_affiliation` is blank — applied identically in both files
+- Added test for `recipient_committee.party` fallback (23 tests total, all passing)
+- Updated CLAUDE.md: Schedule B attribution rules documented, wrong endpoint reference in Known Limitations corrected
+
+**Pending:**
+- Re-run `npm run fetch:donations` to populate partisan totals with corrected attribution
+
+---
+
+### Session: March 10, 2026
+**Focus:** Extension hardening, app/extension data parity, documentation cleanup
+
+**Completed:**
+- Serialized `FECClient.ts` details → totals calls to match the data pipeline rate-limit fix
+- Reconciled stale architecture/docs references from OpenSecrets-era internals to current FEC-native architecture
+- Fixed extension service-worker nullability bug — flagged domains now render safely even when donation data is unavailable
+- Brought extension popup data behavior closer to the mobile BusinessCard:
+  confidence labels preserved, medium-confidence warning preserved, donation-unavailable state surfaced, FEC link fallback added, active-cycle context shown when available
+- Fixed extension/browser TypeScript coverage so `npm run typecheck` is meaningful again
+- Added cross-surface data parity rule to `CLAUDE.md` and `ARCHITECTURE.md` so material business-card/popup data changes must be carried to both surfaces unless a V2 divergence is explicitly documented
+
 ### Session: March 10, 2026
 **Focus:** Data pipeline stabilization, documentation
 
@@ -57,8 +87,8 @@ This document is updated continuously. New instances should read this first — 
 
 | Suite | Count | Status |
 |---|---|---|
-| Total passing | 259 | ✅ Clean |
-| Last tsc run | — | ✅ Zero errors |
+| Total passing | 258 | ✅ Clean |
+| Last tsc run | March 10, 2026 | ✅ Clean |
 
 ---
 
@@ -83,6 +113,7 @@ This document is updated continuously. New instances should read this first — 
 - Geolocation (simulator — SF drop) ✅ / physical device TBD
 - Entity matching with confidence labels ✅
 - Browser extension bundles entities.json at build time ✅
+- Extension popup now mirrors app business-card data states more closely ✅
 - Rate limiting with retry logic ✅
 - Freshness cache with auto-retry on failure ✅
 
@@ -139,5 +170,6 @@ This document is updated continuously. New instances should read this first — 
 - fecCommitteeId three-state schema (string / null / "") ✅
 - verificationStatus numeric migration ✅
 - matchScore removed from Entity type ✅
+- App / extension material data-state changes must stay in parity unless explicitly deferred to V2 ✅
 - Tesla → null (no corporate PAC, Musk donates personally) ✅
 - Patagonia → removed (IE filer only, no Republican history) ✅
