@@ -26,7 +26,7 @@ const PAC_REVIEW_PATH = path.join(OUTPUT_DIR, 'pac-review.json');
 const FEC_API_BASE   = 'https://api.open.fec.gov/v1';
 const CACHE_TTL_DAYS = 60;
 const FETCH_DELAY_MS            = 1_000;  // mirrors config/constants.ts FETCH_DELAY_MS
-const FETCH_SCHEDULE_B_DELAY_MS = 2_000;  // mirrors config/constants.ts FETCH_SCHEDULE_B_DELAY_MS
+const FETCH_SCHEDULE_B_DELAY_MS = 1_000;  // mirrors config/constants.ts FETCH_SCHEDULE_B_DELAY_MS
 const RETRY_DELAY_MS            = 5_000;  // wait before a single 429 retry
 const CYCLES_SINCE_2016 = [2016, 2018, 2020, 2022, 2024];
 
@@ -202,8 +202,6 @@ async function fetchCommitteeTotals(committeeId, apiKey, existingSummary = null)
   const detailsData   = await detailsRes.json();
   const detailsRow    = (detailsData.results ?? [])[0] ?? null;
   const committeeName = detailsRow?.name ?? committeeId;
-
-  await delay(FETCH_DELAY_MS);
 
   // Totals: 404 or empty results both mean "no recorded activity" — not an error.
   const totalsRes = await fetchWithRetry(

@@ -5,7 +5,7 @@ export const REPORT_CARD_WINDOW_DAY = 5;         // Friday (0 = Sunday)
 
 // Extension flagging frequency
 // Options: 'session' | 'daily' | 'weekly'
-export const EXTENSION_FLAG_FREQUENCY = 'session' as const;
+export const EXTENSION_FLAG_FREQUENCY: 'session' | 'daily' | 'weekly' = 'session';
 
 // FEC API cache TTL
 export const ENTITY_CACHE_TTL_DAYS = 60;
@@ -13,8 +13,9 @@ export const ENTITY_CACHE_TTL_DAYS = 60;
 // Delay between entity fetches in the data pipeline (ms)
 export const FETCH_DELAY_MS = 1_000;
 
-// Additional delay before each Schedule B request (ms) — Schedule B is a heavier endpoint
-export const FETCH_SCHEDULE_B_DELAY_MS = 2_000;
+// Additional delay before each Schedule B request (ms)
+// Reduced from 2000 → 1000: H|S|P filter makes SB result sets significantly smaller
+export const FETCH_SCHEDULE_B_DELAY_MS = 1_000;
 
 // Confidence score thresholds (0–1 scale)
 export const CONFIDENCE_THRESHOLD_HIGH = 0.85;
