@@ -13,7 +13,7 @@ This document is updated continuously. New instances should read this first — 
 ## Last 5 Sessions (most recent first)
 
 ### Session: March 11, 2026
-**Focus:** Schedule B attribution root-cause fix
+**Focus:** Schedule B attribution root-cause fix, pipeline performance, UX fix
 
 **Completed:**
 - Diagnosed why partisan donation totals were $0 for all major entities (Walmart, Home Depot, Amazon, etc.):
@@ -22,11 +22,13 @@ This document is updated continuously. New instances should read this first — 
   - Result: 158 of 161 entities had zero partisan totals; all candidate contributions falling into `raw[]`
 - Fixed Schedule B filter: `recipient_type=P` → `recipient_committee_type=H&recipient_committee_type=S&recipient_committee_type=P` (House, Senate, Presidential candidate committees only) in both `FECClient.ts` and `fetch-donation-data.mjs`
 - Fixed party attribution: added `recipient_committee.party` as fallback when `candidate_party_affiliation` is blank — applied identically in both files
-- Added test for `recipient_committee.party` fallback (23 tests total, all passing)
-- Updated CLAUDE.md: Schedule B attribution rules documented, wrong endpoint reference in Known Limitations corrected
+- Added test for `recipient_committee.party` fallback (24 tests total, all passing)
+- Fixed `looksSuspiciouslyZeroed` bug in `pipeline.ts` — `rawItems.length >= 0` was always true, causing entities with non-empty `raw[]` (e.g. Walmart) to have their bundled summary rejected and fall back to a failing live API call, showing "donation data temporarily unavailable"
+- Reduced `fetch:donations` runtime: removed redundant inter-call delay between details/totals; reduced `FETCH_SCHEDULE_B_DELAY_MS` 2000 → 1000ms; expected --force runtime ~8–10 min vs. ~60+ min
+- Updated CLAUDE.md: Schedule B attribution rules documented, wrong endpoint reference corrected, pipeline timing notes updated
 
 **Pending:**
-- Re-run `npm run fetch:donations` to populate partisan totals with corrected attribution
+- Run `npm run fetch:donations -- --force` to repopulate all 161 entities with corrected partisan totals (--force required because 107 "succeeded" entities have recent lastVerifiedDate despite wrong $0 data)
 
 ---
 
