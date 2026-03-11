@@ -119,35 +119,40 @@ body {
   text-transform: uppercase;
 }
 
-.ceo-name {
+.figure-name {
   font-size: 10px;
   color: var(--muted);
   margin-bottom: 10px;
 }
 
-.donation-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 4px;
-}
-
-.donation-label {
-  font-size: 9px;
-  color: var(--muted);
-  letter-spacing: 1px;
-}
-
-.donation-amount {
-  font-size: 12px;
+.recent-amount {
+  margin-top: 10px;
+  font-size: 16px;
   font-weight: bold;
+  color: var(--red);
 }
 
-.donation-amount.red { color: var(--red); }
+.recent-cycle,
+.total-since-2016,
+.active-cycles,
+.data-unavailable {
+  margin-top: 4px;
+  font-size: 10px;
+  line-height: 1.4;
+}
 
-.donation-muted {
-  font-size: 11px;
+.recent-cycle,
+.active-cycles,
+.data-unavailable,
+.figure-name {
   color: var(--muted);
+}
+
+.confidence-disclaimer {
+  margin-top: 6px;
+  color: var(--amber);
+  font-size: 10px;
+  line-height: 1.4;
 }
 
 .confidence-badge {

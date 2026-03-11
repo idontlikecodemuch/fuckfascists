@@ -48,9 +48,15 @@ receive a synchronized weekly report card.
 and lets users log avoidances without leaving the current page.
 
 **The shared core** (`/core`) contains the entity matching pipeline, the
-OpenSecrets API client, the storage adapter interface, and all shared TypeScript
-types. It is framework-free — no React, no Expo, no Chrome APIs. Both products
-import from it.
+FEC API client, the storage adapter interface, and all shared TypeScript types.
+It is framework-free — no React, no Expo, no Chrome APIs. Both products import
+from it.
+
+**Cross-surface rule:** the mobile business card and extension popup may differ
+in layout, copy emphasis, and visual tone, but they are not allowed to drift on
+material data behavior. Confidence handling, donation-data availability states,
+FEC attribution links, and committee attribution rules must stay aligned across
+both surfaces unless a deliberate V2 divergence is documented first.
 
 ---
 
@@ -66,7 +72,7 @@ import from it.
 ├── core/                   ← Framework-free TypeScript. Shared by app + extension.
 │   ├── models/             ← Domain types: Entity, Events, Cache, Confidence
 │   ├── matching/           ← Entity matching pipeline (normalize → fuzzy → score)
-│   ├── api/                ← OpenSecrets API client with rate limiting
+│   ├── api/                ← FEC API client with rate limiting
 │   └── data/               ← StorageAdapter interface, entity list loader, eventStore
 │
 ├── features/               ← React Native feature modules
@@ -76,9 +82,9 @@ import from it.
 │   ├── Onboarding/         ← 5-step first-run flow
 │   └── Info/               ← Transparency, about, FAQ, links (CDN-updatable)
 │
+├── App.tsx                 ← current app shell: onboarding gate + manual tab bar
 ├── app/
-│   ├── navigation/         ← Tab + stack navigation (to be built)
-│   └── providers/          ← Context: theme, config, storage adapter
+│   └── storage/            ← SqliteAdapter.ts (expo-sqlite mobile adapter)
 │
 ├── extension/              ← Browser extension (Chrome/Firefox MV3)
 │   ├── manifest.json       ← MV3 manifest
@@ -111,7 +117,7 @@ These are not preferences. Violating any of them is a product-ending bug.
 | **No browsing history** | Extension content script captures hostname only (no path, no query string). Service worker stores nothing about what was browsed — only the `TabFlag` (which flag is active for a tab) lives in memory, cleared on navigation/tab close. |
 | **No support events** | `EntityAvoidEvent` and `PlatformAvoidEvent` are the only event types. There is no `EntityVisitEvent`, `EntitySupportEvent`, or equivalent. Never add one. |
 | **No personal identifiers** | No account, no email, no device ID. No user ID of any kind in MVP. All data is local-only. |
-| **No backend (MVP)** | All processing is on-device. The only outbound calls are to the OpenSecrets API (from device) and the GitHub CDN (for the entity list, drop schedule, and Info content). |
+| **No backend (MVP)** | All processing is on-device. The only outbound calls are to the FEC API (from device) and the GitHub CDN (for the entity list, drop schedule, and Info content). |
 
 ### The areaHash boundary
 
@@ -169,8 +175,13 @@ Entity {
   domains: string[]            // for extension domain lookup
   categoryTags: string[]
   ceoName: string
-  fecCommitteeId?: string      // pre-resolved FEC committee ID
-  matchScore?: number          // 0–1 override; 1.0 = exact/certain
+  publicFigureName?: string
+  parentEntityId?: string
+  associatedPersonIds?: string[]
+  fecCommitteeId?: string | null
+  fecCommitteeRecords?: FecCommitteeRecord[]
+  verificationStatus: 'manual' | 'pipeline' | 'unverified'
+  donationSummary?: DonationSummary
   lastVerifiedDate: string
 }
 ```
@@ -204,18 +215,19 @@ matchEntity(rawInput, deps, areaHash?)
     │      hit within ENTITY_CACHE_TTL_DAYS → return cached result immediately
     │
     ├─ 3. alias match (findByAlias)
-    │      exact match against entity.aliases[] (all pre-normalized)
-    │      hit → confidence = entity.confidenceOverride ?? 'HIGH'
-    │      skip steps 4–5 if matched
+    │      exact match against entity.aliases[] / canonicalName
+    │      hit → confidence = 1.0
+    │      use bundled donationSummary when present + fresh
+    │      otherwise resolve/fetch FEC committee data
     │
-    ├─ 4. OpenSecrets fuzzy search (deps.fetchOrgs)
-    │      getOrgs(normalizedName) → OpenSecretsOrg[]
+    ├─ 4. FEC fuzzy search (deps.fetchOrgs)
+    │      searchCommittees(normalizedName) → FECCommittee[]
     │      each result scored with jaroWinkler(normalized, normalized(orgname))
     │
     ├─ 5. pick best match (pickBestMatch)
     │      score >= CONFIDENCE_THRESHOLD_HIGH (0.85) → HIGH, fetch orgSummary
     │      score >= CONFIDENCE_THRESHOLD_MEDIUM (0.60) → MEDIUM, fetch orgSummary
-    │      score < 0.60 → unmatched (no flag, show OpenSecrets search link)
+    │      score < 0.60 → unmatched (no flag, show FEC.gov search link)
     │
     └─ 6. cache write (deps.setCache)
            always written — even MEDIUM results are cached to avoid repeat calls
@@ -232,7 +244,7 @@ Return type: MatchResult (discriminated union — matched: true/false)
 | `core/matching/aliasMatch.ts` | `findByAlias(normalized, entities)` |
 | `core/matching/scorer.ts` | `scoreAll(normalized, orgs)`, `pickBestMatch(scores)` |
 | `core/matching/pipeline.ts` | `matchEntity(rawInput, deps, areaHash?)` |
-| `core/matching/types.ts` | `MatchResult`, `MatchingDeps`, `OpenSecretsOrg` |
+| `core/matching/types.ts` | `MatchResult`, `MatchingDeps`, `FECCommittee` |
 | `core/matching/index.ts` | re-exports all of the above |
 
 ### Extension domain matching (different from pipeline)
@@ -248,6 +260,22 @@ findByDomain(hostname, entities)
 `entity.domains[]` lists every domain variant for a brand (including subdomains).
 `findByDomain` does a case-insensitive exact match, with a `www.` strip fallback.
 This is faster and more reliable than fuzzy matching when the domain is known.
+
+### App card / popup parity
+
+The app business card (`features/Map/components/BusinessCard.tsx`) and the
+extension popup (`extension/popup/`) are separate UI implementations, but they
+must present the same underlying data truth:
+
+- confidence labels are always shown
+- medium-confidence matches always surface a verification warning
+- donation data may be unavailable without suppressing the entity flag itself
+- FEC filing links should be shown whenever a committee URL can be derived
+- formatting and emphasis can vary by surface, but attribution rules should not
+
+If one surface gets a material data-state fix and the other does not, treat that
+as documentation/process debt and address it in the same workstream whenever
+practical.
 
 ---
 
@@ -327,10 +355,10 @@ useEntityScan(deps, areaHash)
                              NO location, NO time-of-day
 ```
 
-`MapScreen` receives `entities`, `adapter`, `fetchOrgs`, and `fetchOrgSummary`
-as props (not from context) to keep dependencies explicit and testable. The
-`MatchingDeps` object is memoized with `useMemo` inside `MapScreen` to prevent
-stale closures in `useEntityScan`.
+`App.tsx` opens `SqliteAdapter`, loads bundled entities immediately, attempts a
+CDN refresh in the background, and constructs a single `FECClient` for the app
+lifetime. `MapScreen` receives `entities`, `adapter`, `fetchOrgs`, and
+`fetchOrgSummary` as props to keep dependencies explicit and testable.
 
 ### Survey feature
 
@@ -408,7 +436,7 @@ Persisted in chrome.storage.local:
   avoid:entity:<id>:<date>     ← EntityAvoidEvent records
   avoid:platform:<id>:<week>   ← PlatformAvoidEvent records
   snooze:<hostname>            ← SnoozeRecord { hostname, until: epoch }
-  opensecrets_api_key          ← stored on install (never hard-coded)
+  fec_api_key                  ← optional FEC API key (never hard-coded)
   entity_list                  ← cached CDN entity list
 ```
 
@@ -504,7 +532,7 @@ interface StorageAdapter {
 
 | Product | Implementation | Location |
 |---|---|---|
-| Mobile (iOS/Android) | `SqliteAdapter` | `app/storage/SqliteAdapter.ts` (**to be built**) |
+| Mobile (iOS/Android) | `SqliteAdapter` | `app/storage/SqliteAdapter.ts` |
 | Browser extension | `ChromeStorageAdapter` | `extension/storage/ChromeStorageAdapter.ts` |
 | Tests | In-memory mock | Each test file's `beforeEach` |
 
@@ -532,8 +560,8 @@ Jest config (`jest.config.ts`) picks up all `**/__tests__/**/*.test.ts` files.
 Test environment is `node` — React Native components are not yet under test
 (Expo managed workflow testing requires additional setup).
 
-**Mocks are for tests only.** Never use mock data in dev or prod. Use real
-OpenSecrets API calls with a dev API key stored in `.env` (never committed).
+**Mocks are for tests only.** Never use mock data in dev or prod. Use real FEC
+API calls with a dev API key stored in `.env` (never committed).
 
 ### Extension
 
@@ -561,9 +589,9 @@ npm run ios        # iOS simulator
 npm run android    # Android emulator
 ```
 
-`app/storage/SqliteAdapter.ts` (to be built) must be wired into a React context
-provider so `MapScreen`, `SurveyScreen`, and `ReportCardScreen` receive their
-adapter instance.
+`App.tsx` currently wires `SqliteAdapter` directly and renders a lightweight
+manual tab shell instead of a navigation library. If navigation is introduced
+later, preserve the existing onboarding gate and explicit screen dependencies.
 
 ---
 
@@ -573,20 +601,9 @@ These items are **incomplete or placeholder** in the current codebase:
 
 - [ ] **Replace `[org]` placeholders** in `config/constants.ts` — three URLs
       need the real GitHub org name before any user-facing build.
-- [ ] **Build `app/storage/SqliteAdapter.ts`** — implements `StorageAdapter`
-      using `expo-sqlite`. Schema DDL is in `core/data/schema.ts`.
-- [ ] **Build `app/navigation/`** — tab navigator wiring `MapScreen`,
-      `SurveyScreen`, `ReportCardScreen`, and `InfoScreen`.
-- [ ] **Build `app/providers/`** — React context provider that instantiates
-      `SqliteAdapter` and passes it down to screens.
-- [ ] **Wire `OnboardingNavigator`** — gate the main navigation behind the
-      `isComplete` flag from `useOnboarding`.
-- [ ] **Add pixel art icons** — `extension/icons/` needs `icon16.png`,
-      `icon32.png`, `icon48.png`, `icon128.png` (default + amber variants).
-      See `extension/manifest.json` for the expected filenames.
-- [ ] **Set `opensecrets_api_key`** in `chrome.storage.local` on extension
-      install — add an `onInstalled` listener in the service worker, or an
-      options page, to accept the user's API key.
+- [ ] **Add extension FEC API key UX** — `service-worker.ts` reads optional
+      `fec_api_key` from `chrome.storage.local`, but there is no options UI or
+      install-time prompt yet for users to set or change it.
 - [ ] **Create `fuckfascists-data` GitHub repo** — must contain:
       - `entities.json` — curated entity list
       - `drop-schedule.json` — weekly drop schedule (published by a GitHub Action)
@@ -597,7 +614,7 @@ These items are **incomplete or placeholder** in the current codebase:
 - [ ] **Add pixel art assets** to `assets/pixel/` — logo, CEO avatars, badges,
       map markers, report card frame, animated feedback sprites.
 - [ ] **Extension options page** (optional) — for users to enter/change their
-      OpenSecrets API key after install.
+      FEC API key after install.
 
 ---
 

@@ -41,6 +41,20 @@ const mockDonationSummary: DonationSummary = {
   fecCommitteeUrl: 'https://www.fec.gov/data/committee/D000000074/',
 };
 
+const zeroedButActiveSummary: DonationSummary = {
+  committeeId:     'D000000074',
+  committeeName:   'Walmart Inc',
+  recentCycle:     2024,
+  recentRepubs:    0,
+  recentDems:      0,
+  totalRepubs:     0,
+  totalDems:       0,
+  activeCycles:    [2016, 2018, 2020, 2022, 2024],
+  raw:             [],
+  lastUpdated:     '2026-03-10',
+  fecCommitteeUrl: 'https://www.fec.gov/data/committee/D000000074/',
+};
+
 function makeDeps(overrides: Partial<MatchingDeps> = {}): jest.Mocked<MatchingDeps> {
   return {
     entities: [walmartEntity],
@@ -94,6 +108,23 @@ describe('cache hit', () => {
     if (result.matched) expect(result.fromCache).toBe(false);
     expect(deps.fetchOrgSummary).toHaveBeenCalledWith('D000000074');
   });
+
+  it('ignores suspicious zeroed cache entries and refetches live donation data', async () => {
+    const cached: LocalCache = {
+      key: 'walmart',
+      fecCommitteeId: 'D000000074',
+      donationSummary: zeroedButActiveSummary,
+      confidence: 1.0,
+      fetchedAt: Date.now(),
+    };
+    const deps = makeDeps({ getCache: jest.fn().mockResolvedValue(cached) });
+
+    const result = await matchEntity('Walmart', deps);
+
+    expect(result.matched).toBe(true);
+    if (result.matched) expect(result.fromCache).toBe(false);
+    expect(deps.fetchOrgSummary).toHaveBeenCalledWith('D000000074');
+  });
 });
 
 // ─── Alias match ──────────────────────────────────────────────────────────────
@@ -126,6 +157,20 @@ describe('alias match', () => {
         confidence: 1.0,
       })
     );
+  });
+
+  it('ignores suspicious zeroed bundled summaries and refetches live donation data', async () => {
+    const deps = makeDeps({
+      entities: [{ ...walmartEntity, donationSummary: zeroedButActiveSummary, lastVerifiedDate: '2026-03-10' }],
+    });
+
+    const result = await matchEntity('Walmart', deps);
+
+    expect(deps.fetchOrgSummary).toHaveBeenCalledWith('D000000074');
+    expect(result.matched).toBe(true);
+    if (result.matched) {
+      expect(result.donationSummary).toEqual(mockDonationSummary);
+    }
   });
 
   it('resolves orgId via API when entity lacks fecCommitteeId', async () => {

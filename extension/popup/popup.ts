@@ -13,6 +13,7 @@
  */
 
 import type { TabFlag, WeeklyStats, GetCurrentFlagMsg, AvoidEntityMsg, SnoozeDomainMsg, GetWeeklyStatsMsg } from '../types';
+import { formatActiveCycles, formatCycleLabel, formatDonationAmount } from '../../core/models';
 import { SHOW_FIGURE_NAME_IN_POPUP, CONFIDENCE_THRESHOLD_HIGH } from '../../config/constants';
 
 // ── DOM refs ───────────────────────────────────────────────────────────────────
@@ -22,13 +23,16 @@ const stateFlagged = document.getElementById('state-flagged')!;
 const stateAvoided = document.getElementById('state-avoided')!;
 
 // Figure name visibility is controlled by SHOW_FIGURE_NAME_IN_POPUP (see config/constants.ts).
-const entityNameEl    = document.getElementById('entity-name')!;
-const figureNameEl    = document.getElementById('figure-name')!;
-const recentAmountEl  = document.getElementById('recent-amount')!;
-const recentCycleEl   = document.getElementById('recent-cycle')!;
-const totalSince2016  = document.getElementById('total-since-2016')!;
-const confidenceBadge = document.getElementById('confidence-badge')!;
-const fecLink         = document.getElementById('fec-link') as HTMLAnchorElement;
+const entityNameEl            = document.getElementById('entity-name')!;
+const figureNameEl            = document.getElementById('figure-name')!;
+const confidenceDisclaimerEl  = document.getElementById('confidence-disclaimer')!;
+const recentAmountEl          = document.getElementById('recent-amount')!;
+const recentCycleEl           = document.getElementById('recent-cycle')!;
+const totalSince2016          = document.getElementById('total-since-2016')!;
+const activeCyclesEl          = document.getElementById('active-cycles')!;
+const dataUnavailableEl       = document.getElementById('data-unavailable')!;
+const confidenceBadge         = document.getElementById('confidence-badge')!;
+const fecLink                 = document.getElementById('fec-link') as HTMLAnchorElement;
 
 const btnAvoided = document.getElementById('btn-avoided') as HTMLButtonElement;
 const btnSnooze  = document.getElementById('btn-snooze')  as HTMLButtonElement;
@@ -43,18 +47,6 @@ function showOnly(el: HTMLElement) {
   [stateClean, stateFlagged, stateAvoided].forEach((s) => {
     s.hidden = s !== el;
   });
-}
-
-function formatUSD(amount: number): string {
-  if (amount >= 1_000_000) return `$${(amount / 1_000_000).toFixed(1)}M`;
-  if (amount >= 1_000)     return `$${(amount / 1_000).toFixed(0)}K`;
-  return `$${amount.toFixed(0)}`;
-}
-
-function formatCycleLabel(cycle: number): string {
-  const startYear = cycle - 1;
-  const endTwoDigit = String(cycle).slice(2);
-  return `${startYear}–${endTwoDigit}`;
 }
 
 function getMondayOf(date: Date): string {
@@ -77,28 +69,40 @@ function renderFlag(flag: TabFlag) {
     figureNameEl.hidden = true;
   }
 
-  // Recent cycle — prominent line
-  const hasRecentRepubs = flag.recentRepubs > 0;
-  const hasRecentDems   = flag.recentDems > 0;
-
-  if (hasRecentRepubs || hasRecentDems) {
-    const gopPart = hasRecentRepubs ? `${formatUSD(flag.recentRepubs)} GOP` : '';
-    const demPart = hasRecentDems   ? `${formatUSD(flag.recentDems)} DEM`  : '';
-    recentAmountEl.textContent = [gopPart, demPart].filter(Boolean).join('  ·  ');
+  if (flag.donationDataAvailable && flag.recentCycle !== null) {
+    recentAmountEl.textContent =
+      `GOP ${formatDonationAmount(flag.recentRepubs)} · DEM ${formatDonationAmount(flag.recentDems)}`;
     recentCycleEl.textContent  = `in ${formatCycleLabel(flag.recentCycle)}`;
     recentAmountEl.hidden = false;
     recentCycleEl.hidden  = false;
+
+    totalSince2016.textContent =
+      `Total since 2016: GOP ${formatDonationAmount(flag.totalRepubs)} · DEM ${formatDonationAmount(flag.totalDems)}`;
+    totalSince2016.hidden = false;
+
+    if (flag.activeCycles.length > 0) {
+      activeCyclesEl.textContent = `Active cycles: ${formatActiveCycles(flag.activeCycles)}`;
+      activeCyclesEl.hidden = false;
+    } else {
+      activeCyclesEl.hidden = true;
+    }
+
+    dataUnavailableEl.hidden = true;
   } else {
     recentAmountEl.hidden = true;
     recentCycleEl.hidden  = true;
+    totalSince2016.hidden = true;
+    activeCyclesEl.hidden = true;
+    dataUnavailableEl.hidden = false;
   }
 
-  // Totals since 2016
-  totalSince2016.textContent =
-    `Total since 2016: ${formatUSD(flag.totalRepubs)} GOP · ${formatUSD(flag.totalDems)} DEM`;
-
   // FEC record link
-  fecLink.href = flag.fecCommitteeUrl;
+  if (flag.fecCommitteeUrl) {
+    fecLink.href = flag.fecCommitteeUrl;
+    fecLink.hidden = false;
+  } else {
+    fecLink.hidden = true;
+  }
 
   const confidenceLabel = flag.confidence >= CONFIDENCE_THRESHOLD_HIGH ? 'HIGH' : 'MEDIUM';
   confidenceBadge.textContent = confidenceLabel;
@@ -106,6 +110,11 @@ function renderFlag(flag: TabFlag) {
 
   if (flag.confidence < CONFIDENCE_THRESHOLD_HIGH) {
     confidenceBadge.title = 'MEDIUM confidence — data may not be exact. Always verify at FEC.';
+    confidenceDisclaimerEl.textContent = 'MEDIUM confidence — verify before acting.';
+    confidenceDisclaimerEl.hidden = false;
+  } else {
+    confidenceBadge.title = '';
+    confidenceDisclaimerEl.hidden = true;
   }
 
   showOnly(stateFlagged);

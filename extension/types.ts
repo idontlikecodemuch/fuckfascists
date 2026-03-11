@@ -51,13 +51,14 @@ export interface TabFlag {
   canonicalName: string;
   /** Pre-computed getDisplayFigure() result — publicFigureName if set, otherwise ceoName. */
   displayFigure: string;
-  recentCycle: number;
+  donationDataAvailable: boolean;
+  recentCycle: number | null;
   recentRepubs: number;
   recentDems: number;
   totalRepubs: number;
   totalDems: number;
   activeCycles: number[];
-  fecCommitteeUrl: string;
+  fecCommitteeUrl: string | null;
   confidence: number; // 0–1 score; compare against CONFIDENCE_THRESHOLD_HIGH/MEDIUM for display
   avoided: boolean;
 }

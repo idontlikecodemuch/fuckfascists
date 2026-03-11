@@ -14,7 +14,7 @@
  */
 
 import type { Entity } from '../../core/models';
-import { getDisplayFigure } from '../../core/models';
+import { fecFilingUrl, getDisplayFigure } from '../../core/models';
 import type { ExtensionMsg, TabFlag, WeeklyStats } from '../types';
 import { ChromeStorageAdapter } from '../storage/ChromeStorageAdapter';
 import { findByDomain } from './domainMatch';
@@ -166,7 +166,10 @@ async function handleCheckDomain(hostname: string, tabId: number): Promise<void>
 
   let donationSummary = null;
 
-  const committeeId = entity.fecCommitteeId ?? null;
+  const committeeId =
+    entity.fecCommitteeId && entity.fecCommitteeId !== ''
+      ? entity.fecCommitteeId
+      : null;
 
   const cached = await cacheDeps.getCache(cacheKey);
   if (cached && Date.now() - cached.fetchedAt < CACHE_TTL_MS) {
@@ -192,18 +195,19 @@ async function handleCheckDomain(hostname: string, tabId: number): Promise<void>
 
   const flag: TabFlag = {
     hostname,
-    entityId:       entity.id,
-    canonicalName:  entity.canonicalName,
-    displayFigure:  getDisplayFigure(entity),
-    recentCycle:    donationSummary.recentCycle,
-    recentRepubs:   donationSummary.recentRepubs,
-    recentDems:     donationSummary.recentDems,
-    totalRepubs:    donationSummary.totalRepubs,
-    totalDems:      donationSummary.totalDems,
-    activeCycles:   donationSummary.activeCycles,
-    fecCommitteeUrl: donationSummary.fecCommitteeUrl,
-    confidence:     entityConfidence(undefined),
-    avoided:        false,
+    entityId:              entity.id,
+    canonicalName:         entity.canonicalName,
+    displayFigure:         getDisplayFigure(entity),
+    donationDataAvailable: donationSummary !== null,
+    recentCycle:           donationSummary?.recentCycle ?? null,
+    recentRepubs:          donationSummary?.recentRepubs ?? 0,
+    recentDems:            donationSummary?.recentDems ?? 0,
+    totalRepubs:           donationSummary?.totalRepubs ?? 0,
+    totalDems:             donationSummary?.totalDems ?? 0,
+    activeCycles:          donationSummary?.activeCycles ?? [],
+    fecCommitteeUrl:       donationSummary?.fecCommitteeUrl ?? (committeeId ? fecFilingUrl(committeeId) : null),
+    confidence:            entityConfidence(undefined),
+    avoided:               false,
   };
 
   setTabFlag(tabId, flag);
