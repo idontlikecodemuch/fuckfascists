@@ -1,1 +1,23 @@
+# Environment
 .env
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Expo
+.expo/
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Data pipeline — backup and diagnostic output files
+assets/data/entities_old.json
+assets/data/entities_old2.json
+assets/data/entities_old3.json
+scripts/output/
+scripts/near-miss-entities.txt
+scripts/unverified-entities.txt
