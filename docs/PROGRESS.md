@@ -13,7 +13,7 @@ This document is updated continuously. New instances should read this first — 
 ## Last 5 Sessions (most recent first)
 
 ### Session: March 11, 2026
-**Focus:** Schedule B attribution root-cause fix, pipeline performance, UX fix
+**Focus:** Schedule B attribution root-cause fix, pipeline performance, rate-limit rewrite
 
 **Completed:**
 - Diagnosed why partisan donation totals were $0 for all major entities (Walmart, Home Depot, Amazon, etc.):
@@ -24,14 +24,18 @@ This document is updated continuously. New instances should read this first — 
 - Fixed party attribution: added `recipient_committee.party` as fallback when `candidate_party_affiliation` is blank — applied identically in both files
 - Added test for `recipient_committee.party` fallback (24 tests total, all passing)
 - Fixed `looksSuspiciouslyZeroed` bug in `pipeline.ts` — `rawItems.length >= 0` was always true, causing entities with non-empty `raw[]` (e.g. Walmart) to have their bundled summary rejected and fall back to a failing live API call, showing "donation data temporarily unavailable"
-- Reduced `fetch:donations` runtime: removed redundant inter-call delay between details/totals; reduced `FETCH_SCHEDULE_B_DELAY_MS` 2000 → 1000ms
-- Diagnosed persistent 429s: `/schedules/schedule_b/` has a stricter per-minute rate limit than committee endpoints; 13 entities succeed before hitting threshold; 5s retry wait was far too short for a 60s window to clear
-- Added adaptive batch cooldown: every 10 entities, script pauses until 60s has elapsed since batch start (fully resets per-minute window); increased `RETRY_DELAY_MS` 5s → 15s
-- Fixed second 429 source: pre-pass (SEARCH_BY_NAME entities) fires ~11 requests per entity before the main loop starts, eating into the rate budget and causing immediate 429s on the first main-loop entity; added matching cooldown after pre-pass completes
-- Updated CLAUDE.md: Schedule B attribution rules documented, wrong endpoint reference corrected, pipeline timing notes updated
+- Diagnosed persistent 429 cascades: fixed-delay approach (batch cooldowns, pre-pass cooldowns, `RETRY_DELAY_MS`) cannot correctly enforce a count-based rate limit — delays are added AFTER requests, so multiple entities' requests stack in the same 60s window regardless
+- **Complete rewrite of `fetch-donation-data.mjs`** — replaced all ad-hoc delays with a proper sliding-window `RateLimiter` class:
+  - `RateLimiter(maxPerMinute)` tracks request timestamps; `throttle()` called before every request; waits only as long as needed for oldest timestamp to exit 60s window
+  - Two separate limiters: `COMMITTEE_RPM=30` for `/committee/*`, `SCHEDULE_B_RPM=8` for `/schedules/schedule_b/`
+  - `apiFetch(url, limiter)`: rate-limited fetch with exponential backoff on 429 (60s→120s→240s, max 300s, 3 retries max), respects `Retry-After` header
+  - Incremental save every 10 successes — interrupting and restarting is safe
+  - Removed all `FETCH_DELAY_MS`, `FETCH_SCHEDULE_B_DELAY_MS`, `FETCH_BATCH_SIZE`, `FETCH_BATCH_COOLDOWN_MS`, `RETRY_DELAY_MS` — fixed delays removed from both script and `config/constants.ts`
+  - Pre-pass and main loop now both run under the same limiter — no explicit cooldown needed between them
+- Updated CLAUDE.md: rate-limit architecture documented, removed stale batch-cooldown references
 
 **Pending:**
-- Run `npm run fetch:donations -- --force` to repopulate all 161 entities with corrected partisan totals; wait 3 min after last interrupted run before starting (`sleep 180 && npm run fetch:donations -- --force`)
+- Run `npm run fetch:donations -- --force` to repopulate all 161 entities with corrected partisan totals
 
 ---
 

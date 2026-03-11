@@ -10,20 +10,6 @@ export const EXTENSION_FLAG_FREQUENCY: 'session' | 'daily' | 'weekly' = 'session
 // FEC API cache TTL
 export const ENTITY_CACHE_TTL_DAYS = 60;
 
-// Delay between entity fetches in the data pipeline (ms)
-export const FETCH_DELAY_MS = 1_000;
-
-// Additional delay before each Schedule B request (ms)
-// Reduced from 2000 → 1000: H|S|P filter makes SB result sets significantly smaller
-export const FETCH_SCHEDULE_B_DELAY_MS = 1_000;
-
-// Batch cooldown — after every FETCH_BATCH_SIZE fetch attempts, the script pauses until
-// FETCH_BATCH_COOLDOWN_MS has elapsed since the batch started, fully resetting the FEC
-// API's per-minute rate-limit window. /schedules/schedule_b/ has a stricter per-minute
-// limit than the committee endpoints; this keeps all request rates well under the cap.
-export const FETCH_BATCH_SIZE         = 10;
-export const FETCH_BATCH_COOLDOWN_MS  = 60_000;
-
 // Confidence score thresholds (0–1 scale)
 export const CONFIDENCE_THRESHOLD_HIGH = 0.85;
 export const CONFIDENCE_THRESHOLD_MEDIUM = 0.60;

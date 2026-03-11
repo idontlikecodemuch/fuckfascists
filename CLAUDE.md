@@ -250,16 +250,14 @@ bundled `donationSummary` directly when present and fresh, skipping the live FEC
   to correct suspect committee IDs before the main fetch loop.
 - On fetch failure, `lastVerifiedDate` is cleared to `""` so the entity is retried on the next
   plain run without needing `--force`.
-- Expected runtime: ~26 min for a full `--force` run. Calls are fully serialized.
-  Rate-limit protection has two layers:
-  1. **Pre-pass cooldown** — after the SEARCH_BY_NAME refresh (which fires ~11 requests per
-     entity), the script pauses until 60s has elapsed before starting the main loop.
-  2. **Batch cooldown** — every `FETCH_BATCH_SIZE` (10) entities in the main loop, the script
-     pauses until `FETCH_BATCH_COOLDOWN_MS` (60s) has elapsed since the batch started.
-  Both layers target `/schedules/schedule_b/`, which has a stricter per-minute cap than the
-  committee endpoints and was the primary source of 429 cascades.
-- If the script was interrupted, wait ~3 min before restarting to let the FEC rate-limit
-  window fully clear: `sleep 180 && npm run fetch:donations -- --force`
+- Progress is saved every 10 successful fetches — interrupting and restarting a plain run is safe.
+- **Rate limiting** — the script uses a sliding-window `RateLimiter` class (not fixed delays).
+  Two separate limiters: `COMMITTEE_RPM=30` for `/committee/*` endpoints, `SCHEDULE_B_RPM=8`
+  for `/schedules/schedule_b/` (which has a stricter per-minute cap). Each `apiFetch()` call
+  checks the limiter before sending and waits only as long as needed to stay within the cap.
+  On 429: exponential backoff (60 s → 120 s → 240 s, max 300 s), up to 3 retries.
+  Do NOT add `FETCH_DELAY_MS` / `FETCH_BATCH_COOLDOWN_MS` back — fixed time delays cannot
+  correctly enforce a count-based rate limit.
 - Use `--force` when re-running after an attribution or filter fix — entities that "succeeded"
   with wrong data keep a fresh `lastVerifiedDate` and are skipped on plain runs.
 
