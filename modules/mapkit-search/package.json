@@ -1,0 +1,6 @@
+{
+  "name": "mapkit-search",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local Expo module — MKLocalPointsOfInterestRequest bridge for map tap-to-match"
+}

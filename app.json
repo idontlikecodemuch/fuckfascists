@@ -8,6 +8,9 @@
     "plugins": [
       "expo-asset",
       "expo-secure-store"
-    ]
+    ],
+    "ios": {
+      "bundleIdentifier": "com.anonymous.fuckfascists"
+    }
   }
 }

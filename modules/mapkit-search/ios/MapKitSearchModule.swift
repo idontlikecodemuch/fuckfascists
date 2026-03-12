@@ -5,12 +5,7 @@ import MapKit
  * Expo native module — iOS only.
  *
  * Exposes MKLocalPointsOfInterestRequest to JavaScript as `MapKitSearch.searchNearby()`.
- *
- * Integration (after `expo prebuild --platform ios`):
- *   1. Copy this file into the Xcode project target (drag into Xcode or add via
- *      File > Add Files to "AppName").
- *   2. Build with `expo run:ios` or EAS Build.
- *   3. ExpoModulesCore auto-discovers modules that conform to the Module protocol.
+ * Registered via expo-modules-autolinking using modules/mapkit-search/expo-module.config.json.
  *
  * This module does NOT instantiate CLLocationManager and does NOT require location
  * permission. The coordinate is derived from a MapView tap event in JavaScript —
