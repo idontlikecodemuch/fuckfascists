@@ -12,6 +12,22 @@ This document is updated continuously. New instances should read this first — 
 
 ## Last 5 Sessions (most recent first)
 
+### Session: March 12, 2026 (follow-up)
+**Focus:** Extension — remove FEC API key, bundled donationSummary as primary data path
+
+**Completed:**
+- Removed `fec_api_key` read from `chrome.storage.local` in `init()` — no options UI existed; nothing else to delete
+- Replaced nullable `FECClient | null` with always-on anonymous client (`apiKey: ''` — safely avoids `process.env` access in browser context, no `api_key` param appended to requests)
+- Added `isBundledDataFresh(entity)` helper — checks `entity.lastVerifiedDate` against `ENTITY_CACHE_TTL_DAYS`
+- Rewrote `handleCheckDomain()` data-fetch priority: (1) fresh local extension cache, (2) fresh bundled `entity.donationSummary` — primary, no API call, (3) anonymous live FEC call for absent/stale bundled data, (4) stale bundled data as live-call fallback, (5) null
+- Added `noBundledData: boolean` to `TabFlag` to distinguish structural data gap from transient failure
+- `popup.ts` sets message text based on `noBundledData`: "No bundled donation data." vs "Donation data temporarily unavailable."
+- `tsc --noEmit` clean; test fixture updated for new `TabFlag` field
+- Committed `e6976fb`, pushed
+
+**Architecture note:**
+`service-worker.ts` is 393 lines (over the 250-line limit). Pre-existing violation; flagged for a future refactor session — extract `handleCheckDomain` + `isBundledDataFresh` into `domainCheck.ts`.
+
 ### Session: March 12, 2026
 **Focus:** iOS prebuild repair — mapkit-search local module wiring via `file:` reference
 

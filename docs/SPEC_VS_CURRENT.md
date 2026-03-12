@@ -39,6 +39,8 @@ This document tracks where the current implementation aligns with, deviates from
 | Cross-device sync | QR code scan to bridge extension → app | Deferred to V2 | Complexity too high for MVP; extension and app remain separate |
 | Extension trigger frequency | Session-based or daily reset | Session-based (configurable) | Most conservative privacy-respecting default |
 | iOS native module packaging | Manual Xcode target addition | Expo Modules API package at `modules/mapkit-search/`, registered via `"mapkit-search": "file:./modules/mapkit-search"` in dependencies | CocoaPods autolinking discovers it automatically on prebuild — no Podfile edits, no `expo.autolinking.searchPaths` override required |
+| Extension FEC API key | User-configured key stored in chrome.storage.local | No API key — anonymous mode only | Per-IP FEC rate limits are sufficient for individual users; shared key pooling is a scaling problem; bundled data makes live calls rare |
+| Extension donation data source | Live FEC API call on every domain match | Bundled `entity.donationSummary` first; live call only when absent or stale | Bundled data (populated by `fetch:donations` pipeline) covers all 161 verified entities; live calls are rare fallbacks; popup distinguishes "No bundled donation data" from transient unavailability |
 
 ---
 

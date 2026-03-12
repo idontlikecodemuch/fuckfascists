@@ -314,6 +314,19 @@ The weekly report card is a synchronized global event. Every user receives it at
 - **No browsing history stored** — domain detection is in-memory only, cleared on session end
 - Extension has its own simple weekly summary in the popup — does not feed into the mobile report card in V1
 
+### Extension — FEC API key
+- **No API key is used or stored** — the extension always calls the FEC API in anonymous mode (no `api_key` param). FEC anonymous rate limits are per-IP and sufficient for individual users. A shared key would pool all users against one limit, which is a scaling problem.
+- **No options page exists** for API key configuration — do not create one.
+- `FECClient` is constructed with `{ apiKey: '' }` to prevent `process.env` access in the browser context while keeping the client in anonymous mode.
+
+### Extension — donation data priority order
+When a flagged domain is detected, `handleCheckDomain` resolves donation data in this order:
+1. **Fresh local extension cache** (`ext:{entityId}` in `chrome.storage.local`) — populated by previous live calls
+2. **Bundled `entity.donationSummary`** — primary path; used when present and `isBundledDataFresh()` returns true (within `ENTITY_CACHE_TTL_DAYS` of `entity.lastVerifiedDate`). No API call made.
+3. **Anonymous live FEC call** — fallback when bundled data is absent or stale; result written to local cache
+4. **Stale bundled data** — used when the live call fails and bundled data exists (even if expired)
+5. **No data** — `noBundledData: true` on `TabFlag`; popup shows "No bundled donation data." (not "temporarily unavailable")
+
 ---
 
 ## Canonical Entity List
@@ -581,6 +594,9 @@ After writing any file, scan it once for deprecated APIs, `.then()` chains, `var
 ---
 
 ## Known Limitations / Technical Debt
+
+### service-worker.ts over 250 lines (Priority: V1 cleanup)
+`extension/background/service-worker.ts` is 393 lines — over the 250-line file limit. Pre-existing violation; was 361 lines before the API key removal session. Refactor plan: extract `handleCheckDomain`, `isBundledDataFresh`, and related data-fetch logic into `extension/background/domainCheck.ts`. The message router, tab lifecycle listeners, and alarm handler stay in `service-worker.ts`.
 
 `CYCLES_SINCE_2016` in `scripts/fetch-donation-data.mjs` and `CYCLES_SINCE_2016`
 in `core/api/FECClient.ts` must be updated manually when a new election cycle begins.
