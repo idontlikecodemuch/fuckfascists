@@ -1,14 +1,5 @@
 import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
-import {
-  View,
-  TextInput,
-  Pressable,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  Linking,
-  Platform,
-} from 'react-native';
+import { View, StyleSheet, SafeAreaView, Linking, Platform } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, type Region } from 'react-native-maps';
 import type { Entity } from '../../core/models';
 import type { MatchingDeps } from '../../core/matching';
@@ -16,8 +7,12 @@ import type { StorageAdapter } from '../../core/data';
 import { makeCacheDeps, recordEntityAvoid } from '../../core/data';
 import { useLocation } from './hooks/useLocation';
 import { useEntityScan } from './hooks/useEntityScan';
+import { useTapSearch } from './hooks/useTapSearch';
 import { BusinessCard } from './components/BusinessCard';
 import { FlagMarker } from './components/MapMarker';
+import { MapSearchBar } from './components/MapSearchBar';
+import { UnmatchedBanner } from './components/UnmatchedBanner';
+import { TapLoadingMarker } from './components/TapLoadingMarker';
 import type { MapPin, ScanResult } from './types';
 import { MapControls } from './components/MapControls';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -39,9 +34,11 @@ const DEFAULT_REGION: Region = {
 /**
  * Map screen — the core vertical slice of the MVP.
  *
- * Flow: user centers map → searches a business name → matching pipeline
- * runs → flagged entities appear as pixel art pins → user taps AVOIDED
- * to record an avoidance event (date-only, no location stored).
+ * Two match paths:
+ *   Manual search — user types a business name and taps search.
+ *   Tap-to-match  — user taps the map:
+ *     iOS:     onPress → MKLocalPointsOfInterestRequest (via MapKitSearch native module)
+ *     Android: onPoiClick → e.nativeEvent.name passed directly to matchEntity
  *
  * Session rule: GPS coordinates live only in component state.
  * They are never written to disk, transmitted, or passed to core/data.
@@ -60,14 +57,16 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
   );
 
   const { status, result, scan, reset } = useEntityScan(deps, location.areaHash ?? '');
+  const { tapPins, tapLoadingCoord, handleMapPress, handlePoiClick, resetTapPins, markTapPinAvoided } =
+    useTapSearch(deps, location.areaHash ?? '');
 
-  // Card effect — show BusinessCard whenever a match result arrives, regardless of GPS.
+  // Card effect — show BusinessCard whenever a match result arrives.
   useEffect(() => {
     if (status !== 'matched' || !result) return;
     setActiveResult(result);
   }, [status, result]);
 
-  // Pin effect — place a map marker only when coords are also available.
+  // Pin effect — place a map marker when coords are also available.
   useEffect(() => {
     if (status !== 'matched' || !result || !location.coords) return;
     const id = result.entityId ?? result.fecCommitteeId;
@@ -88,27 +87,23 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
     // DIAGNOSTIC — remove before ship
     console.log('[MapScreen] handleSearch fired — searchText:', JSON.stringify(searchText), 'entities:', entities.length, 'status:', status);
     if (!searchText.trim()) return;
-    // Clear previous card, pins, and scan state before each new search.
     setActiveResult(null);
     setPins([]);
+    resetTapPins();
     reset();
     await scan(searchText);
-  }, [searchText, scan, reset, entities.length, status]);
+  }, [searchText, scan, reset, resetTapPins, entities.length, status]);
 
   const handleAvoid = useCallback(async () => {
-    if (!activeResult) return;
-    // V2: allow fuzzy-matched avoidance with committee ID as fallback key
-    if (!activeResult.entity) return;
+    if (!activeResult?.entity) return;
     const entityId = activeResult.entityId ?? activeResult.fecCommitteeId;
     await recordEntityAvoid(adapter, entityId);
-
-    setPins((prev) =>
-      prev.map((p) => (p.id === entityId ? { ...p, avoided: true } : p))
-    );
+    setPins((prev) => prev.map((p) => (p.id === entityId ? { ...p, avoided: true } : p)));
+    markTapPinAvoided(entityId);
     setActiveResult(null);
     reset();
     setSearchText('');
-  }, [activeResult, adapter, reset]);
+  }, [activeResult, adapter, reset, markTapPinAvoided]);
 
   const handleDismiss = useCallback(() => {
     setActiveResult(null);
@@ -116,15 +111,13 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
   }, [reset]);
 
   const handleOpenSearch = useCallback(() => {
-    const q = encodeURIComponent(searchText || '');
-    Linking.openURL(`https://www.fec.gov/data/committees/?q=${q}`);
+    Linking.openURL(`https://www.fec.gov/data/committees/?q=${encodeURIComponent(searchText)}`);
     reset();
   }, [searchText, reset]);
 
   const mapRef = useRef<MapView>(null);
   const [currentRegion, setCurrentRegion] = useState<Region>(DEFAULT_REGION);
 
-  // Animate to user's location whenever it is (re-)acquired.
   useEffect(() => {
     if (!location.coords) return;
     const next: Region = { ...location.coords, latitudeDelta: 0.02, longitudeDelta: 0.02 };
@@ -144,6 +137,11 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
     mapRef.current?.animateToRegion(next, 200);
   }, [currentRegion]);
 
+  const allPins = useMemo(() => {
+    const existingIds = new Set(pins.map((p) => p.id));
+    return [...pins, ...tapPins.filter((p) => !existingIds.has(p.id))];
+  }, [pins, tapPins]);
+
   return (
     <SafeAreaView style={styles.container}>
       <MapView
@@ -152,11 +150,15 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
         provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : undefined}
         initialRegion={DEFAULT_REGION}
         onRegionChangeComplete={setCurrentRegion}
+        // iOS: tap anywhere → MKLocalPointsOfInterestRequest within 50m
+        onPress={Platform.OS === 'ios' ? handleMapPress : undefined}
+        // Android: tap a labeled POI → e.nativeEvent.name passed to matchEntity
+        onPoiClick={handlePoiClick}
         showsUserLocation
         showsMyLocationButton={false}
         accessibilityLabel="Map showing nearby flagged businesses"
       >
-        {pins.map((pin) => (
+        {allPins.map((pin) => (
           <FlagMarker
             key={pin.id}
             coordinate={pin.coords}
@@ -166,37 +168,17 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
             onPress={() => setActiveResult(pin.result)}
           />
         ))}
+        {tapLoadingCoord && <TapLoadingMarker coordinate={tapLoadingCoord} />}
       </MapView>
 
-      {/* ── Search bar ── */}
-      <View style={[styles.searchContainer, { top: insets.top + 16 }]}>
-        <TextInput
-          style={styles.searchInput}
-          value={searchText}
-          onChangeText={setSearchText}
-          onSubmitEditing={handleSearch}
-          placeholder="Search a business name..."
-          placeholderTextColor="#888"
-          returnKeyType="search"
-          accessibilityLabel="Search for a business"
-          accessibilityHint="Type a business name and press search to check its political donations"
-          allowFontScaling
-        />
-        <Pressable
-          onPress={handleSearch}
-          style={[styles.searchButton, status === 'scanning' && styles.searchButtonBusy]}
-          accessibilityRole="button"
-          accessibilityLabel={status === 'scanning' ? 'Scanning…' : 'Search'}
-          disabled={status === 'scanning'}
-          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-        >
-          <Text style={styles.searchButtonText} allowFontScaling>
-            {status === 'scanning' ? '…' : '\u2315'}
-          </Text>
-        </Pressable>
-      </View>
+      <MapSearchBar
+        value={searchText}
+        onChangeText={setSearchText}
+        onSubmit={handleSearch}
+        isScanning={status === 'scanning'}
+        topOffset={insets.top + 16}
+      />
 
-      {/* ── Map controls (zoom in, zoom out, location) ── */}
       <MapControls
         onZoomIn={handleZoomIn}
         onZoomOut={handleZoomOut}
@@ -204,7 +186,6 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
         locationLoading={location.loading}
       />
 
-      {/* ── Business card ── */}
       {activeResult && (
         <View style={styles.cardContainer}>
           <BusinessCard
@@ -216,43 +197,15 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
         </View>
       )}
 
-      {/* ── Unmatched notice ── */}
       {status === 'unmatched' && (
-        <View style={styles.banner} accessibilityRole="alert">
-          <Text style={styles.bannerText} allowFontScaling>
-            "{searchText}" — not confidently matched.{' '}
-          </Text>
-          <Pressable
-            onPress={handleOpenSearch}
-            accessibilityRole="link"
-            accessibilityLabel="Search FEC.gov directly"
-          >
-            <Text style={styles.bannerLink} allowFontScaling>
-              Search FEC.gov ↗
-            </Text>
-          </Pressable>
-        </View>
+        <UnmatchedBanner searchText={searchText} onOpenSearch={handleOpenSearch} />
       )}
     </SafeAreaView>
   );
 }
 
-// ── Styles ────────────────────────────────────────────────────────────────────
-
-const BLACK = '#1A1A1A';
-const WHITE = '#F5F5F0';
-const MONO  = 'monospace' as const;
-
 const styles = StyleSheet.create({
-  container:          { flex: 1, backgroundColor: BLACK },
-  map:                { flex: 1 },
-  searchContainer:    { position: 'absolute', top: 16, left: 16, right: 16, flexDirection: 'row' },
-  searchInput:        { flex: 1, backgroundColor: WHITE, borderColor: BLACK, borderWidth: 3, paddingHorizontal: 12, height: 44, fontFamily: MONO, fontSize: 14, color: BLACK },
-  searchButton:       { width: 44, height: 44, backgroundColor: BLACK, alignItems: 'center', justifyContent: 'center', borderWidth: 3, borderColor: WHITE },
-  searchButtonBusy:   { backgroundColor: '#555' },
-  searchButtonText:   { color: WHITE, fontSize: 20 },
-  cardContainer:      { position: 'absolute', bottom: 0, left: 0, right: 0 },
-  banner:             { position: 'absolute', bottom: 80, left: 16, right: 16, backgroundColor: WHITE, borderWidth: 3, borderColor: '#CC7A00', padding: 12, flexDirection: 'row', flexWrap: 'wrap' },
-  bannerText:         { fontFamily: MONO, fontSize: 12, color: BLACK },
-  bannerLink:         { fontFamily: MONO, fontSize: 12, color: '#0066CC', textDecorationLine: 'underline' },
+  container:    { flex: 1, backgroundColor: '#1A1A1A' },
+  map:          { flex: 1 },
+  cardContainer: { position: 'absolute', bottom: 0, left: 0, right: 0 },
 });

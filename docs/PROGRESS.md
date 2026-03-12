@@ -12,6 +12,46 @@ This document is updated continuously. New instances should read this first — 
 
 ## Last 5 Sessions (most recent first)
 
+### Session: March 11, 2026 (follow-up 2)
+**Focus:** Map POI tap — coordinate-parameterized nearby search
+
+**Completed:**
+- Introduced Expo Modules API native module pattern (first native module in repo)
+- `ios/MapKitSearchModule.swift` — Swift Expo module using `MKLocalPointsOfInterestRequest` (NOT `MKLocalSearch.Request`). Requires `expo prebuild --platform ios` + adding to Xcode target to activate. Module gracefully absent = iOS tap returns no results silently.
+- `features/Map/nativeModules/MapKitSearch.ts` — TS wrapper; returns `[]` when module not linked (Expo Go, pre-prebuild). Uses `requireNativeModule` from expo-modules-core (transitive dep).
+- `features/Map/hooks/useTapSearch.ts` — handles both platform paths:
+  - iOS: `handleMapPress` → `MapKitSearch.searchNearby(lat, lng, 50m)` → `matchEntity` for each name
+  - Android: `handlePoiClick` → `e.nativeEvent.name` (NOT `e.name`) → `matchEntity` direct
+  - In-memory cell cache: 10min TTL, ~111m grid key, console.log on cache hit
+  - `markTapPinAvoided` exposed so MapScreen can keep avoid state consistent across both pin arrays
+- `config/constants.ts` — added `POI_SEARCH_RADIUS_METERS = 50` and `TAP_CACHE_TTL_MS = 10min`
+- MapScreen refactored (was 259 lines, over limit): extracted `MapSearchBar`, `UnmatchedBanner`
+- `features/Map/components/TapLoadingMarker.tsx` — pulsing amber dot at tap coordinate; respects system reduced-motion setting via `AccessibilityInfo.isReduceMotionEnabled()`
+- `MapScreen.tsx` wired: `onPress` (iOS only), `onPoiClick` (Android), `allPins` merges search + tap pins, `resetTapPins` called on new search
+- `tsc --noEmit` clean; 261 tests passing
+
+**Pending (iOS):**
+- Run `expo prebuild --platform ios` to generate `/ios` directory
+- Add `ios/MapKitSearchModule.swift` to the Xcode project target
+- Build and test acceptance criteria on physical device (esp. criteria 1–5)
+
+---
+
+### Session: March 11, 2026 (follow-up)
+**Focus:** entities.json review and commit
+
+**Completed:**
+- Verified --force fetch run complete: 153 entities with R donations, 155 with D donations
+- Spot-checked Walmart ($3.65M R / $3.1M D), Amazon ($2.76M R / $2.79M D), and others — all correct
+- Removed stale `donationSummary` from perdue-farms (fecCommitteeId: null — false-positive match to PERDUE FOR SENATE candidate committee from a prior pipeline run)
+- Committed entities.json (aabe30d)
+- entities.json now clean and ready for app/extension testing
+
+**Pending:**
+- sherwin-williams, baker-hughes, chick-fil-a — cleared lastVerifiedDate; run plain `fetch:donations` to retry
+
+---
+
 ### Session: March 11, 2026
 **Focus:** Schedule B attribution root-cause fix, pipeline performance, rate-limit rewrite
 
@@ -109,8 +149,11 @@ This document is updated continuously. New instances should read this first — 
 | Verified PAC (pipeline) | 161 |
 | Confirmed no PAC (manual) | ~274 |
 | Unverified | ~14 |
-| Last fetch: --force run in progress | 161 entities, corrected attribution |
-| PAC review flagged (no activity) | 4–6 |
+| Last fetch: --force run complete (March 11, 2026) | 161 entities, corrected attribution ✅ |
+| Entities with R donations > 0 | 153 |
+| Entities with D donations > 0 | 155 |
+| Retry pending (cleared lastVerifiedDate) | 3 (sherwin-williams, baker-hughes, chick-fil-a) |
+| Data integrity fix | perdue-farms stale donationSummary removed (was false-positive match to PERDUE FOR SENATE) |
 
 ---
 
@@ -124,15 +167,16 @@ This document is updated continuously. New instances should read this first — 
 - Extension popup now mirrors app business-card data states more closely ✅
 - Rate limiting with retry logic ✅
 - Freshness cache with auto-retry on failure ✅
+- entities.json clean and ready for testing — 161 entities with verified partisan totals, spot-checked ✅
 
 ## What's Not Working / Not Yet Built
 
 | Item | Status | Priority |
 |---|---|---|
 | Donation amounts showing in BusinessCard | Verified working (Walmart: $3.65M R / $3.1M D) | ✅ Resolved |
-| Map POI tap → entity matching | Not built | 🔴 V1 needed |
+| Map POI tap → entity matching | Built — Android ready; iOS needs expo prebuild + Xcode integration | 🟡 iOS pending |
 | Physical device geolocation test | Not done | 🟡 V1 needed |
-| Batch cooldown for --force runs | Not sent to CC yet | 🟡 Nice to have |
+| 3 entities pending retry (sherwin-williams, baker-hughes, chick-fil-a) | Run plain fetch:donations | 🟡 Nice to have |
 | people.json individual donor data | Not started | 🟠 V1.5 |
 | Report card sharing / social export | Not built | 🟠 V2 |
 | ENTITY_LIST_UPDATE_URL | Placeholder [org] | 🟠 Pre-launch |
@@ -141,10 +185,9 @@ This document is updated continuously. New instances should read this first — 
 
 ## Immediate Next Steps (in order)
 
-1. **Commit entities.json** — once the running --force fetch completes: `git add assets/data/entities.json && git commit -m "data: repopulate all entities with corrected partisan totals"`
-2. **Map POI tap** — architect decision needed first: full pipeline match vs. curated-only for V1, then greenfield build
-3. **Physical device geolocation** — test on hardware, not simulator
-4. **UX/UI + Content pass** — new agent instance, full analysis, 8-bit design system, user journey, copy rewrite
+1. **iOS POI tap activation** — run `expo prebuild --platform ios`, add `ios/MapKitSearchModule.swift` to Xcode target, build + test acceptance criteria on device
+2. **Physical device geolocation** — test on hardware, not simulator
+3. **UX/UI + Content pass** — new agent instance, full analysis, 8-bit design system, user journey, copy rewrite
 
 ---
 
@@ -152,7 +195,7 @@ This document is updated continuously. New instances should read this first — 
 
 | Decision | Context | Status |
 |---|---|---|
-| Map POI tap scope | Full FEC pipeline vs. curated list only for V1 | ❓ Pending |
+| Map POI tap scope | Full pipeline match used (alias first, FEC fuzzy fallback) | ✅ Resolved — full pipeline |
 | Extension + report card unification | QR code bridge or permanently separate | ❓ Deferred V2 |
 | App Store name | "F*ck Fascists" will be rejected — need clean submission name | ❓ Not resolved |
 | Uber entity | No PAC found, name-based match failing | ❓ Needs manual research |

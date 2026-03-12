@@ -45,7 +45,7 @@ This document tracks where the current implementation aligns with, deviates from
 
 | Feature | Spec | Status |
 |---|---|---|
-| Map POI tap → entity matching | Tap a business on the map, get instant donation data | Greenfield — V1 priority |
+| Map POI tap → entity matching | Tap a business on the map, get instant donation data | ✅ Built — Android ready (onPoiClick); iOS ready pending expo prebuild + Xcode integration (MapKitSearchModule.swift) |
 | Report card sharing | Shareable card image, social-ready | Not yet implemented |
 | Leaderboard / high scorers | Weekly top avoiders visible to community | Deferred — V2 |
 | People.json individual donor data | Executive/founder donation lookup (Musk, Bezos, Zuckerberg) | Deferred — V1.5 |

@@ -26,6 +26,18 @@ export const DROP_SCHEDULE_URL = 'https://raw.githubusercontent.com/[org]/fuckfa
 // Info / FAQ / transparency content — editable in the data repo without an app release
 export const INFO_CONTENT_URL = 'https://raw.githubusercontent.com/[org]/fuckfascists-data/main/info.json';
 
+// Map POI tap search
+// Radius passed to MKLocalPointsOfInterestRequest on iOS.
+// Conservative by design — covers finger-tap imprecision without pulling in
+// businesses across the street. Widen after real-world testing if match rate is low.
+export const POI_SEARCH_RADIUS_METERS = 50;
+// How long a tap cell's POI name list is cached in-memory before re-querying.
+export const TAP_CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes
+// Leading-edge debounce for iOS onPress tap search. First tap fires immediately;
+// subsequent taps within this window are dropped. Prevents rapid taps on different
+// map areas from stacking MKLocalPointsOfInterestRequest calls.
+export const TAP_DEBOUNCE_MS = 500;
+
 // Controls whether the public figure / CEO name is shown in the UI.
 // true = show, false = hide. Compile-time constant — change and rebuild to toggle.
 // SHOW_FIGURE_NAME_IN_CARD: off by default — business card is an informational FEC data screen.

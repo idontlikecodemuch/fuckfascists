@@ -120,6 +120,8 @@ API keys and credentials must **only ever be read from environment variables** (
 ├── scripts/
 │   ├── fetch-donation-data.mjs      ← pre-fetches FEC donation data into entities.json
 │   └── verify-entities.mjs          ← verifies fecCommitteeId for each entity via FEC API
+├── ios/
+│   └── MapKitSearchModule.swift     ← Expo native module (iOS only); requires expo prebuild to activate
 └── assets/
     └── pixel/                       ← all pixel art assets by type
 ```
@@ -493,6 +495,7 @@ After writing any file, scan it once for deprecated APIs, `.then()` chains, `var
 - **`expo-sqlite`** — use the current `openDatabaseAsync()` / `SQLiteDatabase` API (SDK 52 switched to an async-first API). Do not use the old synchronous `openDatabase()` from SDK ≤ 50.
 - **`expo-notifications`** — `scheduleNotificationAsync()` with typed trigger objects is current. Use `DateTriggerInput` etc. from the types; do not use the old string-based trigger format.
 - **`expo-secure-store`** — `setItemAsync()` / `getItemAsync()` / `deleteItemAsync()` are current.
+- **Native modules** — one native module exists: `MapKitSearchModule` (iOS only). Pattern: Expo Modules API (`ExpoModulesCore.Module` protocol). TS wrapper at `features/Map/nativeModules/MapKitSearch.ts` uses `requireNativeModule('MapKitSearch')` from `expo-modules-core` (transitive dep). Swift source at `ios/MapKitSearchModule.swift`. The module is active only after `expo prebuild --platform ios` and a native build; the TS wrapper returns `[]` silently when not linked. Do not use the old `NativeModules` bridge — project has `newArchEnabled: true`.
 
 ---
 

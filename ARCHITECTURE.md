@@ -335,25 +335,40 @@ features/Foo/
 
 ### Map feature (vertical slice)
 
-The Map feature is the primary user flow:
+The Map feature has two match paths that converge at `matchEntity`:
 
+**Manual search** — user types a name and taps the search button:
 ```
-useLocation()           → areaHash (cache-safe), coords (display-only, never stored)
-    │
 useEntityScan(deps, areaHash)
-    │
     ├─ scan(businessName) → matchEntity() → ScanResult
-    │
     └─ state: idle | scanning | matched | unmatched | error
                                     │
-                               BusinessCard
-                                    │
-                               AvoidButton
+                               BusinessCard + AvoidButton
                                     │
                           recordEntityAvoid(adapter, entityId)
                           └─ writes EntityAvoidEvent { entityId, date, count:1 }
                              NO location, NO time-of-day
 ```
+
+**Tap-to-match** — user taps the map directly:
+```
+iOS  → MapView.onPress   → useTapSearch.handleMapPress(e.nativeEvent.coordinate)
+           │                   ├─ leading-edge debounce (TAP_DEBOUNCE_MS = 500ms)
+           │                   ├─ in-memory cell cache (TAP_CACHE_TTL_MS = 10min, ~111m grid)
+           │                   └─ MapKitSearch.searchNearby(lat, lng, 50m)
+           │                          └─ MKLocalPointsOfInterestRequest (native, no GPS, no key)
+           │                               → string[] of POI names
+           │
+Android → MapView.onPoiClick → useTapSearch.handlePoiClick(e.nativeEvent)
+           │                   └─ e.nativeEvent.name (NOT e.name — e returns undefined)
+           │
+           └─ matchEntity(name, deps, areaHash) for each name → FlagMarker at tap coordinate
+```
+
+**Native module:** `MapKitSearchModule` (iOS only) — Expo Modules API (`ExpoModulesCore.Module`).
+Swift source: `ios/MapKitSearchModule.swift`. Active after `expo prebuild` + native build.
+TS wrapper (`features/Map/nativeModules/MapKitSearch.ts`) returns `[]` silently when not linked.
+Do not use `MKLocalSearch.Request` — it throws `MKErrorDomain error 4` without a `naturalLanguageQuery`.
 
 `App.tsx` opens `SqliteAdapter`, loads bundled entities immediately, attempts a
 CDN refresh in the background, and constructs a single `FECClient` for the app
@@ -611,6 +626,9 @@ These items are **incomplete or placeholder** in the current codebase:
 - [ ] **GitHub Action for drop schedule** — runs every Monday, generates a random
       drop time within `REPORT_CARD_WINDOW_*` constants, writes `drop-schedule.json`.
 - [ ] **Expo EAS build config** — `eas.json` for `.ipa` and `.apk` production builds.
+- [ ] **iOS native module activation** — run `expo prebuild --platform ios`, add
+      `ios/MapKitSearchModule.swift` to the Xcode project target, then build. Until
+      this is done, iOS tap-to-search silently returns no results (no crash, no error).
 - [ ] **Add pixel art assets** to `assets/pixel/` — logo, CEO avatars, badges,
       map markers, report card frame, animated feedback sprites.
 - [ ] **Extension options page** (optional) — for users to enter/change their
