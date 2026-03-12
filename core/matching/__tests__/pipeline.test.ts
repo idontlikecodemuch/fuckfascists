@@ -262,11 +262,11 @@ describe('fuzzy match', () => {
   });
 });
 
-// ─── matchScore override ──────────────────────────────────────────────────────
+// ─── Alias match confidence ───────────────────────────────────────────────────
 
-describe('matchScore override', () => {
-  it('returns HIGH confidence when matchScore is 1.0 without calling Jaro-Winkler', async () => {
-    // walmartEntity fixture has matchScore: 1.0
+describe('alias match confidence', () => {
+  it('returns HIGH confidence (1.0) on alias hit without calling Jaro-Winkler', async () => {
+    // Alias match short-circuits fuzzy scoring — fetchOrgs must not be called.
     const deps = makeDeps();
 
     const result = await matchEntity('Walmart', deps);
