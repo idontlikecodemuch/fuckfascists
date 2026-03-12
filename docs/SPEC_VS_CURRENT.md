@@ -38,6 +38,7 @@ This document tracks where the current implementation aligns with, deviates from
 | PAC history tracking | Not in original spec | `fecCommitteeRecords[]` for dissolved/active PAC history | Necessary for entities with dissolved PACs that were renamed or replaced |
 | Cross-device sync | QR code scan to bridge extension → app | Deferred to V2 | Complexity too high for MVP; extension and app remain separate |
 | Extension trigger frequency | Session-based or daily reset | Session-based (configurable) | Most conservative privacy-respecting default |
+| iOS native module packaging | Manual Xcode target addition | Expo Modules API package at `modules/mapkit-search/`, registered via `"mapkit-search": "file:./modules/mapkit-search"` in dependencies | CocoaPods autolinking discovers it automatically on prebuild — no Podfile edits, no `expo.autolinking.searchPaths` override required |
 
 ---
 
@@ -45,7 +46,7 @@ This document tracks where the current implementation aligns with, deviates from
 
 | Feature | Spec | Status |
 |---|---|---|
-| Map POI tap → entity matching | Tap a business on the map, get instant donation data | ✅ Built — Android ready (onPoiClick); iOS ready pending expo prebuild + Xcode integration (MapKitSearchModule.swift) |
+| Map POI tap → entity matching | Tap a business on the map, get instant donation data | ✅ Built and linked — Android ready (onPoiClick); iOS module linked via `file:./modules/mapkit-search`, prebuild clean, compiles 0 errors; blocked only on iOS 18.5 simulator runtime install |
 | Report card sharing | Shareable card image, social-ready | Not yet implemented |
 | Leaderboard / high scorers | Weekly top avoiders visible to community | Deferred — V2 |
 | People.json individual donor data | Executive/founder donation lookup (Musk, Bezos, Zuckerberg) | Deferred — V1.5 |

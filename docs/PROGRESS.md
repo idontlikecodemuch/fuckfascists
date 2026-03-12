@@ -6,18 +6,54 @@ This document is updated continuously. New instances should read this first — 
 
 ## Current Sprint: MVP V1 — Core Vertical Slice
 
-**Overall status:** Feature-complete, stabilizing data pipeline, map POI tap pending.
+**Overall status:** Feature-complete. iOS prebuild working. Blocked on iOS simulator runtime for device test.
 
 ---
 
 ## Last 5 Sessions (most recent first)
+
+### Session: March 12, 2026
+**Focus:** iOS prebuild repair — mapkit-search local module wiring via `file:` reference
+
+**Context:** Previous CC instance attempted to register `modules/mapkit-search/` as an Expo autolinking search path. This caused two cascading prebuild failures:
+1. `expo.autolinking.searchPaths: ["./modules"]` replaces (not appends) the default paths → react-native not found → `reactNativePath` undefined → Ruby `Pathname.new(nil)` crash
+2. Adding `"./node_modules"` to fix failure 1 → duplicate ExpoModulesCore pod installation → second crash
+
+The same previous instance also had `"overrides": { "tar": "^7.0.0" }` in package.json (the original root cause it was trying to fix) still committed at HEAD.
+
+**Completed:**
+- Diagnosed full state: committed HEAD had tar override; working copy had autolinking.searchPaths; generated ios/ was from a broken/partial prebuild run
+- Clean-up: `git checkout -- .` reverted all tracked changes; `git clean -fd -e modules/` removed the broken generated ios/ while preserving `modules/mapkit-search/` (the local Expo module package)
+- Fixed `package.json`:
+  - Removed `"overrides": { "tar": "^7.0.0" }` — this was blocking `@expo/cli`
+  - Added `"mapkit-search": "file:./modules/mapkit-search"` to `dependencies` — the correct approach; normal node_modules resolution finds the module without any `searchPaths` override
+  - Updated scripts: `expo start --android` → `expo run:android`, `expo start --ios` → `expo run:ios`
+  - **Did not add `expo.autolinking` section** — hard constraint; this approach does not require it
+- Fixed `app.json`: added `"ios": { "bundleIdentifier": "com.anonymous.fuckfascists" }` — required for `expo prebuild` to succeed
+- `npm install` — picked up the `file:` reference cleanly
+- `expo prebuild --platform ios --clean` — **succeeded end to end** (✅ Cleared ios, ✅ Created native directory, ✅ Finished prebuild, ✅ Installed CocoaPods)
+- Confirmed MapKitSearch pod was auto-linked without any `searchPaths` config:
+  - `MapKitSearchModule.swift` in Pods Sources
+  - `libMapKitSearch.a` static library target created
+  - Resolved path: `../../modules/mapkit-search/ios` (correct)
+- `expo run:ios` — compiled with **0 errors, 0 warnings**; blocked only by environment: Xcode 16.4 ships with iOS 18.5 SDK, only iOS 18.3 simulator runtime is installed → no eligible destinations
+
+**Architecture note — `ios/MapKitSearchModule.swift` (root-level):**
+The Swift source now lives authoritatively at `modules/mapkit-search/ios/MapKitSearchModule.swift`. The root-level `ios/MapKitSearchModule.swift` committed in the prior session was a redundant copy added before the module package structure existed. It is removed in this commit. CocoaPods builds from the podspec path in `modules/`.
+
+**Pending (one environment step):**
+- Install iOS 18.5 simulator runtime: Xcode → Settings → Platforms → download iOS 18.5
+- Then `npx expo run:ios` will build and launch — no further code changes needed
+- Physical device test remains outstanding (separate from simulator unblock)
+
+---
 
 ### Session: March 11, 2026 (follow-up 2)
 **Focus:** Map POI tap — coordinate-parameterized nearby search
 
 **Completed:**
 - Introduced Expo Modules API native module pattern (first native module in repo)
-- `ios/MapKitSearchModule.swift` — Swift Expo module using `MKLocalPointsOfInterestRequest` (NOT `MKLocalSearch.Request`). Requires `expo prebuild --platform ios` + adding to Xcode target to activate. Module gracefully absent = iOS tap returns no results silently.
+- `modules/mapkit-search/ios/MapKitSearchModule.swift` — Swift Expo module using `MKLocalPointsOfInterestRequest` (NOT `MKLocalSearch.Request`). Auto-linked via `file:./modules/mapkit-search` dependency + expo-module.config.json. Module gracefully absent = iOS tap returns no results silently.
 - `features/Map/nativeModules/MapKitSearch.ts` — TS wrapper; returns `[]` when module not linked (Expo Go, pre-prebuild). Uses `requireNativeModule` from expo-modules-core (transitive dep).
 - `features/Map/hooks/useTapSearch.ts` — handles both platform paths:
   - iOS: `handleMapPress` → `MapKitSearch.searchNearby(lat, lng, 50m)` → `matchEntity` for each name
@@ -31,9 +67,9 @@ This document is updated continuously. New instances should read this first — 
 - `tsc --noEmit` clean; 261 tests passing
 
 **Pending (iOS):**
-- Run `expo prebuild --platform ios` to generate `/ios` directory
-- Add `ios/MapKitSearchModule.swift` to the Xcode project target
-- Build and test acceptance criteria on physical device (esp. criteria 1–5)
+- ~~Run `expo prebuild --platform ios` to generate `/ios` directory~~ ✅ Done (March 12 session)
+- ~~Add `ios/MapKitSearchModule.swift` to the Xcode project target~~ ✅ Auto-linked via modules/ package structure
+- Build and test acceptance criteria on device (blocked on iOS 18.5 simulator runtime)
 
 ---
 
@@ -136,8 +172,8 @@ This document is updated continuously. New instances should read this first — 
 
 | Suite | Count | Status |
 |---|---|---|
-| Total passing | 258 | ✅ Clean |
-| Last tsc run | March 10, 2026 | ✅ Clean |
+| Total passing | 261 | ✅ Clean |
+| Last tsc run | March 11, 2026 | ✅ Clean |
 
 ---
 
@@ -168,13 +204,17 @@ This document is updated continuously. New instances should read this first — 
 - Rate limiting with retry logic ✅
 - Freshness cache with auto-retry on failure ✅
 - entities.json clean and ready for testing — 161 entities with verified partisan totals, spot-checked ✅
+- `expo prebuild --platform ios --clean` succeeds ✅ — ios/ generated and committed
+- MapKitSearch auto-linked via `file:./modules/mapkit-search` — no `searchPaths` override needed ✅
+- `expo run:ios` compiles with 0 errors, 0 warnings ✅ (blocked on simulator runtime, not code)
 
 ## What's Not Working / Not Yet Built
 
 | Item | Status | Priority |
 |---|---|---|
 | Donation amounts showing in BusinessCard | Verified working (Walmart: $3.65M R / $3.1M D) | ✅ Resolved |
-| Map POI tap → entity matching | Built — Android ready; iOS needs expo prebuild + Xcode integration | 🟡 iOS pending |
+| Map POI tap → entity matching | Built and linked — Android ready; iOS blocked on iOS 18.5 simulator runtime | 🟡 One env step |
+| iOS simulator runtime | Xcode 16.4 needs iOS 18.5; only 18.3 installed → `expo run:ios` can't find destination | 🟡 Download in Xcode → Platforms |
 | Physical device geolocation test | Not done | 🟡 V1 needed |
 | 3 entities pending retry (sherwin-williams, baker-hughes, chick-fil-a) | Run plain fetch:donations | 🟡 Nice to have |
 | people.json individual donor data | Not started | 🟠 V1.5 |
@@ -185,7 +225,7 @@ This document is updated continuously. New instances should read this first — 
 
 ## Immediate Next Steps (in order)
 
-1. **iOS POI tap activation** — run `expo prebuild --platform ios`, add `ios/MapKitSearchModule.swift` to Xcode target, build + test acceptance criteria on device
+1. **Unblock iOS simulator** — Xcode → Settings → Platforms → download iOS 18.5 simulator runtime. Then `npx expo run:ios` will build and launch. No code changes needed — module is linked.
 2. **Physical device geolocation** — test on hardware, not simulator
 3. **UX/UI + Content pass** — new agent instance, full analysis, 8-bit design system, user journey, copy rewrite
 
