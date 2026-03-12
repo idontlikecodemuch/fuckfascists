@@ -460,7 +460,8 @@ The entire app is styled as a **vintage 8-bit video game**. This is the foundati
 | FEC entity verification run (`verify:entities`) | ✅ Done |
 | Donation data bundled into `entities.json` | ✅ Done |
 | Anonymous FEC API mode (no key required in app) | ✅ Done |
-| App tested on physical device | 🔄 In progress |
+| App built and running on iOS simulator | ✅ Done — `FckFascists.app` installed on iPhone 16 Pro simulator |
+| App tested on physical device | 🔄 Pending |
 | Extension tested in Chrome | ✅ Done |
 
 ---

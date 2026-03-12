@@ -6,7 +6,7 @@ This document is updated continuously. New instances should read this first — 
 
 ## Current Sprint: MVP V1 — Core Vertical Slice
 
-**Overall status:** Feature-complete. iOS prebuild working. Blocked on iOS simulator runtime for device test.
+**Overall status:** Feature-complete. iOS app built and running on simulator. Physical device test next.
 
 ---
 
@@ -41,10 +41,14 @@ The same previous instance also had `"overrides": { "tar": "^7.0.0" }` in packag
 **Architecture note — `ios/MapKitSearchModule.swift` (root-level):**
 The Swift source now lives authoritatively at `modules/mapkit-search/ios/MapKitSearchModule.swift`. The root-level `ios/MapKitSearchModule.swift` committed in the prior session was a redundant copy added before the module package structure existed. It is removed in this commit. CocoaPods builds from the podspec path in `modules/`.
 
-**Pending (one environment step):**
-- Install iOS 18.5 simulator runtime: Xcode → Settings → Platforms → download iOS 18.5
-- Then `npx expo run:ios` will build and launch — no further code changes needed
-- Physical device test remains outstanding (separate from simulator unblock)
+**Build result (confirmed after session):**
+- `npx expo run:ios` completed successfully — `FckFascists.app` built and installed to iPhone 16 Pro simulator (`com.anonymous.fuckfascists`)
+- App displays as "F*ck Fascists" in the simulator app list
+- To launch: `xcrun simctl launch 445D6A63-7999-4272-970C-9E22FED529FA com.anonymous.fuckfascists` + run `npx expo start` for Metro
+
+**Pending:**
+- Physical device test remains outstanding
+- Run `npx expo start` and launch from simulator to do a full interactive smoke test
 
 ---
 
@@ -206,15 +210,14 @@ The Swift source now lives authoritatively at `modules/mapkit-search/ios/MapKitS
 - entities.json clean and ready for testing — 161 entities with verified partisan totals, spot-checked ✅
 - `expo prebuild --platform ios --clean` succeeds ✅ — ios/ generated and committed
 - MapKitSearch auto-linked via `file:./modules/mapkit-search` — no `searchPaths` override needed ✅
-- `expo run:ios` compiles with 0 errors, 0 warnings ✅ (blocked on simulator runtime, not code)
+- `expo run:ios` builds and installs to simulator ✅ — `FckFascists.app` confirmed installed on iPhone 16 Pro
 
 ## What's Not Working / Not Yet Built
 
 | Item | Status | Priority |
 |---|---|---|
 | Donation amounts showing in BusinessCard | Verified working (Walmart: $3.65M R / $3.1M D) | ✅ Resolved |
-| Map POI tap → entity matching | Built and linked — Android ready; iOS blocked on iOS 18.5 simulator runtime | 🟡 One env step |
-| iOS simulator runtime | Xcode 16.4 needs iOS 18.5; only 18.3 installed → `expo run:ios` can't find destination | 🟡 Download in Xcode → Platforms |
+| Map POI tap → entity matching | Built, linked, and running on simulator — iOS tap path pending interactive test | 🟡 Smoke test needed |
 | Physical device geolocation test | Not done | 🟡 V1 needed |
 | 3 entities pending retry (sherwin-williams, baker-hughes, chick-fil-a) | Run plain fetch:donations | 🟡 Nice to have |
 | people.json individual donor data | Not started | 🟠 V1.5 |
@@ -225,7 +228,7 @@ The Swift source now lives authoritatively at `modules/mapkit-search/ios/MapKitS
 
 ## Immediate Next Steps (in order)
 
-1. **Unblock iOS simulator** — Xcode → Settings → Platforms → download iOS 18.5 simulator runtime. Then `npx expo run:ios` will build and launch. No code changes needed — module is linked.
+1. **iOS simulator smoke test** — `npx expo start`, launch from simulator, walk the full vertical slice (map scan → flag → business card → avoid tap → survey → report card). Verify MapKit POI tap fires on iOS.
 2. **Physical device geolocation** — test on hardware, not simulator
 3. **UX/UI + Content pass** — new agent instance, full analysis, 8-bit design system, user journey, copy rewrite
 

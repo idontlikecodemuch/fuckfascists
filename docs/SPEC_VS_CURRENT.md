@@ -46,7 +46,7 @@ This document tracks where the current implementation aligns with, deviates from
 
 | Feature | Spec | Status |
 |---|---|---|
-| Map POI tap → entity matching | Tap a business on the map, get instant donation data | ✅ Built and linked — Android ready (onPoiClick); iOS module linked via `file:./modules/mapkit-search`, prebuild clean, compiles 0 errors; blocked only on iOS 18.5 simulator runtime install |
+| Map POI tap → entity matching | Tap a business on the map, get instant donation data | ✅ Built, linked, and running — Android ready (onPoiClick); iOS module linked via `file:./modules/mapkit-search`; app installed on iPhone 16 Pro simulator; iOS tap path pending interactive smoke test |
 | Report card sharing | Shareable card image, social-ready | Not yet implemented |
 | Leaderboard / high scorers | Weekly top avoiders visible to community | Deferred — V2 |
 | People.json individual donor data | Executive/founder donation lookup (Musk, Bezos, Zuckerberg) | Deferred — V1.5 |
