@@ -34,6 +34,7 @@ function makeFlag(overrides: Partial<TabFlag> = {}): TabFlag {
     canonicalName:   'Amazon',
     displayFigure:   'Jeff Bezos',
     donationDataAvailable: true,
+    noBundledData:   false,
     recentCycle:     2024,
     recentRepubs:    1_200_000,
     recentDems:      0,

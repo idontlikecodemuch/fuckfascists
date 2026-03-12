@@ -52,6 +52,12 @@ export interface TabFlag {
   /** Pre-computed getDisplayFigure() result — publicFigureName if set, otherwise ceoName. */
   displayFigure: string;
   donationDataAvailable: boolean;
+  /**
+   * True when the entity has no bundled donationSummary AND no live data was obtained.
+   * Distinct from donationDataAvailable=false due to a transient API failure.
+   * Drives "No bundled donation data." copy in the popup instead of "temporarily unavailable."
+   */
+  noBundledData: boolean;
   recentCycle: number | null;
   recentRepubs: number;
   recentDems: number;
