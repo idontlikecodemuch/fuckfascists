@@ -508,21 +508,6 @@ Drop time is computed on-device (see `core/dropSchedule/computeDropTime.ts`). V2
 
 ---
 
-## Data Maintenance / AI Verification Process
+## Data Maintenance
 
-### AI verification sweep (run after each FEC data update)
-
-When using an AI agent to verify or correct fecCommitteeId values, use this prompt pattern:
-
-```
-CRITICAL RULES FOR THE AI AGENT:
-1. A valid corporate PAC committee name must contain the company's name or a clear derivative.
-   Reject any match where the committee name is a person's name, contains "FOR CONGRESS",
-   "FOR SENATE", "FOR HOUSE", or is clearly a political campaign committee.
-2. "No activity on record" is a red flag — real active corporate PACs have financial activity.
-   Flag these for manual review rather than auto-accepting.
-3. Do maximum 2 searches per entity. Do not go deep.
-4. If uncertain, set fecCommitteeId: "" (unverified) rather than accepting a questionable match.
-5. Always cross-reference the entity's categoryTags against the committee name.
-   A "retail" entity matched to a "CONSTRUCTION" committee is always wrong.
-```
+See header comments in `scripts/verify-entities.mjs` for AI verification rules.

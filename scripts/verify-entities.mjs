@@ -10,6 +10,15 @@ import 'dotenv/config';
  * Never run in CI. Never hardcode the API key.
  */
 
+/**
+ * AI verification rules (for agents running entity sweeps):
+ * - Committee name must contain the company's name or a clear derivative.
+ *   Reject personal names, "FOR CONGRESS/SENATE/HOUSE", and campaign committees.
+ * - "No activity on record" = flag for manual review, don't auto-accept.
+ * - Max 2 searches per entity. If uncertain, leave fecCommitteeId as "" (unverified).
+ * - Sanity-check categoryTags against the committee name.
+ */
+
 import { readFile, writeFile } from 'node:fs/promises';
 import { execSync } from 'node:child_process';
 import { createInterface } from 'node:readline';
