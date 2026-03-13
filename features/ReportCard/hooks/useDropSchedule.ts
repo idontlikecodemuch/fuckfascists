@@ -1,47 +1,39 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import * as Notifications from 'expo-notifications';
 import type { DropSchedule } from '../types';
-import { fetchDropSchedule } from '../data/dropSchedule';
+import { getCurrentDropTime } from '../../../core/dropSchedule/computeDropTime';
+import { getLocalWeekStart } from '../../../core/utils/localDate';
 
 export interface DropScheduleState {
-  schedule: DropSchedule | null;
-  loading: boolean;
+  schedule: DropSchedule;
+  /** Always false — drop time is computed locally with no async work. */
+  loading: false;
   /** True when the drop time has passed and the card should be revealed. */
   hasDropped: boolean;
 }
 
 /**
- * Fetches the weekly drop schedule from the CDN and schedules a local
- * push notification for the exact drop moment.
+ * Computes the weekly drop schedule on-device (deterministic PRNG — no network).
+ * Schedules a local push notification for the exact drop moment.
  *
- * Notification is only scheduled when the drop time is still in the future —
- * avoids firing stale alerts on users who open the app post-drop.
+ * The drop time is available synchronously on first render. No loading state,
+ * no network dependency.
  */
 export function useDropSchedule(): DropScheduleState {
-  const [schedule, setSchedule] = useState<DropSchedule | null>(null);
-  const [loading, setLoading] = useState(true);
+  const dropAt = getCurrentDropTime().getTime();
+  const weekOf = getLocalWeekStart();
+  const schedule: DropSchedule = { dropAt, weekOf };
+  const hasDropped = Date.now() >= dropAt;
 
   useEffect(() => {
-    let cancelled = false;
+    if (dropAt > Date.now()) {
+      scheduleDropNotification(dropAt).catch(() => {
+        // Notification permission may be denied — silently skip
+      });
+    }
+  }, [dropAt]);
 
-    fetchDropSchedule().then(async (fetched) => {
-      if (cancelled) return;
-      setSchedule(fetched);
-      setLoading(false);
-
-      if (fetched && Date.now() < fetched.dropAt) {
-        await scheduleDropNotification(fetched.dropAt).catch(() => {
-          // Notification permission may be denied — silently skip
-        });
-      }
-    });
-
-    return () => { cancelled = true; };
-  }, []);
-
-  const hasDropped = !!schedule && Date.now() >= schedule.dropAt;
-
-  return { schedule, loading, hasDropped };
+  return { schedule, loading: false, hasDropped };
 }
 
 async function scheduleDropNotification(dropAt: number): Promise<void> {

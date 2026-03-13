@@ -190,7 +190,7 @@ describe('alias match', () => {
     expect(deps.fetchOrgs).toHaveBeenCalled();
   });
 
-  it('returns MatchFailure when orgId cannot be resolved', async () => {
+  it('returns MatchFailure with no_match when orgId cannot be resolved', async () => {
     const deps = makeDeps({
       entities: [entityWithoutOrgId],
       fetchOrgs: jest.fn().mockResolvedValue([]), // no results → no orgId
@@ -199,6 +199,23 @@ describe('alias match', () => {
     const result = await matchEntity('Local Coffee', deps);
 
     expect(result.matched).toBe(false);
+    if (!result.matched) {
+      expect(result.lookupStatus).toBe('no_match');
+    }
+  });
+
+  it('returns MatchFailure with lookup_unavailable when resolveOrgId network fails', async () => {
+    const deps = makeDeps({
+      entities: [entityWithoutOrgId],
+      fetchOrgs: jest.fn().mockRejectedValue(new Error('Network error')),
+    });
+
+    const result = await matchEntity('Local Coffee', deps);
+
+    expect(result.matched).toBe(false);
+    if (!result.matched) {
+      expect(result.lookupStatus).toBe('lookup_unavailable');
+    }
   });
 });
 
@@ -222,7 +239,7 @@ describe('fuzzy match', () => {
     }
   });
 
-  it('returns MatchFailure when no candidate clears the medium threshold', async () => {
+  it('returns MatchFailure with no_match when no candidate clears the medium threshold', async () => {
     const deps = makeDeps({
       entities: [],
       fetchOrgs: jest
@@ -235,15 +252,33 @@ describe('fuzzy match', () => {
     expect(result.matched).toBe(false);
     if (!result.matched) {
       expect(result.normalizedInput).toBe('walmart');
+      expect(result.lookupStatus).toBe('no_match');
     }
   });
 
-  it('returns MatchFailure when FEC returns no results', async () => {
+  it('returns MatchFailure with no_match when FEC returns no results', async () => {
     const deps = makeDeps({ entities: [], fetchOrgs: jest.fn().mockResolvedValue([]) });
 
     const result = await matchEntity('some obscure shop', deps);
 
     expect(result.matched).toBe(false);
+    if (!result.matched) {
+      expect(result.lookupStatus).toBe('no_match');
+    }
+  });
+
+  it('returns MatchFailure with lookup_unavailable when fetchOrgs throws', async () => {
+    const deps = makeDeps({
+      entities: [],
+      fetchOrgs: jest.fn().mockRejectedValue(new Error('Network error')),
+    });
+
+    const result = await matchEntity('some business', deps);
+
+    expect(result.matched).toBe(false);
+    if (!result.matched) {
+      expect(result.lookupStatus).toBe('lookup_unavailable');
+    }
   });
 
   it('caches a successful fuzzy match', async () => {

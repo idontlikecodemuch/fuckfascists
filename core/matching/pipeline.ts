@@ -113,7 +113,9 @@ export async function matchEntity(
       null;
     return {
       matched: true,
+      lookupStatus: 'matched',
       entity,
+      committeeName: entity?.canonicalName ?? cached.donationSummary?.committeeName ?? null,
       confidence: cached.confidence,
       fecCommitteeId: cached.fecCommitteeId,
       donationSummary: cached.donationSummary,
@@ -125,15 +127,19 @@ export async function matchEntity(
   const aliasMatch = findByAlias(normalizedInput, deps.entities);
   if (aliasMatch) {
     // Fix A: explicit check — empty string ("unverified") must not fall through to resolveOrgId
-    const orgId =
-      (aliasMatch.fecCommitteeId != null && aliasMatch.fecCommitteeId !== '')
-        ? aliasMatch.fecCommitteeId
-        : await resolveOrgId(aliasMatch.canonicalName, deps);
+    let orgId: string | null;
+    try {
+      orgId =
+        (aliasMatch.fecCommitteeId != null && aliasMatch.fecCommitteeId !== '')
+          ? aliasMatch.fecCommitteeId
+          : await resolveOrgId(aliasMatch.canonicalName, deps);
+    } catch {
+      return { matched: false, lookupStatus: 'lookup_unavailable', normalizedInput };
+    }
 
-    if (!orgId) return { matched: false, normalizedInput };
+    if (!orgId) return { matched: false, lookupStatus: 'no_match', normalizedInput };
 
     const confidence = 1.0; // alias matches are always exact — full confidence
-    if (confidence === null) return { matched: false, normalizedInput };
 
     // Use bundled donationSummary when present and fresh — skips live API call.
     let donationSummary: DonationSummary | null = null;
@@ -159,7 +165,9 @@ export async function matchEntity(
 
     return {
       matched: true,
+      lookupStatus: 'matched',
       entity: aliasMatch,
+      committeeName: aliasMatch.canonicalName,
       confidence,
       fecCommitteeId: orgId,
       donationSummary,
@@ -173,11 +181,11 @@ export async function matchEntity(
   try {
     candidates = await deps.fetchOrgs(normalizedInput);
   } catch {
-    return { matched: false, normalizedInput };
+    return { matched: false, lookupStatus: 'lookup_unavailable', normalizedInput };
   }
   const best = pickBestMatch(normalizedInput, candidates);
 
-  if (!best) return { matched: false, normalizedInput };
+  if (!best) return { matched: false, lookupStatus: 'no_match', normalizedInput };
 
   const entity =
     deps.entities.find((e) => e.fecCommitteeId === best.org.orgid) ?? null;
@@ -206,7 +214,9 @@ export async function matchEntity(
 
   return {
     matched: true,
+    lookupStatus: 'matched',
     entity,
+    committeeName: entity?.canonicalName ?? best.org.orgname,
     confidence: best.confidence,
     fecCommitteeId: best.org.orgid,
     donationSummary,
@@ -214,18 +224,17 @@ export async function matchEntity(
   };
 }
 
-/** Resolves a FEC committee ID for an entity that lacks one. */
+/**
+ * Resolves a FEC committee ID for an entity that lacks one.
+ * Throws on network failure — callers are responsible for catching and returning
+ * lookupStatus: 'lookup_unavailable'.
+ */
 async function resolveOrgId(
   canonicalName: string,
   deps: MatchingDeps
 ): Promise<string | null> {
   const normalized = normalize(canonicalName);
-  let candidates: FECCommittee[] = [];
-  try {
-    candidates = await deps.fetchOrgs(normalized);
-  } catch {
-    return null;
-  }
+  const candidates = await deps.fetchOrgs(normalized); // throws on network error
   const best = pickBestMatch(normalized, candidates);
   return best?.org.orgid ?? null;
 }

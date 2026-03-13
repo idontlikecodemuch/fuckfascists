@@ -5,11 +5,21 @@ export interface FECCommittee {
   orgname: string;
 }
 
+/**
+ * 'matched'            — confident or medium-confidence match found
+ * 'no_match'           — lookup completed successfully, no confident match
+ * 'lookup_unavailable' — lookup failed (network error, rate limit, timeout)
+ */
+export type LookupStatus = 'matched' | 'no_match' | 'lookup_unavailable';
+
 export type MatchResult = MatchSuccess | MatchFailure;
 
 export interface MatchSuccess {
   matched: true;
-  entity: Entity | null;      // null when matched via FEC but not in curated list
+  lookupStatus: 'matched';
+  entity: Entity | null;        // null when matched via FEC but not in curated list
+  /** Human-readable committee name from FEC — used as display fallback when entity is null. */
+  committeeName: string | null;
   confidence: ConfidenceLevel;
   fecCommitteeId: string;
   donationSummary: DonationSummary | null;
@@ -18,6 +28,7 @@ export interface MatchSuccess {
 
 export interface MatchFailure {
   matched: false;
+  lookupStatus: 'no_match' | 'lookup_unavailable';
   normalizedInput: string;    // caller uses this to build the FEC search link
 }
 

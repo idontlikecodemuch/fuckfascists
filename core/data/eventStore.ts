@@ -1,5 +1,6 @@
 import type { EntityAvoidEvent, PlatformAvoidEvent } from '../models';
 import type { StorageAdapter } from './adapters';
+import { getLocalDateString, getLocalWeekStart } from '../utils/localDate';
 
 // ── Entity avoid events ────────────────────────────────────────────────────────
 
@@ -14,7 +15,7 @@ export async function recordEntityAvoid(
   adapter: StorageAdapter,
   entityId: string
 ): Promise<void> {
-  const date = toDateString(new Date());
+  const date = getLocalDateString();
   // count: 1 is a placeholder — the DB owns the increment atomically (ON CONFLICT DO UPDATE SET count = count + 1).
   await adapter.upsertEntityAvoid({ entityId, date, count: 1 });
 }
@@ -36,7 +37,7 @@ export async function recordPlatformAvoid(
   adapter: StorageAdapter,
   platformId: string
 ): Promise<void> {
-  const weekOf = getMondayOf(new Date());
+  const weekOf = getLocalWeekStart();
   await adapter.upsertPlatformAvoid({ platformId, weekOf });
 }
 
@@ -48,18 +49,28 @@ export async function getPlatformAvoidsForWeek(
   adapter: StorageAdapter,
   weekOf?: string
 ): Promise<PlatformAvoidEvent[]> {
-  const target = weekOf ?? getMondayOf(new Date());
+  const target = weekOf ?? getLocalWeekStart();
   return adapter.getPlatformAvoids(target);
 }
 
 // ── Date helpers ──────────────────────────────────────────────────────────────
 
-/** Returns a date as YYYY-MM-DD (UTC, no time component). */
+/**
+ * Returns a Date as YYYY-MM-DD using UTC.
+ * For computing new event dates use getLocalDateString() from core/utils/localDate.ts
+ * instead. This helper is retained for pure transformations (e.g. test assertions,
+ * boundary arithmetic on stored date strings).
+ */
 export function toDateString(date: Date): string {
   return date.toISOString().slice(0, 10);
 }
 
-/** Returns the Monday of the given date's ISO week as YYYY-MM-DD (UTC). */
+/**
+ * Returns the Monday of the given date's ISO week as YYYY-MM-DD using UTC.
+ * For computing the current week key for new event writes use getLocalWeekStart()
+ * from core/utils/localDate.ts instead. This helper is retained for pure
+ * transformations on existing Date values.
+ */
 export function getMondayOf(date: Date): string {
   const d = new Date(date);
   const day = d.getUTCDay(); // 0 = Sunday

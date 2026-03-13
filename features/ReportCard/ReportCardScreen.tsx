@@ -2,7 +2,6 @@ import React, { useRef, useCallback, useState } from 'react';
 import { View, Text, Pressable, ScrollView, StyleSheet, SafeAreaView, Share, ActivityIndicator } from 'react-native';
 import type { Entity } from '../../core/models';
 import type { StorageAdapter } from '../../core/data';
-import { getMondayOf } from '../../core/data';
 import type { Platform } from '../Survey/types';
 import { useDropSchedule } from './hooks/useDropSchedule';
 import { useReportCard } from './hooks/useReportCard';
@@ -25,18 +24,18 @@ interface ReportCardScreenProps {
  *  4. User tapped PREVIEW → show card with PREVIEW stamp
  */
 export function ReportCardScreen({ adapter, entities, platforms }: ReportCardScreenProps) {
-  const weekOf = getMondayOf(new Date());
   const cardRef = useRef<View>(null);
   const [showPreview, setShowPreview] = useState(false);
 
-  const { schedule, loading: scheduleLoading, hasDropped } = useDropSchedule();
+  // Drop time is computed locally — always available, no loading state.
+  const { schedule, hasDropped } = useDropSchedule();
   const isPreview = !hasDropped || showPreview;
 
   const { data, loading: cardLoading } = useReportCard(
     adapter,
     entities,
     platforms,
-    schedule?.weekOf ?? weekOf,
+    schedule.weekOf,
     isPreview
   );
 
@@ -58,14 +57,6 @@ export function ReportCardScreen({ adapter, entities, platforms }: ReportCardScr
     await Share.share({ message: lines.join('\n') });
   }, [data]);
 
-  if (scheduleLoading) {
-    return (
-      <SafeAreaView style={styles.centered}>
-        <ActivityIndicator color="#CC0000" accessibilityLabel="Loading report card" />
-      </SafeAreaView>
-    );
-  }
-
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scroll}>
@@ -74,7 +65,7 @@ export function ReportCardScreen({ adapter, entities, platforms }: ReportCardScr
           <Text style={styles.topBarTitle} accessibilityRole="header" allowFontScaling>
             REPORT CARD
           </Text>
-          {!hasDropped && schedule && (
+          {!hasDropped && (
             <Text style={styles.dropTime} allowFontScaling>
               DROPS {formatDropTime(schedule.dropAt).toUpperCase()}
             </Text>
@@ -130,7 +121,6 @@ const MONO  = 'monospace' as const;
 
 const styles = StyleSheet.create({
   container:         { flex: 1, backgroundColor: WHITE },
-  centered:          { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: WHITE },
   scroll:            { paddingBottom: 40 },
   topBar:            { backgroundColor: BLACK, padding: 16, borderBottomWidth: 4, borderColor: RED },
   topBarTitle:       { fontFamily: MONO, fontSize: 20, fontWeight: 'bold', color: WHITE, letterSpacing: 3 },

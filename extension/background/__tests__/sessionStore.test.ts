@@ -35,6 +35,7 @@ function makeFlag(overrides: Partial<TabFlag> = {}): TabFlag {
     displayFigure:   'Jeff Bezos',
     donationDataAvailable: true,
     noBundledData:   false,
+    liveLookupFailed: false,
     recentCycle:     2024,
     recentRepubs:    1_200_000,
     recentDems:      0,

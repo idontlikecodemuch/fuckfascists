@@ -20,8 +20,9 @@ export const FEC_API_BASE_URL = 'https://api.open.fec.gov/v1';
 // Curated entity list update URL
 export const ENTITY_LIST_UPDATE_URL = 'https://raw.githubusercontent.com/[org]/fuckfascists-data/main/entities.json';
 
-// Weekly report card drop schedule — published by a GitHub Action each Monday
-export const DROP_SCHEDULE_URL = 'https://raw.githubusercontent.com/[org]/fuckfascists-data/main/drop-schedule.json';
+// Drop schedule is computed deterministically on-device.
+// See core/dropSchedule/computeDropTime.ts.
+// V2: Optional server override for schedule changes — see CLAUDE.md "V2 Server Ping" section.
 
 // Info / FAQ / transparency content — editable in the data repo without an app release
 export const INFO_CONTENT_URL = 'https://raw.githubusercontent.com/[org]/fuckfascists-data/main/info.json';

@@ -33,7 +33,9 @@ const mockSummary: DonationSummary = {
 function makeMatch(overrides: Partial<MatchSuccess> = {}): MatchSuccess {
   return {
     matched: true,
+    lookupStatus: 'matched',
     entity: walmartEntity,
+    committeeName: 'Walmart Inc',
     confidence: 1.0,
     fecCommitteeId: 'D000000074',
     donationSummary: mockSummary,
@@ -51,11 +53,18 @@ describe('buildScanResult', () => {
     expect(result.canonicalName).toBe('Walmart Inc');
   });
 
-  it('uses fecCommitteeId as canonicalName fallback when entity is null', () => {
+  it('uses committeeName as canonicalName fallback when entity is null', () => {
     const result = buildScanResult(
-      makeMatch({ entity: null, fecCommitteeId: 'D000000999' })
+      makeMatch({ entity: null, committeeName: 'Some Corporate PAC', fecCommitteeId: 'D000000999' })
     );
     expect(result.entityId).toBeNull();
+    expect(result.canonicalName).toBe('Some Corporate PAC');
+  });
+
+  it('falls back to fecCommitteeId only when both entity and committeeName are null', () => {
+    const result = buildScanResult(
+      makeMatch({ entity: null, committeeName: null, fecCommitteeId: 'D000000999' })
+    );
     expect(result.canonicalName).toBe('D000000999');
   });
 

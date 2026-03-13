@@ -19,10 +19,10 @@ export interface EntityAvoidSummary {
 }
 
 /**
- * The weekly drop time fetched from the CDN.
- * Published by a GitHub Action each Monday — read-only, no auth required.
+ * The weekly drop time, computed on-device by the deterministic PRNG in
+ * core/dropSchedule/computeDropTime.ts. No network required.
  */
 export interface DropSchedule {
   dropAt: number;  // Unix timestamp in ms
-  weekOf: string;  // YYYY-MM-DD Monday this schedule covers
+  weekOf: string;  // YYYY-MM-DD local Monday of the week this schedule covers
 }

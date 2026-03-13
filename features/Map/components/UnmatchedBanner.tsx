@@ -4,19 +4,25 @@ import { View, Text, Pressable, StyleSheet } from 'react-native';
 interface UnmatchedBannerProps {
   searchText: string;
   onOpenSearch: () => void;
+  variant?: 'no_match' | 'lookup_unavailable';
 }
 
 const MONO = 'monospace' as const;
 const BLACK = '#1A1A1A';
 const WHITE = '#F5F5F0';
 
-/** Shown when a manual search returns no confident match. Tap-to-search never shows this. */
-export function UnmatchedBanner({ searchText, onOpenSearch }: UnmatchedBannerProps) {
+/**
+ * Shown when a manual search returns no confident match, or when the lookup itself failed.
+ * Tap-to-search never shows this.
+ */
+export function UnmatchedBanner({ searchText, onOpenSearch, variant = 'no_match' }: UnmatchedBannerProps) {
+  const message = variant === 'lookup_unavailable'
+    ? `Couldn't check "${searchText}" — try again later. `
+    : `"${searchText}" — not confidently matched. `;
+
   return (
     <View style={styles.banner} accessibilityRole="alert">
-      <Text style={styles.text} allowFontScaling>
-        "{searchText}" — not confidently matched.{' '}
-      </Text>
+      <Text style={styles.text} allowFontScaling>{message}</Text>
       <Pressable
         onPress={onOpenSearch}
         accessibilityRole="link"

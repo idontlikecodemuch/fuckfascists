@@ -6,6 +6,7 @@ export { findByAlias } from './aliasMatch';
 export { scoreAll, pickBestMatch } from './scorer';
 export type {
   FECCommittee,
+  LookupStatus,
   MatchResult,
   MatchSuccess,
   MatchFailure,

@@ -82,7 +82,7 @@ API keys and credentials must **only ever be read from environment variables** (
 | Mobile storage | Expo SecureStore + expo-sqlite |
 | Notifications | Expo Notifications — local scheduling only |
 | Report card rendering | react-native-view-shot or React Native Skia |
-| Networking | Native fetch — OpenFEC API (primary); CDN for entity list + drop schedule |
+| Networking | Native fetch — OpenFEC API (primary); CDN for entity list updates |
 | Extension | Manifest V3, vanilla JS + HTML/CSS |
 | Extension storage | chrome.storage.local / browser.storage.local |
 | Shared core | TypeScript package — /core/matching/, /core/models/, /core/api/ |
@@ -109,6 +109,8 @@ API keys and credentials must **only ever be read from environment variables** (
 │   ├── matching/                    ← entity matching + confidence scoring (SHARED)
 │   ├── api/                         ← FEC API client, rate limiting
 │   ├── data/                        ← entity list loader, local DB, cache
+│   ├── dropSchedule/                ← deterministic PRNG drop time (computeDropTime.ts)
+│   ├── utils/                       ← shared utilities (localDate.ts, etc.)
 │   └── models/                      ← shared TypeScript types
 ├── extension/
 │   ├── manifest.json
@@ -131,8 +133,6 @@ API keys and credentials must **only ever be read from environment variables** (
 └── assets/
     └── pixel/                       ← all pixel art assets by type
 ```
-
-**File size rule: if any file exceeds 250 lines, stop and refactor it before continuing.**
 
 ---
 
@@ -163,8 +163,8 @@ export const FEC_API_BASE_URL = 'https://api.open.fec.gov/v1';
 // Curated entity list update URL — [org] placeholder; update before v1.0 launch
 export const ENTITY_LIST_UPDATE_URL = 'https://raw.githubusercontent.com/[org]/fuckfascists-data/main/entities.json';
 
-// Weekly report card drop schedule — published by a GitHub Action each Monday
-export const DROP_SCHEDULE_URL = 'https://raw.githubusercontent.com/[org]/fuckfascists-data/main/drop-schedule.json';
+// Drop schedule is computed deterministically on-device — no CDN fetch needed.
+// See core/dropSchedule/computeDropTime.ts. V2: optional server override — see Known Limitations.
 
 // Info / FAQ / transparency content — editable in the data repo without an app release
 export const INFO_CONTENT_URL = 'https://raw.githubusercontent.com/[org]/fuckfascists-data/main/info.json';
@@ -213,7 +213,6 @@ LocalCache {
 - Any browsing history or visited URLs
 - Any record of visiting or using a flagged entity ("support" events)
 - Any personal identifier (name, email, device ID)
-- Any data on the server side (MVP has no backend)
 
 ---
 
@@ -269,23 +268,11 @@ bundled `donationSummary` directly when present and fresh, skipping the live FEC
 - Use `--force` when re-running after an attribution or filter fix — entities that "succeeded"
   with wrong data keep a fresh `lastVerifiedDate` and are skipped on plain runs.
 
-**Schedule B attribution** — party is resolved via two fields in priority order:
+**Schedule B attribution** — party resolved in priority order:
 1. `candidate_party_affiliation` on the disbursement record (sparse — often blank in FEC responses)
 2. `recipient_committee.party` on the nested recipient committee object (reliably populated for H/S/P type recipients)
 
-The API call passes `recipient_committee_type=H|S|P` but **this parameter does nothing** — the FEC
-API silently ignores it (verified: filtered and unfiltered requests return identical record counts).
-Party attribution works anyway because the response data includes `recipient_committee_type` on each
-record. Operating expense records (line 29) and non-federal contributions have no `recipient_committee`
-object, so their party resolves to `''` and they land in `raw[]`. Direct candidate committee
-contributions (type H/S/P) have `recipient_committee.party` populated and are correctly attributed.
-Leadership PAC contributions (type Q) also have no party and land in `raw[]` — this is correct
-behaviour since leadership PAC party affiliation cannot be reliably determined from disbursement data.
-
-**Known performance issue**: the broken filter means all Schedule B disbursements are fetched and
-filtered client-side. Large PACs with high operating spend (e.g. Walmart: ~9,500 records) are
-significantly slower than most entities. The fix — using `by_recipient_id` aggregation + party
-lookup — is identified but deferred (see Known Limitations).
+`recipient_committee_type=H|S|P` in the API call **does nothing** — the FEC API silently ignores it (verified: filtered and unfiltered requests return identical record counts). Party attribution works because `recipient_committee_type` is present on each response record. Operating expense records (line 29) and non-federal contributions have no `recipient_committee` object → their party resolves to `''` and they land in `raw[]`. Type Q (leadership PAC) contributions also land in `raw[]` — party affiliation cannot be reliably determined from disbursement data. Direct H/S/P contributions have `recipient_committee.party` populated and are correctly attributed. See Known Limitations → Schedule B for performance implications.
 
 Run `fetch:donations` after `verify:entities` whenever the entity list is updated.
 Commit `entities.json` manually after reviewing the output.
@@ -294,14 +281,18 @@ Commit `entities.json` manually after reviewing the output.
 
 ## Report Card — Drop Mechanics
 
-The weekly report card is a synchronized global event. Every user receives it at the exact same moment.
+The weekly report card is a synchronized global event. Every user with the same app version receives it at the exact same moment — computed entirely on-device with no network dependency.
 
-- A lightweight scheduled job determines the drop time at the start of each week (random within the configured window, avoiding the previous week's hour)
-- The drop time is published to a read-only config endpoint (or GitHub-hosted JSON) — the app polls this
-- Push notification fires at the exact drop time via Expo Push Notifications
+- Drop time is computed deterministically via PRNG in `core/dropSchedule/computeDropTime.ts` — same ISO week year + week number always produces the same result on every install, forever
+- Seed: djb2 hash of `"ff-drop-{year}-W{week}"` mod 23, mapped to an hour offset within the Friday 4pm ET – Saturday 3pm ET window (23 hours, EST = UTC-5 hardcoded for MVP)
+- Collision rule: if this week's hour matches last week's, advance by 1 hour (wrapping within the window) — fully deterministic
+- No network fetch for the schedule — `useDropSchedule` calls `getCurrentDropTime()` synchronously, no loading state
+- Push notification is scheduled locally at the computed drop moment via Expo Notifications
 - If notifications are disabled, the card is waiting when the user opens the app
 - On-demand cards (generated anytime by the user) get a "PREVIEW" pixel art stamp — the weekly drop retains its specialness
 - Extension data is NOT included in the report card (V1) — extension has its own in-popup weekly summary
+
+**V2:** An optional lightweight server ping may add schedule overrides — see "Known Limitations / Technical Debt → V2: Optional Server Schedule Override."
 
 ---
 
@@ -381,15 +372,12 @@ When a flagged domain is detected, `handleCheckDomain` resolves donation data in
 ## Environments
 
 ```typescript
-// Never mock data in dev or prod. Mocks are for tests only.
-// Use real OpenFEC API in dev with a dev API key (FEC_API_KEY in .env).
-// FEC_API_KEY is optional for the app — FECClient runs in anonymous mode when absent.
-// FEC_API_KEY is required for data pipeline scripts (fetch:donations, verify:entities).
-// Keep environment config in .env files, never committed. See .env.example.
+// Environment config in .env files, never committed. See .env.example.
+// FEC_API_KEY optional for app (anonymous mode); required for data pipeline scripts.
 
 DEV   — local build, verbose logging on, real API calls (FEC_API_KEY recommended in .env)
 TEST  — jest, mocked API responses only here
-PROD  — release build, logging off, real API calls (FEC_API_KEY optional — anonymous mode available)
+PROD  — release build, logging off, real API calls (FEC_API_KEY optional — anonymous mode)
 ```
 
 ---
@@ -446,22 +434,7 @@ The entire app is styled as a **vintage 8-bit video game**. This is the foundati
 
 ## Current Sprint Focus
 
-**Phase 1 MVP — build in this order:**
-
-1. `/core/models/` — TypeScript types for all entities, events, cache ✅
-2. `/core/matching/` — entity matching pipeline (test-driven) ✅
-3. `/core/api/` — FEC API client with rate limiting and caching ✅
-4. `/core/data/` — entity list loader, SQLite schema, local DB ✅
-5. `features/Map/` — scan, flag, business card, avoid tap ✅
-6. `features/Survey/` — weekly platform checklist ✅
-7. `features/ReportCard/` — generation, drop timing, sharing ✅
-8. `features/Onboarding/` — first-run flow ✅
-9. `features/Info/` — transparency, about, FAQ ✅
-10. `extension/` — Chrome/Firefox extension using shared core ✅
-
-**Start with the core. Build one vertical slice (Map → flag → avoid tap) end-to-end before moving on.**
-
-### Feature Status
+**Phase 1 MVP — feature status:**
 
 | Feature / Milestone | Status |
 |---|---|
@@ -486,14 +459,10 @@ The entire app is styled as a **vintage 8-bit video game**. This is the foundati
 ### Self-check rule
 After writing any file, scan it once for deprecated APIs, `.then()` chains, `var`, `require()`, and `any`. Rewrite before finishing. If you are genuinely uncertain whether a method is current, flag it with a `// TODO: verify API is current for <package>@<version>` comment rather than silently shipping something that may fail at runtime.
 
----
-
 ### Dependencies
 - Before using any library method, check the installed version in `package.json` and confirm the API is current for that version.
 - Prefer explicit, minimal API calls over convenience wrappers that change between versions.
 - Never install a new dependency without checking: (1) is there an existing dep that already does this? (2) is it actively maintained? (3) does it have a clean audit (`npm audit`)?
-
----
 
 ### Node / TypeScript
 - **ESM only** — `import`/`export`, never `require()`/`module.exports`.
@@ -505,8 +474,6 @@ After writing any file, scan it once for deprecated APIs, `.then()` chains, `var
 - **Strict mode** — `tsconfig.json` has `"strict": true`. Never disable strict checks per-file.
 - Do not use deprecated TypeScript utility types (e.g. `Readonly` is fine; `Extract`/`Exclude` are fine; avoid anything marked `@deprecated` in the TS release notes).
 
----
-
 ### React Native / Expo SDK 52
 - Use **Expo SDK 52** APIs only. Check the SDK 52 changelog before using any Expo module.
 - **Permissions** — use per-module async methods: `Location.requestForegroundPermissionsAsync()`, `Notifications.requestPermissionsAsync()`, etc. Never use the old unified `Permissions` API from `expo-permissions` (removed in SDK 45).
@@ -517,8 +484,6 @@ After writing any file, scan it once for deprecated APIs, `.then()` chains, `var
 - **`expo-secure-store`** — `setItemAsync()` / `getItemAsync()` / `deleteItemAsync()` are current.
 - **Native modules** — one native module exists: `MapKitSearchModule` (iOS only). Pattern: Expo Modules API (`ExpoModulesCore.Module` protocol). TS wrapper at `features/Map/nativeModules/MapKitSearch.ts` uses `requireNativeModule('MapKitSearch')` from `expo-modules-core` (transitive dep). Swift source at `modules/mapkit-search/ios/MapKitSearchModule.swift`. Registered in root `package.json` as `"mapkit-search": "file:./modules/mapkit-search"` — CocoaPods autolinking discovers it via `expo-module.config.json` on every `expo prebuild` run. **Do not add `expo.autolinking.searchPaths` to package.json** — the `file:` reference approach does not require it and `searchPaths` replaces (not appends) the default paths, breaking react-native resolution. The module is active only after `expo prebuild --platform ios` and a native build; the TS wrapper returns `[]` silently when not linked. Do not use the old `NativeModules` bridge — project has `newArchEnabled: true`.
 
----
-
 ### Jest 29
 - **`jest.createMockFromModule()`** — use this; never the legacy `jest.genMockFromModule()`.
 - **`.toHaveBeenCalledWith()`** — use this; never the alias `.toBeCalledWith()`.
@@ -527,16 +492,12 @@ After writing any file, scan it once for deprecated APIs, `.then()` chains, `var
 - **Fake timers** — use `jest.useFakeTimers()` with `jest.runAllTimersAsync()` (Jest 29+); avoid the deprecated `jest.runAllTimers()` for async code.
 - **`beforeEach` cleanup** — always call `jest.clearAllMocks()` (or `jest.resetAllMocks()`) in `beforeEach` to prevent state leaking between tests.
 
----
-
 ### Browser Extension (MV3)
 - **Event listeners must be registered at the top level** of the service worker — never inside `async` functions, `setTimeout`, or `.then()` chains. Chrome terminates the SW between events; listeners not registered synchronously on startup will be missed.
 - **`chrome.alarms`** — create alarms inside `chrome.runtime.onInstalled`, not at the module top level. Alarms persist across SW restarts; re-creating them on every wake is unnecessary and was the cause of a runtime crash (see commit `fad4a0e`).
 - **Async message handlers** — return `true` synchronously from `onMessage` listeners that call `sendResponse` asynchronously, or the message port will close before the response is sent.
 - **`chrome.action.setIcon`** — takes a `path` object keyed by pixel density string (`"16"`, `"32"`, etc.), not a single string.
 - Do not use deprecated MV2 APIs (`chrome.browserAction`, `chrome.pageAction`, `webRequest` blocking mode, etc.).
-
----
 
 ### General
 - **No `console.log` in production paths** — use it only in dev/test; remove or guard with an env check before shipping.
@@ -598,10 +559,8 @@ After writing any file, scan it once for deprecated APIs, `.then()` chains, `var
 ### service-worker.ts over 250 lines (Priority: V1 cleanup)
 `extension/background/service-worker.ts` is 393 lines — over the 250-line file limit. Pre-existing violation; was 361 lines before the API key removal session. Refactor plan: extract `handleCheckDomain`, `isBundledDataFresh`, and related data-fetch logic into `extension/background/domainCheck.ts`. The message router, tab lifecycle listeners, and alarm handler stay in `service-worker.ts`.
 
-`CYCLES_SINCE_2016` in `scripts/fetch-donation-data.mjs` and `CYCLES_SINCE_2016`
-in `core/api/FECClient.ts` must be updated manually when a new election cycle begins.
-Both constants are candidates for renaming to `CYCLES_TO_FETCH` (more accurate now that 2026
-is included) — not blocking for MVP but should be done alongside the next cycle update.
+### CYCLES_SINCE_2016 — cycle constant update (Priority: V1.5)
+`CYCLES_SINCE_2016` in `scripts/fetch-donation-data.mjs` and `core/api/FECClient.ts` must be updated manually when a new election cycle begins. Both are candidates for renaming to `CYCLES_TO_FETCH` (more accurate now that 2026 is included) — not blocking for MVP but should be done alongside the next cycle update.
 
 ### Schedule B filter non-functional — pipeline performance (Priority: V1.5)
 `recipient_committee_type=H|S|P` in the Schedule B API call does nothing — the FEC API ignores it.
@@ -631,6 +590,23 @@ represent their most significant political activity.
 V3 should add an `ieContributions` field to both `Entity` and `PoliticalPerson` and query
 `/schedules/schedule_e/` accordingly. Note: IE data requires a different query pattern — filer
 is the spender, not the recipient. Do not conflate with Schedule A or B data.
+
+### V2: Optional Server Schedule Override
+The report card drop time is computed deterministically on-device (see `core/dropSchedule/computeDropTime.ts`). Every install with the same app version computes the same drop time for any given week with zero network dependency.
+
+V2 may add an optional lightweight server ping to support:
+- Schedule overrides for special events or coordinated drops
+- Entity list freshness check (has entities.json been updated since my bundled version?)
+- Info content freshness check (has info.json changed?)
+
+Design constraints for V2 server ping:
+- Minimal data transmission — a single lightweight request returning version hashes or timestamps, not full payloads
+- No user-identifying data in the request
+- No behavioral data transmitted
+- App must function identically if the ping fails or the server is unreachable
+- The ping is a freshness hint, not a dependency — the app always falls back to local computation and bundled data
+
+Do not build any of this now. This documents the intended V2 upgrade path.
 
 ---
 

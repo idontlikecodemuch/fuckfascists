@@ -6,6 +6,7 @@ import {
   toDateString,
   getMondayOf,
 } from '../eventStore';
+import { getLocalDateString, getLocalWeekStart } from '../../utils/localDate';
 import type { StorageAdapter } from '../adapters';
 import type { EntityAvoidEvent, PlatformAvoidEvent } from '../../models';
 
@@ -28,13 +29,18 @@ function makeAdapter(
 // ─── toDateString ─────────────────────────────────────────────────────────────
 
 describe('toDateString', () => {
-  it('formats a date as YYYY-MM-DD', () => {
+  it('formats a date as YYYY-MM-DD (UTC)', () => {
     expect(toDateString(new Date('2024-03-15T12:00:00Z'))).toBe('2024-03-15');
   });
 
-  it('uses UTC date, not local time', () => {
-    // Midnight UTC is still March 15 in UTC regardless of local TZ
+  it('uses UTC — midnight UTC is March 15 regardless of local TZ', () => {
     expect(toDateString(new Date('2024-03-15T00:00:00Z'))).toBe('2024-03-15');
+  });
+
+  it('note: event writes use getLocalDateString(), not toDateString()', () => {
+    // toDateString is a UTC utility retained for pure arithmetic on existing dates.
+    // New EntityAvoidEvent.date values are produced by getLocalDateString().
+    expect(typeof toDateString(new Date())).toBe('string');
   });
 });
 
@@ -61,9 +67,9 @@ describe('getMondayOf', () => {
 // ─── recordEntityAvoid ────────────────────────────────────────────────────────
 
 describe('recordEntityAvoid', () => {
-  it('calls upsertEntityAvoid with the entityId and today\'s date', async () => {
+  it('calls upsertEntityAvoid with the entityId and today\'s local date', async () => {
     const adapter = makeAdapter();
-    const today = toDateString(new Date());
+    const today = getLocalDateString();
     await recordEntityAvoid(adapter, 'walmart');
 
     expect(adapter.upsertEntityAvoid).toHaveBeenCalledWith(
@@ -107,11 +113,11 @@ describe('getAllEntityAvoids', () => {
 // ─── recordPlatformAvoid ──────────────────────────────────────────────────────
 
 describe('recordPlatformAvoid', () => {
-  it('records an avoid event for the current week', async () => {
+  it('records an avoid event for the current local week', async () => {
     const adapter = makeAdapter();
     await recordPlatformAvoid(adapter, 'twitter');
 
-    const expectedWeek = getMondayOf(new Date());
+    const expectedWeek = getLocalWeekStart();
     expect(adapter.upsertPlatformAvoid).toHaveBeenCalledWith({
       platformId: 'twitter',
       weekOf: expectedWeek,
@@ -131,11 +137,11 @@ describe('getPlatformAvoidsForWeek', () => {
     expect(adapter.getPlatformAvoids).toHaveBeenCalledWith('2024-03-11');
   });
 
-  it('defaults to the current week when weekOf is omitted', async () => {
+  it('defaults to the current local week when weekOf is omitted', async () => {
     const adapter = makeAdapter();
     await getPlatformAvoidsForWeek(adapter);
 
-    const expectedWeek = getMondayOf(new Date());
+    const expectedWeek = getLocalWeekStart();
     expect(adapter.getPlatformAvoids).toHaveBeenCalledWith(expectedWeek);
   });
 });

@@ -13,8 +13,10 @@ export function buildScanResult(match: MatchSuccess): ScanResult {
 
   return {
     entityId: match.entity?.id ?? null,
-    // Prefer the curated entity's canonicalName; fall back to committee ID as last resort.
-    canonicalName: match.entity?.canonicalName ?? match.fecCommitteeId,
+    // Prefer the curated entity's canonicalName; fall back to FEC committee name from
+    // the API search result; use committee ID only as a last resort (should not be
+    // user-visible, but prevents an empty string if something upstream is wrong).
+    canonicalName: match.entity?.canonicalName ?? match.committeeName ?? match.fecCommitteeId,
     confidence: match.confidence,
     donationSummary: match.donationSummary,
     fecCommitteeId: match.fecCommitteeId,

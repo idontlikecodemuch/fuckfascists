@@ -169,6 +169,7 @@ async function handleCheckDomain(hostname: string, tabId: number): Promise<void>
   const CACHE_TTL_MS = ENTITY_CACHE_TTL_DAYS * 86_400_000;
 
   let donationSummary: DonationSummary | null = null;
+  let liveLookupFailed = false;
 
   const committeeId =
     entity.fecCommitteeId && entity.fecCommitteeId !== ''
@@ -202,6 +203,7 @@ async function handleCheckDomain(hostname: string, tabId: number): Promise<void>
       });
     } catch {
       // 4. Live call failed — use bundled data as stale fallback if available.
+      liveLookupFailed = true;
       donationSummary = entity.donationSummary ?? null;
     }
   } else {
@@ -225,6 +227,7 @@ async function handleCheckDomain(hostname: string, tabId: number): Promise<void>
     displayFigure:         getDisplayFigure(entity),
     donationDataAvailable: donationSummary !== null,
     noBundledData,
+    liveLookupFailed,
     recentCycle:           donationSummary?.recentCycle ?? null,
     recentRepubs:          donationSummary?.recentRepubs ?? 0,
     recentDems:            donationSummary?.recentDems ?? 0,

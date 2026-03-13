@@ -58,6 +58,12 @@ export interface TabFlag {
    * Drives "No bundled donation data." copy in the popup instead of "temporarily unavailable."
    */
   noBundledData: boolean;
+  /**
+   * True when a live FEC API call was attempted but failed (network error, timeout, rate limit).
+   * When true the popup shows "Couldn't reach FEC — try again later." instead of the generic
+   * unavailable message. Takes precedence over noBundledData in the popup copy.
+   */
+  liveLookupFailed: boolean;
   recentCycle: number | null;
   recentRepubs: number;
   recentDems: number;

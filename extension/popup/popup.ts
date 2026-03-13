@@ -93,10 +93,12 @@ function renderFlag(flag: TabFlag) {
     recentCycleEl.hidden  = true;
     totalSince2016.hidden = true;
     activeCyclesEl.hidden = true;
-    // Distinguish "entity not yet in data pipeline" from a transient API failure.
-    dataUnavailableEl.textContent = flag.noBundledData
-      ? 'No bundled donation data.'
-      : 'Donation data temporarily unavailable.';
+    // Priority: live call failure > no bundled data > generic unavailable.
+    dataUnavailableEl.textContent = flag.liveLookupFailed
+      ? "Couldn't reach FEC — try again later."
+      : flag.noBundledData
+        ? 'No bundled donation data.'
+        : 'Donation data temporarily unavailable.';
     dataUnavailableEl.hidden = false;
   }
 

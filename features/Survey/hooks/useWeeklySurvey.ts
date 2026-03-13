@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { StorageAdapter } from '../../../core/data';
-import { getMondayOf, recordPlatformAvoid } from '../../../core/data';
+import { recordPlatformAvoid } from '../../../core/data';
+import { getLocalWeekStart } from '../../../core/utils/localDate';
 import type { Platform, SurveyItem } from '../types';
 import { buildSurveyItems } from '../utils/surveyHelpers';
 
@@ -24,7 +25,7 @@ export function useWeeklySurvey(
   adapter: StorageAdapter,
   platforms: Platform[]
 ): WeeklySurveyState {
-  const weekOf = getMondayOf(new Date());
+  const weekOf = getLocalWeekStart();
   const [avoidedIds, setAvoidedIds] = useState<ReadonlySet<string>>(new Set());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

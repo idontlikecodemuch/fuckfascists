@@ -197,8 +197,12 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
         </View>
       )}
 
-      {status === 'unmatched' && (
-        <UnmatchedBanner searchText={searchText} onOpenSearch={handleOpenSearch} />
+      {(status === 'unmatched' || status === 'lookup_unavailable') && (
+        <UnmatchedBanner
+          searchText={searchText}
+          onOpenSearch={handleOpenSearch}
+          variant={status === 'lookup_unavailable' ? 'lookup_unavailable' : 'no_match'}
+        />
       )}
     </SafeAreaView>
   );

@@ -12,6 +12,17 @@ import 'dotenv/config';
  *
  * Requires FEC_API_KEY in environment (or .env file).
  * Never run in CI. Never hardcode the API key.
+ *
+ * Schedule B attribution — party resolved in priority order:
+ * (1) candidate_party_affiliation on the disbursement record (sparse — often blank).
+ * (2) recipient_committee.party on the nested recipient committee object (reliably
+ *     populated for H/S/P type recipients).
+ * recipient_committee_type=H|S|P in the API call does nothing — the FEC API silently
+ * ignores it. Party attribution works because recipient_committee_type is present on
+ * each response record. Operating expense records (line 29) and non-federal contributions
+ * have no recipient_committee object — party resolves to '' and lands in raw[]. Type Q
+ * (leadership PAC) also lands in raw[]. Direct H/S/P contributions have
+ * recipient_committee.party populated and are correctly attributed.
  */
 
 import { readFile, writeFile, mkdir } from 'node:fs/promises';

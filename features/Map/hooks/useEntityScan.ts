@@ -4,7 +4,7 @@ import { matchEntity } from '../../../core/matching';
 import type { ScanResult } from '../types';
 import { buildScanResult } from '../utils/buildScanResult';
 
-export type ScanStatus = 'idle' | 'scanning' | 'matched' | 'unmatched' | 'error';
+export type ScanStatus = 'idle' | 'scanning' | 'matched' | 'unmatched' | 'lookup_unavailable' | 'error';
 
 export interface EntityScanState {
   status: ScanStatus;
@@ -35,7 +35,10 @@ export function useEntityScan(deps: MatchingDeps, areaHash: string) {
         const matchResult = await matchEntity(trimmed, deps, areaHash);
 
         if (!matchResult.matched) {
-          setState({ status: 'unmatched', result: null, error: null });
+          const status = matchResult.lookupStatus === 'lookup_unavailable'
+            ? 'lookup_unavailable'
+            : 'unmatched';
+          setState({ status, result: null, error: null });
           return;
         }
 
