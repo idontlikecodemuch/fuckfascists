@@ -46,6 +46,8 @@
     </dict>
     <key>NSFaceIDUsageDescription</key>
     <string>Allow $(PRODUCT_NAME) to access your Face ID biometric data.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>F*ck Fascists uses your location to find nearby businesses and check their political donation records.</string>
     <key>UILaunchStoryboardName</key>
     <string>SplashScreen</string>
     <key>UIRequiredDeviceCapabilities</key>

@@ -1,0 +1,7 @@
+{
+  "style_and_layout": "Using the provided 1x2 reference image as a strict style and composition guide, create a retro 8-bit pixel-art sprite sheet. The image must contain exactly two figures side-by-side. Use a chunky 1:2.5 head-to-body ratio, thick black outlines, and a strictly limited color palette with hard pixel edges. The background must be solid bright magenta (#FF00FF).",
+
+  "state_neutral": "On the strictly left side of the canvas: The character is in a confident, upright neutral stance looking unpleasant with a slight frown. This left figure has NO dizzy stars, NO sweat, and NO money.",
+
+  "state_defeated": "On the strictly right side of the canvas: The character is in a comedic, slouched defeated pose. This right figure features X-eyes (✕), dizzy stars circling their head, sweat drops, and loose money bills scattered nearby. The defeat is purely comedic and cartoonish, with no graphic injury."
+}

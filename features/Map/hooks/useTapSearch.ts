@@ -67,6 +67,8 @@ export function useTapSearch(deps: MatchingDeps, areaHash: string) {
         if (r.status !== 'fulfilled' || !r.value.matched) continue;
         const scanResult = buildScanResult(r.value);
         const id = scanResult.entityId ?? scanResult.fecCommitteeId;
+        // Guard: empty/falsy id causes a nil key on FlagMarker, crashing AIRMap.
+        if (!id) continue;
         newPins.push({
           id,
           name: scanResult.canonicalName,

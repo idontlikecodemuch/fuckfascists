@@ -12,6 +12,26 @@ This document is updated continuously. New instances should read this first — 
 
 ## Last 5 Sessions (most recent first)
 
+### Session: March 14, 2026
+**Focus:** iOS Map crash fix + sprite generation tool (tools/img-gen/)
+
+**Completed:**
+- Fixed `[AIRMap insertReactSubview:atIndex:]: object cannot be nil` crash on POI tap match:
+  - Root cause: `id = entityId ?? fecCommitteeId` — when `entityId` is `null` and `fecCommitteeId` is `""` (unverified entity state), `id` is `""`. A `Marker` with `key=""` causes Fabric reconciler to pass nil native view to `AIRMap`
+  - Fix 1 — `features/Map/hooks/useTapSearch.ts` `processTapNames`: added `if (!id) continue` guard before pushing to `newPins`
+  - Fix 2 — `features/Map/MapScreen.tsx` pin effect: added `if (!id) return` guard before constructing `newPin`
+- Added `NSLocationWhenInUseUsageDescription` to `app.json` → ran `expo prebuild --platform ios --clean` → `expo run:ios` — build succeeded, installed on iPhone 16 Pro simulator
+- Built and ran full batch of ~80 characters through `tools/img-gen/` sprite generation pipeline (Gemini API, 8-bit pixel art CEO sprites)
+  - Per-variant generation (neutral + defeated side-by-side per API call), chroma-key pipeline, compose.py stacks variant rows
+  - `--redo` workflow: flagged files regenerated to clean name, originals preserved as reference
+  - Batch mode: configurable delay, N/total progress, auto-compose at end
+
+**Pending:**
+- iOS simulator interactive smoke test (MapKit POI tap, full vertical slice)
+- Physical device geolocation test
+
+---
+
 ### Session: March 12, 2026 (follow-up)
 **Focus:** Extension — remove FEC API key, bundled donationSummary as primary data path
 

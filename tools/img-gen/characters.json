@@ -1,0 +1,1372 @@
+[
+  {
+    "id": "doug-mcmillon",
+    "name": "Doug McMillon",
+    "tier": "important",
+    "likeness": "Short gray receding hair, rectangular glasses, medium build, pale skin, oval face, narrow jaw",
+    "variants": {
+      "A": {
+        "outfit": "Gray suit, navy tie, Walmart spark lapel pin, black dress shoes, visible company logo on chest"
+      },
+      "B": {
+        "outfit": "Blue Walmart vest over light-blue oxford shirt, khaki pants, name badge, brown loafers, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "jeff-bezos",
+    "name": "Jeff Bezos",
+    "tier": "important",
+    "likeness": "Bald head, muscular build, pale skin, broad shoulders, heavy brow, deep-set eyes",
+    "variants": {
+      "A": {
+        "outfit": "Black fitted t-shirt with small Amazon smile logo, dark jeans, gray sneakers, visible company logo on chest"
+      },
+      "B": {
+        "outfit": "Open white short-sleeve shirt, dark swim trunks, aviator sunglasses, sandals, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "mark-zuckerberg",
+    "name": "Mark Zuckerberg",
+    "tier": "important",
+    "likeness": "Short curly light-brown hair, pale skin, blue eyes, slim build, long face, black square glasses",
+    "variants": {
+      "A": {
+        "outfit": "Gray Meta t-shirt, dark jeans, simple gray sneakers, visible company logo on chest, plain black belt"
+      },
+      "B": {
+        "outfit": "Oversized black graphic t-shirt, chunky gold chain, black pants, white sneakers, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "elon-musk",
+    "name": "Elon Musk",
+    "tier": "important",
+    "likeness": "Dark receding hair, pale skin, heavy build, wide-set eyes, round face, full cheeks",
+    "variants": {
+      "A": {
+        "outfit": "Black blazer over black t-shirt, dark pants, black dress shoes, tiny white X logo, visible company logo on chest"
+      },
+      "B": {
+        "outfit": "Shirtless pale torso, black swim trunks, sunglasses on head, bare feet, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "brian-cornell",
+    "name": "Brian Cornell",
+    "tier": "important",
+    "likeness": "Short salt-and-pepper hair, pale skin, medium build, long face, square jaw, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Bright red Target polo with white bullseye logo, khaki pants, white sneakers, visible company logo on chest"
+      },
+      "B": {
+        "outfit": "Charcoal suit, white shirt, red tie, tiny Target bullseye pin, black dress shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "ted-decker",
+    "name": "Ted Decker",
+    "tier": "standard",
+    "likeness": "Gray-brown hair, pale skin, medium build, oval face, clean-shaven, slightly receding hairline",
+    "variants": {
+      "A": {
+        "outfit": "Orange Home Depot apron over white dress shirt, dark slacks, brown work shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "marvin-ellison",
+    "name": "Marvin Ellison",
+    "tier": "standard",
+    "likeness": "Bald head, medium-dark skin, glasses, medium build, broad face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Blue Lowe’s vest over white dress shirt, dark slacks, brown loafers, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "todd-vasos",
+    "name": "Todd Vasos",
+    "tier": "standard",
+    "likeness": "Short gray hair, pale skin, stocky build, square face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Yellow Dollar General polo shirt, dark pants, black sneakers, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "david-green",
+    "name": "David Green",
+    "tier": "standard",
+    "likeness": "White hair, pale skin, glasses, medium build, rounded face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Dark suit, white shirt, patterned tie, Hobby Lobby lapel pin, black dress shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "john-stankey",
+    "name": "John Stankey",
+    "tier": "important",
+    "likeness": "Light brown-gray hair, rectangular glasses, medium build, pale skin, oval face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Blue AT&T polo shirt, dark slacks, black sneakers, company lanyard, visible company logo on chest"
+      },
+      "B": {
+        "outfit": "Navy suit, pale blue tie, tiny AT&T globe pin, black dress shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "brian-roberts",
+    "name": "Brian Roberts",
+    "tier": "important",
+    "likeness": "Short dark-gray hair, pale skin, medium build, angular face, clean-shaven, close-set eyes",
+    "variants": {
+      "A": {
+        "outfit": "Dark navy suit, pale blue tie, Comcast NBC peacock lapel pin, black dress shoes, visible company logo on chest"
+      },
+      "B": {
+        "outfit": "Quarter-zip golf pullover, dark slacks, white sneakers, cable-company lanyard, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "mike-wirth",
+    "name": "Mike Wirth",
+    "tier": "important",
+    "likeness": "Short gray hair, pale skin, medium build, square face, clean-shaven, deep-set eyes",
+    "variants": {
+      "A": {
+        "outfit": "Dark Chevron-branded quarter-zip over collared shirt, khaki pants, brown shoes, visible company logo on chest"
+      },
+      "B": {
+        "outfit": "Navy suit, red tie, Chevron lapel pin, black dress shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "darren-woods",
+    "name": "Darren Woods",
+    "tier": "important",
+    "likeness": "Short gray hair, pale skin, medium build, narrow face, clean-shaven, strong nose",
+    "variants": {
+      "A": {
+        "outfit": "Black ExxonMobil fleece over white collared shirt, dark slacks, black shoes, visible company logo on chest"
+      },
+      "B": {
+        "outfit": "Dark suit, red tie, ExxonMobil pin, black dress shoes, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "charles-koch",
+    "name": "Charles Koch",
+    "tier": "important",
+    "likeness": "White hair, pale skin, slim build, long face, thin lips, prominent nose",
+    "variants": {
+      "A": {
+        "outfit": "Dark suit, red tie, American flag pin, black dress shoes, visible company logo on chest"
+      },
+      "B": {
+        "outfit": "Blue checked button-down, tan pants, brown loafers, country-club sweater tied on shoulders, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "david-solomon",
+    "name": "David Solomon",
+    "tier": "important",
+    "likeness": "Short gray hair, pale skin, medium build, broad face, close beard shadow, strong jaw",
+    "variants": {
+      "A": {
+        "outfit": "Dark expensive suit, white shirt, blue tie, black dress shoes, visible company logo on chest"
+      },
+      "B": {
+        "outfit": "Black DJ t-shirt, dark jeans, white sneakers, large over-ear headphones, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "jamie-dimon",
+    "name": "Jamie Dimon",
+    "tier": "important",
+    "likeness": "Silver-gray hair, pale skin, stocky build, broad face, heavy brow, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Dark navy suit, light blue tie, JPMorgan lapel pin, black dress shoes, visible company logo on chest"
+      },
+      "B": {
+        "outfit": "Rolled-sleeve blue oxford shirt, dark slacks, black loafers, no tie, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "stephen-schwarzman",
+    "name": "Stephen Schwarzman",
+    "tier": "important",
+    "likeness": "Silver hair combed back, pale skin, medium build, round face, heavy brow, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Black suit, bright red tie, white shirt, black dress shoes, visible company logo on chest"
+      },
+      "B": {
+        "outfit": "White golf polo, dark slacks, country-club cap, loafers, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "brian-moynihan",
+    "name": "Brian Moynihan",
+    "tier": "standard",
+    "likeness": "Short gray hair, pale skin, medium build, angular face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "gray suit BofA pin, black dress shoes, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "charlie-scharf",
+    "name": "Charlie Scharf",
+    "tier": "important",
+    "likeness": "Very short gray hair, pale skin, medium build, narrow face, thin lips, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Red Wells Fargo tie with dark navy suit, white shirt, black dress shoes, visible company logo on chest"
+      },
+      "B": {
+        "outfit": "Brown fleece vest over blue button-down, khaki pants, brown loafers, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "chris-kempczinski",
+    "name": "Chris Kempczinski",
+    "tier": "important",
+    "likeness": "Short brown-gray hair, pale skin, medium build, oval face, clean-shaven, wide smile lines",
+    "variants": {
+      "A": {
+        "outfit": "Dark suit, red McDonald’s tie, small golden arches pin, black dress shoes, visible company logo on chest"
+      },
+      "B": {
+        "outfit": "Red McDonald’s apron over white shirt, dark pants, non-slip black shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "donnie-king",
+    "name": "Donnie King",
+    "tier": "standard",
+    "likeness": "Short gray hair, pale skin, medium build, oval face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "White Tyson Foods button-down, blue jeans, brown boots, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "raj-subramaniam",
+    "name": "Raj Subramaniam",
+    "tier": "standard",
+    "likeness": "Short dark hair, medium-brown skin, slim build, rectangular glasses, long face",
+    "variants": {
+      "A": {
+        "outfit": "Purple FedEx zip jacket over white shirt, dark pants, black shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "billy-gifford",
+    "name": "Billy Gifford",
+    "tier": "standard",
+    "likeness": "Short gray hair, pale skin, medium build, oval face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Black Altria quarter-zip, khaki pants, brown shoes, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "jim-taiclet",
+    "name": "Jim Taiclet",
+    "tier": "important",
+    "likeness": "Short gray hair, pale skin, tall medium build, square jaw, clean-shaven, deep-set eyes",
+    "variants": {
+      "A": {
+        "outfit": "Dark suit, blue tie, Lockheed Martin pin, black dress shoes, visible company logo on chest"
+      },
+      "B": {
+        "outfit": "Navy bomber jacket with Lockheed patch, gray pants, black boots, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "richard-uihlein",
+    "name": "Richard Uihlein",
+    "tier": "important",
+    "likeness": "Thin white hair, pale skin, slim build, long face, narrow nose, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Blue button-down with red Uline vest, khaki pants, brown shoes, visible company logo on chest"
+      },
+      "B": {
+        "outfit": "Dark blazer over open-collar shirt, white pants, loafers, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "rodney-mcmullen",
+    "name": "Rodney McMullen",
+    "tier": "standard",
+    "likeness": "Short gray hair, pale skin, medium build, long face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Blue Kroger apron over white shirt, dark pants, black shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "ron-vachris",
+    "name": "Ron Vachris",
+    "tier": "standard",
+    "likeness": "Short dark hair, pale skin, stocky build, oval face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Red Costco vest over white dress shirt, khaki pants, brown loafers, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "tim-wentworth",
+    "name": "Tim Wentworth",
+    "tier": "standard",
+    "likeness": "Short gray hair, pale skin, medium build, angular face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Blue Walgreens pharmacy jacket over white shirt, dark pants, black shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "david-joyner",
+    "name": "David Joyner",
+    "tier": "standard",
+    "likeness": "Bald head, medium-dark skin, medium build, oval face, clean-shaven, high forehead",
+    "variants": {
+      "A": {
+        "outfit": "Blue CVS fleece over red polo, khaki pants, gray sneakers, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "corie-barry",
+    "name": "Corie Barry",
+    "tier": "standard",
+    "likeness": "Blonde shoulder-length hair, pale skin, slim build, oval face, high forehead",
+    "variants": {
+      "A": {
+        "outfit": "Blue Best Buy polo shirt, dark pants, black sneakers, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "ernie-herrman",
+    "name": "Ernie Herrman",
+    "tier": "standard",
+    "likeness": "Short gray hair, pale skin, medium build, oval face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Dark suit, white shirt, red tie, black dress shoes, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "mike-creedon",
+    "name": "Mike Creedon",
+    "tier": "standard",
+    "likeness": "Short gray hair, pale skin, medium build, square face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Green Dollar Tree polo shirt, khaki pants, black sneakers, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "vivek-sankaran",
+    "name": "Vivek Sankaran",
+    "tier": "standard",
+    "likeness": "Short dark hair, medium-brown skin, medium build, oval face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Blue Albertsons polo shirt, dark pants, black sneakers, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "kevin-murphy",
+    "name": "Kevin Murphy",
+    "tier": "standard",
+    "likeness": "Short gray hair, pale skin, medium build, rounded face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Green Publix polo shirt, khaki pants, brown shoes, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "tony-spring",
+    "name": "Tony Spring",
+    "tier": "standard",
+    "likeness": "Short dark-gray hair, pale skin, slim build, angular face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Dark suit, white shirt, burgundy tie, black dress shoes, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "richard-dickson",
+    "name": "Richard Dickson",
+    "tier": "standard",
+    "likeness": "Short silver hair, pale skin, slim build, narrow face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Dark Gap hoodie, jeans, white sneakers, visible company logo on chest, plain black belt, rolled sleeves"
+      }
+    }
+  },
+  {
+    "id": "ryan-cohen",
+    "name": "Ryan Cohen",
+    "tier": "important",
+    "likeness": "Short dark hair, pale skin, medium build, trimmed beard, thick eyebrows, angular face",
+    "variants": {
+      "A": {
+        "outfit": "Black GameStop hoodie, dark joggers, red sneakers, visible company logo on chest, plain black belt"
+      },
+      "B": {
+        "outfit": "Crisp navy suit, white shirt, no tie, black loafers, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "mary-dillon",
+    "name": "Mary Dillon",
+    "tier": "standard",
+    "likeness": "Shoulder-length blonde hair, pale skin, medium build, oval face, high forehead",
+    "variants": {
+      "A": {
+        "outfit": "Black Foot Locker referee shirt, black pants, black sneakers, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "erik-nordstrom",
+    "name": "Erik Nordstrom",
+    "tier": "standard",
+    "likeness": "Short brown-gray hair, pale skin, slim build, long face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Dark blazer over open-collar shirt, dark jeans, brown shoes, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "tom-kingsbury",
+    "name": "Tom Kingsbury",
+    "tier": "standard",
+    "likeness": "Short gray hair, pale skin, medium build, round face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Navy Kohl’s polo shirt, khaki pants, white sneakers, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "marc-rosen",
+    "name": "Marc Rosen",
+    "tier": "standard",
+    "likeness": "Short dark hair, pale skin, medium build, oval face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Dark suit, white shirt, blue tie, black dress shoes, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "rj-sheedy",
+    "name": "RJ Sheedy",
+    "tier": "standard",
+    "likeness": "Short gray hair, pale skin, medium build, oval face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Red Grocery Outlet polo shirt, khaki pants, black sneakers, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "ashley-buchanan",
+    "name": "Ashley Buchanan",
+    "tier": "standard",
+    "likeness": "Short dark hair, pale skin, medium build, square jaw, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Purple Michaels apron over white shirt, dark pants, brown shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "chris-ditullio",
+    "name": "Chris DiTullio",
+    "tier": "standard",
+    "likeness": "Short dark hair, pale skin, medium build, beard, broad face",
+    "variants": {
+      "A": {
+        "outfit": "Green Jo-Ann apron over plaid shirt, jeans, brown shoes, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "laura-alber",
+    "name": "Laura Alber",
+    "tier": "standard",
+    "likeness": "Short blonde hair, pale skin, slim build, oval face, high forehead",
+    "variants": {
+      "A": {
+        "outfit": "Cream blouse with Williams-Sonoma apron, dark pants, flats, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "janet-hayes",
+    "name": "Janet Hayes",
+    "tier": "standard",
+    "likeness": "Short blonde hair, pale skin, slim build, oval face, high forehead",
+    "variants": {
+      "A": {
+        "outfit": "Black blazer over white top, dark pants, black flats, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "joel-anderson",
+    "name": "Joel Anderson",
+    "tier": "standard",
+    "likeness": "Short gray hair, pale skin, medium build, angular face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Black Five Below hoodie, jeans, sneakers, visible company logo on chest, plain black belt, rolled sleeves"
+      }
+    }
+  },
+  {
+    "id": "jason-hart",
+    "name": "Jason Hart",
+    "tier": "standard",
+    "likeness": "Short dark hair, pale skin, medium build, oval face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Blue Aldi zip jacket over collared shirt, dark pants, brown shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "joel-rampoldt",
+    "name": "Joel Rampoldt",
+    "tier": "standard",
+    "likeness": "Short light-brown hair, pale skin, medium build, long face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Blue Lidl polo shirt, khaki pants, white sneakers, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "bryan-palbaum",
+    "name": "Bryan Palbaum",
+    "tier": "standard",
+    "likeness": "Short dark hair, pale skin, medium build, oval face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Red Trader Joe’s Hawaiian-style shirt, khaki shorts, white sneakers, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "bob-eddy",
+    "name": "Bob Eddy",
+    "tier": "standard",
+    "likeness": "Short gray hair, pale skin, stocky build, round face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Red BJ’s Wholesale Club vest over white shirt, khaki pants, brown shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "john-menard-jr",
+    "name": "John Menard Jr",
+    "tier": "standard",
+    "likeness": "White hair, pale skin, medium build, oval face, clean-shaven, high forehead",
+    "variants": {
+      "A": {
+        "outfit": "Dark Menards fleece vest over plaid shirt, jeans, brown boots, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "john-venhuizen",
+    "name": "John Venhuizen",
+    "tier": "standard",
+    "likeness": "Short brown-gray hair, pale skin, medium build, broad face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Black Ace Hardware polo shirt, jeans, brown shoes, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "chris-kempa",
+    "name": "Chris Kempa",
+    "tier": "standard",
+    "likeness": "Short dark hair, pale skin, medium build, oval face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Red True Value polo shirt, khaki pants, black sneakers, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "heidi-petz",
+    "name": "Heidi Petz",
+    "tier": "standard",
+    "likeness": "Long blonde hair, pale skin, slim build, oval face, high forehead",
+    "variants": {
+      "A": {
+        "outfit": "Blue Sherwin-Williams button-down, dark pants, black shoes, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "kecia-steelman",
+    "name": "Kecia Steelman",
+    "tier": "standard",
+    "likeness": "Long blonde hair, pale skin, slim build, oval face, high forehead",
+    "variants": {
+      "A": {
+        "outfit": "Orange Ulta Beauty top, black pants, black heels, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "guillaume-motte",
+    "name": "Guillaume Motte",
+    "tier": "standard",
+    "likeness": "Short dark hair, light skin, slim build, angular face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Black Sephora blazer over white shirt, black pants, black shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "james-daunt",
+    "name": "James Daunt",
+    "tier": "standard",
+    "likeness": "Short gray hair, pale skin, slim build, long face, glasses",
+    "variants": {
+      "A": {
+        "outfit": "Dark blazer over open-collar shirt, jeans, brown shoes, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "sumit-singh",
+    "name": "Sumit Singh",
+    "tier": "standard",
+    "likeness": "Short dark hair, medium-brown skin, slim build, narrow face, beard",
+    "variants": {
+      "A": {
+        "outfit": "Blue Chewy hoodie, jeans, white sneakers, visible company logo on chest, plain black belt, rolled sleeves"
+      }
+    }
+  },
+  {
+    "id": "niraj-shah",
+    "name": "Niraj Shah",
+    "tier": "standard",
+    "likeness": "Short dark hair, medium-brown skin, slim build, rectangular glasses, beard",
+    "variants": {
+      "A": {
+        "outfit": "Black Wayfair sweater, dark jeans, gray sneakers, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "josh-silverman",
+    "name": "Josh Silverman",
+    "tier": "standard",
+    "likeness": "Short dark hair, pale skin, medium build, beard, oval face",
+    "variants": {
+      "A": {
+        "outfit": "Blue Etsy t-shirt, jeans, white sneakers, visible company logo on chest, plain black belt, rolled sleeves"
+      }
+    }
+  },
+  {
+    "id": "jamie-iannone",
+    "name": "Jamie Iannone",
+    "tier": "standard",
+    "likeness": "Short gray hair, pale skin, medium build, oval face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Blue eBay zip jacket over t-shirt, jeans, gray sneakers, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "sky-xu",
+    "name": "Sky Xu",
+    "tier": "standard",
+    "likeness": "Short black hair, light skin, slim build, oval face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Black Shein bomber jacket, dark pants, white sneakers, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "daniel-ervr",
+    "name": "Daniel Ervér",
+    "tier": "standard",
+    "likeness": "Short light-brown hair, pale skin, slim build, oval face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "White H&M t-shirt, black pants, white sneakers, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "oscar-garcia-maceiras",
+    "name": "Oscar Garcia Maceiras",
+    "tier": "standard",
+    "likeness": "Short dark hair, light skin, slim build, long face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Dark Zara suit, white shirt, black dress shoes, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "daniel-kulle",
+    "name": "Daniel Kulle",
+    "tier": "standard",
+    "likeness": "Short dark hair, pale skin, medium build, oval face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Black Forever 21 hoodie, ripped jeans, sneakers, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "jay-schottenstein",
+    "name": "Jay Schottenstein",
+    "tier": "standard",
+    "likeness": "Short gray hair, pale skin, stocky build, broad face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Navy American Eagle hoodie, jeans, white sneakers, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "fran-horowitz",
+    "name": "Fran Horowitz",
+    "tier": "standard",
+    "likeness": "Shoulder-length blonde hair, pale skin, slim build, oval face, high forehead",
+    "variants": {
+      "A": {
+        "outfit": "Black blazer over black top, dark pants, black flats, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "kathryn-merrical",
+    "name": "Kathryn Merrical",
+    "tier": "standard",
+    "likeness": "Long dark hair, pale skin, slim build, oval face, high forehead",
+    "variants": {
+      "A": {
+        "outfit": "Black Hot Topic band tee, black jeans, black boots, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "bruce-thorn",
+    "name": "Bruce Thorn",
+    "tier": "standard",
+    "likeness": "Short gray hair, pale skin, medium build, round face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Blue Big Lots polo shirt, khaki pants, brown shoes, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "anthony-hucker",
+    "name": "Anthony Hucker",
+    "tier": "standard",
+    "likeness": "Short dark hair, pale skin, medium build, oval face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Red Winn-Dixie polo shirt, khaki pants, black sneakers, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "meg-ham",
+    "name": "Meg Ham",
+    "tier": "standard",
+    "likeness": "Short blonde hair, pale skin, slim build, oval face, high forehead",
+    "variants": {
+      "A": {
+        "outfit": "Red Food Lion fleece vest over white shirt, dark pants, flats, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "jeremy-gosch",
+    "name": "Jeremy Gosch",
+    "tier": "standard",
+    "likeness": "Short brown hair, pale skin, medium build, oval face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Red Hy-Vee polo shirt, khaki pants, white sneakers, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "rick-keyes",
+    "name": "Rick Keyes",
+    "tier": "standard",
+    "likeness": "Short gray hair, pale skin, medium build, long face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Red Meijer quarter-zip, dark pants, gray sneakers, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "phil-daniele",
+    "name": "Phil Daniele",
+    "tier": "standard",
+    "likeness": "Short gray hair, pale skin, medium build, square face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Black AutoZone polo shirt, khaki pants, black shoes, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "brad-beckham",
+    "name": "Brad Beckham",
+    "tier": "standard",
+    "likeness": "Short gray hair, pale skin, medium build, oval face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Green O’Reilly Auto Parts polo shirt, khaki pants, black shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "shane-okelly",
+    "name": "Shane O'Kelly",
+    "tier": "standard",
+    "likeness": "Short dark hair, pale skin, medium build, beard, broad face",
+    "variants": {
+      "A": {
+        "outfit": "Red Advance Auto Parts polo shirt, dark pants, black shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "mike-manley",
+    "name": "Mike Manley",
+    "tier": "standard",
+    "likeness": "Short gray hair, pale skin, medium build, oval face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Black AutoNation zip jacket, dark pants, brown shoes, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "bill-nash",
+    "name": "Bill Nash",
+    "tier": "standard",
+    "likeness": "Short gray hair, pale skin, medium build, rectangular glasses, oval face",
+    "variants": {
+      "A": {
+        "outfit": "Navy CarMax polo shirt, khaki pants, black sneakers, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "ernie-garcia-iii",
+    "name": "Ernie Garcia III",
+    "tier": "standard",
+    "likeness": "Short dark hair, pale skin, slim build, beard, angular face",
+    "variants": {
+      "A": {
+        "outfit": "Black Carvana hoodie, jeans, white sneakers, visible company logo on chest, plain black belt, rolled sleeves"
+      }
+    }
+  },
+  {
+    "id": "eric-artz",
+    "name": "Eric Artz",
+    "tier": "standard",
+    "likeness": "Short gray hair, pale skin, medium build, glasses, oval face",
+    "variants": {
+      "A": {
+        "outfit": "Green REI fleece over hiking shirt, cargo pants, trail shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "lauren-hobart",
+    "name": "Lauren Hobart",
+    "tier": "standard",
+    "likeness": "Long brown hair, pale skin, slim build, oval face, high forehead",
+    "variants": {
+      "A": {
+        "outfit": "Black Dick’s Sporting Goods vest over white shirt, dark pants, black shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "elliott-hill",
+    "name": "Elliott Hill",
+    "tier": "standard",
+    "likeness": "Bald head, medium-dark skin, athletic build, broad shoulders, oval face",
+    "variants": {
+      "A": {
+        "outfit": "Black Nike track jacket, black joggers, white sneakers, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "bjorn-gulden",
+    "name": "Bjorn Gulden",
+    "tier": "standard",
+    "likeness": "Short gray hair, pale skin, athletic build, square jaw, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Black Adidas track jacket with white stripes, black pants, white sneakers, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "kevin-plank",
+    "name": "Kevin Plank",
+    "tier": "important",
+    "likeness": "Short brown-gray hair, pale skin, athletic build, square jaw, deep-set eyes, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Black Under Armour polo, dark athletic pants, black trainers, visible company logo on chest, plain black belt"
+      },
+      "B": {
+        "outfit": "Quarter-zip performance pullover, baseball cap, dark joggers, running shoes, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "tim-boyle",
+    "name": "Tim Boyle",
+    "tier": "standard",
+    "likeness": "Short gray hair, pale skin, medium build, oval face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Blue Columbia fleece over hiking shirt, khaki pants, hiking shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "robert-greenberg",
+    "name": "Robert Greenberg",
+    "tier": "standard",
+    "likeness": "Bald head, pale skin, medium build, oval face, clean-shaven, high forehead",
+    "variants": {
+      "A": {
+        "outfit": "Black Skechers polo shirt, dark pants, gray sneakers, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "doug-howe",
+    "name": "Doug Howe",
+    "tier": "standard",
+    "likeness": "Short gray hair, pale skin, medium build, oval face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Red DSW polo shirt, khaki pants, black sneakers, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "jeff-seaman",
+    "name": "Jeff Seaman",
+    "tier": "standard",
+    "likeness": "Short gray hair, pale skin, medium build, oval face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Blue Rooms To Go polo shirt, khaki pants, brown shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "todd-wanek",
+    "name": "Todd Wanek",
+    "tier": "standard",
+    "likeness": "Short brown hair, pale skin, medium build, broad face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Blue Ashley Furniture polo shirt, jeans, brown boots, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "melinda-whittington",
+    "name": "Melinda Whittington",
+    "tier": "standard",
+    "likeness": "Short blonde hair, pale skin, slim build, oval face, high forehead",
+    "variants": {
+      "A": {
+        "outfit": "Blue blazer over white top, dark pants, flats, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "gary-friedman",
+    "name": "Gary Friedman",
+    "tier": "important",
+    "likeness": "Long silver-gray hair, pale skin, medium build, goatee, narrow face, heavy eyelids",
+    "variants": {
+      "A": {
+        "outfit": "Black blazer over black t-shirt, dark jeans, black boots, visible company logo on chest, plain black belt"
+      },
+      "B": {
+        "outfit": "Loose white shirt open at the chest, black wide-leg pants, sandals, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "javier-quinones",
+    "name": "Javier Quinones",
+    "tier": "standard",
+    "likeness": "Short dark hair, medium skin, slim build, oval face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Yellow IKEA polo shirt, blue pants, white sneakers, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "tom-taylor",
+    "name": "Tom Taylor",
+    "tier": "standard",
+    "likeness": "Short gray hair, pale skin, medium build, oval face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Black Floor & Decor polo shirt, khaki pants, brown shoes, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "mitch-fadel",
+    "name": "Mitch Fadel",
+    "tier": "standard",
+    "likeness": "Short gray hair, pale skin, medium build, oval face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Blue Rent-A-Center polo shirt, khaki pants, black sneakers, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "douglas-lindsay",
+    "name": "Douglas Lindsay",
+    "tier": "standard",
+    "likeness": "Short gray hair, pale skin, medium build, oval face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Blue Aaron’s polo shirt, dark pants, black sneakers, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "hal-lawton",
+    "name": "Hal Lawton",
+    "tier": "standard",
+    "likeness": "Short gray hair, pale skin, medium build, oval face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Green Tractor Supply vest over plaid shirt, jeans, brown boots, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "jk-symancyk",
+    "name": "J.K. Symancyk",
+    "tier": "standard",
+    "likeness": "Short gray hair, pale skin, medium build, oval face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Blue PetSmart polo shirt, khaki pants, white sneakers, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "sam-altman",
+    "name": "Sam Altman",
+    "tier": "important",
+    "likeness": "Short brown hair parted to the side, pale skin, slim build, narrow face, blue eyes",
+    "variants": {
+      "A": {
+        "outfit": "Dark crewneck sweater, simple slacks, gray sneakers, visible company logo on chest, plain black belt"
+      },
+      "B": {
+        "outfit": "Gray-blue tech vest over plain t-shirt, dark pants, white sneakers, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "tim-cook",
+    "name": "Tim Cook",
+    "tier": "important",
+    "likeness": "Short silver-gray hair, pale skin, lean build, rectangular glasses, narrow face, sharp nose",
+    "variants": {
+      "A": {
+        "outfit": "Black mock turtleneck, dark pants, black sneakers, visible company logo on chest, plain black belt"
+      },
+      "B": {
+        "outfit": "Navy suit, white shirt, tiny silver Apple pin, black dress shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "sundar-pichai",
+    "name": "Sundar Pichai",
+    "tier": "important",
+    "likeness": "Short dark hair graying at the temples, medium-brown skin, slim build, long face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Dark blazer over plain t-shirt, dark pants, brown sneakers, visible company logo on chest, plain black belt"
+      },
+      "B": {
+        "outfit": "Google-color zip hoodie, dark joggers, white sneakers, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "satya-nadella",
+    "name": "Satya Nadella",
+    "tier": "important",
+    "likeness": "Bald head, medium-brown skin, slim build, rectangular glasses, narrow face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Dark sweater over collared shirt, gray slacks, black shoes, visible company logo on chest, plain black belt"
+      },
+      "B": {
+        "outfit": "Charcoal suit, pale shirt, tiny four-color square pin, black dress shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "jensen-huang",
+    "name": "Jensen Huang",
+    "tier": "important",
+    "likeness": "Dark hair graying at the sides, medium skin, medium build, angular face, strong jaw, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Black leather jacket, black t-shirt, dark jeans, black sneakers, visible company logo on chest, plain black belt"
+      },
+      "B": {
+        "outfit": "Open floral vacation shirt over bare chest, dark shorts, sandals, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "larry-fink",
+    "name": "Larry Fink",
+    "tier": "important",
+    "likeness": "Closely cropped gray hair, pale skin, medium build, rounded face, heavy brow, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Dark suit, white shirt, blue tie, black dress shoes, visible company logo on chest, plain black belt"
+      },
+      "B": {
+        "outfit": "Finance-bro fleece vest over blue button-down, khaki pants, brown loafers, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "bob-iger",
+    "name": "Bob Iger",
+    "tier": "important",
+    "likeness": "Short silver hair, tanned light skin, lean build, narrow face, strong jaw, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Tailored navy suit, white shirt, dark tie, black dress shoes, visible company logo on chest"
+      },
+      "B": {
+        "outfit": "Open-collar white resort shirt, dark pants, sunglasses, loafers, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "brian-chesky",
+    "name": "Brian Chesky",
+    "tier": "important",
+    "likeness": "Short brown hair, pale skin, slim build, strong jaw, narrow face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Black t-shirt, blue jeans, white sneakers, visible company logo on chest, plain black belt, rolled sleeves"
+      },
+      "B": {
+        "outfit": "Expensive knit polo, cream pants, loafers, tiny house-key necklace, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "daniel-ek",
+    "name": "Daniel Ek",
+    "tier": "important",
+    "likeness": "Short light-brown hair, pale skin, lean build, oval face, close beard shadow, light eyes",
+    "variants": {
+      "A": {
+        "outfit": "Black hoodie with small green circle logo, dark pants, white sneakers, visible company logo on chest"
+      },
+      "B": {
+        "outfit": "Dark minimalist jacket over gray t-shirt, black jeans, black boots, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "evan-spiegel",
+    "name": "Evan Spiegel",
+    "tier": "important",
+    "likeness": "Short brown hair, pale skin, slim build, youthful face, sharp jaw, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Dark fitted sweater, slim black pants, white sneakers, visible company logo on chest, plain black belt"
+      },
+      "B": {
+        "outfit": "White tennis polo, cream shorts, sunglasses, loafers, visible company logo on chest, plain black belt"
+      }
+    }
+  },
+  {
+    "id": "bill-gates",
+    "name": "Bill Gates",
+    "tier": "important",
+    "likeness": "Short gray hair, pale skin, medium build, square glasses, high forehead, narrow face",
+    "variants": {
+      "A": {
+        "outfit": "Blue button-down tucked into khaki pants, black belt, gray sneakers, square glasses, tiny Windows logo on chest"
+      },
+      "B": {
+        "outfit": "Plum crewneck sweater over light-blue collared shirt, dark slacks, brown loafers, square glasses"
+      }
+    }
+  },
+  {
+    "id": "warren-buffett",
+    "name": "Warren Buffett",
+    "tier": "important",
+    "likeness": "Thin white hair, pale skin, medium build, oval face, large ears, thick black glasses",
+    "variants": {
+      "A": {
+        "outfit": "Dark navy suit, bright red tie, white shirt, black dress shoes, tiny Berkshire Hathaway name badge"
+      },
+      "B": {
+        "outfit": "White short-sleeve polo, khaki pants, brown loafers, thick black glasses, red Coca-Cola can in hand"
+      }
+    }
+  },
+  {
+    "id": "larry-ellison",
+    "name": "Larry Ellison",
+    "tier": "important",
+    "likeness": "Short silver hair, tanned skin, lean build, strong jaw, deep-set eyes, straight nose",
+    "variants": {
+      "A": {
+        "outfit": "Black mock turtleneck, dark blazer, black pants, black loafers, tiny Oracle red logo on chest"
+      },
+      "B": {
+        "outfit": "Open white short-sleeve shirt, dark swim trunks, brown sandals, aviator sunglasses"
+      }
+    }
+  },
+  {
+    "id": "michael-dell",
+    "name": "Michael Dell",
+    "tier": "standard",
+    "likeness": "Short gray hair, pale skin, lean build, long face, narrow jaw, deep-set eyes",
+    "variants": {
+      "A": {
+        "outfit": "Dark blue quarter-zip with small Dell logo, gray chinos, brown shoes, simple watch"
+      }
+    }
+  },
+  {
+    "id": "rupert-murdoch",
+    "name": "Rupert Murdoch",
+    "tier": "important",
+    "likeness": "Thin white hair, pale skin, stocky build, round face, heavy brows, rectangular glasses",
+    "variants": {
+      "A": {
+        "outfit": "Dark suit, blue tie, white shirt, black dress shoes, tiny Fox pin on lapel"
+      },
+      "B": {
+        "outfit": "Navy cardigan over open-collar light-blue shirt, tan trousers, brown loafers, rectangular glasses"
+      }
+    }
+  },
+  {
+    "id": "mark-cuban",
+    "name": "Mark Cuban",
+    "tier": "important",
+    "likeness": "Short dark hair, light skin, medium build, square jaw, broad shoulders, light stubble",
+    "variants": {
+      "A": {
+        "outfit": "Dark navy blazer over black t-shirt, jeans, white sneakers, tiny Shark Tank badge on lapel"
+      },
+      "B": {
+        "outfit": "Royal blue Mavericks t-shirt, dark jeans, white basketball sneakers, tiny Dallas star logo on chest"
+      }
+    }
+  },
+  {
+    "id": "bernard-arnault",
+    "name": "Bernard Arnault",
+    "tier": "standard",
+    "likeness": "Short silver hair, pale skin, slim build, long face, narrow nose, hooded eyes",
+    "variants": {
+      "A": {
+        "outfit": "Dark navy suit, white shirt, black tie, black dress shoes, tiny LVMH monogram pin"
+      }
+    }
+  }
+]

@@ -10,7 +10,10 @@
       "expo-secure-store"
     ],
     "ios": {
-      "bundleIdentifier": "com.anonymous.fuckfascists"
+      "bundleIdentifier": "com.anonymous.fuckfascists",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "F*ck Fascists uses your location to find nearby businesses and check their political donation records."
+      }
     }
   }
 }

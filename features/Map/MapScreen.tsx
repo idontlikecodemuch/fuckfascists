@@ -70,6 +70,8 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
   useEffect(() => {
     if (status !== 'matched' || !result || !location.coords) return;
     const id = result.entityId ?? result.fecCommitteeId;
+    // Guard: empty/falsy id causes a nil key on FlagMarker, crashing AIRMap.
+    if (!id) return;
     const newPin: MapPin = {
       id,
       name: result.canonicalName,

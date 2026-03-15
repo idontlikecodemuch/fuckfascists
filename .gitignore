@@ -21,3 +21,8 @@ assets/data/entities_old3.json
 scripts/output/
 scripts/near-miss-entities.txt
 scripts/unverified-entities.txt
+
+# Image generation tool
+tools/img-gen/output/
+tools/img-gen/.env
+tools/img-gen/cache_id.txt
