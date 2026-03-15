@@ -57,8 +57,11 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
   );
 
   const { status, result, scan, reset } = useEntityScan(deps, location.areaHash ?? '');
+  const mapRef = useRef<MapView>(null);
+  const regionRef = useRef<Region>(DEFAULT_REGION);
+
   const { tapPins, tapLoadingCoord, handleMapPress, handlePoiClick, resetTapPins, markTapPinAvoided } =
-    useTapSearch(deps, location.areaHash ?? '');
+    useTapSearch(deps, location.areaHash ?? '', regionRef);
 
   // Card effect — show BusinessCard whenever a match result arrives.
   useEffect(() => {
@@ -86,8 +89,6 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
   }, [status, result, location.coords]);
 
   const handleSearch = useCallback(async () => {
-    // DIAGNOSTIC — remove before ship
-    console.log('[MapScreen] handleSearch fired — searchText:', JSON.stringify(searchText), 'entities:', entities.length, 'status:', status);
     if (!searchText.trim()) return;
     setActiveResult(null);
     setPins([]);
@@ -117,31 +118,35 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
     reset();
   }, [searchText, reset]);
 
-  const mapRef = useRef<MapView>(null);
-  const [currentRegion, setCurrentRegion] = useState<Region>(DEFAULT_REGION);
-
   useEffect(() => {
     if (!location.coords) return;
     const next: Region = { ...location.coords, latitudeDelta: 0.02, longitudeDelta: 0.02 };
-    setCurrentRegion(next);
+    regionRef.current = next;
     mapRef.current?.animateToRegion(next, 400);
   }, [location.coords]);
 
+  const handleRegionChange = useCallback((r: Region) => {
+    regionRef.current = r;
+  }, []);
+
   const handleZoomIn = useCallback(() => {
-    const next: Region = { ...currentRegion, latitudeDelta: currentRegion.latitudeDelta / 2, longitudeDelta: currentRegion.longitudeDelta / 2 };
-    setCurrentRegion(next);
+    const cur = regionRef.current;
+    const next: Region = { ...cur, latitudeDelta: cur.latitudeDelta / 2, longitudeDelta: cur.longitudeDelta / 2 };
+    regionRef.current = next;
     mapRef.current?.animateToRegion(next, 200);
-  }, [currentRegion]);
+  }, []);
 
   const handleZoomOut = useCallback(() => {
-    const next: Region = { ...currentRegion, latitudeDelta: Math.min(currentRegion.latitudeDelta * 2, 90), longitudeDelta: Math.min(currentRegion.longitudeDelta * 2, 90) };
-    setCurrentRegion(next);
+    const cur = regionRef.current;
+    const next: Region = { ...cur, latitudeDelta: Math.min(cur.latitudeDelta * 2, 90), longitudeDelta: Math.min(cur.longitudeDelta * 2, 90) };
+    regionRef.current = next;
     mapRef.current?.animateToRegion(next, 200);
-  }, [currentRegion]);
+  }, []);
 
   const allPins = useMemo(() => {
-    const existingIds = new Set(pins.map((p) => p.id));
-    return [...pins, ...tapPins.filter((p) => !existingIds.has(p.id))];
+    const pinKey = (p: MapPin) => `${p.id}-${p.coords.latitude}-${p.coords.longitude}`;
+    const existingKeys = new Set(pins.map(pinKey));
+    return [...pins, ...tapPins.filter((p) => !existingKeys.has(pinKey(p)))];
   }, [pins, tapPins]);
 
   return (
@@ -151,7 +156,7 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
         style={styles.map}
         provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : undefined}
         initialRegion={DEFAULT_REGION}
-        onRegionChangeComplete={setCurrentRegion}
+        onRegionChangeComplete={handleRegionChange}
         // iOS: tap anywhere → MKLocalPointsOfInterestRequest within 50m
         onPress={Platform.OS === 'ios' ? handleMapPress : undefined}
         // Android: tap a labeled POI → e.nativeEvent.name passed to matchEntity
@@ -162,7 +167,7 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
       >
         {allPins.map((pin) => (
           <FlagMarker
-            key={pin.id}
+            key={`${pin.id}-${pin.coords.latitude}-${pin.coords.longitude}`}
             coordinate={pin.coords}
             name={pin.name}
             confidence={pin.result.confidence}

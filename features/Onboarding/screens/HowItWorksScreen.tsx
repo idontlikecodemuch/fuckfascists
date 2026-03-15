@@ -8,17 +8,17 @@ interface HowItWorksScreenProps {
 
 const FEATURES = [
   {
-    icon: '🗺',
+    icon: '[+]',
     title: 'MAP',
     desc:  'Scan nearby businesses. Flag GOP donors on your map. Tap AVOIDED and move on.',
   },
   {
-    icon: '\u2713',     // ✓
+    icon: '[✓]',
     title: 'WEEKLY SURVEY',
     desc:  'Check off the platforms and services you skipped this week.',
   },
   {
-    icon: '📋',
+    icon: '[★]',
     title: 'REPORT CARD',
     desc:  'Every Friday, your weekly impact drops — see it, share it, own it.',
   },
@@ -50,7 +50,7 @@ const MONO  = 'monospace' as const;
 const styles = StyleSheet.create({
   list:      { gap: 16 },
   card:      { flexDirection: 'row', borderWidth: 3, borderColor: BLACK, padding: 14, backgroundColor: WHITE, gap: 14 },
-  icon:      { fontSize: 28, width: 36, textAlign: 'center' },
+  icon:      { fontFamily: MONO, fontSize: 15, fontWeight: 'bold', color: RED, width: 36, textAlign: 'center', lineHeight: 20, paddingTop: 2 },
   cardBody:  { flex: 1 },
   cardTitle: { fontFamily: MONO, fontSize: 13, fontWeight: 'bold', color: RED, letterSpacing: 2, marginBottom: 6 },
   cardDesc:  { fontFamily: MONO, fontSize: 12, color: '#333', lineHeight: 18 },

@@ -153,6 +153,14 @@ export const ENTITY_LIST_UPDATE_URL = 'https://raw.githubusercontent.com/[org]/f
 // Info / FAQ / transparency content — editable in the data repo without an app release
 export const INFO_CONTENT_URL = 'https://raw.githubusercontent.com/[org]/fuckfascists-data/main/info.json';
 
+// Map POI tap search — dynamic radius computed from visible region span.
+// Default fallback when region is unavailable; min/max clamps for the dynamic calculation.
+export const POI_SEARCH_RADIUS_METERS = 50;
+export const POI_SEARCH_RADIUS_MIN_METERS = 25;
+export const POI_SEARCH_RADIUS_MAX_METERS = 200;
+export const TAP_CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes
+export const TAP_DEBOUNCE_MS = 500;
+
 // Controls whether the public figure / CEO name is shown in specific UI contexts.
 // SHOW_FIGURE_NAME_IN_CARD: false — business card is an informational FEC data screen.
 // SHOW_FIGURE_NAME_IN_POPUP: true — extension popup benefits from confrontational framing.
@@ -425,6 +433,7 @@ After writing any file, scan it once for deprecated APIs, `.then()` chains, `var
 - **`expo-notifications`** — `scheduleNotificationAsync()` with typed trigger objects is current. Use `DateTriggerInput` etc. from the types; do not use the old string-based trigger format.
 - **`expo-secure-store`** — `setItemAsync()` / `getItemAsync()` / `deleteItemAsync()` are current.
 - **Native modules** — one exists: `MapKitSearchModule` (iOS only). Expo Modules API, Swift source at `modules/mapkit-search/ios/MapKitSearchModule.swift`, TS wrapper at `features/Map/nativeModules/MapKitSearch.ts`. Registered in root `package.json` as `"mapkit-search": "file:./modules/mapkit-search"` — CocoaPods discovers it on `expo prebuild`. **Do not add `expo.autolinking.searchPaths`** — it replaces default paths and breaks react-native resolution. Returns `[]` silently when not linked. Do not use the old `NativeModules` bridge — project has `newArchEnabled: true`.
+- **MKLocalSearch must run on the main thread** — `MapKitSearchModule.swift` wraps the `MKLocalSearch` creation and `.start()` call in `DispatchQueue.main.async { }`. Expo Modules `AsyncFunction` bodies run on a background queue, but `MKLocalSearch` silently hangs if started off the main thread — the completion handler never fires, the JS promise never resolves, and the app appears frozen. This was the critical physical-device fix. Do not remove the dispatch wrapper.
 
 ### Jest 29
 - **`jest.createMockFromModule()`** — use this; never the legacy `jest.genMockFromModule()`.
@@ -446,7 +455,10 @@ After writing any file, scan it once for deprecated APIs, `.then()` chains, `var
 - **No magic numbers** — any threshold, TTL, size, or timing value belongs in `config/constants.ts`.
 - **Error boundaries** — all async paths in hooks must handle rejection. Use the cancelled-flag pattern for `useEffect` cleanup (see `useInfoContent.ts` for the canonical example).
 - **Update this section** — if you encounter a new deprecation warning, a breaking API change, or a pattern that caused a runtime bug in this project, add it here before finishing the session.
-- **react-native-maps — `AIRMap insertReactSubview:atIndex:` nil crash** — caused by a `<Marker>` rendered with `key=""` or `key={undefined}`. In Fabric (new arch), a falsy key causes the reconciler to pass a nil native view to the map's subview array → hard crash. Always guard `id = entityId ?? fecCommitteeId` with `if (!id) return/continue` before creating a `MapPin` or rendering a `Marker`. Both `useTapSearch.ts` and `MapScreen.tsx` pin effect have this guard.
+- **react-native-maps — `AIRMap insertReactSubview:atIndex:` nil crash** — caused by a `<Marker>` rendered with `key=""` or `key={undefined}`. In Fabric (new arch), a falsy key causes the reconciler to pass a nil native view to the map's subview array → hard crash. **Two layers of defense:**
+  - **JS guard (primary):** Always guard `id = entityId ?? fecCommitteeId` with `if (!id) return/continue` before creating a `MapPin` or rendering a `Marker`. Both `useTapSearch.ts` and `MapScreen.tsx` pin effect have this guard.
+  - **Native guard (defense-in-depth):** `AIRMap.m` patched with `if (subview == nil) return` at the top of `insertReactSubview:atIndex:`, `removeReactSubview:`, and `addSubview:`. This prevents the `NSInvalidArgumentException` even if a nil subview leaks through from the Fabric reconciler for any reason. **This patch lives in the Pods source and will be overwritten by `pod install`.** If it recurs, add a `post_install` hook in the Podfile to re-apply the guard, or pin a forked react-native-maps pod.
+- **react-native-maps — `onRegionChangeComplete` render loop** — storing the map region in `useState` and passing the setter directly to `onRegionChangeComplete` creates an infinite re-render loop: region change → setState → re-render MapView → region change → ... The app freezes. **Fix:** Store region in a `useRef` instead of `useState` — the region is only consumed by zoom callbacks (never rendered directly), so it doesn't need to trigger re-renders. `MapScreen.tsx` uses `regionRef` with a stable `handleRegionChange` callback. Do not revert this to `useState`.
 - **V2 cleanup — extension confidence CSS classes** — `popup.ts` uses `'HIGH'`/`'MEDIUM'` string class names derived from numeric scores. In V2, rename to BEM format (`confidence-badge--high`/`--medium`).
 
 ---
@@ -503,6 +515,9 @@ After writing any file, scan it once for deprecated APIs, `.then()` chains, `var
 
 ### Independent Expenditures — IE tracking (Priority: V3)
 Schedule E (independent expenditures) is not tracked. IEs are spending by outside groups to support/oppose candidates — for high-profile individuals (Musk, Bezos) this may be their most significant political activity. V3 should add `ieContributions` to `Entity` and `PoliticalPerson` and query `/schedules/schedule_e/`. IE data uses a different query pattern (filer = spender, not recipient) — do not conflate with Schedule A or B.
+
+### AIRMap.m nil guard patch — pod install fragile (Priority: V1 hardening)
+`AIRMap.m` in the `react-native-maps` pod has been patched with nil guards on `insertReactSubview:atIndex:`, `removeReactSubview:`, and `addSubview:`. This patch is overwritten on every `pod install`. Options: (1) add a `post_install` hook in the Podfile that patches the file automatically, (2) fork `react-native-maps` and pin to the fork, (3) upstream the fix. Option 1 is the lowest-friction V1 solution.
 
 ### V2: Optional Server Schedule Override
 Drop time is computed on-device (see `core/dropSchedule/computeDropTime.ts`). V2 may add a lightweight server ping for: schedule overrides, entity list freshness checks, info content freshness checks. Constraints: minimal data (version hashes only, no payloads), no user-identifying or behavioral data, app functions identically if ping fails. The ping is a freshness hint, not a dependency. Do not build now.

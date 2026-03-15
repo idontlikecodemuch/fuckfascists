@@ -96,10 +96,10 @@ export function BusinessCard({ result, onAvoid, avoidDisabled = false, onDismiss
         <>
           {/* ── Recent cycle (prominent, always shown) ── */}
           <View style={styles.recentSection}>
-            <Text style={styles.recentAmount} allowFontScaling>
+            <Text style={[styles.recentAmount, styles.recentGOP]} allowFontScaling>
               GOP {formatDonationAmount(donationSummary.recentRepubs)}
             </Text>
-            <Text style={styles.recentAmount} allowFontScaling>
+            <Text style={[styles.recentAmount, styles.recentDEM]} allowFontScaling>
               DEM {formatDonationAmount(donationSummary.recentDems)}
             </Text>
             <Text style={styles.recentCycleLabel} allowFontScaling>
@@ -166,7 +166,7 @@ const WHITE  = '#F5F5F0';
 const RED    = '#CC0000';
 const MUTED  = '#888888';
 const AMBER  = '#CC7A00';
-const BLUE   = '#0066CC';
+const BLUE   = '#0044AA';
 const MONO   = 'monospace' as const;
 
 const styles = StyleSheet.create({
@@ -184,7 +184,9 @@ const styles = StyleSheet.create({
 
   // Recent cycle — visually prominent
   recentSection:     { borderTopWidth: 2, borderColor: BLACK, paddingTop: 10, marginBottom: 6 },
-  recentAmount:      { fontFamily: MONO, fontSize: 18, fontWeight: 'bold', color: RED },
+  recentAmount:      { fontFamily: MONO, fontSize: 18, fontWeight: 'bold', color: BLACK },
+  recentGOP:         { color: RED },
+  recentDEM:         { color: BLUE },
   recentCycleLabel:  { fontFamily: MONO, fontSize: 12, color: MUTED, marginTop: 2 },
 
   // Since 2016 totals — smaller, contextual

@@ -12,6 +12,64 @@ This document is updated continuously. New instances should read this first — 
 
 ## Last 5 Sessions (most recent first)
 
+### Session: March 15, 2026
+**Focus:** Map crash fixes + four physical-device map improvements
+
+**Completed:**
+- **Native nil guard (defense-in-depth):** Patched `AIRMap.m` (react-native-maps pod) with `if (subview == nil) return` at the top of `insertReactSubview:atIndex:`, `removeReactSubview:`, and `addSubview:`. The JS-level guards (falsy `key` prevention) were already in place from March 14, but the crash still occurred — Fabric reconciler can pass nil subviews for reasons beyond just falsy keys (e.g., custom `View` children inside `Marker` failing to materialize native backing views). The native guard prevents the `NSInvalidArgumentException` regardless of cause.
+- **Region render loop fix:** `MapScreen.tsx` stored the map region in `useState` and passed `setCurrentRegion` directly to `onRegionChangeComplete`. Every region change triggered a re-render, which could trigger another region change — infinite loop → app freeze. Replaced `useState<Region>` with `useRef<Region>`. The region is only consumed by zoom callbacks (never rendered), so no state needed. `handleZoomIn`/`handleZoomOut` now have empty dependency arrays and read from the ref.
+- **MKLocalSearch main-thread fix (critical):** `MapKitSearchModule.swift` `AsyncFunction` body already wrapped `MKLocalSearch` creation and `.start()` in `DispatchQueue.main.async { }`. Expo Modules `AsyncFunction` runs on a background queue, but `MKLocalSearch` silently hangs if started off the main thread — the completion handler never fires, the JS promise never resolves, and the app appears frozen on physical devices. Confirmed the dispatch wrapper was already in place; documented as a hard constraint in CLAUDE.md.
+- **Auto-center on user location:** `useLocation` now auto-requests foreground permission and current position once on mount (via `useEffect` + `didAutoRequest` ref guard). Map centers on the user's actual location instead of SF default. Falls back to SF if permission denied or location unavailable.
+- **Dynamic POI search radius:** Replaced fixed `POI_SEARCH_RADIUS_METERS` (50m) with zoom-proportional computation: ~5% of the shorter visible span dimension, clamped to 25m–200m. `computeSearchRadius()` in `useTapSearch.ts` converts region deltas to meters using `111,320m/deg × cos(lat)`. `regionRef` passed from `MapScreen` to the hook. Constants `POI_SEARCH_RADIUS_MIN_METERS` (25) and `POI_SEARCH_RADIUS_MAX_METERS` (200) added to `config/constants.ts`.
+- **Duplicate marker key fix:** `FlagMarker` React key changed from `pin.id` to `${pin.id}-${pin.coords.latitude}-${pin.coords.longitude}`. When multiple nearby POIs match the same entity (e.g. two Best Buy locations), they now have unique keys. `allPins` dedup updated to use the same composite key. V2 note added to `useTapSearch.ts`: when >5 POI matches from a single tap, show a scrollable bottom-sheet chooser.
+- Updated CLAUDE.md: MKLocalSearch main-thread rule, POI search constants, dynamic radius documentation
+- Updated PROGRESS.md (this file)
+
+**Files changed:**
+- `features/Map/MapScreen.tsx` — regionRef moved up for useTapSearch, composite marker keys, composite dedup
+- `features/Map/hooks/useTapSearch.ts` — `computeSearchRadius()`, `regionRef` param, V2 bottom-sheet comment
+- `features/Map/hooks/useLocation.ts` — auto-request on mount
+- `config/constants.ts` — `POI_SEARCH_RADIUS_MIN_METERS`, `POI_SEARCH_RADIUS_MAX_METERS`
+- `modules/mapkit-search/ios/MapKitSearchModule.swift` — confirmed main-thread dispatch (no code change needed)
+- `AIRMap.m` (Pods) — nil guards (from earlier in session)
+- `CLAUDE.md` — MKLocalSearch rule, POI constants, dynamic radius docs
+- `docs/PROGRESS.md` — this session
+
+**Build:** Clean (Xcode, 0 errors)
+
+**Note:** The `AIRMap.m` patch lives in Pods source and will be overwritten by `pod install`. If it recurs, add a `post_install` hook in the Podfile.
+
+**Pending:**
+- Podfile `post_install` hook for the AIRMap.m patch (V1 hardening)
+- iOS simulator interactive smoke test
+- Physical device geolocation test
+
+---
+
+### Session: March 14, 2026 (follow-up)
+**Focus:** UX/UI audit + visual pass
+
+**Audit findings (all fixed this session):**
+- `MapScreen.tsx:90` — removed stale `console.log` diagnostic (marked "remove before ship")
+- `ReportCardView` — removed `overflow: 'hidden'` on card; was clipping `PreviewStamp` (positioned `right: -10` with 12deg rotation)
+- `BusinessCard` — GOP and DEM donation amounts both rendered in same RED; added `recentGOP` (red) and `recentDEM` (blue `#0044AA`) styles
+- Splash screen — just an amber spinner on black; added `F*CK FASCISTS` title in monospace RED with proper letterSpacing
+- Tab bar — `paddingBottom: 20` hardcoded; replaced with `useSafeAreaInsets()`. Extracted `TabBar` component (must be inside `SafeAreaProvider` to call hook). Added text-art icons (`[ + ]`, `[ ✓ ]`, `[ ★ ]`, `[ ? ]`). Active tab now has `backgroundColor: '#2A2A2A'` highlight. Colors: `#f5a623` → `#CC7A00`, `borderTopColor: '#333'` → `#CC7A00`
+- `SurveyScreen` score text — `#3CB371` (non-palette) → `#CC7A00` (amber)
+- `ReportCard` empty state — bland copy → confrontational: "YOUR MONEY IS STILL FUNDING FASCISTS. Hit the Map. Hit the Survey. Make them feel it." styled in RED bold
+- `HowItWorksScreen` — emoji icons (🗺, 📋) → text-art (`[+]`, `[✓]`, `[★]`) styled in RED monospace; `accessible={false}` preserved on all icon nodes
+- `OnboardingNavigator` — emoji icon props (📍, 🔔) → text-art (`[PIN]`, `[!]`)
+- `PermissionScreen` — `fontSize: 64` emoji icon → bordered monospace box with `RED` text, thick border, letterSpacing
+- `AvoidButton` — immediate state change on confirm → scale animation (1 → 1.12 → 1, 80+120ms) via `Animated.View`. Respects `AccessibilityInfo.isReduceMotionEnabled()`. Error state resets scale immediately.
+
+**tsc clean. No tests changed.**
+
+**Pending:**
+- iOS simulator interactive smoke test (MapKit POI tap, full vertical slice) — run manually
+- Physical device geolocation test
+
+---
+
 ### Session: March 14, 2026
 **Focus:** iOS Map crash fix + sprite generation tool (tools/img-gen/)
 
@@ -253,7 +311,7 @@ The Swift source now lives authoritatively at `modules/mapkit-search/ios/MapKitS
 | Item | Status | Priority |
 |---|---|---|
 | Donation amounts showing in BusinessCard | Verified working (Walmart: $3.65M R / $3.1M D) | ✅ Resolved |
-| Map POI tap → entity matching | Built, linked, and running on simulator — iOS tap path pending interactive test | 🟡 Smoke test needed |
+| Map POI tap → entity matching | Built, linked, running on simulator — AIRMap nil crash fixed (native guard + JS guard), region render loop fixed | 🟡 Smoke test needed |
 | Physical device geolocation test | Not done | 🟡 V1 needed |
 | 3 entities pending retry (sherwin-williams, baker-hughes, chick-fil-a) | Run plain fetch:donations | 🟡 Nice to have |
 | people.json individual donor data | Not started | 🟠 V1.5 |
@@ -264,9 +322,10 @@ The Swift source now lives authoritatively at `modules/mapkit-search/ios/MapKitS
 
 ## Immediate Next Steps (in order)
 
-1. **iOS simulator smoke test** — `npx expo start`, launch from simulator, walk the full vertical slice (map scan → flag → business card → avoid tap → survey → report card). Verify MapKit POI tap fires on iOS.
-2. **Physical device geolocation** — test on hardware, not simulator
-3. **UX/UI + Content pass** — new agent instance, full analysis, 8-bit design system, user journey, copy rewrite
+1. **Podfile `post_install` hook** — automate the `AIRMap.m` nil guard patch so it survives `pod install`. See Known Limitations in CLAUDE.md.
+2. **iOS simulator smoke test** — `npx expo start`, launch from simulator, walk the full vertical slice (map scan → flag → business card → avoid tap → survey → report card). Verify MapKit POI tap fires on iOS. Confirm map no longer freezes on region change.
+3. **Physical device geolocation** — test on hardware, not simulator
+4. **UX/UI + Content pass** — new agent instance, full analysis, 8-bit design system, user journey, copy rewrite
 
 ---
 

@@ -67,8 +67,9 @@ export const ReportCardView = forwardRef<View, ReportCardViewProps>(
         {totalEntityAvoids === 0 && platformAvoids.length === 0 && (
           <View style={styles.emptyState}>
             <Text style={styles.emptyText} allowFontScaling={false}>
-              No avoidances recorded this week yet.{'\n'}
-              Use the Map or Survey tab to get started.
+              YOUR MONEY IS STILL{'\n'}FUNDING FASCISTS.{'\n\n'}
+              Hit the Map. Hit the Survey.{'\n'}
+              Make them feel it.
             </Text>
           </View>
         )}
@@ -114,7 +115,7 @@ const RED    = '#CC0000';
 const MONO   = 'monospace' as const;
 
 const styles = StyleSheet.create({
-  card:          { backgroundColor: WHITE, borderColor: BLACK, borderWidth: 4, overflow: 'hidden' },
+  card:          { backgroundColor: WHITE, borderColor: BLACK, borderWidth: 4 },
   header:        { backgroundColor: BLACK, padding: 16, alignItems: 'center' },
   title:         { fontFamily: MONO, fontSize: 22, fontWeight: 'bold', color: RED, letterSpacing: 4 },
   subtitle:      { fontFamily: MONO, fontSize: 13, color: WHITE, letterSpacing: 6, marginTop: 2 },
@@ -130,7 +131,7 @@ const styles = StyleSheet.create({
   rowCount:      { fontFamily: MONO, fontSize: 13, color: RED, marginLeft: 8 },
   platformList:  { fontFamily: MONO, fontSize: 12, color: BLACK, lineHeight: 20 },
   emptyState:    { padding: 24, alignItems: 'center' },
-  emptyText:     { fontFamily: MONO, fontSize: 12, color: '#888', textAlign: 'center', lineHeight: 20 },
+  emptyText:     { fontFamily: MONO, fontSize: 12, color: RED, textAlign: 'center', lineHeight: 20, fontWeight: 'bold' },
   footer:        { backgroundColor: '#EEE', padding: 8, alignItems: 'center', borderTopWidth: 2, borderColor: BLACK },
   footerText:    { fontFamily: MONO, fontSize: 9, color: '#888', letterSpacing: 1 },
 });

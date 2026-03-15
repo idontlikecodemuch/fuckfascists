@@ -29,16 +29,20 @@ public class MapKitSearchModule: Module {
       let request = MKLocalPointsOfInterestRequest(center: center, radius: radiusMeters)
       // No pointOfInterestFilter — return all nearby POI types.
 
-      let search = MKLocalSearch(request: request)
-      search.start { response, error in
-        if let error = error {
-          // Fail silently from the user's perspective — log only.
-          print("[MapKitSearch] MKLocalPointsOfInterestRequest error: \(error.localizedDescription)")
-          promise.resolve([String]())
-          return
+      // MKLocalSearch must be created and started on the main thread.
+      // AsyncFunction runs on a background queue — dispatch explicitly.
+      DispatchQueue.main.async {
+        let search = MKLocalSearch(request: request)
+        search.start { response, error in
+          if let error = error {
+            // Fail silently from the user's perspective — log only.
+            print("[MapKitSearch] MKLocalPointsOfInterestRequest error: \(error.localizedDescription)")
+            promise.resolve([String]())
+            return
+          }
+          let names = response?.mapItems.compactMap { $0.name } ?? []
+          promise.resolve(names)
         }
-        let names = response?.mapItems.compactMap { $0.name } ?? []
-        promise.resolve(names)
       }
     }
   }

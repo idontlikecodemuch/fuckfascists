@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import * as ExpoLocation from 'expo-location';
 import { toAreaHash } from '../utils/areaHash';
 
@@ -68,6 +68,14 @@ export function useLocation() {
       });
     }
   }, []);
+
+  // Auto-request location once on mount so the map centers on the user.
+  const didAutoRequest = useRef(false);
+  useEffect(() => {
+    if (didAutoRequest.current) return;
+    didAutoRequest.current = true;
+    requestLocation();
+  }, [requestLocation]);
 
   return { ...state, requestLocation };
 }

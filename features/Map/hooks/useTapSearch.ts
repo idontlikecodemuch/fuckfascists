@@ -1,10 +1,17 @@
-import { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import type { MatchingDeps } from '../../../core/matching';
 import { matchEntity } from '../../../core/matching';
 import { buildScanResult } from '../utils/buildScanResult';
 import { MapKitSearch } from '../nativeModules/MapKitSearch';
 import type { MapPin } from '../types';
-import { POI_SEARCH_RADIUS_METERS, TAP_CACHE_TTL_MS, TAP_DEBOUNCE_MS } from '../../../config/constants';
+import {
+  POI_SEARCH_RADIUS_METERS,
+  POI_SEARCH_RADIUS_MIN_METERS,
+  POI_SEARCH_RADIUS_MAX_METERS,
+  TAP_CACHE_TTL_MS,
+  TAP_DEBOUNCE_MS,
+} from '../../../config/constants';
+import type { Region } from 'react-native-maps';
 
 export interface LatLng {
   latitude: number;
@@ -36,6 +43,28 @@ function tapCellKey(lat: number, lng: number): string {
   return `${r(lat)},${r(lng)}`;
 }
 
+// V2: When more than 5 POI matches are returned from a single tap, show a
+// scrollable bottom-sheet chooser instead of (or in addition to) stacked
+// markers. For MVP, all matches render as markers regardless of count.
+
+/**
+ * Computes a POI search radius proportional to the visible map region.
+ * ~5% of the shorter span dimension (converted to meters), clamped to
+ * POI_SEARCH_RADIUS_MIN_METERS..POI_SEARCH_RADIUS_MAX_METERS.
+ * Falls back to POI_SEARCH_RADIUS_METERS when region is unavailable.
+ *
+ * 1° latitude ≈ 111,320m everywhere.
+ * 1° longitude ≈ 111,320m × cos(latitude).
+ */
+function computeSearchRadius(region: Region | null): number {
+  if (!region) return POI_SEARCH_RADIUS_METERS;
+  const latMeters = region.latitudeDelta * 111_320;
+  const lngMeters = region.longitudeDelta * 111_320 * Math.cos((region.latitude * Math.PI) / 180);
+  const shorterSpan = Math.min(latMeters, lngMeters);
+  const radius = shorterSpan * 0.05;
+  return Math.max(POI_SEARCH_RADIUS_MIN_METERS, Math.min(POI_SEARCH_RADIUS_MAX_METERS, radius));
+}
+
 /**
  * Handles iOS (onPress → MKLocalPointsOfInterestRequest) and Android
  * (onPoiClick → nativeEvent.name) tap-to-match flows.
@@ -46,7 +75,7 @@ function tapCellKey(lat: number, lng: number): string {
  *   - Cache key is a rounded string, not precise coordinates.
  *   - MapKitSearch does not access device GPS. Coordinate comes from the tap event.
  */
-export function useTapSearch(deps: MatchingDeps, areaHash: string) {
+export function useTapSearch(deps: MatchingDeps, areaHash: string, regionRef?: React.RefObject<Region>) {
   const [tapPins, setTapPins] = useState<MapPin[]>([]);
   const [tapLoadingCoord, setTapLoadingCoord] = useState<LatLng | null>(null);
   const cellCache = useRef<Map<string, CellCacheEntry>>(new Map());
@@ -113,10 +142,11 @@ export function useTapSearch(deps: MatchingDeps, areaHash: string) {
           return;
         }
 
+        const radius = computeSearchRadius(regionRef?.current ?? null);
         const names = await MapKitSearch.searchNearby(
           coordinate.latitude,
           coordinate.longitude,
-          POI_SEARCH_RADIUS_METERS
+          radius
         );
 
         cellCache.current.set(cellKey, { names, expiresAt: Date.now() + TAP_CACHE_TTL_MS });

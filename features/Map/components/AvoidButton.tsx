@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Pressable, Text, StyleSheet } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import { Animated, Pressable, Text, StyleSheet, AccessibilityInfo } from 'react-native';
 
 interface AvoidButtonProps {
   onPress: () => Promise<void>;
@@ -13,21 +13,42 @@ interface AvoidButtonProps {
  * user taps it — the tap is the affirmative avoidance action.
  *
  * Minimum tap target: 44×44pt (Apple HIG / WCAG 2.5.5).
- * Reduced-motion: no animation — state change is immediate.
+ * Reduced-motion: animation disabled — state change is immediate.
  */
 export function AvoidButton({ onPress, disabled = false }: AvoidButtonProps) {
   const [confirmed, setConfirmed] = useState(false);
   const [error, setError] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  // Scale animation: quick punch on confirm (1 → 1.1 → 1), disabled when reduced-motion is on.
+  const scaleAnim = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    let cancelled = false;
+    AccessibilityInfo.isReduceMotionEnabled().then((enabled) => {
+      if (!cancelled) setReducedMotion(enabled);
+    });
+    return () => { cancelled = true; };
+  }, []);
 
   async function handlePress() {
     if (confirmed || disabled) return;
     setConfirmed(true);
     setError(false);
+
+    if (!reducedMotion) {
+      Animated.sequence([
+        Animated.timing(scaleAnim, { toValue: 1.12, duration: 80, useNativeDriver: true }),
+        Animated.timing(scaleAnim, { toValue: 1,    duration: 120, useNativeDriver: true }),
+      ]).start();
+    }
+
     try {
       await onPress();
     } catch {
       setConfirmed(false);
       setError(true);
+      scaleAnim.setValue(1);
     }
   }
 
@@ -35,19 +56,21 @@ export function AvoidButton({ onPress, disabled = false }: AvoidButtonProps) {
   const accessLabel = error ? 'Avoid failed — try again' : confirmed ? 'Avoided — confirmed' : 'Mark as avoided';
 
   return (
-    <Pressable
-      onPress={handlePress}
-      disabled={confirmed || disabled}
-      style={[styles.button, confirmed && styles.confirmed, error && styles.errored]}
-      accessibilityRole="button"
-      accessibilityLabel={accessLabel}
-      accessibilityState={{ disabled: confirmed || disabled }}
-      hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-    >
-      <Text style={styles.label} allowFontScaling>
-        {label}
-      </Text>
-    </Pressable>
+    <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+      <Pressable
+        onPress={handlePress}
+        disabled={confirmed || disabled}
+        style={[styles.button, confirmed && styles.confirmed, error && styles.errored]}
+        accessibilityRole="button"
+        accessibilityLabel={accessLabel}
+        accessibilityState={{ disabled: confirmed || disabled }}
+        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+      >
+        <Text style={styles.label} allowFontScaling>
+          {label}
+        </Text>
+      </Pressable>
+    </Animated.View>
   );
 }
 

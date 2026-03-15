@@ -28,10 +28,13 @@ export const ENTITY_LIST_UPDATE_URL = 'https://raw.githubusercontent.com/[org]/f
 export const INFO_CONTENT_URL = 'https://raw.githubusercontent.com/[org]/fuckfascists-data/main/info.json';
 
 // Map POI tap search
-// Radius passed to MKLocalPointsOfInterestRequest on iOS.
-// Conservative by design — covers finger-tap imprecision without pulling in
-// businesses across the street. Widen after real-world testing if match rate is low.
+// Default radius passed to MKLocalPointsOfInterestRequest on iOS.
+// At runtime, radius is computed dynamically from the visible region span
+// (~5% of shorter dimension, clamped to MIN/MAX). This constant is the
+// fallback when region data is unavailable.
 export const POI_SEARCH_RADIUS_METERS = 50;
+export const POI_SEARCH_RADIUS_MIN_METERS = 25;
+export const POI_SEARCH_RADIUS_MAX_METERS = 200;
 // How long a tap cell's POI name list is cached in-memory before re-querying.
 export const TAP_CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes
 // Leading-edge debounce for iOS onPress tap search. First tap fires immediately;

@@ -72,7 +72,7 @@ const MONO  = 'monospace' as const;
 
 const styles = StyleSheet.create({
   content:      { alignItems: 'center', paddingTop: 16 },
-  icon:         { fontSize: 64, marginBottom: 28 },
+  icon:         { fontFamily: MONO, fontSize: 36, fontWeight: 'bold', color: RED, marginBottom: 28, letterSpacing: 4, borderWidth: 3, borderColor: BLACK, paddingHorizontal: 16, paddingVertical: 10 },
   why:          { fontFamily: MONO, fontSize: 15, color: '#333', lineHeight: 24, textAlign: 'center', marginBottom: 32 },
   promiseBox:   { borderWidth: 3, borderColor: BLACK, padding: 16, backgroundColor: WHITE, width: '100%' },
   promiseLabel: { fontFamily: MONO, fontSize: 10, fontWeight: 'bold', color: RED, letterSpacing: 2, marginBottom: 8 },
