@@ -4,6 +4,7 @@ import { useInfoContent } from './hooks/useInfoContent';
 import { InfoSection } from './components/InfoSection';
 import { FaqItem } from './components/FaqItem';
 import { LinkRow } from './components/LinkRow';
+import { infoCopy } from '../../copy/info';
 
 /**
  * Info screen — transparency, about, FAQ, and links.
@@ -24,13 +25,13 @@ export function InfoScreen() {
         {/* ── Page header ── */}
         <View style={styles.pageHeader}>
           <Text style={styles.pageTitle} accessibilityRole="header" allowFontScaling={false}>
-            INFO
+            {infoCopy.title}
           </Text>
           <Text style={styles.pageVersion} allowFontScaling>v{content.version}</Text>
         </View>
 
         {/* ── About ── */}
-        <InfoSection title="ABOUT">
+        <InfoSection title={infoCopy.about}>
           <View style={styles.pad}>
             <Text style={styles.tagline} allowFontScaling>{about.tagline}</Text>
             <Text style={styles.body} allowFontScaling>{about.description}</Text>
@@ -39,7 +40,7 @@ export function InfoScreen() {
         </InfoSection>
 
         {/* ── Transparency ── */}
-        <InfoSection title="HOW THE DATA WORKS">
+        <InfoSection title={infoCopy.data}>
           {transparency.map((point) => (
             <View key={point.id} style={styles.tPoint}>
               <Text style={styles.tTitle} allowFontScaling>{point.title}</Text>
@@ -49,14 +50,14 @@ export function InfoScreen() {
         </InfoSection>
 
         {/* ── FAQ ── */}
-        <InfoSection title="FAQ">
+        <InfoSection title={infoCopy.faq}>
           {faq.map((entry) => (
             <FaqItem key={entry.id} entry={entry} />
           ))}
         </InfoSection>
 
         {/* ── Links ── */}
-        <InfoSection title="LINKS & SOURCE">
+        <InfoSection title={infoCopy.links}>
           {links.map((entry) => (
             <LinkRow key={entry.id} entry={entry} />
           ))}

@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { mapCopy } from '../../../copy/map';
 
 interface UnmatchedBannerProps {
   searchText: string;
@@ -17,8 +18,8 @@ const WHITE = '#F5F5F0';
  */
 export function UnmatchedBanner({ searchText, onOpenSearch, variant = 'no_match' }: UnmatchedBannerProps) {
   const message = variant === 'lookup_unavailable'
-    ? `Couldn't check "${searchText}" — try again later. `
-    : `"${searchText}" — not confidently matched. `;
+    ? mapCopy.lookupFailed(searchText)
+    : mapCopy.noMatch(searchText);
 
   return (
     <View style={styles.banner} accessibilityRole="alert">
@@ -26,9 +27,9 @@ export function UnmatchedBanner({ searchText, onOpenSearch, variant = 'no_match'
       <Pressable
         onPress={onOpenSearch}
         accessibilityRole="link"
-        accessibilityLabel="Search FEC.gov directly"
+        accessibilityLabel={mapCopy.fecSearchLabel}
       >
-        <Text style={styles.link} allowFontScaling>Search FEC.gov ↗</Text>
+        <Text style={styles.link} allowFontScaling>{mapCopy.fecSearch}</Text>
       </Pressable>
     </View>
   );

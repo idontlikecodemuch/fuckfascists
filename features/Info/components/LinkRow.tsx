@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, Pressable, StyleSheet, Linking } from 'react-native';
 import type { LinkEntry } from '../types';
+import { infoCopy } from '../../../copy/info';
 
 const CATEGORY_COLORS: Record<LinkEntry['category'], string> = {
   source:    '#0066CC',
@@ -22,13 +23,13 @@ export function LinkRow({ entry }: LinkRowProps) {
       onPress={() => Linking.openURL(entry.url)}
       style={styles.row}
       accessibilityRole="link"
-      accessibilityLabel={`${entry.label} — opens in browser`}
+      accessibilityLabel={infoCopy.linkLabel(entry.label)}
     >
       <Text
         style={[styles.label, { color: CATEGORY_COLORS[entry.category] }]}
         allowFontScaling
       >
-        {entry.label} ↗
+        {infoCopy.linkText(entry.label)}
       </Text>
     </Pressable>
   );

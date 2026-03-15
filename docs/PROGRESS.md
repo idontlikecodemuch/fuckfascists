@@ -12,6 +12,62 @@ This document is updated continuously. New instances should read this first — 
 
 ## Last 5 Sessions (most recent first)
 
+### Session: March 15, 2026 (follow-up 3)
+**Focus:** Copy externalization — extract all hardcoded strings into centralized copy files
+
+**Completed:**
+- **Created 7 copy files** extracting all user-facing strings from components into typed `as const` objects:
+  - `copy/shared.ts` — cross-feature strings (app name, GOP/DEM labels, donation formatting)
+  - `copy/map.ts` — Map feature (markers, search, business card, avoid button, match chooser)
+  - `copy/survey.ts` — Survey feature (title, score, platform row labels)
+  - `copy/report.ts` — Report Card feature (titles, tiles, empty state, footer)
+  - `copy/onboard.ts` — Onboarding feature (welcome, privacy, how-it-works, permissions)
+  - `copy/info.ts` — Info feature (section titles, FAQ a11y, link formatting)
+  - `extension/copy.ts` — Extension popup (all popup text, donation prefixes, error messages)
+- **Updated 24 component files** to import from copy files, replacing all hardcoded user-facing strings
+- **CLAUDE.md updates:** Added `copy/` to Repository Structure, added Copy Management Rules section
+- **Created `scripts/audit-copy.sh`** — grep-based audit script to detect hardcoded strings in components
+
+**Files created:**
+- `copy/shared.ts`, `copy/map.ts`, `copy/survey.ts`, `copy/report.ts`, `copy/onboard.ts`, `copy/info.ts`
+- `extension/copy.ts`
+- `scripts/audit-copy.sh`
+
+**Files modified:**
+- `features/Map/MapScreen.tsx` — mapCopy import
+- `features/Map/components/BusinessCard.tsx` — sharedCopy + mapCopy imports
+- `features/Map/components/AvoidButton.tsx` — mapCopy import
+- `features/Map/components/MapControls.tsx` — mapCopy import
+- `features/Map/components/MapSearchBar.tsx` — mapCopy import
+- `features/Map/components/UnmatchedBanner.tsx` — mapCopy import
+- `features/Map/components/MatchChooser.tsx` — sharedCopy + mapCopy imports
+- `features/Map/components/MapMarker.tsx` — mapCopy import
+- `features/Map/components/TapLoadingMarker.tsx` — mapCopy import
+- `features/Survey/SurveyScreen.tsx` — surveyCopy import
+- `features/Survey/components/PlatformRow.tsx` — surveyCopy + sharedCopy imports
+- `features/ReportCard/ReportCardScreen.tsx` — reportCopy + sharedCopy imports
+- `features/ReportCard/components/ReportCardView.tsx` — reportCopy + sharedCopy imports
+- `features/ReportCard/components/PreviewStamp.tsx` — reportCopy import
+- `features/Onboarding/OnboardingNavigator.tsx` — onboardCopy import
+- `features/Onboarding/screens/WelcomeScreen.tsx` — onboardCopy import
+- `features/Onboarding/screens/PrivacyScreen.tsx` — onboardCopy import
+- `features/Onboarding/screens/HowItWorksScreen.tsx` — onboardCopy import
+- `features/Onboarding/screens/PermissionScreen.tsx` — onboardCopy import
+- `features/Onboarding/components/OnboardingSlide.tsx` — onboardCopy import
+- `features/Onboarding/components/ProgressDots.tsx` — onboardCopy import
+- `features/Info/InfoScreen.tsx` — infoCopy import
+- `features/Info/components/FaqItem.tsx` — infoCopy import
+- `features/Info/components/LinkRow.tsx` — infoCopy import
+- `extension/popup/popup.ts` — extCopy import
+- `CLAUDE.md` — copy/ in repo structure, Copy Management Rules section
+
+**Design decisions:**
+- `popup.html` NOT modified — HTML cannot import TS modules; hardcoded strings there are fallback defaults overwritten by `popup.ts` at runtime
+- Dynamic strings use arrow functions with typed parameters (e.g. `markerFlagged: (name: string, confidenceLabel: string) => ...`)
+- Extension copy is separate from RN copy since extension is vanilla TS, not React Native
+
+---
+
 ### Session: March 15, 2026 (follow-up 2)
 **Focus:** POI tap radius too wide + map snap-back during exploration
 
@@ -303,8 +359,8 @@ The Swift source now lives authoritatively at `modules/mapkit-search/ios/MapKitS
 
 | Suite | Count | Status |
 |---|---|---|
-| Total passing | 261 | ✅ Clean |
-| Last tsc run | March 11, 2026 | ✅ Clean |
+| Total passing | 282 | ✅ Clean |
+| Last tsc run | March 15, 2026 | ✅ Clean |
 
 ---
 

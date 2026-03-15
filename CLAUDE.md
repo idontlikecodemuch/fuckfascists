@@ -106,6 +106,13 @@ API keys and credentials must **only ever be read from environment variables**. 
 │   ├── background/                  ← service worker, session tracking
 │   ├── content/                     ← domain detection on page load
 │   └── popup/                       ← pixel art UI
+├── copy/
+│   ├── shared.ts                    ← strings used across features
+│   ├── map.ts                       ← Map feature copy
+│   ├── survey.ts                    ← Survey feature copy
+│   ├── report.ts                    ← Report Card feature copy
+│   ├── onboard.ts                   ← Onboarding feature copy
+│   └── info.ts                      ← Info/FAQ feature copy
 ├── config/
 │   └── constants.ts                 ← all configurable variables (see below)
 ├── scripts/
@@ -347,6 +354,22 @@ These apply to every file, every PR, every AI-generated change.
 - **Environments are cleanly separated** — no prod config leaking into dev and vice versa
 - **No one-off scripts in source files** — if a script only runs once, it doesn't belong in the codebase
 - **No script execution in CC** — never run npm scripts, shell commands, or data pipeline scripts (fetch:donations, verify:entities, tsc, etc.) from within a CC session. Scripts are run manually by the developer. CC handles code changes only.
+
+---
+
+## Copy Management Rules
+
+All user-facing strings live in `copy/` (mobile) or `extension/copy.ts` (extension). Components import from these files. Never hardcode a user-facing string in a component.
+
+- **copy/ structure:** shared.ts, map.ts, survey.ts, report.ts, onboard.ts, info.ts
+- **Extension:** extension/copy.ts (separate — vanilla JS cannot import from RN copy files)
+- **Naming:** two-level max (area.element). No `a11y` prefix — use `Label` or `Hint` suffix only when paired with a visible string. Abbreviate: onboarding→onboard, reportCard→report.
+- **Dynamic strings** are arrow functions: `heading: (n: number) => \`${n} MATCHES\``
+- **Static strings** are plain values: `title: "INFO"`
+- **New features:** add copy entries to the relevant copy file BEFORE building the component. The copy file is the spec. The component is the consumer.
+- **Copy review changes:** edit copy files only. No component changes needed for pure copy updates.
+- **CC prompt rule:** any prompt that creates or modifies a component with user-facing text must include: "All user-facing strings must be imported from the corresponding file in copy/. Do not hardcode any user-facing string in a component."
+- **Audit:** run `bash scripts/audit-copy.sh` at the end of any session that creates or modifies UI components. Fix any hits before committing.
 
 ---
 

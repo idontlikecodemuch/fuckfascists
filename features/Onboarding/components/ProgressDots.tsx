@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import { onboardCopy } from '../../../copy/onboard';
 
 interface ProgressDotsProps {
   total: number;
@@ -13,7 +14,7 @@ export function ProgressDots({ total, current }: ProgressDotsProps) {
   return (
     <View
       style={styles.row}
-      accessibilityLabel={`Step ${current + 1} of ${total}`}
+      accessibilityLabel={onboardCopy.progressStep(current + 1, total)}
       accessibilityRole="progressbar"
     >
       {Array.from({ length: total }, (_, i) => (

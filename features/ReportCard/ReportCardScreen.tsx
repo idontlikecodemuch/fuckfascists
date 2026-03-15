@@ -7,6 +7,8 @@ import { useDropSchedule } from './hooks/useDropSchedule';
 import { useReportCard } from './hooks/useReportCard';
 import { ReportCardView } from './components/ReportCardView';
 import { formatDropTime, formatWeekRange } from './utils/formatters';
+import { reportCopy } from '../../copy/report';
+import { sharedCopy } from '../../copy/shared';
 
 interface ReportCardScreenProps {
   adapter: StorageAdapter;
@@ -42,16 +44,16 @@ export function ReportCardScreen({ adapter, entities, platforms }: ReportCardScr
   const handleShare = useCallback(async () => {
     if (!data) return;
     const lines = [
-      `F*CK FASCISTS — Weekly Report`,
-      `${formatWeekRange(data.weekOf)}`,
+      reportCopy.shareHeader,
+      formatWeekRange(data.weekOf),
       ``,
-      `${data.totalEntityAvoids} business avoidances`,
-      `${data.totalPlatformAvoids} platforms avoided`,
+      reportCopy.entityCount(data.totalEntityAvoids),
+      reportCopy.platformCount(data.totalPlatformAvoids),
       data.entityAvoids.length > 0
-        ? `Top: ${data.entityAvoids.slice(0, 3).map((e) => e.name).join(', ')}`
+        ? reportCopy.topEntities(data.entityAvoids.slice(0, 3).map((e) => e.name).join(', '))
         : '',
       ``,
-      `fuckfascists.org`,
+      sharedCopy.siteUrl,
     ].filter(Boolean);
 
     await Share.share({ message: lines.join('\n') });
@@ -63,11 +65,11 @@ export function ReportCardScreen({ adapter, entities, platforms }: ReportCardScr
         {/* ── Header bar ── */}
         <View style={styles.topBar}>
           <Text style={styles.topBarTitle} accessibilityRole="header" allowFontScaling>
-            REPORT CARD
+            {reportCopy.title}
           </Text>
           {!hasDropped && (
             <Text style={styles.dropTime} allowFontScaling>
-              DROPS {formatDropTime(schedule.dropAt).toUpperCase()}
+              {reportCopy.dropTime(formatDropTime(schedule.dropAt).toUpperCase())}
             </Text>
           )}
         </View>
@@ -88,9 +90,9 @@ export function ReportCardScreen({ adapter, entities, platforms }: ReportCardScr
               style={styles.button}
               onPress={handleShare}
               accessibilityRole="button"
-              accessibilityLabel="Share your report card"
+              accessibilityLabel={reportCopy.shareLabel}
             >
-              <Text style={styles.buttonText} allowFontScaling>SHARE</Text>
+              <Text style={styles.buttonText} allowFontScaling>{reportCopy.shareBtn}</Text>
             </Pressable>
           )}
 
@@ -99,10 +101,10 @@ export function ReportCardScreen({ adapter, entities, platforms }: ReportCardScr
               style={[styles.button, styles.buttonSecondary]}
               onPress={() => setShowPreview(true)}
               accessibilityRole="button"
-              accessibilityLabel="Preview your report card early"
+              accessibilityLabel={reportCopy.previewLabel}
             >
               <Text style={[styles.buttonText, styles.buttonTextSecondary]} allowFontScaling>
-                PREVIEW
+                {reportCopy.previewBtn}
               </Text>
             </Pressable>
           )}

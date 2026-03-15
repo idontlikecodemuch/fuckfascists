@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Pressable, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { mapCopy } from '../../../copy/map';
 
 interface MapControlsProps {
   onZoomIn: () => void;
@@ -20,32 +21,32 @@ export function MapControls({ onZoomIn, onZoomOut, onLocation, locationLoading }
         onPress={onZoomIn}
         style={styles.button}
         accessibilityRole="button"
-        accessibilityLabel="Zoom in"
+        accessibilityLabel={mapCopy.zoomInLabel}
         hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
       >
-        <Text style={styles.buttonText} allowFontScaling={false}>+</Text>
+        <Text style={styles.buttonText} allowFontScaling={false}>{mapCopy.zoomIn}</Text>
       </Pressable>
 
       <Pressable
         onPress={onZoomOut}
         style={styles.button}
         accessibilityRole="button"
-        accessibilityLabel="Zoom out"
+        accessibilityLabel={mapCopy.zoomOutLabel}
         hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
       >
-        <Text style={styles.buttonText} allowFontScaling={false}>−</Text>
+        <Text style={styles.buttonText} allowFontScaling={false}>{mapCopy.zoomOut}</Text>
       </Pressable>
 
       <Pressable
         onPress={onLocation}
         style={styles.button}
         accessibilityRole="button"
-        accessibilityLabel="Center map on my location"
+        accessibilityLabel={mapCopy.locationLabel}
         disabled={locationLoading}
         hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
       >
         {locationLoading
-          ? <Text style={styles.buttonText} allowFontScaling={false}>…</Text>
+          ? <Text style={styles.buttonText} allowFontScaling={false}>{mapCopy.loadingIcon}</Text>
           : <Ionicons name="locate" size={22} color={BLACK} />
         }
       </Pressable>

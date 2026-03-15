@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { OnboardingSlide } from '../components/OnboardingSlide';
+import { onboardCopy } from '../../../copy/onboard';
 
 interface HowItWorksScreenProps {
   onNext: () => void;
@@ -8,25 +9,25 @@ interface HowItWorksScreenProps {
 
 const FEATURES = [
   {
-    icon: '[+]',
-    title: 'MAP',
-    desc:  'Scan nearby businesses. Flag GOP donors on your map. Tap AVOIDED and move on.',
+    icon: onboardCopy.mapIcon,
+    title: onboardCopy.mapTitle,
+    desc:  onboardCopy.mapDesc,
   },
   {
-    icon: '[✓]',
-    title: 'WEEKLY SURVEY',
-    desc:  'Check off the platforms and services you skipped this week.',
+    icon: onboardCopy.surveyIcon,
+    title: onboardCopy.surveyTitle,
+    desc:  onboardCopy.surveyDesc,
   },
   {
-    icon: '[★]',
-    title: 'REPORT CARD',
-    desc:  'Every Friday, your weekly impact drops — see it, share it, own it.',
+    icon: onboardCopy.reportIcon,
+    title: onboardCopy.reportTitle,
+    desc:  onboardCopy.reportDesc,
   },
 ] as const;
 
 export function HowItWorksScreen({ onNext }: HowItWorksScreenProps) {
   return (
-    <OnboardingSlide stepIndex={1} title="HOW IT WORKS" onNext={onNext}>
+    <OnboardingSlide stepIndex={1} title={onboardCopy.howTitle} onNext={onNext}>
       <View style={styles.list}>
         {FEATURES.map((f) => (
           <View key={f.title} style={styles.card}>

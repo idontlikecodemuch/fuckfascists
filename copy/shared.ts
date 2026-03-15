@@ -1,0 +1,18 @@
+export const sharedCopy = {
+  appName: "F*CK FASCISTS",
+  dismiss: "DISMISS",
+  dismissLabel: "Dismiss",
+  gop: "GOP",
+  dem: "DEM",
+  verified: "VERIFIED",
+  matched: "MATCHED",
+  confidenceHigh: "HIGH",
+  confidenceMedium: "MEDIUM",
+  warningIcon: "\u26A0",
+  checkmark: "\u2713",
+  siteUrl: "fuckfascists.org",
+  donationUnavail: "Donation data temporarily unavailable.",
+  totalSince: (gopAmt: string, demAmt: string) => `Total since 2016:\u2002GOP ${gopAmt}\u00b7DEM ${demAmt}`,
+  activeCycles: (cycles: string) => `Active cycles: ${cycles}`,
+  confidenceA11y: (label: string) => `Confidence: ${label}`,
+} as const;

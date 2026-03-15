@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import type { SurveyItem } from '../types';
+import { surveyCopy } from '../../../copy/survey';
+import { sharedCopy } from '../../../copy/shared';
 
 interface PlatformRowProps {
   item: SurveyItem;
@@ -21,18 +23,18 @@ export function PlatformRow({ item, onAvoid }: PlatformRowProps) {
       disabled={avoided}
       style={[styles.row, avoided && styles.rowAvoided]}
       accessibilityRole="checkbox"
-      accessibilityLabel={`${platform.name}. ${avoided ? 'Avoided this week.' : 'Not yet marked avoided.'}`}
+      accessibilityLabel={avoided ? surveyCopy.rowAvoided(platform.name) : surveyCopy.rowNotAvoided(platform.name)}
       accessibilityState={{ checked: avoided, disabled: avoided }}
     >
       {/* Pixel art checkbox */}
       <View style={[styles.checkbox, avoided && styles.checkboxChecked]}>
-        {avoided && <Text style={styles.checkmark} accessible={false}>✓</Text>}
+        {avoided && <Text style={styles.checkmark} accessible={false}>{sharedCopy.checkmark}</Text>}
       </View>
 
       <View style={styles.info}>
         <Text style={styles.name} allowFontScaling>{platform.name}</Text>
         <Text style={styles.sub} allowFontScaling>
-          {platform.parentCompany} · CEO: {platform.ceoName}
+          {surveyCopy.rowSubtitle(platform.parentCompany, platform.ceoName)}
         </Text>
         <View style={styles.tags}>
           {platform.categoryTags.map((tag) => (

@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, Pressable, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
 import { ProgressDots } from './ProgressDots';
 import { TOTAL_STEPS } from '../types';
+import { onboardCopy } from '../../../copy/onboard';
 
 interface OnboardingSlideProps {
   stepIndex: number;
@@ -22,10 +23,10 @@ export function OnboardingSlide({
   stepIndex,
   title,
   children,
-  nextLabel = 'NEXT',
+  nextLabel = onboardCopy.next,
   onNext,
   onSkip,
-  skipLabel = 'SKIP FOR NOW',
+  skipLabel = onboardCopy.skip,
 }: OnboardingSlideProps) {
   return (
     <SafeAreaView style={styles.container}>

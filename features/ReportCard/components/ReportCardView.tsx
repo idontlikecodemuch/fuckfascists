@@ -3,6 +3,8 @@ import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import type { ReportCardData } from '../types';
 import { PreviewStamp } from './PreviewStamp';
 import { formatWeekRange, formatCount } from '../utils/formatters';
+import { reportCopy } from '../../../copy/report';
+import { sharedCopy } from '../../../copy/shared';
 
 interface ReportCardViewProps {
   data: ReportCardData;
@@ -25,8 +27,8 @@ export const ReportCardView = forwardRef<View, ReportCardViewProps>(
 
         {/* ── Header ── */}
         <View style={styles.header}>
-          <Text style={styles.title} allowFontScaling={false}>F*CK FASCISTS</Text>
-          <Text style={styles.subtitle} allowFontScaling={false}>WEEKLY REPORT</Text>
+          <Text style={styles.title} allowFontScaling={false}>{sharedCopy.appName}</Text>
+          <Text style={styles.subtitle} allowFontScaling={false}>{reportCopy.subtitle}</Text>
           <Text style={styles.weekRange} allowFontScaling={false}>
             {formatWeekRange(weekOf)}
           </Text>
@@ -34,13 +36,13 @@ export const ReportCardView = forwardRef<View, ReportCardViewProps>(
 
         {/* ── Score ── */}
         <View style={styles.scoreRow}>
-          <ScoreTile value={totalEntityAvoids} label="BUSINESS\nAVOIDED" />
-          <ScoreTile value={data.totalPlatformAvoids} label="PLATFORMS\nAVOIDED" />
+          <ScoreTile value={totalEntityAvoids} label={reportCopy.entityTile} />
+          <ScoreTile value={data.totalPlatformAvoids} label={reportCopy.platformTile} />
         </View>
 
         {/* ── Business avoids ── */}
         {entityAvoids.length > 0 && (
-          <Section title="BUSINESSES">
+          <Section title={reportCopy.entitySection}>
             {entityAvoids.slice(0, 5).map((e) => (
               <View key={e.entityId} style={styles.row}>
                 <Text style={styles.rowName} numberOfLines={1} allowFontScaling={false}>
@@ -56,7 +58,7 @@ export const ReportCardView = forwardRef<View, ReportCardViewProps>(
 
         {/* ── Platform avoids ── */}
         {platformAvoids.length > 0 && (
-          <Section title="PLATFORMS">
+          <Section title={reportCopy.platformSection}>
             <Text style={styles.platformList} allowFontScaling={false}>
               {platformAvoids.join(' · ')}
             </Text>
@@ -67,9 +69,7 @@ export const ReportCardView = forwardRef<View, ReportCardViewProps>(
         {totalEntityAvoids === 0 && platformAvoids.length === 0 && (
           <View style={styles.emptyState}>
             <Text style={styles.emptyText} allowFontScaling={false}>
-              YOUR MONEY IS STILL{'\n'}FUNDING FASCISTS.{'\n\n'}
-              Hit the Map. Hit the Survey.{'\n'}
-              Make them feel it.
+              {reportCopy.emptyState}
             </Text>
           </View>
         )}
@@ -77,7 +77,7 @@ export const ReportCardView = forwardRef<View, ReportCardViewProps>(
         {/* ── Footer ── */}
         <View style={styles.footer}>
           <Text style={styles.footerText} allowFontScaling={false}>
-            fuckfascists.org · DATA: FEC.GOV
+            {reportCopy.footer}
           </Text>
         </View>
       </View>

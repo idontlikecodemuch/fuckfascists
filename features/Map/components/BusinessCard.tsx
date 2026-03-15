@@ -5,6 +5,8 @@ import { AvoidButton } from './AvoidButton';
 import type { Entity } from '../../../core/models';
 import { formatDonationAmount, formatCycleLabel, formatActiveCycles, getDisplayFigure, getParentEntity } from '../../../core/models';
 import { SHOW_FIGURE_NAME_IN_CARD, CONFIDENCE_THRESHOLD_HIGH } from '../../../config/constants';
+import { sharedCopy } from '../../../copy/shared';
+import { mapCopy } from '../../../copy/map';
 // Figure name is controlled by SHOW_FIGURE_NAME_IN_CARD (default: false).
 // See CLAUDE.md §7 for the informational vs. confrontational screen split.
 
@@ -22,11 +24,11 @@ interface BusinessCardProps {
 
 function ConfidenceBadge({ level }: { level: number }) {
   const isVerified = level === 1.0;
-  const label = isVerified ? 'VERIFIED' : 'MATCHED';
+  const label = isVerified ? sharedCopy.verified : sharedCopy.matched;
   return (
     <View
       style={[styles.badge, isVerified ? styles.badgeVerified : styles.badgeMatched]}
-      accessibilityLabel={`Confidence: ${label}`}
+      accessibilityLabel={sharedCopy.confidenceA11y(label)}
     >
       <Text style={styles.badgeText}>{label}</Text>
     </View>
@@ -86,7 +88,7 @@ export function BusinessCard({ result, onAvoid, avoidDisabled = false, onDismiss
 
         {confidence < CONFIDENCE_THRESHOLD_HIGH && (
           <Text style={styles.disclaimer} accessibilityRole="alert" allowFontScaling>
-            ⚠ MEDIUM confidence — verify before acting.
+            {mapCopy.mediumWarning}
           </Text>
         )}
       </View>
@@ -97,10 +99,10 @@ export function BusinessCard({ result, onAvoid, avoidDisabled = false, onDismiss
           {/* ── Recent cycle (prominent, always shown) ── */}
           <View style={styles.recentSection}>
             <Text style={[styles.recentAmount, styles.recentGOP]} allowFontScaling>
-              GOP {formatDonationAmount(donationSummary.recentRepubs)}
+              {sharedCopy.gop} {formatDonationAmount(donationSummary.recentRepubs)}
             </Text>
             <Text style={[styles.recentAmount, styles.recentDEM]} allowFontScaling>
-              DEM {formatDonationAmount(donationSummary.recentDems)}
+              {sharedCopy.dem} {formatDonationAmount(donationSummary.recentDems)}
             </Text>
             <Text style={styles.recentCycleLabel} allowFontScaling>
               in {formatCycleLabel(donationSummary.recentCycle)}
@@ -110,11 +112,11 @@ export function BusinessCard({ result, onAvoid, avoidDisabled = false, onDismiss
           {/* ── Since 2016 totals (contextual) ── */}
           <View style={styles.totalsSection}>
             <Text style={styles.totalsRow} allowFontScaling>
-              Total since 2016:{'\u2002'}GOP {formatDonationAmount(donationSummary.totalRepubs)}{'\u00b7'}DEM {formatDonationAmount(donationSummary.totalDems)}
+              {sharedCopy.totalSince(formatDonationAmount(donationSummary.totalRepubs), formatDonationAmount(donationSummary.totalDems))}
             </Text>
             {donationSummary.activeCycles.length > 0 && (
               <Text style={styles.totalsRow} allowFontScaling>
-                Active cycles: {formatActiveCycles(donationSummary.activeCycles)}
+                {sharedCopy.activeCycles(formatActiveCycles(donationSummary.activeCycles))}
               </Text>
             )}
           </View>
@@ -122,7 +124,7 @@ export function BusinessCard({ result, onAvoid, avoidDisabled = false, onDismiss
       ) : (
         <View style={styles.unavailableSection}>
           <Text style={styles.unavailableText} allowFontScaling>
-            Donation data temporarily unavailable.
+            {sharedCopy.donationUnavail}
           </Text>
         </View>
       )}
@@ -132,12 +134,12 @@ export function BusinessCard({ result, onAvoid, avoidDisabled = false, onDismiss
         <Pressable
           onPress={() => Linking.openURL(fecUrl)}
           accessibilityRole="link"
-          accessibilityLabel="See full FEC record on fec.gov"
+          accessibilityLabel={mapCopy.fecLinkLabel}
           hitSlop={{ top: 4, bottom: 4, left: 4, right: 4 }}
           style={styles.fecLinkRow}
         >
           <Text style={styles.fecLink} allowFontScaling>
-            See full FEC record →
+            {mapCopy.fecLink}
           </Text>
         </Pressable>
       )}
@@ -149,10 +151,10 @@ export function BusinessCard({ result, onAvoid, avoidDisabled = false, onDismiss
           onPress={onDismiss}
           style={styles.dismissButton}
           accessibilityRole="button"
-          accessibilityLabel="Dismiss"
+          accessibilityLabel={sharedCopy.dismissLabel}
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         >
-          <Text style={styles.dismissLabel} allowFontScaling>DISMISS</Text>
+          <Text style={styles.dismissLabel} allowFontScaling>{sharedCopy.dismiss}</Text>
         </Pressable>
       </View>
     </View>

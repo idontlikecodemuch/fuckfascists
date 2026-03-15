@@ -2,6 +2,8 @@ import React from 'react';
 import { View, Text, FlatList, Pressable, StyleSheet } from 'react-native';
 import type { ScanResult } from '../types';
 import { CONFIDENCE_THRESHOLD_HIGH } from '../../../config/constants';
+import { sharedCopy } from '../../../copy/shared';
+import { mapCopy } from '../../../copy/map';
 
 interface MatchChooserProps {
   results: ScanResult[];
@@ -11,11 +13,11 @@ interface MatchChooserProps {
 
 function ConfidenceTag({ level }: { level: number }) {
   const isVerified = level === 1.0;
-  const label = isVerified ? 'VERIFIED' : 'MATCHED';
+  const label = isVerified ? sharedCopy.verified : sharedCopy.matched;
   return (
     <View
       style={[styles.tag, isVerified ? styles.tagVerified : styles.tagMatched]}
-      accessibilityLabel={`Confidence: ${label}`}
+      accessibilityLabel={sharedCopy.confidenceA11y(label)}
     >
       <Text style={styles.tagText}>{label}</Text>
     </View>
@@ -38,7 +40,7 @@ export function MatchChooser({ results, onSelect, onDismiss }: MatchChooserProps
           accessibilityRole="header"
           allowFontScaling
         >
-          {results.length} MATCHES FOUND
+          {mapCopy.chooserHeading(results.length)}
         </Text>
 
         <FlatList
@@ -50,7 +52,7 @@ export function MatchChooser({ results, onSelect, onDismiss }: MatchChooserProps
               onPress={() => onSelect(item)}
               style={styles.row}
               accessibilityRole="button"
-              accessibilityLabel={`View ${item.canonicalName}`}
+              accessibilityLabel={mapCopy.chooserRow(item.canonicalName)}
             >
               <Text
                 style={styles.rowName}
@@ -61,7 +63,7 @@ export function MatchChooser({ results, onSelect, onDismiss }: MatchChooserProps
               </Text>
               <ConfidenceTag level={item.confidence} />
               {item.confidence < CONFIDENCE_THRESHOLD_HIGH && (
-                <Text style={styles.rowWarning} allowFontScaling>⚠</Text>
+                <Text style={styles.rowWarning} allowFontScaling>{sharedCopy.warningIcon}</Text>
               )}
             </Pressable>
           )}
@@ -71,10 +73,10 @@ export function MatchChooser({ results, onSelect, onDismiss }: MatchChooserProps
           onPress={onDismiss}
           style={styles.dismissButton}
           accessibilityRole="button"
-          accessibilityLabel="Dismiss match chooser"
+          accessibilityLabel={mapCopy.chooserDismiss}
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         >
-          <Text style={styles.dismissLabel} allowFontScaling>DISMISS</Text>
+          <Text style={styles.dismissLabel} allowFontScaling>{sharedCopy.dismiss}</Text>
         </Pressable>
       </View>
     </View>

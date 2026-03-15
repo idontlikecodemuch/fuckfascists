@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Animated, Pressable, Text, StyleSheet, AccessibilityInfo } from 'react-native';
+import { mapCopy } from '../../../copy/map';
 
 interface AvoidButtonProps {
   onPress: () => Promise<void>;
@@ -52,8 +53,8 @@ export function AvoidButton({ onPress, disabled = false }: AvoidButtonProps) {
     }
   }
 
-  const label = error ? 'Try again' : confirmed ? '\u2713 AVOIDED' : 'AVOIDED';
-  const accessLabel = error ? 'Avoid failed — try again' : confirmed ? 'Avoided — confirmed' : 'Mark as avoided';
+  const label = error ? mapCopy.avoidRetry : confirmed ? mapCopy.avoidConfirmed : mapCopy.avoidLabel;
+  const accessLabel = error ? mapCopy.avoidRetryLabel : confirmed ? mapCopy.avoidDoneLabel : mapCopy.avoidMarkLabel;
 
   return (
     <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>

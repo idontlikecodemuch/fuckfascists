@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import type { FaqEntry } from '../types';
+import { infoCopy } from '../../../copy/info';
 
 interface FaqItemProps {
   entry: FaqEntry;
@@ -22,10 +23,10 @@ export function FaqItem({ entry }: FaqItemProps) {
         accessibilityRole="button"
         accessibilityLabel={entry.q}
         accessibilityState={{ expanded: open }}
-        accessibilityHint={open ? 'Tap to collapse' : 'Tap to expand answer'}
+        accessibilityHint={open ? infoCopy.faqCollapse : infoCopy.faqExpand}
       >
         <Text style={styles.questionText} allowFontScaling>{entry.q}</Text>
-        <Text style={styles.chevron} accessible={false}>{open ? '▲' : '▼'}</Text>
+        <Text style={styles.chevron} accessible={false}>{open ? infoCopy.chevronOpen : infoCopy.chevronClosed}</Text>
       </Pressable>
 
       {open && (

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { OnboardingSlide } from '../components/OnboardingSlide';
+import { onboardCopy } from '../../../copy/onboard';
 
 interface WelcomeScreenProps {
   onNext: () => void;
@@ -8,24 +9,22 @@ interface WelcomeScreenProps {
 
 export function WelcomeScreen({ onNext }: WelcomeScreenProps) {
   return (
-    <OnboardingSlide stepIndex={0} title="WELCOME" nextLabel="LET'S GO" onNext={onNext}>
+    <OnboardingSlide stepIndex={0} title={onboardCopy.welcomeTitle} nextLabel={onboardCopy.letsGo} onNext={onNext}>
       <View style={styles.content}>
-        <Text style={styles.appName} allowFontScaling={false}>F*CK{'\n'}FASCISTS</Text>
+        <Text style={styles.appName} allowFontScaling={false}>{onboardCopy.appDisplay}</Text>
 
         <Text style={styles.tagline} allowFontScaling>
-          Your money.{'\n'}Your power.{'\n'}Your choice.
+          {onboardCopy.tagline}
         </Text>
 
         <View style={styles.divider} />
 
         <Text style={styles.body} allowFontScaling>
-          Every dollar you spend is a vote. This app helps you avoid businesses
-          and platforms that fund Republican campaigns and authoritarian politics
-          — and celebrate the times you do.
+          {onboardCopy.body}
         </Text>
 
         <Text style={styles.note} allowFontScaling>
-          Open-source · Nonprofit · Privacy-first
+          {onboardCopy.note}
         </Text>
       </View>
     </OnboardingSlide>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { OnboardingSlide } from '../components/OnboardingSlide';
+import { onboardCopy } from '../../../copy/onboard';
 
 interface PermissionScreenProps {
   stepIndex: number;
@@ -47,7 +48,7 @@ export function PermissionScreen({
     <OnboardingSlide
       stepIndex={stepIndex}
       title={title}
-      nextLabel={requesting ? '...' : allowLabel}
+      nextLabel={requesting ? onboardCopy.requesting : allowLabel}
       onNext={handleAllow}
       onSkip={onSkip}
     >
@@ -57,7 +58,7 @@ export function PermissionScreen({
         <Text style={styles.why} allowFontScaling>{why}</Text>
 
         <View style={styles.promiseBox}>
-          <Text style={styles.promiseLabel} allowFontScaling>OUR PROMISE</Text>
+          <Text style={styles.promiseLabel} allowFontScaling>{onboardCopy.ourPromise}</Text>
           <Text style={styles.promise} allowFontScaling>{promise}</Text>
         </View>
       </View>

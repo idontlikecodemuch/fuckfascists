@@ -6,6 +6,7 @@ import { WelcomeScreen } from './screens/WelcomeScreen';
 import { HowItWorksScreen } from './screens/HowItWorksScreen';
 import { PrivacyScreen } from './screens/PrivacyScreen';
 import { PermissionScreen } from './screens/PermissionScreen';
+import { onboardCopy } from '../../copy/onboard';
 
 interface OnboardingNavigatorProps {
   onComplete: () => Promise<void>;
@@ -44,11 +45,11 @@ export function OnboardingNavigator({ onComplete }: OnboardingNavigatorProps) {
       return (
         <PermissionScreen
           stepIndex={3}
-          title="FIND NEARBY BUSINESSES"
-          icon="[PIN]"
-          why="We use your location to center the map on your neighborhood so you can spot flagged businesses nearby."
-          promise="Your GPS coordinates are held in memory only — never stored, never transmitted. We derive a rough area code for caching. That's it."
-          allowLabel="ALLOW LOCATION"
+          title={onboardCopy.locTitle}
+          icon={onboardCopy.locIcon}
+          why={onboardCopy.locWhy}
+          promise={onboardCopy.locPromise}
+          allowLabel={onboardCopy.locBtn}
           onAllow={async () => {
             await ExpoLocation.requestForegroundPermissionsAsync();
             advance();
@@ -61,11 +62,11 @@ export function OnboardingNavigator({ onComplete }: OnboardingNavigatorProps) {
       return (
         <PermissionScreen
           stepIndex={4}
-          title="NEVER MISS THE DROP"
-          icon="[!]"
-          why="Your weekly report card drops at a synchronized moment every Friday. Enable notifications so you never miss it."
-          promise="Notifications are local-only and scheduled on your device. We never send push messages from a server."
-          allowLabel="ALLOW NOTIFICATIONS"
+          title={onboardCopy.notifTitle}
+          icon={onboardCopy.notifIcon}
+          why={onboardCopy.notifWhy}
+          promise={onboardCopy.notifPromise}
+          allowLabel={onboardCopy.notifBtn}
           onAllow={async () => {
             await Notifications.requestPermissionsAsync();
             advance();

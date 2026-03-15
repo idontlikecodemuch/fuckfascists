@@ -2,6 +2,8 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Marker } from 'react-native-maps';
 import { CONFIDENCE_THRESHOLD_HIGH } from '../../../config/constants';
+import { sharedCopy } from '../../../copy/shared';
+import { mapCopy } from '../../../copy/map';
 
 interface FlagMarkerProps {
   coordinate: { latitude: number; longitude: number };
@@ -28,7 +30,7 @@ export function FlagMarker({
   avoided,
   onPress,
 }: FlagMarkerProps) {
-  const confidenceLabel = confidence >= CONFIDENCE_THRESHOLD_HIGH ? 'HIGH' : 'MEDIUM';
+  const confidenceLabel = confidence >= CONFIDENCE_THRESHOLD_HIGH ? sharedCopy.confidenceHigh : sharedCopy.confidenceMedium;
   const colors = avoided ? COLOR_AVOIDED : (confidence >= CONFIDENCE_THRESHOLD_HIGH ? COLOR_HIGH : COLOR_MEDIUM);
 
   return (
@@ -37,8 +39,8 @@ export function FlagMarker({
       onPress={onPress}
       accessibilityLabel={
         avoided
-          ? `Avoided: ${name}`
-          : `Flagged business: ${name}. Confidence: ${confidenceLabel}. Tap for details.`
+          ? mapCopy.markerAvoided(name)
+          : mapCopy.markerFlagged(name, confidenceLabel)
       }
     >
       <View

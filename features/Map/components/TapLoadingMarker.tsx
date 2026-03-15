@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, View, StyleSheet, AccessibilityInfo } from 'react-native';
 import { Marker } from 'react-native-maps';
+import { mapCopy } from '../../../copy/map';
 
 interface TapLoadingMarkerProps {
   coordinate: { latitude: number; longitude: number };
@@ -38,7 +39,7 @@ export function TapLoadingMarker({ coordinate }: TapLoadingMarkerProps) {
     <Marker
       coordinate={coordinate}
       anchor={{ x: 0.5, y: 0.5 }}
-      accessibilityLabel="Searching nearby businesses"
+      accessibilityLabel={mapCopy.tapLoading}
     >
       <Animated.View style={[styles.dot, { opacity: pulseAnim }]} />
     </Marker>

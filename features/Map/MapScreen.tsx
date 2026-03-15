@@ -17,6 +17,7 @@ import { MatchChooser } from './components/MatchChooser';
 import type { MapPin, ScanResult } from './types';
 import { MapControls } from './components/MapControls';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { mapCopy } from '../../copy/map';
 
 interface MapScreenProps {
   entities: Entity[];
@@ -207,7 +208,7 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
         onPoiClick={handlePoiClick}
         showsUserLocation
         showsMyLocationButton={false}
-        accessibilityLabel="Map showing nearby flagged businesses"
+        accessibilityLabel={mapCopy.mapLabel}
       >
         {allPins.map((pin) => (
           <FlagMarker

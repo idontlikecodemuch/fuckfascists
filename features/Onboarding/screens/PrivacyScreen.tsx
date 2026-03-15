@@ -1,23 +1,24 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { OnboardingSlide } from '../components/OnboardingSlide';
+import { onboardCopy } from '../../../copy/onboard';
 
 interface PrivacyScreenProps {
   onNext: () => void;
 }
 
 const POINTS = [
-  { label: 'NO ACCOUNTS',    detail: 'No sign-in, no email, no user ID. Ever.' },
-  { label: 'NO LOCATION STORAGE', detail: 'GPS is session-only. Coordinates are never written to disk.' },
-  { label: 'NO HISTORY',     detail: 'The app never records which businesses you visited or used — only the ones you actively avoided.' },
-  { label: 'ON-DEVICE ONLY', detail: 'All data stays on your phone. No backend, no syncing in v1.' },
-  { label: 'OPEN SOURCE',    detail: 'Every line of code is public. Check it yourself.' },
-  { label: 'DATA: FEC.GOV', detail: 'Donation data comes directly from the Federal Election Commission — the official US government source for campaign finance data.' },
+  { label: onboardCopy.noAccounts,  detail: onboardCopy.noAccountsDesc },
+  { label: onboardCopy.noLocation,  detail: onboardCopy.noLocationDesc },
+  { label: onboardCopy.noHistory,   detail: onboardCopy.noHistoryDesc },
+  { label: onboardCopy.onDevice,    detail: onboardCopy.onDeviceDesc },
+  { label: onboardCopy.openSource,  detail: onboardCopy.openSourceDesc },
+  { label: onboardCopy.fecData,     detail: onboardCopy.fecDataDesc },
 ] as const;
 
 export function PrivacyScreen({ onNext }: PrivacyScreenProps) {
   return (
-    <OnboardingSlide stepIndex={2} title="YOUR PRIVACY FIRST" onNext={onNext}>
+    <OnboardingSlide stepIndex={2} title={onboardCopy.privacyTitle} onNext={onNext}>
       <View style={styles.list}>
         {POINTS.map((p) => (
           <View key={p.label} style={styles.row}>

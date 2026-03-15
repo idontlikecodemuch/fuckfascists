@@ -6,6 +6,7 @@ import { useWeeklySurvey } from './hooks/useWeeklySurvey';
 import { PlatformRow } from './components/PlatformRow';
 import { formatWeekOf } from './utils/surveyHelpers';
 import type { SurveyItem } from './types';
+import { surveyCopy } from '../../copy/survey';
 
 interface SurveyScreenProps {
   adapter: StorageAdapter;
@@ -28,13 +29,13 @@ export function SurveyScreen({ adapter }: SurveyScreenProps) {
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.title} accessibilityRole="header" allowFontScaling>
-          WEEKLY CHECK-IN
+          {surveyCopy.title}
         </Text>
         <Text style={styles.weekLabel} allowFontScaling>
           {formatWeekOf(weekOf)}
         </Text>
         <Text style={styles.score} allowFontScaling>
-          {avoided} / {items.length} avoided
+          {surveyCopy.score(avoided, items.length)}
         </Text>
       </View>
 
@@ -42,7 +43,7 @@ export function SurveyScreen({ adapter }: SurveyScreenProps) {
         <ActivityIndicator
           style={styles.loader}
           color="#CC0000"
-          accessibilityLabel="Loading this week's survey"
+          accessibilityLabel={surveyCopy.loading}
         />
       ) : (
         <FlatList<SurveyItem>
@@ -53,7 +54,7 @@ export function SurveyScreen({ adapter }: SurveyScreenProps) {
           )}
           contentContainerStyle={styles.list}
           accessibilityRole="list"
-          accessibilityLabel="Platform checklist"
+          accessibilityLabel={surveyCopy.checklist}
         />
       )}
     </SafeAreaView>

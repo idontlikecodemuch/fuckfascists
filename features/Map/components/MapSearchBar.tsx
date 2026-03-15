@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, TextInput, Pressable, Text, StyleSheet } from 'react-native';
+import { mapCopy } from '../../../copy/map';
 
 interface MapSearchBarProps {
   value: string;
@@ -21,23 +22,23 @@ export function MapSearchBar({ value, onChangeText, onSubmit, isScanning, topOff
         value={value}
         onChangeText={onChangeText}
         onSubmitEditing={onSubmit}
-        placeholder="Search a business name..."
+        placeholder={mapCopy.searchPlaceholder}
         placeholderTextColor="#888"
         returnKeyType="search"
-        accessibilityLabel="Search for a business"
-        accessibilityHint="Type a business name and press search to check its political donations"
+        accessibilityLabel={mapCopy.searchLabel}
+        accessibilityHint={mapCopy.searchHint}
         allowFontScaling
       />
       <Pressable
         onPress={onSubmit}
         style={[styles.button, isScanning && styles.buttonBusy]}
         accessibilityRole="button"
-        accessibilityLabel={isScanning ? 'Scanning…' : 'Search'}
+        accessibilityLabel={isScanning ? mapCopy.scanning : mapCopy.search}
         disabled={isScanning}
         hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
       >
         <Text style={styles.buttonText} allowFontScaling>
-          {isScanning ? '…' : '\u2315'}
+          {isScanning ? mapCopy.scanningIcon : mapCopy.scanIcon}
         </Text>
       </Pressable>
     </View>

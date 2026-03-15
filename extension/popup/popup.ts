@@ -15,6 +15,7 @@
 import type { TabFlag, WeeklyStats, GetCurrentFlagMsg, AvoidEntityMsg, SnoozeDomainMsg, GetWeeklyStatsMsg } from '../types';
 import { formatActiveCycles, formatCycleLabel, formatDonationAmount } from '../../core/models';
 import { SHOW_FIGURE_NAME_IN_POPUP, CONFIDENCE_THRESHOLD_HIGH } from '../../config/constants';
+import { extCopy } from '../copy';
 
 // ── DOM refs ───────────────────────────────────────────────────────────────────
 
@@ -71,17 +72,17 @@ function renderFlag(flag: TabFlag) {
 
   if (flag.donationDataAvailable && flag.recentCycle !== null) {
     recentAmountEl.textContent =
-      `GOP ${formatDonationAmount(flag.recentRepubs)} · DEM ${formatDonationAmount(flag.recentDems)}`;
-    recentCycleEl.textContent  = `in ${formatCycleLabel(flag.recentCycle)}`;
+      `${extCopy.gopPrefix}${formatDonationAmount(flag.recentRepubs)}${extCopy.demSep}${formatDonationAmount(flag.recentDems)}`;
+    recentCycleEl.textContent  = `${extCopy.cyclePrefix}${formatCycleLabel(flag.recentCycle)}`;
     recentAmountEl.hidden = false;
     recentCycleEl.hidden  = false;
 
     totalSince2016.textContent =
-      `Total since 2016: GOP ${formatDonationAmount(flag.totalRepubs)} · DEM ${formatDonationAmount(flag.totalDems)}`;
+      `${extCopy.totalPrefix}${formatDonationAmount(flag.totalRepubs)}${extCopy.demSep}${formatDonationAmount(flag.totalDems)}`;
     totalSince2016.hidden = false;
 
     if (flag.activeCycles.length > 0) {
-      activeCyclesEl.textContent = `Active cycles: ${formatActiveCycles(flag.activeCycles)}`;
+      activeCyclesEl.textContent = `${extCopy.activeCycles}${formatActiveCycles(flag.activeCycles)}`;
       activeCyclesEl.hidden = false;
     } else {
       activeCyclesEl.hidden = true;
@@ -95,10 +96,10 @@ function renderFlag(flag: TabFlag) {
     activeCyclesEl.hidden = true;
     // Priority: live call failure > no bundled data > generic unavailable.
     dataUnavailableEl.textContent = flag.liveLookupFailed
-      ? "Couldn't reach FEC — try again later."
+      ? extCopy.fecError
       : flag.noBundledData
-        ? 'No bundled donation data.'
-        : 'Donation data temporarily unavailable.';
+        ? extCopy.noBundledData
+        : extCopy.donationUnavail;
     dataUnavailableEl.hidden = false;
   }
 
@@ -110,13 +111,13 @@ function renderFlag(flag: TabFlag) {
     fecLink.hidden = true;
   }
 
-  const confidenceLabel = flag.confidence >= CONFIDENCE_THRESHOLD_HIGH ? 'HIGH' : 'MEDIUM';
+  const confidenceLabel = flag.confidence >= CONFIDENCE_THRESHOLD_HIGH ? extCopy.confidenceHigh : extCopy.confidenceMedium;
   confidenceBadge.textContent = confidenceLabel;
   confidenceBadge.className   = `confidence-badge ${confidenceLabel}`;
 
   if (flag.confidence < CONFIDENCE_THRESHOLD_HIGH) {
-    confidenceBadge.title = 'MEDIUM confidence — data may not be exact. Always verify at FEC.';
-    confidenceDisclaimerEl.textContent = 'MEDIUM confidence — verify before acting.';
+    confidenceBadge.title = extCopy.mediumTitle;
+    confidenceDisclaimerEl.textContent = extCopy.mediumWarning;
     confidenceDisclaimerEl.hidden = false;
   } else {
     confidenceBadge.title = '';
@@ -137,7 +138,7 @@ async function loadWeeklyStats(weekOf: string): Promise<void> {
   statPlatform.textContent = String(stats.platformAvoidCount);
 
   if (stats.topEntityName) {
-    statTop.textContent = `TOP: ${stats.topEntityName.toUpperCase()}`;
+    statTop.textContent = `${extCopy.weeklyTop}${stats.topEntityName.toUpperCase()}`;
     statTop.hidden = false;
   }
 }
