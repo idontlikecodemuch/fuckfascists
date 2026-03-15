@@ -12,6 +12,22 @@ This document is updated continuously. New instances should read this first — 
 
 ## Last 5 Sessions (most recent first)
 
+### Session: March 15, 2026 (follow-up 2)
+**Focus:** POI tap radius too wide + map snap-back during exploration
+
+**Completed:**
+- **Tap radius reduction:** `computeSearchRadius()` multiplier reduced from 5% to 2% of visible span, min clamp lowered from 25m to 15m. At street-level zoom (`latitudeDelta: 0.005`), radius drops from ~28m to ~11m (clamped to 15m). At auto-center zoom (`latitudeDelta: 0.02`), radius drops from ~111m to ~44m. Added diagnostic `console.log` printing computed radius in meters on every tap.
+- **Map snap-back fix:** The `location.coords` effect in MapScreen was unconditionally calling `animateToRegion` every time coords updated — including when the user tapped the location button, which created a new coords object and snapped the map back. Split into two guarded paths: (1) initial-center effect fires once via `hasInitiallyCentered` ref, (2) explicit re-center via `handleLocationPress` + `pendingRecenter` ref flag. Panning, zooming, and exploring the map no longer triggers any snap-back.
+
+**Files changed:**
+- `config/constants.ts` — `POI_SEARCH_RADIUS_MIN_METERS` 25→15, comment updated
+- `features/Map/hooks/useTapSearch.ts` — `computeSearchRadius()` multiplier 0.05→0.02, diagnostic log
+- `features/Map/MapScreen.tsx` — `hasInitiallyCentered` ref guard on initial coords effect, `handleLocationPress` + `pendingRecenter` for explicit re-center, MapControls wired to new handler
+
+**Build:** Clean (Xcode, 0 errors)
+
+---
+
 ### Session: March 15, 2026 (follow-up)
 **Focus:** MatchChooser — multi-match POI tap selection
 

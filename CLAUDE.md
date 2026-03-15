@@ -156,7 +156,7 @@ export const INFO_CONTENT_URL = 'https://raw.githubusercontent.com/[org]/fuckfas
 // Map POI tap search — dynamic radius computed from visible region span.
 // Default fallback when region is unavailable; min/max clamps for the dynamic calculation.
 export const POI_SEARCH_RADIUS_METERS = 50;
-export const POI_SEARCH_RADIUS_MIN_METERS = 25;
+export const POI_SEARCH_RADIUS_MIN_METERS = 15;
 export const POI_SEARCH_RADIUS_MAX_METERS = 200;
 export const TAP_CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes
 export const TAP_DEBOUNCE_MS = 500;
@@ -459,6 +459,8 @@ After writing any file, scan it once for deprecated APIs, `.then()` chains, `var
   - **JS guard (primary):** Always guard `id = entityId ?? fecCommitteeId` with `if (!id) return/continue` before creating a `MapPin` or rendering a `Marker`. Both `useTapSearch.ts` and `MapScreen.tsx` pin effect have this guard.
   - **Native guard (defense-in-depth):** `AIRMap.m` patched with `if (subview == nil) return` at the top of `insertReactSubview:atIndex:`, `removeReactSubview:`, and `addSubview:`. This prevents the `NSInvalidArgumentException` even if a nil subview leaks through from the Fabric reconciler for any reason. **This patch lives in the Pods source and will be overwritten by `pod install`.** If it recurs, add a `post_install` hook in the Podfile to re-apply the guard, or pin a forked react-native-maps pod.
 - **react-native-maps — `onRegionChangeComplete` render loop** — storing the map region in `useState` and passing the setter directly to `onRegionChangeComplete` creates an infinite re-render loop: region change → setState → re-render MapView → region change → ... The app freezes. **Fix:** Store region in a `useRef` instead of `useState` — the region is only consumed by zoom callbacks (never rendered directly), so it doesn't need to trigger re-renders. `MapScreen.tsx` uses `regionRef` with a stable `handleRegionChange` callback. Do not revert this to `useState`.
+- **react-native-maps — map snap-back on location update** — a `useEffect` depending on `location.coords` that unconditionally calls `animateToRegion` will snap the map back to the user's position every time coords get a new object reference (e.g. location button press, tab re-mount). **Fix:** Use a `hasInitiallyCentered` ref guard so the auto-center fires exactly once on mount. For the location button, use a separate `pendingRecenter` ref flag + effect pattern: set the flag before calling `requestLocation`, then the effect only animates when the flag is true. Do not combine initial centering and explicit re-centering into a single unguarded effect.
+- **POI search radius tuning** — `computeSearchRadius()` uses 2% of the visible map span (not 5%). At 5%, the auto-center zoom (`latitudeDelta: 0.02`) produced a 111m radius — over a city block. At 2% with min clamp 15m, street-level taps resolve to individual buildings. If cross-street matches recur, reduce the multiplier further or add a hard cap below 50m.
 - **V2 cleanup — extension confidence CSS classes** — `popup.ts` uses `'HIGH'`/`'MEDIUM'` string class names derived from numeric scores. In V2, rename to BEM format (`confidence-badge--high`/`--medium`).
 
 ---

@@ -141,8 +141,13 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
     reset();
   }, [searchText, reset]);
 
+  // Center the map on the user's location exactly once after the initial
+  // auto-request completes. Subsequent location updates (e.g. from the
+  // location button) are handled by handleLocationPress — not this effect.
+  const hasInitiallyCentered = useRef(false);
   useEffect(() => {
-    if (!location.coords) return;
+    if (hasInitiallyCentered.current || !location.coords) return;
+    hasInitiallyCentered.current = true;
     const next: Region = { ...location.coords, latitudeDelta: 0.02, longitudeDelta: 0.02 };
     regionRef.current = next;
     mapRef.current?.animateToRegion(next, 400);
@@ -151,6 +156,22 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
   const handleRegionChange = useCallback((r: Region) => {
     regionRef.current = r;
   }, []);
+
+  // Explicit "center on me" — user tapped the location button.
+  // pendingRecenter flag tells the effect below to animate when coords arrive.
+  const pendingRecenter = useRef(false);
+  const handleLocationPress = useCallback(async () => {
+    pendingRecenter.current = true;
+    await location.requestLocation();
+  }, [location.requestLocation]);
+
+  useEffect(() => {
+    if (!pendingRecenter.current || !location.coords) return;
+    pendingRecenter.current = false;
+    const next: Region = { ...location.coords, latitudeDelta: 0.02, longitudeDelta: 0.02 };
+    regionRef.current = next;
+    mapRef.current?.animateToRegion(next, 400);
+  }, [location.coords]);
 
   const handleZoomIn = useCallback(() => {
     const cur = regionRef.current;
@@ -212,7 +233,7 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
       <MapControls
         onZoomIn={handleZoomIn}
         onZoomOut={handleZoomOut}
-        onLocation={location.requestLocation}
+        onLocation={handleLocationPress}
         locationLoading={location.loading}
       />
 

@@ -30,10 +30,10 @@ export const INFO_CONTENT_URL = 'https://raw.githubusercontent.com/[org]/fuckfas
 // Map POI tap search
 // Default radius passed to MKLocalPointsOfInterestRequest on iOS.
 // At runtime, radius is computed dynamically from the visible region span
-// (~5% of shorter dimension, clamped to MIN/MAX). This constant is the
+// (~2% of shorter dimension, clamped to MIN/MAX). This constant is the
 // fallback when region data is unavailable.
 export const POI_SEARCH_RADIUS_METERS = 50;
-export const POI_SEARCH_RADIUS_MIN_METERS = 25;
+export const POI_SEARCH_RADIUS_MIN_METERS = 15;
 export const POI_SEARCH_RADIUS_MAX_METERS = 200;
 // How long a tap cell's POI name list is cached in-memory before re-querying.
 export const TAP_CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes

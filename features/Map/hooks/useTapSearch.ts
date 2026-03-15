@@ -48,7 +48,7 @@ function tapCellKey(lat: number, lng: number): string {
 
 /**
  * Computes a POI search radius proportional to the visible map region.
- * ~5% of the shorter span dimension (converted to meters), clamped to
+ * ~2% of the shorter span dimension (converted to meters), clamped to
  * POI_SEARCH_RADIUS_MIN_METERS..POI_SEARCH_RADIUS_MAX_METERS.
  * Falls back to POI_SEARCH_RADIUS_METERS when region is unavailable.
  *
@@ -60,7 +60,7 @@ function computeSearchRadius(region: Region | null): number {
   const latMeters = region.latitudeDelta * 111_320;
   const lngMeters = region.longitudeDelta * 111_320 * Math.cos((region.latitude * Math.PI) / 180);
   const shorterSpan = Math.min(latMeters, lngMeters);
-  const radius = shorterSpan * 0.05;
+  const radius = shorterSpan * 0.02;
   return Math.max(POI_SEARCH_RADIUS_MIN_METERS, Math.min(POI_SEARCH_RADIUS_MAX_METERS, radius));
 }
 
@@ -148,6 +148,7 @@ export function useTapSearch(deps: MatchingDeps, areaHash: string, regionRef?: R
         }
 
         const radius = computeSearchRadius(regionRef?.current ?? null);
+        console.log('[useTapSearch] searchNearby radius:', Math.round(radius), 'm');
         const names = await MapKitSearch.searchNearby(
           coordinate.latitude,
           coordinate.longitude,
