@@ -3,7 +3,7 @@ import type { MatchingDeps } from '../../../core/matching';
 import { matchEntity } from '../../../core/matching';
 import { buildScanResult } from '../utils/buildScanResult';
 import { MapKitSearch } from '../nativeModules/MapKitSearch';
-import type { MapPin } from '../types';
+import type { MapPin, ScanResult } from '../types';
 import {
   POI_SEARCH_RADIUS_METERS,
   POI_SEARCH_RADIUS_MIN_METERS,
@@ -43,9 +43,8 @@ function tapCellKey(lat: number, lng: number): string {
   return `${r(lat)},${r(lng)}`;
 }
 
-// V2: When more than 5 POI matches are returned from a single tap, show a
-// scrollable bottom-sheet chooser instead of (or in addition to) stacked
-// markers. For MVP, all matches render as markers regardless of count.
+// When a tap produces 2+ matches, MapScreen shows a MatchChooser overlay.
+// All matches also render as markers for visual context.
 
 /**
  * Computes a POI search radius proportional to the visible map region.
@@ -78,6 +77,8 @@ function computeSearchRadius(region: Region | null): number {
 export function useTapSearch(deps: MatchingDeps, areaHash: string, regionRef?: React.RefObject<Region>) {
   const [tapPins, setTapPins] = useState<MapPin[]>([]);
   const [tapLoadingCoord, setTapLoadingCoord] = useState<LatLng | null>(null);
+  /** Scan results from the most recent tap — drives the MatchChooser when length ≥ 2. */
+  const [latestTapBatch, setLatestTapBatch] = useState<ScanResult[]>([]);
   const cellCache = useRef<Map<string, CellCacheEntry>>(new Map());
   const lastTapAt = useRef<number>(0);
 
@@ -92,12 +93,14 @@ export function useTapSearch(deps: MatchingDeps, areaHash: string, regionRef?: R
       );
 
       const newPins: MapPin[] = [];
+      const batchResults: ScanResult[] = [];
       for (const r of results) {
         if (r.status !== 'fulfilled' || !r.value.matched) continue;
         const scanResult = buildScanResult(r.value);
         const id = scanResult.entityId ?? scanResult.fecCommitteeId;
         // Guard: empty/falsy id causes a nil key on FlagMarker, crashing AIRMap.
         if (!id) continue;
+        batchResults.push(scanResult);
         newPins.push({
           id,
           name: scanResult.canonicalName,
@@ -106,6 +109,8 @@ export function useTapSearch(deps: MatchingDeps, areaHash: string, regionRef?: R
           avoided: false,
         });
       }
+
+      setLatestTapBatch(batchResults);
 
       if (newPins.length > 0) {
         setTapPins((prev) => {
@@ -181,7 +186,12 @@ export function useTapSearch(deps: MatchingDeps, areaHash: string, regionRef?: R
     [processTapNames]
   );
 
-  const resetTapPins = useCallback(() => setTapPins([]), []);
+  const resetTapPins = useCallback(() => {
+    setTapPins([]);
+    setLatestTapBatch([]);
+  }, []);
+
+  const clearLatestTapBatch = useCallback(() => setLatestTapBatch([]), []);
 
   const markTapPinAvoided = useCallback((entityId: string) => {
     setTapPins((prev) =>
@@ -189,5 +199,14 @@ export function useTapSearch(deps: MatchingDeps, areaHash: string, regionRef?: R
     );
   }, []);
 
-  return { tapPins, tapLoadingCoord, handleMapPress, handlePoiClick, resetTapPins, markTapPinAvoided };
+  return {
+    tapPins,
+    tapLoadingCoord,
+    latestTapBatch,
+    handleMapPress,
+    handlePoiClick,
+    resetTapPins,
+    clearLatestTapBatch,
+    markTapPinAvoided,
+  };
 }

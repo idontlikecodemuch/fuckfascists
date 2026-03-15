@@ -12,6 +12,23 @@ This document is updated continuously. New instances should read this first — 
 
 ## Last 5 Sessions (most recent first)
 
+### Session: March 15, 2026 (follow-up)
+**Focus:** MatchChooser — multi-match POI tap selection
+
+**Completed:**
+- **MatchChooser component:** New `features/Map/components/MatchChooser.tsx` — bottom-anchored overlay shown when a single map tap returns 2+ matched entities. 8-bit pixel art aesthetic matching BusinessCard (same palette, monospace font, thick borders, confidence badges). FlatList of results with business name + VERIFIED/MATCHED badge per row. DISMISS button at bottom. 44pt minimum tap targets.
+- **useTapSearch batch tracking:** Added `latestTapBatch: ScanResult[]` state to `useTapSearch` hook. `processTapNames` now populates it with the scan results from each tap (in addition to creating pins). Exposed `latestTapBatch` and `clearLatestTapBatch` in the hook's return value. `resetTapPins` also clears the batch.
+- **MapScreen integration:** Added tap batch effect — when `latestTapBatch.length === 1`, auto-selects it (shows BusinessCard directly, same as before). When `latestTapBatch.length >= 2`, renders MatchChooser instead. User selects a business → BusinessCard opens for that result. DISMISS closes the chooser. All markers still render on the map regardless of chooser state. Manual search and card dismiss both clear the batch.
+
+**Files changed:**
+- `features/Map/components/MatchChooser.tsx` — **new file**
+- `features/Map/hooks/useTapSearch.ts` — `latestTapBatch` state, `clearLatestTapBatch`, updated return value
+- `features/Map/MapScreen.tsx` — import MatchChooser, destructure new hook values, tap batch effect, chooser callbacks, render MatchChooser
+
+**Build:** Clean (Xcode, 0 errors)
+
+---
+
 ### Session: March 15, 2026
 **Focus:** Map crash fixes + four physical-device map improvements
 

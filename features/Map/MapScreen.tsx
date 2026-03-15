@@ -13,6 +13,7 @@ import { FlagMarker } from './components/MapMarker';
 import { MapSearchBar } from './components/MapSearchBar';
 import { UnmatchedBanner } from './components/UnmatchedBanner';
 import { TapLoadingMarker } from './components/TapLoadingMarker';
+import { MatchChooser } from './components/MatchChooser';
 import type { MapPin, ScanResult } from './types';
 import { MapControls } from './components/MapControls';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -60,8 +61,10 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
   const mapRef = useRef<MapView>(null);
   const regionRef = useRef<Region>(DEFAULT_REGION);
 
-  const { tapPins, tapLoadingCoord, handleMapPress, handlePoiClick, resetTapPins, markTapPinAvoided } =
-    useTapSearch(deps, location.areaHash ?? '', regionRef);
+  const {
+    tapPins, tapLoadingCoord, latestTapBatch,
+    handleMapPress, handlePoiClick, resetTapPins, clearLatestTapBatch, markTapPinAvoided,
+  } = useTapSearch(deps, location.areaHash ?? '', regionRef);
 
   // Card effect — show BusinessCard whenever a match result arrives.
   useEffect(() => {
@@ -93,9 +96,10 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
     setActiveResult(null);
     setPins([]);
     resetTapPins();
+    clearLatestTapBatch();
     reset();
     await scan(searchText);
-  }, [searchText, scan, reset, resetTapPins, entities.length, status]);
+  }, [searchText, scan, reset, resetTapPins, clearLatestTapBatch, entities.length, status]);
 
   const handleAvoid = useCallback(async () => {
     if (!activeResult?.entity) return;
@@ -110,8 +114,27 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
 
   const handleDismiss = useCallback(() => {
     setActiveResult(null);
+    clearLatestTapBatch();
     reset();
-  }, [reset]);
+  }, [reset, clearLatestTapBatch]);
+
+  // Tap batch effect — auto-select when a single tap returns exactly 1 match.
+  // When 2+ matches arrive, the MatchChooser renders (no auto-select).
+  useEffect(() => {
+    if (latestTapBatch.length === 1) {
+      setActiveResult(latestTapBatch[0]);
+      clearLatestTapBatch();
+    }
+  }, [latestTapBatch, clearLatestTapBatch]);
+
+  const handleChooserSelect = useCallback((selected: ScanResult) => {
+    setActiveResult(selected);
+    clearLatestTapBatch();
+  }, [clearLatestTapBatch]);
+
+  const handleChooserDismiss = useCallback(() => {
+    clearLatestTapBatch();
+  }, [clearLatestTapBatch]);
 
   const handleOpenSearch = useCallback(() => {
     Linking.openURL(`https://www.fec.gov/data/committees/?q=${encodeURIComponent(searchText)}`);
@@ -192,6 +215,14 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
         onLocation={location.requestLocation}
         locationLoading={location.loading}
       />
+
+      {latestTapBatch.length >= 2 && !activeResult && (
+        <MatchChooser
+          results={latestTapBatch}
+          onSelect={handleChooserSelect}
+          onDismiss={handleChooserDismiss}
+        />
+      )}
 
       {activeResult && (
         <View style={styles.cardContainer}>
