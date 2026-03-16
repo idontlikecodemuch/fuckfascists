@@ -30,27 +30,74 @@ export async function getAllEntityAvoids(
 // ── Platform avoid events ──────────────────────────────────────────────────────
 
 /**
- * Records that the user avoided a platform during the current week.
- * Idempotent — safe to call multiple times for the same (platformId, week).
+ * Records an affirmative avoidance of a tracked platform.
+ * If the user already avoided this platform today, the count is incremented.
+ *
+ * IMPORTANT: Only avoidance is recorded. There is no "support" path.
+ * No time component or location is stored — date only (YYYY-MM-DD).
  */
 export async function recordPlatformAvoid(
   adapter: StorageAdapter,
   platformId: string
 ): Promise<void> {
-  const weekOf = getLocalWeekStart();
-  await adapter.upsertPlatformAvoid({ platformId, weekOf });
+  const date = getLocalDateString();
+  // count: 1 is a placeholder — the DB owns the increment atomically (ON CONFLICT DO UPDATE SET count = count + 1).
+  await adapter.upsertPlatformAvoid({ platformId, date, count: 1 });
 }
 
 /**
- * Returns platform avoid events for a given week.
- * Defaults to the current week when weekOf is omitted.
+ * Returns the total avoid count for a single platform during the given week.
+ * Sums all daily counts from Monday through Sunday. Defaults to current week.
+ */
+export async function getPlatformWeeklyTotal(
+  adapter: StorageAdapter,
+  platformId: string,
+  weekOf?: string
+): Promise<number> {
+  const weekStart = weekOf ?? getLocalWeekStart();
+  const weekEnd = nextMondayOfStr(weekStart);
+  const events = await adapter.getPlatformAvoidsForWeek(weekStart, weekEnd);
+  return events
+    .filter((e) => e.platformId === platformId)
+    .reduce((sum, e) => sum + e.count, 0);
+}
+
+/**
+ * Returns a map of platformId → total weekly avoid count for all platforms.
+ * Used by the Platforms screen to show per-platform tallies.
+ */
+export async function getAllPlatformWeeklyTotals(
+  adapter: StorageAdapter,
+  weekOf?: string
+): Promise<Map<string, number>> {
+  const weekStart = weekOf ?? getLocalWeekStart();
+  const weekEnd = nextMondayOfStr(weekStart);
+  const events = await adapter.getPlatformAvoidsForWeek(weekStart, weekEnd);
+  const totals = new Map<string, number>();
+  for (const e of events) {
+    totals.set(e.platformId, (totals.get(e.platformId) ?? 0) + e.count);
+  }
+  return totals;
+}
+
+/**
+ * Returns all platform avoid events for a given week.
+ * Used by report card generation. Defaults to current week.
  */
 export async function getPlatformAvoidsForWeek(
   adapter: StorageAdapter,
   weekOf?: string
 ): Promise<PlatformAvoidEvent[]> {
-  const target = weekOf ?? getLocalWeekStart();
-  return adapter.getPlatformAvoids(target);
+  const weekStart = weekOf ?? getLocalWeekStart();
+  const weekEnd = nextMondayOfStr(weekStart);
+  return adapter.getPlatformAvoidsForWeek(weekStart, weekEnd);
+}
+
+/** Returns the Monday immediately following the given weekOf date string. */
+function nextMondayOfStr(weekOf: string): string {
+  const d = new Date(`${weekOf}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + 7);
+  return d.toISOString().slice(0, 10);
 }
 
 // ── Date helpers ──────────────────────────────────────────────────────────────

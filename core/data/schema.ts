@@ -26,14 +26,16 @@ export const DDL_ENTITY_AVOIDS = `
 
 /**
  * platform_avoid_events
- * One record per (platform_id, week_of) — idempotent upsert.
- * week_of is the Monday of the week in YYYY-MM-DD format.
+ * Primary key is (platform_id, date) so an upsert increments count atomically.
+ * No time component, no location — date only (YYYY-MM-DD).
+ * Mirrors entity_avoid_events structure for consistency.
  */
 export const DDL_PLATFORM_AVOIDS = `
   CREATE TABLE IF NOT EXISTS ${TABLE_PLATFORM_AVOIDS} (
-    platform_id TEXT NOT NULL,
-    week_of     TEXT NOT NULL,
-    PRIMARY KEY (platform_id, week_of)
+    platform_id TEXT    NOT NULL,
+    date        TEXT    NOT NULL,
+    count       INTEGER NOT NULL DEFAULT 1,
+    PRIMARY KEY (platform_id, date)
   );
 `;
 

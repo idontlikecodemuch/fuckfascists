@@ -47,28 +47,31 @@ export function MatchChooser({ results, onSelect, onDismiss }: MatchChooserProps
           data={results}
           keyExtractor={(item) => item.entityId ?? item.fecCommitteeId}
           style={styles.list}
-          renderItem={({ item }) => (
-            <Pressable
-              onPress={() => onSelect(item)}
-              style={styles.row}
-              accessibilityRole="button"
-              accessibilityLabel={mapCopy.chooserRow(item.canonicalName)}
-            >
-              <Text
-                style={styles.rowName}
-                numberOfLines={1}
-                allowFontScaling
+          renderItem={({ item }) => {
+            const rowName = item.matchedAlias || item.canonicalName;
+            return (
+              <Pressable
+                onPress={() => onSelect(item)}
+                style={styles.row}
+                accessibilityRole="button"
+                accessibilityLabel={mapCopy.chooserRow(rowName)}
               >
-                {item.canonicalName}
-              </Text>
-              {item.confidence < CONFIDENCE_THRESHOLD_HIGH && (
-                <ConfidenceTag level={item.confidence} />
-              )}
-              {item.confidence < CONFIDENCE_THRESHOLD_HIGH && (
-                <Text style={styles.rowWarning} allowFontScaling>{sharedCopy.warningIcon}</Text>
-              )}
-            </Pressable>
-          )}
+                <Text
+                  style={styles.rowName}
+                  numberOfLines={1}
+                  allowFontScaling
+                >
+                  {rowName}
+                </Text>
+                {item.confidence < CONFIDENCE_THRESHOLD_HIGH && (
+                  <ConfidenceTag level={item.confidence} />
+                )}
+                {item.confidence < CONFIDENCE_THRESHOLD_HIGH && (
+                  <Text style={styles.rowWarning} allowFontScaling>{sharedCopy.warningIcon}</Text>
+                )}
+              </Pressable>
+            );
+          }}
         />
 
         <Pressable

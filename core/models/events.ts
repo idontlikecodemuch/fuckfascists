@@ -9,5 +9,6 @@ export interface EntityAvoidEvent {
 
 export interface PlatformAvoidEvent {
   platformId: string; // references static platform list
-  weekOf: string;     // YYYY-MM-DD (Monday of that week)
+  date: string;       // YYYY-MM-DD — no time, no location
+  count: number;      // accumulated avoid count — set by DB on read, not by callers on write
 }

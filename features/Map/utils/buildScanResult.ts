@@ -17,6 +17,8 @@ export function buildScanResult(match: MatchSuccess): ScanResult {
     // the API search result; use committee ID only as a last resort (should not be
     // user-visible, but prevents an empty string if something upstream is wrong).
     canonicalName: match.entity?.canonicalName ?? match.committeeName ?? match.fecCommitteeId,
+    matchedAlias: match.matchedAlias,
+    committeeName: match.committeeName,
     confidence: match.confidence,
     donationSummary: match.donationSummary,
     fecCommitteeId: match.fecCommitteeId,

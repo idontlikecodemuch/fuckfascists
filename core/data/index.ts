@@ -16,6 +16,8 @@ export {
   recordEntityAvoid,
   recordPlatformAvoid,
   getAllEntityAvoids,
+  getPlatformWeeklyTotal,
+  getAllPlatformWeeklyTotals,
   getPlatformAvoidsForWeek,
   toDateString,
   getMondayOf,

@@ -5,32 +5,38 @@
  */
 import type { ScanResult } from '../Map/types';
 import type { DonationSummary, Entity } from '../../core/models';
-import type { SurveyItem, Platform } from '../Survey/types';
+import type { PlatformItem, Platform } from '../Platforms/types';
 import type { ReportCardData } from '../ReportCard/types';
 import type { FaqEntry, LinkEntry, TransparencyPoint, AboutContent } from '../Info/types';
 
 // ── Donation summaries ──────────────────────────────────────────────────────
 
 const walmartDonations: DonationSummary = {
+  committeeId: 'C00093054',
+  committeeName: 'WALMART INC PAC FOR RESPONSIBLE GOVERNMENT',
   totalRepubs: 3_650_000,
   totalDems: 3_100_000,
   recentRepubs: 980_000,
   recentDems: 720_000,
   recentCycle: 2024,
   activeCycles: [2016, 2018, 2020, 2022, 2024],
+  raw: [],
+  lastUpdated: '2025-03-10',
   fecCommitteeUrl: 'https://www.fec.gov/data/committee/C00093054/',
-  rawLineItems: [],
 };
 
 const metaDonations: DonationSummary = {
+  committeeId: 'C00502906',
+  committeeName: 'META PLATFORMS INC PAC',
   totalRepubs: 1_200_000,
   totalDems: 1_800_000,
   recentRepubs: 340_000,
   recentDems: 510_000,
   recentCycle: 2024,
   activeCycles: [2020, 2022, 2024],
+  raw: [],
+  lastUpdated: '2025-03-10',
   fecCommitteeUrl: 'https://www.fec.gov/data/committee/C00502906/',
-  rawLineItems: [],
 };
 
 // ── Entities ────────────────────────────────────────────────────────────────
@@ -68,6 +74,8 @@ const amazonEntity: Entity = {
 export const highConfResult: ScanResult = {
   entityId: 'walmart',
   canonicalName: 'Walmart Inc',
+  matchedAlias: 'Walmart',
+  committeeName: 'WALMART INC PAC FOR RESPONSIBLE GOVERNMENT',
   confidence: 0.95,
   donationSummary: walmartDonations,
   fecCommitteeId: 'C00093054',
@@ -78,6 +86,8 @@ export const highConfResult: ScanResult = {
 export const medConfResult: ScanResult = {
   entityId: 'walgreens-fuzzy',
   canonicalName: 'Walgreens Boots Alliance',
+  matchedAlias: 'Walgreens',
+  committeeName: 'META PLATFORMS INC PAC',
   confidence: 0.72,
   donationSummary: metaDonations,
   fecCommitteeId: 'C00502906',
@@ -88,6 +98,8 @@ export const medConfResult: ScanResult = {
 export const noDonationResult: ScanResult = {
   entityId: 'amazon',
   canonicalName: 'Amazon.com Inc',
+  matchedAlias: 'Amazon',
+  committeeName: null,
   confidence: 0.95,
   donationSummary: null,
   fecCommitteeId: 'C00360354',
@@ -98,29 +110,29 @@ export const noDonationResult: ScanResult = {
 export const chooser3Results: ScanResult[] = [highConfResult, medConfResult, noDonationResult];
 export const chooser2Results: ScanResult[] = [highConfResult, medConfResult];
 
-// ── Platforms / Survey items ────────────────────────────────────────────────
+// ── Platform items ──────────────────────────────────────────────────────────
 
-const twitterPlatform: Platform = { id: 'twitter', name: 'Twitter / X', parentCompany: 'X Corp', ceoName: 'Linda Yaccarino', categoryTags: ['social'] };
+const twitterPlatform: Platform = { id: 'twitter', name: 'X / Twitter', parentCompany: 'X Corp', ceoName: 'Linda Yaccarino', categoryTags: ['social'] };
 const instagramPlatform: Platform = { id: 'instagram', name: 'Instagram', parentCompany: 'Meta Platforms', ceoName: 'Mark Zuckerberg', categoryTags: ['social'] };
 const amazonPlatform: Platform = { id: 'amazon', name: 'Amazon', parentCompany: 'Amazon.com Inc', ceoName: 'Andy Jassy', categoryTags: ['shopping', 'streaming'] };
-const uberPlatform: Platform = { id: 'uber', name: 'Uber', parentCompany: 'Uber Technologies', ceoName: 'Dara Khosrowshahi', categoryTags: ['rideshare'] };
-const walmartPlatform: Platform = { id: 'walmart', name: 'Walmart.com', parentCompany: 'Walmart Inc', ceoName: 'Doug McMillon', categoryTags: ['shopping'] };
-const foxPlatform: Platform = { id: 'fox-news', name: 'Fox News', parentCompany: 'Fox Corp', ceoName: 'Lachlan Murdoch', categoryTags: ['news'] };
+const facebookPlatform: Platform = { id: 'facebook', name: 'Facebook', parentCompany: 'Meta Platforms', ceoName: 'Mark Zuckerberg', categoryTags: ['social'] };
+const youtubePlatform: Platform = { id: 'youtube', name: 'YouTube', parentCompany: 'Alphabet Inc', ceoName: 'Sundar Pichai', categoryTags: ['streaming', 'social'] };
+const whatsappPlatform: Platform = { id: 'whatsapp', name: 'WhatsApp', parentCompany: 'Meta Platforms', ceoName: 'Mark Zuckerberg', categoryTags: ['messaging'] };
 
-export const partialSurveyItems: SurveyItem[] = [
-  { platform: twitterPlatform, avoided: true },
-  { platform: instagramPlatform, avoided: true },
-  { platform: amazonPlatform, avoided: true },
-  { platform: uberPlatform, avoided: false },
-  { platform: walmartPlatform, avoided: false },
-  { platform: foxPlatform, avoided: false },
+export const partialPlatformItems: PlatformItem[] = [
+  { platform: twitterPlatform, weeklyCount: 5 },
+  { platform: instagramPlatform, weeklyCount: 3 },
+  { platform: amazonPlatform, weeklyCount: 1 },
+  { platform: facebookPlatform, weeklyCount: 0 },
+  { platform: youtubePlatform, weeklyCount: 0 },
+  { platform: whatsappPlatform, weeklyCount: 0 },
 ];
 
-export const fullSurveyItems: SurveyItem[] = partialSurveyItems.map((i) => ({ ...i, avoided: true }));
-export const emptySurveyItems: SurveyItem[] = partialSurveyItems.map((i) => ({ ...i, avoided: false }));
+export const fullPlatformItems: PlatformItem[] = partialPlatformItems.map((i) => ({ ...i, weeklyCount: Math.max(i.weeklyCount, 1) }));
+export const emptyPlatformItems: PlatformItem[] = partialPlatformItems.map((i) => ({ ...i, weeklyCount: 0 }));
 
-export const avoidedPlatformRow: SurveyItem = { platform: twitterPlatform, avoided: true };
-export const notAvoidedPlatformRow: SurveyItem = { platform: instagramPlatform, avoided: false };
+export const avoidedPlatformRow: PlatformItem = { platform: twitterPlatform, weeklyCount: 5 };
+export const notAvoidedPlatformRow: PlatformItem = { platform: instagramPlatform, weeklyCount: 0 };
 
 // ── Report card data ────────────────────────────────────────────────────────
 

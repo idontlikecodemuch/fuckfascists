@@ -22,6 +22,7 @@ function makeAdapter(
     getEntityAvoids: jest.fn().mockResolvedValue([]),
     upsertPlatformAvoid: jest.fn().mockResolvedValue(undefined),
     getPlatformAvoids: jest.fn().mockResolvedValue([]),
+    getPlatformAvoidsForWeek: jest.fn().mockResolvedValue([]),
     ...overrides,
   } as jest.Mocked<StorageAdapter>;
 }
@@ -113,28 +114,36 @@ describe('getAllEntityAvoids', () => {
 // ─── recordPlatformAvoid ──────────────────────────────────────────────────────
 
 describe('recordPlatformAvoid', () => {
-  it('records an avoid event for the current local week', async () => {
+  it('calls upsertPlatformAvoid with the platformId and today\'s local date', async () => {
+    const adapter = makeAdapter();
+    const today = getLocalDateString();
+    await recordPlatformAvoid(adapter, 'twitter');
+
+    expect(adapter.upsertPlatformAvoid).toHaveBeenCalledWith(
+      expect.objectContaining({ platformId: 'twitter', date: today })
+    );
+  });
+
+  it('always passes count: 1 — DB owns the increment atomically', async () => {
     const adapter = makeAdapter();
     await recordPlatformAvoid(adapter, 'twitter');
 
-    const expectedWeek = getLocalWeekStart();
-    expect(adapter.upsertPlatformAvoid).toHaveBeenCalledWith({
-      platformId: 'twitter',
-      weekOf: expectedWeek,
-    });
+    expect(adapter.upsertPlatformAvoid).toHaveBeenCalledWith(
+      expect.objectContaining({ count: 1 })
+    );
   });
 });
 
 // ─── getPlatformAvoidsForWeek ─────────────────────────────────────────────────
 
 describe('getPlatformAvoidsForWeek', () => {
-  it('uses the provided weekOf', async () => {
-    const events: PlatformAvoidEvent[] = [{ platformId: 'twitter', weekOf: '2024-03-11' }];
-    const adapter = makeAdapter({ getPlatformAvoids: jest.fn().mockResolvedValue(events) });
+  it('uses the provided weekOf to compute [weekStart, weekEnd)', async () => {
+    const events: PlatformAvoidEvent[] = [{ platformId: 'twitter', date: '2024-03-11', count: 1 }];
+    const adapter = makeAdapter({ getPlatformAvoidsForWeek: jest.fn().mockResolvedValue(events) });
 
     const result = await getPlatformAvoidsForWeek(adapter, '2024-03-11');
     expect(result).toEqual(events);
-    expect(adapter.getPlatformAvoids).toHaveBeenCalledWith('2024-03-11');
+    expect(adapter.getPlatformAvoidsForWeek).toHaveBeenCalledWith('2024-03-11', '2024-03-18');
   });
 
   it('defaults to the current local week when weekOf is omitted', async () => {
@@ -142,6 +151,8 @@ describe('getPlatformAvoidsForWeek', () => {
     await getPlatformAvoidsForWeek(adapter);
 
     const expectedWeek = getLocalWeekStart();
-    expect(adapter.getPlatformAvoids).toHaveBeenCalledWith(expectedWeek);
+    expect(adapter.getPlatformAvoidsForWeek).toHaveBeenCalled();
+    const [weekStart] = (adapter.getPlatformAvoidsForWeek as jest.Mock).mock.calls[0];
+    expect(weekStart).toBe(expectedWeek);
   });
 });

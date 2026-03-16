@@ -26,7 +26,8 @@ interface EntityAvoidRow {
 
 interface PlatformAvoidRow {
   platform_id: string;
-  week_of: string;
+  date: string;
+  count: number;
 }
 
 // ── Adapter ───────────────────────────────────────────────────────────────────
@@ -44,7 +45,7 @@ export class SqliteAdapter implements StorageAdapter {
   private constructor(private readonly db: SQLite.SQLiteDatabase) {}
 
   /** Current schema version — increment whenever DDL changes. */
-  private static readonly SCHEMA_VERSION = 1;
+  private static readonly SCHEMA_VERSION = 2;
 
   /** Opens the database and runs schema migrations. */
   static async open(name = 'fuckfascists.db'): Promise<SqliteAdapter> {
@@ -56,17 +57,18 @@ export class SqliteAdapter implements StorageAdapter {
   /**
    * Version-gated migrations. Safe to call on every open.
    *
-   * The cache table is a local optimization (not user data) — it is safe
-   * to drop and recreate on a schema version bump. The avoid event tables
-   * contain user data and are never dropped here.
+   * Pre-launch: DROP + CREATE is acceptable for schema changes.
+   * The cache table is a local optimization — always safe to drop.
+   * The platform_avoid_events table schema changed in v2 (weekOf → date+count).
    */
   private static async runMigrations(db: SQLite.SQLiteDatabase): Promise<void> {
     const row = await db.getFirstAsync<{ user_version: number }>('PRAGMA user_version');
     const installedVersion = row?.user_version ?? 0;
 
     if (installedVersion < SqliteAdapter.SCHEMA_VERSION) {
-      // Drop the cache table so CREATE TABLE IF NOT EXISTS rebuilds it with the current schema.
+      // Drop tables whose schema changed so CREATE TABLE IF NOT EXISTS rebuilds them.
       await db.execAsync(`DROP TABLE IF EXISTS ${TABLE_CACHE}`);
+      await db.execAsync(`DROP TABLE IF EXISTS ${TABLE_PLATFORM_AVOIDS}`);
       await db.execAsync(`PRAGMA user_version = ${SqliteAdapter.SCHEMA_VERSION}`);
     }
 
@@ -134,24 +136,35 @@ export class SqliteAdapter implements StorageAdapter {
 
   // ── Platform avoid events ──────────────────────────────────────────────────
 
+  // count is managed atomically by the DB — caller does not control increment
   async upsertPlatformAvoid(event: PlatformAvoidEvent): Promise<void> {
     await this.db.runAsync(
-      `INSERT OR IGNORE INTO ${TABLE_PLATFORM_AVOIDS} (platform_id, week_of)
-       VALUES (?, ?)`,
-      [event.platformId, event.weekOf],
+      `INSERT INTO ${TABLE_PLATFORM_AVOIDS} (platform_id, date, count)
+       VALUES (?, ?, 1)
+       ON CONFLICT (platform_id, date) DO UPDATE SET count = count + 1`,
+      [event.platformId, event.date],
     );
   }
 
-  async getPlatformAvoids(weekOf?: string): Promise<PlatformAvoidEvent[]> {
-    const rows = weekOf
+  async getPlatformAvoids(platformId?: string): Promise<PlatformAvoidEvent[]> {
+    const rows = platformId
       ? await this.db.getAllAsync<PlatformAvoidRow>(
-          `SELECT * FROM ${TABLE_PLATFORM_AVOIDS} WHERE week_of = ?`,
-          [weekOf],
+          `SELECT * FROM ${TABLE_PLATFORM_AVOIDS} WHERE platform_id = ?`,
+          [platformId],
         )
       : await this.db.getAllAsync<PlatformAvoidRow>(
           `SELECT * FROM ${TABLE_PLATFORM_AVOIDS}`,
         );
 
-    return rows.map((r) => ({ platformId: r.platform_id, weekOf: r.week_of }));
+    return rows.map((r) => ({ platformId: r.platform_id, date: r.date, count: r.count }));
+  }
+
+  async getPlatformAvoidsForWeek(weekStart: string, weekEnd: string): Promise<PlatformAvoidEvent[]> {
+    const rows = await this.db.getAllAsync<PlatformAvoidRow>(
+      `SELECT * FROM ${TABLE_PLATFORM_AVOIDS} WHERE date >= ? AND date < ?`,
+      [weekStart, weekEnd],
+    );
+
+    return rows.map((r) => ({ platformId: r.platform_id, date: r.date, count: r.count }));
   }
 }

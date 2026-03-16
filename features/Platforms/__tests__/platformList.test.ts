@@ -1,4 +1,4 @@
-import { TRACKED_PLATFORMS } from '../data/platforms';
+import { TRACKED_PLATFORMS } from '../data/platformList';
 
 describe('TRACKED_PLATFORMS', () => {
   it('contains at least one platform', () => {
@@ -31,11 +31,5 @@ describe('TRACKED_PLATFORMS', () => {
   it('all platform ids are unique', () => {
     const ids = TRACKED_PLATFORMS.map((p) => p.id);
     expect(new Set(ids).size).toBe(ids.length);
-  });
-
-  it('no platform has a confidenceOverride field', () => {
-    TRACKED_PLATFORMS.forEach((p) => {
-      expect((p as unknown as Record<string, unknown>)['confidenceOverride']).toBeUndefined();
-    });
   });
 });

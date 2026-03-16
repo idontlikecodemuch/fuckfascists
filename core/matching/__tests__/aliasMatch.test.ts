@@ -29,18 +29,22 @@ const entities: Entity[] = [walmart, mcdonalds];
 
 describe('findByAlias', () => {
   it('matches by canonical name (normalized)', () => {
-    expect(findByAlias(normalize('Walmart Inc'), entities)).toBe(walmart);
+    const hit = findByAlias(normalize('Walmart Inc'), entities);
+    expect(hit?.entity).toBe(walmart);
+    expect(hit?.matchedAlias).toBe('Walmart Inc');
   });
 
   it('matches by alias (normalized)', () => {
-    expect(findByAlias(normalize('Walmart'), entities)).toBe(walmart);
-    expect(findByAlias(normalize('Wal-Mart'), entities)).toBe(walmart);
-    expect(findByAlias(normalize('Walmart Supercenter'), entities)).toBe(walmart);
+    expect(findByAlias(normalize('Walmart'), entities)).toEqual({ entity: walmart, matchedAlias: 'Walmart' });
+    // normalize('Wal-Mart') → 'walmart' matches normalize('Walmart') → alias 'Walmart'
+    expect(findByAlias(normalize('Wal-Mart'), entities)).toEqual({ entity: walmart, matchedAlias: 'Walmart' });
+    expect(findByAlias(normalize('Walmart Supercenter'), entities)).toEqual({ entity: walmart, matchedAlias: 'Walmart Supercenter' });
   });
 
   it("matches possessive canonical name (McDonald's)", () => {
-    expect(findByAlias(normalize("McDonald's"), entities)).toBe(mcdonalds);
-    expect(findByAlias(normalize('McDonalds'), entities)).toBe(mcdonalds);
+    // normalize("McDonald's") → 'mcdonalds' matches alias "McDonald's" (not canonicalName 'mcdonalds corporation')
+    expect(findByAlias(normalize("McDonald's"), entities)).toEqual({ entity: mcdonalds, matchedAlias: "McDonald's" });
+    expect(findByAlias(normalize('McDonalds'), entities)).toEqual({ entity: mcdonalds, matchedAlias: "McDonald's" });
   });
 
   it('returns null when no match found', () => {
@@ -48,7 +52,7 @@ describe('findByAlias', () => {
   });
 
   it('is case-insensitive via normalize', () => {
-    expect(findByAlias(normalize('WALMART'), entities)).toBe(walmart);
-    expect(findByAlias(normalize('walmart supercenter'), entities)).toBe(walmart);
+    expect(findByAlias(normalize('WALMART'), entities)?.entity).toBe(walmart);
+    expect(findByAlias(normalize('walmart supercenter'), entities)?.entity).toBe(walmart);
   });
 });

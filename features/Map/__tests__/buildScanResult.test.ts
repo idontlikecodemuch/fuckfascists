@@ -36,6 +36,7 @@ function makeMatch(overrides: Partial<MatchSuccess> = {}): MatchSuccess {
     lookupStatus: 'matched',
     entity: walmartEntity,
     committeeName: 'Walmart Inc',
+    matchedAlias: 'Walmart',
     confidence: 1.0,
     fecCommitteeId: 'D000000074',
     donationSummary: mockSummary,
@@ -96,5 +97,20 @@ describe('buildScanResult', () => {
   it('returns null entity when match has no entity', () => {
     const result = buildScanResult(makeMatch({ entity: null }));
     expect(result.entity).toBeNull();
+  });
+
+  it('copies matchedAlias from the match', () => {
+    const result = buildScanResult(makeMatch({ matchedAlias: 'Target' }));
+    expect(result.matchedAlias).toBe('Target');
+  });
+
+  it('copies committeeName from the match', () => {
+    const result = buildScanResult(makeMatch({ committeeName: 'WALMART PAC' }));
+    expect(result.committeeName).toBe('WALMART PAC');
+  });
+
+  it('passes null committeeName when match has no committeeName', () => {
+    const result = buildScanResult(makeMatch({ committeeName: null }));
+    expect(result.committeeName).toBeNull();
   });
 });

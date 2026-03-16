@@ -5,7 +5,7 @@ import type { EntityAvoidEvent, LocalCache, PlatformAvoidEvent } from '../../cor
 
 const CACHE_KEY   = (k: string) => `cache:${k}`;
 const ENTITY_KEY  = (id: string, date: string) => `avoid:entity:${id}:${date}`;
-const PLATFORM_KEY = (id: string, week: string) => `avoid:platform:${id}:${week}`;
+const PLATFORM_KEY = (id: string, date: string) => `avoid:platform:${id}:${date}`;
 
 // ─── Prefix constants for bulk reads ─────────────────────────────────────────
 
@@ -73,23 +73,33 @@ export class ChromeStorageAdapter implements StorageAdapter {
 
   // ── Platform avoid events ────────────────────────────────────────────────────
   // Call via recordPlatformAvoid(adapter, platformId) in core/data/eventStore.ts.
-  // Idempotent by key design: same (platformId, weekOf) → same storage key → overwrites.
+  // Uses read-increment-write pattern (same as entity avoids — see comment above).
 
   async upsertPlatformAvoid(event: PlatformAvoidEvent): Promise<void> {
-    const storageKey = PLATFORM_KEY(event.platformId, event.weekOf);
-    await chrome.storage.local.set({ [storageKey]: event });
+    const storageKey = PLATFORM_KEY(event.platformId, event.date);
+    const existing = await chrome.storage.local.get(storageKey);
+    const prev = (existing[storageKey] as PlatformAvoidEvent) ?? null;
+    const updated: PlatformAvoidEvent = {
+      platformId: event.platformId,
+      date: event.date,
+      count: (prev?.count ?? 0) + event.count,
+    };
+    await chrome.storage.local.set({ [storageKey]: updated });
   }
 
-  async getPlatformAvoids(weekOf?: string): Promise<PlatformAvoidEvent[]> {
+  async getPlatformAvoids(platformId?: string): Promise<PlatformAvoidEvent[]> {
     const all = await chrome.storage.local.get(null);
     return Object.entries(all)
       .filter(([k]) => {
         if (!k.startsWith(PLATFORM_PREFIX)) return false;
-        // weekOf filter: key format is "avoid:platform:<id>:<weekOf>" so a
-        // substring match on ":<weekOf>" is sufficient and avoids a full parse.
-        if (weekOf) return k.includes(`:${weekOf}`);
+        if (platformId) return k.startsWith(`${PLATFORM_PREFIX}${platformId}:`);
         return true;
       })
       .map(([, v]) => v as PlatformAvoidEvent);
+  }
+
+  async getPlatformAvoidsForWeek(weekStart: string, weekEnd: string): Promise<PlatformAvoidEvent[]> {
+    const all = await this.getPlatformAvoids();
+    return all.filter((e) => e.date >= weekStart && e.date < weekEnd);
   }
 }

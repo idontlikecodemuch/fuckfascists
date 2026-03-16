@@ -1,7 +1,7 @@
 import { generateReportCard, nextMondayOf } from '../utils/generateReportCard';
 import type { StorageAdapter } from '../../../core/data';
 import type { Entity } from '../../../core/models';
-import type { Platform } from '../../Survey/types';
+import type { Platform } from '../../Platforms/types';
 import type { EntityAvoidEvent, PlatformAvoidEvent } from '../../../core/models';
 
 // ─── Fixtures ────────────────────────────────────────────────────────────────
@@ -29,12 +29,13 @@ function makeAdapter(
   platformEvents: PlatformAvoidEvent[] = []
 ): jest.Mocked<StorageAdapter> {
   return {
-    getCacheEntry:      jest.fn().mockResolvedValue(null),
-    setCacheEntry:      jest.fn().mockResolvedValue(undefined),
-    upsertEntityAvoid:  jest.fn().mockResolvedValue(undefined),
-    getEntityAvoids:    jest.fn().mockResolvedValue(entityEvents),
-    upsertPlatformAvoid: jest.fn().mockResolvedValue(undefined),
-    getPlatformAvoids:  jest.fn().mockResolvedValue(platformEvents),
+    getCacheEntry:           jest.fn().mockResolvedValue(null),
+    setCacheEntry:           jest.fn().mockResolvedValue(undefined),
+    upsertEntityAvoid:       jest.fn().mockResolvedValue(undefined),
+    getEntityAvoids:         jest.fn().mockResolvedValue(entityEvents),
+    upsertPlatformAvoid:     jest.fn().mockResolvedValue(undefined),
+    getPlatformAvoids:       jest.fn().mockResolvedValue(platformEvents),
+    getPlatformAvoidsForWeek: jest.fn().mockResolvedValue(platformEvents),
   } as jest.Mocked<StorageAdapter>;
 }
 
@@ -99,14 +100,24 @@ describe('generateReportCard', () => {
   });
 
   it('maps platform avoids to display names', async () => {
-    const platformEvents: PlatformAvoidEvent[] = [{ platformId: 'twitter', weekOf: WEEK }];
+    const platformEvents: PlatformAvoidEvent[] = [{ platformId: 'twitter', date: '2024-03-11', count: 1 }];
     const card = await generateReportCard(makeAdapter([], platformEvents), [], [twitter], WEEK, false);
     expect(card.platformAvoids).toEqual(['Twitter / X']);
     expect(card.totalPlatformAvoids).toBe(1);
   });
 
+  it('sums platform avoid counts across multiple days', async () => {
+    const platformEvents: PlatformAvoidEvent[] = [
+      { platformId: 'twitter', date: '2024-03-11', count: 3 },
+      { platformId: 'twitter', date: '2024-03-12', count: 2 },
+    ];
+    const card = await generateReportCard(makeAdapter([], platformEvents), [], [twitter], WEEK, false);
+    expect(card.platformAvoids).toEqual(['Twitter / X']);
+    expect(card.totalPlatformAvoids).toBe(5);
+  });
+
   it('falls back to platformId when platform is not in the list', async () => {
-    const platformEvents: PlatformAvoidEvent[] = [{ platformId: 'unknown-platform', weekOf: WEEK }];
+    const platformEvents: PlatformAvoidEvent[] = [{ platformId: 'unknown-platform', date: '2024-03-11', count: 1 }];
     const card = await generateReportCard(makeAdapter([], platformEvents), [], [], WEEK, false);
     expect(card.platformAvoids).toEqual(['unknown-platform']);
   });

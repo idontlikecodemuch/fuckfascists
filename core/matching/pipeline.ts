@@ -116,6 +116,7 @@ export async function matchEntity(
       lookupStatus: 'matched',
       entity,
       committeeName: entity?.canonicalName ?? cached.donationSummary?.committeeName ?? null,
+      matchedAlias: rawInput,
       confidence: cached.confidence,
       fecCommitteeId: cached.fecCommitteeId,
       donationSummary: cached.donationSummary,
@@ -124,15 +125,16 @@ export async function matchEntity(
   }
 
   // Step 2: Exact alias match
-  const aliasMatch = findByAlias(normalizedInput, deps.entities);
-  if (aliasMatch) {
+  const aliasHit = findByAlias(normalizedInput, deps.entities);
+  if (aliasHit) {
+    const { entity: aliasEntity, matchedAlias } = aliasHit;
     // Fix A: explicit check — empty string ("unverified") must not fall through to resolveOrgId
     let orgId: string | null;
     try {
       orgId =
-        (aliasMatch.fecCommitteeId != null && aliasMatch.fecCommitteeId !== '')
-          ? aliasMatch.fecCommitteeId
-          : await resolveOrgId(aliasMatch.canonicalName, deps);
+        (aliasEntity.fecCommitteeId != null && aliasEntity.fecCommitteeId !== '')
+          ? aliasEntity.fecCommitteeId
+          : await resolveOrgId(aliasEntity.canonicalName, deps);
     } catch {
       return { matched: false, lookupStatus: 'lookup_unavailable', normalizedInput };
     }
@@ -143,8 +145,8 @@ export async function matchEntity(
 
     // Use bundled donationSummary when present and fresh — skips live API call.
     let donationSummary: DonationSummary | null = null;
-    if (shouldUseBundledSummary(aliasMatch.donationSummary, aliasMatch.lastVerifiedDate)) {
-      donationSummary = aliasMatch.donationSummary;
+    if (shouldUseBundledSummary(aliasEntity.donationSummary, aliasEntity.lastVerifiedDate)) {
+      donationSummary = aliasEntity.donationSummary;
     } else {
       try {
         donationSummary = await deps.fetchOrgSummary(orgId);
@@ -166,8 +168,9 @@ export async function matchEntity(
     return {
       matched: true,
       lookupStatus: 'matched',
-      entity: aliasMatch,
-      committeeName: aliasMatch.canonicalName,
+      entity: aliasEntity,
+      committeeName: aliasEntity.canonicalName,
+      matchedAlias,
       confidence,
       fecCommitteeId: orgId,
       donationSummary,
@@ -217,6 +220,7 @@ export async function matchEntity(
     lookupStatus: 'matched',
     entity,
     committeeName: entity?.canonicalName ?? best.org.orgname,
+    matchedAlias: rawInput,
     confidence: best.confidence,
     fecCommitteeId: best.org.orgid,
     donationSummary,

@@ -1,32 +1,32 @@
 /**
- * Survey component catalog sections. DEV ONLY.
+ * Platform avoidance component catalog sections. DEV ONLY.
  */
 import React, { forwardRef } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { CatalogSection } from '../CatalogSection';
-import { PlatformRow } from '../../Survey/components/PlatformRow';
-import { surveyCopy } from '../../../copy/survey';
+import { PlatformRow } from '../../Platforms/components/PlatformRow';
+import { platformsCopy } from '../../../copy/platforms';
 import {
-  partialSurveyItems,
-  fullSurveyItems,
-  emptySurveyItems,
+  partialPlatformItems,
+  fullPlatformItems,
+  emptyPlatformItems,
   avoidedPlatformRow,
   notAvoidedPlatformRow,
 } from '../catalogMocks';
-import type { SurveyItem } from '../../Survey/types';
+import type { PlatformItem } from '../../Platforms/types';
 
 const noop = async () => {};
 
-// Static survey list — uses .map() instead of FlatList to avoid
+// Static platform list — uses .map() instead of FlatList to avoid
 // VirtualizedList-inside-ScrollView nesting warning.
-function SurveyList({ items }: { items: SurveyItem[] }) {
-  const avoided = items.filter((i) => i.avoided).length;
+function PlatformList({ items }: { items: PlatformItem[] }) {
+  const totalAvoids = items.reduce((sum, i) => sum + i.weeklyCount, 0);
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>{surveyCopy.title}</Text>
+        <Text style={styles.title}>{platformsCopy.title}</Text>
         <Text style={styles.weekLabel}>Week of Mar 10</Text>
-        <Text style={styles.score}>{surveyCopy.score(avoided, items.length)}</Text>
+        <Text style={styles.score}>{platformsCopy.score(totalAvoids)}</Text>
       </View>
       {items.map((item) => (
         <PlatformRow key={item.platform.id} item={item} onAvoid={noop} />
@@ -35,25 +35,25 @@ function SurveyList({ items }: { items: SurveyItem[] }) {
   );
 }
 
-// ── Survey full-screen variants ────────────────────────────────────────────
+// ── Platform full-screen variants ────────────────────────────────────────
 
 export const SurveyPartial = forwardRef<View>((_, ref) => (
-  <CatalogSection ref={ref} label="Survey — Partial (3/6)">
-    <SurveyList items={partialSurveyItems} />
+  <CatalogSection ref={ref} label="Platforms — Partial (3/6 active)">
+    <PlatformList items={partialPlatformItems} />
   </CatalogSection>
 ));
 SurveyPartial.displayName = 'SurveyPartial';
 
 export const SurveyFull = forwardRef<View>((_, ref) => (
-  <CatalogSection ref={ref} label="Survey — Full Completion">
-    <SurveyList items={fullSurveyItems} />
+  <CatalogSection ref={ref} label="Platforms — All Active">
+    <PlatformList items={fullPlatformItems} />
   </CatalogSection>
 ));
 SurveyFull.displayName = 'SurveyFull';
 
 export const SurveyEmpty = forwardRef<View>((_, ref) => (
-  <CatalogSection ref={ref} label="Survey — Empty">
-    <SurveyList items={emptySurveyItems} />
+  <CatalogSection ref={ref} label="Platforms — Empty">
+    <PlatformList items={emptyPlatformItems} />
   </CatalogSection>
 ));
 SurveyEmpty.displayName = 'SurveyEmpty';
@@ -61,7 +61,7 @@ SurveyEmpty.displayName = 'SurveyEmpty';
 // ── Individual PlatformRow variants ────────────────────────────────────────
 
 export const PlatformRowAvoided = forwardRef<View>((_, ref) => (
-  <CatalogSection ref={ref} label="PlatformRow — Avoided">
+  <CatalogSection ref={ref} label="PlatformRow — Avoided (×5)">
     <PlatformRow item={avoidedPlatformRow} onAvoid={noop} />
   </CatalogSection>
 ));

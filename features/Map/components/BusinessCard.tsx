@@ -48,10 +48,25 @@ function ConfidenceBadge({ level }: { level: number }) {
  *  - Recent cycle is visually prominent; historical totals are secondary.
  */
 export function BusinessCard({ result, onAvoid, avoidDisabled = false, onDismiss, allEntities }: BusinessCardProps) {
-  const { canonicalName, confidence, donationSummary, entity, fecFilingUrl } = result;
+  const { canonicalName, matchedAlias, committeeName, confidence, donationSummary, entity, fecFilingUrl } = result;
 
   // Prefer donationSummary's URL (has verified committee ID); fall back to ScanResult's fecFilingUrl.
   const fecUrl = donationSummary?.fecCommitteeUrl ?? fecFilingUrl;
+
+  // Primary display name — the alias the user recognizes; fall back to canonicalName.
+  const displayName = matchedAlias || canonicalName;
+
+  // Secondary attribution — parent company (via parentEntityId) or canonicalName when
+  // it differs from the primary display name.
+  const parent = entity && allEntities ? getParentEntity(entity, allEntities) : undefined;
+  const secondaryName = parent
+    ? mapCopy.parentAttribution(parent.canonicalName)
+    : displayName !== canonicalName
+      ? canonicalName
+      : null;
+
+  // PAC committee name for data attribution line.
+  const pacName = donationSummary?.committeeName ?? committeeName;
 
   return (
     <View style={styles.card}>
@@ -64,28 +79,23 @@ export function BusinessCard({ result, onAvoid, avoidDisabled = false, onDismiss
             accessibilityRole="header"
             allowFontScaling
           >
-            {canonicalName}
+            {displayName}
           </Text>
           {confidence < CONFIDENCE_THRESHOLD_HIGH && (
             <ConfidenceBadge level={confidence} />
           )}
         </View>
 
+        {secondaryName && (
+          <Text style={styles.parentAttribution} numberOfLines={1} allowFontScaling>
+            {secondaryName}
+          </Text>
+        )}
+
         {SHOW_FIGURE_NAME_IN_CARD && entity && (
-          <>
-            <Text style={styles.figureName} allowFontScaling>
-              {getDisplayFigure(entity, allEntities)}
-            </Text>
-            {(() => {
-              const parent = allEntities ? getParentEntity(entity, allEntities) : undefined;
-              if (!parent) return null;
-              return (
-                <Text style={styles.parentAttribution} allowFontScaling>
-                  via {parent.canonicalName}
-                </Text>
-              );
-            })()}
-          </>
+          <Text style={styles.figureName} allowFontScaling>
+            {getDisplayFigure(entity, allEntities)}
+          </Text>
         )}
 
         {confidence < CONFIDENCE_THRESHOLD_HIGH && (
@@ -129,6 +139,13 @@ export function BusinessCard({ result, onAvoid, avoidDisabled = false, onDismiss
             {sharedCopy.donationUnavail}
           </Text>
         </View>
+      )}
+
+      {/* ── PAC data attribution ── */}
+      {pacName && (
+        <Text style={styles.pacDataLine} numberOfLines={1} allowFontScaling>
+          {mapCopy.pacDataLine(pacName)}
+        </Text>
       )}
 
       {/* ── FEC record link ── */}
@@ -200,6 +217,7 @@ const styles = StyleSheet.create({
   unavailableSection: { borderTopWidth: 2, borderColor: BLACK, paddingTop: 10, marginBottom: 10 },
   unavailableText:    { fontFamily: MONO, fontSize: 13, color: MUTED },
 
+  pacDataLine:    { fontFamily: MONO, fontSize: 11, color: MUTED, marginBottom: 4 },
   fecLinkRow:     { marginBottom: 12 },
   fecLink:        { fontFamily: MONO, fontSize: 11, color: BLUE, textDecorationLine: 'underline' },
 

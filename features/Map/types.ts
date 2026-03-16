@@ -8,6 +8,10 @@ import type { ConfidenceLevel, DonationSummary, Entity } from '../../core/models
 export interface ScanResult {
   entityId: string | null;     // null when matched via FEC but not in curated list
   canonicalName: string;       // entity.canonicalName, or FEC orgname as fallback
+  /** The user-recognizable name that triggered the match (alias, search term, or fuzzy input). */
+  matchedAlias: string;
+  /** FEC committee display name — grounds donation data to its source PAC. */
+  committeeName: string | null;
   confidence: ConfidenceLevel;
   donationSummary: DonationSummary | null;
   fecCommitteeId: string;      // FEC committee ID from the matched entity or live API

@@ -12,6 +12,97 @@ This document is updated continuously. New instances should read this first — 
 
 ## Last 5 Sessions (most recent first)
 
+### Session: March 15, 2026 (follow-up 7)
+**Focus:** Thread matched alias through pipeline; redesign business card display hierarchy
+
+**Completed:**
+- **matchedAlias field on MatchSuccess** — new required `matchedAlias: string` field carries the specific alias/search term that triggered a match through the entire pipeline to the UI.
+- **findByAlias return type change** — now returns `AliasMatchResult | null` (entity + matchedAlias) instead of `Entity | null`. Alias match returns the original un-normalized alias string (e.g. `"Target"` not `"target"`). Cache hit and fuzzy match paths use `rawInput`.
+- **ScanResult expanded** — added `matchedAlias: string` and `committeeName: string | null` fields. Both threaded through `buildScanResult()`.
+- **BusinessCard redesign** — new display hierarchy:
+  1. **Primary name (large):** `matchedAlias` — the name the user recognizes ("Target", "Best Buy"); falls back to `canonicalName`
+  2. **Parent attribution (small):** shows `canonicalName` when different from primary, or `"via {parent.canonicalName}"` when entity has `parentEntityId`
+  3. **PAC data line (small, above FEC link):** `"Data: {committeeName}"` — grounds donation data to its source PAC
+- **MatchChooser updated** — rows now show `matchedAlias` as primary name instead of `canonicalName`.
+- **MapPin names** — `useTapSearch.ts` and `MapScreen.tsx` pin effect both use `matchedAlias` for map marker labels.
+- **MapScreen** — now passes `allEntities={entities}` to `BusinessCard` (was previously omitted).
+- **Copy strings** — added `pacDataLine` and `parentAttribution` to `copy/map.ts`.
+- **Dev catalog mocks fixed** — `catalogMocks.ts` had pre-existing `DonationSummary` schema errors (`rawLineItems` → `raw`, missing `committeeId`/`committeeName`/`lastUpdated`). Fixed and added `matchedAlias`/`committeeName` to all `ScanResult` mocks.
+
+**Files changed:**
+- `core/matching/types.ts` — `matchedAlias: string` on `MatchSuccess`
+- `core/matching/aliasMatch.ts` — new `AliasMatchResult` type, return type change
+- `core/matching/index.ts` — export `AliasMatchResult`
+- `core/matching/pipeline.ts` — `matchedAlias` populated in all 3 match paths (cache, alias, fuzzy)
+- `features/Map/types.ts` — `matchedAlias` + `committeeName` on `ScanResult`
+- `features/Map/utils/buildScanResult.ts` — threads new fields
+- `features/Map/components/BusinessCard.tsx` — redesigned header hierarchy + PAC data line
+- `features/Map/components/MatchChooser.tsx` — `matchedAlias` as row label
+- `features/Map/hooks/useTapSearch.ts` — pin name uses `matchedAlias`
+- `features/Map/MapScreen.tsx` — pin name, `allEntities` prop on BusinessCard
+- `copy/map.ts` — `pacDataLine`, `parentAttribution`
+- `features/Dev/catalogMocks.ts` — fixed DonationSummary schema + new ScanResult fields
+- `core/matching/__tests__/aliasMatch.test.ts` — updated for `AliasMatchResult` return type
+- `features/Map/__tests__/buildScanResult.test.ts` — `matchedAlias` in fixture + 3 new tests
+
+**Build:** tsc clean. 281 tests passing (27 suites).
+
+---
+
+### Session: March 15, 2026 (follow-up 6)
+**Focus:** Replace Weekly Survey with Platform Avoidance feature
+
+**Completed:**
+- **Full feature replacement** — deleted `features/Survey/` and `copy/survey.ts`. Created `features/Platforms/` with per-day increment data model (matching entity avoids pattern).
+- **Data model change:** `PlatformAvoidEvent` changed from `{platformId, weekOf}` (binary per-week) to `{platformId, date, count}` (per-day increment, DB-owned via `ON CONFLICT DO UPDATE SET count = count + 1`).
+- **Schema migration:** `SCHEMA_VERSION` bumped from 1 to 2. Platform avoid events table DROP+CREATE (pre-launch, no user data to migrate).
+- **StorageAdapter interface:** Added `getPlatformAvoidsForWeek(weekStart, weekEnd)` for half-open date range queries. Both `SqliteAdapter` and `ChromeStorageAdapter` updated.
+- **New eventStore functions:** `recordPlatformAvoid` (increment today), `getPlatformWeeklyTotal`, `getAllPlatformWeeklyTotals` (Map<platformId, total>), updated `getPlatformAvoidsForWeek` for `[weekStart, weekEnd)` range.
+- **New Platforms UI:** `PlatformsScreen`, `PlatformRow` component (AVOID button never locks — can tap multiple times per day), `usePlatformAvoidance` hook, `platformHelpers.ts`, `platformList.ts` (8 platforms: X/Twitter, Instagram, Facebook, Amazon, Amazon Prime, YouTube, WhatsApp, Threads).
+- **Cross-references updated:** `App.tsx` (survey→platforms tab), `ReportCard` imports (Platform type path), `generateReportCard.ts` (aggregates per-day counts into per-platform weekly totals), Dev catalog (catalogMocks, SurveySections, CatalogScreen).
+- **Tests:** New `platformList.test.ts` and `platformHelpers.test.ts`. Updated `eventStore.test.ts`, `generateReportCard.test.ts`, `cacheStore.test.ts`, `ChromeStorageAdapter.test.ts`.
+- **Copy:** Created `copy/platforms.ts` with typed `as const` object.
+
+**Files created:**
+- `features/Platforms/types.ts`
+- `features/Platforms/data/platformList.ts`
+- `features/Platforms/components/PlatformRow.tsx`
+- `features/Platforms/hooks/usePlatformAvoidance.ts`
+- `features/Platforms/utils/platformHelpers.ts`
+- `features/Platforms/PlatformsScreen.tsx`
+- `features/Platforms/__tests__/platformList.test.ts`
+- `features/Platforms/__tests__/platformHelpers.test.ts`
+- `copy/platforms.ts`
+
+**Files deleted:**
+- `features/Survey/` (entire directory)
+- `copy/survey.ts`
+
+**Files modified:**
+- `core/models/events.ts` — PlatformAvoidEvent: weekOf→date+count
+- `core/data/schema.ts` — DDL: (platform_id, week_of)→(platform_id, date, count)
+- `core/data/adapters.ts` — StorageAdapter: new getPlatformAvoidsForWeek, changed getPlatformAvoids filter
+- `core/data/eventStore.ts` — new platform avoid functions
+- `core/data/index.ts` — new barrel exports
+- `app/storage/SqliteAdapter.ts` — schema v2, upsert, date range query
+- `extension/storage/ChromeStorageAdapter.ts` — date-based keys, range filtering
+- `App.tsx` — survey→platforms tab
+- `features/ReportCard/ReportCardScreen.tsx` — Platform import path
+- `features/ReportCard/hooks/useReportCard.ts` — Platform import path
+- `features/ReportCard/utils/generateReportCard.ts` — Platform import, aggregation logic
+- `features/Dev/CatalogScreen.tsx` — comment + header text
+- `features/Dev/catalogMocks.ts` — PlatformItem type, weeklyCount mocks
+- `features/Dev/sections/SurveySections.tsx` — uses Platforms components
+- `core/data/__tests__/eventStore.test.ts` — updated platform avoid tests
+- `core/data/__tests__/cacheStore.test.ts` — mock adapter updated
+- `features/ReportCard/__tests__/generateReportCard.test.ts` — updated fixtures + new test
+- `extension/storage/__tests__/ChromeStorageAdapter.test.ts` — rewritten platform tests
+- `CLAUDE.md` — repo structure, data model, copy structure, sprint status
+
+**Build:** tsc clean. 281 tests passing (27 suites). audit-copy.sh clean (dev-only hits only).
+
+---
+
 ### Session: March 15, 2026 (follow-up 5)
 **Focus:** Suppress confidence badge on high-confidence matches
 
@@ -397,7 +488,7 @@ The Swift source now lives authoritatively at `modules/mapkit-search/ios/MapKitS
 
 | Suite | Count | Status |
 |---|---|---|
-| Total passing | 282 | ✅ Clean |
+| Total passing | 281 | ✅ Clean (27 suites) |
 | Last tsc run | March 15, 2026 | ✅ Clean |
 
 ---
@@ -420,7 +511,7 @@ The Swift source now lives authoritatively at `modules/mapkit-search/ios/MapKitS
 
 ## What's Working
 
-- Avoid tap → survey → report card vertical slice ✅
+- Avoid tap → platforms → report card vertical slice ✅
 - Extension built and tested on walmart.com ✅
 - Geolocation (simulator — SF drop) ✅ / physical device TBD
 - Entity matching with confidence labels ✅

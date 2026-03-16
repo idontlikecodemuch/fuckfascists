@@ -19,7 +19,7 @@ import {
   MapControlsSection,
 } from './sections/MapSections';
 
-// Survey sections
+// Platform sections
 import {
   SurveyPartial, SurveyFull, SurveyEmpty,
   PlatformRowAvoided, PlatformRowNotAvoided,
@@ -61,10 +61,10 @@ const SECTIONS: SectionDef[] = [
   { slug: '09-searchbar-idle', Component: SearchBarIdle },
   { slug: '10-searchbar-scanning', Component: SearchBarScanning },
   { slug: '11-mapcontrols', Component: MapControlsSection },
-  // Survey
-  { slug: '12-survey-partial', Component: SurveyPartial },
-  { slug: '13-survey-full', Component: SurveyFull },
-  { slug: '14-survey-empty', Component: SurveyEmpty },
+  // Platforms
+  { slug: '12-platforms-partial', Component: SurveyPartial },
+  { slug: '13-platforms-full', Component: SurveyFull },
+  { slug: '14-platforms-empty', Component: SurveyEmpty },
   { slug: '15-platformrow-avoided', Component: PlatformRowAvoided },
   { slug: '16-platformrow-not-avoided', Component: PlatformRowNotAvoided },
   // Report Card
@@ -159,7 +159,7 @@ export function CatalogScreen() {
           <s.Component key={s.slug} ref={(el) => { refs.current[i] = el; }} />
         ))}
 
-        <Text style={styles.groupHeader}>SURVEY COMPONENTS</Text>
+        <Text style={styles.groupHeader}>PLATFORM COMPONENTS</Text>
         {SECTIONS.slice(11, 16).map((s, i) => (
           <s.Component key={s.slug} ref={(el) => { refs.current[11 + i] = el; }} />
         ))}

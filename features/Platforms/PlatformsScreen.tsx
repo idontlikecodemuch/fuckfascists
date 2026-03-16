@@ -1,41 +1,39 @@
 import React from 'react';
 import { View, Text, FlatList, StyleSheet, SafeAreaView, ActivityIndicator } from 'react-native';
 import type { StorageAdapter } from '../../core/data';
-import { TRACKED_PLATFORMS } from './data/platforms';
-import { useWeeklySurvey } from './hooks/useWeeklySurvey';
+import { TRACKED_PLATFORMS } from './data/platformList';
+import { usePlatformAvoidance } from './hooks/usePlatformAvoidance';
 import { PlatformRow } from './components/PlatformRow';
-import { formatWeekOf } from './utils/surveyHelpers';
-import type { SurveyItem } from './types';
-import { surveyCopy } from '../../copy/survey';
+import { formatWeekOf } from './utils/platformHelpers';
+import type { PlatformItem } from './types';
+import { platformsCopy } from '../../copy/platforms';
 
-interface SurveyScreenProps {
+interface PlatformsScreenProps {
   adapter: StorageAdapter;
 }
 
 /**
- * Weekly platform checklist.
+ * Platform avoidance tracker.
  *
- * Users confirm which digital platforms they avoided this week.
- * Each tap immediately records a PlatformAvoidEvent (date-only, no location).
- * The screen is stateless across weeks — next Monday it resets automatically.
+ * Users record each time they avoided a tracked digital platform.
+ * Each tap immediately records a PlatformAvoidEvent (date-only, no location)
+ * and increments the daily count. The weekly tally resets on Monday.
  */
-export function SurveyScreen({ adapter }: SurveyScreenProps) {
-  const { weekOf, items, loading, avoid } = useWeeklySurvey(adapter, TRACKED_PLATFORMS);
-
-  const avoided = items.filter((i) => i.avoided).length;
+export function PlatformsScreen({ adapter }: PlatformsScreenProps) {
+  const { weekOf, items, totalAvoids, loading, avoid } = usePlatformAvoidance(adapter, TRACKED_PLATFORMS);
 
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.title} accessibilityRole="header" allowFontScaling>
-          {surveyCopy.title}
+          {platformsCopy.title}
         </Text>
         <Text style={styles.weekLabel} allowFontScaling>
-          {formatWeekOf(weekOf)}
+          {platformsCopy.weekLabel(formatWeekOf(weekOf))}
         </Text>
         <Text style={styles.score} allowFontScaling>
-          {surveyCopy.score(avoided, items.length)}
+          {platformsCopy.score(totalAvoids)}
         </Text>
       </View>
 
@@ -43,10 +41,10 @@ export function SurveyScreen({ adapter }: SurveyScreenProps) {
         <ActivityIndicator
           style={styles.loader}
           color="#CC0000"
-          accessibilityLabel={surveyCopy.loading}
+          accessibilityLabel={platformsCopy.loading}
         />
       ) : (
-        <FlatList<SurveyItem>
+        <FlatList<PlatformItem>
           data={items}
           keyExtractor={(item) => item.platform.id}
           renderItem={({ item }) => (
@@ -54,7 +52,7 @@ export function SurveyScreen({ adapter }: SurveyScreenProps) {
           )}
           contentContainerStyle={styles.list}
           accessibilityRole="list"
-          accessibilityLabel={surveyCopy.checklist}
+          accessibilityLabel={platformsCopy.checklist}
         />
       )}
     </SafeAreaView>

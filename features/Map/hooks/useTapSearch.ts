@@ -104,7 +104,7 @@ export function useTapSearch(deps: MatchingDeps, areaHash: string, regionRef?: R
         batchResults.push(scanResult);
         newPins.push({
           id,
-          name: scanResult.canonicalName,
+          name: scanResult.matchedAlias || scanResult.canonicalName,
           coords: coordinate, // session-only — never persisted
           result: scanResult,
           avoided: false,

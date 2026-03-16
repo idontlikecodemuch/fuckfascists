@@ -12,10 +12,10 @@ import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-cont
 import { useOnboarding } from './features/Onboarding/hooks/useOnboarding';
 import { OnboardingNavigator } from './features/Onboarding/OnboardingNavigator';
 import { MapScreen } from './features/Map/MapScreen';
-import { SurveyScreen } from './features/Survey/SurveyScreen';
+import { PlatformsScreen } from './features/Platforms/PlatformsScreen';
 import { ReportCardScreen } from './features/ReportCard/ReportCardScreen';
 import { InfoScreen } from './features/Info/InfoScreen';
-import { TRACKED_PLATFORMS } from './features/Survey/data/platforms';
+import { TRACKED_PLATFORMS } from './features/Platforms/data/platformList';
 import { SqliteAdapter } from './app/storage/SqliteAdapter';
 import { FECClient } from './core/api';
 import { fetchEntityList, parseEntityList } from './core/data';
@@ -30,24 +30,24 @@ const CatalogScreen = __DEV__
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type Tab = 'map' | 'survey' | 'report' | 'info' | 'dev';
+type Tab = 'map' | 'platforms' | 'report' | 'info' | 'dev';
 
 const TABS: { id: Tab; label: string }[] = [
-  { id: 'map',    label: 'MAP'    },
-  { id: 'survey', label: 'TRACK' },
-  { id: 'report', label: 'SCORECARD' },
-  { id: 'info',   label: 'INFO'   },
+  { id: 'map',       label: 'MAP'       },
+  { id: 'platforms', label: 'TRACK'     },
+  { id: 'report',    label: 'SCORECARD' },
+  { id: 'info',      label: 'INFO'      },
   ...(__DEV__ ? [{ id: 'dev' as const, label: 'DEV' }] : []),
 ];
 
 // ─── Tab bar ─────────────────────────────────────────────────────────────────
 
 const TAB_ICONS: Record<Tab, string> = {
-  map:    '[ + ]',
-  survey: '[ ✓ ]',
-  report: '[ ★ ]',
-  info:   '[ ? ]',
-  dev:    '[ # ]',
+  map:       '[ + ]',
+  platforms: '[ ✓ ]',
+  report:    '[ ★ ]',
+  info:      '[ ? ]',
+  dev:       '[ # ]',
 };
 
 function TabBar({ activeTab, onSelect }: { activeTab: Tab; onSelect: (t: Tab) => void }) {
@@ -156,8 +156,8 @@ export default function App() {
             fetchOrgSummary={fetchOrgSummary}
           />
         );
-      case 'survey':
-        return <SurveyScreen adapter={adapter} />;
+      case 'platforms':
+        return <PlatformsScreen adapter={adapter} />;
       case 'report':
         return (
           <ReportCardScreen

@@ -14,6 +14,8 @@ export const mapCopy = {
   locationLabel: "Center map on my location",
   loadingIcon: "\u2026",
   mediumWarning: "\u26A0 MEDIUM confidence \u2014 verify before acting.",
+  pacDataLine: (committeeName: string) => `Data: ${committeeName}`,
+  parentAttribution: (parentName: string) => `via ${parentName}`,
   fecLink: "See full FEC record \u2192",
   fecLinkLabel: "See full FEC record on fec.gov",
   avoidLabel: "AVOID",

@@ -2,7 +2,7 @@ import type { Entity } from '../../../core/models';
 import { getDisplayFigure } from '../../../core/models';
 import type { StorageAdapter } from '../../../core/data';
 import { getAllEntityAvoids, getPlatformAvoidsForWeek } from '../../../core/data';
-import type { Platform } from '../../Survey/types';
+import type { Platform } from '../../Platforms/types';
 import type { EntityAvoidSummary, ReportCardData } from '../types';
 
 /**
@@ -43,16 +43,22 @@ export async function generateReportCard(
   // ── Platform avoids ────────────────────────────────────────────────────────
   const platformEvents = await getPlatformAvoidsForWeek(adapter, weekOf);
   const platformIndex = new Map(platforms.map((p) => [p.id, p]));
-  const platformAvoids = platformEvents.map(
-    (e) => platformIndex.get(e.platformId)?.name ?? e.platformId
+  // Aggregate per-day counts into a total per platform for the week.
+  const platformCountMap = new Map<string, number>();
+  for (const e of platformEvents) {
+    platformCountMap.set(e.platformId, (platformCountMap.get(e.platformId) ?? 0) + e.count);
+  }
+  const platformAvoids = Array.from(platformCountMap.keys()).map(
+    (id) => platformIndex.get(id)?.name ?? id
   );
+  const totalPlatformAvoids = Array.from(platformCountMap.values()).reduce((sum, c) => sum + c, 0);
 
   return {
     weekOf,
     entityAvoids,
     platformAvoids,
     totalEntityAvoids: entityAvoids.reduce((sum, e) => sum + e.count, 0),
-    totalPlatformAvoids: platformAvoids.length,
+    totalPlatformAvoids,
     isPreview,
   };
 }

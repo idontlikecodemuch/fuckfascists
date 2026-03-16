@@ -32,11 +32,17 @@ export interface StorageAdapter {
   // ── Platform avoid events ──────────────────────────────────────────────────
 
   /**
-   * Records that the user avoided a platform during the given week.
-   * weekOf is the Monday of that week in YYYY-MM-DD format.
+   * Inserts or increments the avoid count for (platformId, date).
+   * date is YYYY-MM-DD — no time component, no location.
    */
   upsertPlatformAvoid(event: PlatformAvoidEvent): Promise<void>;
 
-  /** Returns all platform avoid events, optionally filtered by weekOf. */
-  getPlatformAvoids(weekOf?: string): Promise<PlatformAvoidEvent[]>;
+  /** Returns all platform avoid events, optionally filtered by platformId. */
+  getPlatformAvoids(platformId?: string): Promise<PlatformAvoidEvent[]>;
+
+  /**
+   * Returns platform avoid events whose date falls within [weekStart, weekEnd).
+   * weekStart is Monday YYYY-MM-DD; weekEnd is the following Monday.
+   */
+  getPlatformAvoidsForWeek(weekStart: string, weekEnd: string): Promise<PlatformAvoidEvent[]>;
 }

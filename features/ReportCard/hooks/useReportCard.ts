@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { Entity } from '../../../core/models';
 import type { StorageAdapter } from '../../../core/data';
-import type { Platform } from '../../Survey/types';
+import type { Platform } from '../../Platforms/types';
 import type { ReportCardData } from '../types';
 import { generateReportCard } from '../utils/generateReportCard';
 

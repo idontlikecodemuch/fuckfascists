@@ -2,7 +2,7 @@ import React, { useRef, useCallback, useState } from 'react';
 import { View, Text, Pressable, ScrollView, StyleSheet, SafeAreaView, Share, ActivityIndicator } from 'react-native';
 import type { Entity } from '../../core/models';
 import type { StorageAdapter } from '../../core/data';
-import type { Platform } from '../Survey/types';
+import type { Platform } from '../Platforms/types';
 import { useDropSchedule } from './hooks/useDropSchedule';
 import { useReportCard } from './hooks/useReportCard';
 import { ReportCardView } from './components/ReportCardView';

@@ -81,7 +81,7 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
     if (!id) return;
     const newPin: MapPin = {
       id,
-      name: result.canonicalName,
+      name: result.matchedAlias || result.canonicalName,
       coords: location.coords, // session-only — not persisted
       result,
       avoided: false,
@@ -253,6 +253,7 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
             onAvoid={handleAvoid}
             avoidDisabled={!activeResult.entity}
             onDismiss={handleDismiss}
+            allEntities={entities}
           />
         </View>
       )}

@@ -3,6 +3,7 @@ export { matchEntity } from './pipeline';
 export { normalize } from './normalize';
 export { jaro, jaroWinkler } from './jaroWinkler';
 export { findByAlias } from './aliasMatch';
+export type { AliasMatchResult } from './aliasMatch';
 export { scoreAll, pickBestMatch } from './scorer';
 export type {
   FECCommittee,

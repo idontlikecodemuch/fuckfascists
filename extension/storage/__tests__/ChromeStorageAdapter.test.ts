@@ -126,37 +126,54 @@ describe('ChromeStorageAdapter', () => {
   // ── Platform avoid events ──────────────────────────────────────────────────
 
   describe('upsertPlatformAvoid', () => {
-    it('stores a platform avoid event', async () => {
-      const event: PlatformAvoidEvent = { platformId: 'twitter', weekOf: '2024-03-11' };
+    it('stores a platform avoid event with count 1', async () => {
+      const event: PlatformAvoidEvent = { platformId: 'twitter', date: '2024-03-11', count: 1 };
       await adapter.upsertPlatformAvoid(event);
-      const results = await adapter.getPlatformAvoids('2024-03-11');
+      const results = await adapter.getPlatformAvoids('twitter');
       expect(results).toHaveLength(1);
-      expect(results[0]).toEqual(event);
+      expect(results[0].count).toBe(1);
     });
 
-    it('is idempotent — second upsert does not create a duplicate', async () => {
-      const event: PlatformAvoidEvent = { platformId: 'twitter', weekOf: '2024-03-11' };
+    it('increments count on second upsert for the same (platformId, date)', async () => {
+      const event: PlatformAvoidEvent = { platformId: 'twitter', date: '2024-03-11', count: 1 };
       await adapter.upsertPlatformAvoid(event);
       await adapter.upsertPlatformAvoid(event);
-      const results = await adapter.getPlatformAvoids('2024-03-11');
-      expect(results).toHaveLength(1);
+      const results = await adapter.getPlatformAvoids('twitter');
+      expect(results[0].count).toBe(2);
+    });
+
+    it('keeps separate entries for different dates', async () => {
+      await adapter.upsertPlatformAvoid({ platformId: 'twitter', date: '2024-03-11', count: 1 });
+      await adapter.upsertPlatformAvoid({ platformId: 'twitter', date: '2024-03-12', count: 1 });
+      const results = await adapter.getPlatformAvoids('twitter');
+      expect(results).toHaveLength(2);
     });
   });
 
   describe('getPlatformAvoids', () => {
-    it('returns all platform avoids when no weekOf filter', async () => {
-      await adapter.upsertPlatformAvoid({ platformId: 'twitter', weekOf: '2024-03-11' });
-      await adapter.upsertPlatformAvoid({ platformId: 'facebook', weekOf: '2024-03-18' });
+    it('returns all platform avoids when no platformId filter', async () => {
+      await adapter.upsertPlatformAvoid({ platformId: 'twitter', date: '2024-03-11', count: 1 });
+      await adapter.upsertPlatformAvoid({ platformId: 'facebook', date: '2024-03-12', count: 1 });
       const results = await adapter.getPlatformAvoids();
       expect(results).toHaveLength(2);
     });
 
-    it('filters by weekOf when provided', async () => {
-      await adapter.upsertPlatformAvoid({ platformId: 'twitter', weekOf: '2024-03-11' });
-      await adapter.upsertPlatformAvoid({ platformId: 'facebook', weekOf: '2024-03-18' });
-      const results = await adapter.getPlatformAvoids('2024-03-11');
+    it('filters by platformId when provided', async () => {
+      await adapter.upsertPlatformAvoid({ platformId: 'twitter', date: '2024-03-11', count: 1 });
+      await adapter.upsertPlatformAvoid({ platformId: 'facebook', date: '2024-03-11', count: 1 });
+      const results = await adapter.getPlatformAvoids('twitter');
       expect(results).toHaveLength(1);
       expect(results[0].platformId).toBe('twitter');
+    });
+  });
+
+  describe('getPlatformAvoidsForWeek', () => {
+    it('returns events within the date range', async () => {
+      await adapter.upsertPlatformAvoid({ platformId: 'twitter', date: '2024-03-11', count: 1 });
+      await adapter.upsertPlatformAvoid({ platformId: 'twitter', date: '2024-03-13', count: 2 });
+      await adapter.upsertPlatformAvoid({ platformId: 'twitter', date: '2024-03-18', count: 1 }); // next week
+      const results = await adapter.getPlatformAvoidsForWeek('2024-03-11', '2024-03-18');
+      expect(results).toHaveLength(2);
     });
   });
 });

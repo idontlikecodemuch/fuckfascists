@@ -90,7 +90,7 @@ API keys and credentials must **only ever be read from environment variables**. 
 │   └── storage/                     ← SqliteAdapter.ts (expo-sqlite SDK 52, mobile only)
 ├── features/
 │   ├── Map/                         ← geolocation scan, map display, flagging
-│   ├── Survey/                      ← weekly platform checklist
+│   ├── Platforms/                    ← platform avoidance tracking (daily increments)
 │   ├── ReportCard/                  ← generation, drop timing, sharing
 │   ├── Onboarding/                  ← first-run flow
 │   └── Info/                        ← transparency, about, FAQ
@@ -109,7 +109,7 @@ API keys and credentials must **only ever be read from environment variables**. 
 ├── copy/
 │   ├── shared.ts                    ← strings used across features
 │   ├── map.ts                       ← Map feature copy
-│   ├── survey.ts                    ← Survey feature copy
+│   ├── platforms.ts                  ← Platforms feature copy
 │   ├── report.ts                    ← Report Card feature copy
 │   ├── onboard.ts                   ← Onboarding feature copy
 │   ├── info.ts                      ← Info UI chrome (section headers, labels, icons)
@@ -190,10 +190,11 @@ EntityAvoidEvent {
   count: number          // increment
 }
 
-// A user confirmed they avoided a platform this week
+// A user tapped "Avoided" on a tracked platform
 PlatformAvoidEvent {
   platformId: string     // references static platform list
-  weekOf: string         // YYYY-MM-DD (Monday of that week)
+  date: string           // YYYY-MM-DD only — no time, no location
+  count: number          // accumulated avoid count — DB owns the increment
 }
 
 // Cached FEC API result
@@ -362,7 +363,7 @@ These apply to every file, every PR, every AI-generated change.
 
 All user-facing strings live in `copy/` (mobile) or `extension/copy.ts` (extension). Components import from these files. Never hardcode a user-facing string in a component.
 
-- **copy/ structure:** shared.ts, map.ts, survey.ts, report.ts, onboard.ts, info.ts, infoContent.ts
+- **copy/ structure:** shared.ts, map.ts, platforms.ts, report.ts, onboard.ts, info.ts, infoContent.ts
 - **Extension:** extension/copy.ts (separate — vanilla JS cannot import from RN copy files)
 - **Naming:** two-level max (area.element). No `a11y` prefix — use `Label` or `Hint` suffix only when paired with a visible string. Abbreviate: onboarding→onboard, reportCard→report.
 - **Dynamic strings** are arrow functions: `heading: (n: number) => \`${n} MATCHES\``
@@ -417,7 +418,7 @@ The entire app is styled as a **vintage 8-bit video game**. This is the foundati
 | Core models, matching pipeline, FEC API client | ✅ Done |
 | SQLite adapter (`app/storage/SqliteAdapter.ts`) | ✅ Done |
 | Map scan, flag, business card, avoid tap | ✅ Done |
-| Survey, Report Card, Onboarding, Info screens | ✅ Done |
+| Platforms, Report Card, Onboarding, Info screens | ✅ Done |
 | Browser extension (MV3, Chrome + Firefox) | ✅ Done |
 | FEC entity verification run (`verify:entities`) | ✅ Done |
 | Donation data bundled into `entities.json` | ✅ Done |

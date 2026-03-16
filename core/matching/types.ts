@@ -20,6 +20,8 @@ export interface MatchSuccess {
   entity: Entity | null;        // null when matched via FEC but not in curated list
   /** Human-readable committee name from FEC — used as display fallback when entity is null. */
   committeeName: string | null;
+  /** The specific name that triggered the match — alias string, cached search term, or fuzzy input. */
+  matchedAlias: string;
   confidence: ConfidenceLevel;
   fecCommitteeId: string;
   donationSummary: DonationSummary | null;
