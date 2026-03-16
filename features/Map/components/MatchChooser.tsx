@@ -61,7 +61,9 @@ export function MatchChooser({ results, onSelect, onDismiss }: MatchChooserProps
               >
                 {item.canonicalName}
               </Text>
-              <ConfidenceTag level={item.confidence} />
+              {item.confidence < CONFIDENCE_THRESHOLD_HIGH && (
+                <ConfidenceTag level={item.confidence} />
+              )}
               {item.confidence < CONFIDENCE_THRESHOLD_HIGH && (
                 <Text style={styles.rowWarning} allowFontScaling>{sharedCopy.warningIcon}</Text>
               )}

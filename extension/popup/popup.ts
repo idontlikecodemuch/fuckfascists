@@ -111,16 +111,15 @@ function renderFlag(flag: TabFlag) {
     fecLink.hidden = true;
   }
 
-  const confidenceLabel = flag.confidence >= CONFIDENCE_THRESHOLD_HIGH ? extCopy.confidenceHigh : extCopy.confidenceMedium;
-  confidenceBadge.textContent = confidenceLabel;
-  confidenceBadge.className   = `confidence-badge ${confidenceLabel}`;
-
   if (flag.confidence < CONFIDENCE_THRESHOLD_HIGH) {
+    confidenceBadge.textContent = extCopy.confidenceMedium;
+    confidenceBadge.className   = `confidence-badge ${extCopy.confidenceMedium}`;
     confidenceBadge.title = extCopy.mediumTitle;
+    confidenceBadge.hidden = false;
     confidenceDisclaimerEl.textContent = extCopy.mediumWarning;
     confidenceDisclaimerEl.hidden = false;
   } else {
-    confidenceBadge.title = '';
+    confidenceBadge.hidden = true;
     confidenceDisclaimerEl.hidden = true;
   }
 

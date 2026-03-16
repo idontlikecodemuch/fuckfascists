@@ -12,6 +12,24 @@ This document is updated continuously. New instances should read this first — 
 
 ## Last 5 Sessions (most recent first)
 
+### Session: March 15, 2026 (follow-up 5)
+**Focus:** Suppress confidence badge on high-confidence matches
+
+**Completed:**
+- **BusinessCard.tsx** — `ConfidenceBadge` now only renders when `confidence < CONFIDENCE_THRESHOLD_HIGH`. High-confidence matches show no badge (silence means confidence). Doc comment updated.
+- **MatchChooser.tsx** — `ConfidenceTag` conditionally rendered only for medium-confidence rows.
+- **extension/popup/popup.ts** — Badge element hidden for high-confidence matches; medium-confidence still shows badge + disclaimer. Cross-surface parity maintained.
+
+**Files changed:**
+- `features/Map/components/BusinessCard.tsx` — conditional badge render
+- `features/Map/components/MatchChooser.tsx` — conditional tag render
+- `extension/popup/popup.ts` — badge hidden for high confidence
+- `docs/PROGRESS.md` — this session
+
+**Build:** tsc clean (pre-existing catalogMocks errors only). 282 tests passing.
+
+---
+
 ### Session: March 15, 2026 (follow-up 4)
 **Focus:** Copy rewrite — tone, clarity, and tab renames
 

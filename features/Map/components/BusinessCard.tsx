@@ -41,9 +41,9 @@ function ConfidenceBadge({ level }: { level: number }) {
  * Pixel art–styled business card shown when a flagged entity is detected.
  *
  * Design rules enforced here:
- *  - Confidence label is ALWAYS visible (never hidden).
+ *  - High-confidence matches show NO badge (silence means confidence).
+ *  - MEDIUM matches show a MATCHED badge + "verify before acting" disclaimer.
  *  - FEC attribution link is ALWAYS shown.
- *  - MEDIUM matches always show the "verify before acting" disclaimer.
  *  - Never claims more certainty than the data supports.
  *  - Recent cycle is visually prominent; historical totals are secondary.
  */
@@ -66,7 +66,9 @@ export function BusinessCard({ result, onAvoid, avoidDisabled = false, onDismiss
           >
             {canonicalName}
           </Text>
-          <ConfidenceBadge level={confidence} />
+          {confidence < CONFIDENCE_THRESHOLD_HIGH && (
+            <ConfidenceBadge level={confidence} />
+          )}
         </View>
 
         {SHOW_FIGURE_NAME_IN_CARD && entity && (
