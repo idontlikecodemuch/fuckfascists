@@ -1,0 +1,110 @@
+{
+  "description": "Pixel art asset manifest. Status: 'ready' = exists in assets/pixel/, 'planned' = not yet created.",
+  "assets": [
+    {
+      "slot": "map-marker-flag",
+      "file": "assets/pixel/map-marker-flag.png",
+      "dimensions": "96x96",
+      "required": true,
+      "status": "planned",
+      "fallback": "Platform default map pin"
+    },
+    {
+      "slot": "map-marker-flag-selected",
+      "file": "assets/pixel/map-marker-flag-selected.png",
+      "dimensions": "96x96",
+      "required": false,
+      "status": "planned",
+      "fallback": "Default marker with glow treatment applied in code"
+    },
+    {
+      "slot": "card-topband",
+      "file": "assets/pixel/card-topband.png",
+      "dimensions": "full-width x 64",
+      "required": false,
+      "status": "planned",
+      "fallback": "Solid surface2 band"
+    },
+    {
+      "slot": "card-corner-bracket-tl",
+      "file": "assets/pixel/card-corner-bracket-tl.png",
+      "dimensions": "32x32",
+      "required": false,
+      "status": "planned",
+      "fallback": "None — corners render without brackets"
+    },
+    {
+      "slot": "card-corner-bracket-tr",
+      "file": "assets/pixel/card-corner-bracket-tr.png",
+      "dimensions": "32x32",
+      "required": false,
+      "status": "planned",
+      "fallback": "None — corners render without brackets"
+    },
+    {
+      "slot": "reward-spark",
+      "file": "assets/pixel/reward-spark.png",
+      "dimensions": "64x64",
+      "required": false,
+      "status": "planned",
+      "fallback": "None — animation does not play"
+    },
+    {
+      "slot": "scorecard-frame",
+      "file": "assets/pixel/scorecard-frame.png",
+      "dimensions": "full card",
+      "required": false,
+      "status": "planned",
+      "fallback": "Coded border using borders.hero"
+    },
+    {
+      "slot": "nav-texture",
+      "file": "assets/pixel/nav-texture.png",
+      "dimensions": "repeating tile",
+      "required": false,
+      "status": "planned",
+      "fallback": "Solid bgNav background"
+    },
+    {
+      "slot": "onboarding-hero-welcome",
+      "file": "assets/pixel/onboarding-hero-welcome.png",
+      "dimensions": "full-width x 200",
+      "required": false,
+      "status": "planned",
+      "fallback": "None — screen renders without hero art"
+    },
+    {
+      "slot": "onboarding-hero-privacy",
+      "file": "assets/pixel/onboarding-hero-privacy.png",
+      "dimensions": "full-width x 200",
+      "required": false,
+      "status": "planned",
+      "fallback": "None — screen renders without hero art"
+    },
+    {
+      "slot": "onboarding-hero-howit",
+      "file": "assets/pixel/onboarding-hero-howit.png",
+      "dimensions": "full-width x 200",
+      "required": false,
+      "status": "planned",
+      "fallback": "None — screen renders without hero art"
+    },
+    {
+      "slot": "onboarding-hero-permissions",
+      "file": "assets/pixel/onboarding-hero-permissions.png",
+      "dimensions": "full-width x 200",
+      "required": false,
+      "status": "planned",
+      "fallback": "None — screen renders without hero art"
+    }
+  ],
+  "ceoSprites": {
+    "note": "CEO sprites are generated via tools/img-gen/ pipeline. Each has neutral + defeated variants. None have been moved to assets/pixel/ yet.",
+    "generatedInOutput": [
+      "mark-zuckerberg.png"
+    ],
+    "status": "planned",
+    "dimensions": "per-character, typically 128x128 source",
+    "fallback": "No sprite shown — name text only"
+  }
+}

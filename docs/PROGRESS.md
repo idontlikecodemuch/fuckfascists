@@ -12,6 +12,37 @@ This document is updated continuously. New instances should read this first — 
 
 ## Last 5 Sessions (most recent first)
 
+### Session: March 16, 2026 (follow-up 2)
+**Focus:** Design system foundation — tokens, component rules, asset manifest, font setup
+
+**Completed:**
+- **`design/tokens.ts`** — theme object with colors (13), fonts (4 families), type scale (7 levels), spacing (8 steps), borders (3 styles), effects, and a11y constants. All values exported as `const` for type safety.
+- **`design/component-rules.md`** — per-component spec for 14 components documenting background, border, text hierarchy, spacing, states, decorative rules, and accessibility notes. All references use token names, not raw values.
+- **`design/asset-manifest.json`** — manifest of 12 pixel art asset slots with dimensions, required/optional status, current availability, and fallback behavior. All marked "planned" (assets/pixel/ is empty).
+- **Font setup** — installed `expo-font`, downloaded Bungee-Regular, IBMPlexSans-Regular/SemiBold/Medium to `assets/fonts/`. Registered via expo-font plugin config in `app.json`. Added `useFonts` loading guard in `App.tsx` — app shows splash until all 4 fonts are loaded.
+- **CLAUDE.md** — added `design/` and `assets/fonts/` to repository structure. Added "All visual constants from design tokens" rule to Code Quality Rules.
+- **PROGRESS.md** — this session.
+
+**Files created:**
+- `design/tokens.ts`
+- `design/component-rules.md`
+- `design/asset-manifest.json`
+- `assets/fonts/Bungee-Regular.ttf`
+- `assets/fonts/IBMPlexSans-Regular.ttf`
+- `assets/fonts/IBMPlexSans-SemiBold.ttf`
+- `assets/fonts/IBMPlexSans-Medium.ttf`
+
+**Files modified:**
+- `App.tsx` — `useFonts` import + hook call + loading guard
+- `app.json` — expo-font plugin config with font paths
+- `package.json` — expo-font dependency added
+- `CLAUDE.md` — repo structure + code quality rule
+- `docs/PROGRESS.md` — this session
+
+**Scope:** Foundation only. No existing component styles were changed — migration to design tokens happens in follow-up batches.
+
+---
+
 ### Session: March 16, 2026 (follow-up)
 **Focus:** Scorecard UI redesign — entity-centric → CEO-centric ("I f*cked...")
 

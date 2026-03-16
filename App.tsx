@@ -9,6 +9,7 @@ import {
   type TextStyle,
 } from 'react-native';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useFonts } from 'expo-font';
 import { useOnboarding } from './features/Onboarding/hooks/useOnboarding';
 import { OnboardingNavigator } from './features/Onboarding/OnboardingNavigator';
 import { MapScreen } from './features/Map/MapScreen';
@@ -81,6 +82,13 @@ function TabBar({ activeTab, onSelect }: { activeTab: Tab; onSelect: (t: Tab) =>
 // ─── App ──────────────────────────────────────────────────────────────────────
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    'Bungee-Regular': require('./assets/fonts/Bungee-Regular.ttf'),
+    'IBMPlexSans-Regular': require('./assets/fonts/IBMPlexSans-Regular.ttf'),
+    'IBMPlexSans-SemiBold': require('./assets/fonts/IBMPlexSans-SemiBold.ttf'),
+    'IBMPlexSans-Medium': require('./assets/fonts/IBMPlexSans-Medium.ttf'),
+  });
+
   const { isComplete, markComplete } = useOnboarding();
   const [activeTab, setActiveTab]   = useState<Tab>('map');
   const [adapter, setAdapter]       = useState<StorageAdapter | null>(null);
@@ -118,8 +126,8 @@ export default function App() {
 
   // ── Loading ──────────────────────────────────────────────────────────────────
 
-  // Wait for SecureStore read and SQLite init before rendering anything.
-  if (isComplete === null || adapter === null) {
+  // Wait for fonts, SecureStore read, and SQLite init before rendering anything.
+  if (!fontsLoaded || isComplete === null || adapter === null) {
     return (
       <SafeAreaProvider>
         <View style={styles.splash}>

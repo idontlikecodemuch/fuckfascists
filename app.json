@@ -4,10 +4,24 @@
     "slug": "fuckfascists",
     "version": "0.0.1",
     "newArchEnabled": true,
-    "platforms": ["ios", "android"],
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "plugins": [
       "expo-asset",
-      "expo-secure-store"
+      "expo-secure-store",
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/Bungee-Regular.ttf",
+            "./assets/fonts/IBMPlexSans-Regular.ttf",
+            "./assets/fonts/IBMPlexSans-SemiBold.ttf",
+            "./assets/fonts/IBMPlexSans-Medium.ttf"
+          ]
+        }
+      ]
     ],
     "ios": {
       "bundleIdentifier": "com.anonymous.fuckfascists",

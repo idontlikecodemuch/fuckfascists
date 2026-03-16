@@ -114,6 +114,10 @@ API keys and credentials must **only ever be read from environment variables**. 
 │   ├── onboard.ts                   ← Onboarding feature copy
 │   ├── info.ts                      ← Info UI chrome (section headers, labels, icons)
 │   └── infoContent.ts               ← Info editorial content (bundled default for fetch-and-fallback)
+├── design/
+│   ├── tokens.ts                    ← theme object: colors, type, spacing, borders, a11y
+│   ├── component-rules.md           ← per-component token usage spec
+│   └── asset-manifest.json          ← pixel art asset slots, status, fallbacks
 ├── config/
 │   └── constants.ts                 ← all configurable variables (see below)
 ├── scripts/
@@ -123,6 +127,7 @@ API keys and credentials must **only ever be read from environment variables**. 
 ├── modules/
 │   └── mapkit-search/               ← local Expo native module (iOS MKLocalPointsOfInterestRequest bridge)
 └── assets/
+    ├── fonts/                       ← Bungee-Regular, IBMPlexSans-{Regular,SemiBold,Medium}
     └── pixel/                       ← all pixel art assets by type
 ```
 
@@ -356,6 +361,7 @@ These apply to every file, every PR, every AI-generated change.
 - **Environments are cleanly separated** — no prod config leaking into dev and vice versa
 - **No one-off scripts in source files** — if a script only runs once, it doesn't belong in the codebase
 - **No script execution in CC** — never run npm scripts, shell commands, or data pipeline scripts (fetch:donations, verify:entities, tsc, etc.) from within a CC session. Scripts are run manually by the developer. CC handles code changes only.
+- **All visual constants from design tokens** — colors, spacing, typography, borders, and accessibility values must be imported from `design/tokens.ts`. Never hardcode hex values, pixel measurements, or font names in components. See `design/component-rules.md` for per-component token usage.
 
 ---
 
