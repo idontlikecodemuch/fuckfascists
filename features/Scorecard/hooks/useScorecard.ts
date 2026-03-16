@@ -2,21 +2,21 @@ import { useState, useEffect } from 'react';
 import type { Entity } from '../../../core/models';
 import type { StorageAdapter } from '../../../core/data';
 import type { Platform } from '../../Platforms/types';
-import type { ReportCardData } from '../types';
-import { generateReportCard } from '../utils/generateReportCard';
+import type { ScorecardData } from '../types';
+import { generateScorecard } from '../utils/generateScorecard';
 
 /**
- * Generates the report card for the given week on mount.
+ * Generates the scorecard for the given week on mount.
  * Re-runs whenever weekOf or isPreview changes.
  */
-export function useReportCard(
+export function useScorecard(
   adapter: StorageAdapter,
   entities: Entity[],
   platforms: Platform[],
   weekOf: string,
   isPreview: boolean
-): { data: ReportCardData | null; loading: boolean; error: string | null } {
-  const [data, setData] = useState<ReportCardData | null>(null);
+): { data: ScorecardData | null; loading: boolean; error: string | null } {
+  const [data, setData] = useState<ScorecardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -28,7 +28,7 @@ export function useReportCard(
 
     (async () => {
       try {
-        const card = await generateReportCard(adapter, entities, platforms, weekOf, isPreview);
+        const card = await generateScorecard(adapter, entities, platforms, weekOf, isPreview);
         if (cancelled) return;
         setData(card);
         setLoading(false);

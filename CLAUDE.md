@@ -45,7 +45,7 @@ These are not preferences. They are constraints. Never violate them.
 4. **No personal identifiers** — No accounts, no emails, no user IDs in MVP. All data is local-only.
 5. **No backend in MVP** — All processing is on-device. The only outbound calls are to the OpenFEC API (directly from the device) and to fetch the curated entity list update (static file on GitHub/CDN).
 6. **Transparency always** — Every confidence label is shown. Every data source links to FEC.gov. Nothing is claimed with more certainty than the data supports.
-7. **CEO name context split** — CEO names are intentional in the report card and avoid tap feedback — these are designed to be confrontational and shareable. CEO names are intentionally absent from the business card and extension popup — these are informational tools displaying public FEC data. Do not conflate these two design contexts.
+7. **CEO name context split** — CEO names are intentional in the scorecard and avoid tap feedback — these are designed to be confrontational and shareable. CEO names are intentionally absent from the business card and extension popup — these are informational tools displaying public FEC data. Do not conflate these two design contexts.
 8. **Cross-surface data parity** — When a material data or transparency change is made to the app business card or the extension popup, carry the underlying data behavior to both surfaces unless there is an explicit documented V2 divergence decision. UI treatment may differ by surface; confidence labels, donation availability handling, FEC links, and core attribution rules must not silently drift.
 
 ---
@@ -91,7 +91,7 @@ API keys and credentials must **only ever be read from environment variables**. 
 ├── features/
 │   ├── Map/                         ← geolocation scan, map display, flagging
 │   ├── Platforms/                    ← platform avoidance tracking (daily increments)
-│   ├── ReportCard/                  ← generation, drop timing, sharing
+│   ├── Scorecard/                   ← generation, drop timing, sharing
 │   ├── Onboarding/                  ← first-run flow
 │   └── Info/                        ← transparency, about, FAQ
 ├── core/
@@ -110,7 +110,7 @@ API keys and credentials must **only ever be read from environment variables**. 
 │   ├── shared.ts                    ← strings used across features
 │   ├── map.ts                       ← Map feature copy
 │   ├── platforms.ts                  ← Platforms feature copy
-│   ├── report.ts                    ← Report Card feature copy
+│   ├── scorecard.ts                 ← Scorecard feature copy
 │   ├── onboard.ts                   ← Onboarding feature copy
 │   ├── info.ts                      ← Info UI chrome (section headers, labels, icons)
 │   └── infoContent.ts               ← Info editorial content (bundled default for fetch-and-fallback)
@@ -133,10 +133,10 @@ API keys and credentials must **only ever be read from environment variables**. 
 All of these live in `/config/constants.ts`. They can be adjusted post-launch without code changes. Never hardcode these values anywhere else.
 
 ```typescript
-// Report card drop window (times in ET)
-export const REPORT_CARD_WINDOW_START_HOUR = 16; // 4pm ET Friday
-export const REPORT_CARD_WINDOW_END_HOUR = 15;   // 3pm ET Saturday
-export const REPORT_CARD_WINDOW_DAY = 5;         // Friday (0 = Sunday)
+// Scorecard drop window (times in ET)
+export const SCORECARD_WINDOW_START_HOUR = 16; // 4pm ET Friday
+export const SCORECARD_WINDOW_END_HOUR = 15;   // 3pm ET Saturday
+export const SCORECARD_WINDOW_DAY = 5;         // Friday (0 = Sunday)
 
 // Extension flagging frequency
 // Options: 'session' | 'daily' | 'weekly'
@@ -257,9 +257,9 @@ Run `fetch:donations` after `verify:entities` whenever the entity list is update
 
 ---
 
-## Report Card — Drop Mechanics
+## Scorecard — Drop Mechanics
 
-The weekly report card is a synchronized global event. Every user with the same app version receives it at the exact same moment — computed entirely on-device with no network dependency.
+The weekly scorecard is a synchronized global event. Every user with the same app version receives it at the exact same moment — computed entirely on-device with no network dependency.
 
 - Drop time is computed deterministically via PRNG in `core/dropSchedule/computeDropTime.ts` — same ISO week year + week number always produces the same result on every install, forever
 - Seed: djb2 hash of `"ff-drop-{year}-W{week}"` mod 23, mapped to an hour offset within the Friday 4pm ET – Saturday 3pm ET window (23 hours, EST = UTC-5 hardcoded for MVP)
@@ -268,7 +268,7 @@ The weekly report card is a synchronized global event. Every user with the same 
 - Push notification is scheduled locally at the computed drop moment via Expo Notifications
 - If notifications are disabled, the card is waiting when the user opens the app
 - On-demand cards (generated anytime by the user) get a "PREVIEW" pixel art stamp — the weekly drop retains its specialness
-- Extension data is NOT included in the report card (V1) — extension has its own in-popup weekly summary
+- Extension data is NOT included in the scorecard (V1) — extension has its own in-popup weekly summary
 
 **V2:** An optional lightweight server ping may add schedule overrides — see "Known Limitations / Technical Debt → V2: Optional Server Schedule Override."
 
@@ -281,7 +281,7 @@ The weekly report card is a synchronized global event. Every user with the same 
 - Flags **once per session per domain** by default (configurable via EXTENSION_FLAG_FREQUENCY)
 - User can snooze a domain ("don't remind me for 7 days")
 - **No browsing history stored** — domain detection is in-memory only, cleared on session end
-- Extension has its own simple weekly summary in the popup — does not feed into the mobile report card in V1
+- Extension has its own simple weekly summary in the popup — does not feed into the mobile scorecard in V1
 
 ### Extension — FEC API key
 - **No API key is used or stored** — the extension always calls the FEC API in anonymous mode (no `api_key` param). FEC anonymous rate limits are per-IP and sufficient for individual users. A shared key would pool all users against one limit, which is a scaling problem.
@@ -314,7 +314,7 @@ When a flagged domain is detected, `handleCheckDomain` resolves donation data in
   aliases: string[]                  // consumer-facing brand names
   domains: string[]                  // for extension matching (e.g. ["amazon.com"])
   categoryTags: string[]
-  ceoName: string                    // operational CEO — report card display
+  ceoName: string                    // operational CEO — scorecard display
   publicFigureName?: string          // culturally recognizable figure (e.g. Bezos for Amazon); getDisplayFigure() resolves
   parentEntityId?: string            // links subsidiary to parent by id
   associatedPersonIds?: string[]     // refs to people.json — unused in V1 display
@@ -363,9 +363,9 @@ These apply to every file, every PR, every AI-generated change.
 
 All user-facing strings live in `copy/` (mobile) or `extension/copy.ts` (extension). Components import from these files. Never hardcode a user-facing string in a component.
 
-- **copy/ structure:** shared.ts, map.ts, platforms.ts, report.ts, onboard.ts, info.ts, infoContent.ts
+- **copy/ structure:** shared.ts, map.ts, platforms.ts, scorecard.ts, onboard.ts, info.ts, infoContent.ts
 - **Extension:** extension/copy.ts (separate — vanilla JS cannot import from RN copy files)
-- **Naming:** two-level max (area.element). No `a11y` prefix — use `Label` or `Hint` suffix only when paired with a visible string. Abbreviate: onboarding→onboard, reportCard→report.
+- **Naming:** two-level max (area.element). No `a11y` prefix — use `Label` or `Hint` suffix only when paired with a visible string. Abbreviate: onboarding→onboard.
 - **Dynamic strings** are arrow functions: `heading: (n: number) => \`${n} MATCHES\``
 - **Static strings** are plain values: `title: "INFO"`
 - **New features:** add copy entries to the relevant copy file BEFORE building the component. The copy file is the spec. The component is the consumer.
@@ -403,8 +403,8 @@ The entire app is styled as a **vintage 8-bit video game**. This is the foundati
 - Chunky, pixelated components with hard edges
 - Limited color palettes per screen (4–6 colors, NES/Game Boy era)
 - Pixel art fonts — paired with system fallback for Dynamic Type scaling
-- Pixel art animations for feedback events (avoid taps, streaks, report card reveal)
-- Custom assets designed by the team: logo, CEO avatars, business icons, badges, map markers, report card frame
+- Pixel art animations for feedback events (avoid taps, streaks, scorecard reveal)
+- Custom assets designed by the team: logo, CEO avatars, business icons, badges, map markers, scorecard frame
 - Retro sound effects (optional, off by default, user-toggleable)
 
 ---
@@ -418,7 +418,7 @@ The entire app is styled as a **vintage 8-bit video game**. This is the foundati
 | Core models, matching pipeline, FEC API client | ✅ Done |
 | SQLite adapter (`app/storage/SqliteAdapter.ts`) | ✅ Done |
 | Map scan, flag, business card, avoid tap | ✅ Done |
-| Platforms, Report Card, Onboarding, Info screens | ✅ Done |
+| Platforms, Scorecard, Onboarding, Info screens | ✅ Done |
 | Browser extension (MV3, Chrome + Firefox) | ✅ Done |
 | FEC entity verification run (`verify:entities`) | ✅ Done |
 | Donation data bundled into `entities.json` | ✅ Done |

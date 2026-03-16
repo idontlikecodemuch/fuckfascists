@@ -18,24 +18,24 @@ Generated from `features/Dev/CatalogScreen.tsx`. Re-run after copy or design cha
 | 10 | MapSearchBar — scanning | ![](./catalog/10-searchbar-scanning.png) | copy/map.ts |
 | 11 | MapControls | ![](./catalog/11-mapcontrols.png) | copy/map.ts |
 
-## Survey
+## Platforms
 
 | # | State | Screenshot | Copy Source |
 |---|-------|-----------|-------------|
-| 12 | Survey — partial (3/6) | ![](./catalog/12-survey-partial.png) | copy/survey.ts, copy/shared.ts |
-| 13 | Survey — full completion | ![](./catalog/13-survey-full.png) | copy/survey.ts, copy/shared.ts |
-| 14 | Survey — empty | ![](./catalog/14-survey-empty.png) | copy/survey.ts, copy/shared.ts |
-| 15 | PlatformRow — avoided | ![](./catalog/15-platformrow-avoided.png) | copy/survey.ts, copy/shared.ts |
-| 16 | PlatformRow — not avoided | ![](./catalog/16-platformrow-not-avoided.png) | copy/survey.ts, copy/shared.ts |
+| 12 | Platforms — partial (3/6) | ![](./catalog/12-platforms-partial.png) | copy/platforms.ts, copy/shared.ts |
+| 13 | Platforms — all active | ![](./catalog/13-platforms-full.png) | copy/platforms.ts, copy/shared.ts |
+| 14 | Platforms — empty | ![](./catalog/14-platforms-empty.png) | copy/platforms.ts, copy/shared.ts |
+| 15 | PlatformRow — avoided | ![](./catalog/15-platformrow-avoided.png) | copy/platforms.ts, copy/shared.ts |
+| 16 | PlatformRow — not avoided | ![](./catalog/16-platformrow-not-avoided.png) | copy/platforms.ts, copy/shared.ts |
 
-## Report Card
+## Scorecard
 
 | # | State | Screenshot | Copy Source |
 |---|-------|-----------|-------------|
-| 17 | ReportCardView — with data | ![](./catalog/17-report-with-data.png) | copy/report.ts, copy/shared.ts |
-| 18 | ReportCardView — empty state | ![](./catalog/18-report-empty.png) | copy/report.ts |
-| 19 | ReportCardView — preview stamp | ![](./catalog/19-report-preview.png) | copy/report.ts |
-| 20 | Report Card — drop countdown | ![](./catalog/20-report-countdown.png) | copy/report.ts |
+| 17 | ScorecardView — with data | ![](./catalog/17-scorecard-with-data.png) | copy/scorecard.ts, copy/shared.ts |
+| 18 | ScorecardView — empty state | ![](./catalog/18-scorecard-empty.png) | copy/scorecard.ts |
+| 19 | ScorecardView — preview stamp | ![](./catalog/19-scorecard-preview.png) | copy/scorecard.ts |
+| 20 | Scorecard — drop countdown | ![](./catalog/20-scorecard-countdown.png) | copy/scorecard.ts |
 
 ## Onboarding
 

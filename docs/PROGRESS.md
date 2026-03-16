@@ -12,6 +12,91 @@ This document is updated continuously. New instances should read this first — 
 
 ## Last 5 Sessions (most recent first)
 
+### Session: March 16, 2026
+**Focus:** Scorecard aggregation layer — person-grouped avoidance data
+
+**Completed:**
+- **`aggregateScorecard.ts`** — new pure data function that rolls up both entity and platform avoids for a week, grouped by public figure name (e.g. Walmart + Sam's Club → McMillon, Instagram + Facebook platform → Zuckerberg).
+- **`ScorecardPerson` / `ScorecardSource` types** — `ScorecardPerson { figureName, totalCount, sources[] }`, `ScorecardSource { name, count, verb }`.
+- **`verbForCategory()`** — derives display verb from categoryTags: social/platform/messaging → "stayed off", ecommerce/streaming/shopping → "skipped", retailer/restaurant/grocery → "walked past", default → "avoided".
+- **Person resolution** — uses `getDisplayFigure()` for entities (handles `publicFigureName`, `ceoName` fallback, `parentEntityId` laddering). Platforms resolve to `ceoName`.
+- **Display names** — entities use first alias (fallback: canonicalName, then entityId). Platforms use `name` (fallback: platformId).
+- **27 new tests** — covers verb mapping (all 9 tags, empty/unknown, multi-tag priority), empty week, single entity, publicFigureName vs ceoName, parentEntityId merging, mixed entity+platform, multi-platform same person, sort order, week boundaries, multi-day summing, unknown entity/platform fallback.
+
+**Files created:**
+- `features/Scorecard/data/aggregateScorecard.ts`
+- `features/Scorecard/data/__tests__/aggregateScorecard.test.ts`
+
+**Build:** tsc clean. 308 tests passing (28 suites).
+
+---
+
+### Session: March 15, 2026 (follow-up 9)
+**Focus:** Platforms feature — setup screen, day circles, Thursday nudge notification
+
+**Completed:**
+- **Platform Setup Screen** — new `PlatformSetupScreen.tsx` component: character-select style dark screen with FlatList of all 8 platforms, checkbox affordances (green ✓ when selected, empty box when not), pre-checks 5 defaults (Twitter, Instagram, Facebook, Amazon, YouTube). DONE button disabled when no selection. Accepts `initialSelection` prop for edit mode.
+- **Platform Roster Persistence** — new `usePlatformRoster` hook: three-state pattern (null=loading, undefined=no selection→show setup, string[]=saved). Persists JSON array of platform IDs in SecureStore under `'platform_roster'` key. `getDefaultSelectedIds()` helper for setup screen defaults.
+- **PlatformsScreen Rewrite** — orchestrates setup flow: loading→setup (first use)→main list. Integrates `usePlatformRoster` for roster persistence. Filters `TRACKED_PLATFORMS` to user's roster via `useMemo`. EDIT button in header reopens setup with current selection.
+- **Day Circles** — new `DayCircles.tsx` component: 7 day circles (M–S) for the current week. Green ✓ for avoided days, empty tappable circles for past/current days, faint disabled circles for future days. 36×36 circle size, chunky 3px borders, 8-bit aesthetic.
+- **Expandable PlatformRow** — added chevron toggle (▶/▼) to expand/collapse day circles per row. New props: `weekOf`, `onAvoidDate`. Row wraps into outer View containing row + optional DayCircles.
+- **Date-Specific Avoids** — new `recordPlatformAvoidForDate(adapter, platformId, date)` in eventStore for logging avoids on specific past dates via day circles.
+- **usePlatformAvoidance Rewrite** — now stores raw `PlatformAvoidEvent[]` instead of aggregated totals, computes per-platform `dayCounts: Map<string, number>` and `weeklyCount` from events. Exposes both `avoid(platformId)` and `avoidForDate(platformId, date)` actions.
+- **Week Utilities** — new `utils/weekDates.ts`: `getWeekDates(weekOf)` returns 7 YYYY-MM-DD strings Mon–Sun, `isFutureDate(date)` compares against today.
+- **Thursday Nudge Notification** — new `useNudgeNotification` hook: schedules weekly Thursday 7pm local notification via expo-notifications `SchedulableTriggerInputTypes.WEEKLY`. Cancels previous by identifier before rescheduling. Silently catches permission/scheduling failures.
+- **Copy Updates** — added 12 new entries to `copy/platforms.ts`: setupTitle, setupSubhead, setupDone, editBtn, editLabel, dayLabels, dayCheckedLabel, dayUncheckedLabel, dayFutureLabel, expandLabel, collapseLabel, nudgeTitle, nudgeBody.
+- **Constants** — added `NUDGE_DAY` (4=Thursday), `NUDGE_HOUR` (19=7pm), `DEFAULT_SELECTED_PLATFORM_IDS` to `config/constants.ts`.
+- **Dev Catalog** — updated `catalogMocks.ts` with `dayCounts` field on all PlatformItem mocks. Updated `PlatformsSections.tsx` with `weekOf` and `onAvoidDate` props on all PlatformRow usages.
+
+**Files created:**
+- `features/Platforms/hooks/usePlatformRoster.ts`
+- `features/Platforms/hooks/useNudgeNotification.ts`
+- `features/Platforms/components/PlatformSetupScreen.tsx`
+- `features/Platforms/components/DayCircles.tsx`
+- `features/Platforms/utils/weekDates.ts`
+
+**Files modified:**
+- `copy/platforms.ts` — 12 new copy entries
+- `config/constants.ts` — NUDGE_DAY, NUDGE_HOUR, DEFAULT_SELECTED_PLATFORM_IDS
+- `core/data/eventStore.ts` — recordPlatformAvoidForDate
+- `core/data/index.ts` — new barrel export
+- `features/Platforms/types.ts` — dayCounts on PlatformItem
+- `features/Platforms/hooks/usePlatformAvoidance.ts` — rewritten for day-level data
+- `features/Platforms/components/PlatformRow.tsx` — expandable with chevron + DayCircles
+- `features/Platforms/PlatformsScreen.tsx` — rewritten for setup flow + roster + edit + nudge
+- `features/Dev/catalogMocks.ts` — dayCounts on all PlatformItem mocks
+- `features/Dev/sections/PlatformsSections.tsx` — weekOf + onAvoidDate props
+
+**Build:** tsc clean. 308 tests passing (28 suites). audit-copy.sh pending.
+
+---
+
+### Session: March 15, 2026 (follow-up 8)
+**Focus:** Comprehensive rename pass — Report Card→Scorecard, Survey→Platforms, badge language, AVOIDED→AVOID
+
+**Completed:**
+- **REPORT CARD → SCORECARD** — renamed directories (`features/ReportCard/` → `features/Scorecard/`, `copy/report.ts` → `copy/scorecard.ts`), all types (`ReportCardData` → `ScorecardData`, `ReportCardView` → `ScorecardView`, etc.), all functions (`generateReportCard` → `generateScorecard`, `useReportCard` → `useScorecard`), all imports, all constants (`REPORT_CARD_WINDOW_*` → `SCORECARD_WINDOW_*`), copy string values (`"REPORT CARD"` → `"SCORECARD"`, etc.), and comments/docs throughout.
+- **SURVEY → PLATFORMS** — caught remaining references from prior feature replacement: `SurveyPartial/Full/Empty` → `PlatformsPartial/Full/Empty` in dev catalog, `surveyTitle/Desc/Icon` → `platformsTitle/Desc/Icon` in onboard copy, deleted dead `copy/survey.ts` file, updated ARCHITECTURE.md section to reflect current Platforms data model.
+- **Badge language** — corrected docs from "VERIFIED/MATCHED badge" to "MATCHED badge (medium confidence only; high confidence shows no badge)".
+- **AVOIDED → AVOID** — fixed comments in `AvoidButton.tsx` and `popup.ts` to accurately describe "AVOID" as the button label, "✓ AVOIDED" as the confirmed state.
+- **Copy string values** — updated `copy/scorecard.ts` user-facing strings: title, subtitle, shareHeader, shareLabel, previewLabel, emptyState ("Hit the Survey" → "Hit Track").
+- **Documentation** — CLAUDE.md (12+ edits), ARCHITECTURE.md (10+ edits including full Platforms section rewrite), README.md, SPEC_VS_CURRENT.md, PROGRESS.md, visual-catalog.md all updated.
+- **Core comments** — `core/data/eventStore.ts` and `core/models/entity.ts` comments updated.
+
+**Verification:** tsc clean. 281 tests passing (27 suites). audit-copy.sh clean (dev-only hits only).
+
+**Files renamed (git mv):**
+- `features/ReportCard/` → `features/Scorecard/` (all files within)
+- `copy/report.ts` → `copy/scorecard.ts`
+- `features/Dev/sections/SurveySections.tsx` → `PlatformsSections.tsx`
+- `features/Dev/sections/ReportSections.tsx` → `ScorecardSections.tsx`
+
+**Files modified (~30 files):** App.tsx, config/constants.ts, core/dropSchedule/computeDropTime.ts, core/data/eventStore.ts, core/models/entity.ts, copy/scorecard.ts, copy/onboard.ts, features/Scorecard/* (8 files), features/Dev/* (3 files), features/Onboarding/screens/HowItWorksScreen.tsx, extension/popup/popup.ts, features/Map/components/AvoidButton.tsx, CLAUDE.md, ARCHITECTURE.md, README.md, docs/PROGRESS.md, docs/SPEC_VS_CURRENT.md, docs/visual-catalog.md
+
+**Files deleted:** `copy/survey.ts` (dead file, no imports)
+
+---
+
 ### Session: March 15, 2026 (follow-up 7)
 **Focus:** Thread matched alias through pipeline; redesign business card display hierarchy
 
@@ -217,7 +302,7 @@ This document is updated continuously. New instances should read this first — 
 **Focus:** MatchChooser — multi-match POI tap selection
 
 **Completed:**
-- **MatchChooser component:** New `features/Map/components/MatchChooser.tsx` — bottom-anchored overlay shown when a single map tap returns 2+ matched entities. 8-bit pixel art aesthetic matching BusinessCard (same palette, monospace font, thick borders, confidence badges). FlatList of results with business name + VERIFIED/MATCHED badge per row. DISMISS button at bottom. 44pt minimum tap targets.
+- **MatchChooser component:** New `features/Map/components/MatchChooser.tsx` — bottom-anchored overlay shown when a single map tap returns 2+ matched entities. 8-bit pixel art aesthetic matching BusinessCard (same palette, monospace font, thick borders, confidence badges). FlatList of results with business name + MATCHED badge (medium confidence only; high confidence shows no badge) per row. DISMISS button at bottom. 44pt minimum tap targets.
 - **useTapSearch batch tracking:** Added `latestTapBatch: ScanResult[]` state to `useTapSearch` hook. `processTapNames` now populates it with the scan results from each tap (in addition to creating pins). Exposed `latestTapBatch` and `clearLatestTapBatch` in the hook's return value. `resetTapPins` also clears the batch.
 - **MapScreen integration:** Added tap batch effect — when `latestTapBatch.length === 1`, auto-selects it (shows BusinessCard directly, same as before). When `latestTapBatch.length >= 2`, renders MatchChooser instead. User selects a business → BusinessCard opens for that result. DISMISS closes the chooser. All markers still render on the map regardless of chooser state. Manual search and card dismiss both clear the batch.
 
@@ -488,8 +573,8 @@ The Swift source now lives authoritatively at `modules/mapkit-search/ios/MapKitS
 
 | Suite | Count | Status |
 |---|---|---|
-| Total passing | 281 | ✅ Clean (27 suites) |
-| Last tsc run | March 15, 2026 | ✅ Clean |
+| Total passing | 308 | ✅ Clean (28 suites) |
+| Last tsc run | March 16, 2026 | ✅ Clean |
 
 ---
 
@@ -511,7 +596,7 @@ The Swift source now lives authoritatively at `modules/mapkit-search/ios/MapKitS
 
 ## What's Working
 
-- Avoid tap → platforms → report card vertical slice ✅
+- Avoid tap → platforms → scorecard vertical slice ✅
 - Extension built and tested on walmart.com ✅
 - Geolocation (simulator — SF drop) ✅ / physical device TBD
 - Entity matching with confidence labels ✅
@@ -533,7 +618,7 @@ The Swift source now lives authoritatively at `modules/mapkit-search/ios/MapKitS
 | Physical device geolocation test | Not done | 🟡 V1 needed |
 | 3 entities pending retry (sherwin-williams, baker-hughes, chick-fil-a) | Run plain fetch:donations | 🟡 Nice to have |
 | people.json individual donor data | Not started | 🟠 V1.5 |
-| Report card sharing / social export | Not built | 🟠 V2 |
+| Scorecard sharing / social export | Not built | 🟠 V2 |
 | ENTITY_LIST_UPDATE_URL | Placeholder [org] | 🟠 Pre-launch |
 
 ---
@@ -541,7 +626,7 @@ The Swift source now lives authoritatively at `modules/mapkit-search/ios/MapKitS
 ## Immediate Next Steps (in order)
 
 1. **Podfile `post_install` hook** — automate the `AIRMap.m` nil guard patch so it survives `pod install`. See Known Limitations in CLAUDE.md.
-2. **iOS simulator smoke test** — `npx expo start`, launch from simulator, walk the full vertical slice (map scan → flag → business card → avoid tap → survey → report card). Verify MapKit POI tap fires on iOS. Confirm map no longer freezes on region change.
+2. **iOS simulator smoke test** — `npx expo start`, launch from simulator, walk the full vertical slice (map scan → flag → business card → avoid tap → platforms → scorecard). Verify MapKit POI tap fires on iOS. Confirm map no longer freezes on region change.
 3. **Physical device geolocation** — test on hardware, not simulator
 4. **UX/UI + Content pass** — new agent instance, full analysis, 8-bit design system, user journey, copy rewrite
 
@@ -552,7 +637,7 @@ The Swift source now lives authoritatively at `modules/mapkit-search/ios/MapKitS
 | Decision | Context | Status |
 |---|---|---|
 | Map POI tap scope | Full pipeline match used (alias first, FEC fuzzy fallback) | ✅ Resolved — full pipeline |
-| Extension + report card unification | QR code bridge or permanently separate | ❓ Deferred V2 |
+| Extension + scorecard unification | QR code bridge or permanently separate | ❓ Deferred V2 |
 | App Store name | "F*ck Fascists" will be rejected — need clean submission name | ❓ Not resolved |
 | Uber entity | No PAC found, name-based match failing | ❓ Needs manual research |
 

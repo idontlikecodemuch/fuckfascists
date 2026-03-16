@@ -16,7 +16,7 @@
 6. [CDN-Fetch-with-Bundled-Fallback Pattern](#6-cdn-fetch-with-bundled-fallback-pattern)
 7. [Mobile App Architecture](#7-mobile-app-architecture)
 8. [Browser Extension Architecture](#8-browser-extension-architecture)
-9. [Report Card Drop Mechanics](#9-report-card-drop-mechanics)
+9. [Scorecard Drop Mechanics](#9-scorecard-drop-mechanics)
 10. [Storage Adapters](#10-storage-adapters)
 11. [Build & Test](#11-build--test)
 12. [Pre-Launch Checklist](#12-pre-launch-checklist)
@@ -42,7 +42,7 @@ Three products ship together at v1.0:
 
 **The mobile app** is the primary product. Users scan nearby businesses, tap
 AVOIDED when they skip a flagged one, complete a weekly platform checklist, and
-receive a synchronized weekly report card.
+receive a synchronized weekly scorecard.
 
 **The browser extension** detects flagged domains in-tab, turns the icon amber,
 and lets users log avoidances without leaving the current page.
@@ -77,8 +77,8 @@ both surfaces unless a deliberate V2 divergence is documented first.
 │
 ├── features/               ← React Native feature modules
 │   ├── Map/                ← Geolocation scan, entity flag, BusinessCard, avoid tap
-│   ├── Survey/             ← Weekly platform checklist
-│   ├── ReportCard/         ← Drop timing, card generation, sharing
+│   ├── Platforms/           ← Platform avoidance tracking (daily increments)
+│   ├── Scorecard/           ← Drop timing, card generation, sharing
 │   ├── Onboarding/         ← 5-step first-run flow
 │   └── Info/               ← Transparency, about, FAQ, links (CDN-updatable)
 │
@@ -375,22 +375,21 @@ CDN refresh in the background, and constructs a single `FECClient` for the app
 lifetime. `MapScreen` receives `entities`, `adapter`, `fetchOrgs`, and
 `fetchOrgSummary` as props to keep dependencies explicit and testable.
 
-### Survey feature
+### Platforms feature
 
-Platforms are a **static list** in `features/Survey/data/platforms.ts` (12
-curated platforms at MVP). The weekly reset is automatic — `getMondayOf(new Date())`
-is called fresh each render, so the survey naturally empties itself on Mondays
-without any scheduler.
+Platforms are a **static list** in `features/Platforms/data/platformList.ts` (8
+curated platforms at MVP). Avoidance uses a per-day increment model matching
+entity avoids — DB-owned via `ON CONFLICT DO UPDATE SET count = count + 1`.
 
 ```
-useWeeklySurvey()
-    ├─ weekOf = getMondayOf(new Date())  ← recomputed each render
-    ├─ loads PlatformAvoidEvents for current weekOf
+usePlatformAvoidance()
+    ├─ weekStart/weekEnd = current week bounds
+    ├─ loads PlatformAvoidEvents for [weekStart, weekEnd)
     └─ avoid(platformId) → recordPlatformAvoid(adapter, platformId)
-                           └─ writes PlatformAvoidEvent { platformId, weekOf }
+                           └─ writes PlatformAvoidEvent { platformId, date, count }
 ```
 
-### Report card
+### Scorecard
 
 `hasDropped` is computed as `Date.now() >= dropAt` on each render — no polling,
 no `setInterval`. Re-evaluates naturally when the user opens the screen.
@@ -398,7 +397,7 @@ no `setInterval`. Re-evaluates naturally when the user opens the screen.
 Preview cards (generated on-demand by the user) receive a `PREVIEW` pixel-art
 stamp. Only the official weekly drop card is stamp-free.
 
-`ReportCardView` wraps its root `<View>` in `forwardRef` — this is a pre-wire
+`ScorecardView` wraps its root `<View>` in `forwardRef` — this is a pre-wire
 for `react-native-view-shot` image capture in Phase 2 (sharing as an image).
 Phase 1 shares as text via the native Share sheet.
 
@@ -501,11 +500,11 @@ SW restart.
 
 ---
 
-## 9. Report Card Drop Mechanics
+## 9. Scorecard Drop Mechanics
 
 ```
 Start of week (GitHub Action — not yet built):
-    ├─ generates random drop time within REPORT_CARD_WINDOW (Fri 4pm–Sat 3pm ET)
+    ├─ generates random drop time within SCORECARD_WINDOW (Fri 4pm–Sat 3pm ET)
     ├─ avoids the previous week's drop hour
     └─ publishes { dropAt: epoch, weekOf: 'YYYY-MM-DD' } to DROP_SCHEDULE_URL
 
@@ -514,15 +513,15 @@ Mobile app (useDropSchedule):
     ├─ if dropAt is in the future → schedules Expo local notification
     └─ hasDropped = Date.now() >= dropAt (re-evaluated on each render)
 
-ReportCardScreen states:
+ScorecardScreen states:
     ├─ loading         → spinner
-    ├─ hasDropped=true → generateReportCard(adapter, entities, platforms, weekOf, false)
+    ├─ hasDropped=true → generateScorecard(adapter, entities, platforms, weekOf, false)
     │                    → official card + SHARE button
-    └─ hasDropped=false → PREVIEW button → generateReportCard(..., isPreview: true)
+    └─ hasDropped=false → PREVIEW button → generateScorecard(..., isPreview: true)
                           → card with PREVIEW pixel stamp
 ```
 
-`generateReportCard` filters `EntityAvoidEvent[]` to `[weekOf, nextMonday)` and
+`generateScorecard` filters `EntityAvoidEvent[]` to `[weekOf, nextMonday)` and
 `PlatformAvoidEvent[]` for `weekOf`. Groups entity avoids by `entityId`, sums
 `count`, sorts descending by count.
 
@@ -624,13 +623,13 @@ These items are **incomplete or placeholder** in the current codebase:
       - `drop-schedule.json` — weekly drop schedule (published by a GitHub Action)
       - `info.json` — Info screen content (FAQ, transparency points, links)
 - [ ] **GitHub Action for drop schedule** — runs every Monday, generates a random
-      drop time within `REPORT_CARD_WINDOW_*` constants, writes `drop-schedule.json`.
+      drop time within `SCORECARD_WINDOW_*` constants, writes `drop-schedule.json`.
 - [ ] **Expo EAS build config** — `eas.json` for `.ipa` and `.apk` production builds.
 - [ ] **iOS native module activation** — run `expo prebuild --platform ios`, add
       `ios/MapKitSearchModule.swift` to the Xcode project target, then build. Until
       this is done, iOS tap-to-search silently returns no results (no crash, no error).
 - [ ] **Add pixel art assets** to `assets/pixel/` — logo, CEO avatars, badges,
-      map markers, report card frame, animated feedback sprites.
+      map markers, scorecard frame, animated feedback sprites.
 - [ ] **Extension options page** (optional) — for users to enter/change their
       FEC API key after install.
 
@@ -688,5 +687,5 @@ Do not build these. They are explicitly deferred.
 | Server-side analytics / telemetry | — |
 | Donation processing | Phase 3 |
 | Real-time backend services | Phase 3 |
-| Extension data in mobile report card | Phase 2 |
+| Extension data in mobile scorecard | Phase 2 |
 | Owner-level donation inference | — |

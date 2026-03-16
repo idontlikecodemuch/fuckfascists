@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { reportCopy } from '../../../copy/report';
+import { scorecardCopy } from '../../../copy/scorecard';
 
 /**
  * Pixel art rubber-stamp overlay shown on on-demand (non-official-drop) cards.
@@ -11,10 +11,10 @@ export function PreviewStamp() {
   return (
     <View
       style={styles.stamp}
-      accessibilityLabel={reportCopy.previewA11y}
+      accessibilityLabel={scorecardCopy.previewA11y}
       importantForAccessibility="yes"
     >
-      <Text style={styles.text}>{reportCopy.previewStamp}</Text>
+      <Text style={styles.text}>{scorecardCopy.previewStamp}</Text>
     </View>
   );
 }

@@ -1,5 +1,5 @@
 /**
- * Formats an avoidance count for display on the report card.
+ * Formats an avoidance count for display on the scorecard.
  * e.g. 1 → "1×", 12 → "12×"
  */
 export function formatCount(n: number): string {

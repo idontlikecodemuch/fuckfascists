@@ -16,6 +16,7 @@ import {
 import type { PlatformItem } from '../../Platforms/types';
 
 const noop = async () => {};
+const MOCK_WEEK = '2026-03-09';
 
 // Static platform list — uses .map() instead of FlatList to avoid
 // VirtualizedList-inside-ScrollView nesting warning.
@@ -29,7 +30,7 @@ function PlatformList({ items }: { items: PlatformItem[] }) {
         <Text style={styles.score}>{platformsCopy.score(totalAvoids)}</Text>
       </View>
       {items.map((item) => (
-        <PlatformRow key={item.platform.id} item={item} onAvoid={noop} />
+        <PlatformRow key={item.platform.id} item={item} weekOf={MOCK_WEEK} onAvoid={noop} onAvoidDate={noop} />
       ))}
     </View>
   );
@@ -37,39 +38,39 @@ function PlatformList({ items }: { items: PlatformItem[] }) {
 
 // ── Platform full-screen variants ────────────────────────────────────────
 
-export const SurveyPartial = forwardRef<View>((_, ref) => (
+export const PlatformsPartial = forwardRef<View>((_, ref) => (
   <CatalogSection ref={ref} label="Platforms — Partial (3/6 active)">
     <PlatformList items={partialPlatformItems} />
   </CatalogSection>
 ));
-SurveyPartial.displayName = 'SurveyPartial';
+PlatformsPartial.displayName = 'PlatformsPartial';
 
-export const SurveyFull = forwardRef<View>((_, ref) => (
+export const PlatformsFull = forwardRef<View>((_, ref) => (
   <CatalogSection ref={ref} label="Platforms — All Active">
     <PlatformList items={fullPlatformItems} />
   </CatalogSection>
 ));
-SurveyFull.displayName = 'SurveyFull';
+PlatformsFull.displayName = 'PlatformsFull';
 
-export const SurveyEmpty = forwardRef<View>((_, ref) => (
+export const PlatformsEmpty = forwardRef<View>((_, ref) => (
   <CatalogSection ref={ref} label="Platforms — Empty">
     <PlatformList items={emptyPlatformItems} />
   </CatalogSection>
 ));
-SurveyEmpty.displayName = 'SurveyEmpty';
+PlatformsEmpty.displayName = 'PlatformsEmpty';
 
 // ── Individual PlatformRow variants ────────────────────────────────────────
 
 export const PlatformRowAvoided = forwardRef<View>((_, ref) => (
   <CatalogSection ref={ref} label="PlatformRow — Avoided (×5)">
-    <PlatformRow item={avoidedPlatformRow} onAvoid={noop} />
+    <PlatformRow item={avoidedPlatformRow} weekOf={MOCK_WEEK} onAvoid={noop} onAvoidDate={noop} />
   </CatalogSection>
 ));
 PlatformRowAvoided.displayName = 'PlatformRowAvoided';
 
 export const PlatformRowNotAvoided = forwardRef<View>((_, ref) => (
   <CatalogSection ref={ref} label="PlatformRow — Not Avoided">
-    <PlatformRow item={notAvoidedPlatformRow} onAvoid={noop} />
+    <PlatformRow item={notAvoidedPlatformRow} weekOf={MOCK_WEEK} onAvoid={noop} onAvoidDate={noop} />
   </CatalogSection>
 ));
 PlatformRowNotAvoided.displayName = 'PlatformRowNotAvoided';

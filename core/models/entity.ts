@@ -21,7 +21,7 @@ export interface Entity {
   aliases: string[];           // consumer-facing brand names
   domains: string[];           // for extension matching (e.g. ["amazon.com", "smile.amazon.com"])
   categoryTags: string[];
-  ceoName: string;             // for report card display
+  ceoName: string;             // for scorecard display
   /**
    * Optional. The founder, owner, or controlling public figure most associated
    * with this company's political identity. Use when this person is more
@@ -33,7 +33,7 @@ export interface Entity {
   publicFigureName?: string;
   /**
    * Optional. The id of the parent entity if this is a subsidiary.
-   * When present, the report card ladders up to the parent's displayFigure
+   * When present, the scorecard ladders up to the parent's displayFigure
    * instead of this entity's own ceoName/publicFigureName.
    * Example: { id: "instagram", parentEntityId: "meta" }
    */

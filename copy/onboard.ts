@@ -9,8 +9,8 @@ export const onboardCopy = {
   howTitle: "HOW IT WORKS",
   mapTitle: "MAP",
   mapDesc: "Scan nearby businesses. Flag GOP donors on your map. Tap AVOID and move on.",
-  surveyTitle: "TRACK",
-  surveyDesc: "Did you skip Amazon, Instagram, or X this week? Check them off.",
+  platformsTitle: "TRACK",
+  platformsDesc: "Did you skip Amazon, Instagram, or X this week? Check them off.",
   reportTitle: "SCORECARD",
   reportDesc: "Every Friday, see who you didn\u2019t fund this week. Share it if you want.",
   locTitle: "FIND NEARBY BUSINESSES",
@@ -42,6 +42,6 @@ export const onboardCopy = {
   skip: "SKIP FOR NOW",
   progressStep: (n: number, total: number) => `Step ${n} of ${total}`,
   mapIcon: "[+]",
-  surveyIcon: "[\u2713]",
+  platformsIcon: "[\u2713]",
   reportIcon: "[\u2605]",
 } as const;

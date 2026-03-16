@@ -21,14 +21,14 @@ import {
 
 // Platform sections
 import {
-  SurveyPartial, SurveyFull, SurveyEmpty,
+  PlatformsPartial, PlatformsFull, PlatformsEmpty,
   PlatformRowAvoided, PlatformRowNotAvoided,
-} from './sections/SurveySections';
+} from './sections/PlatformsSections';
 
-// Report sections
+// Scorecard sections
 import {
-  ReportWithData, ReportEmptyState, ReportWithPreview, ReportDropCountdown,
-} from './sections/ReportSections';
+  ScorecardWithData, ScorecardEmptyState, ScorecardWithPreview, ScorecardDropCountdown,
+} from './sections/ScorecardSections';
 
 // Onboarding sections
 import {
@@ -62,16 +62,16 @@ const SECTIONS: SectionDef[] = [
   { slug: '10-searchbar-scanning', Component: SearchBarScanning },
   { slug: '11-mapcontrols', Component: MapControlsSection },
   // Platforms
-  { slug: '12-platforms-partial', Component: SurveyPartial },
-  { slug: '13-platforms-full', Component: SurveyFull },
-  { slug: '14-platforms-empty', Component: SurveyEmpty },
+  { slug: '12-platforms-partial', Component: PlatformsPartial },
+  { slug: '13-platforms-full', Component: PlatformsFull },
+  { slug: '14-platforms-empty', Component: PlatformsEmpty },
   { slug: '15-platformrow-avoided', Component: PlatformRowAvoided },
   { slug: '16-platformrow-not-avoided', Component: PlatformRowNotAvoided },
-  // Report Card
-  { slug: '17-report-with-data', Component: ReportWithData },
-  { slug: '18-report-empty', Component: ReportEmptyState },
-  { slug: '19-report-preview', Component: ReportWithPreview },
-  { slug: '20-report-countdown', Component: ReportDropCountdown },
+  // Scorecard
+  { slug: '17-scorecard-with-data', Component: ScorecardWithData },
+  { slug: '18-scorecard-empty', Component: ScorecardEmptyState },
+  { slug: '19-scorecard-preview', Component: ScorecardWithPreview },
+  { slug: '20-scorecard-countdown', Component: ScorecardDropCountdown },
   // Onboarding
   { slug: '21-onboard-welcome', Component: OnboardWelcome },
   { slug: '22-onboard-howitworks', Component: OnboardHowItWorks },
@@ -164,7 +164,7 @@ export function CatalogScreen() {
           <s.Component key={s.slug} ref={(el) => { refs.current[11 + i] = el; }} />
         ))}
 
-        <Text style={styles.groupHeader}>REPORT CARD COMPONENTS</Text>
+        <Text style={styles.groupHeader}>SCORECARD COMPONENTS</Text>
         {SECTIONS.slice(16, 20).map((s, i) => (
           <s.Component key={s.slug} ref={(el) => { refs.current[16 + i] = el; }} />
         ))}

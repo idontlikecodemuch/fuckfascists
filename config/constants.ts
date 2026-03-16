@@ -1,7 +1,7 @@
-// Report card drop window (times in ET)
-export const REPORT_CARD_WINDOW_START_HOUR = 16; // 4pm ET Friday
-export const REPORT_CARD_WINDOW_END_HOUR = 15;   // 3pm ET Saturday
-export const REPORT_CARD_WINDOW_DAY = 5;         // Friday (0 = Sunday)
+// Scorecard drop window (times in ET)
+export const SCORECARD_WINDOW_START_HOUR = 16; // 4pm ET Friday
+export const SCORECARD_WINDOW_END_HOUR = 15;   // 3pm ET Saturday
+export const SCORECARD_WINDOW_DAY = 5;         // Friday (0 = Sunday)
 
 // Extension flagging frequency
 // Options: 'session' | 'daily' | 'weekly'
@@ -43,6 +43,21 @@ export const TAP_CACHE_TTL_MS = 60 * 1000; // 60 seconds
 // subsequent taps within this window are dropped. Prevents rapid taps on different
 // map areas from stacking MKLocalPointsOfInterestRequest calls.
 export const TAP_DEBOUNCE_MS = 500;
+
+// Thursday nudge notification — reminds users to log avoids before Friday scorecard drop.
+// Day of week: 0=Sunday, 4=Thursday. Hour in local time (24h).
+export const NUDGE_DAY = 4;    // Thursday
+export const NUDGE_HOUR = 19;  // 7pm local time
+
+// Default platforms pre-checked on the setup screen.
+// IDs from features/Platforms/data/platformList.ts.
+export const DEFAULT_SELECTED_PLATFORM_IDS = [
+  'twitter',
+  'instagram',
+  'facebook',
+  'amazon',
+  'youtube',
+];
 
 // Controls whether the public figure / CEO name is shown in the UI.
 // true = show, false = hide. Compile-time constant — change and rebuild to toggle.

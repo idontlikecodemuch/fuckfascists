@@ -20,8 +20,8 @@ This document tracks where the current implementation aligns with, deviates from
 | Confidence levels always shown | Never claim certainty data doesn't support | Confidence labels in UI |
 | Data links to source | All data cites FEC.gov | Attribution standardized to FEC.GOV |
 | Configurable variables in constants.ts | No hardcoded thresholds | All values in `config/constants.ts` |
-| Gamified report card | Weekly drop, shareable | Weekly report card implemented |
-| Platform avoidance survey | Daily checklist for social/streaming/delivery | Weekly survey implemented |
+| Gamified scorecard | Weekly drop, shareable | Weekly scorecard implemented |
+| Platform avoidance tracking | Daily checklist for social/streaming/delivery | Platform avoidance implemented |
 
 ---
 
@@ -31,7 +31,7 @@ This document tracks where the current implementation aligns with, deviates from
 |---|---|---|---|
 | Data source | OpenSecrets API | FEC.gov API directly | OpenSecrets rate limits too tight for bulk lookups; FEC is the primary source anyway and more transparent |
 | Confidence field | String labels ('HIGH', 'MEDIUM') | Numeric 0–1 confidence values with thresholds in `config/constants.ts` | More precise, pipeline-friendly, easier to tune thresholds while keeping display labels derived at render time |
-| Report card timing | Random drop Friday 12PM–Sunday 8PM (BeReal model) | Friday 4PM–Saturday 3PM ET window | Narrowed window for consistency; BeReal model preserved |
+| Scorecard timing | Random drop Friday 12PM–Sunday 8PM (BeReal model) | Friday 4PM–Saturday 3PM ET window | Narrowed window for consistency; BeReal model preserved |
 | Donation data attribution | `openSecretsOrgId` | `fecCommitteeId` | Migration to FEC-native identifiers after OpenSecrets pivot |
 | Partisan attribution method | Committee-level party data | Schedule B disbursements by `candidate_party_affiliation` | Corporate SSF PACs have no party affiliation at committee level; per-disbursement attribution is accurate |
 | Entity verification status | Not in original spec | `verificationStatus: 'manual' \| 'pipeline' \| 'unverified'` | Needed to distinguish human-verified vs. script-verified vs. unreviewed entities |
@@ -49,7 +49,7 @@ This document tracks where the current implementation aligns with, deviates from
 | Feature | Spec | Status |
 |---|---|---|
 | Map POI tap → entity matching | Tap a business on the map, get instant donation data | ✅ Built, linked, and running — Android ready (onPoiClick); iOS module linked via `file:./modules/mapkit-search`; app installed on iPhone 16 Pro simulator; iOS tap path pending interactive smoke test |
-| Report card sharing | Shareable card image, social-ready | Not yet implemented |
+| Scorecard sharing | Shareable card image, social-ready | Not yet implemented |
 | Leaderboard / high scorers | Weekly top avoiders visible to community | Deferred — V2 |
 | People.json individual donor data | Executive/founder donation lookup (Musk, Bezos, Zuckerberg) | Deferred — V1.5 |
 | Donation infrastructure | Phase 3 — ActBlue or equivalent, quarterly payouts | Not started — Phase 3 |
@@ -72,7 +72,7 @@ This document tracks where the current implementation aligns with, deviates from
 | App Store name | "F*ck Fascists" vs. clean public name | Not resolved — App Store submission will force this |
 | Uber entity | No PAC found, name-based match failing | `fecCommitteeId: ""` — needs manual research |
 | ENTITY_LIST_UPDATE_URL | Placeholder `[org]` | Replace when CDN / data repo is live |
-| Extension + report card unification | QR code bridge or keep separate forever | Deferred to V2 but needs a final answer |
+| Extension + scorecard unification | QR code bridge or keep separate forever | Deferred to V2 but needs a final answer |
 
 ---
 

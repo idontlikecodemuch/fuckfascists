@@ -1,5 +1,5 @@
 /**
- * Deterministic drop time computation for the weekly report card.
+ * Deterministic drop time computation for the weekly scorecard.
  *
  * Every install computes the same drop time for any given ISO week — no network
  * calls, no server dependency, no random state. The algorithm is versioned
@@ -19,8 +19,8 @@
  */
 
 import {
-  REPORT_CARD_WINDOW_START_HOUR,
-  REPORT_CARD_WINDOW_END_HOUR,
+  SCORECARD_WINDOW_START_HOUR,
+  SCORECARD_WINDOW_END_HOUR,
 } from '../../config/constants';
 
 // EST = UTC-5 hardcoded for MVP. See TODO above for EDT handling.
@@ -29,10 +29,10 @@ const ET_OFFSET_HOURS = 5;
 // Window size in hours: Friday 4pm ET through Saturday 3pm ET = 23 hours.
 // 24 - 16 (hours remaining on Friday) + 15 (hours on Saturday up to 3pm) = 23.
 const WINDOW_HOURS =
-  24 - REPORT_CARD_WINDOW_START_HOUR + REPORT_CARD_WINDOW_END_HOUR;
+  24 - SCORECARD_WINDOW_START_HOUR + SCORECARD_WINDOW_END_HOUR;
 
 // UTC hour at which the drop window opens (Friday 4pm ET = Friday 21:00 UTC at EST).
-const WINDOW_START_UTC_HOUR = REPORT_CARD_WINDOW_START_HOUR + ET_OFFSET_HOURS;
+const WINDOW_START_UTC_HOUR = SCORECARD_WINDOW_START_HOUR + ET_OFFSET_HOURS;
 
 // ── Hash ──────────────────────────────────────────────────────────────────────
 

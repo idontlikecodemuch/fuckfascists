@@ -6,7 +6,7 @@
 import type { ScanResult } from '../Map/types';
 import type { DonationSummary, Entity } from '../../core/models';
 import type { PlatformItem, Platform } from '../Platforms/types';
-import type { ReportCardData } from '../ReportCard/types';
+import type { ScorecardData } from '../Scorecard/types';
 import type { FaqEntry, LinkEntry, TransparencyPoint, AboutContent } from '../Info/types';
 
 // ── Donation summaries ──────────────────────────────────────────────────────
@@ -120,23 +120,27 @@ const youtubePlatform: Platform = { id: 'youtube', name: 'YouTube', parentCompan
 const whatsappPlatform: Platform = { id: 'whatsapp', name: 'WhatsApp', parentCompany: 'Meta Platforms', ceoName: 'Mark Zuckerberg', categoryTags: ['messaging'] };
 
 export const partialPlatformItems: PlatformItem[] = [
-  { platform: twitterPlatform, weeklyCount: 5 },
-  { platform: instagramPlatform, weeklyCount: 3 },
-  { platform: amazonPlatform, weeklyCount: 1 },
-  { platform: facebookPlatform, weeklyCount: 0 },
-  { platform: youtubePlatform, weeklyCount: 0 },
-  { platform: whatsappPlatform, weeklyCount: 0 },
+  { platform: twitterPlatform, weeklyCount: 5, dayCounts: new Map([['2026-03-09', 2], ['2026-03-10', 1], ['2026-03-11', 2]]) },
+  { platform: instagramPlatform, weeklyCount: 3, dayCounts: new Map([['2026-03-09', 1], ['2026-03-11', 2]]) },
+  { platform: amazonPlatform, weeklyCount: 1, dayCounts: new Map([['2026-03-10', 1]]) },
+  { platform: facebookPlatform, weeklyCount: 0, dayCounts: new Map() },
+  { platform: youtubePlatform, weeklyCount: 0, dayCounts: new Map() },
+  { platform: whatsappPlatform, weeklyCount: 0, dayCounts: new Map() },
 ];
 
-export const fullPlatformItems: PlatformItem[] = partialPlatformItems.map((i) => ({ ...i, weeklyCount: Math.max(i.weeklyCount, 1) }));
-export const emptyPlatformItems: PlatformItem[] = partialPlatformItems.map((i) => ({ ...i, weeklyCount: 0 }));
+export const fullPlatformItems: PlatformItem[] = partialPlatformItems.map((i) => ({
+  ...i,
+  weeklyCount: Math.max(i.weeklyCount, 1),
+  dayCounts: i.weeklyCount > 0 ? i.dayCounts : new Map([['2026-03-09', 1]]),
+}));
+export const emptyPlatformItems: PlatformItem[] = partialPlatformItems.map((i) => ({ ...i, weeklyCount: 0, dayCounts: new Map() }));
 
-export const avoidedPlatformRow: PlatformItem = { platform: twitterPlatform, weeklyCount: 5 };
-export const notAvoidedPlatformRow: PlatformItem = { platform: instagramPlatform, weeklyCount: 0 };
+export const avoidedPlatformRow: PlatformItem = { platform: twitterPlatform, weeklyCount: 5, dayCounts: new Map([['2026-03-09', 2], ['2026-03-10', 1], ['2026-03-11', 2]]) };
+export const notAvoidedPlatformRow: PlatformItem = { platform: instagramPlatform, weeklyCount: 0, dayCounts: new Map() };
 
-// ── Report card data ────────────────────────────────────────────────────────
+// ── Scorecard data ─────────────────────────────────────────────────────────
 
-export const reportWithData: ReportCardData = {
+export const scorecardWithData: ScorecardData = {
   weekOf: '2026-03-09',
   entityAvoids: [
     { entityId: 'walmart', name: 'Walmart Inc', count: 3, ceoName: 'Doug McMillon' },
@@ -149,7 +153,7 @@ export const reportWithData: ReportCardData = {
   isPreview: false,
 };
 
-export const reportEmpty: ReportCardData = {
+export const scorecardEmpty: ScorecardData = {
   weekOf: '2026-03-09',
   entityAvoids: [],
   platformAvoids: [],
@@ -158,7 +162,7 @@ export const reportEmpty: ReportCardData = {
   isPreview: false,
 };
 
-export const reportPreview: ReportCardData = { ...reportWithData, isPreview: true };
+export const scorecardPreview: ScorecardData = { ...scorecardWithData, isPreview: true };
 
 // ── Info content ────────────────────────────────────────────────────────────
 

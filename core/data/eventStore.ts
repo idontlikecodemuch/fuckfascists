@@ -20,7 +20,7 @@ export async function recordEntityAvoid(
   await adapter.upsertEntityAvoid({ entityId, date, count: 1 });
 }
 
-/** Returns all stored entity avoid events — used for report card generation. */
+/** Returns all stored entity avoid events — used for scorecard generation. */
 export async function getAllEntityAvoids(
   adapter: StorageAdapter
 ): Promise<EntityAvoidEvent[]> {
@@ -42,6 +42,21 @@ export async function recordPlatformAvoid(
 ): Promise<void> {
   const date = getLocalDateString();
   // count: 1 is a placeholder — the DB owns the increment atomically (ON CONFLICT DO UPDATE SET count = count + 1).
+  await adapter.upsertPlatformAvoid({ platformId, date, count: 1 });
+}
+
+/**
+ * Records an affirmative avoidance of a tracked platform for a specific date.
+ * Used by the day-circle UI to log avoids for past days in the current week.
+ *
+ * IMPORTANT: Only avoidance is recorded. There is no "support" path.
+ * Date is YYYY-MM-DD — no time component or location stored.
+ */
+export async function recordPlatformAvoidForDate(
+  adapter: StorageAdapter,
+  platformId: string,
+  date: string
+): Promise<void> {
   await adapter.upsertPlatformAvoid({ platformId, date, count: 1 });
 }
 
@@ -82,7 +97,7 @@ export async function getAllPlatformWeeklyTotals(
 
 /**
  * Returns all platform avoid events for a given week.
- * Used by report card generation. Defaults to current week.
+ * Used by scorecard generation. Defaults to current week.
  */
 export async function getPlatformAvoidsForWeek(
   adapter: StorageAdapter,

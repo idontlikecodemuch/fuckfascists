@@ -1,23 +1,23 @@
 import React, { forwardRef } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
-import type { ReportCardData } from '../types';
+import type { ScorecardData } from '../types';
 import { PreviewStamp } from './PreviewStamp';
 import { formatWeekRange, formatCount } from '../utils/formatters';
-import { reportCopy } from '../../../copy/report';
+import { scorecardCopy } from '../../../copy/scorecard';
 import { sharedCopy } from '../../../copy/shared';
 
-interface ReportCardViewProps {
-  data: ReportCardData;
+interface ScorecardViewProps {
+  data: ScorecardData;
 }
 
 /**
- * The visual report card — rendered as a React Native View so it can be
+ * The visual scorecard — rendered as a React Native View so it can be
  * captured by react-native-view-shot for sharing as an image.
  * Exposed via forwardRef so the parent can pass a ref for view capture.
  *
  * 8-bit design: dark header, pixel borders, monospace throughout, hard edges.
  */
-export const ReportCardView = forwardRef<View, ReportCardViewProps>(
+export const ScorecardView = forwardRef<View, ScorecardViewProps>(
   ({ data }, ref) => {
     const { weekOf, entityAvoids, platformAvoids, totalEntityAvoids, isPreview } = data;
 
@@ -28,7 +28,7 @@ export const ReportCardView = forwardRef<View, ReportCardViewProps>(
         {/* ── Header ── */}
         <View style={styles.header}>
           <Text style={styles.title} allowFontScaling={false}>{sharedCopy.appName}</Text>
-          <Text style={styles.subtitle} allowFontScaling={false}>{reportCopy.subtitle}</Text>
+          <Text style={styles.subtitle} allowFontScaling={false}>{scorecardCopy.subtitle}</Text>
           <Text style={styles.weekRange} allowFontScaling={false}>
             {formatWeekRange(weekOf)}
           </Text>
@@ -36,13 +36,13 @@ export const ReportCardView = forwardRef<View, ReportCardViewProps>(
 
         {/* ── Score ── */}
         <View style={styles.scoreRow}>
-          <ScoreTile value={totalEntityAvoids} label={reportCopy.entityTile} />
-          <ScoreTile value={data.totalPlatformAvoids} label={reportCopy.platformTile} />
+          <ScoreTile value={totalEntityAvoids} label={scorecardCopy.entityTile} />
+          <ScoreTile value={data.totalPlatformAvoids} label={scorecardCopy.platformTile} />
         </View>
 
         {/* ── Business avoids ── */}
         {entityAvoids.length > 0 && (
-          <Section title={reportCopy.entitySection}>
+          <Section title={scorecardCopy.entitySection}>
             {entityAvoids.slice(0, 5).map((e) => (
               <View key={e.entityId} style={styles.row}>
                 <Text style={styles.rowName} numberOfLines={1} allowFontScaling={false}>
@@ -58,7 +58,7 @@ export const ReportCardView = forwardRef<View, ReportCardViewProps>(
 
         {/* ── Platform avoids ── */}
         {platformAvoids.length > 0 && (
-          <Section title={reportCopy.platformSection}>
+          <Section title={scorecardCopy.platformSection}>
             <Text style={styles.platformList} allowFontScaling={false}>
               {platformAvoids.join(' · ')}
             </Text>
@@ -69,7 +69,7 @@ export const ReportCardView = forwardRef<View, ReportCardViewProps>(
         {totalEntityAvoids === 0 && platformAvoids.length === 0 && (
           <View style={styles.emptyState}>
             <Text style={styles.emptyText} allowFontScaling={false}>
-              {reportCopy.emptyState}
+              {scorecardCopy.emptyState}
             </Text>
           </View>
         )}
@@ -77,7 +77,7 @@ export const ReportCardView = forwardRef<View, ReportCardViewProps>(
         {/* ── Footer ── */}
         <View style={styles.footer}>
           <Text style={styles.footerText} allowFontScaling={false}>
-            {reportCopy.footer}
+            {scorecardCopy.footer}
           </Text>
         </View>
       </View>
@@ -85,7 +85,7 @@ export const ReportCardView = forwardRef<View, ReportCardViewProps>(
   }
 );
 
-ReportCardView.displayName = 'ReportCardView';
+ScorecardView.displayName = 'ScorecardView';
 
 // ── Sub-components ────────────────────────────────────────────────────────────
 

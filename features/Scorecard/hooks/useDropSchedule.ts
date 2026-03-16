@@ -42,7 +42,7 @@ async function scheduleDropNotification(dropAt: number): Promise<void> {
 
   await Notifications.scheduleNotificationAsync({
     content: {
-      title: 'Your Report Card Is Ready',
+      title: 'Your Scorecard Is Ready',
       body: 'Tap to see how you did this week.',
       sound: true,
     },

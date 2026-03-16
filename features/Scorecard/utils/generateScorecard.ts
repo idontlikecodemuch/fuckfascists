@@ -3,20 +3,20 @@ import { getDisplayFigure } from '../../../core/models';
 import type { StorageAdapter } from '../../../core/data';
 import { getAllEntityAvoids, getPlatformAvoidsForWeek } from '../../../core/data';
 import type { Platform } from '../../Platforms/types';
-import type { EntityAvoidSummary, ReportCardData } from '../types';
+import type { EntityAvoidSummary, ScorecardData } from '../types';
 
 /**
  * Aggregates the week's avoidance events from local storage into a
- * ReportCardData object ready for display or sharing.
+ * ScorecardData object ready for display or sharing.
  * Pure data transform — no network calls, no side effects.
  */
-export async function generateReportCard(
+export async function generateScorecard(
   adapter: StorageAdapter,
   entities: Entity[],
   platforms: Platform[],
   weekOf: string,
   isPreview: boolean
-): Promise<ReportCardData> {
+): Promise<ScorecardData> {
   const weekEnd = nextMondayOf(weekOf);
 
   // ── Entity avoids ──────────────────────────────────────────────────────────

@@ -13,7 +13,7 @@ import { useOnboarding } from './features/Onboarding/hooks/useOnboarding';
 import { OnboardingNavigator } from './features/Onboarding/OnboardingNavigator';
 import { MapScreen } from './features/Map/MapScreen';
 import { PlatformsScreen } from './features/Platforms/PlatformsScreen';
-import { ReportCardScreen } from './features/ReportCard/ReportCardScreen';
+import { ScorecardScreen } from './features/Scorecard/ScorecardScreen';
 import { InfoScreen } from './features/Info/InfoScreen';
 import { TRACKED_PLATFORMS } from './features/Platforms/data/platformList';
 import { SqliteAdapter } from './app/storage/SqliteAdapter';
@@ -160,7 +160,7 @@ export default function App() {
         return <PlatformsScreen adapter={adapter} />;
       case 'report':
         return (
-          <ReportCardScreen
+          <ScorecardScreen
             adapter={adapter}
             entities={entities}
             platforms={TRACKED_PLATFORMS}

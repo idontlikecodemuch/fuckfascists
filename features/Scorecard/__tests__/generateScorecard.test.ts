@@ -1,4 +1,4 @@
-import { generateReportCard, nextMondayOf } from '../utils/generateReportCard';
+import { generateScorecard, nextMondayOf } from '../utils/generateScorecard';
 import type { StorageAdapter } from '../../../core/data';
 import type { Entity } from '../../../core/models';
 import type { Platform } from '../../Platforms/types';
@@ -51,11 +51,11 @@ describe('nextMondayOf', () => {
   });
 });
 
-// ─── generateReportCard ───────────────────────────────────────────────────────
+// ─── generateScorecard ───────────────────────────────────────────────────────
 
-describe('generateReportCard', () => {
+describe('generateScorecard', () => {
   it('returns zero totals when there are no events', async () => {
-    const card = await generateReportCard(makeAdapter(), [], [], WEEK, false);
+    const card = await generateScorecard(makeAdapter(), [], [], WEEK, false);
     expect(card.totalEntityAvoids).toBe(0);
     expect(card.totalPlatformAvoids).toBe(0);
     expect(card.entityAvoids).toHaveLength(0);
@@ -67,7 +67,7 @@ describe('generateReportCard', () => {
       { entityId: 'walmart', date: '2024-03-11', count: 2 },
       { entityId: 'walmart', date: '2024-03-13', count: 1 },
     ];
-    const card = await generateReportCard(makeAdapter(events), [walmart], [], WEEK, false);
+    const card = await generateScorecard(makeAdapter(events), [walmart], [], WEEK, false);
     expect(card.entityAvoids).toHaveLength(1);
     expect(card.entityAvoids[0].count).toBe(3); // summed
     expect(card.entityAvoids[0].name).toBe('Walmart Inc');
@@ -79,7 +79,7 @@ describe('generateReportCard', () => {
       { entityId: 'walmart', date: '2024-03-10', count: 5 }, // Sunday before
       { entityId: 'walmart', date: '2024-03-18', count: 5 }, // following Monday
     ];
-    const card = await generateReportCard(makeAdapter(events), [walmart], [], WEEK, false);
+    const card = await generateScorecard(makeAdapter(events), [walmart], [], WEEK, false);
     expect(card.entityAvoids).toHaveLength(0);
   });
 
@@ -88,20 +88,20 @@ describe('generateReportCard', () => {
       { entityId: 'walmart', date: '2024-03-11', count: 1 },
       { entityId: 'target',  date: '2024-03-11', count: 5 },
     ];
-    const card = await generateReportCard(makeAdapter(events), [walmart, target], [], WEEK, false);
+    const card = await generateScorecard(makeAdapter(events), [walmart, target], [], WEEK, false);
     expect(card.entityAvoids[0].entityId).toBe('target');
     expect(card.entityAvoids[1].entityId).toBe('walmart');
   });
 
   it('falls back to entityId as name when entity is not in the list', async () => {
     const events: EntityAvoidEvent[] = [{ entityId: 'unknown-org', date: '2024-03-11', count: 1 }];
-    const card = await generateReportCard(makeAdapter(events), [], [], WEEK, false);
+    const card = await generateScorecard(makeAdapter(events), [], [], WEEK, false);
     expect(card.entityAvoids[0].name).toBe('unknown-org');
   });
 
   it('maps platform avoids to display names', async () => {
     const platformEvents: PlatformAvoidEvent[] = [{ platformId: 'twitter', date: '2024-03-11', count: 1 }];
-    const card = await generateReportCard(makeAdapter([], platformEvents), [], [twitter], WEEK, false);
+    const card = await generateScorecard(makeAdapter([], platformEvents), [], [twitter], WEEK, false);
     expect(card.platformAvoids).toEqual(['Twitter / X']);
     expect(card.totalPlatformAvoids).toBe(1);
   });
@@ -111,19 +111,19 @@ describe('generateReportCard', () => {
       { platformId: 'twitter', date: '2024-03-11', count: 3 },
       { platformId: 'twitter', date: '2024-03-12', count: 2 },
     ];
-    const card = await generateReportCard(makeAdapter([], platformEvents), [], [twitter], WEEK, false);
+    const card = await generateScorecard(makeAdapter([], platformEvents), [], [twitter], WEEK, false);
     expect(card.platformAvoids).toEqual(['Twitter / X']);
     expect(card.totalPlatformAvoids).toBe(5);
   });
 
   it('falls back to platformId when platform is not in the list', async () => {
     const platformEvents: PlatformAvoidEvent[] = [{ platformId: 'unknown-platform', date: '2024-03-11', count: 1 }];
-    const card = await generateReportCard(makeAdapter([], platformEvents), [], [], WEEK, false);
+    const card = await generateScorecard(makeAdapter([], platformEvents), [], [], WEEK, false);
     expect(card.platformAvoids).toEqual(['unknown-platform']);
   });
 
   it('passes weekOf and isPreview through to the result', async () => {
-    const card = await generateReportCard(makeAdapter(), [], [], WEEK, true);
+    const card = await generateScorecard(makeAdapter(), [], [], WEEK, true);
     expect(card.weekOf).toBe(WEEK);
     expect(card.isPreview).toBe(true);
   });
@@ -133,7 +133,7 @@ describe('generateReportCard', () => {
       { entityId: 'walmart', date: '2024-03-11', count: 3 },
       { entityId: 'target',  date: '2024-03-12', count: 2 },
     ];
-    const card = await generateReportCard(makeAdapter(events), [walmart, target], [], WEEK, false);
+    const card = await generateScorecard(makeAdapter(events), [walmart, target], [], WEEK, false);
     expect(card.totalEntityAvoids).toBe(5);
   });
 });

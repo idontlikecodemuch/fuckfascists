@@ -13,8 +13,10 @@ export interface Platform {
 /**
  * A platform row as rendered in the platform list for a given week.
  * weeklyCount is the sum of all daily avoid counts for the current week.
+ * dayCounts maps YYYY-MM-DD → avoid count for day-circle rendering.
  */
 export interface PlatformItem {
   platform: Platform;
   weeklyCount: number;
+  dayCounts: Map<string, number>;
 }

@@ -14,9 +14,9 @@ const FEATURES = [
     desc:  onboardCopy.mapDesc,
   },
   {
-    icon: onboardCopy.surveyIcon,
-    title: onboardCopy.surveyTitle,
-    desc:  onboardCopy.surveyDesc,
+    icon: onboardCopy.platformsIcon,
+    title: onboardCopy.platformsTitle,
+    desc:  onboardCopy.platformsDesc,
   },
   {
     icon: onboardCopy.reportIcon,

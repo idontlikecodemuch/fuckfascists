@@ -10,7 +10,7 @@ interface AvoidButtonProps {
 /**
  * Primary action button on the business card.
  *
- * Renders once as "AVOIDED" then flips to a confirmed state after the
+ * Renders as "AVOID" then flips to "✓ AVOIDED" confirmed state after the
  * user taps it — the tap is the affirmative avoidance action.
  *
  * Minimum tap target: 44×44pt (Apple HIG / WCAG 2.5.5).

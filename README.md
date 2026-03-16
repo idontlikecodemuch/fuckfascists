@@ -17,7 +17,7 @@ When you're near a business, the app checks whether that company has donated to 
 The extension quietly watches for flagged retailers as you shop online. A subtle indicator lets you know before you click "Buy." Same data, same transparency, same choice — yours to make.
 
 **Every week:**
-A shareable report card drops for everyone at the same time — like BeReal, but for your spending habits. It shows your avoidances for the week, your cumulative impact, and how you're doing on platform avoidance (social media, streaming, delivery apps). You can share it or keep it to yourself.
+A shareable scorecard drops for everyone at the same time — like BeReal, but for your spending habits. It shows your avoidances for the week, your cumulative impact, and how you're doing on platform avoidance (social media, streaming, delivery apps). You can share it or keep it to yourself.
 
 ---
 
@@ -87,7 +87,7 @@ If that's you, welcome.
 
 ## Status
 
-Currently in active development. MVP targets: map screen, browser extension, weekly report card, and curated entity list of 400+ major US corporations with verified FEC data.
+Currently in active development. MVP targets: map screen, browser extension, weekly scorecard, and curated entity list of 400+ major US corporations with verified FEC data.
 
 Contributions, issues, and data corrections welcome.
 

@@ -1,11 +1,11 @@
-export const reportCopy = {
-  title: "REPORT CARD",
-  subtitle: "WEEKLY REPORT",
-  shareHeader: "F*CK FASCISTS \u2014 Weekly Report",
+export const scorecardCopy = {
+  title: "SCORECARD",
+  subtitle: "WEEKLY SCORECARD",
+  shareHeader: "F*CK FASCISTS \u2014 Weekly Scorecard",
   shareBtn: "SHARE",
-  shareLabel: "Share your report card",
+  shareLabel: "Share your scorecard",
   previewBtn: "PREVIEW",
-  previewLabel: "Preview your report card early",
+  previewLabel: "Preview your scorecard early",
   previewStamp: "PREVIEW",
   previewA11y: "Preview \u2014 this is not the official weekly drop",
   dropTime: (time: string) => `DROPS ${time}`,
@@ -16,6 +16,6 @@ export const reportCopy = {
   platformTile: "PLATFORMS\nAVOIDED",
   entitySection: "BUSINESSES",
   platformSection: "PLATFORMS",
-  emptyState: "YOUR MONEY IS STILL\nFUNDING FASCISTS.\n\nHit the Map. Hit the Survey.\nMake them feel it.",
+  emptyState: "YOUR MONEY IS STILL\nFUNDING FASCISTS.\n\nHit the Map. Hit Track.\nMake them feel it.",
   footer: "fuckfascists.org \u00b7 DATA: FEC.GOV",
 } as const;

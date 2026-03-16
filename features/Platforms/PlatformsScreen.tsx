@@ -1,12 +1,15 @@
-import React from 'react';
-import { View, Text, FlatList, StyleSheet, SafeAreaView, ActivityIndicator } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import { View, Text, FlatList, Pressable, StyleSheet, SafeAreaView, ActivityIndicator } from 'react-native';
 import type { StorageAdapter } from '../../core/data';
 import { TRACKED_PLATFORMS } from './data/platformList';
 import { usePlatformAvoidance } from './hooks/usePlatformAvoidance';
+import { usePlatformRoster } from './hooks/usePlatformRoster';
 import { PlatformRow } from './components/PlatformRow';
+import { PlatformSetupScreen } from './components/PlatformSetupScreen';
 import { formatWeekOf } from './utils/platformHelpers';
 import type { PlatformItem } from './types';
 import { platformsCopy } from '../../copy/platforms';
+import { useNudgeNotification } from './hooks/useNudgeNotification';
 
 interface PlatformsScreenProps {
   adapter: StorageAdapter;
@@ -15,20 +18,67 @@ interface PlatformsScreenProps {
 /**
  * Platform avoidance tracker.
  *
- * Users record each time they avoided a tracked digital platform.
- * Each tap immediately records a PlatformAvoidEvent (date-only, no location)
- * and increments the daily count. The weekly tally resets on Monday.
+ * On first use, shows a setup screen for the user to select which platforms
+ * to track. After setup, shows the main platform list filtered to the user's
+ * roster. An EDIT button in the header reopens the setup screen.
  */
 export function PlatformsScreen({ adapter }: PlatformsScreenProps) {
-  const { weekOf, items, totalAvoids, loading, avoid } = usePlatformAvoidance(adapter, TRACKED_PLATFORMS);
+  const { selectedIds, saveSelection } = usePlatformRoster();
+  const [editing, setEditing] = useState(false);
+
+  // Schedule Thursday evening nudge notification (silently skips if permission denied)
+  useNudgeNotification();
+
+  // Filter platforms to the user's roster
+  const activePlatforms = useMemo(() => {
+    if (!selectedIds) return TRACKED_PLATFORMS;
+    const idSet = new Set(selectedIds);
+    return TRACKED_PLATFORMS.filter((p) => idSet.has(p.id));
+  }, [selectedIds]);
+
+  const { weekOf, items, totalAvoids, loading, avoid, avoidForDate } =
+    usePlatformAvoidance(adapter, activePlatforms);
+
+  // Loading roster from SecureStore
+  if (selectedIds === null) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <ActivityIndicator style={styles.loader} color="#CC0000" accessibilityLabel={platformsCopy.loading} />
+      </SafeAreaView>
+    );
+  }
+
+  // First-time setup or editing
+  if (selectedIds === undefined || editing) {
+    return (
+      <PlatformSetupScreen
+        platforms={TRACKED_PLATFORMS}
+        initialSelection={editing && selectedIds ? selectedIds : undefined}
+        onDone={async (ids) => {
+          await saveSelection(ids);
+          setEditing(false);
+        }}
+      />
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.title} accessibilityRole="header" allowFontScaling>
-          {platformsCopy.title}
-        </Text>
+        <View style={styles.headerTop}>
+          <Text style={styles.title} accessibilityRole="header" allowFontScaling>
+            {platformsCopy.title}
+          </Text>
+          <Pressable
+            onPress={() => setEditing(true)}
+            style={styles.editBtn}
+            accessibilityRole="button"
+            accessibilityLabel={platformsCopy.editLabel}
+          >
+            <Text style={styles.editText} allowFontScaling>{platformsCopy.editBtn}</Text>
+          </Pressable>
+        </View>
         <Text style={styles.weekLabel} allowFontScaling>
           {platformsCopy.weekLabel(formatWeekOf(weekOf))}
         </Text>
@@ -48,7 +98,12 @@ export function PlatformsScreen({ adapter }: PlatformsScreenProps) {
           data={items}
           keyExtractor={(item) => item.platform.id}
           renderItem={({ item }) => (
-            <PlatformRow item={item} onAvoid={() => avoid(item.platform.id)} />
+            <PlatformRow
+              item={item}
+              weekOf={weekOf}
+              onAvoid={() => avoid(item.platform.id)}
+              onAvoidDate={(date) => avoidForDate(item.platform.id, date)}
+            />
           )}
           contentContainerStyle={styles.list}
           accessibilityRole="list"
@@ -67,7 +122,10 @@ const MONO  = 'monospace' as const;
 const styles = StyleSheet.create({
   container:  { flex: 1, backgroundColor: WHITE },
   header:     { backgroundColor: BLACK, padding: 16, borderBottomWidth: 4, borderColor: '#CC0000' },
+  headerTop:  { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   title:      { fontFamily: MONO, fontSize: 20, fontWeight: 'bold', color: WHITE, letterSpacing: 3 },
+  editBtn:    { minWidth: 44, minHeight: 44, borderWidth: 2, borderColor: AMBER, paddingHorizontal: 10, alignItems: 'center', justifyContent: 'center' },
+  editText:   { fontFamily: MONO, fontSize: 11, fontWeight: 'bold', color: AMBER, letterSpacing: 1 },
   weekLabel:  { fontFamily: MONO, fontSize: 13, color: '#CCC', marginTop: 2 },
   score:      { fontFamily: MONO, fontSize: 13, color: AMBER, marginTop: 4 },
   loader:     { flex: 1, justifyContent: 'center' },

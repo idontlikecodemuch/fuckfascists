@@ -4,20 +4,20 @@ import type { Entity } from '../../core/models';
 import type { StorageAdapter } from '../../core/data';
 import type { Platform } from '../Platforms/types';
 import { useDropSchedule } from './hooks/useDropSchedule';
-import { useReportCard } from './hooks/useReportCard';
-import { ReportCardView } from './components/ReportCardView';
+import { useScorecard } from './hooks/useScorecard';
+import { ScorecardView } from './components/ScorecardView';
 import { formatDropTime, formatWeekRange } from './utils/formatters';
-import { reportCopy } from '../../copy/report';
+import { scorecardCopy } from '../../copy/scorecard';
 import { sharedCopy } from '../../copy/shared';
 
-interface ReportCardScreenProps {
+interface ScorecardScreenProps {
   adapter: StorageAdapter;
   entities: Entity[];
   platforms: Platform[];
 }
 
 /**
- * Report Card screen — the weekly synchronized reveal.
+ * Scorecard screen — the weekly synchronized reveal.
  *
  * States:
  *  1. Loading drop schedule → spinner
@@ -25,7 +25,7 @@ interface ReportCardScreenProps {
  *  3. Drop is pending → show countdown + PREVIEW button
  *  4. User tapped PREVIEW → show card with PREVIEW stamp
  */
-export function ReportCardScreen({ adapter, entities, platforms }: ReportCardScreenProps) {
+export function ScorecardScreen({ adapter, entities, platforms }: ScorecardScreenProps) {
   const cardRef = useRef<View>(null);
   const [showPreview, setShowPreview] = useState(false);
 
@@ -33,7 +33,7 @@ export function ReportCardScreen({ adapter, entities, platforms }: ReportCardScr
   const { schedule, hasDropped } = useDropSchedule();
   const isPreview = !hasDropped || showPreview;
 
-  const { data, loading: cardLoading } = useReportCard(
+  const { data, loading: cardLoading } = useScorecard(
     adapter,
     entities,
     platforms,
@@ -44,13 +44,13 @@ export function ReportCardScreen({ adapter, entities, platforms }: ReportCardScr
   const handleShare = useCallback(async () => {
     if (!data) return;
     const lines = [
-      reportCopy.shareHeader,
+      scorecardCopy.shareHeader,
       formatWeekRange(data.weekOf),
       ``,
-      reportCopy.entityCount(data.totalEntityAvoids),
-      reportCopy.platformCount(data.totalPlatformAvoids),
+      scorecardCopy.entityCount(data.totalEntityAvoids),
+      scorecardCopy.platformCount(data.totalPlatformAvoids),
       data.entityAvoids.length > 0
-        ? reportCopy.topEntities(data.entityAvoids.slice(0, 3).map((e) => e.name).join(', '))
+        ? scorecardCopy.topEntities(data.entityAvoids.slice(0, 3).map((e) => e.name).join(', '))
         : '',
       ``,
       sharedCopy.siteUrl,
@@ -65,11 +65,11 @@ export function ReportCardScreen({ adapter, entities, platforms }: ReportCardScr
         {/* ── Header bar ── */}
         <View style={styles.topBar}>
           <Text style={styles.topBarTitle} accessibilityRole="header" allowFontScaling>
-            {reportCopy.title}
+            {scorecardCopy.title}
           </Text>
           {!hasDropped && (
             <Text style={styles.dropTime} allowFontScaling>
-              {reportCopy.dropTime(formatDropTime(schedule.dropAt).toUpperCase())}
+              {scorecardCopy.dropTime(formatDropTime(schedule.dropAt).toUpperCase())}
             </Text>
           )}
         </View>
@@ -79,7 +79,7 @@ export function ReportCardScreen({ adapter, entities, platforms }: ReportCardScr
           <ActivityIndicator style={styles.cardLoader} color="#CC0000" />
         ) : data ? (
           <View style={styles.cardWrapper}>
-            <ReportCardView ref={cardRef} data={data} />
+            <ScorecardView ref={cardRef} data={data} />
           </View>
         ) : null}
 
@@ -90,9 +90,9 @@ export function ReportCardScreen({ adapter, entities, platforms }: ReportCardScr
               style={styles.button}
               onPress={handleShare}
               accessibilityRole="button"
-              accessibilityLabel={reportCopy.shareLabel}
+              accessibilityLabel={scorecardCopy.shareLabel}
             >
-              <Text style={styles.buttonText} allowFontScaling>{reportCopy.shareBtn}</Text>
+              <Text style={styles.buttonText} allowFontScaling>{scorecardCopy.shareBtn}</Text>
             </Pressable>
           )}
 
@@ -101,10 +101,10 @@ export function ReportCardScreen({ adapter, entities, platforms }: ReportCardScr
               style={[styles.button, styles.buttonSecondary]}
               onPress={() => setShowPreview(true)}
               accessibilityRole="button"
-              accessibilityLabel={reportCopy.previewLabel}
+              accessibilityLabel={scorecardCopy.previewLabel}
             >
               <Text style={[styles.buttonText, styles.buttonTextSecondary]} allowFontScaling>
-                {reportCopy.previewBtn}
+                {scorecardCopy.previewBtn}
               </Text>
             </Pressable>
           )}

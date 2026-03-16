@@ -5,7 +5,7 @@
  *  1. Query the active tab ID.
  *  2. Ask the service worker for the current flag (GET_CURRENT_FLAG).
  *  3. Render the appropriate state: clean, flagged, or already-avoided.
- *  4. Handle AVOIDED and SNOOZE button clicks.
+ *  4. Handle AVOID and SNOOZE button clicks.
  *  5. Fetch and render weekly stats footer.
  *
  * No browsing history is accessed here. The popup only reads state

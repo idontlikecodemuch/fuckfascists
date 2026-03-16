@@ -1,8 +1,8 @@
 /**
- * Aggregated display data for one week's report card.
+ * Aggregated display data for one week's scorecard.
  * All fields are derived from local storage — no server-side data.
  */
-export interface ReportCardData {
+export interface ScorecardData {
   weekOf: string;                      // YYYY-MM-DD Monday
   entityAvoids: EntityAvoidSummary[];  // sorted by count desc
   platformAvoids: string[];            // display names of avoided platforms

@@ -15,6 +15,7 @@ export { fetchEntityList, parseEntityList } from './entityList';
 export {
   recordEntityAvoid,
   recordPlatformAvoid,
+  recordPlatformAvoidForDate,
   getAllEntityAvoids,
   getPlatformWeeklyTotal,
   getAllPlatformWeeklyTotals,
