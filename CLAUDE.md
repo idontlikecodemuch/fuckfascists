@@ -157,14 +157,14 @@ export const CONFIDENCE_THRESHOLD_MEDIUM = 0.60;
 // OpenFEC API base URL — primary data source
 export const FEC_API_BASE_URL = 'https://api.open.fec.gov/v1';
 
-// Curated entity list update URL — [org] placeholder; update before v1.0 launch
-export const ENTITY_LIST_UPDATE_URL = 'https://raw.githubusercontent.com/[org]/fuckfascists-data/main/entities.json';
+// Curated entity list update URL
+export const ENTITY_LIST_UPDATE_URL = 'https://raw.githubusercontent.com/idontlikecodemuch/fckfascists-data/main/entities.json';
 
 // Drop schedule is computed deterministically on-device — no CDN fetch needed.
 // See core/dropSchedule/computeDropTime.ts. V2: optional server override — see Known Limitations.
 
 // Info / FAQ / transparency content — editable in the data repo without an app release
-export const INFO_CONTENT_URL = 'https://raw.githubusercontent.com/[org]/fuckfascists-data/main/info.json';
+export const INFO_CONTENT_URL = 'https://raw.githubusercontent.com/idontlikecodemuch/fckfascists-data/main/info.json';
 
 // Map POI tap search — dynamic radius computed from visible region span.
 // Default fallback when region is unavailable; min/max clamps for the dynamic calculation.

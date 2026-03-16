@@ -300,15 +300,11 @@ app launch (or service worker init)
 | Drop schedule | inferred from current week | `DROP_SCHEDULE_URL` |
 | Info content | `features/Info/data/content.ts` | `INFO_CONTENT_URL` |
 
-**⚠️ These three URLs in `config/constants.ts` contain `[org]` placeholders.**
-Replace with the actual GitHub org before any user-facing build:
+URLs in `config/constants.ts` point to the data repo at `idontlikecodemuch/fckfascists-data`:
 
 ```typescript
-// BEFORE (placeholder)
-export const ENTITY_LIST_UPDATE_URL = 'https://raw.githubusercontent.com/[org]/fuckfascists-data/main/entities.json';
-
-// AFTER (real)
-export const ENTITY_LIST_UPDATE_URL = 'https://raw.githubusercontent.com/your-org/fuckfascists-data/main/entities.json';
+export const ENTITY_LIST_UPDATE_URL = 'https://raw.githubusercontent.com/idontlikecodemuch/fckfascists-data/main/entities.json';
+export const INFO_CONTENT_URL = 'https://raw.githubusercontent.com/idontlikecodemuch/fckfascists-data/main/info.json';
 ```
 
 ---
@@ -623,8 +619,8 @@ later, preserve the existing onboarding gate and explicit screen dependencies.
 
 These items are **incomplete or placeholder** in the current codebase:
 
-- [ ] **Replace `[org]` placeholders** in `config/constants.ts` — three URLs
-      need the real GitHub org name before any user-facing build.
+- [x] **Replace `[org]` placeholders** in `config/constants.ts` — done,
+      URLs now point to `idontlikecodemuch/fckfascists-data`.
 - [ ] **Add extension FEC API key UX** — `service-worker.ts` reads optional
       `fec_api_key` from `chrome.storage.local`, but there is no options UI or
       install-time prompt yet for users to set or change it.

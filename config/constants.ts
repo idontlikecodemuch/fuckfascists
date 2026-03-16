@@ -18,14 +18,14 @@ export const CONFIDENCE_THRESHOLD_MEDIUM = 0.60;
 export const FEC_API_BASE_URL = 'https://api.open.fec.gov/v1';
 
 // Curated entity list update URL
-export const ENTITY_LIST_UPDATE_URL = 'https://raw.githubusercontent.com/[org]/fuckfascists-data/main/entities.json';
+export const ENTITY_LIST_UPDATE_URL = 'https://raw.githubusercontent.com/idontlikecodemuch/fckfascists-data/main/entities.json';
 
 // Drop schedule is computed deterministically on-device.
 // See core/dropSchedule/computeDropTime.ts.
 // V2: Optional server override for schedule changes — see CLAUDE.md "V2 Server Ping" section.
 
 // Info / FAQ / transparency content — editable in the data repo without an app release
-export const INFO_CONTENT_URL = 'https://raw.githubusercontent.com/[org]/fuckfascists-data/main/info.json';
+export const INFO_CONTENT_URL = 'https://raw.githubusercontent.com/idontlikecodemuch/fckfascists-data/main/info.json';
 
 // Map POI tap search
 // Default radius passed to MKLocalPointsOfInterestRequest on iOS.

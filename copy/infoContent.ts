@@ -20,7 +20,7 @@ export const BUNDLED_INFO_CONTENT: InfoContent = {
     description:
       'Look up businesses. See who they fund. Decide where to spend.',
     organization: 'Open-source nonprofit project. See the repo for governance details.',
-    sourceCodeUrl: 'https://github.com/[org]/fuckfascists',
+    sourceCodeUrl: 'https://github.com/idontlikecodemuch/fuckfascists',
   },
 
   transparency: [
@@ -164,10 +164,10 @@ export const BUNDLED_INFO_CONTENT: InfoContent = {
 
   links: [
     { id: 'fec',          label: 'FEC.gov (campaign finance data)', url: 'https://www.fec.gov',                                   category: 'source' },
-    { id: 'source-code',  label: 'Source code (GitHub)',      url: 'https://github.com/[org]/fuckfascists',                   category: 'community' },
-    { id: 'data-repo',    label: 'Entity list (GitHub)',      url: 'https://github.com/[org]/fuckfascists-data',              category: 'community' },
-    { id: 'issues',       label: 'Report a bug or correction', url: 'https://github.com/[org]/fuckfascists/issues',           category: 'community' },
-    { id: 'privacy',      label: 'Privacy policy',            url: 'https://github.com/[org]/fuckfascists/blob/main/PRIVACY.md', category: 'legal' },
+    { id: 'source-code',  label: 'Source code (GitHub)',      url: 'https://github.com/idontlikecodemuch/fuckfascists',                   category: 'community' },
+    { id: 'data-repo',    label: 'Entity list (GitHub)',      url: 'https://github.com/idontlikecodemuch/fckfascists-data',              category: 'community' },
+    { id: 'issues',       label: 'Report a bug or correction', url: 'https://github.com/idontlikecodemuch/fuckfascists/issues',           category: 'community' },
+    { id: 'privacy',      label: 'Privacy policy',            url: 'https://github.com/idontlikecodemuch/fuckfascists/blob/main/PRIVACY.md', category: 'legal' },
   ],
 };
 

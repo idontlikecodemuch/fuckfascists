@@ -72,7 +72,7 @@ This document tracks where the current implementation aligns with, deviates from
 | Map POI tap scope | Full pipeline match vs. curated list only for V1 | ✅ **Resolved** — full pipeline match (alias first, FEC fuzzy fallback) |
 | App Store name | "F*ck Fascists" vs. clean public name | Not resolved — App Store submission will force this |
 | Uber entity | No PAC found, name-based match failing | `fecCommitteeId: ""` — needs manual research |
-| ENTITY_LIST_UPDATE_URL | Placeholder `[org]` | Replace when CDN / data repo is live |
+| ENTITY_LIST_UPDATE_URL | Data repo URL | ✅ **Resolved** — `idontlikecodemuch/fckfascists-data` |
 | Extension + scorecard unification | QR code bridge or keep separate forever | Deferred to V2 but needs a final answer |
 
 ---

@@ -12,6 +12,32 @@ This document is updated continuously. New instances should read this first — 
 
 ## Last 5 Sessions (most recent first)
 
+### Session: March 16, 2026 (follow-up 4)
+**Focus:** Replace [org] placeholder URLs, data repo seed files
+
+**Completed:**
+- **Replaced all `[org]` placeholder URLs** across 6 files with real GitHub org (`idontlikecodemuch`):
+  - `config/constants.ts` — `ENTITY_LIST_UPDATE_URL` and `INFO_CONTENT_URL` → `idontlikecodemuch/fckfascists-data`
+  - `copy/infoContent.ts` — 5 URLs (source code, data repo, issues, privacy)
+  - `CLAUDE.md` — 2 URL examples in configurable variables
+  - `ARCHITECTURE.md` — replaced warning block, checked off pre-launch checklist item
+  - `docs/PROGRESS.md` — marked URL as resolved
+  - `docs/SPEC_VS_CURRENT.md` — marked URL as resolved
+- **Created `data-repo-seed/`** — seed files for the `fckfascists-data` GitHub repo:
+  - `entities.json` (686K) — copied from `assets/data/entities.json` (448 entities, 161 with verified FEC data)
+  - `info.json` (6.1K) — generated from `copy/infoContent.ts` (about, transparency, FAQ, links)
+  - `README.md` (3.2K) — documents files, schema, fetch behavior, contributing guidelines
+
+**Files modified:**
+- `config/constants.ts`, `copy/infoContent.ts`, `CLAUDE.md`, `ARCHITECTURE.md`, `docs/PROGRESS.md`, `docs/SPEC_VS_CURRENT.md`
+
+**Files created:**
+- `data-repo-seed/entities.json`, `data-repo-seed/info.json`, `data-repo-seed/README.md`
+
+**Build:** tsc clean.
+
+---
+
 ### Session: March 16, 2026 (follow-up 3)
 **Focus:** Full component migration to design tokens — 26 files
 
@@ -710,7 +736,7 @@ The Swift source now lives authoritatively at `modules/mapkit-search/ios/MapKitS
 | 3 entities pending retry (sherwin-williams, baker-hughes, chick-fil-a) | Run plain fetch:donations | 🟡 Nice to have |
 | people.json individual donor data | Not started | 🟠 V1.5 |
 | Scorecard sharing / social export | Not built | 🟠 V2 |
-| ENTITY_LIST_UPDATE_URL | Placeholder [org] | 🟠 Pre-launch |
+| ENTITY_LIST_UPDATE_URL | ✅ Resolved — `idontlikecodemuch/fckfascists-data` | ✅ Done |
 
 ---
 
