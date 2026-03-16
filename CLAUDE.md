@@ -112,7 +112,8 @@ API keys and credentials must **only ever be read from environment variables**. 
 │   ├── survey.ts                    ← Survey feature copy
 │   ├── report.ts                    ← Report Card feature copy
 │   ├── onboard.ts                   ← Onboarding feature copy
-│   └── info.ts                      ← Info/FAQ feature copy
+│   ├── info.ts                      ← Info UI chrome (section headers, labels, icons)
+│   └── infoContent.ts               ← Info editorial content (bundled default for fetch-and-fallback)
 ├── config/
 │   └── constants.ts                 ← all configurable variables (see below)
 ├── scripts/
@@ -165,7 +166,7 @@ export const INFO_CONTENT_URL = 'https://raw.githubusercontent.com/[org]/fuckfas
 export const POI_SEARCH_RADIUS_METERS = 50;
 export const POI_SEARCH_RADIUS_MIN_METERS = 15;
 export const POI_SEARCH_RADIUS_MAX_METERS = 200;
-export const TAP_CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes
+export const TAP_CACHE_TTL_MS = 60 * 1000; // 60 seconds
 export const TAP_DEBOUNCE_MS = 500;
 
 // Controls whether the public figure / CEO name is shown in specific UI contexts.
@@ -361,7 +362,7 @@ These apply to every file, every PR, every AI-generated change.
 
 All user-facing strings live in `copy/` (mobile) or `extension/copy.ts` (extension). Components import from these files. Never hardcode a user-facing string in a component.
 
-- **copy/ structure:** shared.ts, map.ts, survey.ts, report.ts, onboard.ts, info.ts
+- **copy/ structure:** shared.ts, map.ts, survey.ts, report.ts, onboard.ts, info.ts, infoContent.ts
 - **Extension:** extension/copy.ts (separate — vanilla JS cannot import from RN copy files)
 - **Naming:** two-level max (area.element). No `a11y` prefix — use `Label` or `Hint` suffix only when paired with a visible string. Abbreviate: onboarding→onboard, reportCard→report.
 - **Dynamic strings** are arrow functions: `heading: (n: number) => \`${n} MATCHES\``
@@ -370,6 +371,8 @@ All user-facing strings live in `copy/` (mobile) or `extension/copy.ts` (extensi
 - **Copy review changes:** edit copy files only. No component changes needed for pure copy updates.
 - **CC prompt rule:** any prompt that creates or modifies a component with user-facing text must include: "All user-facing strings must be imported from the corresponding file in copy/. Do not hardcode any user-facing string in a component."
 - **Audit:** run `bash scripts/audit-copy.sh` at the end of any session that creates or modifies UI components. Fix any hits before committing.
+- **Info editorial content** (FAQ answers, about text, methodology) lives in `copy/infoContent.ts` as a bundled default. `useInfoContent` hook fetches from `INFO_CONTENT_URL` in the background and replaces bundled content if a valid update is available. Fetch failure silently falls back to bundled. This is the same pattern as entities.json: bundled first, fetch if available, stale bundled as fallback.
+- **Info UI chrome** (section headers, labels, icons) stays in `copy/info.ts` — bundled only, updated via app releases.
 
 ---
 
@@ -484,6 +487,7 @@ After writing any file, scan it once for deprecated APIs, `.then()` chains, `var
 - **react-native-maps — `onRegionChangeComplete` render loop** — storing the map region in `useState` and passing the setter directly to `onRegionChangeComplete` creates an infinite re-render loop: region change → setState → re-render MapView → region change → ... The app freezes. **Fix:** Store region in a `useRef` instead of `useState` — the region is only consumed by zoom callbacks (never rendered directly), so it doesn't need to trigger re-renders. `MapScreen.tsx` uses `regionRef` with a stable `handleRegionChange` callback. Do not revert this to `useState`.
 - **react-native-maps — map snap-back on location update** — a `useEffect` depending on `location.coords` that unconditionally calls `animateToRegion` will snap the map back to the user's position every time coords get a new object reference (e.g. location button press, tab re-mount). **Fix:** Use a `hasInitiallyCentered` ref guard so the auto-center fires exactly once on mount. For the location button, use a separate `pendingRecenter` ref flag + effect pattern: set the flag before calling `requestLocation`, then the effect only animates when the flag is true. Do not combine initial centering and explicit re-centering into a single unguarded effect.
 - **POI search radius tuning** — `computeSearchRadius()` uses 2% of the visible map span (not 5%). At 5%, the auto-center zoom (`latitudeDelta: 0.02`) produced a 111m radius — over a city block. At 2% with min clamp 15m, street-level taps resolve to individual buildings. If cross-street matches recur, reduce the multiplier further or add a hard cap below 50m.
+- **POI tap cache key** — `tapCellKey()` in `useTapSearch.ts` rounds to 4 decimal places (~11m grid, not 3 dp / ~111m) and includes the computed search radius. This ensures (a) taps on opposite sides of a street get different cache entries, and (b) zooming in/out at the same location triggers a fresh MKLocalPointsOfInterestRequest instead of returning stale results from a wider/narrower search. TTL is 60s (double-tap dedup only, not exploration persistence).
 - **V2 cleanup — extension confidence CSS classes** — `popup.ts` uses `'HIGH'`/`'MEDIUM'` string class names derived from numeric scores. In V2, rename to BEM format (`confidence-badge--high`/`--medium`).
 
 ---

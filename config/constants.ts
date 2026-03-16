@@ -36,7 +36,9 @@ export const POI_SEARCH_RADIUS_METERS = 50;
 export const POI_SEARCH_RADIUS_MIN_METERS = 15;
 export const POI_SEARCH_RADIUS_MAX_METERS = 200;
 // How long a tap cell's POI name list is cached in-memory before re-querying.
-export const TAP_CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes
+// Short TTL — only prevents duplicate API calls from accidental double-taps,
+// not meant to persist results across active map exploration.
+export const TAP_CACHE_TTL_MS = 60 * 1000; // 60 seconds
 // Leading-edge debounce for iOS onPress tap search. First tap fires immediately;
 // subsequent taps within this window are dropped. Prevents rapid taps on different
 // map areas from stacking MKLocalPointsOfInterestRequest calls.

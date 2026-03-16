@@ -33,14 +33,15 @@ interface CellCacheEntry {
 }
 
 /**
- * Rounds to 3 decimal places (~111m grid) for tap cell cache keys.
- * Finer than toAreaHash (~1.1km) — ensures nearby taps reuse cached POI names
- * without pulling in results from an entire city block away.
+ * Rounds to 4 decimal places (~11m grid) for tap cell cache keys.
+ * Matches the tightened POI search radius (15m min) so taps on opposite
+ * sides of a street get different cache entries.
+ * Includes radius so a zoom change at the same location triggers a fresh search.
  * The key is a plain string, never stored as coordinates.
  */
-function tapCellKey(lat: number, lng: number): string {
-  const r = (n: number) => Math.round(n * 1000) / 1000;
-  return `${r(lat)},${r(lng)}`;
+function tapCellKey(lat: number, lng: number, radius: number): string {
+  const r = (n: number) => Math.round(n * 10000) / 10000;
+  return `${r(lat)},${r(lng)},${Math.round(radius)}`;
 }
 
 // When a tap produces 2+ matches, MapScreen shows a MatchChooser overlay.
@@ -138,7 +139,8 @@ export function useTapSearch(deps: MatchingDeps, areaHash: string, regionRef?: R
       setTapLoadingCoord(coordinate);
 
       try {
-        const cellKey = tapCellKey(coordinate.latitude, coordinate.longitude);
+        const radius = computeSearchRadius(regionRef?.current ?? null);
+        const cellKey = tapCellKey(coordinate.latitude, coordinate.longitude, radius);
         const cached = cellCache.current.get(cellKey);
 
         if (cached && cached.expiresAt > Date.now()) {
@@ -146,8 +148,6 @@ export function useTapSearch(deps: MatchingDeps, areaHash: string, regionRef?: R
           await processTapNames(cached.names, coordinate);
           return;
         }
-
-        const radius = computeSearchRadius(regionRef?.current ?? null);
         console.log('[useTapSearch] searchNearby radius:', Math.round(radius), 'm');
         const names = await MapKitSearch.searchNearby(
           coordinate.latitude,

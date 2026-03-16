@@ -23,15 +23,21 @@ import type { StorageAdapter } from './core/data';
 import type { Entity } from './core/models';
 import bundledEntitiesRaw from './assets/data/entities.json';
 
+// Dev-only catalog — conditional import keeps it out of production bundles.
+const CatalogScreen = __DEV__
+  ? require('./features/Dev/CatalogScreen').CatalogScreen
+  : () => null;
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type Tab = 'map' | 'survey' | 'report' | 'info';
+type Tab = 'map' | 'survey' | 'report' | 'info' | 'dev';
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'map',    label: 'MAP'    },
-  { id: 'survey', label: 'WEEKLY' },
-  { id: 'report', label: 'CARD'   },
+  { id: 'survey', label: 'TRACK' },
+  { id: 'report', label: 'SCORECARD' },
   { id: 'info',   label: 'INFO'   },
+  ...(__DEV__ ? [{ id: 'dev' as const, label: 'DEV' }] : []),
 ];
 
 // ─── Tab bar ─────────────────────────────────────────────────────────────────
@@ -41,6 +47,7 @@ const TAB_ICONS: Record<Tab, string> = {
   survey: '[ ✓ ]',
   report: '[ ★ ]',
   info:   '[ ? ]',
+  dev:    '[ # ]',
 };
 
 function TabBar({ activeTab, onSelect }: { activeTab: Tab; onSelect: (t: Tab) => void }) {
@@ -161,6 +168,8 @@ export default function App() {
         );
       case 'info':
         return <InfoScreen />;
+      case 'dev':
+        return <CatalogScreen />;
     }
   };
 

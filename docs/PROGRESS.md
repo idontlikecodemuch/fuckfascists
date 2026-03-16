@@ -12,6 +12,26 @@ This document is updated continuously. New instances should read this first — 
 
 ## Last 5 Sessions (most recent first)
 
+### Session: March 15, 2026 (follow-up 4)
+**Focus:** Copy rewrite — tone, clarity, and tab renames
+
+**Completed:**
+- **copy/onboard.ts** — 12 changes: new tagline ("The fascists won't f*ck themselves."), shorter body, "PRESS START" button, "No tracking" note, renamed survey→TRACK and report→SCORECARD, mapDesc AVOIDED→AVOID, shorter notifWhy, onDeviceDesc removes "v1" language, new `welcomeKicker` field
+- **copy/map.ts** — 4 changes: avoidLabel AVOIDED→AVOID, rewritten noMatch/lookupFailed messages referencing FEC filings, searchHint updated to "FEC donation record"
+- **copy/infoContent.ts** — 10 editorial changes: new about tagline/description matching onboarding, fec-filings body uses 'See full FEC record' instead of "VIEW FEC FILING", confidence section rewritten around MATCHED badge (not HIGH/MEDIUM), no-server removes "Not in v1." prefix, storage body uses "tapped Avoid" and "platform avoid events", trust FAQ rewritten, medium-confidence FAQ renamed to matched-badge with new q/a, extension-sync FAQ removes "in v1" and "planned for v2" language, two new FAQs added (internet connectivity, edit platform list)
+- **App.tsx** — tab bar labels: WEEKLY→TRACK, CARD→SCORECARD. Final set: MAP · TRACK · SCORECARD · INFO
+
+**Files changed:**
+- `copy/onboard.ts` — 12 field updates + 1 new field
+- `copy/map.ts` — 4 field updates
+- `copy/infoContent.ts` — 10 editorial changes + 2 new FAQ entries
+- `App.tsx` — 2 tab label renames
+- `docs/PROGRESS.md` — this session
+
+**No component logic changes.** All changes are copy file edits and tab label renames.
+
+---
+
 ### Session: March 15, 2026 (follow-up 3)
 **Focus:** Copy externalization — extract all hardcoded strings into centralized copy files
 

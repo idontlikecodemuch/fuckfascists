@@ -8,15 +8,20 @@ import { fetchInfoContent } from '../data/fetchContent';
  * (no loading spinner) then silently upgrading to the CDN version if available.
  *
  * This means the screen is always usable offline from first launch.
+ * Uses the cancelled-flag pattern for useEffect cleanup.
  */
 export function useInfoContent(): InfoContent {
   const [content, setContent] = useState<InfoContent>(BUNDLED_CONTENT);
 
   useEffect(() => {
     let cancelled = false;
-    fetchInfoContent(BUNDLED_CONTENT).then((fetched) => {
+
+    const load = async () => {
+      const fetched = await fetchInfoContent(BUNDLED_CONTENT);
       if (!cancelled) setContent(fetched);
-    });
+    };
+
+    load();
     return () => { cancelled = true; };
   }, []);
 

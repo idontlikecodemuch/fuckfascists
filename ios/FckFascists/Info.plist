@@ -48,6 +48,10 @@
     <string>Allow $(PRODUCT_NAME) to access your Face ID biometric data.</string>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>F*ck Fascists uses your location to find nearby businesses and check their political donation records.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Access your photo library to save visual catalog screenshots.</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>Save visual catalog screenshots to your photo library.</string>
     <key>UILaunchStoryboardName</key>
     <string>SplashScreen</string>
     <key>UIRequiredDeviceCapabilities</key>
