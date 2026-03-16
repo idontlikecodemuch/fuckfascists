@@ -4,6 +4,7 @@ import { Marker } from 'react-native-maps';
 import { CONFIDENCE_THRESHOLD_HIGH } from '../../../config/constants';
 import { sharedCopy } from '../../../copy/shared';
 import { mapCopy } from '../../../copy/map';
+import { theme } from '../../../design/tokens';
 
 interface FlagMarkerProps {
   coordinate: { latitude: number; longitude: number };
@@ -13,10 +14,10 @@ interface FlagMarkerProps {
   onPress: () => void;
 }
 
-// 8-bit palette: red = HIGH confidence flagged, amber = MEDIUM, green = avoided
-const COLOR_HIGH    = { bg: '#CC0000', border: '#7A0000' };
-const COLOR_MEDIUM  = { bg: '#CC7A00', border: '#7A4800' };
-const COLOR_AVOIDED = { bg: '#228B22', border: '#0D3D16' };
+// Token-based palette: red = HIGH confidence flagged, amber = MEDIUM, green = avoided
+const COLOR_HIGH    = { bg: theme.colors.dangerRed, border: theme.colors.dangerRed };
+const COLOR_MEDIUM  = { bg: theme.colors.rewardYellow, border: theme.colors.rewardYellow };
+const COLOR_AVOIDED = { bg: theme.colors.successGreen, border: theme.colors.successGreen };
 
 /**
  * Pixel art–style map marker for a flagged (or avoided) business.
@@ -61,12 +62,12 @@ const styles = StyleSheet.create({
   flag: {
     width: 32,
     height: 32,
-    borderWidth: 3,
+    borderWidth: theme.borders.standard.width,
     alignItems: 'center',
     justifyContent: 'center',
   },
   icon: {
-    color: '#FFFFFF',
+    color: theme.colors.textPrimary,
     fontSize: 16,
     fontWeight: 'bold',
   },

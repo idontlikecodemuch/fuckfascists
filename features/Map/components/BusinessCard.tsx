@@ -7,6 +7,7 @@ import { formatDonationAmount, formatCycleLabel, formatActiveCycles, getDisplayF
 import { SHOW_FIGURE_NAME_IN_CARD, CONFIDENCE_THRESHOLD_HIGH } from '../../../config/constants';
 import { sharedCopy } from '../../../copy/shared';
 import { mapCopy } from '../../../copy/map';
+import { theme } from '../../../design/tokens';
 // Figure name is controlled by SHOW_FIGURE_NAME_IN_CARD (default: false).
 // See CLAUDE.md §7 for the informational vs. confrontational screen split.
 
@@ -182,46 +183,38 @@ export function BusinessCard({ result, onAvoid, avoidDisabled = false, onDismiss
 
 // ── Styles ────────────────────────────────────────────────────────────────────
 
-const BLACK  = '#1A1A1A';
-const WHITE  = '#F5F5F0';
-const RED    = '#CC0000';
-const MUTED  = '#888888';
-const AMBER  = '#CC7A00';
-const BLUE   = '#0044AA';
-const MONO   = 'monospace' as const;
-
 const styles = StyleSheet.create({
-  card:           { backgroundColor: WHITE, borderColor: BLACK, borderWidth: 4, padding: 16, margin: 8 },
-  header:         { marginBottom: 12 },
-  titleRow:       { flexDirection: 'row', alignItems: 'center', marginBottom: 4 },
-  name:           { flex: 1, fontFamily: MONO, fontSize: 18, fontWeight: 'bold', color: BLACK, marginRight: 8 },
-  figureName:        { fontFamily: MONO, fontSize: 12, color: MUTED, marginTop: 2 },
-  parentAttribution: { fontFamily: MONO, fontSize: 11, color: MUTED, marginTop: 1 },
-  disclaimer:     { fontFamily: MONO, fontSize: 11, color: AMBER, marginTop: 4 },
-  badge:          { paddingHorizontal: 6, paddingVertical: 2, borderWidth: 2 },
-  badgeVerified:  { backgroundColor: '#2E7D32', borderColor: '#1B5E20' },
-  badgeMatched:   { backgroundColor: AMBER, borderColor: '#7A4800' },
-  badgeText:      { fontFamily: MONO, fontSize: 10, color: WHITE, fontWeight: 'bold' },
+  card:           { backgroundColor: theme.colors.surface1, borderColor: theme.colors.frameBlue, borderWidth: theme.borders.hero.width, padding: theme.space.lg, margin: theme.space.sm },
+  header:         { marginBottom: theme.space.md },
+  titleRow:       { flexDirection: 'row', alignItems: 'center', marginBottom: theme.space.xs },
+  name:           { flex: 1, ...theme.type.displayM, color: theme.colors.textPrimary, marginRight: theme.space.sm },
+  figureName:        { ...theme.type.bodyS, color: theme.colors.textSecondary, marginTop: 2 },
+  parentAttribution: { ...theme.type.caption, color: theme.colors.textSecondary, marginTop: 1 },
+  disclaimer:     { ...theme.type.caption, color: theme.colors.rewardYellow, marginTop: theme.space.xs },
+  badge:          { paddingHorizontal: 6, paddingVertical: 2, borderWidth: theme.borders.standard.width },
+  badgeVerified:  { backgroundColor: theme.colors.successGreen, borderColor: theme.colors.successGreen },
+  badgeMatched:   { backgroundColor: theme.colors.rewardYellow, borderColor: theme.colors.rewardYellow },
+  badgeText:      { ...theme.type.caption, fontSize: 10, color: theme.colors.bgVoid, fontWeight: 'bold' },
 
   // Recent cycle — visually prominent
-  recentSection:     { borderTopWidth: 2, borderColor: BLACK, paddingTop: 10, marginBottom: 6 },
-  recentAmount:      { fontFamily: MONO, fontSize: 18, fontWeight: 'bold', color: BLACK },
-  recentGOP:         { color: RED },
-  recentDEM:         { color: BLUE },
-  recentCycleLabel:  { fontFamily: MONO, fontSize: 12, color: MUTED, marginTop: 2 },
+  recentSection:     { borderTopWidth: theme.borders.standard.width, borderColor: theme.colors.frameBlue, paddingTop: 10, marginBottom: 6 },
+  recentAmount:      { ...theme.type.displayS, color: theme.colors.textPrimary },
+  recentGOP:         { color: theme.colors.dangerRed },
+  recentDEM:         { color: theme.colors.highlightBlue },
+  recentCycleLabel:  { ...theme.type.bodyS, color: theme.colors.textSecondary, marginTop: 2 },
 
   // Since 2016 totals — smaller, contextual
   totalsSection:  { marginBottom: 10 },
-  totalsRow:      { fontFamily: MONO, fontSize: 12, color: BLACK, marginBottom: 2 },
+  totalsRow:      { ...theme.type.bodyS, color: theme.colors.textPrimary, marginBottom: 2 },
 
-  unavailableSection: { borderTopWidth: 2, borderColor: BLACK, paddingTop: 10, marginBottom: 10 },
-  unavailableText:    { fontFamily: MONO, fontSize: 13, color: MUTED },
+  unavailableSection: { borderTopWidth: theme.borders.standard.width, borderColor: theme.colors.frameBlue, paddingTop: 10, marginBottom: 10 },
+  unavailableText:    { ...theme.type.bodyS, fontSize: 13, color: theme.colors.textSecondary },
 
-  pacDataLine:    { fontFamily: MONO, fontSize: 11, color: MUTED, marginBottom: 4 },
-  fecLinkRow:     { marginBottom: 12 },
-  fecLink:        { fontFamily: MONO, fontSize: 11, color: BLUE, textDecorationLine: 'underline' },
+  pacDataLine:    { ...theme.type.caption, color: theme.colors.textSecondary, marginBottom: theme.space.xs },
+  fecLinkRow:     { marginBottom: theme.space.md },
+  fecLink:        { ...theme.type.bodyS, color: theme.colors.highlightBlue, textDecorationLine: 'underline' },
 
-  actions:        { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  dismissButton:  { minHeight: 44, paddingVertical: 10, paddingHorizontal: 16, borderWidth: 3, borderColor: BLACK, backgroundColor: WHITE, alignItems: 'center', justifyContent: 'center' },
-  dismissLabel:   { fontFamily: MONO, fontSize: 13, color: BLACK, fontWeight: 'bold' },
+  actions:        { flexDirection: 'row', alignItems: 'center', gap: theme.space.md },
+  dismissButton:  { minHeight: theme.a11y.minTapTarget, paddingVertical: 10, paddingHorizontal: theme.space.lg, borderWidth: theme.borders.standard.width, borderColor: theme.colors.frameBlue, backgroundColor: theme.colors.surface2, alignItems: 'center', justifyContent: 'center' },
+  dismissLabel:   { ...theme.type.bodyS, fontSize: 13, color: theme.colors.textPrimary, fontWeight: 'bold' },
 });

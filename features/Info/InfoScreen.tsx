@@ -5,6 +5,7 @@ import { InfoSection } from './components/InfoSection';
 import { FaqItem } from './components/FaqItem';
 import { LinkRow } from './components/LinkRow';
 import { infoCopy } from '../../copy/info';
+import { theme } from '../../design/tokens';
 
 /**
  * Info screen — transparency, about, FAQ, and links.
@@ -70,22 +71,17 @@ export function InfoScreen() {
 
 // ── Styles ────────────────────────────────────────────────────────────────────
 
-const BLACK = '#1A1A1A';
-const WHITE = '#F5F5F0';
-const RED   = '#CC0000';
-const MONO  = 'monospace' as const;
-
 const styles = StyleSheet.create({
-  container:   { flex: 1, backgroundColor: WHITE },
-  scroll:      { paddingBottom: 40 },
-  pageHeader:  { backgroundColor: BLACK, padding: 16, borderBottomWidth: 4, borderColor: RED, flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between' },
-  pageTitle:   { fontFamily: MONO, fontSize: 20, fontWeight: 'bold', color: WHITE, letterSpacing: 3 },
-  pageVersion: { fontFamily: MONO, fontSize: 11, color: '#888' },
-  pad:         { padding: 16 },
-  tagline:     { fontFamily: MONO, fontSize: 16, fontWeight: 'bold', color: RED, marginBottom: 12, lineHeight: 22 },
-  body:        { fontFamily: MONO, fontSize: 13, color: '#333', lineHeight: 21, marginBottom: 10 },
-  org:         { fontFamily: MONO, fontSize: 11, color: '#888', fontStyle: 'italic' },
-  tPoint:      { padding: 16, borderBottomWidth: 1, borderColor: '#DDD' },
-  tTitle:      { fontFamily: MONO, fontSize: 12, fontWeight: 'bold', color: BLACK, marginBottom: 6, letterSpacing: 1 },
-  tBody:       { fontFamily: MONO, fontSize: 12, color: '#444', lineHeight: 20 },
+  container:   { flex: 1, backgroundColor: theme.colors.bgVoid },
+  scroll:      { paddingBottom: theme.space['4xl'] },
+  pageHeader:  { backgroundColor: theme.colors.bgNav, padding: theme.space.lg, borderBottomWidth: theme.borders.hero.width, borderColor: theme.colors.frameBlue, flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between' },
+  pageTitle:   { ...theme.type.displayM, color: theme.colors.textPrimary, letterSpacing: 3 },
+  pageVersion: { ...theme.type.caption, color: theme.colors.textSecondary },
+  pad:         { padding: theme.space.lg },
+  tagline:     { ...theme.type.uiLabel, color: theme.colors.rewardYellow, marginBottom: theme.space.md, lineHeight: 22 },
+  body:        { ...theme.type.bodyS, fontSize: 13, color: theme.colors.textSecondary, lineHeight: 21, marginBottom: 10 },
+  org:         { ...theme.type.caption, color: theme.colors.textSecondary, fontStyle: 'italic' },
+  tPoint:      { padding: theme.space.lg, borderBottomWidth: 1, borderColor: theme.colors.surface2 },
+  tTitle:      { ...theme.type.bodyS, fontWeight: 'bold', color: theme.colors.textPrimary, marginBottom: 6, letterSpacing: 1 },
+  tBody:       { ...theme.type.bodyS, color: theme.colors.textSecondary, lineHeight: 20 },
 });

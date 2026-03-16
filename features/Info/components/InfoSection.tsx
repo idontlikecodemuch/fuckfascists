@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { theme } from '../../../design/tokens';
 
 interface InfoSectionProps {
   title: string;
@@ -8,7 +9,7 @@ interface InfoSectionProps {
 
 /**
  * Titled section block used to group content on the Info screen.
- * Black header strip with the section title in red, body below.
+ * Dark header strip with the section title, body below.
  */
 export function InfoSection({ title, children }: InfoSectionProps) {
   return (
@@ -23,14 +24,9 @@ export function InfoSection({ title, children }: InfoSectionProps) {
   );
 }
 
-const BLACK = '#1A1A1A';
-const WHITE = '#F5F5F0';
-const RED   = '#CC0000';
-const MONO  = 'monospace' as const;
-
 const styles = StyleSheet.create({
-  section: { marginBottom: 4 },
-  header:  { backgroundColor: BLACK, paddingHorizontal: 16, paddingVertical: 10, borderLeftWidth: 4, borderColor: RED },
-  title:   { fontFamily: MONO, fontSize: 11, fontWeight: 'bold', color: WHITE, letterSpacing: 3 },
-  body:    { borderLeftWidth: 4, borderColor: '#EEE' },
+  section: { marginBottom: theme.space.xs },
+  header:  { backgroundColor: theme.colors.surface1, paddingHorizontal: theme.space.lg, paddingVertical: 10, borderLeftWidth: theme.borders.hero.width, borderColor: theme.colors.frameBlue },
+  title:   { ...theme.type.displayS, fontSize: 11, color: theme.colors.textPrimary, letterSpacing: 3 },
+  body:    { borderLeftWidth: theme.borders.hero.width, borderColor: theme.colors.surface2 },
 });

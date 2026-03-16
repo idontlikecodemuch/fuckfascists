@@ -4,6 +4,7 @@ import type { ScanResult } from '../types';
 import { CONFIDENCE_THRESHOLD_HIGH } from '../../../config/constants';
 import { sharedCopy } from '../../../copy/shared';
 import { mapCopy } from '../../../copy/map';
+import { theme } from '../../../design/tokens';
 
 interface MatchChooserProps {
   results: ScanResult[];
@@ -88,12 +89,7 @@ export function MatchChooser({ results, onSelect, onDismiss }: MatchChooserProps
   );
 }
 
-// ── Styles — matches BusinessCard 8-bit palette ──────────────────────────────
-
-const BLACK  = '#1A1A1A';
-const WHITE  = '#F5F5F0';
-const AMBER  = '#CC7A00';
-const MONO   = 'monospace' as const;
+// ── Styles ────────────────────────────────────────────────────────────────────
 
 const styles = StyleSheet.create({
   overlay: {
@@ -103,19 +99,17 @@ const styles = StyleSheet.create({
     right: 0,
   },
   card: {
-    backgroundColor: WHITE,
-    borderColor: BLACK,
-    borderWidth: 4,
-    padding: 16,
-    margin: 8,
+    backgroundColor: theme.colors.surface1,
+    borderColor: theme.colors.frameBlue,
+    borderWidth: theme.borders.hero.width,
+    padding: theme.space.lg,
+    margin: theme.space.sm,
     maxHeight: 300,
   },
   heading: {
-    fontFamily: MONO,
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: BLACK,
-    marginBottom: 8,
+    ...theme.type.displayS,
+    color: theme.colors.textPrimary,
+    marginBottom: theme.space.sm,
   },
   list: {
     flexGrow: 0,
@@ -124,57 +118,56 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 10,
-    paddingHorizontal: 8,
-    borderBottomWidth: 2,
-    borderColor: BLACK,
-    minHeight: 44,
+    paddingHorizontal: theme.space.sm,
+    borderBottomWidth: theme.borders.standard.width,
+    borderColor: theme.colors.frameBlue,
+    backgroundColor: theme.colors.surface2,
+    minHeight: theme.a11y.minTapTarget,
   },
   rowName: {
     flex: 1,
-    fontFamily: MONO,
-    fontSize: 15,
-    fontWeight: 'bold',
-    color: BLACK,
-    marginRight: 8,
+    ...theme.type.uiLabel,
+    color: theme.colors.textPrimary,
+    marginRight: theme.space.sm,
   },
   rowWarning: {
     fontSize: 14,
-    marginLeft: 4,
+    marginLeft: theme.space.xs,
   },
   tag: {
     paddingHorizontal: 6,
     paddingVertical: 2,
-    borderWidth: 2,
+    borderWidth: theme.borders.standard.width,
   },
   tagVerified: {
-    backgroundColor: '#2E7D32',
-    borderColor: '#1B5E20',
+    backgroundColor: theme.colors.successGreen,
+    borderColor: theme.colors.successGreen,
   },
   tagMatched: {
-    backgroundColor: AMBER,
-    borderColor: '#7A4800',
+    backgroundColor: theme.colors.rewardYellow,
+    borderColor: theme.colors.rewardYellow,
   },
   tagText: {
-    fontFamily: MONO,
+    ...theme.type.caption,
     fontSize: 10,
-    color: WHITE,
+    color: theme.colors.bgVoid,
     fontWeight: 'bold',
   },
   dismissButton: {
-    minHeight: 44,
+    minHeight: theme.a11y.minTapTarget,
     paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderWidth: 3,
-    borderColor: BLACK,
-    backgroundColor: WHITE,
+    paddingHorizontal: theme.space.lg,
+    borderWidth: theme.borders.standard.width,
+    borderColor: theme.colors.frameBlue,
+    backgroundColor: theme.colors.surface2,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 8,
+    marginTop: theme.space.sm,
   },
   dismissLabel: {
-    fontFamily: MONO,
+    ...theme.type.bodyS,
     fontSize: 13,
-    color: BLACK,
+    color: theme.colors.textPrimary,
     fontWeight: 'bold',
   },
 });

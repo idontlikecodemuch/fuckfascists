@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { OnboardingSlide } from '../components/OnboardingSlide';
 import { onboardCopy } from '../../../copy/onboard';
+import { theme } from '../../../design/tokens';
 
 interface WelcomeScreenProps {
   onNext: () => void;
@@ -31,15 +32,11 @@ export function WelcomeScreen({ onNext }: WelcomeScreenProps) {
   );
 }
 
-const BLACK = '#1A1A1A';
-const RED   = '#CC0000';
-const MONO  = 'monospace' as const;
-
 const styles = StyleSheet.create({
   content:  { alignItems: 'flex-start' },
-  appName:  { fontFamily: MONO, fontSize: 48, fontWeight: 'bold', color: RED, lineHeight: 52, marginBottom: 20 },
-  tagline:  { fontFamily: MONO, fontSize: 18, fontWeight: 'bold', color: BLACK, lineHeight: 28, marginBottom: 24 },
-  divider:  { width: 48, height: 4, backgroundColor: RED, marginBottom: 24 },
-  body:     { fontFamily: MONO, fontSize: 14, color: '#333', lineHeight: 22, marginBottom: 24 },
-  note:     { fontFamily: MONO, fontSize: 11, color: '#888', letterSpacing: 1 },
+  appName:  { fontFamily: theme.fonts.headline, fontSize: 48, color: theme.colors.dangerRed, lineHeight: 52, marginBottom: theme.space.xl },
+  tagline:  { ...theme.type.displayS, color: theme.colors.textPrimary, lineHeight: 28, marginBottom: theme.space['2xl'] },
+  divider:  { width: 48, height: 4, backgroundColor: theme.colors.dangerRed, marginBottom: theme.space['2xl'] },
+  body:     { ...theme.type.bodyM, color: theme.colors.textSecondary, lineHeight: 22, marginBottom: theme.space['2xl'] },
+  note:     { ...theme.type.caption, color: theme.colors.textSecondary, letterSpacing: 1 },
 });

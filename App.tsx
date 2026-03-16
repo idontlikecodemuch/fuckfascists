@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFonts } from 'expo-font';
+import { theme } from './design/tokens';
 import { useOnboarding } from './features/Onboarding/hooks/useOnboarding';
 import { OnboardingNavigator } from './features/Onboarding/OnboardingNavigator';
 import { MapScreen } from './features/Map/MapScreen';
@@ -132,7 +133,7 @@ export default function App() {
       <SafeAreaProvider>
         <View style={styles.splash}>
           <Text style={styles.splashTitle}>F*CK{'\n'}FASCISTS</Text>
-          <ActivityIndicator color="#CC7A00" style={styles.splashSpinner} />
+          <ActivityIndicator color={theme.colors.rewardYellow} style={styles.splashSpinner} />
         </View>
       </SafeAreaProvider>
     );
@@ -193,10 +194,6 @@ export default function App() {
 
 // ─── Styles ───────────────────────────────────────────────────────────────────
 
-const BLACK = '#1A1A1A';
-const AMBER = '#CC7A00';
-const MONO  = 'monospace' as const;
-
 const styles = StyleSheet.create<{
   splash:         ViewStyle;
   splashTitle:    TextStyle;
@@ -213,62 +210,60 @@ const styles = StyleSheet.create<{
 }>({
   splash: {
     flex: 1,
-    backgroundColor: BLACK,
+    backgroundColor: theme.colors.bgVoid,
     alignItems: 'center',
     justifyContent: 'center',
   },
   splashTitle: {
-    fontFamily: MONO,
+    ...theme.type.displayL,
     fontSize: 36,
-    fontWeight: 'bold',
-    color: '#CC0000',
-    textAlign: 'center',
     lineHeight: 42,
+    color: theme.colors.dangerRed,
+    textAlign: 'center',
     letterSpacing: 4,
   },
   splashSpinner: {
-    marginTop: 32,
+    marginTop: theme.space['3xl'],
   },
   root: {
     flex: 1,
-    backgroundColor: BLACK,
+    backgroundColor: theme.colors.bgVoid,
   },
   content: {
     flex: 1,
   },
   tabBar: {
     flexDirection: 'row',
-    backgroundColor: BLACK,
-    borderTopWidth: 3,
-    borderTopColor: AMBER,
-    paddingTop: 4,
+    backgroundColor: theme.colors.bgNav,
+    borderTopWidth: theme.borders.hero.width,
+    borderTopColor: theme.colors.frameBlue,
+    paddingTop: theme.space.xs,
   },
   tabItem: {
     flex: 1,
     alignItems: 'center',
-    paddingVertical: 8,
-    minHeight: 44,
+    paddingVertical: theme.space.sm,
+    minHeight: theme.a11y.minTapTarget,
     justifyContent: 'center',
   },
   tabItemActive: {
-    backgroundColor: '#2A2A2A',
+    backgroundColor: theme.colors.surface1,
   },
   tabIcon: {
-    fontFamily: MONO,
-    fontSize: 11,
-    color: '#555',
+    ...theme.type.caption,
+    color: theme.colors.textSecondary,
     marginBottom: 2,
   },
   tabIconActive: {
-    color: AMBER,
+    color: theme.colors.rewardYellow,
   },
   tabLabel: {
-    fontFamily: MONO,
+    ...theme.type.caption,
     fontSize: 9,
     letterSpacing: 1,
-    color: '#555',
+    color: theme.colors.textSecondary,
   },
   tabLabelActive: {
-    color: AMBER,
+    color: theme.colors.rewardYellow,
   },
 });

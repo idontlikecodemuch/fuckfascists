@@ -3,6 +3,7 @@ import { View, Text, Pressable, StyleSheet, SafeAreaView, ScrollView } from 'rea
 import { ProgressDots } from './ProgressDots';
 import { TOTAL_STEPS } from '../types';
 import { onboardCopy } from '../../../copy/onboard';
+import { theme } from '../../../design/tokens';
 
 interface OnboardingSlideProps {
   stepIndex: number;
@@ -16,7 +17,7 @@ interface OnboardingSlideProps {
 
 /**
  * Shared layout for all onboarding screens.
- * Pixel art shell: black top bar with title + progress dots, scrollable body,
+ * Dark shell: bgNav top bar with title + progress dots, scrollable body,
  * action buttons pinned to the bottom.
  */
 export function OnboardingSlide({
@@ -70,19 +71,14 @@ export function OnboardingSlide({
   );
 }
 
-const BLACK = '#1A1A1A';
-const WHITE = '#F5F5F0';
-const RED   = '#CC0000';
-const MONO  = 'monospace' as const;
-
 const styles = StyleSheet.create({
-  container:  { flex: 1, backgroundColor: WHITE },
-  header:     { backgroundColor: BLACK, padding: 16, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 4, borderColor: RED },
-  title:      { fontFamily: MONO, fontSize: 16, fontWeight: 'bold', color: WHITE, letterSpacing: 2, flex: 1, marginRight: 12 },
-  body:       { flexGrow: 1, padding: 24 },
-  actions:    { padding: 16, gap: 10, borderTopWidth: 2, borderColor: BLACK },
-  nextButton: { backgroundColor: RED, borderWidth: 3, borderColor: BLACK, minHeight: 44, alignItems: 'center', justifyContent: 'center', paddingVertical: 12 },
-  nextLabel:  { fontFamily: MONO, fontSize: 15, fontWeight: 'bold', color: WHITE, letterSpacing: 2 },
-  skipButton: { minHeight: 44, alignItems: 'center', justifyContent: 'center' },
-  skipLabel:  { fontFamily: MONO, fontSize: 12, color: '#888' },
+  container:  { flex: 1, backgroundColor: theme.colors.bgVoid },
+  header:     { backgroundColor: theme.colors.bgNav, padding: theme.space.lg, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: theme.borders.hero.width, borderColor: theme.colors.frameBlue },
+  title:      { ...theme.type.displayS, color: theme.colors.textPrimary, letterSpacing: 2, flex: 1, marginRight: theme.space.md },
+  body:       { flexGrow: 1, padding: theme.space['2xl'] },
+  actions:    { padding: theme.space.lg, gap: 10, borderTopWidth: theme.borders.standard.width, borderColor: theme.colors.frameBlue },
+  nextButton: { backgroundColor: theme.colors.dangerRed, borderWidth: theme.borders.standard.width, borderColor: theme.colors.frameBlue, minHeight: theme.a11y.minTapTarget, alignItems: 'center', justifyContent: 'center', paddingVertical: theme.space.md },
+  nextLabel:  { ...theme.type.uiLabel, fontSize: 15, color: theme.colors.textPrimary, letterSpacing: 2 },
+  skipButton: { minHeight: theme.a11y.minTapTarget, alignItems: 'center', justifyContent: 'center' },
+  skipLabel:  { ...theme.type.bodyS, color: theme.colors.textSecondary },
 });

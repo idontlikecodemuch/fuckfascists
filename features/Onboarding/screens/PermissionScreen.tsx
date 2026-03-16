@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { OnboardingSlide } from '../components/OnboardingSlide';
 import { onboardCopy } from '../../../copy/onboard';
+import { theme } from '../../../design/tokens';
 
 interface PermissionScreenProps {
   stepIndex: number;
@@ -66,16 +67,11 @@ export function PermissionScreen({
   );
 }
 
-const BLACK = '#1A1A1A';
-const WHITE = '#F5F5F0';
-const RED   = '#CC0000';
-const MONO  = 'monospace' as const;
-
 const styles = StyleSheet.create({
-  content:      { alignItems: 'center', paddingTop: 16 },
-  icon:         { fontFamily: MONO, fontSize: 36, fontWeight: 'bold', color: RED, marginBottom: 28, letterSpacing: 4, borderWidth: 3, borderColor: BLACK, paddingHorizontal: 16, paddingVertical: 10 },
-  why:          { fontFamily: MONO, fontSize: 15, color: '#333', lineHeight: 24, textAlign: 'center', marginBottom: 32 },
-  promiseBox:   { borderWidth: 3, borderColor: BLACK, padding: 16, backgroundColor: WHITE, width: '100%' },
-  promiseLabel: { fontFamily: MONO, fontSize: 10, fontWeight: 'bold', color: RED, letterSpacing: 2, marginBottom: 8 },
-  promise:      { fontFamily: MONO, fontSize: 12, color: '#555', lineHeight: 20 },
+  content:      { alignItems: 'center', paddingTop: theme.space.lg },
+  icon:         { fontFamily: theme.fonts.headline, fontSize: 36, color: theme.colors.rewardYellow, marginBottom: 28, letterSpacing: 4, borderWidth: theme.borders.hero.width, borderColor: theme.colors.frameBlue, paddingHorizontal: theme.space.lg, paddingVertical: 10 },
+  why:          { ...theme.type.uiLabel, fontSize: 15, color: theme.colors.textSecondary, lineHeight: 24, textAlign: 'center', marginBottom: theme.space['3xl'] },
+  promiseBox:   { borderWidth: theme.borders.hero.width, borderColor: theme.colors.frameBlue, padding: theme.space.lg, backgroundColor: theme.colors.surface1, width: '100%' },
+  promiseLabel: { ...theme.type.caption, fontWeight: 'bold', color: theme.colors.rewardYellow, letterSpacing: 2, marginBottom: theme.space.sm },
+  promise:      { ...theme.type.bodyS, color: theme.colors.textSecondary, lineHeight: 20 },
 });

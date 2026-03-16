@@ -10,6 +10,7 @@ import { formatWeekOf } from './utils/platformHelpers';
 import type { PlatformItem } from './types';
 import { platformsCopy } from '../../copy/platforms';
 import { useNudgeNotification } from './hooks/useNudgeNotification';
+import { theme } from '../../design/tokens';
 
 interface PlatformsScreenProps {
   adapter: StorageAdapter;
@@ -43,7 +44,7 @@ export function PlatformsScreen({ adapter }: PlatformsScreenProps) {
   if (selectedIds === null) {
     return (
       <SafeAreaView style={styles.container}>
-        <ActivityIndicator style={styles.loader} color="#CC0000" accessibilityLabel={platformsCopy.loading} />
+        <ActivityIndicator style={styles.loader} color={theme.colors.dangerRed} accessibilityLabel={platformsCopy.loading} />
       </SafeAreaView>
     );
   }
@@ -90,7 +91,7 @@ export function PlatformsScreen({ adapter }: PlatformsScreenProps) {
       {loading ? (
         <ActivityIndicator
           style={styles.loader}
-          color="#CC0000"
+          color={theme.colors.dangerRed}
           accessibilityLabel={platformsCopy.loading}
         />
       ) : (
@@ -114,20 +115,15 @@ export function PlatformsScreen({ adapter }: PlatformsScreenProps) {
   );
 }
 
-const BLACK = '#1A1A1A';
-const WHITE = '#F5F5F0';
-const AMBER = '#CC7A00';
-const MONO  = 'monospace' as const;
-
 const styles = StyleSheet.create({
-  container:  { flex: 1, backgroundColor: WHITE },
-  header:     { backgroundColor: BLACK, padding: 16, borderBottomWidth: 4, borderColor: '#CC0000' },
+  container:  { flex: 1, backgroundColor: theme.colors.bgVoid },
+  header:     { backgroundColor: theme.colors.bgNav, padding: theme.space.lg, borderBottomWidth: theme.borders.hero.width, borderColor: theme.colors.frameBlue },
   headerTop:  { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  title:      { fontFamily: MONO, fontSize: 20, fontWeight: 'bold', color: WHITE, letterSpacing: 3 },
-  editBtn:    { minWidth: 44, minHeight: 44, borderWidth: 2, borderColor: AMBER, paddingHorizontal: 10, alignItems: 'center', justifyContent: 'center' },
-  editText:   { fontFamily: MONO, fontSize: 11, fontWeight: 'bold', color: AMBER, letterSpacing: 1 },
-  weekLabel:  { fontFamily: MONO, fontSize: 13, color: '#CCC', marginTop: 2 },
-  score:      { fontFamily: MONO, fontSize: 13, color: AMBER, marginTop: 4 },
+  title:      { ...theme.type.displayM, color: theme.colors.textPrimary, letterSpacing: 3 },
+  editBtn:    { minWidth: theme.a11y.minTapTarget, minHeight: theme.a11y.minTapTarget, borderWidth: theme.borders.standard.width, borderColor: theme.colors.rewardYellow, paddingHorizontal: 10, alignItems: 'center', justifyContent: 'center' },
+  editText:   { ...theme.type.caption, fontWeight: 'bold', color: theme.colors.rewardYellow, letterSpacing: 1 },
+  weekLabel:  { ...theme.type.bodyS, fontSize: 13, color: theme.colors.textSecondary, marginTop: 2 },
+  score:      { ...theme.type.bodyS, fontSize: 13, color: theme.colors.rewardYellow, marginTop: theme.space.xs },
   loader:     { flex: 1, justifyContent: 'center' },
-  list:       { paddingBottom: 32 },
+  list:       { paddingBottom: theme.space['3xl'] },
 });

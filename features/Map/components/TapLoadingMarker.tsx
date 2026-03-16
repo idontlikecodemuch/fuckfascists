@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Animated, View, StyleSheet, AccessibilityInfo } from 'react-native';
 import { Marker } from 'react-native-maps';
 import { mapCopy } from '../../../copy/map';
+import { theme } from '../../../design/tokens';
 
 interface TapLoadingMarkerProps {
   coordinate: { latitude: number; longitude: number };
@@ -51,8 +52,8 @@ const styles = StyleSheet.create({
     width: 16,
     height: 16,
     borderRadius: 8,
-    backgroundColor: '#CC7A00',
-    borderWidth: 2,
-    borderColor: '#7A4800',
+    backgroundColor: theme.colors.glowCyan,
+    borderWidth: theme.borders.standard.width,
+    borderColor: theme.colors.frameBlue,
   },
 });

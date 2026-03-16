@@ -22,6 +22,7 @@ This document tracks where the current implementation aligns with, deviates from
 | Configurable variables in constants.ts | No hardcoded thresholds | All values in `config/constants.ts` |
 | Gamified scorecard | Weekly drop, shareable | Weekly scorecard implemented |
 | Platform avoidance tracking | Daily checklist for social/streaming/delivery | Platform avoidance implemented |
+| 8-bit visual design system | Pixel art aesthetic, dark palette, chunky borders | `design/tokens.ts` + all 26 components migrated to theme tokens (Bungee + IBMPlexSans fonts, dark palette, hero/standard borders) |
 
 ---
 
@@ -68,7 +69,7 @@ This document tracks where the current implementation aligns with, deviates from
 
 | Decision | Options | Status |
 |---|---|---|
-| Map POI tap scope | Full pipeline match vs. curated list only for V1 | **Pending** — needs architect decision before implementation |
+| Map POI tap scope | Full pipeline match vs. curated list only for V1 | ✅ **Resolved** — full pipeline match (alias first, FEC fuzzy fallback) |
 | App Store name | "F*ck Fascists" vs. clean public name | Not resolved — App Store submission will force this |
 | Uber entity | No PAC found, name-based match failing | `fecCommitteeId: ""` — needs manual research |
 | ENTITY_LIST_UPDATE_URL | Placeholder `[org]` | Replace when CDN / data repo is live |

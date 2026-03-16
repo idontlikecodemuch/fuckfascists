@@ -8,6 +8,7 @@ import { useScorecard } from './hooks/useScorecard';
 import { ScorecardView } from './components/ScorecardView';
 import { formatDropTime, formatWeekRange } from './utils/formatters';
 import { scorecardCopy } from '../../copy/scorecard';
+import { theme } from '../../design/tokens';
 
 interface ScorecardScreenProps {
   adapter: StorageAdapter;
@@ -80,7 +81,7 @@ export function ScorecardScreen({ adapter, entities, platforms }: ScorecardScree
         {cardLoading ? (
           <ActivityIndicator
             style={styles.cardLoader}
-            color="#CC0000"
+            color={theme.colors.dangerRed}
             accessibilityLabel={scorecardCopy.loadingLabel}
           />
         ) : data ? (
@@ -122,22 +123,17 @@ export function ScorecardScreen({ adapter, entities, platforms }: ScorecardScree
 
 // ── Styles ────────────────────────────────────────────────────────────────────
 
-const BLACK = '#1A1A1A';
-const WHITE = '#F5F5F0';
-const RED   = '#CC0000';
-const MONO  = 'monospace' as const;
-
 const styles = StyleSheet.create({
-  container:         { flex: 1, backgroundColor: BLACK },
-  scroll:            { paddingBottom: 40 },
-  topBar:            { backgroundColor: BLACK, padding: 16, borderBottomWidth: 4, borderColor: RED },
-  topBarTitle:       { fontFamily: MONO, fontSize: 20, fontWeight: 'bold', color: WHITE, letterSpacing: 3 },
-  dropTime:          { fontFamily: MONO, fontSize: 11, color: '#AAA', marginTop: 4 },
-  cardWrapper:       { margin: 16 },
-  cardLoader:        { marginTop: 40 },
-  actions:           { flexDirection: 'row', gap: 12, paddingHorizontal: 16, marginTop: 8 },
-  button:            { flex: 1, minHeight: 44, backgroundColor: RED, borderWidth: 3, borderColor: WHITE, alignItems: 'center', justifyContent: 'center', paddingVertical: 10 },
-  buttonSecondary:   { backgroundColor: BLACK, borderColor: WHITE },
-  buttonText:        { fontFamily: MONO, fontSize: 15, fontWeight: 'bold', color: WHITE, letterSpacing: 2 },
-  buttonTextSecondary: { color: WHITE },
+  container:         { flex: 1, backgroundColor: theme.colors.bgVoid },
+  scroll:            { paddingBottom: theme.space['4xl'] },
+  topBar:            { backgroundColor: theme.colors.bgNav, padding: theme.space.lg, borderBottomWidth: theme.borders.hero.width, borderColor: theme.colors.frameBlue },
+  topBarTitle:       { ...theme.type.displayM, color: theme.colors.textPrimary, letterSpacing: 3 },
+  dropTime:          { ...theme.type.caption, color: theme.colors.textSecondary, marginTop: theme.space.xs },
+  cardWrapper:       { margin: theme.space.lg },
+  cardLoader:        { marginTop: theme.space['4xl'] },
+  actions:           { flexDirection: 'row', gap: theme.space.md, paddingHorizontal: theme.space.lg, marginTop: theme.space.sm },
+  button:            { flex: 1, minHeight: theme.a11y.minTapTarget, backgroundColor: theme.colors.dangerRed, borderWidth: theme.borders.standard.width, borderColor: theme.colors.frameBlue, alignItems: 'center', justifyContent: 'center', paddingVertical: 10 },
+  buttonSecondary:   { backgroundColor: theme.colors.bgVoid, borderColor: theme.colors.frameBlue },
+  buttonText:        { ...theme.type.uiLabel, fontSize: 15, color: theme.colors.textPrimary, letterSpacing: 2 },
+  buttonTextSecondary: { color: theme.colors.textPrimary },
 });

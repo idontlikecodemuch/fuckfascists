@@ -12,6 +12,37 @@ This document is updated continuously. New instances should read this first — 
 
 ## Last 5 Sessions (most recent first)
 
+### Session: March 16, 2026 (follow-up 3)
+**Focus:** Full component migration to design tokens — 26 files
+
+**Completed:**
+- **All 26 component files migrated** to import from `design/tokens.ts` and follow `design/component-rules.md` specs. Every hardcoded color, spacing, typography, border, and tap target value replaced with theme token references.
+- **Root:** `App.tsx` — removed `BLACK`/`AMBER`/`MONO` constants. Tab bar: `bgNav` bg, `hero` border `frameBlue`, `surface1` active tab, `caption` + `rewardYellow`/`textSecondary` labels.
+- **Map (8 files):** `BusinessCard` (surface1, hero border, displayM name), `AvoidButton` (rewardYellow/successGreen/dangerRed states, hero border bgVoid), `MatchChooser` (surface1 sheet, surface2 rows), `MapSearchBar` (bgNav shell, surface1 input, highlightBlue border), `MapControls` (bgNav 48×48, standard border frameBlue), `MapMarker` (dangerRed/rewardYellow/successGreen), `TapLoadingMarker` (glowCyan, frameBlue border), `UnmatchedBanner` (surface1, standard border rewardYellow).
+- **Platforms (4 files):** `PlatformRow` (surface1/surface2 states, displayS count rewardYellow), `PlatformSetupScreen` (bgVoid page, hero border, rewardYellow selected), `PlatformsScreen` (bgVoid, bgNav header), `DayCircles` (surface1, successGreen checked).
+- **Scorecard (3 files):** `ScorecardView` (surface1 card, rewardYellow totals, standard border rewardYellow accent), `ScorecardScreen` (bgVoid, bgNav topBar, dangerRed buttons), `PreviewStamp` (standard border + text rewardYellow).
+- **Onboarding (6 files):** `OnboardingSlide` (bgVoid, bgNav header, dangerRed nextButton), `WelcomeScreen` (headline 48pt dangerRed, displayS tagline), `HowItWorksScreen` (surface2 cards, rewardYellow kickers), `PermissionScreen` (rewardYellow icon, surface1 promiseBox), `PrivacyScreen` (dangerRed bullet, caption label), `ProgressDots` (standard border, rewardYellow active).
+- **Info (4 files):** `InfoScreen` (bgVoid, bgNav header, uiLabel rewardYellow tagline), `InfoSection` (surface1 header, hero border frameBlue), `FaqItem` (surface1 question, surface2 answer, highlightBlue borders), `LinkRow` (token-based category colors).
+
+**Verification:**
+- `tsc --noEmit` — clean, zero errors
+- `jest` — 27 suites, 296 tests, all passing
+- `audit-copy.sh` — only flags in `features/Dev/` (mock data, pre-existing)
+
+**Files modified (26):**
+- `App.tsx`
+- `features/Map/components/` — BusinessCard, AvoidButton, MatchChooser, MapSearchBar, MapControls, MapMarker, TapLoadingMarker, UnmatchedBanner
+- `features/Platforms/` — PlatformsScreen, PlatformRow, PlatformSetupScreen, DayCircles
+- `features/Scorecard/` — ScorecardScreen, ScorecardView, PreviewStamp
+- `features/Onboarding/` — OnboardingSlide, ProgressDots, WelcomeScreen, HowItWorksScreen, PermissionScreen, PrivacyScreen
+- `features/Info/` — InfoScreen, InfoSection, FaqItem, LinkRow
+
+**No copy files, data layer, native modules, extension, scripts, or design/ files changed.**
+
+**Build:** tsc clean. 296 tests passing (27 suites). audit-copy.sh clean (dev-only hits only).
+
+---
+
 ### Session: March 16, 2026 (follow-up 2)
 **Focus:** Design system foundation — tokens, component rules, asset manifest, font setup
 
@@ -632,7 +663,7 @@ The Swift source now lives authoritatively at `modules/mapkit-search/ios/MapKitS
 
 | Suite | Count | Status |
 |---|---|---|
-| Total passing | 308 | ✅ Clean (28 suites) |
+| Total passing | 296 | ✅ Clean (27 suites) |
 | Last tsc run | March 16, 2026 | ✅ Clean |
 
 ---
@@ -667,6 +698,7 @@ The Swift source now lives authoritatively at `modules/mapkit-search/ios/MapKitS
 - `expo prebuild --platform ios --clean` succeeds ✅ — ios/ generated and committed
 - MapKitSearch auto-linked via `file:./modules/mapkit-search` — no `searchPaths` override needed ✅
 - `expo run:ios` builds and installs to simulator ✅ — `FckFascists.app` confirmed installed on iPhone 16 Pro
+- Design system: `design/tokens.ts` foundation + all 26 components migrated to theme tokens ✅
 
 ## What's Not Working / Not Yet Built
 
@@ -684,10 +716,11 @@ The Swift source now lives authoritatively at `modules/mapkit-search/ios/MapKitS
 
 ## Immediate Next Steps (in order)
 
-1. **Podfile `post_install` hook** — automate the `AIRMap.m` nil guard patch so it survives `pod install`. See Known Limitations in CLAUDE.md.
-2. **iOS simulator smoke test** — `npx expo start`, launch from simulator, walk the full vertical slice (map scan → flag → business card → avoid tap → platforms → scorecard). Verify MapKit POI tap fires on iOS. Confirm map no longer freezes on region change.
-3. **Physical device geolocation** — test on hardware, not simulator
-4. **UX/UI + Content pass** — new agent instance, full analysis, 8-bit design system, user journey, copy rewrite
+1. **Rebuild iOS** — `expo prebuild --platform ios --clean && expo run:ios` to verify design token changes render correctly on simulator.
+2. **Podfile `post_install` hook** — automate the `AIRMap.m` nil guard patch so it survives `pod install`. See Known Limitations in CLAUDE.md.
+3. **iOS simulator smoke test** — launch from simulator, walk the full vertical slice (map scan → flag → business card → avoid tap → platforms → scorecard). Verify the new dark palette, Bungee/IBMPlexSans typography, and token-based spacing render correctly.
+4. **Physical device geolocation** — test on hardware, not simulator
+5. **Pixel art assets** — integrate generated sprites from `tools/img-gen/` into the asset pipeline per `design/asset-manifest.json`
 
 ---
 

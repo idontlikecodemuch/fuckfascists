@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Animated, Pressable, Text, StyleSheet, AccessibilityInfo } from 'react-native';
 import { mapCopy } from '../../../copy/map';
+import { theme } from '../../../design/tokens';
 
 interface AvoidButtonProps {
   onPress: () => Promise<void>;
@@ -77,29 +78,27 @@ export function AvoidButton({ onPress, disabled = false }: AvoidButtonProps) {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#3CB371',
-    borderColor: '#1E5C3A',
-    borderWidth: 4,
-    minHeight: 44,
-    minWidth: 44,
+    backgroundColor: theme.colors.rewardYellow,
+    borderColor: theme.colors.bgVoid,
+    borderWidth: theme.borders.hero.width,
+    minHeight: 56,
+    minWidth: theme.a11y.minTapTarget,
     paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingHorizontal: theme.space.xl,
     alignItems: 'center',
     justifyContent: 'center',
   },
   confirmed: {
-    backgroundColor: '#228B22',
-    borderColor: '#0D3D16',
+    backgroundColor: theme.colors.successGreen,
+    borderColor: theme.colors.bgVoid,
   },
   errored: {
-    backgroundColor: '#CC7A00',
-    borderColor: '#7A4800',
+    backgroundColor: theme.colors.dangerRed,
+    borderColor: theme.colors.bgVoid,
   },
   label: {
-    fontFamily: 'monospace',
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
+    ...theme.type.displayS,
+    color: theme.colors.bgVoid,
     letterSpacing: 2,
   },
 });

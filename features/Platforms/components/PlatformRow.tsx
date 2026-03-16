@@ -4,6 +4,7 @@ import type { PlatformItem } from '../types';
 import { platformsCopy } from '../../../copy/platforms';
 import { sharedCopy } from '../../../copy/shared';
 import { DayCircles } from './DayCircles';
+import { theme } from '../../../design/tokens';
 
 interface PlatformRowProps {
   item: PlatformItem;
@@ -95,25 +96,20 @@ export function PlatformRow({ item, weekOf, onAvoid, onAvoidDate }: PlatformRowP
   );
 }
 
-const BLACK = '#1A1A1A';
-const WHITE = '#F5F5F0';
-const GREEN = '#228B22';
-const MONO  = 'monospace' as const;
-
 const styles = StyleSheet.create({
-  outer:           { borderBottomWidth: 2, borderColor: BLACK },
-  outerAvoided:    { backgroundColor: '#E8F5E9' },
-  row:             { flexDirection: 'row', alignItems: 'center', padding: 12, minHeight: 44 },
-  chevronBtn:      { minWidth: 28, minHeight: 44, alignItems: 'center', justifyContent: 'center', marginRight: 4 },
-  chevron:         { fontFamily: MONO, fontSize: 12, color: BLACK },
+  outer:           { borderBottomWidth: theme.borders.standard.width, borderColor: theme.colors.frameBlue, backgroundColor: theme.colors.surface1 },
+  outerAvoided:    { backgroundColor: theme.colors.surface2 },
+  row:             { flexDirection: 'row', alignItems: 'center', padding: theme.space.md, minHeight: theme.a11y.minTapTarget },
+  chevronBtn:      { minWidth: 28, minHeight: theme.a11y.minTapTarget, alignItems: 'center', justifyContent: 'center', marginRight: theme.space.xs },
+  chevron:         { fontFamily: theme.fonts.body, fontSize: 12, color: theme.colors.textPrimary },
   info:            { flex: 1 },
-  name:            { fontFamily: MONO, fontSize: 15, fontWeight: 'bold', color: BLACK, marginBottom: 2 },
-  sub:             { fontFamily: MONO, fontSize: 11, color: '#555', marginBottom: 4 },
+  name:            { ...theme.type.uiLabel, color: theme.colors.textPrimary, marginBottom: 2 },
+  sub:             { ...theme.type.caption, color: theme.colors.textSecondary, marginBottom: theme.space.xs },
   tags:            { flexDirection: 'row', gap: 6 },
-  tag:             { fontFamily: MONO, fontSize: 10, color: WHITE, backgroundColor: BLACK, paddingHorizontal: 5, paddingVertical: 1 },
-  count:           { fontFamily: MONO, fontSize: 16, fontWeight: 'bold', color: GREEN, marginRight: 12 },
-  avoidBtn:        { minWidth: 44, minHeight: 44, borderWidth: 3, borderColor: BLACK, backgroundColor: WHITE, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 10 },
-  avoidBtnActive:  { backgroundColor: GREEN, borderColor: GREEN },
-  avoidText:       { fontFamily: MONO, fontSize: 12, fontWeight: 'bold', color: BLACK },
-  avoidTextActive: { color: WHITE },
+  tag:             { ...theme.type.caption, fontSize: 10, color: theme.colors.bgVoid, backgroundColor: theme.colors.highlightBlue, paddingHorizontal: 5, paddingVertical: 1 },
+  count:           { ...theme.type.displayS, color: theme.colors.rewardYellow, marginRight: theme.space.md },
+  avoidBtn:        { minWidth: theme.a11y.minTapTarget, minHeight: theme.a11y.minTapTarget, borderWidth: theme.borders.standard.width, borderColor: theme.colors.frameBlue, backgroundColor: theme.colors.surface1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 10 },
+  avoidBtnActive:  { backgroundColor: theme.colors.successGreen, borderColor: theme.colors.successGreen },
+  avoidText:       { ...theme.type.bodyS, fontWeight: 'bold', color: theme.colors.textPrimary },
+  avoidTextActive: { color: theme.colors.bgVoid },
 });

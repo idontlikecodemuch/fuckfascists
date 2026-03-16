@@ -2,11 +2,12 @@ import React from 'react';
 import { Text, Pressable, StyleSheet, Linking } from 'react-native';
 import type { LinkEntry } from '../types';
 import { infoCopy } from '../../../copy/info';
+import { theme } from '../../../design/tokens';
 
 const CATEGORY_COLORS: Record<LinkEntry['category'], string> = {
-  source:    '#0066CC',
-  community: '#228B22',
-  legal:     '#888888',
+  source:    theme.colors.highlightBlue,
+  community: theme.colors.successGreen,
+  legal:     theme.colors.textSecondary,
 };
 
 interface LinkRowProps {
@@ -36,6 +37,6 @@ export function LinkRow({ entry }: LinkRowProps) {
 }
 
 const styles = StyleSheet.create({
-  row:   { minHeight: 44, justifyContent: 'center', paddingHorizontal: 16, paddingVertical: 10, borderBottomWidth: 1, borderColor: '#DDD' },
-  label: { fontFamily: 'monospace', fontSize: 13, textDecorationLine: 'underline' },
+  row:   { minHeight: theme.a11y.minTapTarget, justifyContent: 'center', paddingHorizontal: theme.space.lg, paddingVertical: 10, borderBottomWidth: 1, borderColor: theme.colors.surface2 },
+  label: { ...theme.type.uiLabel, fontSize: 13, textDecorationLine: 'underline' },
 });

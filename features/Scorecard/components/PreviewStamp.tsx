@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { scorecardCopy } from '../../../copy/scorecard';
+import { theme } from '../../../design/tokens';
 
 /**
  * Pixel art rubber-stamp overlay shown on on-demand (non-official-drop) cards.
@@ -25,17 +26,17 @@ const styles = StyleSheet.create({
     top:             20,
     right:           -10,
     backgroundColor: 'transparent',
-    borderWidth:     3,
-    borderColor:     '#CC7A00',
+    borderWidth:     theme.borders.standard.width,
+    borderColor:     theme.colors.rewardYellow,
     paddingHorizontal: 10,
     paddingVertical:   4,
     transform:       [{ rotate: '12deg' }],
   },
   text: {
-    fontFamily:  'monospace',
+    fontFamily:  theme.fonts.headline,
     fontSize:    14,
     fontWeight:  'bold',
-    color:       '#CC7A00',
+    color:       theme.colors.rewardYellow,
     letterSpacing: 3,
   },
 });

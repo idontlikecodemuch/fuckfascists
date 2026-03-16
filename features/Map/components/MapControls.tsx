@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Pressable, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { mapCopy } from '../../../copy/map';
+import { theme } from '../../../design/tokens';
 
 interface MapControlsProps {
   onZoomIn: () => void;
@@ -47,18 +48,15 @@ export function MapControls({ onZoomIn, onZoomOut, onLocation, locationLoading }
       >
         {locationLoading
           ? <Text style={styles.buttonText} allowFontScaling={false}>{mapCopy.loadingIcon}</Text>
-          : <Ionicons name="locate" size={22} color={BLACK} />
+          : <Ionicons name="locate" size={22} color={theme.colors.textPrimary} />
         }
       </Pressable>
     </View>
   );
 }
 
-const BLACK = '#1A1A1A';
-const WHITE = '#F5F5F0';
-
 const styles = StyleSheet.create({
-  stack:      { position: 'absolute', bottom: 120, right: 16, gap: 8 },
-  button:     { width: 44, height: 44, backgroundColor: WHITE, borderWidth: 3, borderColor: BLACK, alignItems: 'center', justifyContent: 'center' },
-  buttonText: { fontSize: 22, color: BLACK, lineHeight: 26 },
+  stack:      { position: 'absolute', bottom: 120, right: theme.space.lg, gap: theme.space.sm },
+  button:     { width: 48, height: 48, backgroundColor: theme.colors.bgNav, borderWidth: theme.borders.standard.width, borderColor: theme.colors.frameBlue, alignItems: 'center', justifyContent: 'center' },
+  buttonText: { fontSize: 22, color: theme.colors.textPrimary, lineHeight: 26 },
 });

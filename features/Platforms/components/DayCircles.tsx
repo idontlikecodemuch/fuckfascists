@@ -3,6 +3,7 @@ import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { platformsCopy } from '../../../copy/platforms';
 import { sharedCopy } from '../../../copy/shared';
 import { getWeekDates, isFutureDate } from '../utils/weekDates';
+import { theme } from '../../../design/tokens';
 
 interface DayCirclesProps {
   weekOf: string;
@@ -66,17 +67,12 @@ export function DayCircles({ weekOf, platformName, dayCounts, onAvoidDate }: Day
   );
 }
 
-const BLACK = '#1A1A1A';
-const GREEN = '#228B22';
-const WHITE = '#F5F5F0';
-const MONO  = 'monospace' as const;
-
 const styles = StyleSheet.create({
-  container:     { flexDirection: 'row', justifyContent: 'space-evenly', paddingVertical: 8, paddingHorizontal: 12 },
-  dayColumn:     { alignItems: 'center', gap: 4 },
-  dayLabel:      { fontFamily: MONO, fontSize: 10, fontWeight: 'bold', color: BLACK },
-  circle:        { width: 36, height: 36, borderRadius: 18, borderWidth: 3, borderColor: BLACK, alignItems: 'center', justifyContent: 'center', backgroundColor: WHITE },
-  circleChecked: { backgroundColor: GREEN, borderColor: GREEN },
-  circleFuture:  { borderColor: '#CCC', backgroundColor: '#F0F0F0', opacity: 0.5 },
-  checkmark:     { fontFamily: MONO, fontSize: 16, fontWeight: 'bold', color: WHITE },
+  container:     { flexDirection: 'row', justifyContent: 'space-evenly', paddingVertical: theme.space.sm, paddingHorizontal: theme.space.md },
+  dayColumn:     { alignItems: 'center', gap: theme.space.xs },
+  dayLabel:      { ...theme.type.caption, fontWeight: 'bold', color: theme.colors.textPrimary },
+  circle:        { width: 36, height: 36, borderRadius: 18, borderWidth: theme.borders.standard.width, borderColor: theme.colors.frameBlue, alignItems: 'center', justifyContent: 'center', backgroundColor: theme.colors.surface1 },
+  circleChecked: { backgroundColor: theme.colors.successGreen, borderColor: theme.colors.successGreen },
+  circleFuture:  { borderColor: theme.colors.surface2, backgroundColor: theme.colors.surface2, opacity: 0.5 },
+  checkmark:     { fontFamily: theme.fonts.headline, fontSize: 16, fontWeight: 'bold', color: theme.colors.textPrimary },
 });

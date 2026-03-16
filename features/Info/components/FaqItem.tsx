@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import type { FaqEntry } from '../types';
 import { infoCopy } from '../../../copy/info';
+import { theme } from '../../../design/tokens';
 
 interface FaqItemProps {
   entry: FaqEntry;
@@ -38,15 +39,11 @@ export function FaqItem({ entry }: FaqItemProps) {
   );
 }
 
-const BLACK = '#1A1A1A';
-const WHITE = '#F5F5F0';
-const MONO  = 'monospace' as const;
-
 const styles = StyleSheet.create({
-  wrapper:      { borderBottomWidth: 2, borderColor: BLACK },
-  question:     { flexDirection: 'row', alignItems: 'center', minHeight: 44, paddingHorizontal: 16, paddingVertical: 12, backgroundColor: WHITE },
-  questionText: { flex: 1, fontFamily: MONO, fontSize: 13, fontWeight: 'bold', color: BLACK, lineHeight: 18 },
-  chevron:      { fontFamily: MONO, fontSize: 10, color: '#CC0000', marginLeft: 8 },
-  answer:       { backgroundColor: '#F0F0EA', paddingHorizontal: 16, paddingVertical: 14, borderTopWidth: 2, borderColor: BLACK },
-  answerText:   { fontFamily: MONO, fontSize: 12, color: '#333', lineHeight: 20 },
+  wrapper:      { borderBottomWidth: theme.borders.standard.width, borderColor: theme.colors.frameBlue },
+  question:     { flexDirection: 'row', alignItems: 'center', minHeight: theme.a11y.minTapTarget, paddingHorizontal: theme.space.lg, paddingVertical: theme.space.md, backgroundColor: theme.colors.surface1 },
+  questionText: { flex: 1, ...theme.type.uiLabel, fontSize: 13, color: theme.colors.textPrimary, lineHeight: 18 },
+  chevron:      { ...theme.type.caption, color: theme.colors.highlightBlue, marginLeft: theme.space.sm },
+  answer:       { backgroundColor: theme.colors.surface2, paddingHorizontal: theme.space.lg, paddingVertical: theme.space.md, borderTopWidth: theme.borders.standard.width, borderColor: theme.colors.highlightBlue },
+  answerText:   { ...theme.type.bodyM, fontSize: 12, color: theme.colors.textSecondary, lineHeight: 20 },
 });

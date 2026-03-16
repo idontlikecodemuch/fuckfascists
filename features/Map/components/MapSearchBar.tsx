@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, TextInput, Pressable, Text, StyleSheet } from 'react-native';
 import { mapCopy } from '../../../copy/map';
+import { theme } from '../../../design/tokens';
 
 interface MapSearchBarProps {
   value: string;
@@ -9,10 +10,6 @@ interface MapSearchBarProps {
   isScanning: boolean;
   topOffset: number;
 }
-
-const MONO = 'monospace' as const;
-const BLACK = '#1A1A1A';
-const WHITE = '#F5F5F0';
 
 export function MapSearchBar({ value, onChangeText, onSubmit, isScanning, topOffset }: MapSearchBarProps) {
   return (
@@ -23,7 +20,7 @@ export function MapSearchBar({ value, onChangeText, onSubmit, isScanning, topOff
         onChangeText={onChangeText}
         onSubmitEditing={onSubmit}
         placeholder={mapCopy.searchPlaceholder}
-        placeholderTextColor="#888"
+        placeholderTextColor={theme.colors.textSecondary}
         returnKeyType="search"
         accessibilityLabel={mapCopy.searchLabel}
         accessibilityHint={mapCopy.searchHint}
@@ -46,9 +43,9 @@ export function MapSearchBar({ value, onChangeText, onSubmit, isScanning, topOff
 }
 
 const styles = StyleSheet.create({
-  container:  { position: 'absolute', left: 16, right: 16, flexDirection: 'row' },
-  input:      { flex: 1, backgroundColor: WHITE, borderColor: BLACK, borderWidth: 3, paddingHorizontal: 12, height: 44, fontFamily: MONO, fontSize: 14, color: BLACK },
-  button:     { width: 44, height: 44, backgroundColor: BLACK, alignItems: 'center', justifyContent: 'center', borderWidth: 3, borderColor: WHITE },
-  buttonBusy: { backgroundColor: '#555' },
-  buttonText: { color: WHITE, fontSize: 20 },
+  container:  { position: 'absolute', left: theme.space.lg, right: theme.space.lg, flexDirection: 'row' },
+  input:      { flex: 1, backgroundColor: theme.colors.surface1, borderColor: theme.colors.highlightBlue, borderWidth: theme.borders.standard.width, paddingHorizontal: theme.space.md, height: theme.a11y.minTapTarget, ...theme.type.bodyM, color: theme.colors.textPrimary },
+  button:     { width: theme.a11y.minTapTarget, height: theme.a11y.minTapTarget, backgroundColor: theme.colors.bgNav, alignItems: 'center', justifyContent: 'center', borderWidth: theme.borders.hero.width, borderColor: theme.colors.frameBlue },
+  buttonBusy: { backgroundColor: theme.colors.surface2 },
+  buttonText: { color: theme.colors.textPrimary, fontSize: 20 },
 });

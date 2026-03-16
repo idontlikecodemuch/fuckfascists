@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { onboardCopy } from '../../../copy/onboard';
+import { theme } from '../../../design/tokens';
 
 interface ProgressDotsProps {
   total: number;
@@ -28,7 +29,7 @@ export function ProgressDots({ total, current }: ProgressDotsProps) {
 }
 
 const styles = StyleSheet.create({
-  row:       { flexDirection: 'row', gap: 8, alignItems: 'center' },
-  dot:       { width: 10, height: 10, borderWidth: 2, borderColor: '#1A1A1A', backgroundColor: 'transparent' },
-  dotActive: { backgroundColor: '#CC0000', borderColor: '#CC0000' },
+  row:       { flexDirection: 'row', gap: theme.space.sm, alignItems: 'center' },
+  dot:       { width: 10, height: 10, borderWidth: theme.borders.standard.width, borderColor: theme.colors.textSecondary, backgroundColor: 'transparent' },
+  dotActive: { backgroundColor: theme.colors.rewardYellow, borderColor: theme.colors.rewardYellow },
 });

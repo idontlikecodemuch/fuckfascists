@@ -6,6 +6,7 @@ import { PreviewStamp } from './PreviewStamp';
 import { formatWeekRange } from '../utils/formatters';
 import { scorecardCopy } from '../../../copy/scorecard';
 import { sharedCopy } from '../../../copy/shared';
+import { theme } from '../../../design/tokens';
 
 interface ScorecardViewProps {
   data: ScorecardViewData;
@@ -161,40 +162,34 @@ function formatSource(source: ScorecardSource): string {
 
 // ── Styles ────────────────────────────────────────────────────────────────────
 
-const BLACK  = '#1A1A1A';
-const WHITE  = '#F5F5F0';
-const RED    = '#CC0000';
-const AMBER  = '#CC7A00';
-const MONO   = 'monospace' as const;
-
 const styles = StyleSheet.create({
-  card:           { backgroundColor: BLACK, borderColor: RED, borderWidth: 4 },
+  card:           { backgroundColor: theme.colors.surface1, borderColor: theme.colors.frameBlue, borderWidth: theme.borders.hero.width },
   // Header
-  header:         { padding: 16, alignItems: 'center', borderBottomWidth: 3, borderColor: RED },
-  appName:        { fontFamily: MONO, fontSize: 22, fontWeight: 'bold', color: RED, letterSpacing: 4 },
-  title:          { fontFamily: MONO, fontSize: 11, color: WHITE, letterSpacing: 6, marginTop: 2 },
-  weekRange:      { fontFamily: MONO, fontSize: 10, color: '#777', marginTop: 6, letterSpacing: 1 },
+  header:         { padding: theme.space.lg, alignItems: 'center', borderBottomWidth: theme.borders.standard.width, borderColor: theme.colors.frameBlue },
+  appName:        { ...theme.type.displayM, color: theme.colors.dangerRed, letterSpacing: 4 },
+  title:          { ...theme.type.caption, color: theme.colors.textPrimary, letterSpacing: 6, marginTop: 2 },
+  weekRange:      { ...theme.type.caption, fontSize: 10, color: theme.colors.textSecondary, marginTop: 6, letterSpacing: 1 },
   // Empty state
-  emptyState:     { padding: 32, alignItems: 'center' },
-  emptyText:      { fontFamily: MONO, fontSize: 13, color: RED, textAlign: 'center', lineHeight: 22, fontWeight: 'bold' },
+  emptyState:     { padding: theme.space['3xl'], alignItems: 'center' },
+  emptyText:      { ...theme.type.bodyS, fontSize: 13, color: theme.colors.dangerRed, textAlign: 'center', lineHeight: 22, fontWeight: 'bold' },
   // Body
-  body:           { padding: 16 },
-  bigTotalRow:    { alignItems: 'center', marginBottom: 4 },
-  bigTotal:       { fontFamily: MONO, fontSize: 48, fontWeight: 'bold', color: RED },
-  framingRow:     { marginBottom: 12 },
-  framingText:    { fontFamily: MONO, fontSize: 16, color: WHITE, fontWeight: 'bold', letterSpacing: 2 },
+  body:           { padding: theme.space.lg },
+  bigTotalRow:    { alignItems: 'center', marginBottom: theme.space.xs },
+  bigTotal:       { fontFamily: theme.fonts.headline, fontSize: 48, color: theme.colors.rewardYellow },
+  framingRow:     { marginBottom: theme.space.md },
+  framingText:    { ...theme.type.uiLabel, color: theme.colors.textPrimary, letterSpacing: 2 },
   // Person row
-  personRow:      { marginBottom: 12, borderLeftWidth: 3, borderColor: RED, paddingLeft: 10 },
+  personRow:      { marginBottom: theme.space.md, borderLeftWidth: theme.borders.standard.width, borderColor: theme.colors.rewardYellow, paddingLeft: 10 },
   personHeader:   { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline' },
-  personName:     { fontFamily: MONO, fontSize: 18, fontWeight: 'bold', color: WHITE, flex: 1, textTransform: 'uppercase', letterSpacing: 1 },
-  personCount:    { fontFamily: MONO, fontSize: 18, fontWeight: 'bold', color: RED, marginLeft: 8 },
-  personSources:  { fontFamily: MONO, fontSize: 10, color: '#999', marginTop: 2, letterSpacing: 0.5 },
+  personName:     { ...theme.type.displayS, color: theme.colors.textPrimary, flex: 1, textTransform: 'uppercase', letterSpacing: 1 },
+  personCount:    { ...theme.type.displayS, color: theme.colors.rewardYellow, marginLeft: theme.space.sm },
+  personSources:  { ...theme.type.caption, fontSize: 10, color: theme.colors.textSecondary, marginTop: 2, letterSpacing: 0.5 },
   // Overflow
-  overflowRow:    { marginTop: 4, paddingLeft: 10 },
-  overflowText:   { fontFamily: MONO, fontSize: 12, color: AMBER, fontWeight: 'bold' },
+  overflowRow:    { marginTop: theme.space.xs, paddingLeft: 10 },
+  overflowText:   { ...theme.type.bodyS, color: theme.colors.rewardYellow, fontWeight: 'bold' },
   // Footer
-  footer:         { borderTopWidth: 3, borderColor: RED, padding: 12, alignItems: 'center' },
-  tagline:        { fontFamily: MONO, fontSize: 10, color: '#999', textAlign: 'center', letterSpacing: 1 },
-  cta:            { fontFamily: MONO, fontSize: 9, color: AMBER, marginTop: 4, letterSpacing: 1 },
-  attribution:    { fontFamily: MONO, fontSize: 8, color: '#555', marginTop: 4, letterSpacing: 2 },
+  footer:         { borderTopWidth: theme.borders.standard.width, borderColor: theme.colors.frameBlue, padding: theme.space.md, alignItems: 'center' },
+  tagline:        { ...theme.type.caption, fontSize: 10, color: theme.colors.textSecondary, textAlign: 'center', letterSpacing: 1 },
+  cta:            { ...theme.type.caption, fontSize: 9, color: theme.colors.rewardYellow, marginTop: theme.space.xs, letterSpacing: 1 },
+  attribution:    { ...theme.type.caption, fontSize: 8, color: theme.colors.textSecondary, marginTop: theme.space.xs, letterSpacing: 2 },
 });

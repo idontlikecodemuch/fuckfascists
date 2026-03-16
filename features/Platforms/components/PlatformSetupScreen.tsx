@@ -4,6 +4,7 @@ import type { Platform } from '../types';
 import { platformsCopy } from '../../../copy/platforms';
 import { sharedCopy } from '../../../copy/shared';
 import { getDefaultSelectedIds } from '../hooks/usePlatformRoster';
+import { theme } from '../../../design/tokens';
 
 interface PlatformSetupScreenProps {
   platforms: Platform[];
@@ -105,31 +106,24 @@ export function PlatformSetupScreen({ platforms, initialSelection, onDone }: Pla
   );
 }
 
-const BLACK = '#1A1A1A';
-const WHITE = '#F5F5F0';
-const GREEN = '#228B22';
-const RED   = '#CC0000';
-const AMBER = '#CC7A00';
-const MONO  = 'monospace' as const;
-
 const styles = StyleSheet.create({
-  container:       { flex: 1, backgroundColor: BLACK },
-  header:          { padding: 16, borderBottomWidth: 4, borderColor: RED },
-  title:           { fontFamily: MONO, fontSize: 20, fontWeight: 'bold', color: WHITE, letterSpacing: 3 },
-  subhead:         { fontFamily: MONO, fontSize: 12, color: '#AAA', marginTop: 6 },
-  list:            { padding: 12, paddingBottom: 80 },
-  card:            { flexDirection: 'row', alignItems: 'center', padding: 12, marginBottom: 8, borderWidth: 3, borderColor: '#444', backgroundColor: '#2A2A2A', minHeight: 44 },
-  cardSelected:    { borderColor: GREEN, backgroundColor: '#1A2E1A' },
-  checkbox:        { width: 28, height: 28, borderWidth: 3, borderColor: '#666', alignItems: 'center', justifyContent: 'center', marginRight: 12, backgroundColor: BLACK },
-  check:           { fontFamily: MONO, fontSize: 16, fontWeight: 'bold', color: GREEN },
+  container:       { flex: 1, backgroundColor: theme.colors.bgVoid },
+  header:          { padding: theme.space.lg, borderBottomWidth: theme.borders.hero.width, borderColor: theme.colors.frameBlue },
+  title:           { ...theme.type.displayL, color: theme.colors.textPrimary, letterSpacing: 3 },
+  subhead:         { ...theme.type.bodyS, color: theme.colors.textSecondary, marginTop: 6 },
+  list:            { padding: theme.space.md, paddingBottom: 80 },
+  card:            { flexDirection: 'row', alignItems: 'center', padding: theme.space.md, marginBottom: theme.space.sm, borderWidth: theme.borders.hero.width, borderColor: theme.colors.frameBlue, backgroundColor: theme.colors.surface1, minHeight: theme.a11y.minTapTarget },
+  cardSelected:    { borderColor: theme.colors.rewardYellow },
+  checkbox:        { width: 28, height: 28, borderWidth: theme.borders.standard.width, borderColor: theme.colors.frameBlue, alignItems: 'center', justifyContent: 'center', marginRight: theme.space.md, backgroundColor: theme.colors.bgVoid },
+  check:           { fontFamily: theme.fonts.headline, fontSize: 16, fontWeight: 'bold', color: theme.colors.successGreen },
   cardInfo:        { flex: 1 },
-  cardName:        { fontFamily: MONO, fontSize: 14, fontWeight: 'bold', color: WHITE, marginBottom: 2 },
-  cardSub:         { fontFamily: MONO, fontSize: 10, color: '#888', marginBottom: 4 },
+  cardName:        { ...theme.type.uiLabel, color: theme.colors.textPrimary, marginBottom: 2 },
+  cardSub:         { ...theme.type.caption, color: theme.colors.textSecondary, marginBottom: theme.space.xs },
   cardTags:        { flexDirection: 'row', gap: 6 },
-  cardTag:         { fontFamily: MONO, fontSize: 9, color: BLACK, backgroundColor: AMBER, paddingHorizontal: 4, paddingVertical: 1 },
-  footer:          { padding: 16, borderTopWidth: 3, borderColor: RED, backgroundColor: BLACK },
-  doneBtn:         { minHeight: 44, borderWidth: 3, borderColor: GREEN, backgroundColor: GREEN, alignItems: 'center', justifyContent: 'center', paddingVertical: 10 },
-  doneBtnDisabled: { borderColor: '#444', backgroundColor: '#333' },
-  doneText:        { fontFamily: MONO, fontSize: 16, fontWeight: 'bold', color: WHITE, letterSpacing: 2 },
-  doneTextDisabled:{ color: '#666' },
+  cardTag:         { ...theme.type.caption, fontSize: 9, color: theme.colors.bgVoid, backgroundColor: theme.colors.rewardYellow, paddingHorizontal: 4, paddingVertical: 1 },
+  footer:          { padding: theme.space.lg, borderTopWidth: theme.borders.standard.width, borderColor: theme.colors.frameBlue, backgroundColor: theme.colors.bgVoid },
+  doneBtn:         { minHeight: theme.a11y.minTapTarget, borderWidth: theme.borders.hero.width, borderColor: theme.colors.successGreen, backgroundColor: theme.colors.successGreen, alignItems: 'center', justifyContent: 'center', paddingVertical: 10 },
+  doneBtnDisabled: { borderColor: theme.colors.surface2, backgroundColor: theme.colors.surface2 },
+  doneText:        { ...theme.type.displayS, color: theme.colors.bgVoid, letterSpacing: 2 },
+  doneTextDisabled:{ color: theme.colors.textSecondary },
 });
