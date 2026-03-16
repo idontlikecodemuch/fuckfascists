@@ -399,7 +399,13 @@ stamp. Only the official weekly drop card is stamp-free.
 
 `ScorecardView` wraps its root `<View>` in `forwardRef` — this is a pre-wire
 for `react-native-view-shot` image capture in Phase 2 (sharing as an image).
-Phase 1 shares as text via the native Share sheet.
+Phase 1 shares as text via the native Share sheet. The share format is
+CEO-centric: "I f*cked {Name} {N}× · {Name} {N}×" with tagline and CTA.
+
+`ScorecardView` has two layout variants based on thresholds:
+- **Heavy** (grandTotal >= 4 AND persons >= 3): big total count, "I f*cked..."
+  framing, top 3 persons, "+ N others" overflow line.
+- **Light** (below thresholds): all persons listed, no aggregate total.
 
 ### Onboarding
 
@@ -515,15 +521,19 @@ Mobile app (useDropSchedule):
 
 ScorecardScreen states:
     ├─ loading         → spinner
-    ├─ hasDropped=true → generateScorecard(adapter, entities, platforms, weekOf, false)
+    ├─ hasDropped=true → useScorecard → aggregateScorecard(adapter, entities, platforms, weekOf)
     │                    → official card + SHARE button
-    └─ hasDropped=false → PREVIEW button → generateScorecard(..., isPreview: true)
+    └─ hasDropped=false → PREVIEW button → aggregateScorecard(...) with isPreview: true
                           → card with PREVIEW pixel stamp
 ```
 
-`generateScorecard` filters `EntityAvoidEvent[]` to `[weekOf, nextMonday)` and
-`PlatformAvoidEvent[]` for `weekOf`. Groups entity avoids by `entityId`, sums
-`count`, sorts descending by count.
+`aggregateScorecard` (in `features/Scorecard/data/aggregateScorecard.ts`) filters
+`EntityAvoidEvent[]` to `[weekOf, nextMonday)` and `PlatformAvoidEvent[]` for
+`weekOf`. Groups all avoids by **public figure name** (resolved via
+`getDisplayFigure()` for entities, `ceoName` for platforms), producing
+`ScorecardPerson[]` sorted descending by `totalCount`. Each person has
+`sources: ScorecardSource[]` with verb-specific display strings ("stayed off",
+"skipped", "walked past", "avoided").
 
 ---
 

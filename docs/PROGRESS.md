@@ -12,6 +12,34 @@ This document is updated continuously. New instances should read this first — 
 
 ## Last 5 Sessions (most recent first)
 
+### Session: March 16, 2026 (follow-up)
+**Focus:** Scorecard UI redesign — entity-centric → CEO-centric ("I f*cked...")
+
+**Completed:**
+- **`copy/scorecard.ts`** — replaced all copy with CEO-centric strings. New verb-specific source functions (`sourceSkipped`, `sourceAvoided`, `sourceWalkedPast`, `sourceStayedOff`), framing line ("I f*cked..."), person count (`{N}×`), total count, others line, tagline, CTA. Removed old entity/platform count copy.
+- **`features/Scorecard/types.ts`** — replaced `ScorecardData` / `EntityAvoidSummary` with `ScorecardViewData { weekOf, persons: ScorecardPerson[], grandTotal, isPreview }`. `DropSchedule` unchanged.
+- **`features/Scorecard/hooks/useScorecard.ts`** — now calls `aggregateScorecard()` instead of old `generateScorecard()`. Returns `ScorecardViewData` with computed `grandTotal`.
+- **`features/Scorecard/components/ScorecardView.tsx`** — full rewrite. Person-centric layout with heavy/light/empty variants. Heavy: big total + "I f*cked..." + top 3 persons + overflow count. Light: all persons, no total. PersonRow sub-component with last name prominent (uppercase), verb-specific source breakdown. Dark card (BLACK bg, RED borders, AMBER overflow).
+- **`features/Scorecard/ScorecardScreen.tsx`** — new share logic generates "I f*cked {Name} {N}× · {Name} {N}×" format with tagline + CTA. Dark background. SHARE button only visible when persons exist. `loadingLabel` on ActivityIndicator. Removed `sharedCopy` import (share text now self-contained via `scorecardCopy`).
+- **Removed `generateScorecard.ts` + test** — old aggregation function + 12 tests. Fully superseded by `aggregateScorecard.ts` (27 tests). No production code imported it.
+- **Dev catalog mocks** — `catalogMocks.ts` updated from `ScorecardData` to `ScorecardViewData` with rich person data (Walton Family, Zuckerberg, Jassy, Decker with verb-specific sources).
+
+**Files modified:**
+- `copy/scorecard.ts` — full rewrite
+- `features/Scorecard/types.ts` — ScorecardViewData replaces ScorecardData
+- `features/Scorecard/hooks/useScorecard.ts` — calls aggregateScorecard
+- `features/Scorecard/components/ScorecardView.tsx` — full rewrite
+- `features/Scorecard/ScorecardScreen.tsx` — share logic + dark theme
+- `features/Dev/catalogMocks.ts` — ScorecardViewData mocks
+
+**Files removed:**
+- `features/Scorecard/utils/generateScorecard.ts` (dead code)
+- `features/Scorecard/__tests__/generateScorecard.test.ts` (dead tests)
+
+**Build:** tsc clean. 296 tests passing (27 suites). Net -12 tests (removed old generateScorecard tests; aggregateScorecard's 27 tests already counted).
+
+---
+
 ### Session: March 16, 2026
 **Focus:** Scorecard aggregation layer — person-grouped avoidance data
 

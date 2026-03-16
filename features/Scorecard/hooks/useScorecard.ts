@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import type { Entity } from '../../../core/models';
 import type { StorageAdapter } from '../../../core/data';
 import type { Platform } from '../../Platforms/types';
-import type { ScorecardData } from '../types';
-import { generateScorecard } from '../utils/generateScorecard';
+import type { ScorecardViewData } from '../types';
+import { aggregateScorecard } from '../data/aggregateScorecard';
 
 /**
- * Generates the scorecard for the given week on mount.
+ * Aggregates the week's avoidance events into person-grouped scorecard data.
  * Re-runs whenever weekOf or isPreview changes.
  */
 export function useScorecard(
@@ -14,9 +14,9 @@ export function useScorecard(
   entities: Entity[],
   platforms: Platform[],
   weekOf: string,
-  isPreview: boolean
-): { data: ScorecardData | null; loading: boolean; error: string | null } {
-  const [data, setData] = useState<ScorecardData | null>(null);
+  isPreview: boolean,
+): { data: ScorecardViewData | null; loading: boolean; error: string | null } {
+  const [data, setData] = useState<ScorecardViewData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -28,9 +28,10 @@ export function useScorecard(
 
     (async () => {
       try {
-        const card = await generateScorecard(adapter, entities, platforms, weekOf, isPreview);
+        const persons = await aggregateScorecard(adapter, entities, platforms, weekOf);
         if (cancelled) return;
-        setData(card);
+        const grandTotal = persons.reduce((sum, p) => sum + p.totalCount, 0);
+        setData({ weekOf, persons, grandTotal, isPreview });
         setLoading(false);
       } catch (err) {
         if (cancelled) return;

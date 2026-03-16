@@ -6,7 +6,7 @@
 import type { ScanResult } from '../Map/types';
 import type { DonationSummary, Entity } from '../../core/models';
 import type { PlatformItem, Platform } from '../Platforms/types';
-import type { ScorecardData } from '../Scorecard/types';
+import type { ScorecardViewData } from '../Scorecard/types';
 import type { FaqEntry, LinkEntry, TransparencyPoint, AboutContent } from '../Info/types';
 
 // ── Donation summaries ──────────────────────────────────────────────────────
@@ -140,29 +140,52 @@ export const notAvoidedPlatformRow: PlatformItem = { platform: instagramPlatform
 
 // ── Scorecard data ─────────────────────────────────────────────────────────
 
-export const scorecardWithData: ScorecardData = {
+export const scorecardWithData: ScorecardViewData = {
   weekOf: '2026-03-09',
-  entityAvoids: [
-    { entityId: 'walmart', name: 'Walmart Inc', count: 3, ceoName: 'Doug McMillon' },
-    { entityId: 'amazon', name: 'Amazon.com Inc', count: 2, ceoName: 'Andy Jassy' },
-    { entityId: 'home-depot', name: 'Home Depot Inc', count: 1, ceoName: 'Ted Decker' },
+  persons: [
+    {
+      figureName: 'The Walton Family',
+      totalCount: 5,
+      sources: [
+        { name: 'Walmart', count: 3, verb: 'walked past' },
+        { name: "Sam's Club", count: 2, verb: 'walked past' },
+      ],
+    },
+    {
+      figureName: 'Mark Zuckerberg',
+      totalCount: 8,
+      sources: [
+        { name: 'Instagram', count: 4, verb: 'stayed off' },
+        { name: 'Facebook', count: 2, verb: 'stayed off' },
+        { name: 'WhatsApp', count: 2, verb: 'stayed off' },
+      ],
+    },
+    {
+      figureName: 'Andy Jassy',
+      totalCount: 3,
+      sources: [
+        { name: 'Amazon', count: 2, verb: 'skipped' },
+        { name: 'Whole Foods', count: 1, verb: 'walked past' },
+      ],
+    },
+    {
+      figureName: 'Ted Decker',
+      totalCount: 1,
+      sources: [{ name: 'Home Depot', count: 1, verb: 'walked past' }],
+    },
   ],
-  platformAvoids: ['Twitter / X', 'Instagram'],
-  totalEntityAvoids: 6,
-  totalPlatformAvoids: 2,
+  grandTotal: 17,
   isPreview: false,
 };
 
-export const scorecardEmpty: ScorecardData = {
+export const scorecardEmpty: ScorecardViewData = {
   weekOf: '2026-03-09',
-  entityAvoids: [],
-  platformAvoids: [],
-  totalEntityAvoids: 0,
-  totalPlatformAvoids: 0,
+  persons: [],
+  grandTotal: 0,
   isPreview: false,
 };
 
-export const scorecardPreview: ScorecardData = { ...scorecardWithData, isPreview: true };
+export const scorecardPreview: ScorecardViewData = { ...scorecardWithData, isPreview: true };
 
 // ── Info content ────────────────────────────────────────────────────────────
 

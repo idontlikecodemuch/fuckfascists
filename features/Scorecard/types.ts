@@ -1,21 +1,15 @@
-/**
- * Aggregated display data for one week's scorecard.
- * All fields are derived from local storage — no server-side data.
- */
-export interface ScorecardData {
-  weekOf: string;                      // YYYY-MM-DD Monday
-  entityAvoids: EntityAvoidSummary[];  // sorted by count desc
-  platformAvoids: string[];            // display names of avoided platforms
-  totalEntityAvoids: number;           // sum of all entity avoid counts
-  totalPlatformAvoids: number;
-  isPreview: boolean;                  // true → show PREVIEW stamp
-}
+import type { ScorecardPerson } from './data/aggregateScorecard';
 
-export interface EntityAvoidSummary {
-  entityId: string;
-  name: string;     // canonicalName from entity list, or entityId as fallback
-  count: number;
-  ceoName?: string;
+/**
+ * Display data for the scorecard view.
+ * All fields are derived from local storage — no server-side data.
+ * Persons are grouped by public figure name, sorted by totalCount desc.
+ */
+export interface ScorecardViewData {
+  weekOf: string;                    // YYYY-MM-DD Monday
+  persons: ScorecardPerson[];        // grouped by figure, sorted desc by totalCount
+  grandTotal: number;                // sum of all person totalCounts
+  isPreview: boolean;                // true → show PREVIEW stamp
 }
 
 /**

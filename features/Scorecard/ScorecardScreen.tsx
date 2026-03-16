@@ -8,7 +8,6 @@ import { useScorecard } from './hooks/useScorecard';
 import { ScorecardView } from './components/ScorecardView';
 import { formatDropTime, formatWeekRange } from './utils/formatters';
 import { scorecardCopy } from '../../copy/scorecard';
-import { sharedCopy } from '../../copy/shared';
 
 interface ScorecardScreenProps {
   adapter: StorageAdapter;
@@ -42,19 +41,22 @@ export function ScorecardScreen({ adapter, entities, platforms }: ScorecardScree
   );
 
   const handleShare = useCallback(async () => {
-    if (!data) return;
+    if (!data || data.persons.length === 0) return;
+
+    // "I f*cked {Name} {N}× · {Name} {N}×"
+    const personLines = data.persons
+      .map((p) => `${p.figureName} ${scorecardCopy.personCount(p.totalCount)}`)
+      .join(' \u00b7 ');
+
     const lines = [
       scorecardCopy.shareHeader,
       formatWeekRange(data.weekOf),
-      ``,
-      scorecardCopy.entityCount(data.totalEntityAvoids),
-      scorecardCopy.platformCount(data.totalPlatformAvoids),
-      data.entityAvoids.length > 0
-        ? scorecardCopy.topEntities(data.entityAvoids.slice(0, 3).map((e) => e.name).join(', '))
-        : '',
-      ``,
-      sharedCopy.siteUrl,
-    ].filter(Boolean);
+      '',
+      personLines,
+      '',
+      scorecardCopy.tagline,
+      scorecardCopy.cta,
+    ];
 
     await Share.share({ message: lines.join('\n') });
   }, [data]);
@@ -76,7 +78,11 @@ export function ScorecardScreen({ adapter, entities, platforms }: ScorecardScree
 
         {/* ── Card ── */}
         {cardLoading ? (
-          <ActivityIndicator style={styles.cardLoader} color="#CC0000" />
+          <ActivityIndicator
+            style={styles.cardLoader}
+            color="#CC0000"
+            accessibilityLabel={scorecardCopy.loadingLabel}
+          />
         ) : data ? (
           <View style={styles.cardWrapper}>
             <ScorecardView ref={cardRef} data={data} />
@@ -85,7 +91,7 @@ export function ScorecardScreen({ adapter, entities, platforms }: ScorecardScree
 
         {/* ── Actions ── */}
         <View style={styles.actions}>
-          {data && (
+          {data && data.persons.length > 0 && (
             <Pressable
               style={styles.button}
               onPress={handleShare}
@@ -122,7 +128,7 @@ const RED   = '#CC0000';
 const MONO  = 'monospace' as const;
 
 const styles = StyleSheet.create({
-  container:         { flex: 1, backgroundColor: WHITE },
+  container:         { flex: 1, backgroundColor: BLACK },
   scroll:            { paddingBottom: 40 },
   topBar:            { backgroundColor: BLACK, padding: 16, borderBottomWidth: 4, borderColor: RED },
   topBarTitle:       { fontFamily: MONO, fontSize: 20, fontWeight: 'bold', color: WHITE, letterSpacing: 3 },
@@ -130,8 +136,8 @@ const styles = StyleSheet.create({
   cardWrapper:       { margin: 16 },
   cardLoader:        { marginTop: 40 },
   actions:           { flexDirection: 'row', gap: 12, paddingHorizontal: 16, marginTop: 8 },
-  button:            { flex: 1, minHeight: 44, backgroundColor: RED, borderWidth: 3, borderColor: BLACK, alignItems: 'center', justifyContent: 'center', paddingVertical: 10 },
-  buttonSecondary:   { backgroundColor: WHITE, borderColor: BLACK },
+  button:            { flex: 1, minHeight: 44, backgroundColor: RED, borderWidth: 3, borderColor: WHITE, alignItems: 'center', justifyContent: 'center', paddingVertical: 10 },
+  buttonSecondary:   { backgroundColor: BLACK, borderColor: WHITE },
   buttonText:        { fontFamily: MONO, fontSize: 15, fontWeight: 'bold', color: WHITE, letterSpacing: 2 },
-  buttonTextSecondary: { color: BLACK },
+  buttonTextSecondary: { color: WHITE },
 });
