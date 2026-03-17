@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, View, Text, StyleSheet, SafeAreaView } from 'react-native';
+import { ScrollView, View, Text, Pressable, StyleSheet, SafeAreaView } from 'react-native';
 import { useInfoContent } from './hooks/useInfoContent';
 import { InfoSection } from './components/InfoSection';
 import { FaqItem } from './components/FaqItem';
@@ -15,7 +15,11 @@ import { theme } from '../../design/tokens';
  * the screen is always usable offline. To update copy, FAQ entries, or links
  * without an app release, edit info.json in the fuckfascists-data repo.
  */
-export function InfoScreen() {
+interface InfoScreenProps {
+  onVersionTap?: () => void;
+}
+
+export function InfoScreen({ onVersionTap }: InfoScreenProps) {
   const content = useInfoContent();
   const { about, transparency, faq, links } = content;
 
@@ -28,7 +32,9 @@ export function InfoScreen() {
           <Text style={styles.pageTitle} accessibilityRole="header" allowFontScaling={false}>
             {infoCopy.title}
           </Text>
-          <Text style={styles.pageVersion} allowFontScaling>v{content.version}</Text>
+          <Pressable onPress={onVersionTap} hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}>
+            <Text style={styles.pageVersion} allowFontScaling>v{content.version}</Text>
+          </Pressable>
         </View>
 
         {/* ── About ── */}

@@ -14,6 +14,7 @@ interface ScorecardScreenProps {
   adapter: StorageAdapter;
   entities: Entity[];
   platforms: Platform[];
+  onSwitchTab?: (tab: string) => void;
 }
 
 /**
@@ -25,7 +26,7 @@ interface ScorecardScreenProps {
  *  3. Drop is pending → show countdown + PREVIEW button
  *  4. User tapped PREVIEW → show card with PREVIEW stamp
  */
-export function ScorecardScreen({ adapter, entities, platforms }: ScorecardScreenProps) {
+export function ScorecardScreen({ adapter, entities, platforms, onSwitchTab }: ScorecardScreenProps) {
   const cardRef = useRef<View>(null);
   const [showPreview, setShowPreview] = useState(false);
 
@@ -86,7 +87,7 @@ export function ScorecardScreen({ adapter, entities, platforms }: ScorecardScree
           />
         ) : data ? (
           <View style={styles.cardWrapper}>
-            <ScorecardView ref={cardRef} data={data} />
+            <ScorecardView ref={cardRef} data={data} onSwitchTab={onSwitchTab} />
           </View>
         ) : null}
 

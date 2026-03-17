@@ -122,8 +122,8 @@ const styles = StyleSheet.create({
   title:      { ...theme.type.displayM, color: theme.colors.textPrimary, letterSpacing: 3 },
   editBtn:    { minWidth: theme.a11y.minTapTarget, minHeight: theme.a11y.minTapTarget, borderWidth: theme.borders.standard.width, borderColor: theme.colors.rewardYellow, paddingHorizontal: 10, alignItems: 'center', justifyContent: 'center' },
   editText:   { ...theme.type.caption, fontWeight: 'bold', color: theme.colors.rewardYellow, letterSpacing: 1 },
-  weekLabel:  { ...theme.type.bodyS, fontSize: 13, color: theme.colors.textSecondary, marginTop: 2 },
-  score:      { ...theme.type.bodyS, fontSize: 13, color: theme.colors.rewardYellow, marginTop: theme.space.xs },
+  weekLabel:  { ...theme.type.bodyS, color: theme.colors.textSecondary, marginTop: 2 },
+  score:      { ...theme.type.displayL, color: theme.colors.rewardYellow, marginTop: theme.space.xs },
   loader:     { flex: 1, justifyContent: 'center' },
   list:       { paddingBottom: theme.space['3xl'] },
 });

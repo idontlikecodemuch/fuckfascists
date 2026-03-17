@@ -32,8 +32,7 @@ import {
 
 // Onboarding sections
 import {
-  OnboardWelcome, OnboardHowItWorks, OnboardPrivacy,
-  OnboardPermissionLocation, OnboardPermissionNotif,
+  OnboardWelcome, OnboardPermissions, OnboardPrivacy,
 } from './sections/OnboardingSections';
 
 // Info sections
@@ -74,15 +73,13 @@ const SECTIONS: SectionDef[] = [
   { slug: '20-scorecard-countdown', Component: ScorecardDropCountdown },
   // Onboarding
   { slug: '21-onboard-welcome', Component: OnboardWelcome },
-  { slug: '22-onboard-howitworks', Component: OnboardHowItWorks },
+  { slug: '22-onboard-permissions', Component: OnboardPermissions },
   { slug: '23-onboard-privacy', Component: OnboardPrivacy },
-  { slug: '24-onboard-permission-location', Component: OnboardPermissionLocation },
-  { slug: '25-onboard-permission-notif', Component: OnboardPermissionNotif },
   // Info
-  { slug: '26-info-full', Component: InfoFullScreen },
-  { slug: '27-faqitem-collapsed', Component: FaqCollapsed },
-  { slug: '28-faqitem-expanded', Component: FaqExpanded },
-  { slug: '29-linkrow', Component: LinkRowSection },
+  { slug: '24-info-full', Component: InfoFullScreen },
+  { slug: '25-faqitem-collapsed', Component: FaqCollapsed },
+  { slug: '26-faqitem-expanded', Component: FaqExpanded },
+  { slug: '27-linkrow', Component: LinkRowSection },
 ];
 
 // ── Screen ─────────────────────────────────────────────────────────────────
@@ -170,13 +167,13 @@ export function CatalogScreen() {
         ))}
 
         <Text style={styles.groupHeader}>ONBOARDING SCREENS</Text>
-        {SECTIONS.slice(20, 25).map((s, i) => (
+        {SECTIONS.slice(20, 23).map((s, i) => (
           <s.Component key={s.slug} ref={(el) => { refs.current[20 + i] = el; }} />
         ))}
 
         <Text style={styles.groupHeader}>INFO COMPONENTS</Text>
-        {SECTIONS.slice(25).map((s, i) => (
-          <s.Component key={s.slug} ref={(el) => { refs.current[25 + i] = el; }} />
+        {SECTIONS.slice(23).map((s, i) => (
+          <s.Component key={s.slug} ref={(el) => { refs.current[23 + i] = el; }} />
         ))}
       </ScrollView>
     </SafeAreaView>

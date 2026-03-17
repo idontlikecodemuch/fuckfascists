@@ -14,12 +14,11 @@ const POINTS = [
   { label: onboardCopy.noHistory,   detail: onboardCopy.noHistoryDesc },
   { label: onboardCopy.onDevice,    detail: onboardCopy.onDeviceDesc },
   { label: onboardCopy.openSource,  detail: onboardCopy.openSourceDesc },
-  { label: onboardCopy.fecData,     detail: onboardCopy.fecDataDesc },
 ] as const;
 
 export function PrivacyScreen({ onNext }: PrivacyScreenProps) {
   return (
-    <OnboardingSlide stepIndex={2} title={onboardCopy.privacyTitle} onNext={onNext}>
+    <OnboardingSlide stepIndex={2} title={onboardCopy.privacyTitle} nextLabel={onboardCopy.done} onNext={onNext}>
       <View style={styles.list}>
         {POINTS.map((p) => (
           <View key={p.label} style={styles.row}>

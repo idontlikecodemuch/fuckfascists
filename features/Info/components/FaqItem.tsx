@@ -27,7 +27,7 @@ export function FaqItem({ entry }: FaqItemProps) {
         accessibilityHint={open ? infoCopy.faqCollapse : infoCopy.faqExpand}
       >
         <Text style={styles.questionText} allowFontScaling>{entry.q}</Text>
-        <Text style={styles.chevron} accessible={false}>{open ? infoCopy.chevronOpen : infoCopy.chevronClosed}</Text>
+        <Text style={styles.chevron} accessible={false}>{open ? '\u2212' : '+'}</Text>
       </Pressable>
 
       {open && (
@@ -40,7 +40,7 @@ export function FaqItem({ entry }: FaqItemProps) {
 }
 
 const styles = StyleSheet.create({
-  wrapper:      { borderBottomWidth: theme.borders.standard.width, borderColor: theme.colors.frameBlue },
+  wrapper:      { borderBottomWidth: theme.borders.standard.width, borderColor: theme.colors.surface2, marginBottom: theme.space.xs },
   question:     { flexDirection: 'row', alignItems: 'center', minHeight: theme.a11y.minTapTarget, paddingHorizontal: theme.space.lg, paddingVertical: theme.space.md, backgroundColor: theme.colors.surface1 },
   questionText: { flex: 1, ...theme.type.uiLabel, fontSize: 13, color: theme.colors.textPrimary, lineHeight: 18 },
   chevron:      { ...theme.type.caption, color: theme.colors.highlightBlue, marginLeft: theme.space.sm },

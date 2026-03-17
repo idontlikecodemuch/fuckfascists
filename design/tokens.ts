@@ -26,8 +26,8 @@ export const theme = {
     displayM: { fontFamily: 'Bungee-Regular', fontSize: 22, lineHeight: 24 },
     displayS: { fontFamily: 'Bungee-Regular', fontSize: 18, lineHeight: 20 },
     uiLabel: { fontFamily: 'IBMPlexSans-SemiBold', fontSize: 16, lineHeight: 20 },
-    bodyM: { fontFamily: 'IBMPlexSans-Regular', fontSize: 14, lineHeight: 20 },
-    bodyS: { fontFamily: 'IBMPlexSans-Regular', fontSize: 12, lineHeight: 16 },
+    bodyM: { fontFamily: 'IBMPlexSans-Regular', fontSize: 15, lineHeight: 22 },
+    bodyS: { fontFamily: 'IBMPlexSans-Regular', fontSize: 13, lineHeight: 18 },
     caption: { fontFamily: 'IBMPlexSans-Medium', fontSize: 11, lineHeight: 14 },
   },
 

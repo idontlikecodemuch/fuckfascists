@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Animated, Pressable, Text, StyleSheet, AccessibilityInfo } from 'react-native';
+import * as Haptics from 'expo-haptics';
 import { mapCopy } from '../../../copy/map';
 import { theme } from '../../../design/tokens';
 
@@ -9,21 +10,25 @@ interface AvoidButtonProps {
 }
 
 /**
- * Primary action button on the business card.
+ * Full-width AVOID button — the primary action on the business card.
  *
- * Renders as "AVOID" then flips to "✓ AVOIDED" confirmed state after the
- * user taps it — the tap is the affirmative avoidance action.
+ * Celebration sequence on confirm:
+ *  1. Text flips to "AVOIDED" with checkmark
+ *  2. Scale punch (1 → 1.08 → 1) over ~200ms
+ *  3. Brief opacity pulse (flash)
+ *  4. Haptic impact (medium)
+ *  5. Settles to green confirmed state after ~1.5s
  *
+ * Reduced-motion: animation + haptics disabled — state change is immediate.
  * Minimum tap target: 44×44pt (Apple HIG / WCAG 2.5.5).
- * Reduced-motion: animation disabled — state change is immediate.
  */
 export function AvoidButton({ onPress, disabled = false }: AvoidButtonProps) {
   const [confirmed, setConfirmed] = useState(false);
   const [error, setError] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
 
-  // Scale animation: quick punch on confirm (1 → 1.1 → 1), disabled when reduced-motion is on.
   const scaleAnim = useRef(new Animated.Value(1)).current;
+  const flashAnim = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
     let cancelled = false;
@@ -39,9 +44,19 @@ export function AvoidButton({ onPress, disabled = false }: AvoidButtonProps) {
     setError(false);
 
     if (!reducedMotion) {
-      Animated.sequence([
-        Animated.timing(scaleAnim, { toValue: 1.12, duration: 80, useNativeDriver: true }),
-        Animated.timing(scaleAnim, { toValue: 1,    duration: 120, useNativeDriver: true }),
+      // Haptic feedback
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
+
+      // Scale punch + flash pulse
+      Animated.parallel([
+        Animated.sequence([
+          Animated.timing(scaleAnim, { toValue: 1.08, duration: 100, useNativeDriver: true }),
+          Animated.timing(scaleAnim, { toValue: 1, duration: 150, useNativeDriver: true }),
+        ]),
+        Animated.sequence([
+          Animated.timing(flashAnim, { toValue: 0.7, duration: 80, useNativeDriver: true }),
+          Animated.timing(flashAnim, { toValue: 1, duration: 120, useNativeDriver: true }),
+        ]),
       ]).start();
     }
 
@@ -51,6 +66,7 @@ export function AvoidButton({ onPress, disabled = false }: AvoidButtonProps) {
       setConfirmed(false);
       setError(true);
       scaleAnim.setValue(1);
+      flashAnim.setValue(1);
     }
   }
 
@@ -58,7 +74,7 @@ export function AvoidButton({ onPress, disabled = false }: AvoidButtonProps) {
   const accessLabel = error ? mapCopy.avoidRetryLabel : confirmed ? mapCopy.avoidDoneLabel : mapCopy.avoidMarkLabel;
 
   return (
-    <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+    <Animated.View style={{ transform: [{ scale: scaleAnim }], opacity: flashAnim }}>
       <Pressable
         onPress={handlePress}
         disabled={confirmed || disabled}
@@ -66,9 +82,8 @@ export function AvoidButton({ onPress, disabled = false }: AvoidButtonProps) {
         accessibilityRole="button"
         accessibilityLabel={accessLabel}
         accessibilityState={{ disabled: confirmed || disabled }}
-        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
       >
-        <Text style={styles.label} allowFontScaling>
+        <Text style={[styles.label, confirmed && styles.labelConfirmed]} allowFontScaling>
           {label}
         </Text>
       </Pressable>
@@ -82,8 +97,7 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.bgVoid,
     borderWidth: theme.borders.hero.width,
     minHeight: 56,
-    minWidth: theme.a11y.minTapTarget,
-    paddingVertical: 10,
+    paddingVertical: theme.space.md,
     paddingHorizontal: theme.space.xl,
     alignItems: 'center',
     justifyContent: 'center',
@@ -97,8 +111,12 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.bgVoid,
   },
   label: {
-    ...theme.type.displayS,
+    ...theme.type.displayM,
     color: theme.colors.bgVoid,
+    letterSpacing: 3,
+  },
+  labelConfirmed: {
+    ...theme.type.displayS,
     letterSpacing: 2,
   },
 });

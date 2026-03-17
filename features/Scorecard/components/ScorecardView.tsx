@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, Pressable, StyleSheet } from 'react-native';
 import type { ScorecardViewData } from '../types';
 import type { ScorecardPerson, ScorecardSource } from '../data/aggregateScorecard';
 import { PreviewStamp } from './PreviewStamp';
@@ -10,6 +10,7 @@ import { theme } from '../../../design/tokens';
 
 interface ScorecardViewProps {
   data: ScorecardViewData;
+  onSwitchTab?: (tab: string) => void;
 }
 
 // Heavy layout threshold: 4+ total avoids AND 3+ distinct people
@@ -29,7 +30,7 @@ const TOP_N = 3;
  * Exposed via forwardRef so the parent can pass a ref for view capture.
  */
 export const ScorecardView = forwardRef<View, ScorecardViewProps>(
-  ({ data }, ref) => {
+  ({ data, onSwitchTab }, ref) => {
     const { weekOf, persons, grandTotal, isPreview } = data;
     const isEmpty = persons.length === 0;
     const isHeavy = grandTotal >= HEAVY_TOTAL_THRESHOLD && persons.length >= HEAVY_PERSON_THRESHOLD;
@@ -58,7 +59,23 @@ export const ScorecardView = forwardRef<View, ScorecardViewProps>(
         {isEmpty && (
           <View style={styles.emptyState}>
             <Text style={styles.emptyText} allowFontScaling={false}>
-              {scorecardCopy.emptyState}
+              {scorecardCopy.emptyBefore}
+              <Text
+                style={styles.emptyLink}
+                onPress={onSwitchTab ? () => onSwitchTab('map') : undefined}
+                accessibilityRole={onSwitchTab ? 'link' : undefined}
+              >
+                {scorecardCopy.emptyMap}
+              </Text>
+              {scorecardCopy.emptyMiddle}
+              <Text
+                style={styles.emptyLink}
+                onPress={onSwitchTab ? () => onSwitchTab('platforms') : undefined}
+                accessibilityRole={onSwitchTab ? 'link' : undefined}
+              >
+                {scorecardCopy.emptyTrack}
+              </Text>
+              {scorecardCopy.emptyAfter}
             </Text>
           </View>
         )}
@@ -83,8 +100,8 @@ export const ScorecardView = forwardRef<View, ScorecardViewProps>(
             </View>
 
             {/* Person rows */}
-            {visiblePersons.map((person) => (
-              <PersonRow key={person.figureName} person={person} />
+            {visiblePersons.map((person, index) => (
+              <PersonRow key={person.figureName} person={person} isTop={index === 0} />
             ))}
 
             {/* Overflow */}
@@ -119,14 +136,14 @@ ScorecardView.displayName = 'ScorecardView';
 
 // ── Sub-components ────────────────────────────────────────────────────────────
 
-function PersonRow({ person }: { person: ScorecardPerson }) {
+function PersonRow({ person, isTop = false }: { person: ScorecardPerson; isTop?: boolean }) {
   const lastName = extractLastName(person.figureName);
   const sourceText = person.sources
     .map((s) => formatSource(s))
     .join(' \u00b7 '); // middle dot separator
 
   return (
-    <View style={styles.personRow}>
+    <View style={[styles.personRow, isTop && styles.personRowTop]}>
       <View style={styles.personHeader}>
         <Text style={styles.personName} numberOfLines={1} allowFontScaling={false}>
           {lastName}
@@ -172,14 +189,16 @@ const styles = StyleSheet.create({
   // Empty state
   emptyState:     { padding: theme.space['3xl'], alignItems: 'center' },
   emptyText:      { ...theme.type.bodyS, fontSize: 13, color: theme.colors.dangerRed, textAlign: 'center', lineHeight: 22, fontWeight: 'bold' },
+  emptyLink:      { color: theme.colors.rewardYellow, textDecorationLine: 'underline' },
   // Body
   body:           { padding: theme.space.lg },
   bigTotalRow:    { alignItems: 'center', marginBottom: theme.space.xs },
   bigTotal:       { fontFamily: theme.fonts.headline, fontSize: 48, color: theme.colors.rewardYellow },
   framingRow:     { marginBottom: theme.space.md },
-  framingText:    { ...theme.type.uiLabel, color: theme.colors.textPrimary, letterSpacing: 2 },
+  framingText:    { ...theme.type.displayM, color: theme.colors.textPrimary, letterSpacing: 2 },
   // Person row
   personRow:      { marginBottom: theme.space.md, borderLeftWidth: theme.borders.standard.width, borderColor: theme.colors.rewardYellow, paddingLeft: 10 },
+  personRowTop:   { borderLeftWidth: theme.borders.hero.width, borderColor: theme.colors.rewardYellow },
   personHeader:   { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline' },
   personName:     { ...theme.type.displayS, color: theme.colors.textPrimary, flex: 1, textTransform: 'uppercase', letterSpacing: 1 },
   personCount:    { ...theme.type.displayS, color: theme.colors.rewardYellow, marginLeft: theme.space.sm },

@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import {
   View,
   Text,
-  Pressable,
   StyleSheet,
   ActivityIndicator,
+  Alert,
   type ViewStyle,
   type TextStyle,
 } from 'react-native';
-import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFonts } from 'expo-font';
 import { theme } from './design/tokens';
 import { useOnboarding } from './features/Onboarding/hooks/useOnboarding';
@@ -18,6 +18,11 @@ import { PlatformsScreen } from './features/Platforms/PlatformsScreen';
 import { ScorecardScreen } from './features/Scorecard/ScorecardScreen';
 import { InfoScreen } from './features/Info/InfoScreen';
 import { TRACKED_PLATFORMS } from './features/Platforms/data/platformList';
+import { useBetaMode } from './features/Beta/useBetaMode';
+import { BetaOverlay } from './features/Beta/BetaOverlay';
+import { LaunchScreen, shouldShowLaunchScreen } from './features/Launch/LaunchScreen';
+import { TabBar, type Tab } from './app/navigation/TabBar';
+import { betaCopy } from './copy/beta';
 import { SqliteAdapter } from './app/storage/SqliteAdapter';
 import { FECClient } from './core/api';
 import { fetchEntityList, parseEntityList } from './core/data';
@@ -30,56 +35,6 @@ const CatalogScreen = __DEV__
   ? require('./features/Dev/CatalogScreen').CatalogScreen
   : () => null;
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
-type Tab = 'map' | 'platforms' | 'report' | 'info' | 'dev';
-
-const TABS: { id: Tab; label: string }[] = [
-  { id: 'map',       label: 'MAP'       },
-  { id: 'platforms', label: 'TRACK'     },
-  { id: 'report',    label: 'SCORECARD' },
-  { id: 'info',      label: 'INFO'      },
-  ...(__DEV__ ? [{ id: 'dev' as const, label: 'DEV' }] : []),
-];
-
-// ─── Tab bar ─────────────────────────────────────────────────────────────────
-
-const TAB_ICONS: Record<Tab, string> = {
-  map:       '[ + ]',
-  platforms: '[ ✓ ]',
-  report:    '[ ★ ]',
-  info:      '[ ? ]',
-  dev:       '[ # ]',
-};
-
-function TabBar({ activeTab, onSelect }: { activeTab: Tab; onSelect: (t: Tab) => void }) {
-  const insets = useSafeAreaInsets();
-  return (
-    <View style={[styles.tabBar, { paddingBottom: Math.max(insets.bottom, 8) }]}>
-      {TABS.map(({ id, label }) => {
-        const active = id === activeTab;
-        return (
-          <Pressable
-            key={id}
-            style={[styles.tabItem, active && styles.tabItemActive]}
-            onPress={() => onSelect(id)}
-            accessibilityRole="tab"
-            accessibilityState={{ selected: active }}
-            accessibilityLabel={label}
-          >
-            <Text style={[styles.tabIcon, active && styles.tabIconActive]} allowFontScaling={false}>
-              {TAB_ICONS[id]}
-            </Text>
-            <Text style={[styles.tabLabel, active && styles.tabLabelActive]} allowFontScaling={false}>
-              {label}
-            </Text>
-          </Pressable>
-        );
-      })}
-    </View>
-  );
-}
-
 // ─── App ──────────────────────────────────────────────────────────────────────
 
 export default function App() {
@@ -90,12 +45,36 @@ export default function App() {
     'IBMPlexSans-Medium': require('./assets/fonts/IBMPlexSans-Medium.ttf'),
   });
 
+  useEffect(() => {
+    if (__DEV__ && fontsLoaded) {
+      console.log('[App] Fonts loaded: Bungee-Regular, IBMPlexSans-Regular, IBMPlexSans-SemiBold, IBMPlexSans-Medium');
+    }
+  }, [fontsLoaded]);
+
   const { isComplete, markComplete } = useOnboarding();
+  const { betaEnabled, registerTap } = useBetaMode();
   const [activeTab, setActiveTab]   = useState<Tab>('map');
   const [adapter, setAdapter]       = useState<StorageAdapter | null>(null);
   const [entities, setEntities]     = useState<Entity[]>(() =>
     parseEntityList(bundledEntitiesRaw)
   );
+  const [showLaunch, setShowLaunch] = useState<boolean | null>(null);
+
+  // Check if launch screen should show (once per calendar day)
+  useEffect(() => {
+    let cancelled = false;
+    shouldShowLaunchScreen()
+      .then((show) => { if (!cancelled) setShowLaunch(show); })
+      .catch(() => { if (!cancelled) setShowLaunch(false); });
+    return () => { cancelled = true; };
+  }, []);
+
+  const handleVersionTap = useCallback(async () => {
+    const toggled = await registerTap();
+    if (toggled) {
+      Alert.alert(betaEnabled ? betaCopy.deactivated : betaCopy.activated);
+    }
+  }, [registerTap, betaEnabled]);
 
   // Open SQLite and run migrations once on mount.
   useEffect(() => {
@@ -127,8 +106,8 @@ export default function App() {
 
   // ── Loading ──────────────────────────────────────────────────────────────────
 
-  // Wait for fonts, SecureStore read, and SQLite init before rendering anything.
-  if (!fontsLoaded || isComplete === null || adapter === null) {
+  // Wait for fonts, SecureStore read, SQLite init, and launch check before rendering.
+  if (!fontsLoaded || isComplete === null || adapter === null || showLaunch === null) {
     return (
       <SafeAreaProvider>
         <View style={styles.splash}>
@@ -145,6 +124,16 @@ export default function App() {
     return (
       <SafeAreaProvider>
         <OnboardingNavigator onComplete={markComplete} />
+      </SafeAreaProvider>
+    );
+  }
+
+  // ── Daily launch screen ──────────────────────────────────────────────────────
+
+  if (showLaunch) {
+    return (
+      <SafeAreaProvider>
+        <LaunchScreen onDismiss={() => setShowLaunch(false)} />
       </SafeAreaProvider>
     );
   }
@@ -173,10 +162,11 @@ export default function App() {
             adapter={adapter}
             entities={entities}
             platforms={TRACKED_PLATFORMS}
+            onSwitchTab={(tab) => setActiveTab(tab as Tab)}
           />
         );
       case 'info':
-        return <InfoScreen />;
+        return <InfoScreen onVersionTap={handleVersionTap} />;
       case 'dev':
         return <CatalogScreen />;
     }
@@ -187,6 +177,7 @@ export default function App() {
       <View style={styles.root}>
         <View style={styles.content}>{renderScreen()}</View>
         <TabBar activeTab={activeTab} onSelect={setActiveTab} />
+        {betaEnabled && <BetaOverlay />}
       </View>
     </SafeAreaProvider>
   );
@@ -195,18 +186,11 @@ export default function App() {
 // ─── Styles ───────────────────────────────────────────────────────────────────
 
 const styles = StyleSheet.create<{
-  splash:         ViewStyle;
-  splashTitle:    TextStyle;
-  splashSpinner:  ViewStyle;
-  root:           ViewStyle;
-  content:        ViewStyle;
-  tabBar:         ViewStyle;
-  tabItem:        ViewStyle;
-  tabItemActive:  ViewStyle;
-  tabIcon:        TextStyle;
-  tabIconActive:  TextStyle;
-  tabLabel:       TextStyle;
-  tabLabelActive: TextStyle;
+  splash:        ViewStyle;
+  splashTitle:   TextStyle;
+  splashSpinner: ViewStyle;
+  root:          ViewStyle;
+  content:       ViewStyle;
 }>({
   splash: {
     flex: 1,
@@ -231,39 +215,5 @@ const styles = StyleSheet.create<{
   },
   content: {
     flex: 1,
-  },
-  tabBar: {
-    flexDirection: 'row',
-    backgroundColor: theme.colors.bgNav,
-    borderTopWidth: theme.borders.hero.width,
-    borderTopColor: theme.colors.frameBlue,
-    paddingTop: theme.space.xs,
-  },
-  tabItem: {
-    flex: 1,
-    alignItems: 'center',
-    paddingVertical: theme.space.sm,
-    minHeight: theme.a11y.minTapTarget,
-    justifyContent: 'center',
-  },
-  tabItemActive: {
-    backgroundColor: theme.colors.surface1,
-  },
-  tabIcon: {
-    ...theme.type.caption,
-    color: theme.colors.textSecondary,
-    marginBottom: 2,
-  },
-  tabIconActive: {
-    color: theme.colors.rewardYellow,
-  },
-  tabLabel: {
-    ...theme.type.caption,
-    fontSize: 9,
-    letterSpacing: 1,
-    color: theme.colors.textSecondary,
-  },
-  tabLabelActive: {
-    color: theme.colors.rewardYellow,
   },
 });

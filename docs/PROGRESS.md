@@ -12,6 +12,92 @@ This document is updated continuously. New instances should read this first — 
 
 ## Last 5 Sessions (most recent first)
 
+### Session: March 16, 2026 (follow-up 6)
+**Focus:** Asset pipeline keying fix, reprocess/deploy, wire pixel art into components
+
+**Completed:**
+- **process_assets.py keying improvement** — three-step pipeline:
+  1. Flood fill from corners (existing — removes border-connected magenta/white)
+  2. **New global magenta pass** — keys any remaining pixel within Euclidean RGB distance 80 of #FF00FF regardless of connectedness. Catches magenta trapped inside closed shapes.
+  3. Alpha binarization threshold lowered from ≥200 to ≥128
+- **Reprocessed all assets** — `python3 scripts/process_assets.py --all` (17/18 processed; `bg_tile_pixel_grid` raw missing, pre-existing)
+- **Redeployed all assets** — `python3 scripts/deploy_assets.py --all` → 35 files to `assets/pixel/`
+- **FlagMarker.tsx wired to pixel art** — replaced coded View+Text (unicode ✓/⚑) with `<Image>` assets per component-rules §6:
+  - High confidence / avoided: `marker_flag_default.png`
+  - Medium confidence: `marker_warning_tile.png`
+  - 32×32pt display, 96×96 source
+- **BusinessCard.tsx wired to pixel art** — per component-rules §1:
+  - Topband: `business_card_topband_neutral.png` (full-width × 64h, resizeMode cover)
+  - Corner brackets: `corners_blue_standard_0.png` (TL) + `corners_blue_standard_1.png` (TR), positioned absolute 32×32
+  - `overflow: 'hidden'` on card for clean topband clipping
+  - `TOPBAND_DEFEATED` imported and ready for avoided state wiring
+
+**Files modified:**
+- `tools/img-gen/scripts/process_assets.py` — 3-step keying pipeline
+- `features/Map/components/MapMarker.tsx` — Image-based markers
+- `features/Map/components/BusinessCard.tsx` — topband + corner bracket assets
+
+**35 pixel art assets deployed to `assets/pixel/`** (markers, topbands, corners, FX, scorecard stamp, onboarding, search shell, nav shell, FAQ icons, bg tiles).
+
+---
+
+### Session: March 16, 2026 (follow-up 5)
+**Focus:** UI polish (Tasks 1-5) — visual pass, business card redesign, onboarding tightening, scorecard polish, beta/launch features
+
+**Completed:**
+
+**Task 1 — Visual polish pass:**
+- Ionicons in TabBar (extracted to `app/navigation/TabBar.tsx`, kept App.tsx under 250 lines)
+- Avoid celebration animation: 3-frame scale animation (1→1.15→1) with haptic feedback (expo-haptics), respects reduced motion
+- Scorecard empty state: tappable "Map" and "Track" links that switch tabs
+- Scorecard `displayM` framing, top person hero border (`rewardYellow`)
+- Various token-based spacing and typography adjustments
+
+**Task 2 — Business Card 3-beat redesign:**
+- WHO/WHY/ACT three-beat layout with clear visual separation
+- Medium confidence: `rewardYellow` left accent border
+- `onSwitchTab` callback threaded through ScorecardScreen → ScorecardView → App.tsx
+
+**Task 3 — Onboarding tightening (5→3 screens):**
+- Combined Welcome + HowItWorks into single WelcomeScreen with three feature one-liners
+- Combined Location + Notification permissions into single PermissionsScreen
+- Tightened PrivacyScreen (5→4 bullets, removed fecData point)
+- Deleted `HowItWorksScreen.tsx` and `PermissionScreen.tsx`
+- Updated OnboardingNavigator, types, and Dev catalog
+
+**Task 4 — Scorecard empty state + polish:**
+- `copy/scorecard.ts`: split `emptyState` into tappable link parts (`emptyLine1`, `emptyMapLink`, `emptyLine2`, `emptyTrackLink`, `emptyLine3`)
+- ScorecardView: tappable "Map" and "Track" links that switch tabs via `onSwitchTab`
+
+**Task 5 — Beta mode + daily launch screen:**
+- `features/Beta/useBetaMode.ts`: SecureStore-persisted triple-tap toggle (3 taps within 1.5s on version label)
+- `features/Beta/BetaOverlay.tsx`: floating "BETA" badge + "BUG" screenshot button (react-native-view-shot + expo-media-library)
+- `features/Launch/LaunchScreen.tsx`: daily launch screen (once per calendar day via SecureStore), rotating messages, pulsing "TAP TO START" (respects reduced motion), 3s auto-dismiss
+- InfoScreen: `onVersionTap` prop wired to beta toggle
+- App.tsx: beta overlay, launch screen flow, version tap handler
+
+**Files created:**
+- `app/navigation/TabBar.tsx`, `copy/beta.ts`, `copy/launch.ts`
+- `features/Beta/useBetaMode.ts`, `features/Beta/BetaOverlay.tsx`
+- `features/Launch/LaunchScreen.tsx`
+- `features/Onboarding/screens/PermissionsScreen.tsx` (new combined)
+
+**Files deleted:**
+- `features/Onboarding/screens/HowItWorksScreen.tsx`
+- `features/Onboarding/screens/PermissionScreen.tsx`
+
+**Files modified:**
+- `App.tsx`, `copy/onboard.ts`, `copy/scorecard.ts`
+- `features/Map/components/AvoidButton.tsx`, `features/Map/components/BusinessCard.tsx`
+- `features/Onboarding/OnboardingNavigator.tsx`, `features/Onboarding/types.ts`
+- `features/Onboarding/screens/WelcomeScreen.tsx`, `features/Onboarding/screens/PrivacyScreen.tsx`
+- `features/Scorecard/ScorecardScreen.tsx`, `features/Scorecard/components/ScorecardView.tsx`
+- `features/Info/InfoScreen.tsx`
+- `features/Dev/CatalogScreen.tsx`, `features/Dev/sections/OnboardingSections.tsx`
+- Various token and minor alignment fixes across Platform, Info, Map components
+
+---
+
 ### Session: March 16, 2026 (follow-up 4)
 **Focus:** Replace [org] placeholder URLs, data repo seed files
 
@@ -725,6 +811,14 @@ The Swift source now lives authoritatively at `modules/mapkit-search/ios/MapKitS
 - MapKitSearch auto-linked via `file:./modules/mapkit-search` — no `searchPaths` override needed ✅
 - `expo run:ios` builds and installs to simulator ✅ — `FckFascists.app` confirmed installed on iPhone 16 Pro
 - Design system: `design/tokens.ts` foundation + all 26 components migrated to theme tokens ✅
+- Pixel art assets: 35 assets deployed to `assets/pixel/`, keyed with improved 3-step pipeline ✅
+- FlagMarker uses pixel art marker assets (not coded View+Text) ✅
+- BusinessCard has topband and corner bracket pixel art assets ✅
+- Onboarding tightened to 3 screens (Welcome, Permissions, Privacy) ✅
+- Beta testing mode with triple-tap toggle + BetaOverlay screenshot tool ✅
+- Daily launch screen with rotating messages ✅
+- Avoid celebration animation with haptic feedback ✅
+- TabBar extracted with Ionicons ✅
 
 ## What's Not Working / Not Yet Built
 
@@ -742,11 +836,11 @@ The Swift source now lives authoritatively at `modules/mapkit-search/ios/MapKitS
 
 ## Immediate Next Steps (in order)
 
-1. **Rebuild iOS** — `expo prebuild --platform ios --clean && expo run:ios` to verify design token changes render correctly on simulator.
+1. **Rebuild iOS** — `expo prebuild --platform ios --clean && expo run:ios` to verify all recent changes (pixel art assets, onboarding, beta mode, launch screen) render correctly on simulator.
 2. **Podfile `post_install` hook** — automate the `AIRMap.m` nil guard patch so it survives `pod install`. See Known Limitations in CLAUDE.md.
-3. **iOS simulator smoke test** — launch from simulator, walk the full vertical slice (map scan → flag → business card → avoid tap → platforms → scorecard). Verify the new dark palette, Bungee/IBMPlexSans typography, and token-based spacing render correctly.
+3. **iOS simulator smoke test** — launch from simulator, walk the full vertical slice (map scan → flag → business card with topband art → avoid tap with haptics → platforms → scorecard). Verify pixel art markers render on map, topband/corners render in business card, onboarding flows through 3 screens, launch screen appears once per day, beta mode toggle works.
 4. **Physical device geolocation** — test on hardware, not simulator
-5. **Pixel art assets** — integrate generated sprites from `tools/img-gen/` into the asset pipeline per `design/asset-manifest.json`
+5. **Wire remaining pixel art assets** — `marker_flag_selected.png` (selected state), `business_card_reward_overlay.png` (avoid celebration), `corners_yellow_reward_0-3.png` (reward corners), `bottom_nav_shell.png`, `search_shell_caps`, `scorecard_preview_stamp`, `onboarding_hero_welcome`, FX animation frames
 
 ---
 

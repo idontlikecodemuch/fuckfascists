@@ -7,6 +7,7 @@ export interface Platform {
   name: string;            // consumer-facing display name
   parentCompany: string;   // legal entity name used for FEC committee matching
   ceoName: string;
+  publicFigureName?: string; // culturally recognizable figure (e.g. Musk for X/Twitter)
   categoryTags: string[];  // e.g. ['social', 'shopping', 'streaming']
 }
 

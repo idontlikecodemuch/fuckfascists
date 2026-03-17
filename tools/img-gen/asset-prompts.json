@@ -1,0 +1,151 @@
+{
+  "project": "F*CK FASCISTS",
+  "version": "v1.5_master",
+  "notes": {
+    "art_direction": "coded product UI + rendered identity layer. STRICT 8-bit character style.",
+    "generation_pipeline": "Feed the 'prompt' field to AI image generator. AI outputs will have a #FF00FF background.",
+    "scripting_pipeline": "Python/PIL script reads 'filename', applies 'processing.type' (keying magenta, cropping/slicing), and uses Nearest-Neighbor to scale to 'processing.target_size'.",
+    "palette": {
+      "bg_void": "#070B12",
+      "bg_nav": "#0D1424",
+      "surface_1": "#15284B",
+      "surface_2": "#1A2742",
+      "text_primary": "#DCE7F6",
+      "text_secondary": "#A8B4C8",
+      "frame_blue": "#2F63FF",
+      "highlight_blue": "#5FAEFF",
+      "glow_cyan": "#7AF2FF",
+      "reward_yellow": "#FFC93C",
+      "danger_red": "#FF3B30",
+      "success_green": "#2CCB63"
+    }
+  },
+  "assets": [
+    {
+      "id": "bg_tile_dark_stone",
+      "filename": "bg_tile_dark_stone.png",
+      "asset_name": "Dark Stone Tile",
+      "processing": { "type": "crop_center", "target_size": [128, 128] },
+      "prompt": "Chunky 8-bit / NES-style uniform background texture. Dark arcade stone with subtle cracks, cool blue-black tones (#070B12, #15284B). Limited palette, hard pixel edges only. Fill entire frame. No background. No anti-aliasing, no blur, no noise."
+    },
+    {
+      "id": "bg_tile_pixel_grid",
+      "filename": "bg_tile_pixel_grid.png",
+      "asset_name": "Subtle Pixel Grid Tile",
+      "processing": { "type": "crop_center", "target_size": [64, 64] },
+      "prompt": "Chunky 8-bit / NES-style uniform background texture. Ultra-subtle pixel grid, dark navy tones (#0D1424). Limited palette, hard pixel edges only. Fill entire frame. No background. No anti-aliasing, no blur, no noise."
+    },
+    {
+      "id": "fx_reward_spark_set",
+      "filename": "fx_reward_spark_set.png",
+      "asset_name": "Reward Spark / Star Set",
+      "processing": { "type": "grid_2x2", "target_size": [64, 64] },
+      "prompt": "Chunky 8-bit / NES-style sprite rendering. Exactly 4 variations of simple reward sparks/stars in a perfect 2x2 grid. Yellow (#FFC93C) and cyan (#7AF2FF). Thick black outlines, limited color palette, hard pixel edges only. Solid bright magenta (#FF00FF) background with wide gutters between sprites. No anti-aliasing, no gradients, no noise."
+    },
+    {
+      "id": "fx_money_drop_set",
+      "filename": "fx_money_drop_set.png",
+      "asset_name": "Money Drop FX Set",
+      "processing": { "type": "grid_2x2", "target_size": [96, 96] },
+      "prompt": "Chunky 8-bit / NES-style sprite rendering. Exactly 4 variations of falling green money bills in a perfect 2x2 grid. Thick black outlines, limited color palette, hard pixel edges only. Solid bright magenta (#FF00FF) background with wide gutters between sprites. No anti-aliasing, no gradients, no noise."
+    },
+    {
+      "id": "marker_flag_default",
+      "filename": "marker_flag_default.png",
+      "asset_name": "Map Marker Flag — Default",
+      "processing": { "type": "auto_crop", "target_size": [96, 96] },
+      "prompt": "Chunky 8-bit / NES-style sprite rendering. A simple red warning flag map marker on a base. Centered. Thick black outlines, limited color palette, hard pixel edges only. Solid bright magenta (#FF00FF) background. No anti-aliasing, no gradients, no noise."
+    },
+    {
+      "id": "marker_flag_selected",
+      "filename": "marker_flag_selected.png",
+      "asset_name": "Map Marker Flag — Selected",
+      "processing": { "type": "auto_crop", "target_size": [96, 96] },
+      "prompt": "Chunky 8-bit / NES-style sprite rendering. A simple red warning flag map marker with a glowing blue base. Centered. Thick black outlines, limited color palette, hard pixel edges only. Solid bright magenta (#FF00FF) background. No anti-aliasing, no gradients, no noise."
+    },
+    {
+      "id": "marker_warning_tile",
+      "filename": "marker_warning_tile.png",
+      "asset_name": "Map Marker — Warning Tile",
+      "processing": { "type": "auto_crop", "target_size": [96, 96] },
+      "prompt": "Chunky 8-bit / NES-style sprite rendering. A simple square arcade beacon map marker, yellow core, blue frame. Centered. Thick black outlines, limited color palette, hard pixel edges only. Solid bright magenta (#FF00FF) background. No anti-aliasing, no gradients, no noise."
+    },
+    {
+      "id": "corners_blue_standard",
+      "filename": "corners_blue_standard.png",
+      "asset_name": "Blue Corner Bracket Set",
+      "processing": { "type": "grid_2x2", "target_size": [64, 64] },
+      "prompt": "Chunky 8-bit / NES-style sprite rendering. Exactly 4 variations of simple blue UI corner brackets in a perfect 2x2 grid. Thick black outlines, limited color palette, hard pixel edges only. Solid bright magenta (#FF00FF) background with wide gutters. No anti-aliasing, no gradients, no noise, no complex detail."
+    },
+    {
+      "id": "corners_yellow_reward",
+      "filename": "corners_yellow_reward.png",
+      "asset_name": "Yellow Reward Corner Set",
+      "processing": { "type": "grid_2x2", "target_size": [64, 64] },
+      "prompt": "Chunky 8-bit / NES-style sprite rendering. Exactly 4 variations of simple yellow UI corner brackets in a perfect 2x2 grid. Thick black outlines, flat colors, hard pixel edges only. Solid bright magenta (#FF00FF) background with wide gutters. No anti-aliasing, no gradients, no noise, no ornate jewelry details."
+    },
+    {
+      "id": "search_shell_caps",
+      "filename": "search_shell_caps.png",
+      "asset_name": "Search Shell Corner Caps",
+      "processing": { "type": "split_horizontal", "target_size": [96, 64] },
+      "prompt": "Chunky 8-bit / NES-style sprite rendering. Left and right simple blue UI endcaps, side-by-side. Thick black outlines, flat colors, hard pixel edges only. Solid bright magenta (#FF00FF) background. No anti-aliasing, no gradients, no noise."
+    },
+    {
+      "id": "bottom_nav_shell",
+      "filename": "bottom_nav_shell.png",
+      "asset_name": "Bottom Nav Shell",
+      "processing": { "type": "horizontal_band", "target_size": null },
+      "prompt": "Chunky 8-bit / NES-style sprite rendering. A simple, wide, horizontal blue UI navigation ribbon. Centered horizontally. Thick black outlines, flat colors, hard pixel edges only. Solid bright magenta (#FF00FF) background filling top and bottom. No anti-aliasing, no gradients, no noise, no text, no lettering, no words."
+    },
+    {
+      "id": "business_card_topband_neutral",
+      "filename": "business_card_topband_neutral.png",
+      "asset_name": "Business Card Hero Topband — Neutral",
+      "processing": { "type": "horizontal_band", "target_size": [1200, 240] },
+      "prompt": "Chunky 8-bit / NES-style sprite rendering. A simple, wide, horizontal dark blue UI header ribbon. Centered horizontally. Thick black outlines, flat colors, hard pixel edges only. Solid bright magenta (#FF00FF) background filling top and bottom. No anti-aliasing, no gradients, no noise, no text, no lettering, no words."
+    },
+    {
+      "id": "business_card_topband_defeated",
+      "filename": "business_card_topband_defeated.png",
+      "asset_name": "Business Card Hero Topband — Defeated",
+      "processing": { "type": "horizontal_band", "target_size": [1200, 240] },
+      "prompt": "Chunky 8-bit / NES-style sprite rendering. A simple, wide, horizontal dark blue UI header ribbon with yellow sparks. Centered horizontally. Thick black outlines, flat colors, hard pixel edges only. Solid bright magenta (#FF00FF) background filling top and bottom. No anti-aliasing, no gradients, no noise, no text, no lettering, no words."
+    },
+    {
+      "id": "business_card_reward_overlay",
+      "filename": "business_card_reward_overlay.png",
+      "asset_name": "Business Card Reward Overlay",
+      "processing": { "type": "auto_crop", "target_size": [256, 256] },
+      "prompt": "Chunky 8-bit / NES-style sprite rendering. A simple victory overlay: yellow and cyan star bursts. Centered. Thick black outlines, flat colors, hard pixel edges only. Solid bright magenta (#FF00FF) background. No anti-aliasing, no gradients, no noise."
+    },
+    {
+      "id": "scorecard_preview_stamp",
+      "filename": "scorecard_preview_stamp.png",
+      "asset_name": "Preview Stamp",
+      "processing": { "type": "auto_crop", "target_size": [512, 256] },
+      "prompt": "Chunky 8-bit / NES-style sprite rendering. A simple chunky stamp reading 'PREVIEW' in yellow and navy. Centered. Thick black outlines, flat colors, hard pixel edges only. Solid bright magenta (#FF00FF) background. No anti-aliasing, no noise."
+    },
+    {
+      "id": "onboarding_hero_welcome",
+      "filename": "onboarding_hero_welcome.png",
+      "asset_name": "Onboarding Hero — Welcome",
+      "processing": { "type": "auto_crop", "target_size": [1536, 1024] },
+      "prompt": "Chunky 8-bit / NES-style sprite rendering. A simple rebellious arcade scene, dark blue with yellow sparks and red accents. Thick black outlines, flat colors, hard pixel edges only. Solid bright magenta (#FF00FF) background. No anti-aliasing, no noise, no text, no lettering, no words."
+    },
+    {
+      "id": "onboarding_permission_icons",
+      "filename": "onboarding_permission_icons.png",
+      "asset_name": "Permission Icon Set",
+      "processing": { "type": "split_horizontal", "target_size": [256, 256] },
+      "prompt": "Chunky 8-bit / NES-style sprite rendering. Exactly 2 simple icons (location marker, bell) side-by-side. Thick black outlines, flat colors, hard pixel edges only. Solid bright magenta (#FF00FF) background. No anti-aliasing, no noise."
+    },
+    {
+      "id": "faq_link_icon_set",
+      "filename": "faq_link_icon_set.png",
+      "asset_name": "Info / FAQ Icon Set",
+      "processing": { "type": "grid_2x2", "target_size": [64, 64] },
+      "prompt": "Chunky 8-bit / NES-style sprite rendering. Exactly 4 simple small icons (FAQ, link, privacy, source) in a 2x2 grid. Thick black outlines, flat colors, hard pixel edges only. Solid bright magenta (#FF00FF) background. No anti-aliasing, no noise."
+    }
+  ]
+}

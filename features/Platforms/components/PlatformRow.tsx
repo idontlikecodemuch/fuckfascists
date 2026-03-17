@@ -41,14 +41,14 @@ export function PlatformRow({ item, weekOf, onAvoid, onAvoidDate }: PlatformRowP
           hitSlop={{ top: 4, bottom: 4, left: 4, right: 4 }}
         >
           <Text style={styles.chevron} allowFontScaling={false}>
-            {expanded ? '\u25BC' : '\u25B6'}
+            {expanded ? '\u2212' : '+'}
           </Text>
         </Pressable>
 
         <View style={styles.info}>
           <Text style={styles.name} allowFontScaling>{platform.name}</Text>
           <Text style={styles.sub} allowFontScaling>
-            {platformsCopy.rowSubtitle(platform.parentCompany, platform.ceoName)}
+            {platformsCopy.rowSubtitle(platform.parentCompany, platform.publicFigureName ?? platform.ceoName)}
           </Text>
           <View style={styles.tags}>
             {platform.categoryTags.map((tag) => (
@@ -108,8 +108,8 @@ const styles = StyleSheet.create({
   tags:            { flexDirection: 'row', gap: 6 },
   tag:             { ...theme.type.caption, fontSize: 10, color: theme.colors.bgVoid, backgroundColor: theme.colors.highlightBlue, paddingHorizontal: 5, paddingVertical: 1 },
   count:           { ...theme.type.displayS, color: theme.colors.rewardYellow, marginRight: theme.space.md },
-  avoidBtn:        { minWidth: theme.a11y.minTapTarget, minHeight: theme.a11y.minTapTarget, borderWidth: theme.borders.standard.width, borderColor: theme.colors.frameBlue, backgroundColor: theme.colors.surface1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 10 },
+  avoidBtn:        { minWidth: theme.a11y.minTapTarget, minHeight: theme.a11y.minTapTarget, borderWidth: theme.borders.hero.width, borderColor: theme.colors.rewardYellow, backgroundColor: theme.colors.rewardYellow, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 10 },
   avoidBtnActive:  { backgroundColor: theme.colors.successGreen, borderColor: theme.colors.successGreen },
-  avoidText:       { ...theme.type.bodyS, fontWeight: 'bold', color: theme.colors.textPrimary },
+  avoidText:       { ...theme.type.displayS, fontSize: 11, fontWeight: 'bold', color: theme.colors.bgVoid },
   avoidTextActive: { color: theme.colors.bgVoid },
 });

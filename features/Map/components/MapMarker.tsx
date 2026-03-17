@@ -1,10 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { Image, StyleSheet } from 'react-native';
 import { Marker } from 'react-native-maps';
 import { CONFIDENCE_THRESHOLD_HIGH } from '../../../config/constants';
 import { sharedCopy } from '../../../copy/shared';
 import { mapCopy } from '../../../copy/map';
-import { theme } from '../../../design/tokens';
+
+// Pixel art marker assets — 96x96 source, displayed at 32pt on map
+const MARKER_FLAG    = require('../../../assets/pixel/marker_flag_default.png');
+const MARKER_WARN    = require('../../../assets/pixel/marker_warning_tile.png');
 
 interface FlagMarkerProps {
   coordinate: { latitude: number; longitude: number };
@@ -14,14 +17,11 @@ interface FlagMarkerProps {
   onPress: () => void;
 }
 
-// Token-based palette: red = HIGH confidence flagged, amber = MEDIUM, green = avoided
-const COLOR_HIGH    = { bg: theme.colors.dangerRed, border: theme.colors.dangerRed };
-const COLOR_MEDIUM  = { bg: theme.colors.rewardYellow, border: theme.colors.rewardYellow };
-const COLOR_AVOIDED = { bg: theme.colors.successGreen, border: theme.colors.successGreen };
-
 /**
- * Pixel art–style map marker for a flagged (or avoided) business.
- * Color encodes confidence level; green overrides when the user has avoided.
+ * Pixel art map marker for a flagged (or avoided) business.
+ * Uses rendered assets per component-rules §6:
+ *   - Default: red flag marker (marker_flag_default)
+ *   - Medium confidence: warning tile (marker_warning_tile)
  * Tapping opens the business card.
  */
 export function FlagMarker({
@@ -32,7 +32,8 @@ export function FlagMarker({
   onPress,
 }: FlagMarkerProps) {
   const confidenceLabel = confidence >= CONFIDENCE_THRESHOLD_HIGH ? sharedCopy.confidenceHigh : sharedCopy.confidenceMedium;
-  const colors = avoided ? COLOR_AVOIDED : (confidence >= CONFIDENCE_THRESHOLD_HIGH ? COLOR_HIGH : COLOR_MEDIUM);
+  const isHigh = confidence >= CONFIDENCE_THRESHOLD_HIGH;
+  const markerSource = isHigh || avoided ? MARKER_FLAG : MARKER_WARN;
 
   return (
     <Marker
@@ -44,31 +45,14 @@ export function FlagMarker({
           : mapCopy.markerFlagged(name, confidenceLabel)
       }
     >
-      <View
-        style={[
-          styles.flag,
-          { backgroundColor: colors.bg, borderColor: colors.border },
-        ]}
-      >
-        <Text style={styles.icon} accessible={false}>
-          {avoided ? '\u2713' : '\u2691'}
-        </Text>
-      </View>
+      <Image source={markerSource} style={styles.marker} />
     </Marker>
   );
 }
 
 const styles = StyleSheet.create({
-  flag: {
+  marker: {
     width: 32,
     height: 32,
-    borderWidth: theme.borders.standard.width,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  icon: {
-    color: theme.colors.textPrimary,
-    fontSize: 16,
-    fontWeight: 'bold',
   },
 });

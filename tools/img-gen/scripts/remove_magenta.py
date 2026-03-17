@@ -6,9 +6,13 @@ Processes all PNGs in output/raw/ and writes transparent PNGs to output/processe
 Usage:
   python scripts/remove_magenta.py
 
-Tolerance rules:
-  - Exact magenta: R >= 250, G <= 10, B >= 250 → fully transparent
-  - Anti-aliasing fringe: R > 200, G < 60, B > 200, A == 255 → fully transparent
+Keying strategy (handles noisy Gemini outputs):
+  - Flood fill from all 4 corners through candidate background pixels.
+  - Candidate = within RGB distance 60 of #FF00FF, OR within distance 30 of white.
+  - Only border-connected regions are removed — interior highlights are preserved.
+  - Alpha binarization: <200 → 0, >=200 → 255. Hard pixel-art edges, no fringe.
+
+Requires: pip3 install numpy pillow scipy
 """
 
 import sys
@@ -17,6 +21,11 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
+try:
+    from scipy import ndimage as _ndimage
+except ImportError:
+    print("ERROR: scipy is required. Run: pip3 install scipy")
+    sys.exit(1)
 
 TOOL_DIR = Path(__file__).resolve().parent.parent
 RAW_DIR = TOOL_DIR / "output" / "raw"
@@ -24,14 +33,39 @@ PROCESSED_DIR = TOOL_DIR / "output" / "processed"
 
 
 def remove_magenta(img: Image.Image) -> Image.Image:
-    """Return a copy of img with magenta (#FF00FF) pixels made transparent using NumPy."""
+    """
+    Return a copy of img with background keyed out and alpha binarized.
+
+    Flood fills from all 4 corners through pixels within RGB distance 60 of
+    #FF00FF or distance 30 of white. Only border-connected background regions
+    are removed. Alpha binarization (<200 → 0, >=200 → 255) kills fringe.
+    """
     rgba = img.convert("RGBA")
-    data = np.array(rgba)
+    data = np.array(rgba, dtype=np.uint8)
 
-    r, g, b, a = data[:, :, 0], data[:, :, 1], data[:, :, 2], data[:, :, 3]
+    r = data[:, :, 0].astype(np.float32)
+    g = data[:, :, 1].astype(np.float32)
+    b = data[:, :, 2].astype(np.float32)
 
-    magenta_mask = (r >= 250) & (g <= 10) & (b >= 250)
-    data[:, :, 3][magenta_mask] = 0
+    dist_magenta = np.sqrt((r - 255) ** 2 + g ** 2 + (b - 255) ** 2)
+    dist_white   = np.sqrt((r - 255) ** 2 + (g - 255) ** 2 + (b - 255) ** 2)
+
+    bg_candidate = (dist_magenta < 60) | (dist_white < 30)
+
+    labeled, _ = _ndimage.label(bg_candidate)
+
+    border_labels = set()
+    border_labels.update(labeled[0, :].flat)
+    border_labels.update(labeled[-1, :].flat)
+    border_labels.update(labeled[:, 0].flat)
+    border_labels.update(labeled[:, -1].flat)
+    border_labels.discard(0)
+
+    bg_mask = np.isin(labeled, list(border_labels))
+    data[:, :, 3][bg_mask] = 0
+
+    alpha = data[:, :, 3]
+    data[:, :, 3] = np.where(alpha >= 200, 255, 0).astype(np.uint8)
 
     return Image.fromarray(data)
 

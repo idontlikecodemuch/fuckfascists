@@ -48,7 +48,7 @@ export function MapControls({ onZoomIn, onZoomOut, onLocation, locationLoading }
       >
         {locationLoading
           ? <Text style={styles.buttonText} allowFontScaling={false}>{mapCopy.loadingIcon}</Text>
-          : <Ionicons name="locate" size={22} color={theme.colors.textPrimary} />
+          : <Ionicons name="navigate" size={20} color={theme.colors.glowCyan} />
         }
       </Pressable>
     </View>
@@ -57,6 +57,6 @@ export function MapControls({ onZoomIn, onZoomOut, onLocation, locationLoading }
 
 const styles = StyleSheet.create({
   stack:      { position: 'absolute', bottom: 120, right: theme.space.lg, gap: theme.space.sm },
-  button:     { width: 48, height: 48, backgroundColor: theme.colors.bgNav, borderWidth: theme.borders.standard.width, borderColor: theme.colors.frameBlue, alignItems: 'center', justifyContent: 'center' },
-  buttonText: { fontSize: 22, color: theme.colors.textPrimary, lineHeight: 26 },
+  button:     { width: 44, height: 44, backgroundColor: theme.colors.bgNav, borderWidth: theme.borders.standard.width, borderColor: theme.colors.surface2, alignItems: 'center', justifyContent: 'center', opacity: 0.85 },
+  buttonText: { fontSize: 18, color: theme.colors.textSecondary, lineHeight: 22 },
 });

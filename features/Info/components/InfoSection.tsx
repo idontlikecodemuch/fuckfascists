@@ -27,6 +27,6 @@ export function InfoSection({ title, children }: InfoSectionProps) {
 const styles = StyleSheet.create({
   section: { marginBottom: theme.space.xs },
   header:  { backgroundColor: theme.colors.surface1, paddingHorizontal: theme.space.lg, paddingVertical: 10, borderLeftWidth: theme.borders.hero.width, borderColor: theme.colors.frameBlue },
-  title:   { ...theme.type.displayS, fontSize: 11, color: theme.colors.textPrimary, letterSpacing: 3 },
+  title:   { ...theme.type.displayS, fontSize: 12, color: theme.colors.rewardYellow, letterSpacing: 3 },
   body:    { borderLeftWidth: theme.borders.hero.width, borderColor: theme.colors.surface2 },
 });

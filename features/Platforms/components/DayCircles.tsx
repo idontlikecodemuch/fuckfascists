@@ -73,6 +73,6 @@ const styles = StyleSheet.create({
   dayLabel:      { ...theme.type.caption, fontWeight: 'bold', color: theme.colors.textPrimary },
   circle:        { width: 36, height: 36, borderRadius: 18, borderWidth: theme.borders.standard.width, borderColor: theme.colors.frameBlue, alignItems: 'center', justifyContent: 'center', backgroundColor: theme.colors.surface1 },
   circleChecked: { backgroundColor: theme.colors.successGreen, borderColor: theme.colors.successGreen },
-  circleFuture:  { borderColor: theme.colors.surface2, backgroundColor: theme.colors.surface2, opacity: 0.5 },
+  circleFuture:  { borderColor: theme.colors.surface2, backgroundColor: theme.colors.surface2, opacity: 0.3 },
   checkmark:     { fontFamily: theme.fonts.headline, fontSize: 16, fontWeight: 'bold', color: theme.colors.textPrimary },
 });

@@ -14,6 +14,7 @@ export const TRACKED_PLATFORMS: Platform[] = [
     name: 'X / Twitter',
     parentCompany: 'X Corp',
     ceoName: 'Linda Yaccarino',
+    publicFigureName: 'Elon Musk',
     categoryTags: ['social'],
   },
   {
@@ -35,6 +36,7 @@ export const TRACKED_PLATFORMS: Platform[] = [
     name: 'Amazon',
     parentCompany: 'Amazon.com Inc',
     ceoName: 'Andy Jassy',
+    publicFigureName: 'Jeff Bezos',
     categoryTags: ['shopping', 'streaming'],
   },
   {
@@ -42,6 +44,7 @@ export const TRACKED_PLATFORMS: Platform[] = [
     name: 'Amazon Prime',
     parentCompany: 'Amazon.com Inc',
     ceoName: 'Andy Jassy',
+    publicFigureName: 'Jeff Bezos',
     categoryTags: ['streaming', 'shopping'],
   },
   {
