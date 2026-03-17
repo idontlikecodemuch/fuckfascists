@@ -22,7 +22,7 @@ This document tracks where the current implementation aligns with, deviates from
 | Configurable variables in constants.ts | No hardcoded thresholds | All values in `config/constants.ts` |
 | Gamified scorecard | Weekly drop, shareable | Weekly scorecard implemented |
 | Platform avoidance tracking | Daily checklist for social/streaming/delivery | Platform avoidance implemented |
-| 8-bit visual design system | Pixel art aesthetic, dark palette, chunky borders | `design/tokens.ts` + all 26 components migrated to theme tokens (Bungee + IBMPlexSans fonts, dark palette, hero/standard borders). 35 pixel art assets deployed to `assets/pixel/` — map markers and business card topband/corners wired. 107 CEO sprite sheets deployed to `assets/pixel/sprites/` with `SpriteView` component wired into BusinessCard, PlatformRow, and ScorecardView |
+| 8-bit visual design system | Pixel art aesthetic, dark palette, chunky borders | `design/tokens.ts` + all 26 components migrated to theme tokens (Bungee + IBMPlexSans fonts, dark palette, hero/standard borders). 35 pixel art assets + 107 CEO sprite sheets deployed. Full design refinement: map header bar, tab bar texture, search bar depth, BusinessCard sprite-left layout with donation hierarchy flip, MatchChooser visual upgrade, GameArena sprite grid with cosmetic tap FX, PlatformGroup parent company grouping, InfoScreen collapsible transparency + section ornamentation. 4-step keying pipeline with 1px alpha erosion. |
 | Onboarding flow | Multi-screen first-run flow | 3 screens: Welcome, Permissions (location+notifications combined), Privacy |
 | Beta testing mode | Hidden dev tools | Triple-tap version label → BetaOverlay with screenshot tool |
 

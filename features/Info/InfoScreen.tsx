@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ScrollView, View, Text, Pressable, StyleSheet, SafeAreaView } from 'react-native';
 import { useInfoContent } from './hooks/useInfoContent';
 import { InfoSection } from './components/InfoSection';
@@ -22,6 +22,7 @@ interface InfoScreenProps {
 export function InfoScreen({ onVersionTap }: InfoScreenProps) {
   const content = useInfoContent();
   const { about, transparency, faq, links } = content;
+  const [showTransparency, setShowTransparency] = useState(false);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -46,9 +47,20 @@ export function InfoScreen({ onVersionTap }: InfoScreenProps) {
           </View>
         </InfoSection>
 
-        {/* ── Transparency ── */}
+        {/* ── Transparency (collapsible) ── */}
         <InfoSection title={infoCopy.data}>
-          {transparency.map((point) => (
+          <Pressable
+            onPress={() => setShowTransparency((v) => !v)}
+            style={styles.collapseToggle}
+            accessibilityRole="button"
+            accessibilityState={{ expanded: showTransparency }}
+            accessibilityHint={showTransparency ? infoCopy.faqCollapse : infoCopy.faqExpand}
+          >
+            <Text style={styles.collapseText} allowFontScaling>
+              {showTransparency ? infoCopy.chevronOpen : infoCopy.chevronClosed}
+            </Text>
+          </Pressable>
+          {showTransparency && transparency.map((point) => (
             <View key={point.id} style={styles.tPoint}>
               <Text style={styles.tTitle} allowFontScaling>{point.title}</Text>
               <Text style={styles.tBody} allowFontScaling>{point.body}</Text>
@@ -87,7 +99,9 @@ const styles = StyleSheet.create({
   tagline:     { ...theme.type.uiLabel, color: theme.colors.rewardYellow, marginBottom: theme.space.md, lineHeight: 22 },
   body:        { ...theme.type.bodyS, fontSize: 13, color: theme.colors.textSecondary, lineHeight: 21, marginBottom: 10 },
   org:         { ...theme.type.caption, color: theme.colors.textSecondary, fontStyle: 'italic' },
-  tPoint:      { padding: theme.space.lg, borderBottomWidth: 1, borderColor: theme.colors.surface2 },
+  collapseToggle: { minHeight: theme.a11y.minTapTarget, alignItems: 'center', justifyContent: 'center', backgroundColor: theme.colors.surface1, borderBottomWidth: theme.borders.standard.width, borderColor: theme.colors.surface2 },
+  collapseText:   { ...theme.type.caption, color: theme.colors.highlightBlue },
+  tPoint:      { padding: theme.space.lg, borderBottomWidth: theme.borders.hero.width, borderColor: theme.colors.surface2 },
   tTitle:      { ...theme.type.bodyS, fontWeight: 'bold', color: theme.colors.textPrimary, marginBottom: 6, letterSpacing: 1 },
   tBody:       { ...theme.type.bodyS, color: theme.colors.textSecondary, lineHeight: 20 },
 });

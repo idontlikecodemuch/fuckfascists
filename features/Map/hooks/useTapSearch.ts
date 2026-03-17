@@ -204,6 +204,7 @@ export function useTapSearch(deps: MatchingDeps, areaHash: string, regionRef?: R
     tapPins,
     tapLoadingCoord,
     latestTapBatch,
+    setLatestTapBatch,
     handleMapPress,
     handlePoiClick,
     resetTapPins,

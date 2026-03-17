@@ -1,8 +1,10 @@
 import React from 'react';
-import { View, Text, Pressable, StyleSheet, type ViewStyle, type TextStyle } from 'react-native';
+import { View, Text, Pressable, ImageBackground, StyleSheet, type ViewStyle, type TextStyle, type ImageStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { theme } from '../../design/tokens';
+
+const BG_TEXTURE = require('../../assets/pixel/bg_tile_dark_stone.png');
 
 export type Tab = 'map' | 'platforms' | 'report' | 'info' | 'dev';
 
@@ -25,7 +27,7 @@ const TAB_ICON_NAMES: Record<Tab, keyof typeof Ionicons.glyphMap> = {
 export function TabBar({ activeTab, onSelect }: { activeTab: Tab; onSelect: (t: Tab) => void }) {
   const insets = useSafeAreaInsets();
   return (
-    <View style={[styles.tabBar, { paddingBottom: Math.max(insets.bottom, 8) }]}>
+    <ImageBackground source={BG_TEXTURE} resizeMode="repeat" style={[styles.tabBar, { paddingBottom: Math.max(insets.bottom, 8) }]} imageStyle={styles.bgTexture}>
       {TABS.map(({ id, label }) => {
         const active = id === activeTab;
         return (
@@ -39,7 +41,7 @@ export function TabBar({ activeTab, onSelect }: { activeTab: Tab; onSelect: (t: 
           >
             <Ionicons
               name={TAB_ICON_NAMES[id]}
-              size={22}
+              size={26}
               color={active ? theme.colors.rewardYellow : theme.colors.textSecondary}
               style={styles.tabIconSpacing}
             />
@@ -49,12 +51,13 @@ export function TabBar({ activeTab, onSelect }: { activeTab: Tab; onSelect: (t: 
           </Pressable>
         );
       })}
-    </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create<{
   tabBar:         ViewStyle;
+  bgTexture:      ImageStyle;
   tabItem:        ViewStyle;
   tabItemActive:  ViewStyle;
   tabIconSpacing: ViewStyle;
@@ -67,6 +70,9 @@ const styles = StyleSheet.create<{
     borderTopWidth: theme.borders.hero.width,
     borderTopColor: theme.colors.frameBlue,
     paddingTop: theme.space.xs,
+  },
+  bgTexture: {
+    opacity: 0.3,
   },
   tabItem: {
     flex: 1,

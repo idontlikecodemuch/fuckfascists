@@ -79,7 +79,7 @@ both surfaces unless a deliberate V2 divergence is documented first.
 │   ├── Map/                ← Geolocation scan, entity flag, BusinessCard, avoid tap
 │   ├── Platforms/           ← Platform avoidance tracking (daily increments)
 │   ├── Scorecard/           ← Drop timing, card generation, sharing
-│   ├── Onboarding/         ← 5-step first-run flow
+│   ├── Onboarding/         ← 3-screen first-run flow (Welcome, Permissions, Privacy)
 │   └── Info/               ← Transparency, about, FAQ, links (CDN-updatable)
 │
 ├── App.tsx                 ← current app shell: onboarding gate + manual tab bar

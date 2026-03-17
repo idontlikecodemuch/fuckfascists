@@ -1,7 +1,7 @@
 export const infoCopy = {
   title: "INFO",
   about: "ABOUT",
-  data: "HOW THE DATA WORKS",
+  data: "HOW IT WORKS",
   faq: "FAQ",
   links: "LINKS & SOURCE",
   linkText: (label: string) => `${label} \u2197`,

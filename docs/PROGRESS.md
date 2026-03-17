@@ -12,6 +12,65 @@ This document is updated continuously. New instances should read this first — 
 
 ## Last 5 Sessions (most recent first)
 
+### Session: March 17, 2026
+**Focus:** Design refinement — 8-bit game energy across all screens, bug fixes, sprite halo removal
+
+**Completed:**
+
+**Bug fixes (7 fixes from device testing):**
+- **Launch screen gate** — `shouldShowLaunchScreen()` was marking today as "seen" during onboarding before `isComplete` was true. Fixed: launch check deferred until `isComplete === true`. Loading guard also updated so onboarding renders without waiting for `showLaunch`.
+- **Avoid dismiss timing** — business card dismissed instantly on avoid tap. Added 3s celebration delay with fade+shrink animation (`Animated.parallel` opacity/scale, 400ms ease-out, respects reduced-motion). `avoidedResult` state drives defeated sprite/topband during delay.
+- **Multi-match re-tap** — tapping a pin at shared coordinates jumped to single card instead of showing chooser. Fixed: pin `onPress` now checks for colocated pins and routes to `setLatestTapBatch` when ≥2.
+- **Search pin drop** — text search was dropping map pins for businesses that might not be nearby. Added `isTextSearch` ref guard: pin effect skips when `isTextSearch.current === true`.
+- **Chick-fil-A zeros** — entities with all-zero donation data (dissolved PACs) showed "$0 / $0". Added `hasRealDonations` guard; shows "No donation data on file." when all amounts are zero.
+- **Day circles future style** — future day circles used `surface2` fill (identical to past unchecked). Changed to `transparent` background with `textSecondary` border, `opacity: 0.3`.
+- **Corner brackets** — business card had only TL+TR corners. Not a bug but noted for future asset wiring.
+
+**Design refinement — Steps 1-5 (from approved plan):**
+- **Copy updates** — `copy/info.ts`: "HOW THE DATA WORKS" → "HOW IT WORKS". `copy/platforms.ts`: added `groupHeader`, `arenaTitle`. `copy/shared.ts`: added `totalSince2016`, `recentCycleShort`, `donationNoneOnFile`.
+- **Map header bar** — branded "F*CK FASCISTS" header in `displayS` above the map, `surface1` background, `frameBlue` bottom border. Search bar repositioned below.
+- **Search bar depth** — `highlightBlue` top border + `bgVoid` bottom border on container for embossed/inset look.
+- **Tab bar texture** — `ImageBackground` with `bg_tile_dark_stone.png` tiled at 30% opacity behind tab bar. Icon size 22→26.
+- **Business card layout rethink** — sprite LEFT at 100pt with name RIGHT (flexDirection: row). Donation hierarchy flipped: total since 2016 as primary (big, GOP red / DEM blue), recent cycle as secondary below. All-zero guard. `highlightBlue` top edge + `bgVoid` bottom edge ornamentation.
+
+**Design refinement — Steps 6-9:**
+- **MatchChooser visual upgrade** — heading color → `rewardYellow`. Row left accent: `highlightBlue` 2px border. Card depth: `highlightBlue` top border + `bgVoid` bottom border.
+- **PlatformsScreen major restructure** — replaced `FlatList` with `ScrollView` for mixed arena+grouped content. New `GameArena.tsx` component (static sprite grid with cosmetic tap FX). New `PlatformGroup.tsx` component (parent company grouping with sprite bust + rolled-up total). Platforms grouped by `parentCompany` with group headers; singletons render without headers.
+- **GameArena cosmetic tap interaction** — tapping any sprite triggers floating "-1" FX (fade+translate up, 600ms) + speech bubble with random reaction ("ow!", "stop!", "no!", "hey!" from `platformsCopy.spriteReactions`). Bubble fades after 1s. Per-cell animated values via `useRef(new Map<string, TapFx>())`. Reduced-motion: static bubble for 1s, no animation. Purely cosmetic — no data logged.
+- **InfoScreen refinements** — transparency section now collapsible (default: collapsed) with ▲/▼ toggle. Thicker dividers between transparency points (`hero` width). InfoSection ornamentation: `highlightBlue` top border + `bgVoid` bottom border on body.
+
+**Sprite pipeline — 1px alpha erosion:**
+- Added `_erode_alpha_1px()` to both `remove_magenta.py` and `process_assets.py` — removes the anti-aliased fringe halo that survives keying + binarization. For every opaque pixel, if any of its 4 cardinal neighbors is transparent, make it transparent. Vectorized numpy implementation.
+- Processing order now: flood fill → global magenta pass → alpha binarization → 1px alpha erosion.
+- Reprocessed all 124 PNGs via `remove_magenta.py`, 17/18 assets via `process_assets.py`, deployed 35 non-sprite assets + 107 sprite sheets to `assets/pixel/`.
+
+**Files created:**
+- `features/Platforms/components/GameArena.tsx` — sprite grid with cosmetic tap FX
+- `features/Platforms/components/PlatformGroup.tsx` — parent company group header
+
+**Files modified:**
+- `App.tsx` — launch screen gate fix (deferred until `isComplete`)
+- `app/navigation/TabBar.tsx` — `ImageBackground` texture, icon size 26
+- `copy/info.ts` — "HOW IT WORKS" rename
+- `copy/platforms.ts` — `groupHeader`, `arenaTitle`, `spriteReactions`
+- `copy/shared.ts` — `totalSince2016`, `recentCycleShort`, `donationNoneOnFile`
+- `features/Info/InfoScreen.tsx` — collapsible transparency, thicker dividers
+- `features/Info/components/InfoSection.tsx` — `highlightBlue` top + `bgVoid` bottom borders
+- `features/Map/MapScreen.tsx` — header bar, avoid dismiss animation, search pin guard, colocated pin routing
+- `features/Map/components/BusinessCard.tsx` — sprite-left layout, donation hierarchy flip, all-zero guard, depth borders
+- `features/Map/components/MapSearchBar.tsx` — depth borders
+- `features/Map/components/MatchChooser.tsx` — `rewardYellow` heading, row left accent, depth borders
+- `features/Map/hooks/useTapSearch.ts` — exposed `setLatestTapBatch`
+- `features/Platforms/PlatformsScreen.tsx` — arena + grouping restructure
+- `features/Platforms/components/DayCircles.tsx` — future circle style fix
+- `tools/img-gen/scripts/process_assets.py` — `_erode_alpha_1px` step 4
+- `tools/img-gen/scripts/remove_magenta.py` — `_erode_alpha_1px` step 3
+- 107 sprite PNGs + 35 asset PNGs reprocessed with erosion
+
+**Build:** Xcode build clean (0 errors).
+
+---
+
 ### Session: March 16, 2026 (follow-up 7)
 **Focus:** CEO sprite system — process, deploy, utility, wire into 3 components + onboarding test fix
 
@@ -854,11 +913,18 @@ The Swift source now lives authoritatively at `modules/mapkit-search/ios/MapKitS
 - FlagMarker uses pixel art marker assets (not coded View+Text) ✅
 - BusinessCard has topband and corner bracket pixel art assets ✅
 - CEO sprites: 107 sprites deployed, SpriteView utility, wired into BusinessCard (standing on topband), PlatformRow (state-driven), ScorecardView (defeated) ✅
+- Sprite pipeline: 4-step keying (flood fill → global magenta → binarization → 1px alpha erosion) ✅
 - Onboarding tightened to 3 screens (Welcome, Permissions, Privacy) ✅
 - Beta testing mode with triple-tap toggle + BetaOverlay screenshot tool ✅
 - Daily launch screen with rotating messages ✅
-- Avoid celebration animation with haptic feedback ✅
-- TabBar extracted with Ionicons ✅
+- Avoid celebration animation with haptic feedback + 3s dismiss delay ✅
+- TabBar extracted with Ionicons + dark stone texture background ✅
+- Map branded header bar ("F*CK FASCISTS") ✅
+- GameArena: sprite grid with cosmetic tap FX (floating -1, speech bubbles) ✅
+- PlatformGroup: parent company grouping with sprite bust headers ✅
+- BusinessCard: sprite-left layout, flipped donation hierarchy, all-zero guard ✅
+- MatchChooser: rewardYellow heading, row accents, depth borders ✅
+- InfoScreen: collapsible transparency, section ornamentation ✅
 
 ## What's Not Working / Not Yet Built
 

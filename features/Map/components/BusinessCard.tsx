@@ -50,11 +50,11 @@ function ConfidenceBadge({ level }: { level: number }) {
 /**
  * Three-beat business card: WHO / WHY / ACT.
  *
- * Beat 1 — WHO: matchedAlias + parent attribution + CEO name (when enabled).
- * Beat 2 — WHY: donation data with clear visual separation.
- * Beat 3 — ACT: full-width AVOID button as the primary action.
+ * When sprite exists: sprite LEFT (100pt), name + parent RIGHT.
+ * When no sprite: name fills full width.
  *
- * Medium confidence: rewardYellow accent line on left border.
+ * Donation hierarchy: Total since 2016 is primary (big), recent cycle secondary.
+ * Global ornamentation: highlightBlue top edge, bgVoid bottom edge.
  */
 export function BusinessCard({ result, onAvoid, avoidDisabled = false, avoided = false, onDismiss, allEntities }: BusinessCardProps) {
   const { canonicalName, matchedAlias, committeeName, confidence, donationSummary, entity, fecFilingUrl } = result;
@@ -70,6 +70,11 @@ export function BusinessCard({ result, onAvoid, avoidDisabled = false, avoided =
       ? canonicalName
       : null;
 
+  // Detect all-zero donation data (e.g. dissolved PACs with no historical records).
+  const hasRealDonations = donationSummary != null &&
+    (donationSummary.recentRepubs !== 0 || donationSummary.recentDems !== 0 ||
+     donationSummary.totalRepubs !== 0 || donationSummary.totalDems !== 0);
+
   const pacName = donationSummary?.committeeName ?? committeeName;
 
   // Resolve sprite ID from the entity's display figure
@@ -84,73 +89,82 @@ export function BusinessCard({ result, onAvoid, avoidDisabled = false, avoided =
       <Image source={CORNER_TL} style={styles.cornerTL} />
       <Image source={CORNER_TR} style={styles.cornerTR} />
 
-      {/* ── CEO sprite — "standing" on the topband ── */}
-      {spriteId && (
-        <View style={styles.spritePerch}>
-          <SpriteView spriteId={spriteId} state={avoided ? 'defeated' : 'neutral'} size={72} />
+      {/* ── Beat 1: WHO — sprite-left layout when sprite exists ── */}
+      <View style={[styles.whoSection, spriteId ? styles.whoRow : undefined]}>
+        {spriteId && (
+          <View style={styles.spriteHero}>
+            <SpriteView spriteId={spriteId} state={avoided ? 'defeated' : 'neutral'} size={100} />
+          </View>
+        )}
+        <View style={spriteId ? styles.whoText : undefined}>
+          <View style={styles.titleRow}>
+            <Text
+              style={styles.name}
+              numberOfLines={2}
+              accessibilityRole="header"
+              allowFontScaling
+            >
+              {displayName}
+            </Text>
+            {isMedium && <ConfidenceBadge level={confidence} />}
+          </View>
+
+          {secondaryName && (
+            <Text style={styles.parentAttribution} numberOfLines={1} allowFontScaling>
+              {secondaryName}
+            </Text>
+          )}
+
+          {SHOW_FIGURE_NAME_IN_CARD && entity && (
+            <Text style={styles.figureName} allowFontScaling>
+              {getDisplayFigure(entity, allEntities)}
+            </Text>
+          )}
+
+          {isMedium && (
+            <Text style={styles.disclaimer} accessibilityRole="alert" allowFontScaling>
+              {mapCopy.mediumWarning}
+            </Text>
+          )}
         </View>
-      )}
-
-      {/* ── Beat 1: WHO ── */}
-      <View style={styles.whoSection}>
-        <View style={styles.titleRow}>
-          <Text
-            style={[styles.name, spriteId ? styles.nameWithSprite : undefined]}
-            numberOfLines={1}
-            accessibilityRole="header"
-            allowFontScaling
-          >
-            {displayName}
-          </Text>
-          {isMedium && <ConfidenceBadge level={confidence} />}
-        </View>
-
-        {secondaryName && (
-          <Text style={styles.parentAttribution} numberOfLines={1} allowFontScaling>
-            {secondaryName}
-          </Text>
-        )}
-
-        {SHOW_FIGURE_NAME_IN_CARD && entity && (
-          <Text style={styles.figureName} allowFontScaling>
-            {getDisplayFigure(entity, allEntities)}
-          </Text>
-        )}
-
-        {isMedium && (
-          <Text style={styles.disclaimer} accessibilityRole="alert" allowFontScaling>
-            {mapCopy.mediumWarning}
-          </Text>
-        )}
       </View>
 
-      {/* ── Beat 2: WHY ── */}
+      {/* ── Beat 2: WHY — totals primary, recent secondary ── */}
       <View style={styles.whySection}>
-        {donationSummary ? (
+        {hasRealDonations ? (
           <>
-            <View style={styles.recentRow}>
-              <Text style={[styles.recentAmount, styles.recentGOP]} allowFontScaling>
-                {sharedCopy.gop} {formatDonationAmount(donationSummary.recentRepubs)}
+            {/* Primary: Total since 2016 — big and prominent */}
+            <Text style={styles.totalLabel} allowFontScaling>
+              {sharedCopy.totalSince2016}
+            </Text>
+            <View style={styles.totalRow}>
+              <Text style={styles.totalGOP} allowFontScaling>
+                {sharedCopy.gop} {formatDonationAmount(donationSummary!.totalRepubs)}
               </Text>
-              <Text style={[styles.recentAmount, styles.recentDEM]} allowFontScaling>
-                {sharedCopy.dem} {formatDonationAmount(donationSummary.recentDems)}
+              <Text style={styles.totalDEM} allowFontScaling>
+                {sharedCopy.dem} {formatDonationAmount(donationSummary!.totalDems)}
               </Text>
             </View>
-            <Text style={styles.recentCycleLabel} allowFontScaling>
-              in {formatCycleLabel(donationSummary.recentCycle)}
+
+            {/* Secondary: recent cycle */}
+            <Text style={styles.recentLine} allowFontScaling>
+              {sharedCopy.recentCycleShort(
+                formatDonationAmount(donationSummary!.recentRepubs),
+                formatDonationAmount(donationSummary!.recentDems),
+                formatCycleLabel(donationSummary!.recentCycle),
+              )}
             </Text>
 
-            <View style={styles.totalsSection}>
-              <Text style={styles.totalsRow} allowFontScaling>
-                {sharedCopy.totalSince(formatDonationAmount(donationSummary.totalRepubs), formatDonationAmount(donationSummary.totalDems))}
+            {donationSummary!.activeCycles.length > 0 && (
+              <Text style={styles.cyclesLine} allowFontScaling>
+                {sharedCopy.activeCycles(formatActiveCycles(donationSummary!.activeCycles))}
               </Text>
-              {donationSummary.activeCycles.length > 0 && (
-                <Text style={styles.totalsRow} allowFontScaling>
-                  {sharedCopy.activeCycles(formatActiveCycles(donationSummary.activeCycles))}
-                </Text>
-              )}
-            </View>
+            )}
           </>
+        ) : donationSummary ? (
+          <Text style={styles.unavailableText} allowFontScaling>
+            {sharedCopy.donationNoneOnFile}
+          </Text>
         ) : (
           <Text style={styles.unavailableText} allowFontScaling>
             {sharedCopy.donationUnavail}
@@ -200,46 +214,45 @@ export function BusinessCard({ result, onAvoid, avoidDisabled = false, avoided =
 // ── Styles ────────────────────────────────────────────────────────────────────
 
 const styles = StyleSheet.create({
-  card:           { backgroundColor: theme.colors.surface1, borderColor: theme.colors.frameBlue, borderWidth: theme.borders.hero.width, margin: theme.space.sm, overflow: 'hidden' as const },
+  // Card container — highlight top, shadow bottom for pixel depth
+  card:           { backgroundColor: theme.colors.surface1, borderColor: theme.colors.frameBlue, borderWidth: theme.borders.hero.width, borderTopColor: theme.colors.highlightBlue, borderBottomColor: theme.colors.bgVoid, margin: theme.space.sm, overflow: 'hidden' as const },
   cardMedium:     { borderLeftColor: theme.colors.rewardYellow, borderLeftWidth: theme.borders.hero.width },
   topband:        { alignSelf: 'stretch' as const, height: 64 },
-  cornerTL:       { position: 'absolute' as const, top: 0, left: 0, width: 32, height: 32 },
-  cornerTR:       { position: 'absolute' as const, top: 0, right: 0, width: 32, height: 32 },
+  cornerTL:       { position: 'absolute' as const, top: 0, left: 0, width: 32, height: 32, zIndex: 3 },
+  cornerTR:       { position: 'absolute' as const, top: 0, right: 0, width: 32, height: 32, zIndex: 3 },
 
-  // Sprite perch — absolute, right-aligned, feet land on topband/WHO boundary
-  spritePerch:       { position: 'absolute' as const, top: 2, right: theme.space.md, zIndex: 2 },
-
-  // Beat 1: WHO
+  // Beat 1: WHO — row layout when sprite present
   whoSection:        { padding: theme.space.lg, paddingBottom: theme.space.md },
-  titleRow:          { flexDirection: 'row', alignItems: 'center', marginBottom: theme.space.xs },
+  whoRow:            { flexDirection: 'row' as const, alignItems: 'flex-start' as const },
+  spriteHero:        { marginRight: theme.space.md, marginTop: -theme.space.xl },
+  whoText:           { flex: 1 },
+  titleRow:          { flexDirection: 'row' as const, alignItems: 'center' as const, marginBottom: theme.space.xs },
   name:              { flex: 1, ...theme.type.displayM, color: theme.colors.textPrimary, marginRight: theme.space.sm },
-  nameWithSprite:    { marginRight: theme.space.xs },
   figureName:        { ...theme.type.bodyS, color: theme.colors.textSecondary, marginTop: 2 },
-  parentAttribution: { ...theme.type.caption, color: theme.colors.textSecondary, marginTop: 1 },
+  parentAttribution: { ...theme.type.bodyS, color: theme.colors.textSecondary, marginTop: 1 },
   disclaimer:        { ...theme.type.caption, color: theme.colors.rewardYellow, marginTop: theme.space.xs },
   badge:             { paddingHorizontal: 6, paddingVertical: 2, borderWidth: theme.borders.standard.width },
   badgeVerified:     { backgroundColor: theme.colors.successGreen, borderColor: theme.colors.successGreen },
   badgeMatched:      { backgroundColor: theme.colors.rewardYellow, borderColor: theme.colors.rewardYellow },
   badgeText:         { ...theme.type.caption, fontSize: 10, color: theme.colors.bgVoid, fontWeight: 'bold' },
 
-  // Beat 2: WHY
+  // Beat 2: WHY — totals primary
   whySection:        { paddingHorizontal: theme.space.lg, paddingBottom: theme.space.md, borderTopWidth: theme.borders.standard.width, borderTopColor: theme.colors.frameBlue },
-  recentRow:         { flexDirection: 'row', gap: theme.space.lg, paddingTop: theme.space.md },
-  recentAmount:      { ...theme.type.displayS, color: theme.colors.textPrimary },
-  recentGOP:         { color: theme.colors.dangerRed },
-  recentDEM:         { color: theme.colors.highlightBlue },
-  recentCycleLabel:  { ...theme.type.bodyS, color: theme.colors.textSecondary, marginTop: 2 },
-  totalsSection:     { marginTop: theme.space.sm },
-  totalsRow:         { ...theme.type.bodyS, color: theme.colors.textPrimary, marginBottom: 2 },
+  totalLabel:        { ...theme.type.caption, color: theme.colors.textSecondary, letterSpacing: 2, paddingTop: theme.space.md, marginBottom: theme.space.xs },
+  totalRow:          { flexDirection: 'row' as const, gap: theme.space.lg },
+  totalGOP:          { ...theme.type.displayS, color: theme.colors.dangerRed },
+  totalDEM:          { ...theme.type.displayS, color: theme.colors.highlightBlue },
+  recentLine:        { ...theme.type.bodyS, color: theme.colors.textSecondary, marginTop: theme.space.sm },
+  cyclesLine:        { ...theme.type.bodyS, color: theme.colors.textSecondary, marginTop: 2 },
   unavailableText:   { ...theme.type.bodyS, color: theme.colors.textSecondary, paddingTop: theme.space.md },
   pacDataLine:       { ...theme.type.caption, color: theme.colors.textSecondary, marginTop: theme.space.sm },
   fecLinkRow:        { marginTop: theme.space.sm },
-  fecLink:           { ...theme.type.bodyS, color: theme.colors.highlightBlue, textDecorationLine: 'underline' },
+  fecLink:           { ...theme.type.bodyS, color: theme.colors.highlightBlue, textDecorationLine: 'underline' as const },
 
   // Beat 3: ACT
   actSection:        { paddingHorizontal: theme.space.lg, paddingBottom: theme.space.md },
 
   // Dismiss
-  dismissButton:     { alignItems: 'center', paddingVertical: theme.space.sm, borderTopWidth: theme.borders.standard.width, borderTopColor: theme.colors.surface2 },
+  dismissButton:     { alignItems: 'center' as const, paddingVertical: theme.space.sm, borderTopWidth: theme.borders.standard.width, borderTopColor: theme.colors.surface2 },
   dismissLabel:      { ...theme.type.bodyS, color: theme.colors.textSecondary },
 });

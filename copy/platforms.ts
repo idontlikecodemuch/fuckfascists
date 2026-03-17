@@ -26,6 +26,13 @@ export const platformsCopy = {
   expandLabel: (name: string) => `Expand ${name} day details`,
   collapseLabel: (name: string) => `Collapse ${name} day details`,
 
+  // Parent company group headers
+  groupHeader: (name: string, total: number) => `${name} \u2014 ${total}\u00d7`,
+  arenaTitle: "THE ARENA",
+
+  // Arena sprite tap reactions (cosmetic only — no data logged)
+  spriteReactions: ["ow!", "stop!", "no!", "hey!"] as readonly string[],
+
   // Thursday nudge notification
   nudgeTitle: "Your card drops tomorrow.",
   nudgeBody: "Any more fascists you f*cked this week?",

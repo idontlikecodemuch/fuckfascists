@@ -43,8 +43,8 @@ export function MapSearchBar({ value, onChangeText, onSubmit, isScanning, topOff
 }
 
 const styles = StyleSheet.create({
-  container:  { position: 'absolute', left: theme.space.lg, right: theme.space.lg, flexDirection: 'row' },
-  input:      { flex: 1, backgroundColor: theme.colors.surface1, borderColor: theme.colors.highlightBlue, borderWidth: theme.borders.standard.width, paddingHorizontal: theme.space.md, height: theme.a11y.minTapTarget, ...theme.type.bodyM, color: theme.colors.textPrimary },
+  container:  { position: 'absolute', left: theme.space.lg, right: theme.space.lg, flexDirection: 'row', borderTopWidth: theme.borders.standard.width, borderTopColor: theme.colors.highlightBlue, borderBottomWidth: theme.borders.standard.width, borderBottomColor: theme.colors.bgVoid },
+  input:      { flex: 1, backgroundColor: theme.colors.surface1, borderColor: theme.colors.highlightBlue, borderWidth: theme.borders.standard.width, borderTopWidth: 0, borderBottomWidth: 0, paddingHorizontal: theme.space.md, height: theme.a11y.minTapTarget, ...theme.type.bodyM, color: theme.colors.textPrimary },
   button:     { width: theme.a11y.minTapTarget, height: theme.a11y.minTapTarget, backgroundColor: theme.colors.bgNav, alignItems: 'center', justifyContent: 'center', borderWidth: theme.borders.hero.width, borderColor: theme.colors.frameBlue },
   buttonBusy: { backgroundColor: theme.colors.surface2 },
   buttonText: { color: theme.colors.glowCyan, fontSize: 22, fontWeight: 'bold' },

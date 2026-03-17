@@ -12,7 +12,10 @@ export const sharedCopy = {
   checkmark: "\u2713",
   siteUrl: "fuckfascists.org",
   donationUnavail: "Donation data temporarily unavailable.",
+  donationNoneOnFile: "No donation data on file.",
   totalSince: (gopAmt: string, demAmt: string) => `Total since 2016:\u2002GOP ${gopAmt}\u00b7DEM ${demAmt}`,
   activeCycles: (cycles: string) => `Active cycles: ${cycles}`,
   confidenceA11y: (label: string) => `Confidence: ${label}`,
+  totalSince2016: "TOTAL SINCE 2016",
+  recentCycleShort: (gopAmt: string, demAmt: string, cycle: string) => `Recent (${cycle}): GOP ${gopAmt}\u00b7DEM ${demAmt}`,
 } as const;

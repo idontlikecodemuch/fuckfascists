@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
-import { View, StyleSheet, SafeAreaView, Linking, Platform } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, Linking, Platform, Animated, AccessibilityInfo } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, type Region } from 'react-native-maps';
 import type { Entity } from '../../core/models';
 import type { MatchingDeps } from '../../core/matching';
@@ -18,6 +18,8 @@ import type { MapPin, ScanResult } from './types';
 import { MapControls } from './components/MapControls';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { mapCopy } from '../../copy/map';
+import { sharedCopy } from '../../copy/shared';
+import { theme } from '../../design/tokens';
 
 interface MapScreenProps {
   entities: Entity[];
@@ -50,6 +52,8 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
   const [searchText, setSearchText] = useState('');
   const [pins, setPins] = useState<MapPin[]>([]);
   const [activeResult, setActiveResult] = useState<ScanResult | null>(null);
+  /** Tracks whether the current result came from a text search (true) or map tap (false). */
+  const isTextSearch = useRef(false);
 
   const location = useLocation();
 
@@ -63,9 +67,24 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
   const regionRef = useRef<Region>(DEFAULT_REGION);
 
   const {
-    tapPins, tapLoadingCoord, latestTapBatch,
+    tapPins, tapLoadingCoord, latestTapBatch, setLatestTapBatch,
     handleMapPress, handlePoiClick, resetTapPins, clearLatestTapBatch, markTapPinAvoided,
   } = useTapSearch(deps, location.areaHash ?? '', regionRef);
+
+  // Avoid celebration: 3s delay before dismiss, then fade+shrink animation.
+  const [avoidedResult, setAvoidedResult] = useState<ScanResult | null>(null);
+  const cardOpacity = useRef(new Animated.Value(1)).current;
+  const cardScale = useRef(new Animated.Value(1)).current;
+  const reducedMotionRef = useRef(false);
+  const avoidDismissTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    AccessibilityInfo.isReduceMotionEnabled().then((v) => {
+      if (!cancelled) reducedMotionRef.current = v;
+    });
+    return () => { cancelled = true; };
+  }, []);
 
   // Card effect — show BusinessCard whenever a match result arrives.
   useEffect(() => {
@@ -74,8 +93,10 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
   }, [status, result]);
 
   // Pin effect — place a map marker when coords are also available.
+  // Only drops pins for POI tap matches, not text searches (searched business might not be nearby).
   useEffect(() => {
     if (status !== 'matched' || !result || !location.coords) return;
+    if (isTextSearch.current) return;
     const id = result.entityId ?? result.fecCommitteeId;
     // Guard: empty/falsy id causes a nil key on FlagMarker, crashing AIRMap.
     if (!id) return;
@@ -94,6 +115,7 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
 
   const handleSearch = useCallback(async () => {
     if (!searchText.trim()) return;
+    isTextSearch.current = true;
     setActiveResult(null);
     setPins([]);
     resetTapPins();
@@ -102,22 +124,57 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
     await scan(searchText);
   }, [searchText, scan, reset, resetTapPins, clearLatestTapBatch, entities.length, status]);
 
+  const dismissAfterAvoid = useCallback(() => {
+    const finishDismiss = () => {
+      setActiveResult(null);
+      setAvoidedResult(null);
+      reset();
+      setSearchText('');
+      cardOpacity.setValue(1);
+      cardScale.setValue(1);
+    };
+
+    if (reducedMotionRef.current) {
+      // Reduced-motion: plain dismiss after 3s, no animation.
+      finishDismiss();
+    } else {
+      // Fade + shrink: opacity 1→0, scale 1→0.95, 400ms ease-out.
+      Animated.parallel([
+        Animated.timing(cardOpacity, { toValue: 0, duration: 400, useNativeDriver: true }),
+        Animated.timing(cardScale, { toValue: 0.95, duration: 400, useNativeDriver: true }),
+      ]).start(() => finishDismiss());
+    }
+  }, [reset, cardOpacity, cardScale]);
+
   const handleAvoid = useCallback(async () => {
     if (!activeResult?.entity) return;
     const entityId = activeResult.entityId ?? activeResult.fecCommitteeId;
     await recordEntityAvoid(adapter, entityId);
     setPins((prev) => prev.map((p) => (p.id === entityId ? { ...p, avoided: true } : p)));
     markTapPinAvoided(entityId);
-    setActiveResult(null);
-    reset();
-    setSearchText('');
-  }, [activeResult, adapter, reset, markTapPinAvoided]);
+    // Mark as avoided so the card shows the defeated sprite/topband.
+    setAvoidedResult(activeResult);
+    // Dismiss after 3 seconds so the user sees the celebration.
+    avoidDismissTimer.current = setTimeout(dismissAfterAvoid, 3000);
+  }, [activeResult, adapter, markTapPinAvoided, dismissAfterAvoid]);
+
+  // Cleanup the timer on unmount.
+  useEffect(() => {
+    return () => {
+      if (avoidDismissTimer.current) clearTimeout(avoidDismissTimer.current);
+    };
+  }, []);
 
   const handleDismiss = useCallback(() => {
+    if (avoidDismissTimer.current) clearTimeout(avoidDismissTimer.current);
+    isTextSearch.current = false;
     setActiveResult(null);
+    setAvoidedResult(null);
     clearLatestTapBatch();
     reset();
-  }, [reset, clearLatestTapBatch]);
+    cardOpacity.setValue(1);
+    cardScale.setValue(1);
+  }, [reset, clearLatestTapBatch, cardOpacity, cardScale]);
 
   // Tap batch effect — auto-select when a single tap returns exactly 1 match.
   // When 2+ matches arrive, the MatchChooser renders (no auto-select).
@@ -194,8 +251,15 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
     return [...pins, ...tapPins.filter((p) => !existingKeys.has(pinKey(p)))];
   }, [pins, tapPins]);
 
+  const HEADER_HEIGHT = 36;
+
   return (
     <SafeAreaView style={styles.container}>
+      {/* ── Branded header bar ── */}
+      <View style={styles.headerBar}>
+        <Text style={styles.headerTitle} allowFontScaling={false}>{sharedCopy.appName}</Text>
+      </View>
+
       <MapView
         ref={mapRef}
         style={styles.map}
@@ -217,7 +281,18 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
             name={pin.name}
             confidence={pin.result.confidence}
             avoided={pin.avoided}
-            onPress={() => setActiveResult(pin.result)}
+            onPress={() => {
+              // If multiple pins share the same coords, show the chooser instead
+              // of jumping to a single card.
+              const colocated = allPins.filter(
+                (p) => p.coords.latitude === pin.coords.latitude && p.coords.longitude === pin.coords.longitude
+              );
+              if (colocated.length >= 2) {
+                setLatestTapBatch(colocated.map((p) => p.result));
+              } else {
+                setActiveResult(pin.result);
+              }
+            }}
           />
         ))}
         {tapLoadingCoord && <TapLoadingMarker coordinate={tapLoadingCoord} />}
@@ -228,7 +303,7 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
         onChangeText={setSearchText}
         onSubmit={handleSearch}
         isScanning={status === 'scanning'}
-        topOffset={insets.top + 16}
+        topOffset={HEADER_HEIGHT + theme.space.sm}
       />
 
       <MapControls
@@ -247,16 +322,16 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
       )}
 
       {activeResult && (
-        <View style={styles.cardContainer}>
+        <Animated.View style={[styles.cardContainer, { opacity: cardOpacity, transform: [{ scale: cardScale }] }]}>
           <BusinessCard
             result={activeResult}
             onAvoid={handleAvoid}
             avoidDisabled={!activeResult.entity}
-            avoided={allPins.some((p) => p.result === activeResult && p.avoided)}
+            avoided={avoidedResult === activeResult || allPins.some((p) => p.result === activeResult && p.avoided)}
             onDismiss={handleDismiss}
             allEntities={entities}
           />
-        </View>
+        </Animated.View>
       )}
 
       {(status === 'unmatched' || status === 'lookup_unavailable') && (
@@ -271,7 +346,9 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
 }
 
 const styles = StyleSheet.create({
-  container:    { flex: 1, backgroundColor: '#1A1A1A' },
-  map:          { flex: 1 },
+  container:     { flex: 1, backgroundColor: theme.colors.bgVoid },
+  headerBar:     { backgroundColor: theme.colors.surface1, paddingHorizontal: theme.space.lg, paddingVertical: theme.space.sm, borderBottomWidth: theme.borders.standard.width, borderBottomColor: theme.colors.frameBlue },
+  headerTitle:   { ...theme.type.displayS, color: theme.colors.textPrimary },
+  map:           { flex: 1 },
   cardContainer: { position: 'absolute', bottom: 0, left: 0, right: 0 },
 });

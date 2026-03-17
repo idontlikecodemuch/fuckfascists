@@ -1,19 +1,57 @@
-import React, { useMemo, useState } from 'react';
-import { View, Text, FlatList, Pressable, StyleSheet, SafeAreaView, ActivityIndicator } from 'react-native';
+import React, { useMemo, useState, useCallback, useRef } from 'react';
+import { View, Text, ScrollView, Pressable, StyleSheet, SafeAreaView, ActivityIndicator } from 'react-native';
 import type { StorageAdapter } from '../../core/data';
 import { TRACKED_PLATFORMS } from './data/platformList';
 import { usePlatformAvoidance } from './hooks/usePlatformAvoidance';
 import { usePlatformRoster } from './hooks/usePlatformRoster';
 import { PlatformRow } from './components/PlatformRow';
 import { PlatformSetupScreen } from './components/PlatformSetupScreen';
+import { GameArena } from './components/GameArena';
+import { PlatformGroup } from './components/PlatformGroup';
 import { formatWeekOf } from './utils/platformHelpers';
 import type { PlatformItem } from './types';
 import { platformsCopy } from '../../copy/platforms';
 import { useNudgeNotification } from './hooks/useNudgeNotification';
+import { nameToSpriteId } from '../../core/sprites/spriteLoader';
 import { theme } from '../../design/tokens';
 
 interface PlatformsScreenProps {
   adapter: StorageAdapter;
+}
+
+/** Dedupe figures by display name for the arena grid. */
+function buildArenaFigures(items: PlatformItem[]) {
+  const seen = new Map<string, number>();
+  for (const { platform, weeklyCount } of items) {
+    const name = platform.publicFigureName ?? platform.ceoName;
+    seen.set(name, (seen.get(name) ?? 0) + weeklyCount);
+  }
+  return [...seen.entries()].map(([name, totalAvoids]) => ({
+    name,
+    spriteId: nameToSpriteId(name),
+    totalAvoids,
+  }));
+}
+
+/** Group items by parentCompany, preserving order of first appearance. */
+function groupByParent(items: PlatformItem[]) {
+  const groups: { parent: string; figure: string; items: PlatformItem[] }[] = [];
+  const idx = new Map<string, number>();
+  for (const item of items) {
+    const parent = item.platform.parentCompany;
+    const existing = idx.get(parent);
+    if (existing !== undefined) {
+      groups[existing].items.push(item);
+    } else {
+      idx.set(parent, groups.length);
+      groups.push({
+        parent,
+        figure: item.platform.publicFigureName ?? item.platform.ceoName,
+        items: [item],
+      });
+    }
+  }
+  return groups;
 }
 
 /**
@@ -22,10 +60,14 @@ interface PlatformsScreenProps {
  * On first use, shows a setup screen for the user to select which platforms
  * to track. After setup, shows the main platform list filtered to the user's
  * roster. An EDIT button in the header reopens the setup screen.
+ *
+ * Restructured: game arena at top, platforms grouped by parent company.
  */
 export function PlatformsScreen({ adapter }: PlatformsScreenProps) {
   const { selectedIds, saveSelection } = usePlatformRoster();
   const [editing, setEditing] = useState(false);
+  const lastAvoidedRef = useRef<string | null>(null);
+  const [lastAvoided, setLastAvoided] = useState<string | null>(null);
 
   // Schedule Thursday evening nudge notification (silently skips if permission denied)
   useNudgeNotification();
@@ -39,6 +81,22 @@ export function PlatformsScreen({ adapter }: PlatformsScreenProps) {
 
   const { weekOf, items, totalAvoids, loading, avoid, avoidForDate } =
     usePlatformAvoidance(adapter, activePlatforms);
+
+  const arenaFigures = useMemo(() => buildArenaFigures(items), [items]);
+  const grouped = useMemo(() => groupByParent(items), [items]);
+
+  const handleAvoid = useCallback(
+    async (platformId: string) => {
+      const platform = activePlatforms.find((p) => p.id === platformId);
+      if (platform) {
+        const figureName = platform.publicFigureName ?? platform.ceoName;
+        lastAvoidedRef.current = figureName;
+        setLastAvoided(figureName);
+      }
+      await avoid(platformId);
+    },
+    [avoid, activePlatforms]
+  );
 
   // Loading roster from SecureStore
   if (selectedIds === null) {
@@ -95,21 +153,49 @@ export function PlatformsScreen({ adapter }: PlatformsScreenProps) {
           accessibilityLabel={platformsCopy.loading}
         />
       ) : (
-        <FlatList<PlatformItem>
-          data={items}
-          keyExtractor={(item) => item.platform.id}
-          renderItem={({ item }) => (
-            <PlatformRow
-              item={item}
-              weekOf={weekOf}
-              onAvoid={() => avoid(item.platform.id)}
-              onAvoidDate={(date) => avoidForDate(item.platform.id, date)}
-            />
-          )}
-          contentContainerStyle={styles.list}
-          accessibilityRole="list"
-          accessibilityLabel={platformsCopy.checklist}
-        />
+        <ScrollView contentContainerStyle={styles.list} accessibilityLabel={platformsCopy.checklist}>
+          {/* Game Arena */}
+          <GameArena figures={arenaFigures} lastAvoided={lastAvoided} />
+
+          {/* Grouped platform rows */}
+          {grouped.map((group) => {
+            const groupAvoids = group.items.reduce((sum, i) => sum + i.weeklyCount, 0);
+            const isSingleton = group.items.length === 1;
+
+            if (isSingleton) {
+              // Standalone platform — no group header
+              const item = group.items[0];
+              return (
+                <PlatformRow
+                  key={item.platform.id}
+                  item={item}
+                  weekOf={weekOf}
+                  onAvoid={() => handleAvoid(item.platform.id)}
+                  onAvoidDate={(date) => avoidForDate(item.platform.id, date)}
+                />
+              );
+            }
+
+            return (
+              <PlatformGroup
+                key={group.parent}
+                parentCompany={group.parent}
+                figureName={group.figure}
+                totalAvoids={groupAvoids}
+              >
+                {group.items.map((item) => (
+                  <PlatformRow
+                    key={item.platform.id}
+                    item={item}
+                    weekOf={weekOf}
+                    onAvoid={() => handleAvoid(item.platform.id)}
+                    onAvoidDate={(date) => avoidForDate(item.platform.id, date)}
+                  />
+                ))}
+              </PlatformGroup>
+            );
+          })}
+        </ScrollView>
       )}
     </SafeAreaView>
   );

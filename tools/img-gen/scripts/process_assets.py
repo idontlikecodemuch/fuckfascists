@@ -23,6 +23,8 @@ Keying (applied to all types before slicing):
      of #FF00FF is keyed out regardless of connectedness. This catches magenta
      trapped inside closed shapes that the flood fill cannot reach.
   3. Alpha binarization: <128 → 0, >=128 → 255. Hard pixel-art edges, no fringe.
+  4. 1px alpha erosion: any opaque pixel with a transparent 4-neighbor becomes
+     transparent. Removes the anti-aliased fringe halo that survives keying.
 
 Requires: pip3 install numpy pillow scipy
 
@@ -88,13 +90,55 @@ def _bg_flood_fill(data: np.ndarray) -> np.ndarray:
     return np.isin(labeled, list(border_labels))
 
 
+def _erode_alpha_1px(data: np.ndarray) -> None:
+    """
+    1px alpha erosion: make any opaque pixel transparent if at least one of
+    its 4 immediate neighbors (up, down, left, right) is transparent.
+
+    This removes exactly one pixel ring from every opaque edge — the
+    anti-aliased fringe halo that survives keying + binarization.
+    Interior pixels are untouched because all their neighbors are opaque.
+
+    Modifies data in-place.
+    """
+    alpha = data[:, :, 3]
+    opaque = alpha > 0
+
+    # Check each of the 4 cardinal neighbors for transparency.
+    # Pixels at the image border treat the out-of-bounds neighbor as transparent.
+    has_transparent_above = np.zeros_like(opaque)
+    has_transparent_below = np.zeros_like(opaque)
+    has_transparent_left  = np.zeros_like(opaque)
+    has_transparent_right = np.zeros_like(opaque)
+
+    has_transparent_above[0, :]  = True   # top row — no neighbor above
+    has_transparent_above[1:, :] = ~opaque[:-1, :]
+
+    has_transparent_below[-1, :] = True   # bottom row — no neighbor below
+    has_transparent_below[:-1, :] = ~opaque[1:, :]
+
+    has_transparent_left[:, 0]  = True    # left column — no neighbor left
+    has_transparent_left[:, 1:] = ~opaque[:, :-1]
+
+    has_transparent_right[:, -1] = True   # right column — no neighbor right
+    has_transparent_right[:, :-1] = ~opaque[:, 1:]
+
+    edge_mask = opaque & (
+        has_transparent_above | has_transparent_below |
+        has_transparent_left  | has_transparent_right
+    )
+
+    data[:, :, 3][edge_mask] = 0
+
+
 def _key_and_threshold(img: Image.Image) -> Image.Image:
     """
-    Three-step keying pipeline:
+    Four-step keying pipeline:
     1. Flood fill background from corners (near-magenta + near-white candidates).
     2. Global magenta pass: key any remaining pixel within RGB distance 80 of
        #FF00FF — catches magenta trapped inside closed shapes.
     3. Alpha binarization: <128 → 0 (transparent), >=128 → 255 (opaque).
+    4. 1px alpha erosion — removes the anti-aliased halo ring.
     Hard pixel-art edges — no fringe, no soft blending.
     """
     rgba = img.convert("RGBA")
@@ -115,6 +159,9 @@ def _key_and_threshold(img: Image.Image) -> Image.Image:
     # Step 3: binarize alpha — kill anti-aliased fringe
     alpha = data[:, :, 3]
     data[:, :, 3] = np.where(alpha >= 128, 255, 0).astype(np.uint8)
+
+    # Step 4: 1px alpha erosion — strip fringe halo
+    _erode_alpha_1px(data)
 
     return Image.fromarray(data)
 

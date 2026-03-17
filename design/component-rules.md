@@ -56,16 +56,16 @@ All components reference tokens from `design/tokens.ts`. Never hardcode hex valu
 | Sheet background | `colors.surface1` |
 | Row background | `colors.surface2` |
 | Sheet border | `borders.hero` in `colors.frameBlue` |
-| Title | `type.displayS` / `colors.textPrimary` |
+| Title | `type.displayS` / `colors.rewardYellow` |
 | Row name | `type.uiLabel` / `colors.textPrimary` |
 | Row subtitle | `type.bodyS` / `colors.textSecondary` |
 
 **Spacing:** `space.lg` sheet padding, `space.sm` between rows, `space.md` row internal padding.
 
 **States:**
-- Medium confidence rows get `colors.rewardYellow` left accent bar (2px).
+- All rows get `colors.highlightBlue` left accent bar (`borders.hero` width).
 
-**Decoration:** Minimal — no heavy ornament. Sheet border only.
+**Decoration:** Depth borders — `borderTopColor: highlightBlue`, `borderBottomColor: bgVoid` on sheet container.
 
 **Accessibility:** Each row is a focusable button. VoiceOver reads name + confidence level.
 
@@ -281,14 +281,19 @@ All components reference tokens from `design/tokens.ts`. Never hardcode hex valu
 | Section background | `colors.surface1` |
 | Expanded FAQ background | `colors.surface2` |
 | Section border | `borders.standard` in `colors.frameBlue` |
+| Section ornamentation | `borders.hero` top in `colors.highlightBlue`, `borders.hero` bottom in `colors.bgVoid` |
 | Expanded border | `borders.standard` in `colors.highlightBlue` |
-| Section headers | `type.displayS` / `colors.textPrimary` |
+| Section headers | `type.displayS` / `colors.rewardYellow` |
 | Question text | `type.uiLabel` / `colors.textPrimary` |
 | Answer text | `type.bodyM` / `colors.textSecondary` |
+| Transparency toggle | `type.caption` / `colors.highlightBlue` on `colors.surface1` background |
 
 **Spacing:** `space.lg` between sections, `space.md` internal section padding.
 
-**Accessibility:** FAQ items are collapsible — VoiceOver announces expanded/collapsed state. Answers become visible on expand.
+**States:**
+- Transparency section: collapsible (default collapsed). Pressable toggle with ▲/▼ chevron.
+
+**Accessibility:** FAQ items are collapsible — VoiceOver announces expanded/collapsed state. Answers become visible on expand. Transparency toggle has `accessibilityState={{ expanded }}` and descriptive hint.
 
 ---
 
@@ -309,3 +314,54 @@ All components reference tokens from `design/tokens.ts`. Never hardcode hex valu
 **Spacing:** `space.md` internal padding, `space.sm` between title and sublabel.
 
 **Accessibility:** Entire row is a single pressable link. VoiceOver reads title + sublabel + "link".
+
+---
+
+## 15. Game Arena
+
+**Purpose:** Static sprite grid at the top of the Platforms screen showing all tracked figures as bust sprites.
+
+| Property | Token |
+|---|---|
+| Background | `colors.surface2` |
+| Border | `borders.hero` in `colors.frameBlue` |
+| Border top highlight | `colors.highlightBlue` |
+| Border bottom shadow | `colors.bgVoid` |
+| Title | `type.displayS` (10pt) / `colors.rewardYellow` |
+| FX text (-1) | `type.displayS` (14pt) / `colors.dangerRed` |
+| Speech bubble bg | `colors.surface1` |
+| Speech bubble border | `borders.standard` in `colors.frameBlue` |
+| Speech bubble text | `type.caption` (9pt) / `colors.textPrimary` bold |
+
+**Spacing:** `space.md` padding, `space.sm` grid gap between sprite cells.
+
+**Sprites:** 48pt per cell. Neutral state at 0.4 opacity when 0 avoids, full opacity when >0. Defeated state after `DEFEATED_THRESHOLD` (3) avoids.
+
+**FX (cosmetic — no data logged):**
+- **Avoid-triggered:** `lastAvoided` prop fires floating -1 on matching sprite (fade up 600ms).
+- **Tap-triggered:** tapping any sprite shows -1 float + speech bubble with random reaction from `platformsCopy.spriteReactions`. Bubble fades after 1s.
+- **Reduced-motion:** bubble shown statically for 1s, no animation.
+- Per-cell animated values stored in `useRef(Map)` to avoid re-creating on render.
+
+**Accessibility:** Each sprite cell is a Pressable with `accessibilityLabel={fig.name}` and `accessibilityRole="button"`. FX elements have `accessibilityElementsHidden`.
+
+---
+
+## 16. Platform Group
+
+**Purpose:** Parent company group header for platforms sharing a `parentCompany` in the TRACK screen.
+
+| Property | Token |
+|---|---|
+| Header background | `colors.surface2` |
+| Header top border | `borders.hero` in `colors.highlightBlue` |
+| Header bottom shadow | `borders.hero` in `colors.bgVoid` |
+| Header text | `type.displayS` (11pt) / `colors.rewardYellow` |
+
+**Sprites:** 32pt sprite bust in header. Same state logic as arena (neutral/defeated based on total avoids).
+
+**Copy:** Header text via `platformsCopy.groupHeader(parentCompany, totalAvoids)` — renders as "META — 5×".
+
+**Children:** Individual `PlatformRow` components indented below the header. Standalone platforms (no siblings sharing parentCompany) render without a group header.
+
+**Accessibility:** Header text includes parent name and rolled-up total.

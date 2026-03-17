@@ -60,14 +60,17 @@ export default function App() {
   );
   const [showLaunch, setShowLaunch] = useState<boolean | null>(null);
 
-  // Check if launch screen should show (once per calendar day)
+  // Check if launch screen should show (once per calendar day).
+  // Only runs after onboarding is confirmed complete — avoids marking
+  // today as "seen" while the user is still in the onboarding flow.
   useEffect(() => {
+    if (isComplete !== true) return;
     let cancelled = false;
     shouldShowLaunchScreen()
       .then((show) => { if (!cancelled) setShowLaunch(show); })
       .catch(() => { if (!cancelled) setShowLaunch(false); });
     return () => { cancelled = true; };
-  }, []);
+  }, [isComplete]);
 
   const handleVersionTap = useCallback(async () => {
     const toggled = await registerTap();
@@ -106,8 +109,9 @@ export default function App() {
 
   // ── Loading ──────────────────────────────────────────────────────────────────
 
-  // Wait for fonts, SecureStore read, SQLite init, and launch check before rendering.
-  if (!fontsLoaded || isComplete === null || adapter === null || showLaunch === null) {
+  // Wait for fonts, SecureStore read, and SQLite init before rendering.
+  // showLaunch is only needed once onboarding is complete — skip its check during onboarding.
+  if (!fontsLoaded || isComplete === null || adapter === null || (isComplete && showLaunch === null)) {
     return (
       <SafeAreaProvider>
         <View style={styles.splash}>
