@@ -7,20 +7,14 @@ describe('ONBOARDING_STEPS', () => {
     expect(ONBOARDING_STEPS[0]).toBe('welcome');
   });
 
-  it('ends with notifications', () => {
-    expect(ONBOARDING_STEPS[ONBOARDING_STEPS.length - 1]).toBe('notifications');
+  it('ends with privacy', () => {
+    expect(ONBOARDING_STEPS[ONBOARDING_STEPS.length - 1]).toBe('privacy');
   });
 
-  it('places privacy before permissions', () => {
+  it('places permissions before privacy', () => {
+    const permIdx = ONBOARDING_STEPS.indexOf('permissions');
     const privacyIdx = ONBOARDING_STEPS.indexOf('privacy');
-    const locationIdx = ONBOARDING_STEPS.indexOf('location');
-    expect(privacyIdx).toBeLessThan(locationIdx);
-  });
-
-  it('places location before notifications', () => {
-    const locIdx  = ONBOARDING_STEPS.indexOf('location');
-    const notifIdx = ONBOARDING_STEPS.indexOf('notifications');
-    expect(locIdx).toBeLessThan(notifIdx);
+    expect(permIdx).toBeLessThan(privacyIdx);
   });
 
   it('contains no duplicate steps', () => {
@@ -31,9 +25,9 @@ describe('ONBOARDING_STEPS', () => {
     expect(TOTAL_STEPS).toBe(ONBOARDING_STEPS.length);
   });
 
-  it('contains all five expected steps', () => {
+  it('contains all three expected steps', () => {
     const expected: OnboardingStep[] = [
-      'welcome', 'how-it-works', 'privacy', 'location', 'notifications',
+      'welcome', 'permissions', 'privacy',
     ];
     expected.forEach((step) => expect(ONBOARDING_STEPS).toContain(step));
   });
@@ -49,6 +43,6 @@ describe('step progression', () => {
 
     expect(advance(TOTAL_STEPS - 1, TOTAL_STEPS)).toBe('complete');
     expect(advance(0, TOTAL_STEPS)).toBe(1);
-    expect(advance(2, TOTAL_STEPS)).toBe(3);
+    expect(advance(1, TOTAL_STEPS)).toBe(2);
   });
 });

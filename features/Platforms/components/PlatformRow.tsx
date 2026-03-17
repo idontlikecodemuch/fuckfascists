@@ -5,6 +5,9 @@ import { platformsCopy } from '../../../copy/platforms';
 import { sharedCopy } from '../../../copy/shared';
 import { DayCircles } from './DayCircles';
 import { theme } from '../../../design/tokens';
+import { SpriteView, nameToSpriteId } from '../../../core/sprites/spriteLoader';
+
+const SPRITE_DEFEATED_THRESHOLD = 3;
 
 interface PlatformRowProps {
   item: PlatformItem;
@@ -25,6 +28,11 @@ export function PlatformRow({ item, weekOf, onAvoid, onAvoidDate }: PlatformRowP
   const hasAvoided = weeklyCount > 0;
   const [expanded, setExpanded] = useState(false);
 
+  const figureName = platform.publicFigureName ?? platform.ceoName;
+  const spriteId = nameToSpriteId(figureName);
+  const spriteState = weeklyCount >= SPRITE_DEFEATED_THRESHOLD ? 'defeated' as const : 'neutral' as const;
+  const spriteOpacity = hasAvoided ? 1 : 0.4;
+
   return (
     <View style={[styles.outer, hasAvoided && styles.outerAvoided]}>
       <View style={styles.row}>
@@ -44,6 +52,8 @@ export function PlatformRow({ item, weekOf, onAvoid, onAvoidDate }: PlatformRowP
             {expanded ? '\u2212' : '+'}
           </Text>
         </Pressable>
+
+        <SpriteView spriteId={spriteId} state={spriteState} size={36} opacity={spriteOpacity} />
 
         <View style={styles.info}>
           <Text style={styles.name} allowFontScaling>{platform.name}</Text>
@@ -102,7 +112,7 @@ const styles = StyleSheet.create({
   row:             { flexDirection: 'row', alignItems: 'center', padding: theme.space.md, minHeight: theme.a11y.minTapTarget },
   chevronBtn:      { minWidth: 28, minHeight: theme.a11y.minTapTarget, alignItems: 'center', justifyContent: 'center', marginRight: theme.space.xs },
   chevron:         { fontFamily: theme.fonts.body, fontSize: 12, color: theme.colors.textPrimary },
-  info:            { flex: 1 },
+  info:            { flex: 1, marginLeft: theme.space.xs },
   name:            { ...theme.type.uiLabel, color: theme.colors.textPrimary, marginBottom: 2 },
   sub:             { ...theme.type.caption, color: theme.colors.textSecondary, marginBottom: theme.space.xs },
   tags:            { flexDirection: 'row', gap: 6 },

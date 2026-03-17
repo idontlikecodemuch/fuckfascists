@@ -7,6 +7,7 @@ import { formatWeekRange } from '../utils/formatters';
 import { scorecardCopy } from '../../../copy/scorecard';
 import { sharedCopy } from '../../../copy/shared';
 import { theme } from '../../../design/tokens';
+import { SpriteView, nameToSpriteId } from '../../../core/sprites/spriteLoader';
 
 interface ScorecardViewProps {
   data: ScorecardViewData;
@@ -138,23 +139,29 @@ ScorecardView.displayName = 'ScorecardView';
 
 function PersonRow({ person, isTop = false }: { person: ScorecardPerson; isTop?: boolean }) {
   const lastName = extractLastName(person.figureName);
+  const spriteId = nameToSpriteId(person.figureName);
   const sourceText = person.sources
     .map((s) => formatSource(s))
     .join(' \u00b7 '); // middle dot separator
 
   return (
     <View style={[styles.personRow, isTop && styles.personRowTop]}>
-      <View style={styles.personHeader}>
-        <Text style={styles.personName} numberOfLines={1} allowFontScaling={false}>
-          {lastName}
-        </Text>
-        <Text style={styles.personCount} allowFontScaling={false}>
-          {scorecardCopy.personCount(person.totalCount)}
-        </Text>
+      <View style={styles.personContent}>
+        <SpriteView spriteId={spriteId} state="defeated" size={44} />
+        <View style={styles.personText}>
+          <View style={styles.personHeader}>
+            <Text style={styles.personName} numberOfLines={1} allowFontScaling={false}>
+              {lastName}
+            </Text>
+            <Text style={styles.personCount} allowFontScaling={false}>
+              {scorecardCopy.personCount(person.totalCount)}
+            </Text>
+          </View>
+          <Text style={styles.personSources} numberOfLines={2} allowFontScaling={false}>
+            {sourceText}
+          </Text>
+        </View>
       </View>
-      <Text style={styles.personSources} numberOfLines={2} allowFontScaling={false}>
-        {sourceText}
-      </Text>
     </View>
   );
 }
@@ -199,6 +206,8 @@ const styles = StyleSheet.create({
   // Person row
   personRow:      { marginBottom: theme.space.md, borderLeftWidth: theme.borders.standard.width, borderColor: theme.colors.rewardYellow, paddingLeft: 10 },
   personRowTop:   { borderLeftWidth: theme.borders.hero.width, borderColor: theme.colors.rewardYellow },
+  personContent:  { flexDirection: 'row', alignItems: 'center', gap: theme.space.sm },
+  personText:     { flex: 1 },
   personHeader:   { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline' },
   personName:     { ...theme.type.displayS, color: theme.colors.textPrimary, flex: 1, textTransform: 'uppercase', letterSpacing: 1 },
   personCount:    { ...theme.type.displayS, color: theme.colors.rewardYellow, marginLeft: theme.space.sm },

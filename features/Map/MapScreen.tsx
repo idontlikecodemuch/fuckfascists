@@ -252,6 +252,7 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
             result={activeResult}
             onAvoid={handleAvoid}
             avoidDisabled={!activeResult.entity}
+            avoided={allPins.some((p) => p.result === activeResult && p.avoided)}
             onDismiss={handleDismiss}
             allEntities={entities}
           />

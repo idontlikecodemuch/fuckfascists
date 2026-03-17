@@ -102,6 +102,7 @@ API keys and credentials must **only ever be read from environment variables**. 
 │   ├── api/                         ← FEC API client, rate limiting
 │   ├── data/                        ← entity list loader, local DB, cache
 │   ├── dropSchedule/                ← deterministic PRNG drop time (computeDropTime.ts)
+│   ├── sprites/                     ← spriteAssets.ts (require map), spriteLoader.tsx (SpriteView, nameToSpriteId)
 │   ├── utils/                       ← shared utilities (localDate.ts, etc.)
 │   └── models/                      ← shared TypeScript types
 ├── extension/
@@ -138,7 +139,8 @@ API keys and credentials must **only ever be read from environment variables**. 
 │       └── asset-prompts.json       ← asset definitions + processing configs
 └── assets/
     ├── fonts/                       ← Bungee-Regular, IBMPlexSans-{Regular,SemiBold,Medium}
-    └── pixel/                       ← 35 deployed pixel art assets (markers, topbands, corners, FX, etc.)
+    └── pixel/                       ← all pixel art assets by type
+        └── sprites/                 ← 107 CEO sprite sheets + manifest.json
 ```
 
 ---
@@ -440,7 +442,7 @@ The entire app is styled as a **vintage 8-bit video game**. This is the foundati
 | Donation data bundled into `entities.json` | ✅ Done |
 | Anonymous FEC API mode (no key required in app) | ✅ Done |
 | Design system: tokens + 26 components migrated | ✅ Done — `design/tokens.ts` + all components use theme tokens |
-| Pixel art assets: pipeline + deploy + wired | ✅ Done — 35 assets in `assets/pixel/`, FlagMarker + BusinessCard wired |
+| Pixel art assets: pipeline + deploy + wired | ✅ Done — 35 assets in `assets/pixel/`, FlagMarker + BusinessCard wired. 107 CEO sprites in `assets/pixel/sprites/`, wired into BusinessCard, PlatformRow, ScorecardView |
 | Onboarding tightened (5→3 screens) | ✅ Done — Welcome, Permissions, Privacy |
 | Beta testing mode | ✅ Done — triple-tap toggle, BetaOverlay, screenshot tool |
 | Daily launch screen | ✅ Done — once per calendar day, rotating messages, 3s auto-dismiss |

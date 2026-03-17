@@ -8,6 +8,7 @@ import { SHOW_FIGURE_NAME_IN_CARD, CONFIDENCE_THRESHOLD_HIGH } from '../../../co
 import { sharedCopy } from '../../../copy/shared';
 import { mapCopy } from '../../../copy/map';
 import { theme } from '../../../design/tokens';
+import { SpriteView, nameToSpriteId } from '../../../core/sprites/spriteLoader';
 
 // Pixel art assets — component-rules §1
 const TOPBAND_NEUTRAL  = require('../../../assets/pixel/business_card_topband_neutral.png');
@@ -22,6 +23,8 @@ interface BusinessCardProps {
   onAvoid: () => Promise<void>;
   /** When true, the avoid button is disabled (e.g. entity not in curated list). */
   avoidDisabled?: boolean;
+  /** Whether the user has already tapped AVOIDED — controls topband + sprite state. */
+  avoided?: boolean;
   onDismiss: () => void;
   /** Full entity list — enables parent attribution when an entity has a parentEntityId. */
   allEntities?: Entity[];
@@ -53,7 +56,7 @@ function ConfidenceBadge({ level }: { level: number }) {
  *
  * Medium confidence: rewardYellow accent line on left border.
  */
-export function BusinessCard({ result, onAvoid, avoidDisabled = false, onDismiss, allEntities }: BusinessCardProps) {
+export function BusinessCard({ result, onAvoid, avoidDisabled = false, avoided = false, onDismiss, allEntities }: BusinessCardProps) {
   const { canonicalName, matchedAlias, committeeName, confidence, donationSummary, entity, fecFilingUrl } = result;
 
   const fecUrl = donationSummary?.fecCommitteeUrl ?? fecFilingUrl;
@@ -69,19 +72,30 @@ export function BusinessCard({ result, onAvoid, avoidDisabled = false, onDismiss
 
   const pacName = donationSummary?.committeeName ?? committeeName;
 
+  // Resolve sprite ID from the entity's display figure
+  const figureName = entity ? getDisplayFigure(entity, allEntities) : null;
+  const spriteId = figureName ? nameToSpriteId(figureName) : null;
+
   return (
     <View style={[styles.card, isMedium && styles.cardMedium]}>
       {/* ── Topband asset ── */}
-      <Image source={TOPBAND_NEUTRAL} style={styles.topband} resizeMode="cover" />
+      <Image source={avoided ? TOPBAND_DEFEATED : TOPBAND_NEUTRAL} style={styles.topband} resizeMode="cover" />
       {/* ── Corner brackets ── */}
       <Image source={CORNER_TL} style={styles.cornerTL} />
       <Image source={CORNER_TR} style={styles.cornerTR} />
+
+      {/* ── CEO sprite — "standing" on the topband ── */}
+      {spriteId && (
+        <View style={styles.spritePerch}>
+          <SpriteView spriteId={spriteId} state={avoided ? 'defeated' : 'neutral'} size={72} />
+        </View>
+      )}
 
       {/* ── Beat 1: WHO ── */}
       <View style={styles.whoSection}>
         <View style={styles.titleRow}>
           <Text
-            style={styles.name}
+            style={[styles.name, spriteId ? styles.nameWithSprite : undefined]}
             numberOfLines={1}
             accessibilityRole="header"
             allowFontScaling
@@ -192,10 +206,14 @@ const styles = StyleSheet.create({
   cornerTL:       { position: 'absolute' as const, top: 0, left: 0, width: 32, height: 32 },
   cornerTR:       { position: 'absolute' as const, top: 0, right: 0, width: 32, height: 32 },
 
+  // Sprite perch — absolute, right-aligned, feet land on topband/WHO boundary
+  spritePerch:       { position: 'absolute' as const, top: 2, right: theme.space.md, zIndex: 2 },
+
   // Beat 1: WHO
   whoSection:        { padding: theme.space.lg, paddingBottom: theme.space.md },
   titleRow:          { flexDirection: 'row', alignItems: 'center', marginBottom: theme.space.xs },
   name:              { flex: 1, ...theme.type.displayM, color: theme.colors.textPrimary, marginRight: theme.space.sm },
+  nameWithSprite:    { marginRight: theme.space.xs },
   figureName:        { ...theme.type.bodyS, color: theme.colors.textSecondary, marginTop: 2 },
   parentAttribution: { ...theme.type.caption, color: theme.colors.textSecondary, marginTop: 1 },
   disclaimer:        { ...theme.type.caption, color: theme.colors.rewardYellow, marginTop: theme.space.xs },

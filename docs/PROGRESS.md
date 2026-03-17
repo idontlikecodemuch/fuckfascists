@@ -12,6 +12,45 @@ This document is updated continuously. New instances should read this first — 
 
 ## Last 5 Sessions (most recent first)
 
+### Session: March 16, 2026 (follow-up 7)
+**Focus:** CEO sprite system — process, deploy, utility, wire into 3 components + onboarding test fix
+
+**Completed:**
+
+**CEO sprite pipeline:**
+- Ran `compose.py --all` → 107/115 characters composed into sprite sheets (8 skipped: `_flag`/`_redo` only files)
+- Ran `remove_magenta.py` → 124 files chroma-keyed (107 characters + 17 assets)
+- Ran `manifest.py` → `output/manifest.json` with 107 sprite entries (frame coordinates, tier, grid layout)
+- Deployed 107 sprite PNGs + `manifest.json` to `assets/pixel/sprites/` (108 files total)
+
+**Sprite utility (`core/sprites/`):**
+- `spriteAssets.ts` — generated static `require()` map for all 107 sprites (Metro needs static string literals)
+- `spriteLoader.tsx` — `nameToSpriteId()` (name→kebab-case), `pickVariant()` (deterministic djb2 hash for A/B), `getSpriteFrame()` (returns FrameInfo with offsets), `SpriteView` component (overflow-hidden container with offset Image, static frames only — no animation)
+
+**Sprite wiring into 3 components:**
+- **BusinessCard.tsx** — CEO sprite "standing" on topband via absolute-positioned `spritePerch` (top: 2, right-aligned, 72pt). Sprite straddles topband/WHO boundary. Topband switches between `TOPBAND_NEUTRAL` and `TOPBAND_DEFEATED` based on new `avoided` prop. `avoided` derived in MapScreen from `allPins.some(p => p.result === activeResult && p.avoided)`.
+- **PlatformRow.tsx** — 36pt sprite between chevron and info section. State logic: 0 avoids = neutral + dimmed (0.4 opacity), 1-2 = neutral full, 3+ (`SPRITE_DEFEATED_THRESHOLD`) = defeated.
+- **ScorecardView.tsx** — 44pt sprite in PersonRow, always defeated state, left of name/source text in flexRow layout.
+
+**Onboarding test fix:**
+- `features/Onboarding/__tests__/onboarding.test.ts` — updated from stale 5-screen flow references to current 3-screen flow (welcome, permissions, privacy). Removed tests for non-existent 'location' and 'notifications' steps. Fixed step progression assertion. All 7 tests passing.
+
+**Files created:**
+- `assets/pixel/sprites/` — 107 PNGs + `manifest.json`
+- `core/sprites/spriteAssets.ts` — static require() map
+- `core/sprites/spriteLoader.tsx` — sprite utility + SpriteView component
+
+**Files modified:**
+- `features/Map/components/BusinessCard.tsx` — sprite perch, avoided prop, topband state
+- `features/Map/MapScreen.tsx` — passes `avoided` prop to BusinessCard
+- `features/Platforms/components/PlatformRow.tsx` — sprite between chevron and info
+- `features/Scorecard/components/ScorecardView.tsx` — sprite in PersonRow
+- `features/Onboarding/__tests__/onboarding.test.ts` — updated for 3-screen flow
+
+**Build:** tsc clean. 288 tests passing (all suites green, including previously-failing onboarding suite).
+
+---
+
 ### Session: March 16, 2026 (follow-up 6)
 **Focus:** Asset pipeline keying fix, reprocess/deploy, wire pixel art into components
 
@@ -775,7 +814,7 @@ The Swift source now lives authoritatively at `modules/mapkit-search/ios/MapKitS
 
 | Suite | Count | Status |
 |---|---|---|
-| Total passing | 296 | ✅ Clean (27 suites) |
+| Total passing | 288 | ✅ Clean (all suites green) |
 | Last tsc run | March 16, 2026 | ✅ Clean |
 
 ---
@@ -814,6 +853,7 @@ The Swift source now lives authoritatively at `modules/mapkit-search/ios/MapKitS
 - Pixel art assets: 35 assets deployed to `assets/pixel/`, keyed with improved 3-step pipeline ✅
 - FlagMarker uses pixel art marker assets (not coded View+Text) ✅
 - BusinessCard has topband and corner bracket pixel art assets ✅
+- CEO sprites: 107 sprites deployed, SpriteView utility, wired into BusinessCard (standing on topband), PlatformRow (state-driven), ScorecardView (defeated) ✅
 - Onboarding tightened to 3 screens (Welcome, Permissions, Privacy) ✅
 - Beta testing mode with triple-tap toggle + BetaOverlay screenshot tool ✅
 - Daily launch screen with rotating messages ✅

@@ -1,0 +1,2384 @@
+{
+  "sprites": {
+    "anthony-hucker": {
+      "file": "anthony-hucker.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "ashley-buchanan": {
+      "file": "ashley-buchanan.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "bernard-arnault": {
+      "file": "bernard-arnault.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "bill-gates": {
+      "file": "bill-gates.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "bill-nash": {
+      "file": "bill-nash.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "billy-gifford": {
+      "file": "billy-gifford.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "bjorn-gulden": {
+      "file": "bjorn-gulden.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "bob-eddy": {
+      "file": "bob-eddy.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "brad-beckham": {
+      "file": "brad-beckham.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "brian-chesky": {
+      "file": "brian-chesky.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "brian-cornell": {
+      "file": "brian-cornell.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "brian-moynihan": {
+      "file": "brian-moynihan.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "bruce-thorn": {
+      "file": "bruce-thorn.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "bryan-palbaum": {
+      "file": "bryan-palbaum.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "charles-koch": {
+      "file": "charles-koch.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "charlie-scharf": {
+      "file": "charlie-scharf.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "chris-ditullio": {
+      "file": "chris-ditullio.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "chris-kempa": {
+      "file": "chris-kempa.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "chris-kempczinski": {
+      "file": "chris-kempczinski.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "corie-barry": {
+      "file": "corie-barry.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "daniel-ek": {
+      "file": "daniel-ek.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "daniel-ervr": {
+      "file": "daniel-ervr.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "daniel-kulle": {
+      "file": "daniel-kulle.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "darren-woods": {
+      "file": "darren-woods.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "david-joyner": {
+      "file": "david-joyner.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "david-solomon": {
+      "file": "david-solomon.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "donnie-king": {
+      "file": "donnie-king.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "doug-howe": {
+      "file": "doug-howe.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "doug-mcmillon": {
+      "file": "doug-mcmillon.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "douglas-lindsay": {
+      "file": "douglas-lindsay.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "elliott-hill": {
+      "file": "elliott-hill.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "elon-musk": {
+      "file": "elon-musk.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "eric-artz": {
+      "file": "eric-artz.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "erik-nordstrom": {
+      "file": "erik-nordstrom.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "ernie-garcia-iii": {
+      "file": "ernie-garcia-iii.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "ernie-herrman": {
+      "file": "ernie-herrman.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "evan-spiegel": {
+      "file": "evan-spiegel.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "fran-horowitz": {
+      "file": "fran-horowitz.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "gary-friedman": {
+      "file": "gary-friedman.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "guillaume-motte": {
+      "file": "guillaume-motte.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "hal-lawton": {
+      "file": "hal-lawton.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "heidi-petz": {
+      "file": "heidi-petz.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "james-daunt": {
+      "file": "james-daunt.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "jamie-dimon": {
+      "file": "jamie-dimon.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "jamie-iannone": {
+      "file": "jamie-iannone.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "janet-hayes": {
+      "file": "janet-hayes.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "jason-hart": {
+      "file": "jason-hart.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "javier-quinones": {
+      "file": "javier-quinones.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "jay-schottenstein": {
+      "file": "jay-schottenstein.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "jeff-bezos": {
+      "file": "jeff-bezos.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "jeff-seaman": {
+      "file": "jeff-seaman.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "jensen-huang": {
+      "file": "jensen-huang.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "jeremy-gosch": {
+      "file": "jeremy-gosch.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "jim-taiclet": {
+      "file": "jim-taiclet.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "jk-symancyk": {
+      "file": "jk-symancyk.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "joel-anderson": {
+      "file": "joel-anderson.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "joel-rampoldt": {
+      "file": "joel-rampoldt.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "john-menard-jr": {
+      "file": "john-menard-jr.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "john-stankey": {
+      "file": "john-stankey.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "john-venhuizen": {
+      "file": "john-venhuizen.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "josh-silverman": {
+      "file": "josh-silverman.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "kathryn-merrical": {
+      "file": "kathryn-merrical.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "kecia-steelman": {
+      "file": "kecia-steelman.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "kevin-murphy": {
+      "file": "kevin-murphy.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "kevin-plank": {
+      "file": "kevin-plank.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "larry-ellison": {
+      "file": "larry-ellison.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "laura-alber": {
+      "file": "laura-alber.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "lauren-hobart": {
+      "file": "lauren-hobart.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "marc-rosen": {
+      "file": "marc-rosen.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "mark-cuban": {
+      "file": "mark-cuban.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "mark-zuckerberg": {
+      "file": "mark-zuckerberg.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "marvin-ellison": {
+      "file": "marvin-ellison.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "meg-ham": {
+      "file": "meg-ham.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "melinda-whittington": {
+      "file": "melinda-whittington.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "michael-dell": {
+      "file": "michael-dell.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "mike-creedon": {
+      "file": "mike-creedon.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "mike-manley": {
+      "file": "mike-manley.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "mitch-fadel": {
+      "file": "mitch-fadel.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "oscar-garcia-maceiras": {
+      "file": "oscar-garcia-maceiras.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "phil-daniele": {
+      "file": "phil-daniele.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "raj-subramaniam": {
+      "file": "raj-subramaniam.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "richard-dickson": {
+      "file": "richard-dickson.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "richard-uihlein": {
+      "file": "richard-uihlein.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "rick-keyes": {
+      "file": "rick-keyes.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "rj-sheedy": {
+      "file": "rj-sheedy.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "robert-greenberg": {
+      "file": "robert-greenberg.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "rodney-mcmullen": {
+      "file": "rodney-mcmullen.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "ron-vachris": {
+      "file": "ron-vachris.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "rupert-murdoch": {
+      "file": "rupert-murdoch.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "ryan-cohen": {
+      "file": "ryan-cohen.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "sam-altman": {
+      "file": "sam-altman.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "satya-nadella": {
+      "file": "satya-nadella.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "shane-okelly": {
+      "file": "shane-okelly.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "sky-xu": {
+      "file": "sky-xu.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "stephen-schwarzman": {
+      "file": "stephen-schwarzman.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "sumit-singh": {
+      "file": "sumit-singh.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "ted-decker": {
+      "file": "ted-decker.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "tim-boyle": {
+      "file": "tim-boyle.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "tim-cook": {
+      "file": "tim-cook.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "tim-wentworth": {
+      "file": "tim-wentworth.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "todd-vasos": {
+      "file": "todd-vasos.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "todd-wanek": {
+      "file": "todd-wanek.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "tom-kingsbury": {
+      "file": "tom-kingsbury.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "tom-taylor": {
+      "file": "tom-taylor.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "tony-spring": {
+      "file": "tony-spring.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "vivek-sankaran": {
+      "file": "vivek-sankaran.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "warren-buffett": {
+      "file": "warren-buffett.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 728,
+      "frameHeight": 720,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    }
+  }
+}
