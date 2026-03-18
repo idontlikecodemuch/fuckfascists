@@ -444,7 +444,7 @@ The entire app is styled as a **vintage 8-bit video game**. This is the foundati
 | Anonymous FEC API mode (no key required in app) | ✅ Done |
 | Design system: tokens + 26 components migrated | ✅ Done — `design/tokens.ts` + all components use theme tokens |
 | Pixel art assets: pipeline + deploy + wired | ✅ Done — 35 assets in `assets/pixel/`, FlagMarker + BusinessCard wired. 107 CEO sprites in `assets/pixel/sprites/`, wired into BusinessCard, PlatformRow, ScorecardView. 4-step keying pipeline with 1px alpha erosion. |
-| Design refinement: 8-bit game energy | ✅ Done — Map header bar, search bar depth, tab bar texture, BusinessCard sprite-left layout + donation hierarchy flip, MatchChooser visual upgrade, GameArena sprite grid with cosmetic tap FX, PlatformGroup parent company grouping, InfoScreen collapsible transparency + section ornamentation |
+| Design refinement: 8-bit game energy | ✅ Done — Map header bar, search bar depth, tab bar texture, BusinessCard sprite-left layout + donation hierarchy flip + reward overlay + sprite perch ON card, MatchChooser visual upgrade, GameArena tiled bg texture + rewardYellow cell borders, PlatformGroup parent company grouping + short names + hideSprite/compact child rows, InfoScreen collapsible transparency + section ornamentation, tap-to-dismiss backdrop, AvoidButton depth borders, global highlight lines reduced to 2px |
 | Onboarding tightened (5→3 screens) | ✅ Done — Welcome, Permissions, Privacy |
 | Beta testing mode | ✅ Done — triple-tap toggle, BetaOverlay, screenshot tool |
 | Daily launch screen | ✅ Done — once per calendar day, rotating messages, 3s auto-dismiss |
