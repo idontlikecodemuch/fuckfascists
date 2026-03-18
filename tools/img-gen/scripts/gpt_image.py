@@ -5,7 +5,7 @@ Two modes:
   --generate  Text prompt → PNG output (optionally with a reference image).
   --process   Existing PNG(s) → cleaned PNG(s) via natural-language edit instruction.
 
-Uses gpt-image-1 throughout. Reads OPENAI_API_KEY from the repo root .env file.
+Uses gpt-image-1.5 throughout. Reads OPENAI_API_KEY from the repo root .env file.
 
 Usage:
   Generate:
@@ -104,7 +104,7 @@ def _generate(args) -> None:
 
         with open(ref_path, "rb") as img_file:
             result = client.images.edit(
-                model="gpt-image-1",
+                model="gpt-image-1.5",
                 image=img_file,
                 prompt=args.prompt,
                 size=size,
@@ -116,7 +116,7 @@ def _generate(args) -> None:
         print(f"Size: {size}")
 
         result = client.images.generate(
-            model="gpt-image-1",
+            model="gpt-image-1.5",
             prompt=args.prompt,
             size=size,
             n=1,
@@ -164,7 +164,7 @@ def _resolve_inputs(input_pattern: str) -> list[Path]:
     sys.exit(1)
 
 
-def _process_single(client, input_path: Path, instruction: str, output_dir: Path | None) -> bool:
+def _process_single(client, input_path: Path, instruction: str, output_dir) -> bool:
     """Process a single PNG through the GPT edit endpoint. Returns True on success."""
     # Determine output path
     if output_dir is not None:
@@ -175,9 +175,11 @@ def _process_single(client, input_path: Path, instruction: str, output_dir: Path
     try:
         with open(input_path, "rb") as img_file:
             result = client.images.edit(
-                model="gpt-image-1",
+                model="gpt-image-1.5",
                 image=img_file,
                 prompt=instruction,
+                background="transparent",
+                output_format="png",
             )
 
         b64_data = result.data[0].b64_json
@@ -229,20 +231,20 @@ def _process(args) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="GPT image pipeline: generate or process PNG assets using gpt-image-1."
+        description="GPT image pipeline: generate or process PNG assets using gpt-image-1.5."
     )
     subparsers = parser.add_subparsers(dest="mode", required=True)
 
-    # --generate
-    gen_parser = subparsers.add_parser("--generate", help="Text prompt → PNG output")
+    # generate
+    gen_parser = subparsers.add_parser("generate", help="Text prompt → PNG output")
     gen_parser.add_argument("--prompt", required=True, help="Text prompt for image generation")
     gen_parser.add_argument("--output-dir", default=str(DEFAULT_OUTPUT_DIR), help="Output directory (default: tools/img-gen/output/)")
     gen_parser.add_argument("--filename", help="Output filename (default: auto-generated from prompt)")
     gen_parser.add_argument("--reference", metavar="PATH", help="Reference image to pass alongside the prompt (uses edit endpoint)")
     gen_parser.add_argument("--size", default="1024x1024", help="Output size: 1024x1024, 1024x1536, 1536x1024, or auto (default: 1024x1024)")
 
-    # --process
-    proc_parser = subparsers.add_parser("--process", help="Edit existing PNG(s) with a natural-language instruction")
+    # process
+    proc_parser = subparsers.add_parser("process", help="Edit existing PNG(s) with a natural-language instruction")
     proc_parser.add_argument("--input", required=True, help="Input PNG path or glob pattern (e.g. 'output/raw/*.png')")
     proc_parser.add_argument("--instruction", required=True, help="Natural-language edit instruction")
     proc_parser.add_argument("--output-dir", default=None, help="Output directory (default: same directory as input, with _gpt suffix)")
@@ -251,9 +253,9 @@ def main() -> None:
 
     _load_env()
 
-    if args.mode == "--generate":
+    if args.mode == "generate":
         _generate(args)
-    elif args.mode == "--process":
+    elif args.mode == "process":
         _process(args)
 
 

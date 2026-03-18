@@ -141,11 +141,11 @@ API keys and credentials must **only ever be read from environment variables**. 
 │       ├── scripts/generate.py      ← character sprite generation (Gemini API)
 │       ├── scripts/generate_assets.py ← UI ornament generation (Gemini API)
 │       ├── scripts/compose.py       ← stack sprite variants into final sheets
-│       ├── scripts/process_assets.py ← 4-step keying (flood fill → magenta → binarize → erode) + slicing + scaling
-│       ├── scripts/remove_magenta.py ← chroma key for sprite sheets (3-step: flood fill → binarize → erode)
+│       ├── scripts/process_assets.py ← keying (delegates to remove_magenta) + slicing + scaling → output/new/
+│       ├── scripts/remove_magenta.py ← HSV flood-fill chroma key: border BFS + interior removal + defringe
 │       ├── scripts/deploy_assets.py  ← copies processed → assets/pixel/
 │       ├── scripts/manifest.py      ← generate sprite sheet metadata JSON
-│       ├── scripts/gpt_image.py     ← GPT image pipeline (gpt-image-1): generate + batch process
+│       ├── scripts/gpt_image.py     ← GPT image pipeline (gpt-image-1.5): generate + batch process
 │       ├── USAGE.md                 ← full documentation for all pipeline scripts
 │       └── asset-prompts.json       ← asset definitions + processing configs
 └── assets/
