@@ -12,6 +12,62 @@ This document is updated continuously. New instances should read this first — 
 
 ## Last 5 Sessions (most recent first)
 
+### Session: March 18, 2026 (arena assets pattern)
+**Focus:** Arena background asset management — arenaAssets.ts require map + build script
+
+**Changes:**
+- Created `core/arena/arenaAssets.ts` — static `require()` map for arena backgrounds, following the `spriteAssets.ts` pattern
+- Created `scripts/generate-arena-assets.mjs` — scans `assets/pixel/arena/` for PNGs and regenerates `arenaAssets.ts`. Run after adding or removing arena backgrounds.
+- Updated `GameArena.tsx` — imports from `arenaAssets` instead of inline `require()` calls; `ARENA_BACKGROUNDS` built via `Object.values(arenaAssets)`
+- Documented script in CLAUDE.md (repo structure tree + data pipeline section)
+
+**Verification:** tsc clean, 295 tests pass, copy audit clean (dev fixtures only)
+
+### Session: March 18, 2026 (follow-up — img-gen pipeline + device testing)
+**Focus:** Physical device build fix, ornamental asset pipeline, magenta keying overhaul
+
+**Physical device (iOS):**
+- Diagnosed map freeze on physical device: `MKLocalSearch.start()` was called from Expo Modules background queue — MapKit silently hangs off main thread; completion handler never fires; JS promise never resolves; loading state stuck permanently
+- Fix: wrapped `MKLocalSearch` creation and `.start()` in `DispatchQueue.main.async {}` in `MapKitSearchModule.swift`
+- iOS build: provisioning failure with `expo run:ios --device` — fixed by opening `FckFascists.xcworkspace` directly in Xcode; Xcode handles device registration and provisioning profile updates interactively
+- CLAUDE.md updated with MKLocalSearch main-thread rule (do not remove dispatch wrapper)
+
+**Ornamental asset pipeline (tools/img-gen/):**
+- Created `scripts/generate_assets.py` — generates UI ornament assets via Gemini API from `asset-prompts.json`. Same API pattern as `generate.py`. CLI: `--all`, `--asset <id>`, `--dry-run`, `--force`. Prompts reference image before generation (y/n).
+- Created `scripts/process_assets.py` — reads `asset-prompts.json` processing config, applies keying + slicing + nearest-neighbor scaling. Handles `grid_2x2` (4 files), `split_horizontal` (left/right), `auto_crop`, `crop_center`, `horizontal_band`. Output: `output/new/`. Raw input: `output/raw/UI Elements/`.
+- Created `scripts/deploy_assets.py` — copies processed assets to `assets/pixel/`. Handles multi-file outputs via glob. Never deletes from target.
+- `config.json` — cleared `reference_images` (was `["reference/ref1.png"]`); reference images now opt-in per run
+
+**Magenta keying overhaul (`remove_magenta.py`):**
+- Full rewrite with HSV-based detection (replaces RGB Euclidean distance). Candidate = hue 285–345°, saturation ≥ 0.35, value ≥ 0.25, red-minus-green ≥ 26, blue-minus-green ≥ 13
+- Border-connected BFS flood fill (pure Python + PIL, no numpy/scipy required)
+- Large interior region removal (`--interior-min-size`, default 250px) — catches magenta trapped inside closed shapes
+- Optional conservative defringe pass (`--defringe`) — strips leftover pink edge pixels using 8-neighbor adjacency check
+- Single-file mode: `remove_magenta.py input.png [output.png] [flags]`; `--output-dir` flag for batch and single-file mode
+- Tuning flags exposed on CLI: `--hue-min`, `--hue-max`, `--min-sat`, `--min-val`, `--interior-min-size`
+- Key tuning insight: to preserve dark purple clothing while removing bright magenta, raise `--min-val` (e.g. 0.65) — value (brightness) is the discriminator, not hue
+
+**`process_assets.py` keying:**
+- Removed scipy dependency; now delegates to `remove_magenta.remove_magenta()` via importlib (single source of keying logic)
+
+**`gpt_image.py` updates:**
+- Model updated to `gpt-image-1.5`
+- Added `background="transparent"` and `output_format="png"` to `images.edit()` calls
+- Fixed subcommand names (`--generate`/`--process` → `generate`/`process`) — argparse subparsers don't support `--` prefix names
+- Fixed Python 3.9 compatibility: `Path | None` type annotation → untyped
+
+**Files modified:**
+- `modules/mapkit-search/ios/MapKitSearchModule.swift` — DispatchQueue.main.async wrapper
+- `tools/img-gen/scripts/remove_magenta.py` — full rewrite (HSV flood-fill)
+- `tools/img-gen/scripts/process_assets.py` — delegates keying to remove_magenta, output/new/, UI Elements input dir
+- `tools/img-gen/scripts/gpt_image.py` — model 1.5, transparent bg, subcommand fix, Python 3.9 compat
+
+**Files created:**
+- `tools/img-gen/scripts/generate_assets.py`
+- `tools/img-gen/scripts/deploy_assets.py`
+
+---
+
 ### Session: March 18, 2026
 **Focus:** Physical device visual refinement pass — 8 UI changes across 9 files
 

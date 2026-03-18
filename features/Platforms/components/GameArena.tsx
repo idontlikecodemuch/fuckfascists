@@ -1,15 +1,11 @@
 import React, { useRef, useEffect, useState, useCallback, useMemo } from 'react';
-import { View, Text, Pressable, Animated, ImageBackground, AccessibilityInfo, StyleSheet, type ImageSourcePropType } from 'react-native';
+import { View, Text, Pressable, Animated, ImageBackground, AccessibilityInfo, StyleSheet } from 'react-native';
 import { SpriteView } from '../../../core/sprites/spriteLoader';
+import { arenaAssets } from '../../../core/arena/arenaAssets';
 import { platformsCopy } from '../../../copy/platforms';
 import { theme } from '../../../design/tokens';
 
-const ARENA_BACKGROUNDS: ImageSourcePropType[] = [
-  require('../../../assets/pixel/arena/arena_sf.png'),
-  require('../../../assets/pixel/arena/arena_nyc_street.png'),
-  require('../../../assets/pixel/arena/arena_nyc_penthouse.png'),
-  require('../../../assets/pixel/arena/arena_dc.png'),
-];
+const ARENA_BACKGROUNDS = Object.values(arenaAssets);
 
 const SPRITE_SIZE = 48;
 const DEFEATED_THRESHOLD = 3;
