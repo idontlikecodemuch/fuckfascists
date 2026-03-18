@@ -33,9 +33,17 @@ function buildArenaFigures(items: PlatformItem[]) {
   }));
 }
 
+/** Short display name for group headers — strips Inc, Corp, Platforms, .com suffixes. */
+function shortParentName(name: string): string {
+  return name
+    .replace(/\s*(Inc|Corp|Platforms|\.com)\s*/gi, '')
+    .trim()
+    .toUpperCase();
+}
+
 /** Group items by parentCompany, preserving order of first appearance. */
 function groupByParent(items: PlatformItem[]) {
-  const groups: { parent: string; figure: string; items: PlatformItem[] }[] = [];
+  const groups: { parent: string; shortName: string; figure: string; items: PlatformItem[] }[] = [];
   const idx = new Map<string, number>();
   for (const item of items) {
     const parent = item.platform.parentCompany;
@@ -46,6 +54,7 @@ function groupByParent(items: PlatformItem[]) {
       idx.set(parent, groups.length);
       groups.push({
         parent,
+        shortName: shortParentName(parent),
         figure: item.platform.publicFigureName ?? item.platform.ceoName,
         items: [item],
       });
@@ -125,19 +134,18 @@ export function PlatformsScreen({ adapter }: PlatformsScreenProps) {
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <View style={styles.headerTop}>
-          <Text style={styles.title} accessibilityRole="header" allowFontScaling>
-            {platformsCopy.title}
-          </Text>
-          <Pressable
-            onPress={() => setEditing(true)}
-            style={styles.editBtn}
-            accessibilityRole="button"
-            accessibilityLabel={platformsCopy.editLabel}
-          >
-            <Text style={styles.editText} allowFontScaling>{platformsCopy.editBtn}</Text>
-          </Pressable>
-        </View>
+        <Text style={styles.title} accessibilityRole="header" allowFontScaling>
+          {platformsCopy.title}
+        </Text>
+        <Pressable
+          onPress={() => setEditing(true)}
+          style={styles.editBtn}
+          accessibilityRole="button"
+          accessibilityLabel={platformsCopy.editLabel}
+          hitSlop={{ top: 4, bottom: 4, left: 4, right: 4 }}
+        >
+          <Text style={styles.editText} allowFontScaling>{platformsCopy.editLabel}</Text>
+        </Pressable>
         <Text style={styles.weekLabel} allowFontScaling>
           {platformsCopy.weekLabel(formatWeekOf(weekOf))}
         </Text>
@@ -179,7 +187,7 @@ export function PlatformsScreen({ adapter }: PlatformsScreenProps) {
             return (
               <PlatformGroup
                 key={group.parent}
-                parentCompany={group.parent}
+                parentCompany={group.shortName}
                 figureName={group.figure}
                 totalAvoids={groupAvoids}
               >
@@ -190,6 +198,8 @@ export function PlatformsScreen({ adapter }: PlatformsScreenProps) {
                     weekOf={weekOf}
                     onAvoid={() => handleAvoid(item.platform.id)}
                     onAvoidDate={(date) => avoidForDate(item.platform.id, date)}
+                    hideSprite
+                    compact
                   />
                 ))}
               </PlatformGroup>
@@ -204,10 +214,9 @@ export function PlatformsScreen({ adapter }: PlatformsScreenProps) {
 const styles = StyleSheet.create({
   container:  { flex: 1, backgroundColor: theme.colors.bgVoid },
   header:     { backgroundColor: theme.colors.bgNav, padding: theme.space.lg, borderBottomWidth: theme.borders.hero.width, borderColor: theme.colors.frameBlue },
-  headerTop:  { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   title:      { ...theme.type.displayM, color: theme.colors.textPrimary, letterSpacing: 3 },
-  editBtn:    { minWidth: theme.a11y.minTapTarget, minHeight: theme.a11y.minTapTarget, borderWidth: theme.borders.standard.width, borderColor: theme.colors.rewardYellow, paddingHorizontal: 10, alignItems: 'center', justifyContent: 'center' },
-  editText:   { ...theme.type.caption, fontWeight: 'bold', color: theme.colors.rewardYellow, letterSpacing: 1 },
+  editBtn:    { minHeight: theme.a11y.minTapTarget, justifyContent: 'center' },
+  editText:   { ...theme.type.bodyS, color: theme.colors.textSecondary },
   weekLabel:  { ...theme.type.bodyS, color: theme.colors.textSecondary, marginTop: 2 },
   score:      { ...theme.type.displayL, color: theme.colors.rewardYellow, marginTop: theme.space.xs },
   loader:     { flex: 1, justifyContent: 'center' },

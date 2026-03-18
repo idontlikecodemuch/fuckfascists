@@ -67,7 +67,7 @@ const styles = StyleSheet.create<{
   tabBar: {
     flexDirection: 'row',
     backgroundColor: theme.colors.bgNav,
-    borderTopWidth: theme.borders.hero.width,
+    borderTopWidth: theme.borders.standard.width,
     borderTopColor: theme.colors.frameBlue,
     paddingTop: theme.space.xs,
   },

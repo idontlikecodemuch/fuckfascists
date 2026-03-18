@@ -1,8 +1,10 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
-import { View, Text, Pressable, Animated, AccessibilityInfo, StyleSheet } from 'react-native';
+import { View, Text, Pressable, Animated, ImageBackground, AccessibilityInfo, StyleSheet } from 'react-native';
 import { SpriteView } from '../../../core/sprites/spriteLoader';
 import { platformsCopy } from '../../../copy/platforms';
 import { theme } from '../../../design/tokens';
+
+const BG_TEXTURE = require('../../../assets/pixel/bg_tile_dark_stone.png');
 
 const SPRITE_SIZE = 48;
 const DEFEATED_THRESHOLD = 3;
@@ -125,10 +127,7 @@ export function GameArena({ figures, lastAvoided }: GameArenaProps) {
   }, [reducedMotion, getTapFx]);
 
   return (
-    <View style={styles.arena}>
-      <Text style={styles.title} accessibilityRole="header" allowFontScaling={false}>
-        {platformsCopy.arenaTitle}
-      </Text>
+    <ImageBackground source={BG_TEXTURE} resizeMode="repeat" style={styles.arena} imageStyle={styles.bgTexture}>
       <View style={styles.grid}>
         {figures.map((fig) => {
           const isDefeated = fig.totalAvoids >= DEFEATED_THRESHOLD;
@@ -194,37 +193,39 @@ export function GameArena({ figures, lastAvoided }: GameArenaProps) {
           );
         })}
       </View>
-    </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
   arena: {
     backgroundColor: theme.colors.surface2,
-    borderWidth: theme.borders.hero.width,
+    borderWidth: theme.borders.standard.width,
     borderColor: theme.colors.frameBlue,
     borderTopColor: theme.colors.highlightBlue,
     borderBottomColor: theme.colors.bgVoid,
-    margin: theme.space.md,
-    padding: theme.space.md,
+    marginHorizontal: theme.space.sm,
+    marginTop: theme.space.sm,
+    padding: theme.space.sm,
+    overflow: 'hidden' as const,
   },
-  title: {
-    ...theme.type.displayS,
-    fontSize: 10,
-    color: theme.colors.rewardYellow,
-    letterSpacing: 3,
-    marginBottom: theme.space.sm,
+  bgTexture: {
+    opacity: 0.25,
   },
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: theme.space.sm,
+    gap: theme.space.xs,
+    justifyContent: 'center',
   },
   cell: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: SPRITE_SIZE,
-    height: SPRITE_SIZE,
+    width: SPRITE_SIZE + 4,
+    height: SPRITE_SIZE + 4,
+    borderWidth: theme.borders.standard.width,
+    borderColor: theme.colors.rewardYellow,
+    backgroundColor: theme.colors.surface1,
   },
   fxText: {
     position: 'absolute',

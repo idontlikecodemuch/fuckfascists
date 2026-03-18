@@ -44,7 +44,8 @@ export function AvoidButton({ onPress, disabled = false }: AvoidButtonProps) {
     setError(false);
 
     if (!reducedMotion) {
-      // Haptic feedback
+      // Haptic feedback — console.log for device verification
+      console.log('[AvoidButton] Firing haptic feedback');
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
 
       // Scale punch + flash pulse
@@ -96,6 +97,10 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.rewardYellow,
     borderColor: theme.colors.bgVoid,
     borderWidth: theme.borders.hero.width,
+    borderTopColor: theme.colors.bgVoid,
+    borderTopWidth: theme.borders.standard.width,
+    borderBottomColor: theme.colors.highlightBlue,
+    borderBottomWidth: theme.borders.standard.width,
     minHeight: 56,
     paddingVertical: theme.space.md,
     paddingHorizontal: theme.space.xl,

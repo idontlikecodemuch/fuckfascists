@@ -57,7 +57,7 @@ export function InfoScreen({ onVersionTap }: InfoScreenProps) {
             accessibilityHint={showTransparency ? infoCopy.faqCollapse : infoCopy.faqExpand}
           >
             <Text style={styles.collapseText} allowFontScaling>
-              {showTransparency ? infoCopy.chevronOpen : infoCopy.chevronClosed}
+              {showTransparency ? '\u2212' : '+'}
             </Text>
           </Pressable>
           {showTransparency && transparency.map((point) => (
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   pageTitle:   { ...theme.type.displayM, color: theme.colors.textPrimary, letterSpacing: 3 },
   pageVersion: { ...theme.type.caption, color: theme.colors.textSecondary },
   pad:         { padding: theme.space.lg },
-  tagline:     { ...theme.type.uiLabel, color: theme.colors.rewardYellow, marginBottom: theme.space.md, lineHeight: 22 },
+  tagline:     { ...theme.type.uiLabel, color: theme.colors.rewardYellow, marginBottom: theme.space.md, lineHeight: 22, textAlign: 'center' as const },
   body:        { ...theme.type.bodyS, fontSize: 13, color: theme.colors.textSecondary, lineHeight: 21, marginBottom: 10 },
   org:         { ...theme.type.caption, color: theme.colors.textSecondary, fontStyle: 'italic' },
   collapseToggle: { minHeight: theme.a11y.minTapTarget, alignItems: 'center', justifyContent: 'center', backgroundColor: theme.colors.surface1, borderBottomWidth: theme.borders.standard.width, borderColor: theme.colors.surface2 },

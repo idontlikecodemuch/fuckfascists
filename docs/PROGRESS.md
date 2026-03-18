@@ -12,6 +12,61 @@ This document is updated continuously. New instances should read this first — 
 
 ## Last 5 Sessions (most recent first)
 
+### Session: March 17, 2026 (follow-up)
+**Focus:** Device-testing-driven visual refinement pass
+
+**Completed:**
+
+**Map screen:**
+- Search bar safe area fix — added `insets.top` to search bar offset so it clears the status bar on device
+- Tap-to-dismiss backdrop — added `Pressable` overlay behind BusinessCard for dismissing by tapping the map
+- Card container `overflow: 'visible'` to allow sprite perch to extend above card bounds
+
+**Business card:**
+- Sprite perch enlarged — 100→120pt, `marginTop: -60` + `zIndex: 5` so sprite stands ON TOP of card border
+- WHY section divider softened — `hero` width `frameBlue` → 1px `surface2` (less visual noise)
+- Reward overlay wired — `business_card_reward_overlay.png` fades in to 0.6 opacity over 400ms during 3s celebration
+- Card `overflow: 'visible'` for sprite perch
+
+**Avoid button:**
+- Added debug `console.log` before haptic feedback call
+- Visual depth — `bgVoid` top border + `highlightBlue` bottom border (2px each)
+
+**Platforms screen (TRACK):**
+- Removed "THE ARENA" title label from GameArena
+- Arena padding reduced — `margin: md` → `marginHorizontal: sm, marginTop: sm`, `padding: md` → `sm`
+- Arena background — `ImageBackground` with `bg_tile_dark_stone.png` at 25% opacity
+- Sprite cells — `rewardYellow` 2px borders, `surface1` background, centered grid
+- Short parent names — added `shortParentName()` to strip Inc/Corp/Platforms/.com and uppercase (e.g. "META" not "META PLATFORMS")
+- Group header is ONLY sprite for grouped platforms — child rows hide sprites via `hideSprite` prop
+- Grouped child rows compact — reduced vertical padding, left indent via `compact` prop
+- Edit button restyled — bordered box → plain text link
+
+**Info screen:**
+- Tagline centered (`textAlign: 'center'`)
+- Collapse indicator changed from ▲/▼ to +/− (matches FaqItem pattern)
+
+**Global highlight line reduction:**
+- TabBar top border: `hero` (4px) → `standard` (2px)
+- InfoSection top border: `hero` → `standard`
+- PlatformGroup top border: `hero` → `standard`
+
+**Files modified:**
+- `features/Map/MapScreen.tsx` — safe area offset, backdrop, overflow
+- `features/Map/components/BusinessCard.tsx` — sprite perch, reward overlay, divider, overflow
+- `features/Map/components/AvoidButton.tsx` — haptics debug log, depth borders
+- `features/Platforms/PlatformsScreen.tsx` — shortParentName, grouped rows hideSprite+compact, edit button restyle
+- `features/Platforms/components/GameArena.tsx` — removed title, ImageBackground, cell borders, padding
+- `features/Platforms/components/PlatformGroup.tsx` — top border standard
+- `features/Platforms/components/PlatformRow.tsx` — hideSprite, compact props
+- `features/Info/InfoScreen.tsx` — centered tagline, +/− indicator
+- `features/Info/components/InfoSection.tsx` — top border standard
+- `app/navigation/TabBar.tsx` — top border standard
+
+**Build:** Xcode build clean (0 errors).
+
+---
+
 ### Session: March 17, 2026
 **Focus:** Design refinement — 8-bit game energy across all screens, bug fixes, sprite halo removal
 
@@ -922,9 +977,14 @@ The Swift source now lives authoritatively at `modules/mapkit-search/ios/MapKitS
 - Map branded header bar ("F*CK FASCISTS") ✅
 - GameArena: sprite grid with cosmetic tap FX (floating -1, speech bubbles) ✅
 - PlatformGroup: parent company grouping with sprite bust headers ✅
-- BusinessCard: sprite-left layout, flipped donation hierarchy, all-zero guard ✅
+- BusinessCard: sprite-left layout, flipped donation hierarchy, all-zero guard, reward overlay wired, sprite perch ON card ✅
 - MatchChooser: rewardYellow heading, row accents, depth borders ✅
-- InfoScreen: collapsible transparency, section ornamentation ✅
+- InfoScreen: collapsible transparency, section ornamentation, centered tagline ✅
+- Tap-to-dismiss backdrop behind BusinessCard ✅
+- AvoidButton: visual depth borders, haptics debug log ✅
+- GameArena: tiled bg texture, rewardYellow-bordered cells, no title label ✅
+- PlatformRow: hideSprite + compact props for grouped child rows ✅
+- Global highlight lines reduced from 4px to 2px (TabBar, InfoSection, PlatformGroup) ✅
 
 ## What's Not Working / Not Yet Built
 
@@ -946,7 +1006,7 @@ The Swift source now lives authoritatively at `modules/mapkit-search/ios/MapKitS
 2. **Podfile `post_install` hook** — automate the `AIRMap.m` nil guard patch so it survives `pod install`. See Known Limitations in CLAUDE.md.
 3. **iOS simulator smoke test** — launch from simulator, walk the full vertical slice (map scan → flag → business card with topband art → avoid tap with haptics → platforms → scorecard). Verify pixel art markers render on map, topband/corners render in business card, onboarding flows through 3 screens, launch screen appears once per day, beta mode toggle works.
 4. **Physical device geolocation** — test on hardware, not simulator
-5. **Wire remaining pixel art assets** — `marker_flag_selected.png` (selected state), `business_card_reward_overlay.png` (avoid celebration), `corners_yellow_reward_0-3.png` (reward corners), `bottom_nav_shell.png`, `search_shell_caps`, `scorecard_preview_stamp`, `onboarding_hero_welcome`, FX animation frames
+5. **Wire remaining pixel art assets** — `marker_flag_selected.png` (selected state), `corners_yellow_reward_0-3.png` (reward corners), `bottom_nav_shell.png`, `search_shell_caps`, `scorecard_preview_stamp`, `onboarding_hero_welcome`, FX animation frames. `business_card_reward_overlay.png` ✅ wired.
 
 ---
 

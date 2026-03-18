@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Linking, Platform, Animated, AccessibilityInfo } from 'react-native';
+import { View, Text, Pressable, StyleSheet, SafeAreaView, Linking, Platform, Animated, AccessibilityInfo } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, type Region } from 'react-native-maps';
 import type { Entity } from '../../core/models';
 import type { MatchingDeps } from '../../core/matching';
@@ -303,7 +303,7 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
         onChangeText={setSearchText}
         onSubmit={handleSearch}
         isScanning={status === 'scanning'}
-        topOffset={HEADER_HEIGHT + theme.space.sm}
+        topOffset={HEADER_HEIGHT + insets.top + theme.space.sm}
       />
 
       <MapControls
@@ -322,16 +322,24 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
       )}
 
       {activeResult && (
-        <Animated.View style={[styles.cardContainer, { opacity: cardOpacity, transform: [{ scale: cardScale }] }]}>
-          <BusinessCard
-            result={activeResult}
-            onAvoid={handleAvoid}
-            avoidDisabled={!activeResult.entity}
-            avoided={avoidedResult === activeResult || allPins.some((p) => p.result === activeResult && p.avoided)}
-            onDismiss={handleDismiss}
-            allEntities={entities}
+        <>
+          <Pressable
+            style={styles.backdrop}
+            onPress={handleDismiss}
+            accessibilityRole="button"
+            accessibilityLabel={sharedCopy.dismissLabel}
           />
-        </Animated.View>
+          <Animated.View style={[styles.cardContainer, { opacity: cardOpacity, transform: [{ scale: cardScale }] }]}>
+            <BusinessCard
+              result={activeResult}
+              onAvoid={handleAvoid}
+              avoidDisabled={!activeResult.entity}
+              avoided={avoidedResult === activeResult || allPins.some((p) => p.result === activeResult && p.avoided)}
+              onDismiss={handleDismiss}
+              allEntities={entities}
+            />
+          </Animated.View>
+        </>
       )}
 
       {(status === 'unmatched' || status === 'lookup_unavailable') && (
@@ -350,5 +358,6 @@ const styles = StyleSheet.create({
   headerBar:     { backgroundColor: theme.colors.surface1, paddingHorizontal: theme.space.lg, paddingVertical: theme.space.sm, borderBottomWidth: theme.borders.standard.width, borderBottomColor: theme.colors.frameBlue },
   headerTitle:   { ...theme.type.displayS, color: theme.colors.textPrimary },
   map:           { flex: 1 },
-  cardContainer: { position: 'absolute', bottom: 0, left: 0, right: 0 },
+  backdrop:      { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
+  cardContainer: { position: 'absolute', bottom: 0, left: 0, right: 0, overflow: 'visible' as const },
 });

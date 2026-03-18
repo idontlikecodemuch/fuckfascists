@@ -41,7 +41,11 @@ All components reference tokens from `design/tokens.ts`. Never hardcode hex valu
 - **Medium confidence:** `colors.rewardYellow` accent line below hero band + disclaimer text.
 - **High confidence:** no badge shown (silence = confidence).
 
-**Rendered assets:** topband asset (full-width x 64h), corner brackets top-left + top-right (32x32), reward spark on confirm (64x64).
+**Layout:** Card uses `overflow: 'visible'` so sprite perch extends above card border. Sprite: 120pt, `marginTop: -60`, `zIndex: 5` — stands ON TOP of the card edge. WHY section divider: 1px `surface2` (subtle).
+
+**Reward overlay:** `business_card_reward_overlay.png` fades in to 0.6 opacity over 400ms when `avoided` state is true. Covers full card area at `zIndex: 4` (below sprite perch).
+
+**Rendered assets:** topband asset (full-width x 64h), corner brackets top-left + top-right (32x32), reward overlay on confirm.
 
 **Accessibility:** VoiceOver reads brand name, parent, donation totals, confidence level as one accessible group. FEC link is a separate focusable element.
 
@@ -81,9 +85,13 @@ All components reference tokens from `design/tokens.ts`. Never hardcode hex valu
 | Confirmed fill | `colors.successGreen` |
 | Error fill | `colors.dangerRed` |
 | Border | `borders.hero` in `colors.bgVoid` |
+| Depth top border | `borders.standard` in `colors.bgVoid` |
+| Depth bottom border | `borders.standard` in `colors.highlightBlue` |
 | Label | `type.displayS` / `colors.bgVoid` |
 
 **Dimensions:** Min height 56pt. Full width of parent container.
+
+**Depth:** Top shadow (`bgVoid`) + bottom highlight (`highlightBlue`) at `standard` width give embossed 8-bit button feel.
 
 **States:**
 - **Default:** "AVOID" label, `rewardYellow` fill.
@@ -157,7 +165,7 @@ All components reference tokens from `design/tokens.ts`. Never hardcode hex valu
 |---|---|
 | Shell background | `colors.bgNav` |
 | Active tab plate | `colors.surface1` |
-| Shell border (top) | `borders.hero` in `colors.frameBlue` |
+| Shell border (top) | `borders.standard` in `colors.frameBlue` |
 | Labels | `type.displayS` |
 | Label color (default) | `colors.textSecondary` |
 | Label color (active) | `colors.rewardYellow` |
@@ -182,6 +190,10 @@ All components reference tokens from `design/tokens.ts`. Never hardcode hex valu
 | Count (when active) | `type.displayS` / `colors.rewardYellow` |
 
 **Decoration:** Left edge accent line in `colors.highlightBlue` (2px). Reward flash on tap (<500ms, respects reduced-motion).
+
+**Props:**
+- `hideSprite?: boolean` — hides the sprite when row is inside a group that already shows the figure in its header.
+- `compact?: boolean` — reduces vertical padding and adds left indent for grouped child rows.
 
 **Accessibility:** Row is a pressable element. VoiceOver reads platform name + avoid count + "tap to avoid".
 
@@ -281,7 +293,7 @@ All components reference tokens from `design/tokens.ts`. Never hardcode hex valu
 | Section background | `colors.surface1` |
 | Expanded FAQ background | `colors.surface2` |
 | Section border | `borders.standard` in `colors.frameBlue` |
-| Section ornamentation | `borders.hero` top in `colors.highlightBlue`, `borders.hero` bottom in `colors.bgVoid` |
+| Section ornamentation | `borders.standard` top in `colors.highlightBlue`, `borders.standard` bottom in `colors.bgVoid` |
 | Expanded border | `borders.standard` in `colors.highlightBlue` |
 | Section headers | `type.displayS` / `colors.rewardYellow` |
 | Question text | `type.uiLabel` / `colors.textPrimary` |
@@ -291,7 +303,7 @@ All components reference tokens from `design/tokens.ts`. Never hardcode hex valu
 **Spacing:** `space.lg` between sections, `space.md` internal section padding.
 
 **States:**
-- Transparency section: collapsible (default collapsed). Pressable toggle with ▲/▼ chevron.
+- Transparency section: collapsible (default collapsed). Pressable toggle with +/− indicator (matches FaqItem pattern).
 
 **Accessibility:** FAQ items are collapsible — VoiceOver announces expanded/collapsed state. Answers become visible on expand. Transparency toggle has `accessibilityState={{ expanded }}` and descriptive hint.
 
@@ -324,18 +336,20 @@ All components reference tokens from `design/tokens.ts`. Never hardcode hex valu
 | Property | Token |
 |---|---|
 | Background | `colors.surface2` |
-| Border | `borders.hero` in `colors.frameBlue` |
+| Background texture | `bg_tile_dark_stone.png` via `ImageBackground`, 25% opacity (`overflow: 'hidden'`) |
+| Border | `borders.standard` in `colors.frameBlue` |
 | Border top highlight | `colors.highlightBlue` |
 | Border bottom shadow | `colors.bgVoid` |
-| Title | `type.displayS` (10pt) / `colors.rewardYellow` |
+| Cell border | `borders.standard` in `colors.rewardYellow` |
+| Cell background | `colors.surface1` |
 | FX text (-1) | `type.displayS` (14pt) / `colors.dangerRed` |
 | Speech bubble bg | `colors.surface1` |
 | Speech bubble border | `borders.standard` in `colors.frameBlue` |
 | Speech bubble text | `type.caption` (9pt) / `colors.textPrimary` bold |
 
-**Spacing:** `space.md` padding, `space.sm` grid gap between sprite cells.
+**Spacing:** `space.sm` padding, `space.xs` grid gap between sprite cells. `marginHorizontal: sm`, `marginTop: sm`.
 
-**Sprites:** 48pt per cell. Neutral state at 0.4 opacity when 0 avoids, full opacity when >0. Defeated state after `DEFEATED_THRESHOLD` (3) avoids.
+**Sprites:** 48pt per cell (cell size: 52×52 including 2px border). Neutral state at 0.4 opacity when 0 avoids, full opacity when >0. Defeated state after `DEFEATED_THRESHOLD` (3) avoids. Grid uses `flexWrap: 'wrap'` with `justifyContent: 'center'`.
 
 **FX (cosmetic — no data logged):**
 - **Avoid-triggered:** `lastAvoided` prop fires floating -1 on matching sprite (fade up 600ms).
@@ -353,15 +367,15 @@ All components reference tokens from `design/tokens.ts`. Never hardcode hex valu
 
 | Property | Token |
 |---|---|
-| Header background | `colors.surface2` |
-| Header top border | `borders.hero` in `colors.highlightBlue` |
-| Header bottom shadow | `borders.hero` in `colors.bgVoid` |
-| Header text | `type.displayS` (11pt) / `colors.rewardYellow` |
+| Header background | `colors.surface1` |
+| Header top border | `borders.standard` in `colors.highlightBlue` |
+| Header bottom shadow | `borders.standard` in `colors.bgVoid` |
+| Header text | `type.displayS` / `colors.rewardYellow` |
 
 **Sprites:** 32pt sprite bust in header. Same state logic as arena (neutral/defeated based on total avoids).
 
-**Copy:** Header text via `platformsCopy.groupHeader(parentCompany, totalAvoids)` — renders as "META — 5×".
+**Copy:** Header text via `platformsCopy.groupHeader(parentCompany, totalAvoids)` — renders as "META — 5×". Parent names are shortened via `shortParentName()` in PlatformsScreen (strips Inc/Corp/Platforms/.com, uppercases).
 
-**Children:** Individual `PlatformRow` components indented below the header. Standalone platforms (no siblings sharing parentCompany) render without a group header.
+**Children:** Individual `PlatformRow` components indented below the header with `hideSprite` and `compact` props. Standalone platforms (no siblings sharing parentCompany) render without a group header.
 
 **Accessibility:** Header text includes parent name and rolled-up total.

@@ -14,6 +14,10 @@ interface PlatformRowProps {
   weekOf: string;
   onAvoid: () => Promise<void>;
   onAvoidDate: (date: string) => Promise<void>;
+  /** Hide the sprite (e.g. when row is inside a group that already shows the sprite). */
+  hideSprite?: boolean;
+  /** Compact mode — less padding for grouped child rows. */
+  compact?: boolean;
 }
 
 /**
@@ -23,7 +27,7 @@ interface PlatformRowProps {
  *
  * Tap the chevron to expand and show 7 day circles for the current week.
  */
-export function PlatformRow({ item, weekOf, onAvoid, onAvoidDate }: PlatformRowProps) {
+export function PlatformRow({ item, weekOf, onAvoid, onAvoidDate, hideSprite = false, compact = false }: PlatformRowProps) {
   const { platform, weeklyCount, dayCounts } = item;
   const hasAvoided = weeklyCount > 0;
   const [expanded, setExpanded] = useState(false);
@@ -35,7 +39,7 @@ export function PlatformRow({ item, weekOf, onAvoid, onAvoidDate }: PlatformRowP
 
   return (
     <View style={[styles.outer, hasAvoided && styles.outerAvoided]}>
-      <View style={styles.row}>
+      <View style={[styles.row, compact && styles.rowCompact]}>
         {/* Expand/collapse chevron */}
         <Pressable
           onPress={() => setExpanded((prev) => !prev)}
@@ -53,13 +57,17 @@ export function PlatformRow({ item, weekOf, onAvoid, onAvoidDate }: PlatformRowP
           </Text>
         </Pressable>
 
-        <SpriteView spriteId={spriteId} state={spriteState} size={36} opacity={spriteOpacity} />
+        {!hideSprite && (
+          <SpriteView spriteId={spriteId} state={spriteState} size={36} opacity={spriteOpacity} />
+        )}
 
         <View style={styles.info}>
           <Text style={styles.name} allowFontScaling>{platform.name}</Text>
-          <Text style={styles.sub} allowFontScaling>
-            {platformsCopy.rowSubtitle(platform.parentCompany, platform.publicFigureName ?? platform.ceoName)}
-          </Text>
+          {!hideSprite && (
+            <Text style={styles.sub} allowFontScaling>
+              {platformsCopy.rowSubtitle(platform.parentCompany, platform.publicFigureName ?? platform.ceoName)}
+            </Text>
+          )}
           <View style={styles.tags}>
             {platform.categoryTags.map((tag) => (
               <Text key={tag} style={styles.tag} allowFontScaling>{tag}</Text>
@@ -110,6 +118,7 @@ const styles = StyleSheet.create({
   outer:           { borderBottomWidth: theme.borders.standard.width, borderColor: theme.colors.frameBlue, backgroundColor: theme.colors.surface1 },
   outerAvoided:    { backgroundColor: theme.colors.surface2 },
   row:             { flexDirection: 'row', alignItems: 'center', padding: theme.space.md, minHeight: theme.a11y.minTapTarget },
+  rowCompact:      { paddingVertical: theme.space.sm, paddingLeft: theme.space.xl },
   chevronBtn:      { minWidth: 28, minHeight: theme.a11y.minTapTarget, alignItems: 'center', justifyContent: 'center', marginRight: theme.space.xs },
   chevron:         { fontFamily: theme.fonts.body, fontSize: 12, color: theme.colors.textPrimary },
   info:            { flex: 1, marginLeft: theme.space.xs },

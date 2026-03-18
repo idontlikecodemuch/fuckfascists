@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.surface1,
     paddingHorizontal: theme.space.md,
     paddingVertical: theme.space.sm,
-    borderTopWidth: theme.borders.hero.width,
+    borderTopWidth: theme.borders.standard.width,
     borderTopColor: theme.colors.highlightBlue,
     borderBottomWidth: theme.borders.standard.width,
     borderBottomColor: theme.colors.bgVoid,
