@@ -3,7 +3,8 @@ import { View, Text, Pressable, ImageBackground, StyleSheet, type ViewStyle, typ
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { theme } from '../../design/tokens';
-import { barTab } from '../../core/ui/uiAssets';
+
+const BG_TEXTURE = require('../../assets/pixel/bg_tile_dark_stone.png');
 
 export type Tab = 'map' | 'platforms' | 'report' | 'info' | 'dev';
 
@@ -26,7 +27,7 @@ const TAB_ICON_NAMES: Record<Tab, keyof typeof Ionicons.glyphMap> = {
 export function TabBar({ activeTab, onSelect }: { activeTab: Tab; onSelect: (t: Tab) => void }) {
   const insets = useSafeAreaInsets();
   return (
-    <ImageBackground source={barTab} resizeMode="stretch" style={[styles.tabBar, { paddingBottom: Math.max(insets.bottom, 8) }]} imageStyle={styles.bgTexture}>
+    <ImageBackground source={BG_TEXTURE} resizeMode="repeat" style={[styles.tabBar, { paddingBottom: Math.max(insets.bottom, 8) }]} imageStyle={styles.bgTexture}>
       {TABS.map(({ id, label }) => {
         const active = id === activeTab;
         return (
@@ -71,7 +72,8 @@ const styles = StyleSheet.create<{
     paddingTop: theme.space.xs,
   },
   bgTexture: {
-    opacity: 0.8,
+    opacity: 0.3,
+    transform: [{ scale: 2 }],
   },
   tabItem: {
     flex: 1,

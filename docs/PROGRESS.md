@@ -12,6 +12,17 @@ This document is updated continuously. New instances should read this first — 
 
 ## Last 5 Sessions (most recent first)
 
+### Session: March 18, 2026 (UI kit revert + header bar fix + sprite overflow)
+**Focus:** Partial revert of UI kit wiring (assets don't fit at current sizes), header bar sizing fix, sprite overflow fix
+
+**Changes:**
+- **Reverted UI kit wiring** from 6 components — sliced assets remain in `assets/pixel/ui/` but are no longer wired into BusinessCard, AvoidButton, MapSearchBar, TabBar, MapControls, or ScorecardView. All components restored to pre-UI-kit coded borders/styling. `core/ui/uiAssets.ts` and header bar wiring in MapScreen retained.
+- **MapScreen.tsx** — header bar height now derived from screen width via `useWindowDimensions` + aspect ratio (1482/153) instead of hardcoded 60px. Image uses `resizeMode="stretch"` for full-width fill. Logo vertically centered within the stone area above the crumbling edge.
+- **BusinessCard.tsx** — explicit `overflow: 'visible'` on `whoSection`, `whoRow`, and `spriteHero` styles to ensure the sprite perch renders outside the card's top edge without clipping. Corner brackets restored.
+- Renamed `assets/pixel/UI/` → `assets/pixel/ui/` (lowercase) to fix Metro bundler case-sensitive resolution.
+
+**Verification:** tsc clean, 295 tests pass
+
 ### Session: March 18, 2026 (UI kit slicing + component wiring)
 **Focus:** UI kit sprite sheet slicing pipeline + wiring pixel art assets into 7 components
 

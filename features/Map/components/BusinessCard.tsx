@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { View, Text, Image, ImageBackground, Pressable, Animated, StyleSheet, Linking } from 'react-native';
+import { View, Text, Image, Pressable, Animated, StyleSheet, Linking } from 'react-native';
 import type { ScanResult } from '../types';
 import { AvoidButton } from './AvoidButton';
 import type { Entity } from '../../../core/models';
@@ -9,11 +9,12 @@ import { sharedCopy } from '../../../copy/shared';
 import { mapCopy } from '../../../copy/map';
 import { theme } from '../../../design/tokens';
 import { SpriteView, nameToSpriteId } from '../../../core/sprites/spriteLoader';
-import { frameCardWide } from '../../../core/ui/uiAssets';
 
 // Pixel art assets — component-rules §1
 const TOPBAND_NEUTRAL  = require('../../../assets/pixel/business_card_topband_neutral.png');
 const TOPBAND_DEFEATED = require('../../../assets/pixel/business_card_topband_defeated.png');
+const CORNER_TL        = require('../../../assets/pixel/corners_blue_standard_0.png');
+const CORNER_TR        = require('../../../assets/pixel/corners_blue_standard_1.png');
 const REWARD_OVERLAY   = require('../../../assets/pixel/business_card_reward_overlay.png');
 // Figure name is controlled by SHOW_FIGURE_NAME_IN_CARD (default: false).
 // See CLAUDE.md §7 for the informational vs. confrontational screen split.
@@ -92,9 +93,12 @@ export function BusinessCard({ result, onAvoid, avoidDisabled = false, avoided =
   }, [avoided, overlayOpacity]);
 
   return (
-    <ImageBackground source={frameCardWide} resizeMode="stretch" style={[styles.card, isMedium && styles.cardMedium]} imageStyle={styles.cardFrame}>
+    <View style={[styles.card, isMedium && styles.cardMedium]}>
       {/* ── Topband asset ── */}
       <Image source={avoided ? TOPBAND_DEFEATED : TOPBAND_NEUTRAL} style={styles.topband} resizeMode="cover" />
+      {/* ── Corner brackets ── */}
+      <Image source={CORNER_TL} style={styles.cornerTL} />
+      <Image source={CORNER_TR} style={styles.cornerTR} />
 
       {/* ── Reward overlay — semi-transparent celebration layer ── */}
       {avoided && (
@@ -224,24 +228,25 @@ export function BusinessCard({ result, onAvoid, avoidDisabled = false, avoided =
       >
         <Text style={styles.dismissLabel} allowFontScaling>{sharedCopy.dismiss}</Text>
       </Pressable>
-    </ImageBackground>
+    </View>
   );
 }
 
 // ── Styles ────────────────────────────────────────────────────────────────────
 
 const styles = StyleSheet.create({
-  // Card container — pixel art frame from UI kit
-  card:           { backgroundColor: theme.colors.surface1, margin: theme.space.sm, overflow: 'visible' as const, padding: theme.space.xs },
-  cardFrame:      { borderRadius: 0 },
+  // Card container — highlight top, shadow bottom for pixel depth
+  card:           { backgroundColor: theme.colors.surface1, borderColor: theme.colors.frameBlue, borderWidth: theme.borders.hero.width, borderTopColor: theme.colors.highlightBlue, borderBottomColor: theme.colors.bgVoid, margin: theme.space.sm, overflow: 'visible' as const },
   cardMedium:     { borderLeftColor: theme.colors.rewardYellow, borderLeftWidth: theme.borders.hero.width },
   topband:        { alignSelf: 'stretch' as const, height: 64 },
+  cornerTL:       { position: 'absolute' as const, top: -4, left: -4, width: 36, height: 36, zIndex: 3 },
+  cornerTR:       { position: 'absolute' as const, top: -4, right: -4, width: 36, height: 36, zIndex: 3 },
   rewardOverlay:  { position: 'absolute' as const, top: 0, left: 0, right: 0, bottom: 0, zIndex: 10 },
 
   // Beat 1: WHO — row layout when sprite present
-  whoSection:        { padding: theme.space.lg, paddingBottom: theme.space.sm },
-  whoRow:            { flexDirection: 'row' as const, alignItems: 'flex-start' as const },
-  spriteHero:        { marginRight: theme.space.md, marginLeft: -theme.space.md, marginTop: -80, zIndex: 5 },
+  whoSection:        { padding: theme.space.lg, paddingBottom: theme.space.sm, overflow: 'visible' as const },
+  whoRow:            { flexDirection: 'row' as const, alignItems: 'flex-start' as const, overflow: 'visible' as const },
+  spriteHero:        { marginRight: theme.space.md, marginLeft: -theme.space.md, marginTop: -80, zIndex: 5, overflow: 'visible' as const },
   whoText:           { flex: 1 },
   titleRow:          { flexDirection: 'row' as const, alignItems: 'center' as const, marginBottom: theme.space.xs },
   name:              { flex: 1, ...theme.type.displayM, color: theme.colors.textPrimary, marginRight: theme.space.sm },

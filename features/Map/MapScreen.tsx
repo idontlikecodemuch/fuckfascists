@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
-import { View, Text, Image, Pressable, StyleSheet, SafeAreaView, Linking, Platform, Animated, AccessibilityInfo } from 'react-native';
+import { View, Text, Image, Pressable, StyleSheet, SafeAreaView, Linking, Platform, Animated, AccessibilityInfo, useWindowDimensions } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, type Region } from 'react-native-maps';
 import type { Entity } from '../../core/models';
 import type { MatchingDeps } from '../../core/matching';
@@ -48,8 +48,12 @@ const DEFAULT_REGION: Region = {
  * Session rule: GPS coordinates live only in component state.
  * They are never written to disk, transmitted, or passed to core/data.
  */
+// Header bar source image: 1482×153 px
+const HEADER_BAR_ASPECT = 1482 / 153;
+
 export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: MapScreenProps) {
   const insets = useSafeAreaInsets();
+  const { width: screenWidth } = useWindowDimensions();
   const [searchText, setSearchText] = useState('');
   const [pins, setPins] = useState<MapPin[]>([]);
   const [activeResult, setActiveResult] = useState<ScanResult | null>(null);
@@ -252,9 +256,9 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
     return [...pins, ...tapPins.filter((p) => !existingKeys.has(pinKey(p)))];
   }, [pins, tapPins]);
 
-  // Header bar asset: 1482x153 source — aspect ratio preserved, full width
-  const HEADER_BAR_HEIGHT = 60;
-  const SEARCH_TOP = insets.top + HEADER_BAR_HEIGHT + theme.space.xs;
+  // Header bar height derived from screen width to maintain aspect ratio
+  const headerBarHeight = Math.round(screenWidth / HEADER_BAR_ASPECT);
+  const SEARCH_TOP = insets.top + headerBarHeight + theme.space.xs;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -297,11 +301,15 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
       </MapView>
 
       {/* ── Branded header bar — overlays map, irregular bottom edge is transparent ── */}
-      <View style={[styles.headerBarOverlay, { height: insets.top + HEADER_BAR_HEIGHT }]} pointerEvents="none">
-        <Image source={HEADER_BAR_ASSET} style={styles.headerBarImage} resizeMode="cover" />
+      <View style={[styles.headerBarOverlay, { height: insets.top + headerBarHeight }]} pointerEvents="none">
+        <Image
+          source={HEADER_BAR_ASSET}
+          style={[styles.headerBarImage, { top: insets.top, width: screenWidth, height: headerBarHeight }]}
+          resizeMode="stretch"
+        />
         <Image
           source={require('../../assets/pixel/brand/FF_logo_horizontal.png')}
-          style={[styles.headerLogo, { marginTop: insets.top }]}
+          style={[styles.headerLogo, { marginTop: insets.top + Math.round(headerBarHeight * 0.2) }]}
           resizeMode="contain"
           accessibilityLabel={sharedCopy.appName}
         />
@@ -366,7 +374,7 @@ const styles = StyleSheet.create({
   container:        { flex: 1, backgroundColor: theme.colors.bgVoid },
   map:              { flex: 1 },
   headerBarOverlay: { position: 'absolute', top: 0, left: 0, right: 0, zIndex: 2, alignItems: 'center', overflow: 'visible' as const },
-  headerBarImage:   { position: 'absolute', top: 0, left: 0, right: 0, height: '100%' },
+  headerBarImage:   { position: 'absolute', left: 0 },
   headerLogo:       { height: 24, aspectRatio: 1536 / 322, zIndex: 3 },
   backdrop:         { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
   cardContainer:    { position: 'absolute', bottom: 0, left: 0, right: 0, overflow: 'visible' as const },

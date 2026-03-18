@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import { View, Text, Pressable, ImageBackground, StyleSheet } from 'react-native';
+import { View, Text, Pressable, StyleSheet } from 'react-native';
 import type { ScorecardViewData } from '../types';
 import type { ScorecardPerson, ScorecardSource } from '../data/aggregateScorecard';
 import { PreviewStamp } from './PreviewStamp';
@@ -8,7 +8,6 @@ import { scorecardCopy } from '../../../copy/scorecard';
 import { sharedCopy } from '../../../copy/shared';
 import { theme } from '../../../design/tokens';
 import { SpriteView, nameToSpriteId } from '../../../core/sprites/spriteLoader';
-import { frameScorecard } from '../../../core/ui/uiAssets';
 
 interface ScorecardViewProps {
   data: ScorecardViewData;
@@ -41,7 +40,7 @@ export const ScorecardView = forwardRef<View, ScorecardViewProps>(
     const overflowCount = isHeavy ? persons.length - TOP_N : 0;
 
     return (
-      <ImageBackground ref={ref} source={frameScorecard} resizeMode="stretch" style={styles.card} imageStyle={styles.cardFrame}>
+      <View ref={ref} style={styles.card}>
         {isPreview && <PreviewStamp />}
 
         {/* ── Header ── */}
@@ -129,7 +128,7 @@ export const ScorecardView = forwardRef<View, ScorecardViewProps>(
             {scorecardCopy.dataAttribution}
           </Text>
         </View>
-      </ImageBackground>
+      </View>
     );
   },
 );
@@ -188,8 +187,7 @@ function formatSource(source: ScorecardSource): string {
 // ── Styles ────────────────────────────────────────────────────────────────────
 
 const styles = StyleSheet.create({
-  card:           { backgroundColor: theme.colors.surface1, padding: theme.space.xs, overflow: 'hidden' as const },
-  cardFrame:      { borderRadius: 0 },
+  card:           { backgroundColor: theme.colors.surface1, borderColor: theme.colors.frameBlue, borderWidth: theme.borders.hero.width },
   // Header
   header:         { padding: theme.space.lg, alignItems: 'center', borderBottomWidth: theme.borders.standard.width, borderColor: theme.colors.frameBlue },
   appName:        { ...theme.type.displayM, color: theme.colors.dangerRed, letterSpacing: 4 },

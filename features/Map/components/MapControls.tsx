@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Pressable, Text, ImageBackground, StyleSheet } from 'react-native';
+import { View, Pressable, Text, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { mapCopy } from '../../../copy/map';
 import { theme } from '../../../design/tokens';
-import { btnCirclePlus, btnCircleArrow, btnCircleTarget } from '../../../core/ui/uiAssets';
 
 interface MapControlsProps {
   onZoomIn: () => void;
@@ -20,46 +20,43 @@ export function MapControls({ onZoomIn, onZoomOut, onLocation, locationLoading }
     <View style={styles.stack}>
       <Pressable
         onPress={onZoomIn}
+        style={styles.button}
         accessibilityRole="button"
         accessibilityLabel={mapCopy.zoomInLabel}
         hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
       >
-        <ImageBackground source={btnCirclePlus} resizeMode="contain" style={styles.button}>
-          <Text style={styles.buttonText} allowFontScaling={false}>{mapCopy.zoomIn}</Text>
-        </ImageBackground>
+        <Text style={styles.buttonText} allowFontScaling={false}>{mapCopy.zoomIn}</Text>
       </Pressable>
 
       <Pressable
         onPress={onZoomOut}
+        style={styles.button}
         accessibilityRole="button"
         accessibilityLabel={mapCopy.zoomOutLabel}
         hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
       >
-        <ImageBackground source={btnCircleArrow} resizeMode="contain" style={styles.button}>
-          <Text style={styles.buttonText} allowFontScaling={false}>{mapCopy.zoomOut}</Text>
-        </ImageBackground>
+        <Text style={styles.buttonText} allowFontScaling={false}>{mapCopy.zoomOut}</Text>
       </Pressable>
 
       <Pressable
         onPress={onLocation}
+        style={styles.button}
         accessibilityRole="button"
         accessibilityLabel={mapCopy.locationLabel}
         disabled={locationLoading}
         hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
       >
-        <ImageBackground source={btnCircleTarget} resizeMode="contain" style={[styles.button, locationLoading && styles.buttonLoading]}>
-          <Text style={styles.buttonText} allowFontScaling={false}>
-            {locationLoading ? mapCopy.loadingIcon : ''}
-          </Text>
-        </ImageBackground>
+        {locationLoading
+          ? <Text style={styles.buttonText} allowFontScaling={false}>{mapCopy.loadingIcon}</Text>
+          : <Ionicons name="navigate" size={20} color={theme.colors.glowCyan} />
+        }
       </Pressable>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  stack:         { position: 'absolute', bottom: 120, right: theme.space.lg, gap: theme.space.sm },
-  button:        { width: 44, height: 44, alignItems: 'center', justifyContent: 'center' },
-  buttonLoading: { opacity: 0.5 },
-  buttonText:    { fontSize: 18, color: theme.colors.textPrimary, lineHeight: 22, fontWeight: 'bold' },
+  stack:      { position: 'absolute', bottom: 120, right: theme.space.lg, gap: theme.space.sm },
+  button:     { width: 44, height: 44, backgroundColor: theme.colors.bgNav, borderWidth: theme.borders.standard.width, borderColor: theme.colors.surface2, alignItems: 'center', justifyContent: 'center', opacity: 0.85 },
+  buttonText: { fontSize: 18, color: theme.colors.textSecondary, lineHeight: 22 },
 });
