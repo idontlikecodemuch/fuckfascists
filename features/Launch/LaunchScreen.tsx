@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { View, Text, Pressable, StyleSheet, Animated, AccessibilityInfo } from 'react-native';
+import { View, Text, Image, Pressable, StyleSheet, Animated, AccessibilityInfo } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { launchCopy } from '../../copy/launch';
 import { sharedCopy } from '../../copy/shared';
@@ -55,9 +55,12 @@ export function LaunchScreen({ onDismiss }: { onDismiss: () => void }) {
       accessibilityLabel={launchCopy.tapLabel}
     >
       <View style={styles.content}>
-        <Text style={styles.appName} allowFontScaling={false}>
-          {sharedCopy.appName}
-        </Text>
+        <Image
+          source={require('../../assets/pixel/brand/FF_logo.png')}
+          style={styles.heroLogo}
+          resizeMode="contain"
+          accessibilityLabel={sharedCopy.appName}
+        />
 
         <View style={styles.divider} />
 
@@ -100,13 +103,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: theme.space['3xl'],
   },
-  appName: {
-    fontFamily: theme.fonts.headline,
-    fontSize: 36,
-    color: theme.colors.dangerRed,
-    letterSpacing: 4,
-    textAlign: 'center',
-    lineHeight: 42,
+  heroLogo: {
+    width: 200,
+    aspectRatio: 1466 / 827,
+    alignSelf: 'center',
+    marginBottom: theme.space.sm,
   },
   divider: {
     width: 48,

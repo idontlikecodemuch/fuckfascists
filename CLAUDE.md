@@ -57,6 +57,8 @@ API keys and credentials must **only ever be read from environment variables**. 
 - **Never hardcode any key, token, or credential** in source files, config files, or comments. `.env` is gitignored; `.env.example` shows placeholders only. Hardcoded keys are bugs — remove immediately and rotate.
 - **`FECClient` supports anonymous mode** — runs without `FEC_API_KEY`, making requests with no `api_key` param (lower rate limits). `console.warn` in non-prod when key is absent.
 - **`FEC_API_KEY` is required for data pipeline scripts** — they make hundreds of requests and exit with an error when the key is missing.
+- **`OPENAI_API_KEY` is required for `gpt_image.py`** — the GPT image pipeline reads from `.env` via python-dotenv. Exits with a clear error if missing. Not used by any app or extension runtime code.
+- **`GEMINI_API_KEY` is required for Gemini generation scripts** — `generate.py` and `generate_assets.py` read from `.env`. Not used by any app or extension runtime code.
 
 ---
 
@@ -133,14 +135,22 @@ API keys and credentials must **only ever be read from environment variables**. 
 ├── modules/
 │   └── mapkit-search/               ← local Expo native module (iOS MKLocalPointsOfInterestRequest bridge)
 ├── tools/
-│   └── img-gen/                     ← pixel art asset generation pipeline (Gemini API)
+│   └── img-gen/                     ← pixel art asset generation pipeline (Gemini + GPT)
+│       ├── scripts/generate.py      ← character sprite generation (Gemini API)
+│       ├── scripts/generate_assets.py ← UI ornament generation (Gemini API)
+│       ├── scripts/compose.py       ← stack sprite variants into final sheets
 │       ├── scripts/process_assets.py ← 4-step keying (flood fill → magenta → binarize → erode) + slicing + scaling
 │       ├── scripts/remove_magenta.py ← chroma key for sprite sheets (3-step: flood fill → binarize → erode)
 │       ├── scripts/deploy_assets.py  ← copies processed → assets/pixel/
+│       ├── scripts/manifest.py      ← generate sprite sheet metadata JSON
+│       ├── scripts/gpt_image.py     ← GPT image pipeline (gpt-image-1): generate + batch process
+│       ├── USAGE.md                 ← full documentation for all pipeline scripts
 │       └── asset-prompts.json       ← asset definitions + processing configs
 └── assets/
     ├── fonts/                       ← Bungee-Regular, IBMPlexSans-{Regular,SemiBold,Medium}
     └── pixel/                       ← all pixel art assets by type
+        ├── brand/                   ← FF_logo.png (stacked), FF_logo_horizontal.png
+        ├── arena/                   ← 4 scene backgrounds (sf, nyc street, nyc penthouse, dc)
         └── sprites/                 ← 107 CEO sprite sheets + manifest.json
 ```
 
@@ -443,7 +453,7 @@ The entire app is styled as a **vintage 8-bit video game**. This is the foundati
 | Donation data bundled into `entities.json` | ✅ Done |
 | Anonymous FEC API mode (no key required in app) | ✅ Done |
 | Design system: tokens + 26 components migrated | ✅ Done — `design/tokens.ts` + all components use theme tokens |
-| Pixel art assets: pipeline + deploy + wired | ✅ Done — 35 assets in `assets/pixel/`, FlagMarker + BusinessCard wired. 107 CEO sprites in `assets/pixel/sprites/`, wired into BusinessCard, PlatformRow, ScorecardView. 4-step keying pipeline with 1px alpha erosion. |
+| Pixel art assets: pipeline + deploy + wired | ✅ Done — 35 assets in `assets/pixel/`, FlagMarker + BusinessCard wired. 107 CEO sprites in `assets/pixel/sprites/`, wired into BusinessCard, PlatformRow, ScorecardView. 4-step keying pipeline with 1px alpha erosion. Brand logos wired (map header, launch, onboarding, icon, splash). 4 arena backgrounds wired into GameArena. |
 | Design refinement: 8-bit game energy | ✅ Done — Map header bar, search bar depth, tab bar texture, BusinessCard sprite-left layout + donation hierarchy flip + reward overlay + sprite perch ON card, MatchChooser visual upgrade, GameArena tiled bg texture + rewardYellow cell borders, PlatformGroup parent company grouping + short names + hideSprite/compact child rows, InfoScreen collapsible transparency + section ornamentation, tap-to-dismiss backdrop, AvoidButton depth borders, global highlight lines reduced to 2px |
 | Onboarding tightened (5→3 screens) | ✅ Done — Welcome, Permissions, Privacy |
 | Beta testing mode | ✅ Done — triple-tap toggle, BetaOverlay, screenshot tool |

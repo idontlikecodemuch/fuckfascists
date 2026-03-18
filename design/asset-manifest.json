@@ -96,6 +96,60 @@
       "required": false,
       "status": "planned",
       "fallback": "None — screen renders without hero art"
+    },
+    {
+      "slot": "brand-logo-stacked",
+      "file": "assets/pixel/brand/FF_logo.png",
+      "dimensions": "1466x827",
+      "required": true,
+      "status": "ready",
+      "fallback": "Text appName via sharedCopy",
+      "usage": "Launch screen hero, onboarding welcome hero, app icon, splash image"
+    },
+    {
+      "slot": "brand-logo-horizontal",
+      "file": "assets/pixel/brand/FF_logo_horizontal.png",
+      "dimensions": "1536x322",
+      "required": true,
+      "status": "ready",
+      "fallback": "Text appName via sharedCopy",
+      "usage": "Map screen header bar"
+    },
+    {
+      "slot": "arena-bg-sf",
+      "file": "assets/pixel/arena/arena_sf.png",
+      "dimensions": "scene background",
+      "required": false,
+      "status": "ready",
+      "fallback": "Tiled bg_tile_dark_stone.png texture",
+      "usage": "GameArena background (random rotation)"
+    },
+    {
+      "slot": "arena-bg-nyc-street",
+      "file": "assets/pixel/arena/arena_byc_street.png",
+      "dimensions": "scene background",
+      "required": false,
+      "status": "ready",
+      "fallback": "Tiled bg_tile_dark_stone.png texture",
+      "usage": "GameArena background (random rotation)"
+    },
+    {
+      "slot": "arena-bg-nyc-penthouse",
+      "file": "assets/pixel/arena/arena_nyc_penthouse.png",
+      "dimensions": "scene background",
+      "required": false,
+      "status": "ready",
+      "fallback": "Tiled bg_tile_dark_stone.png texture",
+      "usage": "GameArena background (random rotation)"
+    },
+    {
+      "slot": "arena-bg-dc",
+      "file": "assets/pixel/arena/arena_dc.png",
+      "dimensions": "scene background",
+      "required": false,
+      "status": "ready",
+      "fallback": "Tiled bg_tile_dark_stone.png texture",
+      "usage": "GameArena background (random rotation)"
     }
   ],
   "ceoSprites": {

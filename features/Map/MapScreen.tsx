@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
-import { View, Text, Pressable, StyleSheet, SafeAreaView, Linking, Platform, Animated, AccessibilityInfo } from 'react-native';
+import { View, Text, Image, Pressable, StyleSheet, SafeAreaView, Linking, Platform, Animated, AccessibilityInfo } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, type Region } from 'react-native-maps';
 import type { Entity } from '../../core/models';
 import type { MatchingDeps } from '../../core/matching';
@@ -257,7 +257,12 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
     <SafeAreaView style={styles.container}>
       {/* ── Branded header bar ── */}
       <View style={styles.headerBar}>
-        <Text style={styles.headerTitle} allowFontScaling={false}>{sharedCopy.appName}</Text>
+        <Image
+          source={require('../../assets/pixel/brand/FF_logo_horizontal.png')}
+          style={styles.headerLogo}
+          resizeMode="contain"
+          accessibilityLabel={sharedCopy.appName}
+        />
       </View>
 
       <MapView
@@ -356,7 +361,7 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
 const styles = StyleSheet.create({
   container:     { flex: 1, backgroundColor: theme.colors.bgVoid },
   headerBar:     { backgroundColor: theme.colors.surface1, paddingHorizontal: theme.space.lg, paddingVertical: theme.space.sm, borderBottomWidth: theme.borders.standard.width, borderBottomColor: theme.colors.frameBlue },
-  headerTitle:   { ...theme.type.displayS, color: theme.colors.textPrimary },
+  headerLogo:    { height: 28, aspectRatio: 1536 / 322 },
   map:           { flex: 1 },
   backdrop:      { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
   cardContainer: { position: 'absolute', bottom: 0, left: 0, right: 0, overflow: 'visible' as const },

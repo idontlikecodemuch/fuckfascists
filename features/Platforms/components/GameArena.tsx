@@ -1,10 +1,15 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react';
-import { View, Text, Pressable, Animated, ImageBackground, AccessibilityInfo, StyleSheet } from 'react-native';
+import React, { useRef, useEffect, useState, useCallback, useMemo } from 'react';
+import { View, Text, Pressable, Animated, ImageBackground, AccessibilityInfo, StyleSheet, type ImageSourcePropType } from 'react-native';
 import { SpriteView } from '../../../core/sprites/spriteLoader';
 import { platformsCopy } from '../../../copy/platforms';
 import { theme } from '../../../design/tokens';
 
-const BG_TEXTURE = require('../../../assets/pixel/bg_tile_dark_stone.png');
+const ARENA_BACKGROUNDS: ImageSourcePropType[] = [
+  require('../../../assets/pixel/arena/arena_sf.png'),
+  require('../../../assets/pixel/arena/arena_byc_street.png'),
+  require('../../../assets/pixel/arena/arena_nyc_penthouse.png'),
+  require('../../../assets/pixel/arena/arena_dc.png'),
+];
 
 const SPRITE_SIZE = 48;
 const DEFEATED_THRESHOLD = 3;
@@ -47,6 +52,7 @@ function pickReaction(): string {
  *    No data is logged — purely decorative.
  */
 export function GameArena({ figures, lastAvoided }: GameArenaProps) {
+  const arenaBg = useMemo(() => ARENA_BACKGROUNDS[Math.floor(Math.random() * ARENA_BACKGROUNDS.length)], []);
   const [reducedMotion, setReducedMotion] = useState(false);
 
   // Avoid-triggered FX (from PlatformsScreen handleAvoid)
@@ -127,7 +133,7 @@ export function GameArena({ figures, lastAvoided }: GameArenaProps) {
   }, [reducedMotion, getTapFx]);
 
   return (
-    <ImageBackground source={BG_TEXTURE} resizeMode="repeat" style={styles.arena} imageStyle={styles.bgTexture}>
+    <ImageBackground source={arenaBg} resizeMode="cover" style={styles.arena} imageStyle={styles.bgTexture}>
       <View style={styles.grid}>
         {figures.map((fig) => {
           const isDefeated = fig.totalAvoids >= DEFEATED_THRESHOLD;

@@ -4,6 +4,12 @@
     "slug": "fuckfascists",
     "version": "0.0.1",
     "newArchEnabled": true,
+    "icon": "./assets/pixel/brand/FF_logo.png",
+    "splash": {
+      "image": "./assets/pixel/brand/FF_logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#070B12"
+    },
     "platforms": [
       "ios",
       "android"

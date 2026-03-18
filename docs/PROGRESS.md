@@ -12,6 +12,45 @@ This document is updated continuously. New instances should read this first — 
 
 ## Last 5 Sessions (most recent first)
 
+### Session: March 17, 2026 (follow-up 2)
+**Focus:** Brand assets wired + GPT image pipeline tool
+
+**Completed:**
+
+**Brand logo wiring:**
+- **Map header** — replaced text-based `{sharedCopy.appName}` with `<Image>` rendering `FF_logo_horizontal.png` (1536×322). Height 28pt, aspect ratio preserved. `accessibilityLabel={sharedCopy.appName}`.
+- **Launch screen** — replaced text-based `appName` with `FF_logo.png` (1466×827) as hero image. Width 200pt, aspect ratio preserved, centered.
+- **Onboarding welcome** — replaced text-based `appDisplay` with `FF_logo.png` as hero image. Same dimensions as launch screen. Added `sharedCopy` import for accessibility label.
+- **App icon + splash** — `app.json` updated with `icon` and `splash` fields pointing to `FF_logo.png`. Splash background `#070B12` matches `theme.colors.bgVoid`.
+
+**Arena backgrounds:**
+- **GameArena** — replaced single tiled `bg_tile_dark_stone.png` with 4 arena scene backgrounds (`arena_sf`, `arena_byc_street`, `arena_nyc_penthouse`, `arena_dc`). Random selection via `useMemo` on mount. Changed `resizeMode` from `repeat` to `cover`.
+
+**Asset manifest:**
+- Added 6 new entries with status `"ready"`: `brand-logo-stacked`, `brand-logo-horizontal`, `arena-bg-sf`, `arena-bg-nyc-street`, `arena-bg-nyc-penthouse`, `arena-bg-dc`. Each includes dimensions, usage context, and fallback.
+
+**GPT image pipeline (tools/img-gen/):**
+- Created `scripts/gpt_image.py` — general-purpose GPT image tool using `gpt-image-1`. Two modes: `--generate` (text prompt → PNG, optional reference image) and `--process` (batch edit existing PNGs with natural-language instructions). Reads `OPENAI_API_KEY` from repo root `.env` via python-dotenv. Batch support with `[N/total]` progress, skip-on-error.
+- Created `USAGE.md` — full documentation for all 8 scripts in the pipeline (generate, generate_assets, compose, remove_magenta, process_assets, deploy_assets, manifest, gpt_image). Pipeline overview section, all CLI flags, 2+ examples per script.
+- Updated `requirements.txt` — added `openai`, `python-dotenv`, `scipy` (was imported but missing).
+
+**Files created:**
+- `tools/img-gen/scripts/gpt_image.py`
+- `tools/img-gen/USAGE.md`
+
+**Files modified:**
+- `features/Map/MapScreen.tsx` — Image import, horizontal logo in header, headerLogo style
+- `features/Launch/LaunchScreen.tsx` — Image import, stacked logo hero, heroLogo style
+- `features/Onboarding/screens/WelcomeScreen.tsx` — Image import, sharedCopy import, stacked logo hero, heroLogo style
+- `app.json` — icon and splash configuration
+- `features/Platforms/components/GameArena.tsx` — arena backgrounds array, random selection, cover resize
+- `design/asset-manifest.json` — 6 new asset entries
+- `tools/img-gen/requirements.txt` — 3 new dependencies
+
+**Build:** tsc clean. 295 tests passing (27 suites). audit-copy.sh clean.
+
+---
+
 ### Session: March 17, 2026 (follow-up)
 **Focus:** Device-testing-driven visual refinement pass
 
@@ -928,8 +967,8 @@ The Swift source now lives authoritatively at `modules/mapkit-search/ios/MapKitS
 
 | Suite | Count | Status |
 |---|---|---|
-| Total passing | 288 | ✅ Clean (all suites green) |
-| Last tsc run | March 16, 2026 | ✅ Clean |
+| Total passing | 295 | ✅ Clean (all suites green) |
+| Last tsc run | March 17, 2026 | ✅ Clean |
 
 ---
 
@@ -974,7 +1013,7 @@ The Swift source now lives authoritatively at `modules/mapkit-search/ios/MapKitS
 - Daily launch screen with rotating messages ✅
 - Avoid celebration animation with haptic feedback + 3s dismiss delay ✅
 - TabBar extracted with Ionicons + dark stone texture background ✅
-- Map branded header bar ("F*CK FASCISTS") ✅
+- Map branded header bar (horizontal logo image) ✅
 - GameArena: sprite grid with cosmetic tap FX (floating -1, speech bubbles) ✅
 - PlatformGroup: parent company grouping with sprite bust headers ✅
 - BusinessCard: sprite-left layout, flipped donation hierarchy, all-zero guard, reward overlay wired, sprite perch ON card ✅
@@ -982,9 +1021,11 @@ The Swift source now lives authoritatively at `modules/mapkit-search/ios/MapKitS
 - InfoScreen: collapsible transparency, section ornamentation, centered tagline ✅
 - Tap-to-dismiss backdrop behind BusinessCard ✅
 - AvoidButton: visual depth borders, haptics debug log ✅
-- GameArena: tiled bg texture, rewardYellow-bordered cells, no title label ✅
+- GameArena: arena scene backgrounds (4 locations, random per mount), rewardYellow-bordered cells, no title label ✅
 - PlatformRow: hideSprite + compact props for grouped child rows ✅
 - Global highlight lines reduced from 4px to 2px (TabBar, InfoSection, PlatformGroup) ✅
+- Brand logos deployed: stacked (FF_logo.png) wired into launch + onboarding + app icon + splash; horizontal (FF_logo_horizontal.png) wired into map header ✅
+- GPT image pipeline tool (gpt_image.py) for generation and batch processing ✅
 
 ## What's Not Working / Not Yet Built
 
