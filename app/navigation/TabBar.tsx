@@ -73,6 +73,7 @@ const styles = StyleSheet.create<{
   },
   bgTexture: {
     opacity: 0.3,
+    transform: [{ scale: 2 }],
   },
   tabItem: {
     flex: 1,

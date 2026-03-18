@@ -9,7 +9,7 @@ import { PlatformSetupScreen } from './components/PlatformSetupScreen';
 import { GameArena } from './components/GameArena';
 import { PlatformGroup } from './components/PlatformGroup';
 import { formatWeekOf } from './utils/platformHelpers';
-import type { PlatformItem } from './types';
+import type { PlatformItem, Platform } from './types';
 import { platformsCopy } from '../../copy/platforms';
 import { useNudgeNotification } from './hooks/useNudgeNotification';
 import { nameToSpriteId } from '../../core/sprites/spriteLoader';
@@ -19,18 +19,23 @@ interface PlatformsScreenProps {
   adapter: StorageAdapter;
 }
 
-/** Dedupe figures by display name for the arena grid. */
-function buildArenaFigures(items: PlatformItem[]) {
-  const seen = new Map<string, number>();
+/** Dedupe figures by display name for the arena grid — shows ALL tracked platforms. */
+function buildArenaFigures(allPlatforms: Platform[], items: PlatformItem[]) {
+  const avoidsByName = new Map<string, number>();
   for (const { platform, weeklyCount } of items) {
     const name = platform.publicFigureName ?? platform.ceoName;
-    seen.set(name, (seen.get(name) ?? 0) + weeklyCount);
+    avoidsByName.set(name, (avoidsByName.get(name) ?? 0) + weeklyCount);
   }
-  return [...seen.entries()].map(([name, totalAvoids]) => ({
-    name,
-    spriteId: nameToSpriteId(name),
-    totalAvoids,
-  }));
+  // Include every figure from the full roster, not just user-selected
+  const seen = new Set<string>();
+  const figures: { name: string; spriteId: string; totalAvoids: number }[] = [];
+  for (const p of allPlatforms) {
+    const name = p.publicFigureName ?? p.ceoName;
+    if (seen.has(name)) continue;
+    seen.add(name);
+    figures.push({ name, spriteId: nameToSpriteId(name), totalAvoids: avoidsByName.get(name) ?? 0 });
+  }
+  return figures;
 }
 
 /** Short display name for group headers — strips Inc, Corp, Platforms, .com suffixes. */
@@ -91,7 +96,7 @@ export function PlatformsScreen({ adapter }: PlatformsScreenProps) {
   const { weekOf, items, totalAvoids, loading, avoid, avoidForDate } =
     usePlatformAvoidance(adapter, activePlatforms);
 
-  const arenaFigures = useMemo(() => buildArenaFigures(items), [items]);
+  const arenaFigures = useMemo(() => buildArenaFigures(TRACKED_PLATFORMS, items), [items]);
   const grouped = useMemo(() => groupByParent(items), [items]);
 
   const handleAvoid = useCallback(
@@ -216,7 +221,7 @@ const styles = StyleSheet.create({
   header:     { backgroundColor: theme.colors.bgNav, padding: theme.space.lg, borderBottomWidth: theme.borders.hero.width, borderColor: theme.colors.frameBlue },
   title:      { ...theme.type.displayM, color: theme.colors.textPrimary, letterSpacing: 3 },
   editBtn:    { minHeight: theme.a11y.minTapTarget, justifyContent: 'center' },
-  editText:   { ...theme.type.bodyS, color: theme.colors.textSecondary },
+  editText:   { ...theme.type.bodyS, color: theme.colors.textSecondary, textDecorationLine: 'underline' as const },
   weekLabel:  { ...theme.type.bodyS, color: theme.colors.textSecondary, marginTop: 2 },
   score:      { ...theme.type.displayL, color: theme.colors.rewardYellow, marginTop: theme.space.xs },
   loader:     { flex: 1, justifyContent: 'center' },

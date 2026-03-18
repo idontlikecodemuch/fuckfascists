@@ -457,9 +457,10 @@ The entire app is styled as a **vintage 8-bit video game**. This is the foundati
 | Design refinement: 8-bit game energy | ✅ Done — Map header bar, search bar depth, tab bar texture, BusinessCard sprite-left layout + donation hierarchy flip + reward overlay + sprite perch ON card, MatchChooser visual upgrade, GameArena tiled bg texture + rewardYellow cell borders, PlatformGroup parent company grouping + short names + hideSprite/compact child rows, InfoScreen collapsible transparency + section ornamentation, tap-to-dismiss backdrop, AvoidButton depth borders, global highlight lines reduced to 2px |
 | Onboarding tightened (5→3 screens) | ✅ Done — Welcome, Permissions, Privacy |
 | Beta testing mode | ✅ Done — triple-tap toggle, BetaOverlay, screenshot tool |
-| Daily launch screen | ✅ Done — once per calendar day, rotating messages, 3s auto-dismiss |
+| Daily launch screen | ✅ Done — once per calendar day, rotating messages, 5s auto-dismiss, breathing logo animation |
 | Avoid celebration animation + haptics | ✅ Done — scale animation + expo-haptics |
 | App built and running on iOS simulator | ✅ Done — `FckFascists.app` installed on iPhone 16 Pro simulator |
+| Device visual refinement pass | ✅ Done — launch screen 5s + breathing logo, map header spacing, BusinessCard corners/z-index/sprite 150pt, SpriteView headOnly, GameArena full bleed + all-platforms roster, PlatformRow row-tap + auto-expand, TabBar texture 2x |
 | App tested on physical device | 🔄 Pending |
 | Extension tested in Chrome | ✅ Done |
 

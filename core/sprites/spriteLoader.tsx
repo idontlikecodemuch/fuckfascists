@@ -123,25 +123,30 @@ interface SpriteViewProps {
   size: number;
   /** Optional opacity (e.g. 0.4 for dimmed neutral). */
   opacity?: number;
+  /** When true, clips to the top ~38% of the sprite frame (head/face crop). */
+  headOnly?: boolean;
 }
+
+const HEAD_CROP_RATIO = 0.38;
 
 /**
  * Renders a single static frame from a CEO sprite sheet.
  * Shows nothing when spriteId is null or no sprite exists in the manifest.
  */
-export function SpriteView({ spriteId, state, variant, size, opacity }: SpriteViewProps) {
+export function SpriteView({ spriteId, state, variant, size, opacity, headOnly = false }: SpriteViewProps) {
   if (!spriteId) return null;
 
   const frame = getSpriteFrame(spriteId, state, variant);
   if (!frame) return null;
 
   const scale = size / frame.frameWidth;
+  const displayHeight = headOnly ? size * HEAD_CROP_RATIO : size;
 
   return (
     <View
       style={[
         styles.container,
-        { width: size, height: size, opacity: opacity ?? 1 },
+        { width: size, height: displayHeight, opacity: opacity ?? 1 },
       ]}
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"

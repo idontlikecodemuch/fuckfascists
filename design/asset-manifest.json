@@ -126,7 +126,7 @@
     },
     {
       "slot": "arena-bg-nyc-street",
-      "file": "assets/pixel/arena/arena_byc_street.png",
+      "file": "assets/pixel/arena/arena_nyc_street.png",
       "dimensions": "scene background",
       "required": false,
       "status": "ready",

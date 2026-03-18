@@ -308,7 +308,7 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
         onChangeText={setSearchText}
         onSubmit={handleSearch}
         isScanning={status === 'scanning'}
-        topOffset={HEADER_HEIGHT + insets.top + theme.space.sm}
+        topOffset={HEADER_HEIGHT + insets.top + theme.space.md}
       />
 
       <MapControls
@@ -360,7 +360,7 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
 
 const styles = StyleSheet.create({
   container:     { flex: 1, backgroundColor: theme.colors.bgVoid },
-  headerBar:     { backgroundColor: theme.colors.surface1, paddingHorizontal: theme.space.lg, paddingVertical: theme.space.sm, borderBottomWidth: theme.borders.standard.width, borderBottomColor: theme.colors.frameBlue },
+  headerBar:     { backgroundColor: theme.colors.surface1, paddingHorizontal: theme.space.lg, paddingVertical: theme.space.md, borderBottomWidth: theme.borders.standard.width, borderBottomColor: theme.colors.frameBlue },
   headerLogo:    { height: 28, aspectRatio: 1536 / 322 },
   map:           { flex: 1 },
   backdrop:      { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },

@@ -6,7 +6,7 @@ import { theme } from '../../../design/tokens';
 
 const ARENA_BACKGROUNDS: ImageSourcePropType[] = [
   require('../../../assets/pixel/arena/arena_sf.png'),
-  require('../../../assets/pixel/arena/arena_byc_street.png'),
+  require('../../../assets/pixel/arena/arena_nyc_street.png'),
   require('../../../assets/pixel/arena/arena_nyc_penthouse.png'),
   require('../../../assets/pixel/arena/arena_dc.png'),
 ];
@@ -156,6 +156,7 @@ export function GameArena({ figures, lastAvoided }: GameArenaProps) {
                 state={isDefeated ? 'defeated' : 'neutral'}
                 size={SPRITE_SIZE}
                 opacity={opacity}
+                headOnly
               />
 
               {/* Avoid-triggered -1 */}
@@ -203,6 +204,8 @@ export function GameArena({ figures, lastAvoided }: GameArenaProps) {
   );
 }
 
+const HEAD_CELL_HEIGHT = Math.ceil(SPRITE_SIZE * 0.38) + 4;
+
 const styles = StyleSheet.create({
   arena: {
     backgroundColor: theme.colors.surface2,
@@ -210,13 +213,12 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.frameBlue,
     borderTopColor: theme.colors.highlightBlue,
     borderBottomColor: theme.colors.bgVoid,
-    marginHorizontal: theme.space.sm,
-    marginTop: theme.space.sm,
     padding: theme.space.sm,
+    minHeight: 120,
     overflow: 'hidden' as const,
   },
   bgTexture: {
-    opacity: 0.25,
+    opacity: 0.3,
   },
   grid: {
     flexDirection: 'row',
@@ -228,7 +230,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: SPRITE_SIZE + 4,
-    height: SPRITE_SIZE + 4,
+    height: HEAD_CELL_HEIGHT,
     borderWidth: theme.borders.standard.width,
     borderColor: theme.colors.rewardYellow,
     backgroundColor: theme.colors.surface1,

@@ -12,6 +12,63 @@ This document is updated continuously. New instances should read this first — 
 
 ## Last 5 Sessions (most recent first)
 
+### Session: March 18, 2026
+**Focus:** Physical device visual refinement pass — 8 UI changes across 9 files
+
+**Completed:**
+
+**Launch screen:**
+- Auto-dismiss increased from 3s to 5s for title screen feel
+- Logo now 60% of screen width (was fixed 200pt) — more prominent on device
+- Added subtle breathing scale animation on logo (1.0→1.04→1.0 loop, 3s period) — respects reduced motion
+- Uses `Animated.Image` + `useWindowDimensions` for dynamic sizing
+
+**Map screen:**
+- Increased spacing between branded header bar and search bar — `paddingVertical: md` on header, `topOffset` uses `md` gap
+
+**Business card:**
+- Corner brackets repositioned: now sit ON the card border (top: -4, left/right: -4) with larger 36pt size
+- Vertical padding compressed: WHO section `paddingBottom: sm`, WHY section `paddingBottom: sm`, `paddingTop: sm` on total label
+- Reward overlay z-index raised to 10 (was 4) — now renders in front of sprite (z-index 5)
+- Sprite increased from 120pt to 150pt; marginTop -80 (was -60) so sprite still stands on topband; marginLeft negative to encroach left
+
+**Track screen:**
+- "Edit platform selection" text now underlined (`textDecorationLine: 'underline'`) to read as tappable
+
+**SpriteView:**
+- New `headOnly` prop — clips to top 38% of sprite frame (head/face crop) via reduced container height
+- No asset changes — same sprite sheet, overflow:hidden handles the crop
+
+**GameArena:**
+- Full bleed: removed `marginHorizontal`, arena now edge-to-edge
+- Increased background opacity from 0.25 to 0.3
+- `minHeight: 120` for taller arena section
+- All sprites use `headOnly` — cell height adapted to cropped head proportion
+- Arena roster now shows ALL tracked platforms (full `TRACKED_PLATFORMS` list), not just user's current selection — rogues' gallery, not a mirror of user choices
+
+**Platform Row:**
+- Grouped child rows indent deeper: `paddingLeft: 3xl` (was `xl`) — tree structure visual
+- Row content (everything except avoid button) wrapped in a single `Pressable` for expand/collapse — not just the + icon
+- Removed separate `chevronBtn` `Pressable` — chevron is now inside the row content touchable
+- Second-tap auto-expand: if today already has count > 0 when avoid button is pressed, row auto-expands to show day circles, teaching the backfill mechanic organically
+
+**Tab Bar:**
+- Stone texture scaled up 2x via `transform: [{ scale: 2 }]` on `imageStyle` — pattern now visible at device resolution
+
+**Files modified:**
+- `features/Launch/LaunchScreen.tsx` — breathing logo animation, 5s dismiss, dynamic width
+- `features/Map/MapScreen.tsx` — header bar padding, search bar gap
+- `features/Map/components/BusinessCard.tsx` — corners, z-index, sprite size, tighter padding
+- `features/Platforms/PlatformsScreen.tsx` — edit underline, arena all-platforms roster
+- `core/sprites/spriteLoader.tsx` — `headOnly` prop on SpriteView
+- `features/Platforms/components/GameArena.tsx` — full bleed, headOnly, taller, 0.3 bg opacity
+- `features/Platforms/components/PlatformRow.tsx` — row tap target, indent, auto-expand
+- `app/navigation/TabBar.tsx` — texture scale 2x
+
+**Build:** tsc clean. 295 tests passing (27 suites). audit-copy.sh clean (dev-only fixtures only).
+
+---
+
 ### Session: March 17, 2026 (follow-up 2)
 **Focus:** Brand assets wired + GPT image pipeline tool
 
@@ -968,7 +1025,7 @@ The Swift source now lives authoritatively at `modules/mapkit-search/ios/MapKitS
 | Suite | Count | Status |
 |---|---|---|
 | Total passing | 295 | ✅ Clean (all suites green) |
-| Last tsc run | March 17, 2026 | ✅ Clean |
+| Last tsc run | March 18, 2026 | ✅ Clean |
 
 ---
 
@@ -1026,6 +1083,14 @@ The Swift source now lives authoritatively at `modules/mapkit-search/ios/MapKitS
 - Global highlight lines reduced from 4px to 2px (TabBar, InfoSection, PlatformGroup) ✅
 - Brand logos deployed: stacked (FF_logo.png) wired into launch + onboarding + app icon + splash; horizontal (FF_logo_horizontal.png) wired into map header ✅
 - GPT image pipeline tool (gpt_image.py) for generation and batch processing ✅
+- Launch screen: 5s duration, 60% width logo, breathing scale animation (respects reduced motion) ✅
+- Map header: increased spacing between logo bar and search bar ✅
+- BusinessCard: corner brackets ON border, tighter padding, reward overlay z-index fix, 150pt sprite encroaching left ✅
+- SpriteView: headOnly prop for head/face crop (38% frame height) ✅
+- GameArena: full bleed, taller (minHeight 120), headOnly sprites, all-platforms roster (not just user selection) ✅
+- PlatformRow: deeper grouped indent (3xl), full-row expand/collapse tap target, second-tap auto-expand ✅
+- Track screen: "Edit" link underlined ✅
+- TabBar: stone texture scaled 2x for device visibility ✅
 
 ## What's Not Working / Not Yet Built
 

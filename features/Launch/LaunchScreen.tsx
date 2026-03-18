@@ -1,20 +1,23 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { View, Text, Image, Pressable, StyleSheet, Animated, AccessibilityInfo } from 'react-native';
+import { View, Text, Pressable, StyleSheet, Animated, AccessibilityInfo, useWindowDimensions } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { launchCopy } from '../../copy/launch';
 import { sharedCopy } from '../../copy/shared';
 import { theme } from '../../design/tokens';
 
 const LAUNCH_DATE_KEY = 'ff_last_launch_date';
-const AUTO_DISMISS_MS = 3000;
+const AUTO_DISMISS_MS = 5000;
 
 /**
  * Daily launch screen — shown once per calendar day.
- * Rotating daily message, pulsing "TAP TO START", auto-dismisses after 3s.
+ * Rotating daily message, pulsing "TAP TO START", auto-dismisses after 5s.
+ * Logo breathes with a subtle scale pulse — video game title screen energy.
  */
 export function LaunchScreen({ onDismiss }: { onDismiss: () => void }) {
+  const { width: screenWidth } = useWindowDimensions();
   const [reducedMotion, setReducedMotion] = useState(false);
   const pulseAnim = useRef(new Animated.Value(1)).current;
+  const logoScale = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
     let cancelled = false;
@@ -37,7 +40,20 @@ export function LaunchScreen({ onDismiss }: { onDismiss: () => void }) {
     return () => loop.stop();
   }, [reducedMotion, pulseAnim]);
 
-  // Auto-dismiss after 3 seconds
+  // Subtle breathing scale on the logo — title screen energy
+  useEffect(() => {
+    if (reducedMotion) return;
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(logoScale, { toValue: 1.04, duration: 1500, useNativeDriver: true }),
+        Animated.timing(logoScale, { toValue: 1, duration: 1500, useNativeDriver: true }),
+      ]),
+    );
+    loop.start();
+    return () => loop.stop();
+  }, [reducedMotion, logoScale]);
+
+  // Auto-dismiss after 5 seconds
   useEffect(() => {
     const timer = setTimeout(onDismiss, AUTO_DISMISS_MS);
     return () => clearTimeout(timer);
@@ -47,6 +63,8 @@ export function LaunchScreen({ onDismiss }: { onDismiss: () => void }) {
   const messageIndex = Math.floor(Date.now() / 86400000) % launchCopy.messages.length;
   const message = launchCopy.messages[messageIndex];
 
+  const logoWidth = screenWidth * 0.6;
+
   return (
     <Pressable
       style={styles.container}
@@ -55,9 +73,9 @@ export function LaunchScreen({ onDismiss }: { onDismiss: () => void }) {
       accessibilityLabel={launchCopy.tapLabel}
     >
       <View style={styles.content}>
-        <Image
+        <Animated.Image
           source={require('../../assets/pixel/brand/FF_logo.png')}
-          style={styles.heroLogo}
+          style={[styles.heroLogo, { width: logoWidth, transform: [{ scale: logoScale }] }]}
           resizeMode="contain"
           accessibilityLabel={sharedCopy.appName}
         />
@@ -104,10 +122,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.space['3xl'],
   },
   heroLogo: {
-    width: 200,
     aspectRatio: 1466 / 827,
     alignSelf: 'center',
-    marginBottom: theme.space.sm,
+    marginBottom: theme.space.md,
   },
   divider: {
     width: 48,
