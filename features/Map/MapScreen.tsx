@@ -20,6 +20,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { mapCopy } from '../../copy/map';
 import { sharedCopy } from '../../copy/shared';
 import { theme } from '../../design/tokens';
+import { headerBar as HEADER_BAR_ASSET } from '../../core/ui/uiAssets';
 
 interface MapScreenProps {
   entities: Entity[];
@@ -251,20 +252,12 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
     return [...pins, ...tapPins.filter((p) => !existingKeys.has(pinKey(p)))];
   }, [pins, tapPins]);
 
-  const HEADER_HEIGHT = 36;
+  // Header bar asset: 1482x153 source — aspect ratio preserved, full width
+  const HEADER_BAR_HEIGHT = 60;
+  const SEARCH_TOP = insets.top + HEADER_BAR_HEIGHT + theme.space.xs;
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* ── Branded header bar ── */}
-      <View style={styles.headerBar}>
-        <Image
-          source={require('../../assets/pixel/brand/FF_logo_horizontal.png')}
-          style={styles.headerLogo}
-          resizeMode="contain"
-          accessibilityLabel={sharedCopy.appName}
-        />
-      </View>
-
       <MapView
         ref={mapRef}
         style={styles.map}
@@ -303,12 +296,23 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
         {tapLoadingCoord && <TapLoadingMarker coordinate={tapLoadingCoord} />}
       </MapView>
 
+      {/* ── Branded header bar — overlays map, irregular bottom edge is transparent ── */}
+      <View style={[styles.headerBarOverlay, { height: insets.top + HEADER_BAR_HEIGHT }]} pointerEvents="none">
+        <Image source={HEADER_BAR_ASSET} style={styles.headerBarImage} resizeMode="cover" />
+        <Image
+          source={require('../../assets/pixel/brand/FF_logo_horizontal.png')}
+          style={[styles.headerLogo, { marginTop: insets.top }]}
+          resizeMode="contain"
+          accessibilityLabel={sharedCopy.appName}
+        />
+      </View>
+
       <MapSearchBar
         value={searchText}
         onChangeText={setSearchText}
         onSubmit={handleSearch}
         isScanning={status === 'scanning'}
-        topOffset={HEADER_HEIGHT + insets.top + theme.space.md}
+        topOffset={SEARCH_TOP}
       />
 
       <MapControls
@@ -359,10 +363,11 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
 }
 
 const styles = StyleSheet.create({
-  container:     { flex: 1, backgroundColor: theme.colors.bgVoid },
-  headerBar:     { backgroundColor: theme.colors.surface1, paddingHorizontal: theme.space.lg, paddingVertical: theme.space.md, borderBottomWidth: theme.borders.standard.width, borderBottomColor: theme.colors.frameBlue },
-  headerLogo:    { height: 28, aspectRatio: 1536 / 322 },
-  map:           { flex: 1 },
-  backdrop:      { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
-  cardContainer: { position: 'absolute', bottom: 0, left: 0, right: 0, overflow: 'visible' as const },
+  container:        { flex: 1, backgroundColor: theme.colors.bgVoid },
+  map:              { flex: 1 },
+  headerBarOverlay: { position: 'absolute', top: 0, left: 0, right: 0, zIndex: 2, alignItems: 'center', overflow: 'visible' as const },
+  headerBarImage:   { position: 'absolute', top: 0, left: 0, right: 0, height: '100%' },
+  headerLogo:       { height: 24, aspectRatio: 1536 / 322, zIndex: 3 },
+  backdrop:         { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
+  cardContainer:    { position: 'absolute', bottom: 0, left: 0, right: 0, overflow: 'visible' as const },
 });

@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Animated, Pressable, Text, StyleSheet, AccessibilityInfo } from 'react-native';
+import { Animated, Pressable, Text, ImageBackground, StyleSheet, AccessibilityInfo } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { mapCopy } from '../../../copy/map';
 import { theme } from '../../../design/tokens';
+import { btnStart } from '../../../core/ui/uiAssets';
 
 interface AvoidButtonProps {
   onPress: () => Promise<void>;
@@ -79,14 +80,20 @@ export function AvoidButton({ onPress, disabled = false }: AvoidButtonProps) {
       <Pressable
         onPress={handlePress}
         disabled={confirmed || disabled}
-        style={[styles.button, confirmed && styles.confirmed, error && styles.errored]}
         accessibilityRole="button"
         accessibilityLabel={accessLabel}
         accessibilityState={{ disabled: confirmed || disabled }}
       >
-        <Text style={[styles.label, confirmed && styles.labelConfirmed]} allowFontScaling>
-          {label}
-        </Text>
+        <ImageBackground
+          source={btnStart}
+          resizeMode="stretch"
+          style={[styles.button, confirmed && styles.confirmed, error && styles.errored]}
+          imageStyle={[styles.buttonImage, (confirmed || error) && styles.buttonImageHidden]}
+        >
+          <Text style={[styles.label, confirmed && styles.labelConfirmed]} allowFontScaling>
+            {label}
+          </Text>
+        </ImageBackground>
       </Pressable>
     </Animated.View>
   );
@@ -94,26 +101,24 @@ export function AvoidButton({ onPress, disabled = false }: AvoidButtonProps) {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: theme.colors.rewardYellow,
-    borderColor: theme.colors.bgVoid,
-    borderWidth: theme.borders.hero.width,
-    borderTopColor: theme.colors.bgVoid,
-    borderTopWidth: theme.borders.standard.width,
-    borderBottomColor: theme.colors.highlightBlue,
-    borderBottomWidth: theme.borders.standard.width,
     minHeight: 56,
     paddingVertical: theme.space.md,
     paddingHorizontal: theme.space.xl,
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'hidden' as const,
+  },
+  buttonImage: {
+    borderRadius: 0,
+  },
+  buttonImageHidden: {
+    opacity: 0,
   },
   confirmed: {
     backgroundColor: theme.colors.successGreen,
-    borderColor: theme.colors.bgVoid,
   },
   errored: {
     backgroundColor: theme.colors.dangerRed,
-    borderColor: theme.colors.bgVoid,
   },
   label: {
     ...theme.type.displayM,

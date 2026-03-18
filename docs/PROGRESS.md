@@ -12,6 +12,25 @@ This document is updated continuously. New instances should read this first — 
 
 ## Last 5 Sessions (most recent first)
 
+### Session: March 18, 2026 (UI kit slicing + component wiring)
+**Focus:** UI kit sprite sheet slicing pipeline + wiring pixel art assets into 7 components
+
+**Changes:**
+- Created `tools/img-gen/scripts/slice_ui_kit.py` — auto-detects connected non-transparent regions via flood-fill BFS, extracts each as individual transparent PNG. Reusable for any sprite sheet.
+- Sliced `ui_kit.png` into 30 elements, saved to `assets/pixel/ui/` with semantic names (frames, buttons, bars, badges, input fields, panels, dividers)
+- Created `core/ui/uiAssets.ts` — static require() map for all 30 UI kit elements + header bar
+- **MapScreen.tsx** — header bar replaced with `header_bar.png` pixel art asset, overlaid on map with logo on top. Irregular bottom edge is transparent (map visible through gaps). Full SafeAreaView layout restructured.
+- **BusinessCard.tsx** — `ImageBackground` with `frame_card_wide.png` replaces coded borders + corner brackets. Corner bracket images removed.
+- **AvoidButton.tsx** — `ImageBackground` with `btn_start.png` replaces coded yellow/green background. Frame image hidden on confirmed/error states (solid colors remain).
+- **MapSearchBar.tsx** — `ImageBackground` with `input_field.png` wraps TextInput. Search button uses `btn_circle_search.png` Image.
+- **TabBar.tsx** — `bar_tab.png` replaces stone tile repeat texture. resizeMode stretch, higher opacity.
+- **MapControls.tsx** — `ImageBackground` with circle button assets (`btn_circle_plus`, `btn_circle_arrow`, `btn_circle_target`) replace coded dark square buttons.
+- **ScorecardView.tsx** — `ImageBackground` with `frame_scorecard.png` replaces coded hero border.
+- Documented `slice_ui_kit.py` in `tools/img-gen/USAGE.md`
+- Updated CLAUDE.md repo structure tree (core/ui/, assets/pixel/ui/, slice_ui_kit.py)
+
+**Verification:** tsc clean, 295 tests pass, copy audit clean (dev fixtures only)
+
 ### Session: March 18, 2026 (arena assets pattern)
 **Focus:** Arena background asset management — arenaAssets.ts require map + build script
 

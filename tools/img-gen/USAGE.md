@@ -290,3 +290,35 @@ python3 scripts/gpt_image.py --process \
   --instruction "Sharpen pixel edges and increase contrast" \
   --output-dir output/gpt_cleaned/
 ```
+
+---
+
+### slice_ui_kit.py
+
+Slice a UI kit sprite sheet into individual elements. Auto-detects distinct non-transparent connected regions on the sheet using flood-fill BFS, extracts each as a separate transparent PNG, and saves with sequential names (`element_00.png`, `element_01.png`, ...) ordered top-to-bottom, left-to-right.
+
+After slicing, rename the output files to semantic names based on visual content (e.g. `frame_card_wide.png`, `btn_start.png`, `btn_circle_search.png`) and copy them to `assets/pixel/ui/`. Update `core/ui/uiAssets.ts` with the new require map.
+
+| Flag | Description |
+|---|---|
+| `--input <path>` | **(required)** Path to the UI kit PNG |
+| `--output-dir <dir>` | Output directory for sliced elements (required unless `--preview`) |
+| `--preview` | Preview mode — detect regions and print bounding boxes only, don't write |
+| `--min-size <px>` | Minimum region dimension to include (default: 20) |
+| `--alpha-threshold <0-255>` | Alpha value above which a pixel is considered non-transparent (default: 10) |
+| `--padding <px>` | Padding around each extracted element (default: 2) |
+
+**Input:** Any transparent PNG sprite sheet
+**Output:** `{output-dir}/element_00.png`, `element_01.png`, etc.
+
+**Examples:**
+```bash
+# Preview — detect regions, print bounding boxes, don't write files
+python3 scripts/slice_ui_kit.py --input ../../assets/pixel/ui/ui_kit.png --preview
+
+# Slice and save to output directory
+python3 scripts/slice_ui_kit.py --input ../../assets/pixel/ui/ui_kit.png --output-dir output/ui_sliced
+
+# Slice with larger minimum size to skip small artifacts
+python3 scripts/slice_ui_kit.py --input ../../assets/pixel/ui/ui_kit.png --output-dir output/ui_sliced --min-size 30
+```

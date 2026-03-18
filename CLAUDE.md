@@ -106,6 +106,7 @@ API keys and credentials must **only ever be read from environment variables**. 
 │   ├── dropSchedule/                ← deterministic PRNG drop time (computeDropTime.ts)
 │   ├── sprites/                     ← spriteAssets.ts (require map), spriteLoader.tsx (SpriteView, nameToSpriteId)
 │   ├── arena/                       ← arenaAssets.ts (require map for arena backgrounds)
+│   ├── ui/                          ← uiAssets.ts (require map for UI kit sliced elements + header bar)
 │   ├── utils/                       ← shared utilities (localDate.ts, etc.)
 │   └── models/                      ← shared TypeScript types
 ├── extension/
@@ -146,6 +147,7 @@ API keys and credentials must **only ever be read from environment variables**. 
 │       ├── scripts/deploy_assets.py  ← copies processed → assets/pixel/
 │       ├── scripts/manifest.py      ← generate sprite sheet metadata JSON
 │       ├── scripts/gpt_image.py     ← GPT image pipeline (gpt-image-1.5): generate + batch process
+│       ├── scripts/slice_ui_kit.py  ← auto-detect + slice UI kit sprite sheet into individual elements
 │       ├── USAGE.md                 ← full documentation for all pipeline scripts
 │       └── asset-prompts.json       ← asset definitions + processing configs
 └── assets/
@@ -153,6 +155,7 @@ API keys and credentials must **only ever be read from environment variables**. 
     └── pixel/                       ← all pixel art assets by type
         ├── brand/                   ← FF_logo.png (stacked), FF_logo_horizontal.png
         ├── arena/                   ← 4 scene backgrounds (sf, nyc street, nyc penthouse, dc)
+        ├── ui/                      ← UI kit sliced elements (frames, buttons, bars, badges) + header_bar.png
         └── sprites/                 ← 107 CEO sprite sheets + manifest.json
 ```
 
@@ -458,7 +461,7 @@ The entire app is styled as a **vintage 8-bit video game**. This is the foundati
 | Donation data bundled into `entities.json` | ✅ Done |
 | Anonymous FEC API mode (no key required in app) | ✅ Done |
 | Design system: tokens + 26 components migrated | ✅ Done — `design/tokens.ts` + all components use theme tokens |
-| Pixel art assets: pipeline + deploy + wired | ✅ Done — 35 assets in `assets/pixel/`, FlagMarker + BusinessCard wired. 107 CEO sprites in `assets/pixel/sprites/`, wired into BusinessCard, PlatformRow, ScorecardView. 4-step keying pipeline with 1px alpha erosion. Brand logos wired (map header, launch, onboarding, icon, splash). 4 arena backgrounds wired into GameArena. |
+| Pixel art assets: pipeline + deploy + wired | ✅ Done — 35 assets in `assets/pixel/`, FlagMarker + BusinessCard wired. 107 CEO sprites in `assets/pixel/sprites/`, wired into BusinessCard, PlatformRow, ScorecardView. 4-step keying pipeline with 1px alpha erosion. Brand logos wired (map header, launch, onboarding, icon, splash). 4 arena backgrounds wired into GameArena. UI kit sliced (30 elements): frames wired into BusinessCard + ScorecardView, buttons into AvoidButton + MapControls, input field into MapSearchBar, bar into TabBar, header bar into MapScreen. |
 | Design refinement: 8-bit game energy | ✅ Done — Map header bar, search bar depth, tab bar texture, BusinessCard sprite-left layout + donation hierarchy flip + reward overlay + sprite perch ON card, MatchChooser visual upgrade, GameArena tiled bg texture + rewardYellow cell borders, PlatformGroup parent company grouping + short names + hideSprite/compact child rows, InfoScreen collapsible transparency + section ornamentation, tap-to-dismiss backdrop, AvoidButton depth borders, global highlight lines reduced to 2px |
 | Onboarding tightened (5→3 screens) | ✅ Done — Welcome, Permissions, Privacy |
 | Beta testing mode | ✅ Done — triple-tap toggle, BetaOverlay, screenshot tool |
