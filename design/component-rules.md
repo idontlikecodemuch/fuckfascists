@@ -17,37 +17,63 @@ All components reference tokens from `design/tokens.ts`. Never hardcode hex valu
 
 ---
 
-## 1. Business Card
+## 1. Business Card (3 files: BusinessCard.tsx, BusinessBanner.tsx, DataZone.tsx)
 
-**Purpose:** Entity detail sheet shown after map tap match or search match.
+**Purpose:** Entity detail sheet shown after map tap match or search match. Three composable files:
+- `BusinessCard.tsx` — full card layout (sprite + name + data + avoid)
+- `BusinessBanner.tsx` — lightweight banner for non-card states + `resolveCardMode()` routing
+- `DataZone.tsx` — self-contained donation data display
+
+**Card mode** (BusinessCard.tsx):
 
 | Property | Token |
 |---|---|
 | Background (body) | `colors.surface1` |
-| Hero band (top) | `colors.surface2` |
 | Border | `borders.hero` in `colors.frameBlue` |
+| Top highlight | `colors.highlightBlue` (borderTopColor) |
+| Bottom edge | `colors.bgVoid` (borderBottomColor) |
 | Brand name | `type.displayM` / `colors.textPrimary` |
-| Parent attribution | `type.uiLabel` / `colors.textSecondary` |
-| PAC data line | `type.caption` / `colors.textSecondary` |
+| Parent attribution | `type.bodyS` / `colors.textSecondary` |
+| Confidence badge | `colors.rewardYellow` bg + `colors.bgVoid` text |
+| Disclaimer | `type.caption` / `colors.rewardYellow` |
+| Dismiss label | `type.bodyS` / `colors.textSecondary` |
+
+**DataZone tokens** (DataZone.tsx):
+
+| Property | Token |
+|---|---|
+| Section divider | 1px `colors.surface2` (borderTop) |
+| Total label | `type.caption` / `colors.textSecondary`, letterSpacing 2 |
 | GOP total | `type.displayS` / `colors.dangerRed` |
 | DEM total | `type.displayS` / `colors.highlightBlue` |
-| Disclaimer + FEC link | `type.bodyS` / `colors.highlightBlue` |
+| Recent/cycles lines | `type.bodyS` / `colors.textSecondary` |
+| PAC data line | `type.caption` / `colors.textSecondary` |
+| FEC link | `type.bodyS` / `colors.highlightBlue`, underlined |
 
-**Spacing:** `space.lg` padding body, `space.md` between sections.
+**Banner mode** (BusinessBanner.tsx):
+
+| Property | Token |
+|---|---|
+| Background | `colors.surface1` |
+| Border | `borders.standard` in `colors.surface2` |
+| Message text | `type.bodyS` / `colors.textSecondary` |
+| Dismiss text | `type.bodyS` / `colors.highlightBlue` |
+
+**Spacing:** `space.lg` padding body, `space.sm` between name and data sections, `space.md` action section.
+
+**Card/banner routing:** `resolveCardMode(result)` returns `'card'` or `{ banner: BannerVariant }`. Card when entity has donation data or known PAC. Banner variants: `no_match`, `lookup_failed`, `no_pac`, `dissolved`.
 
 **States:**
-- **Neutral:** default sprite, no CTA.
-- **Confirmed (avoided):** defeated sprite, `colors.rewardYellow` CTA, reward spark overlay.
-- **Medium confidence:** `colors.rewardYellow` accent line below hero band + disclaimer text.
+- **Neutral:** default sprite, avoid button enabled.
+- **Confirmed (avoided):** defeated sprite, celebration overlay at screen level (CelebrationOverlay.tsx in MapScreen).
+- **Medium confidence:** `colors.rewardYellow` left border accent + disclaimer text + confidence badge.
 - **High confidence:** no badge shown (silence = confidence).
 
-**Layout:** Card uses `overflow: 'visible'` so sprite perch extends above card border. Sprite: 120pt, `marginTop: -60`, `zIndex: 5` — stands ON TOP of the card edge. WHY section divider: 1px `surface2` (subtle).
+**Layout:** Card wrapper uses `overflow: 'visible'`. Sprite perch: 140pt, centered, `marginBottom: -40`, `zIndex: 20` — renders ABOVE card edge. Card container: `maxHeight: '65%'`, positioned at bottom.
 
-**Reward overlay:** `business_card_reward_overlay.png` fades in to 0.6 opacity over 400ms when `avoided` state is true. Covers full card area at `zIndex: 4` (below sprite perch).
+**Celebration:** Celebration effects live in MapScreen (CelebrationOverlay.tsx), NOT in the card. Card shows `pointerEvents='none'` during celebration. Duration: 3000ms. Respects reduced motion.
 
-**Rendered assets:** topband asset (full-width x 64h), corner brackets top-left + top-right (32x32), reward overlay on confirm.
-
-**Accessibility:** VoiceOver reads brand name, parent, donation totals, confidence level as one accessible group. FEC link is a separate focusable element.
+**Accessibility:** `accessibilityViewIsModal` on card wrapper. Post-avoid announcement via `AccessibilityInfo.announceForAccessibility`. FEC link is a separate focusable element with `accessibilityRole="link"`.
 
 ---
 

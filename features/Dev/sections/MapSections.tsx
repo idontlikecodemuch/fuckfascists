@@ -4,7 +4,7 @@
 import React, { forwardRef } from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { CatalogSection } from '../CatalogSection';
-import { BusinessCard } from '../../Map/components/BusinessCard';
+import { BusinessCard, BusinessBanner } from '../../Map/components/BusinessCard';
 import { UnmatchedBanner } from '../../Map/components/UnmatchedBanner';
 import { AvoidButton } from '../../Map/components/AvoidButton';
 import { MapSearchBar } from '../../Map/components/MapSearchBar';
@@ -46,6 +46,29 @@ export const BusinessCardNoDonation = forwardRef<View>((_, ref) => (
   </CatalogSection>
 ));
 BusinessCardNoDonation.displayName = 'BusinessCardNoDonation';
+
+// ── BusinessBanner variants ──────────────────────────────────────────────────
+
+export const BannerNoMatch = forwardRef<View>((_, ref) => (
+  <CatalogSection ref={ref} label="BusinessBanner — No Match">
+    <BusinessBanner displayName="Joe's Pizza" variant="no_match" onDismiss={noopSync} />
+  </CatalogSection>
+));
+BannerNoMatch.displayName = 'BannerNoMatch';
+
+export const BannerNoPac = forwardRef<View>((_, ref) => (
+  <CatalogSection ref={ref} label="BusinessBanner — No PAC">
+    <BusinessBanner displayName="Tesla" variant="no_pac" onDismiss={noopSync} />
+  </CatalogSection>
+));
+BannerNoPac.displayName = 'BannerNoPac';
+
+export const BannerDissolved = forwardRef<View>((_, ref) => (
+  <CatalogSection ref={ref} label="BusinessBanner — Dissolved">
+    <BusinessBanner displayName="Apple Inc." variant="dissolved" onDismiss={noopSync} />
+  </CatalogSection>
+));
+BannerDissolved.displayName = 'BannerDissolved';
 
 // ── MatchChooser — static mock (avoids FlatList nesting) ───────────────────
 

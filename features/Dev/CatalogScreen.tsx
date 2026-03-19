@@ -12,6 +12,7 @@ import * as MediaLibrary from 'expo-media-library';
 // Map sections
 import {
   BusinessCardHigh, BusinessCardMedium, BusinessCardNoDonation,
+  BannerNoMatch, BannerNoPac, BannerDissolved,
   MatchChooser3, MatchChooser2,
   UnmatchedNoMatch, UnmatchedLookupFailed,
   AvoidButtonDefault,
@@ -52,6 +53,9 @@ const SECTIONS: SectionDef[] = [
   { slug: '01-businesscard-high', Component: BusinessCardHigh },
   { slug: '02-businesscard-medium', Component: BusinessCardMedium },
   { slug: '03-businesscard-no-donation', Component: BusinessCardNoDonation },
+  { slug: '03a-banner-no-match', Component: BannerNoMatch },
+  { slug: '03b-banner-no-pac', Component: BannerNoPac },
+  { slug: '03c-banner-dissolved', Component: BannerDissolved },
   { slug: '04-matchchooser-3', Component: MatchChooser3 },
   { slug: '05-matchchooser-2', Component: MatchChooser2 },
   { slug: '06-unmatched-no-match', Component: UnmatchedNoMatch },
@@ -152,28 +156,28 @@ export function CatalogScreen() {
       <ScrollView contentContainerStyle={styles.scroll}>
         {/* Spacer for the sections header */}
         <Text style={styles.groupHeader}>MAP COMPONENTS</Text>
-        {SECTIONS.slice(0, 11).map((s, i) => (
+        {SECTIONS.slice(0, 14).map((s, i) => (
           <s.Component key={s.slug} ref={(el) => { refs.current[i] = el; }} />
         ))}
 
         <Text style={styles.groupHeader}>PLATFORM COMPONENTS</Text>
-        {SECTIONS.slice(11, 16).map((s, i) => (
-          <s.Component key={s.slug} ref={(el) => { refs.current[11 + i] = el; }} />
+        {SECTIONS.slice(14, 19).map((s, i) => (
+          <s.Component key={s.slug} ref={(el) => { refs.current[14 + i] = el; }} />
         ))}
 
         <Text style={styles.groupHeader}>SCORECARD COMPONENTS</Text>
-        {SECTIONS.slice(16, 20).map((s, i) => (
-          <s.Component key={s.slug} ref={(el) => { refs.current[16 + i] = el; }} />
+        {SECTIONS.slice(19, 23).map((s, i) => (
+          <s.Component key={s.slug} ref={(el) => { refs.current[19 + i] = el; }} />
         ))}
 
         <Text style={styles.groupHeader}>ONBOARDING SCREENS</Text>
-        {SECTIONS.slice(20, 23).map((s, i) => (
-          <s.Component key={s.slug} ref={(el) => { refs.current[20 + i] = el; }} />
+        {SECTIONS.slice(23, 26).map((s, i) => (
+          <s.Component key={s.slug} ref={(el) => { refs.current[23 + i] = el; }} />
         ))}
 
         <Text style={styles.groupHeader}>INFO COMPONENTS</Text>
-        {SECTIONS.slice(23).map((s, i) => (
-          <s.Component key={s.slug} ref={(el) => { refs.current[23 + i] = el; }} />
+        {SECTIONS.slice(26).map((s, i) => (
+          <s.Component key={s.slug} ref={(el) => { refs.current[26 + i] = el; }} />
         ))}
       </ScrollView>
     </SafeAreaView>

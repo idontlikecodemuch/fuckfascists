@@ -17,41 +17,44 @@ Generated from `features/Dev/CatalogScreen.tsx`. Re-run after copy or design cha
 | 09 | MapSearchBar — idle | ![](./catalog/09-searchbar-idle.png) | copy/map.ts |
 | 10 | MapSearchBar — scanning | ![](./catalog/10-searchbar-scanning.png) | copy/map.ts |
 | 11 | MapControls | ![](./catalog/11-mapcontrols.png) | copy/map.ts |
+| 12 | BannerNoMatch | ![](./catalog/12-banner-no-match.png) | copy/map.ts |
+| 13 | BannerNoPac | ![](./catalog/13-banner-no-pac.png) | copy/map.ts |
+| 14 | BannerDissolved | ![](./catalog/14-banner-dissolved.png) | copy/map.ts |
 
 ## Platforms
 
 | # | State | Screenshot | Copy Source |
 |---|-------|-----------|-------------|
-| 12 | Platforms — partial (3/6) | ![](./catalog/12-platforms-partial.png) | copy/platforms.ts, copy/shared.ts |
-| 13 | Platforms — all active | ![](./catalog/13-platforms-full.png) | copy/platforms.ts, copy/shared.ts |
-| 14 | Platforms — empty | ![](./catalog/14-platforms-empty.png) | copy/platforms.ts, copy/shared.ts |
-| 15 | PlatformRow — avoided | ![](./catalog/15-platformrow-avoided.png) | copy/platforms.ts, copy/shared.ts |
-| 16 | PlatformRow — not avoided | ![](./catalog/16-platformrow-not-avoided.png) | copy/platforms.ts, copy/shared.ts |
+| 15 | Platforms — partial (3/6) | ![](./catalog/15-platforms-partial.png) | copy/platforms.ts, copy/shared.ts |
+| 16 | Platforms — all active | ![](./catalog/16-platforms-full.png) | copy/platforms.ts, copy/shared.ts |
+| 17 | Platforms — empty | ![](./catalog/17-platforms-empty.png) | copy/platforms.ts, copy/shared.ts |
+| 18 | PlatformRow — avoided | ![](./catalog/18-platformrow-avoided.png) | copy/platforms.ts, copy/shared.ts |
+| 19 | PlatformRow — not avoided | ![](./catalog/19-platformrow-not-avoided.png) | copy/platforms.ts, copy/shared.ts |
 
 ## Scorecard
 
 | # | State | Screenshot | Copy Source |
 |---|-------|-----------|-------------|
-| 17 | ScorecardView — with data | ![](./catalog/17-scorecard-with-data.png) | copy/scorecard.ts, copy/shared.ts |
-| 18 | ScorecardView — empty state | ![](./catalog/18-scorecard-empty.png) | copy/scorecard.ts |
-| 19 | ScorecardView — preview stamp | ![](./catalog/19-scorecard-preview.png) | copy/scorecard.ts |
-| 20 | Scorecard — drop countdown | ![](./catalog/20-scorecard-countdown.png) | copy/scorecard.ts |
+| 20 | ScorecardView — with data | ![](./catalog/20-scorecard-with-data.png) | copy/scorecard.ts, copy/shared.ts |
+| 21 | ScorecardView — empty state | ![](./catalog/21-scorecard-empty.png) | copy/scorecard.ts |
+| 22 | ScorecardView — preview stamp | ![](./catalog/22-scorecard-preview.png) | copy/scorecard.ts |
+| 23 | Scorecard — drop countdown | ![](./catalog/23-scorecard-countdown.png) | copy/scorecard.ts |
 
 ## Onboarding
 
 | # | State | Screenshot | Copy Source |
 |---|-------|-----------|-------------|
-| 21 | WelcomeScreen | ![](./catalog/21-onboard-welcome.png) | copy/onboard.ts |
-| 22 | HowItWorksScreen | ![](./catalog/22-onboard-howitworks.png) | copy/onboard.ts |
-| 23 | PrivacyScreen | ![](./catalog/23-onboard-privacy.png) | copy/onboard.ts |
-| 24 | PermissionScreen — location | ![](./catalog/24-onboard-permission-location.png) | copy/onboard.ts |
-| 25 | PermissionScreen — notifications | ![](./catalog/25-onboard-permission-notif.png) | copy/onboard.ts |
+| 24 | WelcomeScreen | ![](./catalog/24-onboard-welcome.png) | copy/onboard.ts |
+| 25 | HowItWorksScreen | ![](./catalog/25-onboard-howitworks.png) | copy/onboard.ts |
+| 26 | PrivacyScreen | ![](./catalog/26-onboard-privacy.png) | copy/onboard.ts |
+| 27 | PermissionScreen — location | ![](./catalog/27-onboard-permission-location.png) | copy/onboard.ts |
+| 28 | PermissionScreen — notifications | ![](./catalog/28-onboard-permission-notif.png) | copy/onboard.ts |
 
 ## Info
 
 | # | State | Screenshot | Copy Source |
 |---|-------|-----------|-------------|
-| 26 | InfoScreen — full | ![](./catalog/26-info-full.png) | copy/info.ts |
-| 27 | FaqItem — collapsed | ![](./catalog/27-faqitem-collapsed.png) | copy/info.ts |
-| 28 | FaqItem — expanded | ![](./catalog/28-faqitem-expanded.png) | copy/info.ts |
-| 29 | LinkRow | ![](./catalog/29-linkrow.png) | copy/info.ts |
+| 29 | InfoScreen — full | ![](./catalog/29-info-full.png) | copy/info.ts |
+| 30 | FaqItem — collapsed | ![](./catalog/30-faqitem-collapsed.png) | copy/info.ts |
+| 31 | FaqItem — expanded | ![](./catalog/31-faqitem-expanded.png) | copy/info.ts |
+| 32 | LinkRow | ![](./catalog/32-linkrow.png) | copy/info.ts |

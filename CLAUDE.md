@@ -30,7 +30,7 @@ These documents are the authoritative reference for the project. New instances s
 | Spec vs. Current State | /docs/SPEC_VS_CURRENT.md | Living document tracking alignment, deviations, and open decisions |
 | CLAUDE.md | /CLAUDE.md | Technical reference for AI agents — update continuously |
 
-**Update cadence:** PROGRESS.md after every session. CLAUDE.md continuously. README.md and SPEC_VS_CURRENT.md when features ship or decisions resolve. Never modify the original spec. When PROGRESS.md exceeds ~25K tokens, move sessions older than one week to PROGRESS_ARCHIVE.md.
+**Update cadence:** PROGRESS.md after every session. CLAUDE.md continuously. README.md and SPEC_VS_CURRENT.md when features ship or decisions resolve. Never modify the original spec. When PROGRESS.md exceeds ~10K tokens, move sessions older than one week to PROGRESS_ARCHIVE.md.
 
 **New instance checklist:** Read PROGRESS.md first, then CLAUDE.md, then check SPEC_VS_CURRENT.md open decisions — don't re-litigate resolved ones.
 
@@ -470,6 +470,7 @@ The entire app is styled as a **vintage 8-bit video game**. This is the foundati
 | Avoid celebration animation + haptics | ✅ Done — scale animation + expo-haptics |
 | App built and running on iOS simulator | ✅ Done — `FckFascists.app` installed on iPhone 16 Pro simulator |
 | Device visual refinement pass | ✅ Done — launch screen 5s + breathing logo, map header spacing, BusinessCard corners/z-index/sprite 150pt, SpriteView headOnly, GameArena full bleed + all-platforms roster, PlatformRow row-tap + auto-expand, TabBar texture 2x |
+| BusinessCard rebuild + component extraction | ✅ Done — BusinessCard (168 lines), BusinessBanner + resolveCardMode (114), DataZone (161), DetailSheet (placeholder), CelebrationOverlay (66), useMapControls hook (73). Card/banner routing, celebration registry in MapScreen, all files under 250 lines. |
 | App tested on physical device | 🔄 Pending |
 | Extension tested in Chrome | ✅ Done |
 

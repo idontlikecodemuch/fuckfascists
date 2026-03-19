@@ -35,4 +35,16 @@ export const mapCopy = {
   chooserHeading: (n: number) => `${n} MATCHES FOUND`,
   chooserRow: (name: string) => `View ${name}`,
   chooserDismiss: "Dismiss match chooser",
+  // Banner states — lightweight dismissible bar for non-card results
+  bannerNoMatch: (text: string) => `No FEC match for \u201C${text}\u201D.`,
+  bannerLookupFailed: (text: string) => `Lookup failed for \u201C${text}\u201D \u2014 try again later.`,
+  bannerNoPac: (name: string) => `${name} has no corporate PAC on file.`,
+  bannerDissolved: (name: string) => `${name}\u2019s PAC is dissolved with no recorded donations.`,
+  bannerDismissLabel: "Dismiss banner",
+  // DataZone
+  dataZoneDetail: "See full breakdown \u2192",
+  dataZoneDetailLabel: "See full FEC breakdown",
+  // Card — screen reader
+  cardAvoidedAnnouncement: (name: string) => `Avoided ${name}. Well done.`,
+  cardModalLabel: "Business detail card",
 } as const;
