@@ -1,39 +1,23 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ActivityIndicator,
-  Alert,
   type ViewStyle,
   type TextStyle,
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFonts } from 'expo-font';
 import { theme } from './design/tokens';
-import { useOnboarding } from './features/Onboarding/hooks/useOnboarding';
-import { OnboardingNavigator } from './features/Onboarding/OnboardingNavigator';
-import { MapScreen } from './features/Map/MapScreen';
-import { PlatformsScreen } from './features/Platforms/PlatformsScreen';
-import { ScorecardScreen } from './features/Scorecard/ScorecardScreen';
-import { InfoScreen } from './features/Info/InfoScreen';
-import { TRACKED_PLATFORMS } from './features/Platforms/data/platformList';
-import { useBetaMode } from './features/Beta/useBetaMode';
-import { BetaOverlay } from './features/Beta/BetaOverlay';
-import { LaunchScreen, shouldShowLaunchScreen } from './features/Launch/LaunchScreen';
-import { TabBar, type Tab } from './app/navigation/TabBar';
-import { betaCopy } from './copy/beta';
+import { OnboardingGate } from './app/gates/OnboardingGate';
+import { LaunchGate } from './app/gates/LaunchGate';
+import { AppShell } from './app/gates/AppShell';
 import { SqliteAdapter } from './app/storage/SqliteAdapter';
-import { FECClient } from './core/api';
 import { fetchEntityList, parseEntityList } from './core/data';
 import type { StorageAdapter } from './core/data';
 import type { Entity } from './core/models';
 import bundledEntitiesRaw from './assets/data/entities.json';
-
-// Dev-only catalog — conditional import keeps it out of production bundles.
-const CatalogScreen = __DEV__
-  ? require('./features/Dev/CatalogScreen').CatalogScreen
-  : () => null;
 
 // ─── App ──────────────────────────────────────────────────────────────────────
 
@@ -51,35 +35,10 @@ export default function App() {
     }
   }, [fontsLoaded]);
 
-  const { isComplete, markComplete } = useOnboarding();
-  const { betaEnabled, registerTap } = useBetaMode();
-  const [activeTab, setActiveTab]   = useState<Tab>('map');
-  const [adapter, setAdapter]       = useState<StorageAdapter | null>(null);
-  const [entities, setEntities]     = useState<Entity[]>(() =>
+  const [adapter, setAdapter] = useState<StorageAdapter | null>(null);
+  const [entities, setEntities] = useState<Entity[]>(() =>
     parseEntityList(bundledEntitiesRaw)
   );
-  const [showLaunch, setShowLaunch] = useState<boolean | null>(null);
-
-  // Check if launch screen should show (once per calendar day).
-  // Only runs after onboarding is confirmed complete — avoids marking
-  // today as "seen" while the user is still in the onboarding flow.
-  useEffect(() => {
-    if (isComplete !== true) return;
-    let cancelled = false;
-    shouldShowLaunchScreen()
-      .then((show) => { if (!cancelled) setShowLaunch(show); })
-      .catch(() => { if (!cancelled) setShowLaunch(false); });
-    return () => { cancelled = true; };
-  }, [isComplete]);
-
-  const dismissLaunch = useCallback(() => setShowLaunch(false), []);
-
-  const handleVersionTap = useCallback(async () => {
-    const toggled = await registerTap();
-    if (toggled) {
-      Alert.alert(betaEnabled ? betaCopy.deactivated : betaCopy.activated);
-    }
-  }, [registerTap, betaEnabled]);
 
   // Open SQLite and run migrations once on mount.
   useEffect(() => {
@@ -99,21 +58,9 @@ export default function App() {
     return () => { cancelled = true; };
   }, []);
 
-  // FECClient is stable for the lifetime of the app.
-  const fecClient = useMemo(() => {
-    try {
-      return new FECClient();
-    } catch {
-      // FEC_API_KEY missing — API-dependent features will show "not matched".
-      return null;
-    }
-  }, []);
-
   // ── Loading ──────────────────────────────────────────────────────────────────
 
-  // Wait for fonts, SecureStore read, and SQLite init before rendering.
-  // showLaunch is only needed once onboarding is complete — skip its check during onboarding.
-  if (!fontsLoaded || isComplete === null || adapter === null || (isComplete && showLaunch === null)) {
+  if (!fontsLoaded || adapter === null) {
     return (
       <SafeAreaProvider>
         <View style={styles.splash}>
@@ -124,67 +71,15 @@ export default function App() {
     );
   }
 
-  // ── Onboarding ───────────────────────────────────────────────────────────────
-
-  if (!isComplete) {
-    return (
-      <SafeAreaProvider>
-        <OnboardingNavigator onComplete={markComplete} />
-      </SafeAreaProvider>
-    );
-  }
-
-  // ── Daily launch screen ──────────────────────────────────────────────────────
-
-  if (showLaunch) {
-    return (
-      <SafeAreaProvider>
-        <LaunchScreen onDismiss={dismissLaunch} />
-      </SafeAreaProvider>
-    );
-  }
-
-  // ── Main app ─────────────────────────────────────────────────────────────────
-
-  const fetchOrgs      = fecClient ? fecClient.fetchOrgs.bind(fecClient)      : async () => [];
-  const fetchOrgSummary = fecClient ? fecClient.fetchOrgSummary.bind(fecClient) : async () => null;
-
-  const renderScreen = () => {
-    switch (activeTab) {
-      case 'map':
-        return (
-          <MapScreen
-            entities={entities}
-            adapter={adapter}
-            fetchOrgs={fetchOrgs}
-            fetchOrgSummary={fetchOrgSummary}
-          />
-        );
-      case 'platforms':
-        return <PlatformsScreen adapter={adapter} />;
-      case 'report':
-        return (
-          <ScorecardScreen
-            adapter={adapter}
-            entities={entities}
-            platforms={TRACKED_PLATFORMS}
-            onSwitchTab={(tab) => setActiveTab(tab as Tab)}
-          />
-        );
-      case 'info':
-        return <InfoScreen onVersionTap={handleVersionTap} />;
-      case 'dev':
-        return <CatalogScreen />;
-    }
-  };
+  // ── Gate chain: onboarding → launch → main app ─────────────────────────────
 
   return (
     <SafeAreaProvider>
-      <View style={styles.root}>
-        <View style={styles.content}>{renderScreen()}</View>
-        <TabBar activeTab={activeTab} onSelect={setActiveTab} />
-        {betaEnabled && <BetaOverlay />}
-      </View>
+      <OnboardingGate>
+        <LaunchGate>
+          <AppShell adapter={adapter} entities={entities} />
+        </LaunchGate>
+      </OnboardingGate>
     </SafeAreaProvider>
   );
 }
@@ -192,11 +87,9 @@ export default function App() {
 // ─── Styles ───────────────────────────────────────────────────────────────────
 
 const styles = StyleSheet.create<{
-  splash:        ViewStyle;
-  splashTitle:   TextStyle;
+  splash: ViewStyle;
+  splashTitle: TextStyle;
   splashSpinner: ViewStyle;
-  root:          ViewStyle;
-  content:       ViewStyle;
 }>({
   splash: {
     flex: 1,
@@ -214,12 +107,5 @@ const styles = StyleSheet.create<{
   },
   splashSpinner: {
     marginTop: theme.space['3xl'],
-  },
-  root: {
-    flex: 1,
-    backgroundColor: theme.colors.bgVoid,
-  },
-  content: {
-    flex: 1,
   },
 });

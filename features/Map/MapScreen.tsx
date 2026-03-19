@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
-import { View, Image, Pressable, StyleSheet, SafeAreaView, Linking, Platform, AccessibilityInfo, useWindowDimensions } from 'react-native';
+import { View, Image, Pressable, StyleSheet, SafeAreaView, Linking, Platform, useWindowDimensions } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import type { Entity } from '../../core/models';
 import type { MatchingDeps } from '../../core/matching';
@@ -10,8 +10,8 @@ import { useEntityScan } from './hooks/useEntityScan';
 import { useTapSearch } from './hooks/useTapSearch';
 import { useMapControls } from './hooks/useMapControls';
 import { BusinessCard, BusinessBanner, resolveCardMode } from './components/BusinessCard';
-import { CelebrationOverlay, CELEBRATION_DURATION_MS } from './components/CelebrationOverlay';
-import type { CelebrationEffect } from './components/CelebrationOverlay';
+import { FXLayer, useFX, defaultFXRegistry } from '../../core/fx';
+import { FX_AVOID_DURATION_MS } from '../../config/constants';
 import { FlagMarker } from './components/MapMarker';
 import { MapSearchBar } from './components/MapSearchBar';
 import { UnmatchedBanner } from './components/UnmatchedBanner';
@@ -72,16 +72,9 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
     handleMapPress, handlePoiClick, resetTapPins, clearLatestTapBatch, markTapPinAvoided,
   } = useTapSearch(deps, location.areaHash ?? '', regionRef);
 
-  const [celebrations, setCelebrations] = useState<CelebrationEffect[]>([]);
+  const fx = useFX();
   const [avoidedResult, setAvoidedResult] = useState<ScanResult | null>(null);
-  const reducedMotionRef = useRef(false);
   const avoidDismissTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    AccessibilityInfo.isReduceMotionEnabled().then((v) => { if (!cancelled) reducedMotionRef.current = v; });
-    return () => { cancelled = true; };
-  }, []);
 
   useEffect(() => { if (status === 'matched' && result) setActiveResult(result); }, [status, result]);
 
@@ -111,8 +104,8 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
     setPins((prev) => prev.map((p) => (p.id === entityId ? { ...p, avoided: true } : p)));
     markTapPinAvoided(entityId);
     setAvoidedResult(activeResult);
-    setCelebrations((prev) => [...prev, { id: `${entityId}-${Date.now()}`, type: 'avoid', startedAt: Date.now() }]);
-    avoidDismissTimer.current = setTimeout(finishDismiss, CELEBRATION_DURATION_MS);
+    fx.fire('avoid', 'full');
+    avoidDismissTimer.current = setTimeout(finishDismiss, FX_AVOID_DURATION_MS);
   }, [activeResult, adapter, markTapPinAvoided, finishDismiss]);
 
   useEffect(() => () => { if (avoidDismissTimer.current) clearTimeout(avoidDismissTimer.current); }, []);
@@ -148,10 +141,9 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
   const cardMode = activeResult ? resolveCardMode(activeResult) : null;
   const showFullCard = cardMode === 'card';
   const bannerVariant = cardMode && typeof cardMode === 'object' ? cardMode.banner : null;
-  const isCelebrating = celebrations.length > 0;
+  const isCelebrating = fx.active;
   const headerBarHeight = Math.round(screenWidth / HEADER_BAR_ASPECT);
   const SEARCH_TOP = insets.top + headerBarHeight + theme.space.md;
-  const removeCelebration = useCallback((id: string) => { setCelebrations((prev) => prev.filter((c) => c.id !== id)); }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -197,7 +189,7 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
         </View>
       )}
 
-      {celebrations.map((fx) => <CelebrationOverlay key={fx.id} effect={fx} reducedMotion={reducedMotionRef.current} onComplete={() => removeCelebration(fx.id)} />)}
+      <FXLayer entries={fx.entries} registry={defaultFXRegistry} reducedMotion={fx.reducedMotion} onComplete={fx.remove} />
 
       {(status === 'unmatched' || status === 'lookup_unavailable') && <UnmatchedBanner searchText={searchText} onOpenSearch={handleOpenSearch} variant={status === 'lookup_unavailable' ? 'lookup_unavailable' : 'no_match'} />}
       {tapNoMatch && !activeResult && <NoMatchToast />}

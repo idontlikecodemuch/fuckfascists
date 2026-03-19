@@ -22,7 +22,7 @@ This document tracks where the current implementation aligns with, deviates from
 | Configurable variables in constants.ts | No hardcoded thresholds | All values in `config/constants.ts` |
 | Gamified scorecard | Weekly drop, shareable | Weekly scorecard implemented |
 | Platform avoidance tracking | Daily checklist for social/streaming/delivery | Platform avoidance implemented |
-| 8-bit visual design system | Pixel art aesthetic, dark palette, chunky borders | `design/tokens.ts` + all 26 components migrated to theme tokens (Bungee + IBMPlexSans fonts, dark palette, hero/standard borders). 35 pixel art assets + 107 CEO sprite sheets deployed. Full design refinement: map header bar, tab bar texture, search bar depth, BusinessCard rebuilt as 3 composable files (BusinessCard + BusinessBanner + DataZone) with card/banner routing via resolveCardMode(), CelebrationOverlay at screen level, MatchChooser visual upgrade, GameArena sprite grid with cosmetic tap FX, PlatformGroup parent company grouping, InfoScreen collapsible transparency + section ornamentation. 4-step keying pipeline with 1px alpha erosion. |
+| 8-bit visual design system | Pixel art aesthetic, dark palette, chunky borders | `design/tokens.ts` + all 26 components migrated to theme tokens (Bungee + IBMPlexSans fonts, dark palette, hero/standard borders). 35 pixel art assets + 107 CEO sprite sheets deployed. Full design refinement: map header bar, tab bar texture, search bar depth, BusinessCard rebuilt as 3 composable files (BusinessCard + BusinessBanner + DataZone) with card/banner routing via resolveCardMode(), shared FX system (`core/fx/`) with FXLayer + useFX + effect registry replacing CelebrationOverlay, MatchChooser visual upgrade, GameArena sprite grid with cosmetic tap FX, PlatformGroup parent company grouping, InfoScreen collapsible transparency + section ornamentation. 4-step keying pipeline with 1px alpha erosion. |
 | Onboarding flow | Multi-screen first-run flow | 3 screens: Welcome, Permissions (location+notifications combined), Privacy |
 | Beta testing mode | Hidden dev tools | Triple-tap version label → BetaOverlay with screenshot tool |
 
@@ -54,7 +54,7 @@ This document tracks where the current implementation aligns with, deviates from
 | Map POI tap → entity matching | Tap a business on the map, get instant donation data | ✅ Built, linked, and running — Android ready (onPoiClick); iOS module linked via `file:./modules/mapkit-search`; app installed on iPhone 16 Pro simulator; iOS tap path pending interactive smoke test |
 | Scorecard sharing | Shareable card image, social-ready | Not yet implemented |
 | Leaderboard / high scorers | Weekly top avoiders visible to community | Deferred — V2 |
-| People.json individual donor data | Executive/founder donation lookup (Musk, Bezos, Zuckerberg) | Deferred — V1.5 |
+| People.json individual donor data | Executive/founder donation lookup (Musk, Bezos, Zuckerberg) | 🔄 In progress — `people.json` schema + `PoliticalPerson` model + `personList.ts` loader built; data file seeded with 107 people; `associatedPersonIds`↔`associatedEntityIds` bidirectional linkage established; Schedule A contributions not yet surfaced in UI (V1.5 target) |
 | Donation infrastructure | Phase 3 — ActBlue or equivalent, quarterly payouts | Not started — Phase 3 |
 | Cause voting | Users vote on 25% allocation | Not started — Phase 3 |
 | Transparency dashboard | Donation pool, past distributions, cause allocations | Not started — Phase 3 |

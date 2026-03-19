@@ -54,7 +54,7 @@ function ConfidenceBadge({ confidence }: { confidence: number }) {
  *   3. Avoid button + dismiss
  *
  * Sprite renders ABOVE the card via negative marginBottom on the perch.
- * No celebration/victory code — that lives in MapScreen (CelebrationOverlay).
+ * No celebration/victory code — that lives in MapScreen (FXLayer).
  */
 export function BusinessCard({
   result,

@@ -19,6 +19,7 @@ export const FEC_API_BASE_URL = 'https://api.open.fec.gov/v1';
 
 // Curated entity list update URL
 export const ENTITY_LIST_UPDATE_URL = 'https://raw.githubusercontent.com/idontlikecodemuch/fckfascists-data/main/entities.json';
+export const PEOPLE_LIST_UPDATE_URL = 'https://raw.githubusercontent.com/idontlikecodemuch/fckfascists-data/main/people.json';
 
 // Drop schedule is computed deterministically on-device.
 // See core/dropSchedule/computeDropTime.ts.
@@ -58,6 +59,12 @@ export const DEFAULT_SELECTED_PLATFORM_IDS = [
   'amazon',
   'youtube',
 ];
+
+// ── Shared FX system ─────────────────────────────────────────────────────────
+// Duration an avoid celebration effect stays on screen (ms).
+export const FX_AVOID_DURATION_MS = 3000;
+// Fade-out portion at the end of the avoid celebration (ms).
+export const FX_AVOID_FADE_MS = 400;
 
 // Controls whether the public figure / CEO name is shown in the UI.
 // true = show, false = hide. Compile-time constant — change and rebuild to toggle.

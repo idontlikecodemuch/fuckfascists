@@ -12,6 +12,37 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: March 19, 2026 (Shared FX system + App.tsx extraction + people.json docs)
+**Focus:** Three infrastructure tasks — no UI changes.
+
+**Changes:**
+1. **Shared FX system (`core/fx/`)** — replaces CelebrationOverlay with a generic, extensible effects system.
+   - `types.ts` — FXEntry, FXScope ('point'|'area'|'full'), FXComponentProps, FXRegistration
+   - `useFX.ts` — fire-and-forget hook: `fire(type, scope, meta?)`, `remove(id)`, `entries[]`, `active`, `reducedMotion`
+   - `FXLayer.tsx` — host component that renders active effects from a registry
+   - `registry.ts` — default registry with built-in `avoid` effect
+   - `effects/AvoidCelebration.tsx` — migrated from CelebrationOverlay (scale+fade, reduced motion support)
+   - `index.ts` — barrel export
+   - `config/constants.ts` — added `FX_AVOID_DURATION_MS = 3000`, `FX_AVOID_FADE_MS = 400`
+   - **MapScreen.tsx** — replaced `CelebrationOverlay` imports + `celebrations[]` state + `reducedMotionRef` with `useFX()` + `<FXLayer>`. Removed `AccessibilityInfo` import.
+   - **Deleted** `features/Map/components/CelebrationOverlay.tsx`
+
+2. **App.tsx extraction** — split monolithic App.tsx into gate components.
+   - `app/gates/OnboardingGate.tsx` — wraps `useOnboarding` + conditional `OnboardingNavigator`
+   - `app/gates/LaunchGate.tsx` — wraps `shouldShowLaunchScreen()` + conditional `LaunchScreen`
+   - `app/gates/AppShell.tsx` — tab navigation, screen rendering, beta overlay, FEC client
+   - **App.tsx** reduced from 226 to 112 lines: fonts → data init → splash → gate chain
+
+3. **People.json architecture documentation**
+   - **CLAUDE.md** — expanded Entity Relationships: bidirectional linkage model, full PoliticalPerson schema with all fields, integrity rules, getPersonDisplayName. Updated repo structure (added `app/gates/`, `core/fx/`). Updated sprint focus table.
+   - **SPEC_VS_CURRENT.md** — people.json row updated from "Deferred — V1.5" to "In progress" with current state. 8-bit design system entry updated to reflect FXLayer.
+
+**Files created:** core/fx/types.ts, core/fx/useFX.ts, core/fx/FXLayer.tsx, core/fx/registry.ts, core/fx/effects/AvoidCelebration.tsx, core/fx/index.ts, app/gates/OnboardingGate.tsx, app/gates/LaunchGate.tsx, app/gates/AppShell.tsx
+**Files modified:** App.tsx, features/Map/MapScreen.tsx, features/Map/components/BusinessCard.tsx (comment), config/constants.ts, CLAUDE.md, docs/SPEC_VS_CURRENT.md, docs/PROGRESS.md
+**Files deleted:** features/Map/components/CelebrationOverlay.tsx
+
+**Verification:** 307 tests pass (28 suites).
+
 ### Session: March 19, 2026 (AIRMap.m post_install patch hook)
 **Focus:** Automate the AIRMap.m nil guard patch so it survives `pod install`.
 

@@ -88,6 +88,7 @@ API keys and credentials must **only ever be read from environment variables**. 
 /
 ├── CLAUDE.md                        ← this file
 ├── app/                             ← React Native app root
+│   ├── gates/                       ← OnboardingGate, LaunchGate, AppShell (app lifecycle gates)
 │   ├── navigation/                  ← tab/stack navigation
 │   ├── providers/                   ← context, theme, config
 │   └── storage/                     ← SqliteAdapter.ts (expo-sqlite SDK 52, mobile only)
@@ -107,6 +108,7 @@ API keys and credentials must **only ever be read from environment variables**. 
 │   ├── dropSchedule/                ← deterministic PRNG drop time (computeDropTime.ts)
 │   ├── sprites/                     ← spriteAssets.ts (require map), spriteLoader.tsx (SpriteView, nameToSpriteId)
 │   ├── arena/                       ← arenaAssets.ts (require map for arena backgrounds)
+│   ├── fx/                          ← shared FX system (FXLayer, useFX, effect registry, built-in effects)
 │   ├── ui/                          ← uiAssets.ts (require map for UI kit sliced elements + header bar)
 │   ├── utils/                       ← shared utilities (localDate.ts, etc.)
 │   └── models/                      ← shared TypeScript types
@@ -467,10 +469,11 @@ The entire app is styled as a **vintage 8-bit video game**. This is the foundati
 | Onboarding tightened (5→3 screens) | ✅ Done — Welcome, Permissions, Privacy |
 | Beta testing mode | ✅ Done — triple-tap toggle, BetaOverlay, screenshot tool |
 | Daily launch screen | ✅ Done — once per calendar day, rotating messages, 5s auto-dismiss, breathing logo animation |
-| Avoid celebration animation + haptics | ✅ Done — scale animation + expo-haptics |
+| Avoid celebration animation + haptics | ✅ Done — shared FX system (`core/fx/`) with FXLayer + useFX + effect registry; AvoidCelebration effect (scale + fade) |
 | App built and running on iOS simulator | ✅ Done — `FckFascists.app` installed on iPhone 16 Pro simulator |
 | Device visual refinement pass | ✅ Done — launch screen 5s + breathing logo, map header spacing, BusinessCard corners/z-index/sprite 150pt, SpriteView headOnly, GameArena full bleed + all-platforms roster, PlatformRow row-tap + auto-expand, TabBar texture 2x |
-| BusinessCard rebuild + component extraction | ✅ Done — BusinessCard (168 lines), BusinessBanner + resolveCardMode (114), DataZone (161), DetailSheet (placeholder), CelebrationOverlay (66), useMapControls hook (73). Card/banner routing, celebration registry in MapScreen, all files under 250 lines. |
+| BusinessCard rebuild + component extraction | ✅ Done — BusinessCard (168 lines), BusinessBanner + resolveCardMode (114), DataZone (161), DetailSheet (placeholder), useMapControls hook (73). Card/banner routing, FXLayer in MapScreen, all files under 250 lines. |
+| App.tsx extraction | ✅ Done — App.tsx (112 lines): fonts + data init + gate chain. OnboardingGate, LaunchGate, AppShell extracted to `app/gates/`. |
 | App tested on physical device | 🔄 Pending |
 | Extension tested in Chrome | ✅ Done |
 
@@ -548,15 +551,41 @@ After writing any file, scan it once for deprecated APIs, `.then()` chains, `var
 - Do not conflate these contexts — see Principle §7.
 
 ### associatedPersonIds — entity → people.json linkage
-- Unused in V1 display. Reserved for future individual donor lookup. Do not use to drive current UI.
+- `Entity.associatedPersonIds[]` references `PoliticalPerson.id` values in `people.json`.
+- Bidirectional: `PoliticalPerson.associatedEntityIds[]` references `Entity.id` values in `entities.json`.
+- `PoliticalPerson.rolesByEntity` maps entity IDs to role strings (e.g. `{ "tesla": "CEO & Founder", "x-twitter": "Owner" }`).
+- V1: linkage is established but not surfaced in UI. V1.5: personal Schedule A contributions will appear in DataZone when available.
+- Integrity rule: every ID in `associatedPersonIds` must exist in `people.json`, and vice versa for `associatedEntityIds`. A validation script is planned to enforce this.
 
 ### Data file separation
-- `entities.json` + `fecCommitteeId` → corporate PAC contributions (`/committees/{id}/totals/`)
-- `people.json` + `fecContributorId` → individual Schedule A contributions (`/schedules/schedule_a/`)
-- Do not conflate — different FEC endpoints, different data semantics.
+- `entities.json` + `fecCommitteeId` → corporate PAC contributions via `/committees/{id}/totals/` and `/schedules/schedule_b/`
+- `people.json` + `fecContributorId` (or `fecSearchNames`) → individual Schedule A contributions via `/schedules/schedule_a/?contributor_name=`
+- Do not conflate — different FEC endpoints, different data semantics, different query patterns.
 
 ### people.json schema — `PoliticalPerson`
-`id` (lowercase-hyphenated), `name` (FEC-formatted "Last, First"), `fecContributorId?`, `associatedEntityIds[]`, `rolesByEntity` (entity id → role string), `notes`.
+```typescript
+{
+  id: string                           // lowercase-hyphenated slug (e.g. "elon-musk")
+  canonicalName: string                // FEC lookup format: "LAST, FIRST" or "LAST, FIRST M."
+  aliases: string[]                    // consumer-facing display names (e.g. ["Elon Musk"])
+  fecContributorId?: string | null     // stable FEC contributor ID when available
+  fecSearchNames?: string[]            // alternate contributor_name variants in FEC filings
+  primaryState?: string                // disambiguation for common names
+  primaryEmployer?: string             // disambiguation for common names
+  primaryOccupation?: string           // disambiguation for common names
+  totalIndividualContributions?: number // aggregate amount from donor pipeline
+  donorRank?: number                   // ranking from donor pipeline
+  associatedEntityIds: string[]        // refs to entities.json IDs
+  rolesByEntity: { [entityId: string]: string }  // entity id → role
+  totalIndividualRepubs?: number       // aggregate GOP individual contributions
+  totalIndividualDems?: number         // aggregate DEM individual contributions
+  activeCycles?: number[]              // election cycles with activity
+  verificationStatus: 'manual' | 'pipeline' | 'unverified'
+  lastVerifiedDate: string             // YYYY-MM-DD
+  notes?: string                       // e.g. "Also donated via America PAC"
+}
+```
+`getPersonDisplayName(person)` returns the first alias, or de-formats the canonical FEC name as a fallback.
 
 ---
 
