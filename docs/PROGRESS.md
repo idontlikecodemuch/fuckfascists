@@ -12,6 +12,17 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: March 19, 2026 (AIRMap.m post_install patch hook)
+**Focus:** Automate the AIRMap.m nil guard patch so it survives `pod install`.
+
+**Changes:**
+- **ios/Podfile** — added `post_install` hook that reads `node_modules/react-native-maps/ios/AirMaps/AIRMap.m` and injects nil guards on `insertReactSubview:atIndex:`, `removeReactSubview:`, and `addSubview:` if missing. Idempotent — detects existing guards and skips. Prints confirmation via `Pod::UI.puts` when patch is applied.
+- **CLAUDE.md** — updated Modern Code Standards bullet (native guard is now auto-applied by Podfile hook). Updated Known Limitations section: AIRMap.m nil guard patch marked as ✅ Resolved.
+
+**Files modified:** ios/Podfile, CLAUDE.md, docs/PROGRESS.md
+
+**Verification:** 295 tests pass (27 suites). Patch idempotency confirmed via Ruby dry-run against both patched and simulated unpatched sources.
+
 ### Session: March 18, 2026 (BusinessCard rebuild + component extraction)
 **Focus:** Complete BusinessCard rebuild — deleted old component, split into clean composable pieces, moved celebration to screen level, extracted map controls hook.
 
