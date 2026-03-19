@@ -23,13 +23,14 @@ These documents are the authoritative reference for the project. New instances s
 
 | Document | Location | Purpose |
 |---|---|---|
-| Progress & Current State | /docs/PROGRESS.md | Read this first — current sprint status, last sessions, immediate next steps |
+| Progress & Current State | /docs/PROGRESS.md | Read this first — current sprint status, recent sessions, immediate next steps |
+| Progress Archive | /docs/PROGRESS_ARCHIVE.md | Older session logs (pre-March 12, 2026) — reference only, not required reading |
 | App Spec (original) | /docs/FuckFascists_AppSpec_ORIGINAL.docx | Canonical product vision as originally written — do not modify |
 | README | /README.md | Plain-English public overview — keep current with major feature changes |
 | Spec vs. Current State | /docs/SPEC_VS_CURRENT.md | Living document tracking alignment, deviations, and open decisions |
 | CLAUDE.md | /CLAUDE.md | Technical reference for AI agents — update continuously |
 
-**Update cadence:** PROGRESS.md after every session. CLAUDE.md continuously. README.md and SPEC_VS_CURRENT.md when features ship or decisions resolve. Never modify the original spec.
+**Update cadence:** PROGRESS.md after every session. CLAUDE.md continuously. README.md and SPEC_VS_CURRENT.md when features ship or decisions resolve. Never modify the original spec. When PROGRESS.md exceeds ~25K tokens, move sessions older than one week to PROGRESS_ARCHIVE.md.
 
 **New instance checklist:** Read PROGRESS.md first, then CLAUDE.md, then check SPEC_VS_CURRENT.md open decisions — don't re-litigate resolved ones.
 
