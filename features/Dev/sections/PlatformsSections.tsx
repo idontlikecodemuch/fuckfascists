@@ -1,91 +1,73 @@
 /**
  * Platform avoidance component catalog sections. DEV ONLY.
+ *
+ * The Track screen was rebuilt from scratch — PlatformRow is no longer a
+ * standalone component (rows are rendered by TrackRow inside TrackList).
+ * These catalog entries show placeholder text until the catalog is updated
+ * to use the new component architecture.
  */
 import React, { forwardRef } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { CatalogSection } from '../CatalogSection';
-import { PlatformRow } from '../../Platforms/components/PlatformRow';
-import { platformsCopy } from '../../../copy/platforms';
-import {
-  partialPlatformItems,
-  fullPlatformItems,
-  emptyPlatformItems,
-  avoidedPlatformRow,
-  notAvoidedPlatformRow,
-} from '../catalogMocks';
-import type { PlatformItem } from '../../Platforms/types';
+import { theme } from '../../../design/tokens';
 
-const noop = async () => {};
-const MOCK_WEEK = '2026-03-09';
-
-// Static platform list — uses .map() instead of FlatList to avoid
-// VirtualizedList-inside-ScrollView nesting warning.
-function PlatformList({ items }: { items: PlatformItem[] }) {
-  const totalAvoids = items.reduce((sum, i) => sum + i.weeklyCount, 0);
-  return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>{platformsCopy.title}</Text>
-        <Text style={styles.weekLabel}>Week of Mar 10</Text>
-        <Text style={styles.score}>{platformsCopy.score(totalAvoids)}</Text>
-      </View>
-      {items.map((item) => (
-        <PlatformRow key={item.platform.id} item={item} weekOf={MOCK_WEEK} onAvoid={noop} onAvoidDate={noop} />
-      ))}
-    </View>
-  );
-}
-
-// ── Platform full-screen variants ────────────────────────────────────────
+const Placeholder = ({ label }: { label: string }) => (
+  <View style={styles.placeholder}>
+    <Text style={styles.placeholderText} allowFontScaling>{label}</Text>
+    <Text style={styles.placeholderSub} allowFontScaling>
+      Track screen rebuilt — open the Track tab to preview
+    </Text>
+  </View>
+);
 
 export const PlatformsPartial = forwardRef<View>((_, ref) => (
   <CatalogSection ref={ref} label="Platforms — Partial (3/6 active)">
-    <PlatformList items={partialPlatformItems} />
+    <Placeholder label="Track screen — partial avoids" />
   </CatalogSection>
 ));
 PlatformsPartial.displayName = 'PlatformsPartial';
 
 export const PlatformsFull = forwardRef<View>((_, ref) => (
   <CatalogSection ref={ref} label="Platforms — All Active">
-    <PlatformList items={fullPlatformItems} />
+    <Placeholder label="Track screen — all active" />
   </CatalogSection>
 ));
 PlatformsFull.displayName = 'PlatformsFull';
 
 export const PlatformsEmpty = forwardRef<View>((_, ref) => (
   <CatalogSection ref={ref} label="Platforms — Empty">
-    <PlatformList items={emptyPlatformItems} />
+    <Placeholder label="Track screen — empty state" />
   </CatalogSection>
 ));
 PlatformsEmpty.displayName = 'PlatformsEmpty';
 
-// ── Individual PlatformRow variants ────────────────────────────────────────
-
 export const PlatformRowAvoided = forwardRef<View>((_, ref) => (
   <CatalogSection ref={ref} label="PlatformRow — Avoided (×5)">
-    <PlatformRow item={avoidedPlatformRow} weekOf={MOCK_WEEK} onAvoid={noop} onAvoidDate={noop} />
+    <Placeholder label="TrackRow — avoided state" />
   </CatalogSection>
 ));
 PlatformRowAvoided.displayName = 'PlatformRowAvoided';
 
 export const PlatformRowNotAvoided = forwardRef<View>((_, ref) => (
   <CatalogSection ref={ref} label="PlatformRow — Not Avoided">
-    <PlatformRow item={notAvoidedPlatformRow} weekOf={MOCK_WEEK} onAvoid={noop} onAvoidDate={noop} />
+    <Placeholder label="TrackRow — not avoided state" />
   </CatalogSection>
 ));
 PlatformRowNotAvoided.displayName = 'PlatformRowNotAvoided';
 
-// ── Styles ─────────────────────────────────────────────────────────────────
-
-const BLACK = '#1A1A1A';
-const WHITE = '#F5F5F0';
-const AMBER = '#CC7A00';
-const MONO = 'monospace' as const;
-
 const styles = StyleSheet.create({
-  container: { backgroundColor: WHITE },
-  header: { backgroundColor: BLACK, padding: 16, borderBottomWidth: 4, borderColor: '#CC0000' },
-  title: { fontFamily: MONO, fontSize: 20, fontWeight: 'bold', color: WHITE, letterSpacing: 3 },
-  weekLabel: { fontFamily: MONO, fontSize: 13, color: '#CCC', marginTop: 2 },
-  score: { fontFamily: MONO, fontSize: 13, color: AMBER, marginTop: 4 },
+  placeholder: {
+    padding: theme.space.lg,
+    backgroundColor: theme.colors.surface1,
+    alignItems: 'center',
+    gap: theme.space.sm,
+  },
+  placeholderText: {
+    ...theme.type.uiLabel,
+    color: theme.colors.textPrimary,
+  },
+  placeholderSub: {
+    ...theme.type.caption,
+    color: theme.colors.textSecondary,
+  },
 });

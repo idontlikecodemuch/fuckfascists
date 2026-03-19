@@ -66,6 +66,22 @@ export const FX_AVOID_DURATION_MS = 3000;
 // Fade-out portion at the end of the avoid celebration (ms).
 export const FX_AVOID_FADE_MS = 400;
 
+// ── Track screen animation timing ────────────────────────────────────────────
+// Arena transition when switching focus from grid/other person to single character.
+export const ARENA_TRANSITION_MS = 500;
+// Delay before day circles auto-collapse on first visit of the day.
+export const DAY_CIRCLES_AUTO_COLLAPSE_DELAY_MS = 2000;
+// Stagger between each row's collapse in the daily open animation.
+export const DAY_CIRCLES_COLLAPSE_STAGGER_MS = 80;
+// Duration of the day circles expand/collapse height animation.
+export const DAY_CIRCLES_ANIMATE_MS = 300;
+// Hit FX duration after an avoid tap.
+export const ARENA_HIT_FX_MS = 800;
+// Arena height: 16:9 aspect ratio from screen width, capped at this max.
+export const ARENA_MAX_HEIGHT = 220;
+// Sprite defeated threshold — weekly avoids per person needed for defeated state.
+export const SPRITE_DEFEATED_THRESHOLD = 3;
+
 // Controls whether the public figure / CEO name is shown in the UI.
 // true = show, false = hide. Compile-time constant — change and rebuild to toggle.
 // SHOW_FIGURE_NAME_IN_CARD: off by default — business card is an informational FEC data screen.

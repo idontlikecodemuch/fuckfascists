@@ -1,7 +1,8 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { View, Alert, StyleSheet, type ViewStyle } from 'react-native';
 import { MapScreen } from '../../features/Map/MapScreen';
-import { PlatformsScreen } from '../../features/Platforms/PlatformsScreen';
+import { TrackScreen } from '../../features/Platforms/TrackScreen';
+import { NudgeBanner } from '../../features/Platforms/components/NudgeBanner';
 import { ScorecardScreen } from '../../features/Scorecard/ScorecardScreen';
 import { InfoScreen } from '../../features/Info/InfoScreen';
 import { TRACKED_PLATFORMS } from '../../features/Platforms/data/platformList';
@@ -63,7 +64,7 @@ export function AppShell({ adapter, entities }: AppShellProps) {
           />
         );
       case 'platforms':
-        return <PlatformsScreen adapter={adapter} />;
+        return <TrackScreen adapter={adapter} />;
       case 'report':
         return (
           <ScorecardScreen
@@ -80,8 +81,13 @@ export function AppShell({ adapter, entities }: AppShellProps) {
     }
   };
 
+  const handleNudgePress = useCallback(() => {
+    setActiveTab('platforms');
+  }, []);
+
   return (
     <View style={styles.root}>
+      <NudgeBanner onPress={handleNudgePress} />
       <View style={styles.content}>{renderScreen()}</View>
       <TabBar activeTab={activeTab} onSelect={setActiveTab} />
       {betaEnabled && <BetaOverlay />}

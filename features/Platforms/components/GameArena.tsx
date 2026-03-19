@@ -1,256 +1,336 @@
-import React, { useRef, useEffect, useState, useCallback, useMemo } from 'react';
-import { View, Text, Pressable, Animated, ImageBackground, AccessibilityInfo, StyleSheet } from 'react-native';
-import { SpriteView } from '../../../core/sprites/spriteLoader';
+import React, { useRef, useEffect, useMemo, useCallback, useState } from 'react';
+import {
+  View, Pressable, Text, Animated, StyleSheet, useWindowDimensions,
+  AccessibilityInfo, Image,
+} from 'react-native';
+import { SpriteView, nameToSpriteId } from '../../../core/sprites/spriteLoader';
 import { arenaAssets } from '../../../core/arena/arenaAssets';
+import { useTrack, getDisplayFigure } from '../context/TrackContext';
+import { useFX, FXLayer } from '../../../core/fx';
+import type { FXRegistration } from '../../../core/fx';
 import { platformsCopy } from '../../../copy/platforms';
 import { theme } from '../../../design/tokens';
+import {
+  ARENA_MAX_HEIGHT,
+  ARENA_TRANSITION_MS,
+  ARENA_HIT_FX_MS,
+} from '../../../config/constants';
 
-const ARENA_BACKGROUNDS = Object.values(arenaAssets);
+// ── Arena-scoped FX: speech bubble + floating -1 ─────────────────────────────
 
-const SPRITE_SIZE = 48;
-const DEFEATED_THRESHOLD = 3;
-const FX_DURATION = 600;
-const BUBBLE_DURATION = 1000;
+function SpeechBubbleFX({ entry, reducedMotion, onComplete }: { entry: { meta?: Record<string, unknown> }; reducedMotion: boolean; onComplete: () => void }) {
+  const opacity = useRef(new Animated.Value(1)).current;
+  const text = (entry.meta?.text as string) ?? '!';
+
+  useEffect(() => {
+    if (reducedMotion) {
+      const t = setTimeout(onComplete, ARENA_HIT_FX_MS);
+      return () => clearTimeout(t);
+    }
+    const anim = Animated.timing(opacity, { toValue: 0, duration: ARENA_HIT_FX_MS, useNativeDriver: true });
+    anim.start(() => onComplete());
+    return () => anim.stop();
+  }, [reducedMotion, onComplete, opacity]);
+
+  return (
+    <Animated.View style={[styles.speechBubble, { opacity }]} pointerEvents="none" accessibilityElementsHidden>
+      <Text style={styles.speechText} allowFontScaling={false}>{text}</Text>
+    </Animated.View>
+  );
+}
+
+function FloatingMinusOneFX({ entry, reducedMotion, onComplete }: { entry: { meta?: Record<string, unknown> }; reducedMotion: boolean; onComplete: () => void }) {
+  const opacity = useRef(new Animated.Value(1)).current;
+  const translateY = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    if (reducedMotion) {
+      const t = setTimeout(onComplete, ARENA_HIT_FX_MS);
+      return () => clearTimeout(t);
+    }
+    const anim = Animated.parallel([
+      Animated.timing(opacity, { toValue: 0, duration: ARENA_HIT_FX_MS, useNativeDriver: true }),
+      Animated.timing(translateY, { toValue: -40, duration: ARENA_HIT_FX_MS, useNativeDriver: true }),
+    ]);
+    anim.start(() => onComplete());
+    return () => anim.stop();
+  }, [reducedMotion, onComplete, opacity, translateY]);
+
+  return (
+    <Animated.View
+      style={[styles.floatingMinus, { opacity, transform: [{ translateY }] }]}
+      pointerEvents="none"
+      accessibilityElementsHidden
+    >
+      <Text style={styles.floatingMinusText} allowFontScaling={false}>-1</Text>
+    </Animated.View>
+  );
+}
+
+const arenaFXRegistry: Record<string, FXRegistration> = {
+  speechBubble: { scope: 'point', component: SpeechBubbleFX as FXRegistration['component'] },
+  floatingMinus: { scope: 'area', component: FloatingMinusOneFX as FXRegistration['component'] },
+};
+
+// ── Arena backgrounds ────────────────────────────────────────────────────────
+
+const arenaKeys = Object.keys(arenaAssets);
+function pickArena(seed: string): string {
+  let hash = 5381;
+  for (let i = 0; i < seed.length; i++) hash = ((hash << 5) + hash + seed.charCodeAt(i)) | 0;
+  return arenaKeys[Math.abs(hash) % arenaKeys.length]!;
+}
+
+// ── Unique figure list ───────────────────────────────────────────────────────
 
 interface ArenaFigure {
   name: string;
   spriteId: string;
-  totalAvoids: number;
 }
 
-interface GameArenaProps {
-  /** All figures to show, deduped by display name. */
-  figures: ArenaFigure[];
-  /** Newly avoided figure name — triggers the floating -1 FX. */
-  lastAvoided: string | null;
-}
-
-interface TapFx {
-  fadeAnim: Animated.Value;
-  translateAnim: Animated.Value;
-  bubbleFadeAnim: Animated.Value;
-  reaction: string;
-  active: boolean;
-}
-
-function pickReaction(): string {
-  const reactions = platformsCopy.spriteReactions;
-  return reactions[Math.floor(Math.random() * reactions.length)];
-}
+// ── Component ────────────────────────────────────────────────────────────────
 
 /**
- * Static sprite grid at the top of the Platforms screen.
- * Shows all tracked figures as bust sprites in a wrapping grid.
- *
- * Two FX triggers:
- * 1. Avoid-triggered: `lastAvoided` prop fires floating -1 on the matching sprite.
- * 2. Tap-triggered: tapping any sprite shows a cosmetic -1 + speech bubble reaction.
- *    No data is logged — purely decorative.
+ * Arena container with three states:
+ *   1. Grid view (focusedPlatformId === null) — all figures as headOnly busts
+ *   2. Single neutral (focused, not in todayActions)
+ *   3. Single defeated (focused, in todayActions)
  */
-export function GameArena({ figures, lastAvoided }: GameArenaProps) {
-  const arenaBg = useMemo(() => ARENA_BACKGROUNDS[Math.floor(Math.random() * ARENA_BACKGROUNDS.length)], []);
-  const [reducedMotion, setReducedMotion] = useState(false);
+export function GameArena() {
+  const { width } = useWindowDimensions();
+  const arenaHeight = Math.min(Math.round((width * 9) / 16), ARENA_MAX_HEIGHT);
+  const { focusedPlatformId, todayActions, platforms, personWeeklyAvoids, isDefeated } = useTrack();
+  const fx = useFX();
 
-  // Avoid-triggered FX (from PlatformsScreen handleAvoid)
-  const [avoidFxTarget, setAvoidFxTarget] = useState<string | null>(null);
-  const avoidFade = useRef(new Animated.Value(0)).current;
-  const avoidTranslate = useRef(new Animated.Value(0)).current;
+  // Dedupe figures by display name
+  const figures = useMemo<ArenaFigure[]>(() => {
+    const seen = new Set<string>();
+    const result: ArenaFigure[] = [];
+    for (const p of platforms) {
+      const name = getDisplayFigure(p);
+      if (!seen.has(name)) {
+        seen.add(name);
+        result.push({ name, spriteId: nameToSpriteId(name) });
+      }
+    }
+    return result;
+  }, [platforms]);
 
-  // Tap-triggered FX — keyed by figure name
-  const tapFxRef = useRef(new Map<string, TapFx>()).current;
-  const [tapFxVersion, setTapFxVersion] = useState(0);
+  // Resolve focused figure
+  const focusedFigure = useMemo<ArenaFigure | null>(() => {
+    if (!focusedPlatformId) return null;
+    const platform = platforms.find((p) => p.id === focusedPlatformId);
+    if (!platform) return null;
+    const name = getDisplayFigure(platform);
+    return { name, spriteId: nameToSpriteId(name) };
+  }, [focusedPlatformId, platforms]);
+
+  // Arena transition opacity
+  const transitionOpacity = useRef(new Animated.Value(1)).current;
+  const prevFigureRef = useRef<string | null>(null);
 
   useEffect(() => {
-    AccessibilityInfo.isReduceMotionEnabled().then(setReducedMotion);
-  }, []);
+    const currentFigure = focusedFigure?.name ?? null;
+    const prevFigure = prevFigureRef.current;
 
-  // Avoid-triggered -1 animation
-  useEffect(() => {
-    if (!lastAvoided || reducedMotion) return;
-    setAvoidFxTarget(lastAvoided);
-    avoidFade.setValue(1);
-    avoidTranslate.setValue(0);
-    Animated.parallel([
-      Animated.timing(avoidFade, { toValue: 0, duration: FX_DURATION, useNativeDriver: true }),
-      Animated.timing(avoidTranslate, { toValue: -24, duration: FX_DURATION, useNativeDriver: true }),
-    ]).start(() => setAvoidFxTarget(null));
-  }, [lastAvoided, reducedMotion, avoidFade, avoidTranslate]);
+    // Skip transition for sibling switches (same person, different platform)
+    if (currentFigure === prevFigure) return;
 
-  const getTapFx = useCallback((name: string): TapFx => {
-    let fx = tapFxRef.get(name);
-    if (!fx) {
-      fx = {
-        fadeAnim: new Animated.Value(0),
-        translateAnim: new Animated.Value(0),
-        bubbleFadeAnim: new Animated.Value(0),
-        reaction: '',
-        active: false,
-      };
-      tapFxRef.set(name, fx);
-    }
-    return fx;
-  }, [tapFxRef]);
+    prevFigureRef.current = currentFigure;
+    transitionOpacity.setValue(0);
+    Animated.timing(transitionOpacity, {
+      toValue: 1,
+      duration: ARENA_TRANSITION_MS,
+      useNativeDriver: true,
+    }).start();
+  }, [focusedFigure?.name, transitionOpacity]);
 
-  const handleSpriteTap = useCallback((name: string) => {
-    const fx = getTapFx(name);
-    fx.reaction = pickReaction();
-    fx.active = true;
-    setTapFxVersion((v) => v + 1);
+  // Arena background (deterministic)
+  const bgKey = pickArena(focusedFigure?.name ?? 'grid');
+  const bgSource = arenaAssets[bgKey];
 
-    if (reducedMotion) {
-      // Static: show bubble for 1s, then hide
-      fx.bubbleFadeAnim.setValue(1);
-      fx.fadeAnim.setValue(0);
-      const timer = setTimeout(() => {
-        fx.bubbleFadeAnim.setValue(0);
-        fx.active = false;
-        setTapFxVersion((v) => v + 1);
-      }, BUBBLE_DURATION);
-      return () => clearTimeout(timer);
-    }
+  // Cosmetic sprite tap handler (grid view only)
+  const handleSpriteTap = useCallback((figure: ArenaFigure) => {
+    const reactions = platformsCopy.spriteReactions;
+    const text = reactions[Math.floor(Math.random() * reactions.length)];
+    fx.fire('speechBubble', 'point', { text });
+    fx.fire('floatingMinus', 'area', {});
+  }, [fx]);
 
-    // Animated: -1 floats up + speech bubble fades in then out
-    fx.fadeAnim.setValue(1);
-    fx.translateAnim.setValue(0);
-    fx.bubbleFadeAnim.setValue(1);
+  /** Fire hit FX — called by TrackScreen after avoid tap via ref. */
+  const fireHitFX = useCallback(() => {
+    fx.fire('floatingMinus', 'area', {});
+    const reactions = platformsCopy.spriteReactions;
+    const text = reactions[Math.floor(Math.random() * reactions.length)];
+    fx.fire('speechBubble', 'point', { text });
+  }, [fx]);
 
-    Animated.parallel([
-      Animated.timing(fx.fadeAnim, { toValue: 0, duration: FX_DURATION, useNativeDriver: true }),
-      Animated.timing(fx.translateAnim, { toValue: -24, duration: FX_DURATION, useNativeDriver: true }),
-    ]).start();
-
-    Animated.sequence([
-      Animated.delay(BUBBLE_DURATION),
-      Animated.timing(fx.bubbleFadeAnim, { toValue: 0, duration: 300, useNativeDriver: true }),
-    ]).start(() => {
-      fx.active = false;
-      setTapFxVersion((v) => v + 1);
-    });
-  }, [reducedMotion, getTapFx]);
+  // Expose fireHitFX to parent via a stable function on the component
+  // (TrackScreen will call this after avoid)
+  GameArena.fireHitFX = fireHitFX;
 
   return (
-    <ImageBackground source={arenaBg} resizeMode="cover" style={styles.arena} imageStyle={styles.bgTexture}>
-      <View style={styles.grid}>
-        {figures.map((fig) => {
-          const isDefeated = fig.totalAvoids >= DEFEATED_THRESHOLD;
-          const opacity = fig.totalAvoids > 0 ? 1 : 0.4;
-          const tapFx = tapFxRef.get(fig.name);
-          const showTapFx = tapFx?.active === true;
-          const showAvoidFx = avoidFxTarget === fig.name;
+    <View style={[styles.container, { height: arenaHeight }]}>
+      {bgSource && (
+        <Image source={bgSource} style={styles.bg} resizeMode="cover" />
+      )}
+      <View style={styles.overlay} />
 
-          return (
-            <Pressable
-              key={fig.name}
-              style={styles.cell}
-              onPress={() => handleSpriteTap(fig.name)}
-              accessibilityLabel={fig.name}
-              accessibilityRole="button"
-              hitSlop={{ top: 4, bottom: 4, left: 4, right: 4 }}
-            >
-              <SpriteView
-                spriteId={fig.spriteId}
-                state={isDefeated ? 'defeated' : 'neutral'}
-                size={SPRITE_SIZE}
-                opacity={opacity}
-                headOnly
-              />
+      <Animated.View style={[styles.content, { opacity: transitionOpacity }]}>
+        {focusedFigure ? (
+          <SingleSprite
+            figure={focusedFigure}
+            defeated={todayActions.has(focusedFigure.name)}
+            weeklyAvoids={personWeeklyAvoids(focusedFigure.name)}
+            arenaHeight={arenaHeight}
+          />
+        ) : (
+          <SpriteGrid figures={figures} onTap={handleSpriteTap} />
+        )}
+      </Animated.View>
 
-              {/* Avoid-triggered -1 */}
-              {showAvoidFx && (
-                <Animated.Text
-                  style={[
-                    styles.fxText,
-                    { opacity: avoidFade, transform: [{ translateY: avoidTranslate }] },
-                  ]}
-                  accessibilityElementsHidden
-                >
-                  -1
-                </Animated.Text>
-              )}
-
-              {/* Tap-triggered -1 */}
-              {showTapFx && !reducedMotion && (
-                <Animated.Text
-                  style={[
-                    styles.fxText,
-                    { opacity: tapFx!.fadeAnim, transform: [{ translateY: tapFx!.translateAnim }] },
-                  ]}
-                  accessibilityElementsHidden
-                >
-                  -1
-                </Animated.Text>
-              )}
-
-              {/* Speech bubble */}
-              {showTapFx && (
-                <Animated.View
-                  style={[styles.bubble, { opacity: tapFx!.bubbleFadeAnim }]}
-                  accessibilityElementsHidden
-                >
-                  <Text style={styles.bubbleText} allowFontScaling={false}>
-                    {tapFx!.reaction}
-                  </Text>
-                </Animated.View>
-              )}
-            </Pressable>
-          );
-        })}
-      </View>
-    </ImageBackground>
+      <FXLayer
+        entries={fx.entries}
+        registry={arenaFXRegistry}
+        reducedMotion={fx.reducedMotion}
+        onComplete={fx.remove}
+      />
+    </View>
   );
 }
 
-const HEAD_CELL_HEIGHT = Math.ceil(SPRITE_SIZE * 0.38) + 4;
+// Static property for parent communication
+GameArena.fireHitFX = (() => {}) as () => void;
+
+// ── Sub-components ───────────────────────────────────────────────────────────
+
+function SpriteGrid({ figures, onTap }: { figures: ArenaFigure[]; onTap: (f: ArenaFigure) => void }) {
+  const { isDefeated, personWeeklyAvoids } = useTrack();
+
+  return (
+    <View style={styles.grid}>
+      {figures.map((fig) => {
+        const defeated = isDefeated(fig.name);
+        const avoids = personWeeklyAvoids(fig.name);
+        return (
+          <Pressable
+            key={fig.spriteId}
+            onPress={() => onTap(fig)}
+            style={styles.gridCell}
+            accessibilityRole="button"
+            accessibilityLabel={platformsCopy.arenaTapA11y(fig.name)}
+          >
+            <SpriteView
+              spriteId={fig.spriteId}
+              state={defeated ? 'defeated' : 'neutral'}
+              size={48}
+              headOnly
+              opacity={avoids > 0 ? 1 : 0.4}
+            />
+          </Pressable>
+        );
+      })}
+    </View>
+  );
+}
+
+function SingleSprite({
+  figure,
+  defeated,
+  weeklyAvoids,
+  arenaHeight,
+}: {
+  figure: ArenaFigure;
+  defeated: boolean;
+  weeklyAvoids: number;
+  arenaHeight: number;
+}) {
+  const spriteSize = Math.round(arenaHeight * 0.75);
+
+  return (
+    <View style={styles.singleContainer}>
+      <SpriteView
+        spriteId={figure.spriteId}
+        state={defeated ? 'defeated' : 'neutral'}
+        size={spriteSize}
+        opacity={weeklyAvoids > 0 ? 1 : 0.6}
+      />
+    </View>
+  );
+}
+
+// ── Styles ───────────────────────────────────────────────────────────────────
 
 const styles = StyleSheet.create({
-  arena: {
-    backgroundColor: theme.colors.surface2,
-    borderWidth: theme.borders.standard.width,
-    borderColor: theme.colors.frameBlue,
-    borderTopColor: theme.colors.highlightBlue,
-    borderBottomColor: theme.colors.bgVoid,
-    padding: theme.space.sm,
-    minHeight: 120,
-    overflow: 'hidden' as const,
+  container: {
+    overflow: 'hidden',
+    backgroundColor: theme.colors.surface1,
+    borderBottomWidth: theme.borders.hero.width,
+    borderBottomColor: theme.colors.frameBlue,
   },
-  bgTexture: {
+  bg: {
+    ...StyleSheet.absoluteFillObject,
+    width: '100%',
+    height: '100%',
     opacity: 0.3,
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: theme.colors.bgVoid,
+    opacity: 0.4,
+  },
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: theme.space.xs,
     justifyContent: 'center',
-  },
-  cell: {
     alignItems: 'center',
-    justifyContent: 'center',
-    width: SPRITE_SIZE + 4,
-    height: HEAD_CELL_HEIGHT,
+    gap: theme.space.sm,
+    padding: theme.space.sm,
+  },
+  gridCell: {
+    width: 56,
+    height: 56,
     borderWidth: theme.borders.standard.width,
     borderColor: theme.colors.rewardYellow,
-    backgroundColor: theme.colors.surface1,
+    backgroundColor: theme.colors.surface2,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  fxText: {
-    position: 'absolute',
-    top: -4,
-    ...theme.type.displayS,
-    fontSize: 14,
-    color: theme.colors.dangerRed,
+  singleContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  bubble: {
+  speechBubble: {
     position: 'absolute',
-    top: -18,
-    backgroundColor: theme.colors.surface1,
+    top: 8,
+    alignSelf: 'center',
+    backgroundColor: theme.colors.textPrimary,
+    paddingHorizontal: theme.space.sm,
+    paddingVertical: theme.space.xs,
     borderWidth: theme.borders.standard.width,
-    borderColor: theme.colors.frameBlue,
-    paddingHorizontal: 4,
-    paddingVertical: 1,
+    borderColor: theme.colors.bgVoid,
+    zIndex: 10,
   },
-  bubbleText: {
-    ...theme.type.caption,
-    fontSize: 9,
-    color: theme.colors.textPrimary,
+  speechText: {
+    ...theme.type.uiLabel,
+    color: theme.colors.bgVoid,
+    textTransform: 'uppercase',
+  },
+  floatingMinus: {
+    position: 'absolute',
+    top: '30%',
+    alignSelf: 'center',
+    zIndex: 10,
+  },
+  floatingMinusText: {
+    ...theme.type.displayM,
+    color: theme.colors.dangerRed,
     fontWeight: 'bold',
   },
 });

@@ -12,6 +12,35 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: March 19, 2026 (Track screen rebuild)
+**Focus:** Delete and rebuild the Track (Platforms) screen from scratch. Old implementation had accumulated ad hoc patches.
+
+**Changes:**
+1. **Deleted old files:** `PlatformsScreen.tsx`, `GameArena.tsx`, `PlatformRow.tsx`, `PlatformGroup.tsx`
+2. **New architecture — context-driven, flat layout:**
+   - `context/TrackContext.tsx` — shared state provider: `focusedPlatformId`, `weekAvoids`, `todayActions` (set of figure names with today's avoids, resets on app open via local date comparison)
+   - `components/TrackHeader.tsx` — title, week label, total score, EDIT button
+   - `components/GameArena.tsx` — three states: character grid (null focus), single neutral (focused, not in todayActions), single defeated (focused, in todayActions). Arena-scoped FX (speech bubble + floating -1). Transition animation on focus change; skipped for sibling switches (same person, different platform).
+   - `components/TrackList.tsx` — FlatList with flat data array. Three item types: `groupHeader`, `childRow`, `platformRow`. Daily open animation (expand all → stagger-collapse top to bottom on first visit).
+   - `components/TrackRow.tsx` — renders all three item types. Group headers: sprite bust + short name + roll-up count. Child rows: indented, no sprite. Platform rows: sprite + name + figure name. Focus/dimming states. Avoid button: AVOID → ✓ on first tap; second tap on ✓ expands day circles.
+   - `components/DayCircles.tsx` — animated expand/collapse via `Animated.Value` height. 7 circles M–S. Checked = green ✓. Open past/today = tappable. Future = faded/disabled.
+   - `components/NudgeBanner.tsx` — app-wide dismissible banner in AppShell. Shows on Thursday with pump-up copy. Tapping opens Track tab.
+   - `TrackScreen.tsx` — root component: TrackProvider → SafeAreaView → TrackHeader + GameArena + TrackList. Shows PlatformSetupScreen when no roster saved.
+3. **AppShell updated:** imports TrackScreen (replaces PlatformsScreen), adds NudgeBanner above content area
+4. **Dev catalog:** PlatformsSections.tsx updated with placeholder components (old PlatformRow no longer exists as standalone)
+5. **Copy additions:** `avoidedBtn`, `arenaTapA11y`, `nudgeBanner`, `nudgeDismiss`, `nudgeDismissA11y`, `shortParentNames` map
+6. **Constants additions:** `ARENA_TRANSITION_MS`, `DAY_CIRCLES_AUTO_COLLAPSE_DELAY_MS`, `DAY_CIRCLES_COLLAPSE_STAGGER_MS`, `DAY_CIRCLES_ANIMATE_MS`, `ARENA_HIT_FX_MS`, `ARENA_MAX_HEIGHT`, `SPRITE_DEFEATED_THRESHOLD`
+
+**Screen layout:** Plain flex column. TrackHeader (auto height) → GameArena (16:9 from width, max 220pt) → FlatList (flex: 1, only scrollable element). No sticky headers, no nested scrolling.
+
+**Files created:** features/Platforms/TrackScreen.tsx, features/Platforms/context/TrackContext.tsx, features/Platforms/components/TrackHeader.tsx, features/Platforms/components/GameArena.tsx, features/Platforms/components/TrackList.tsx, features/Platforms/components/TrackRow.tsx, features/Platforms/components/NudgeBanner.tsx
+**Files modified:** app/gates/AppShell.tsx, copy/platforms.ts, config/constants.ts, features/Platforms/components/DayCircles.tsx, features/Dev/sections/PlatformsSections.tsx, docs/PROGRESS.md
+**Files deleted:** features/Platforms/PlatformsScreen.tsx, features/Platforms/components/GameArena.tsx (old), features/Platforms/components/PlatformRow.tsx, features/Platforms/components/PlatformGroup.tsx
+
+**Kept unchanged:** hooks (usePlatformAvoidance, usePlatformRoster, useNudgeNotification), utils (weekDates, platformHelpers), types.ts, platformList.ts, all tests
+
+**Verification:** 12 Platforms tests pass (2 suites). 291 tests pass across 26 suites. 2 pre-existing failures in person model tests (in-flight PoliticalPerson type changes, not related to Track rebuild). TypeScript clean — zero errors.
+
 ### Session: March 19, 2026 (Shared FX system + App.tsx extraction + people.json docs)
 **Focus:** Three infrastructure tasks — no UI changes.
 

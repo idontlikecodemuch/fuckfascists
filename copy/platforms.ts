@@ -5,6 +5,7 @@ export const platformsCopy = {
   loading: "Loading platform data",
   checklist: "Platform checklist",
   avoidBtn: "AVOID",
+  avoidedBtn: "DONE",
   avoidedLabel: (name: string) => `${name}. Avoided today.`,
   notAvoidedLabel: (name: string) => `${name}. Tap to record avoidance.`,
   rowSubtitle: (company: string, ceo: string) => `${company} \u00b7 CEO: ${ceo}`,
@@ -33,7 +34,21 @@ export const platformsCopy = {
   // Arena sprite tap reactions (cosmetic only — no data logged)
   spriteReactions: ["ow!", "stop!", "no!", "hey!"] as readonly string[],
 
-  // Thursday nudge notification
+  // Arena speech bubble (cosmetic tap FX)
+  arenaTapA11y: (name: string) => `${name} sprite. Tap for reaction.`,
+
+  // Nudge banner (app-wide, Thursday)
   nudgeTitle: "Your card drops tomorrow.",
   nudgeBody: "Any more fascists you f*cked this week?",
+  nudgeBanner: "Scorecard drops tomorrow \u2014 log your avoids!",
+  nudgeDismiss: "DISMISS",
+  nudgeDismissA11y: "Dismiss nudge banner",
+
+  // Short parent company names for group headers
+  shortParentNames: {
+    'Meta Platforms': 'META',
+    'Amazon.com Inc': 'AMAZON',
+    'Alphabet Inc': 'ALPHABET',
+    'X Corp': 'X CORP',
+  } as Record<string, string>,
 } as const;
