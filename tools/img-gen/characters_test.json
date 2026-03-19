@@ -1,0 +1,21 @@
+[
+  {
+    "id": "mark-zuckerberg",
+    "name": "Mark Zuckerberg",
+    "tier": "important",
+    "likeness": "Short curly brown hair, pale skin, narrow face, blue eyes",
+    "variants": {
+      "A": { "outfit": "Dark gray Meta hoodie with Facebook 'f' logo, dark jeans, gray sneakers" },
+      "B": { "outfit": "Charcoal suit, white shirt, no tie, Meta pin on lapel" }
+    }
+  },
+  {
+    "id": "doug-mcmillon",
+    "name": "Doug McMillon",
+    "tier": "standard",
+    "likeness": "Gray receding hair, glasses, medium build",
+    "variants": {
+      "A": { "outfit": "Blue Walmart vest over light-blue oxford shirt, khakis, name badge, subtle earpiece" }
+    }
+  }
+]
