@@ -27,6 +27,7 @@ export const mapCopy = {
   markerAvoided: (name: string) => `Avoided: ${name}`,
   markerFlagged: (name: string, confidenceLabel: string) => `Flagged business: ${name}. Confidence: ${confidenceLabel}. Tap for details.`,
   tapLoading: "Searching nearby businesses",
+  tapNoMatch: "No match found",
   noMatch: (text: string) => `Couldn\u2019t match \u201C${text}\u201D to an FEC filing.`,
   lookupFailed: (text: string) => `FEC.gov lookup failed for \u201C${text}\u201D \u2014 try again later.`,
   fecSearch: "Search FEC.gov \u2197",

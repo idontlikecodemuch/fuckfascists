@@ -72,6 +72,8 @@ export default function App() {
     return () => { cancelled = true; };
   }, [isComplete]);
 
+  const dismissLaunch = useCallback(() => setShowLaunch(false), []);
+
   const handleVersionTap = useCallback(async () => {
     const toggled = await registerTap();
     if (toggled) {
@@ -137,7 +139,7 @@ export default function App() {
   if (showLaunch) {
     return (
       <SafeAreaProvider>
-        <LaunchScreen onDismiss={() => setShowLaunch(false)} />
+        <LaunchScreen onDismiss={dismissLaunch} />
       </SafeAreaProvider>
     );
   }

@@ -75,11 +75,16 @@ function computeSearchRadius(region: Region | null): number {
  *   - Cache key is a rounded string, not precise coordinates.
  *   - MapKitSearch does not access device GPS. Coordinate comes from the tap event.
  */
+const TAP_NO_MATCH_DISPLAY_MS = 2000;
+
 export function useTapSearch(deps: MatchingDeps, areaHash: string, regionRef?: React.RefObject<Region>) {
   const [tapPins, setTapPins] = useState<MapPin[]>([]);
   const [tapLoadingCoord, setTapLoadingCoord] = useState<LatLng | null>(null);
   /** Scan results from the most recent tap — drives the MatchChooser when length ≥ 2. */
   const [latestTapBatch, setLatestTapBatch] = useState<ScanResult[]>([]);
+  /** True briefly after a tap search yields no matches — drives the no-match toast. */
+  const [tapNoMatch, setTapNoMatch] = useState(false);
+  const tapNoMatchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const cellCache = useRef<Map<string, CellCacheEntry>>(new Map());
   const lastTapAt = useRef<number>(0);
 
@@ -112,6 +117,15 @@ export function useTapSearch(deps: MatchingDeps, areaHash: string, regionRef?: R
       }
 
       setLatestTapBatch(batchResults);
+
+      // Show a brief no-match toast when the tap found POI names but none matched.
+      if (batchResults.length === 0 && names.length > 0) {
+        if (tapNoMatchTimer.current) clearTimeout(tapNoMatchTimer.current);
+        setTapNoMatch(true);
+        tapNoMatchTimer.current = setTimeout(() => setTapNoMatch(false), TAP_NO_MATCH_DISPLAY_MS);
+      } else {
+        setTapNoMatch(false);
+      }
 
       if (newPins.length > 0) {
         setTapPins((prev) => {
@@ -203,6 +217,7 @@ export function useTapSearch(deps: MatchingDeps, areaHash: string, regionRef?: R
   return {
     tapPins,
     tapLoadingCoord,
+    tapNoMatch,
     latestTapBatch,
     setLatestTapBatch,
     handleMapPress,

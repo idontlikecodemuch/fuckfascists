@@ -53,11 +53,17 @@ export function LaunchScreen({ onDismiss }: { onDismiss: () => void }) {
     return () => loop.stop();
   }, [reducedMotion, logoScale]);
 
-  // Auto-dismiss after 5 seconds
+  // Keep a stable ref to onDismiss so the timer fires exactly once on mount.
+  // Without this, an unstable onDismiss reference restarts the 5s timer on
+  // every parent re-render, causing unpredictable dismiss timing.
+  const onDismissRef = useRef(onDismiss);
+  onDismissRef.current = onDismiss;
+
+  // Auto-dismiss after 5 seconds — runs once on mount, no dependency on callback identity.
   useEffect(() => {
-    const timer = setTimeout(onDismiss, AUTO_DISMISS_MS);
+    const timer = setTimeout(() => onDismissRef.current(), AUTO_DISMISS_MS);
     return () => clearTimeout(timer);
-  }, [onDismiss]);
+  }, []);
 
   // Pick a rotating daily message based on day-of-year
   const messageIndex = Math.floor(Date.now() / 86400000) % launchCopy.messages.length;

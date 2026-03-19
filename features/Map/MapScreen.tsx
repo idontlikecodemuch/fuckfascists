@@ -14,6 +14,7 @@ import { MapSearchBar } from './components/MapSearchBar';
 import { UnmatchedBanner } from './components/UnmatchedBanner';
 import { TapLoadingMarker } from './components/TapLoadingMarker';
 import { MatchChooser } from './components/MatchChooser';
+import { NoMatchToast } from './components/NoMatchToast';
 import type { MapPin, ScanResult } from './types';
 import { MapControls } from './components/MapControls';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -72,7 +73,7 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
   const regionRef = useRef<Region>(DEFAULT_REGION);
 
   const {
-    tapPins, tapLoadingCoord, latestTapBatch, setLatestTapBatch,
+    tapPins, tapLoadingCoord, tapNoMatch, latestTapBatch, setLatestTapBatch,
     handleMapPress, handlePoiClick, resetTapPins, clearLatestTapBatch, markTapPinAvoided,
   } = useTapSearch(deps, location.areaHash ?? '', regionRef);
 
@@ -258,7 +259,7 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
 
   // Header bar height derived from screen width to maintain aspect ratio
   const headerBarHeight = Math.round(screenWidth / HEADER_BAR_ASPECT);
-  const SEARCH_TOP = insets.top + headerBarHeight + theme.space.xs;
+  const SEARCH_TOP = insets.top + headerBarHeight + theme.space.md;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -366,6 +367,8 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
           variant={status === 'lookup_unavailable' ? 'lookup_unavailable' : 'no_match'}
         />
       )}
+
+      {tapNoMatch && !activeResult && <NoMatchToast />}
     </SafeAreaView>
   );
 }
@@ -373,7 +376,7 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
 const styles = StyleSheet.create({
   container:        { flex: 1, backgroundColor: theme.colors.bgVoid },
   map:              { flex: 1 },
-  headerBarOverlay: { position: 'absolute', top: 0, left: 0, right: 0, zIndex: 2, alignItems: 'center', overflow: 'visible' as const },
+  headerBarOverlay: { position: 'absolute', top: 0, left: 0, right: 0, zIndex: 2, alignItems: 'center', overflow: 'visible' as const, backgroundColor: theme.colors.bgVoid },
   headerBarImage:   { position: 'absolute', left: 0 },
   headerLogo:       { height: 24, aspectRatio: 1536 / 322, zIndex: 3 },
   backdrop:         { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
