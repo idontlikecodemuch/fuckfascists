@@ -13,6 +13,7 @@ import {
   ARENA_HEIGHT,
   ARENA_TRANSITION_MS,
   TRACK_ARENA_GRID_CELL_SIZE,
+  TRACK_ARENA_SINGLE_SPRITE_RATIO,
 } from '../../../config/constants';
 
 // ── Arena backgrounds ────────────────────────────────────────────────────────
@@ -120,7 +121,7 @@ export function GameArena() {
             <SpriteView
               spriteId={focusedFigure.spriteId}
               state={todayActions.has(focusedFigure.name) ? 'defeated' : 'neutral'}
-              size={Math.round(ARENA_HEIGHT * 0.7)}
+              size={Math.round(ARENA_HEIGHT * TRACK_ARENA_SINGLE_SPRITE_RATIO)}
               opacity={personWeeklyAvoids(focusedFigure.name) > 0 ? 1 : 0.6}
             />
           </Pressable>
@@ -200,8 +201,9 @@ const styles = StyleSheet.create({
   singleContainer: {
     flex: 1,
     justifyContent: 'flex-end',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     paddingBottom: theme.space.sm,
+    paddingLeft: theme.space.lg,
   },
   fxLayer: {
     ...StyleSheet.absoluteFillObject,

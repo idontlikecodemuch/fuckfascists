@@ -12,6 +12,23 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: March 20, 2026 (Track screen six targeted fixes)
+**Focus:** Six targeted fixes for the Track screen based on device testing feedback.
+
+**Fixes:**
+1. **Grid sprites cut off** — increased `TRACK_ARENA_GRID_CELL_SIZE` from 52 to 80. At 52, the headOnly crop rendered faces at ~18px (unrecognizable). At 80, faces render at ~30px.
+2. **Single character centered and too small** — left-aligned sprite (`alignItems: 'flex-start'`), increased size from `ARENA_HEIGHT * 0.7` to `ARENA_HEIGHT * 0.9` via new `TRACK_ARENA_SINGLE_SPRITE_RATIO` constant. Fighting-game portrait style.
+3. **Avoid counts unlimited per day** — enforced max one avoid per platform per calendar day. Added duplicate check in `usePlatformAvoidance` `avoid()` and `avoidForDate()` callbacks via `eventsRef` (avoids stale closure). Max 7 avoids per platform per week.
+4. **Day circles not expanding** — `expandedIds` was missing from FlatList's `extraData`. FlatList wasn't re-rendering items when expand state changed. Added `expandedIds` to `extraData` array.
+5. **Daily open animation re-triggering** — `dailyOpenDone` refs reset on component unmount (tab switch, screenshot, background). Replaced `useRef` guards with module-level `lastDailyOpenDate` variable that persists across mounts within the same app session.
+6. **Group header tap** — code was already correct (`setFocusedPlatformId(childPlatformIds[0])`) but likely appeared broken due to Fix 4's FlatList re-render issue. Now works with the `extraData` fix.
+
+**Spec review** — no additional inconsistencies found. Tap behavior (focus → expand → collapse cycle), avoid button two-state logic, grid-always-neutral, todayActions-based defeated, and daily open animation all match the authoritative spec.
+
+**Files modified:** config/constants.ts, features/Platforms/components/GameArena.tsx, features/Platforms/hooks/usePlatformAvoidance.ts, features/Platforms/TrackScreen.tsx, docs/PROGRESS.md
+
+**Verification:** 310 tests pass (28 suites). Zero failures.
+
 ### Session: March 20, 2026 (Track screen rebuild v2 — component extraction + todayActions)
 **Focus:** Second-pass rebuild of the Track screen. Extracted monolithic TrackRow/TrackList into focused single-responsibility components. Defeated state now driven by todayActions (any avoid = defeated) instead of weekly threshold.
 

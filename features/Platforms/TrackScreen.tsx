@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { Text, FlatList, ActivityIndicator, StyleSheet, SafeAreaView } from 'react-native';
 import type { StorageAdapter } from '../../core/data';
 import { TRACKED_PLATFORMS } from './data/platformList';
@@ -79,11 +79,14 @@ export function TrackScreen({ adapter }: TrackScreenProps) {
 
 // ── Inner list (needs TrackProvider context) ─────────────────────────────────
 
+// Module-level: survives component unmounts within the same app session.
+// Prevents daily open animation from re-triggering on tab switches, screenshots,
+// or background/foreground transitions within the same calendar day.
+let lastDailyOpenDate: string | null = null;
+
 function TrackListInner() {
   const { platforms, focusedPlatformId, weekAvoids } = useTrack();
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
-  const dailyOpenDone = useRef(false);
-  const dailyOpenDateRef = useRef<string | null>(null);
 
   const listData = useMemo(() => buildListData(platforms), [platforms]);
 
@@ -94,14 +97,14 @@ function TrackListInner() {
       .map((item) => item.platformId);
   }, [listData]);
 
-  // Daily open animation: expand all on first visit of the day, then stagger-collapse
+  // Daily open animation: expand all on first visit of the day, then stagger-collapse.
+  // Uses module-level lastDailyOpenDate so it survives unmount/remount within the same day.
   useEffect(() => {
     const today = getLocalDateString();
-    if (dailyOpenDone.current && dailyOpenDateRef.current === today) return;
+    if (lastDailyOpenDate === today) return;
     if (allPlatformIds.length === 0) return;
 
-    dailyOpenDone.current = true;
-    dailyOpenDateRef.current = today;
+    lastDailyOpenDate = today;
 
     setExpandedIds(new Set(allPlatformIds));
 
@@ -161,7 +164,7 @@ function TrackListInner() {
       data={listData}
       keyExtractor={keyExtractor}
       renderItem={renderItem}
-      extraData={[focusedPlatformId, weekAvoids]}
+      extraData={[focusedPlatformId, weekAvoids, expandedIds]}
       style={styles.list}
       contentContainerStyle={styles.listContent}
       accessibilityRole="list"
