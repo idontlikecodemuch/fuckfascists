@@ -20,6 +20,9 @@ import {
   DAY_CIRCLES_COLLAPSE_STAGGER_MS,
 } from '../../config/constants';
 
+// ── Daily open animation guard (module-level, survives unmount/remount) ──────
+let _dailyOpenDate: string | null = null;
+
 // ── Root screen ──────────────────────────────────────────────────────────────
 
 interface TrackScreenProps {
@@ -77,14 +80,10 @@ export function TrackScreen({ adapter }: TrackScreenProps) {
   );
 }
 
-// ── Daily open animation guard (module-level, survives unmount/remount) ──────
-let _dailyOpenDate: string | null = null;
-
 // ── Inner list (needs TrackProvider context) ─────────────────────────────────
 
 function TrackListInner() {
-  const { platforms, focusedPlatformId, weekAvoids } = useTrack();
-  const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
+  const { platforms, focusedPlatformId, weekAvoids, expandAll, collapseOne } = useTrack();
 
   const listData = useMemo(() => buildListData(platforms), [platforms]);
 
@@ -104,36 +103,21 @@ function TrackListInner() {
 
     _dailyOpenDate = today;
 
-    setExpandedIds(new Set(allPlatformIds));
+    expandAll(allPlatformIds);
 
     const timers: ReturnType<typeof setTimeout>[] = [];
     for (let i = 0; i < allPlatformIds.length; i++) {
       const timer = setTimeout(() => {
-        const id = allPlatformIds[i]!;
-        setExpandedIds((prev) => {
-          const next = new Set(prev);
-          next.delete(id);
-          return next;
-        });
+        collapseOne(allPlatformIds[i]!);
       }, DAY_CIRCLES_AUTO_COLLAPSE_DELAY_MS + (i * DAY_CIRCLES_COLLAPSE_STAGGER_MS));
       timers.push(timer);
     }
 
     return () => { timers.forEach(clearTimeout); };
-  }, [allPlatformIds]);
+  }, [allPlatformIds, expandAll, collapseOne]);
 
-  const toggleExpand = useCallback((platformId: string) => {
-    setExpandedIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(platformId)) {
-        next.delete(platformId);
-      } else {
-        next.add(platformId);
-      }
-      return next;
-    });
-  }, []);
-
+  // PlatformRow reads expandedIds + toggleExpand from context directly,
+  // so renderItem doesn't need to pass expand props.
   const renderItem = useCallback(({ item }: { item: TrackListItem }) => {
     if (item.type === 'groupHeader') {
       return (
@@ -149,11 +133,9 @@ function TrackListInner() {
       <PlatformRow
         platformId={item.platformId}
         isChild={item.type === 'childRow'}
-        expanded={expandedIds.has(item.platformId)}
-        onToggleExpand={toggleExpand}
       />
     );
-  }, [expandedIds, toggleExpand]);
+  }, []);
 
   const keyExtractor = useCallback((item: TrackListItem) => item.key, []);
 
@@ -162,7 +144,7 @@ function TrackListInner() {
       data={listData}
       keyExtractor={keyExtractor}
       renderItem={renderItem}
-      extraData={[focusedPlatformId, weekAvoids, expandedIds]}
+      extraData={[focusedPlatformId, weekAvoids]}
       style={styles.list}
       contentContainerStyle={styles.listContent}
       accessibilityRole="list"

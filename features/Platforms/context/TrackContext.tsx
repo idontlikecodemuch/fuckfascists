@@ -18,6 +18,14 @@ export interface TrackContextValue {
   /** Currently focused platform ID, or null for the grid overview. */
   focusedPlatformId: string | null;
   setFocusedPlatformId: (id: string | null) => void;
+  /** Set of platform IDs whose day circles are currently expanded. */
+  expandedIds: Set<string>;
+  /** Toggle a single platform's day circles open/closed. */
+  toggleExpand: (platformId: string) => void;
+  /** Expand all given platform IDs (used by daily open animation). */
+  expandAll: (ids: string[]) => void;
+  /** Collapse a single platform ID (used by stagger-collapse). */
+  collapseOne: (id: string) => void;
   /** All platform avoid data for the week. */
   weekAvoids: PlatformItem[];
   /** Total avoids across all platforms this week. */
@@ -61,7 +69,42 @@ interface TrackProviderProps {
 }
 
 export function TrackProvider({ adapter, platforms, children }: TrackProviderProps) {
-  const [focusedPlatformId, setFocusedPlatformId] = useState<string | null>(null);
+  const [focusedPlatformId, rawSetFocusedPlatformId] = useState<string | null>(null);
+  const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
+
+  // When focus changes, collapse all previously expanded rows (per UX spec).
+  const setFocusedPlatformId = useCallback((id: string | null) => {
+    rawSetFocusedPlatformId((prev) => {
+      if (prev !== id) {
+        setExpandedIds(new Set());
+      }
+      return id;
+    });
+  }, []);
+
+  const toggleExpand = useCallback((platformId: string) => {
+    setExpandedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(platformId)) {
+        next.delete(platformId);
+      } else {
+        next.add(platformId);
+      }
+      return next;
+    });
+  }, []);
+
+  const expandAll = useCallback((ids: string[]) => {
+    setExpandedIds(new Set(ids));
+  }, []);
+
+  const collapseOne = useCallback((id: string) => {
+    setExpandedIds((prev) => {
+      const next = new Set(prev);
+      next.delete(id);
+      return next;
+    });
+  }, []);
 
   const avoidance = usePlatformAvoidance(adapter, platforms);
 
@@ -124,12 +167,17 @@ export function TrackProvider({ adapter, platforms, children }: TrackProviderPro
   const clearAll = useCallback(async () => {
     await avoidance.clearAll();
     setTodayActions(new Set());
-    setFocusedPlatformId(null);
+    rawSetFocusedPlatformId(null);
+    setExpandedIds(new Set());
   }, [avoidance.clearAll]);
 
   const value = useMemo<TrackContextValue>(() => ({
     focusedPlatformId,
     setFocusedPlatformId,
+    expandedIds,
+    toggleExpand,
+    expandAll,
+    collapseOne,
     weekAvoids: avoidance.items,
     totalAvoids: avoidance.totalAvoids,
     weekOf: avoidance.weekOf,
@@ -143,10 +191,11 @@ export function TrackProvider({ adapter, platforms, children }: TrackProviderPro
     isDefeated,
     clearAll,
   }), [
-    focusedPlatformId, avoidance.items, avoidance.totalAvoids,
+    focusedPlatformId, expandedIds, avoidance.items, avoidance.totalAvoids,
     avoidance.weekOf, todayActions, avoid, avoidForDate,
     avoidance.loading, avoidance.error, platforms,
     personWeeklyAvoids, isDefeated, clearAll,
+    setFocusedPlatformId, toggleExpand, expandAll, collapseOne,
   ]);
 
   return <TrackCtx.Provider value={value}>{children}</TrackCtx.Provider>;

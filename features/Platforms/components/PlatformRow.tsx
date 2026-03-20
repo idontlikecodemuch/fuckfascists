@@ -25,8 +25,6 @@ interface PlatformRowProps {
   platformId: string;
   /** True when this is a child row under a group header. */
   isChild: boolean;
-  expanded: boolean;
-  onToggleExpand: (platformId: string) => void;
 }
 
 /**
@@ -38,10 +36,15 @@ interface PlatformRowProps {
  * Two tap zones side by side:
  *   1. RowBody (Pressable, flex:1): focus/expand/collapse logic
  *   2. AvoidButton: avoid or expand logic
+ *
+ * Reads expandedIds + toggleExpand directly from TrackContext to bypass
+ * FlatList cell memoization — context changes re-render the component
+ * immediately without depending on FlatList's renderItem cycle.
  */
-export function PlatformRow({ platformId, isChild, expanded, onToggleExpand }: PlatformRowProps) {
+export function PlatformRow({ platformId, isChild }: PlatformRowProps) {
   const {
     focusedPlatformId, setFocusedPlatformId,
+    expandedIds, toggleExpand,
     avoid, avoidForDate, weekAvoids, weekOf, isDefeated,
   } = useTrack();
 
@@ -55,16 +58,17 @@ export function PlatformRow({ platformId, isChild, expanded, onToggleExpand }: P
   const todayCount = platformItem.dayCounts.get(getLocalDateString()) ?? 0;
   const avoidedToday = todayCount > 0;
   const focused = focusedPlatformId === platformId;
+  const expanded = expandedIds.has(platformId);
   const dimmed = focusedPlatformId !== null && !focused;
 
   // Row body tap: focus → expand → collapse
   const handleRowPress = useCallback(() => {
     if (focused) {
-      onToggleExpand(platformId);
+      toggleExpand(platformId);
     } else {
       setFocusedPlatformId(platformId);
     }
-  }, [focused, platformId, setFocusedPlatformId, onToggleExpand]);
+  }, [focused, platformId, setFocusedPlatformId, toggleExpand]);
 
   // Avoid button tap
   const handleAvoidPress = useCallback(async () => {
@@ -75,12 +79,12 @@ export function PlatformRow({ platformId, isChild, expanded, onToggleExpand }: P
       // Already avoided today: toggle expand + focus
       if (!focused) {
         setFocusedPlatformId(platformId);
-        if (!expanded) onToggleExpand(platformId);
+        if (!expanded) toggleExpand(platformId);
       } else {
-        onToggleExpand(platformId);
+        toggleExpand(platformId);
       }
     }
-  }, [avoidedToday, avoid, platformId, focused, expanded, setFocusedPlatformId, onToggleExpand]);
+  }, [avoidedToday, avoid, platformId, focused, expanded, setFocusedPlatformId, toggleExpand]);
 
   return (
     <View style={{ opacity: dimmed ? TRACK_ROW_DIMMED_OPACITY : 1 }}>
