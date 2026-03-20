@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import type { StorageAdapter } from '../../../core/data';
 import {
   recordPlatformAvoid,
@@ -25,7 +25,8 @@ export interface PlatformAvoidanceState {
  * Loads the current week's per-platform avoid events (with day-level detail)
  * and provides `avoid` and `avoidForDate` actions.
  *
- * Max one avoid per platform per calendar day. 7 days = max 7 per week.
+ * Each tap increments the day's count — the user can avoid the same platform
+ * multiple times per day (e.g. resisting the urge to open Instagram repeatedly).
  */
 export function usePlatformAvoidance(
   adapter: StorageAdapter,
@@ -33,8 +34,6 @@ export function usePlatformAvoidance(
 ): PlatformAvoidanceState {
   const weekOf = getLocalWeekStart();
   const [events, setEvents] = useState<PlatformAvoidEvent[]>([]);
-  const eventsRef = useRef(events);
-  eventsRef.current = events;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -58,10 +57,8 @@ export function usePlatformAvoidance(
   const avoid = useCallback(
     async (platformId: string) => {
       try {
-        const today = getLocalDateString();
-        // Max one avoid per platform per calendar day
-        if (eventsRef.current.some((e) => e.platformId === platformId && e.date === today)) return;
         await recordPlatformAvoid(adapter, platformId);
+        const today = getLocalDateString();
         setEvents((prev) => [...prev, { platformId, date: today, count: 1 }]);
       } catch (err) {
         setError((err as Error).message);
@@ -73,8 +70,6 @@ export function usePlatformAvoidance(
   const avoidForDate = useCallback(
     async (platformId: string, date: string) => {
       try {
-        // Max one avoid per platform per calendar day
-        if (eventsRef.current.some((e) => e.platformId === platformId && e.date === date)) return;
         await recordPlatformAvoidForDate(adapter, platformId, date);
         setEvents((prev) => [...prev, { platformId, date, count: 1 }]);
       } catch (err) {

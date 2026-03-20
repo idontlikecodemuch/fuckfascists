@@ -99,11 +99,7 @@ export const TRACK_DAY_CIRCLE_SIZE = 28;
 export const TRACK_DAY_CIRCLES_GAP = 4;
 export const TRACK_EXPAND_INDICATOR_SIZE = 14;
 // Grid cell size for arena character select (square, px).
-// Sprites are 728×720. headOnly shows top 38%. At size 80, face renders at ~30px which is recognizable.
-export const TRACK_ARENA_GRID_CELL_SIZE = 80;
-// Single character in the focused arena view — fraction of ARENA_HEIGHT.
-// 0.9 = fills most of the arena height. Rendered left-aligned, not centered.
-export const TRACK_ARENA_SINGLE_SPRITE_RATIO = 0.9;
+export const TRACK_ARENA_GRID_CELL_SIZE = 52;
 
 // Controls whether the public figure / CEO name is shown in the UI.
 // true = show, false = hide. Compile-time constant — change and rebuild to toggle.
