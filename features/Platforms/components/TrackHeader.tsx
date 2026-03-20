@@ -10,8 +10,11 @@ interface TrackHeaderProps {
 }
 
 /**
- * Track screen header: title, week label, total avoids, EDIT button.
- * Auto-height — no fixed sizing.
+ * Track screen header. No screen title (tab already says TRACK).
+ *
+ * Layout:
+ *   Top row: "Week of Mar 16" left, "Edit platforms" right (underlined)
+ *   Main area: weekly avoid count (big, amber) or pump-up text when zero
  */
 export function TrackHeader({ onEdit }: TrackHeaderProps) {
   const { weekOf, totalAvoids } = useTrack();
@@ -19,26 +22,31 @@ export function TrackHeader({ onEdit }: TrackHeaderProps) {
   return (
     <View style={styles.container}>
       <View style={styles.topRow}>
-        <Text style={styles.title} accessibilityRole="header" allowFontScaling>
-          {platformsCopy.title}
+        <Text style={styles.weekLabel} allowFontScaling>
+          {platformsCopy.weekLabel(formatWeekOf(weekOf))}
         </Text>
         <Pressable
           onPress={onEdit}
           style={styles.editBtn}
-          accessibilityRole="button"
-          accessibilityLabel={platformsCopy.editLabel}
+          accessibilityRole="link"
+          accessibilityLabel={platformsCopy.editPlatformsA11y}
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         >
-          <Text style={styles.editText} allowFontScaling>{platformsCopy.editBtn}</Text>
+          <Text style={styles.editText} allowFontScaling>
+            {platformsCopy.editPlatforms}
+          </Text>
         </Pressable>
       </View>
-      <View style={styles.bottomRow}>
-        <Text style={styles.weekLabel} allowFontScaling>
-          {platformsCopy.weekLabel(formatWeekOf(weekOf))}
-        </Text>
-        <Text style={styles.score} allowFontScaling>
-          {platformsCopy.score(totalAvoids)}
-        </Text>
+      <View style={styles.countArea}>
+        {totalAvoids > 0 ? (
+          <Text style={styles.countText} allowFontScaling>
+            {platformsCopy.avoidCountLabel(totalAvoids)}
+          </Text>
+        ) : (
+          <Text style={styles.pumpText} allowFontScaling>
+            {platformsCopy.pumpUp}
+          </Text>
+        )}
       </View>
     </View>
   );
@@ -58,34 +66,29 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  title: {
-    ...theme.type.displayL,
-    color: theme.colors.textPrimary,
-    letterSpacing: 3,
-  },
-  editBtn: {
-    minWidth: theme.a11y.minTapTarget,
-    minHeight: theme.a11y.minTapTarget,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  editText: {
-    ...theme.type.uiLabel,
-    color: theme.colors.rewardYellow,
-    letterSpacing: 1,
-  },
-  bottomRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: theme.space.xs,
-  },
   weekLabel: {
     ...theme.type.caption,
     color: theme.colors.textSecondary,
   },
-  score: {
-    ...theme.type.caption,
+  editBtn: {
+    minHeight: theme.a11y.minTapTarget,
+    justifyContent: 'center',
+  },
+  editText: {
+    ...theme.type.bodyS,
+    color: theme.colors.rewardYellow,
+    textDecorationLine: 'underline',
+  },
+  countArea: {
+    marginTop: theme.space.xs,
+    paddingBottom: theme.space.xs,
+  },
+  countText: {
+    ...theme.type.displayM,
+    color: theme.colors.rewardYellow,
+  },
+  pumpText: {
+    ...theme.type.displayM,
     color: theme.colors.rewardYellow,
   },
 });

@@ -1,30 +1,31 @@
-import React, { useState, useCallback, useMemo } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet, SafeAreaView } from 'react-native';
+import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react';
+import { Text, FlatList, ActivityIndicator, StyleSheet, SafeAreaView } from 'react-native';
 import type { StorageAdapter } from '../../core/data';
 import { TRACKED_PLATFORMS } from './data/platformList';
 import { usePlatformRoster } from './hooks/usePlatformRoster';
 import { useNudgeNotification } from './hooks/useNudgeNotification';
-import { TrackProvider } from './context/TrackContext';
+import { TrackProvider, useTrack } from './context/TrackContext';
 import { TrackHeader } from './components/TrackHeader';
 import { GameArena } from './components/GameArena';
-import { TrackList } from './components/TrackList';
+import { PlatformGroupHeader } from './components/PlatformGroupHeader';
+import { PlatformRow } from './components/PlatformRow';
 import { PlatformSetupScreen } from './components/PlatformSetupScreen';
+import { buildListData } from './utils/listData';
+import type { TrackListItem } from './utils/listData';
 import { platformsCopy } from '../../copy/platforms';
 import { theme } from '../../design/tokens';
+import { getLocalDateString } from '../../core/utils/localDate';
+import {
+  DAY_CIRCLES_AUTO_COLLAPSE_DELAY_MS,
+  DAY_CIRCLES_COLLAPSE_STAGGER_MS,
+} from '../../config/constants';
+
+// ── Root screen ──────────────────────────────────────────────────────────────
 
 interface TrackScreenProps {
   adapter: StorageAdapter;
 }
 
-/**
- * Root Track screen. Plain flex column layout:
- *   TrackHeader (auto height)
- *   GameArena (configurable height)
- *   TrackList (flex: 1, FlatList, only scrollable element)
- *
- * Wraps everything in TrackProvider for shared state.
- * Shows PlatformSetupScreen when no roster is saved.
- */
 export function TrackScreen({ adapter }: TrackScreenProps) {
   useNudgeNotification();
   const { selectedIds, saveSelection } = usePlatformRoster();
@@ -44,7 +45,6 @@ export function TrackScreen({ adapter }: TrackScreenProps) {
     setEditing(true);
   }, []);
 
-  // Loading state
   if (selectedIds === null) {
     return (
       <SafeAreaView style={styles.center}>
@@ -56,7 +56,6 @@ export function TrackScreen({ adapter }: TrackScreenProps) {
     );
   }
 
-  // Setup / edit screen
   if (selectedIds === undefined || editing) {
     return (
       <PlatformSetupScreen
@@ -72,9 +71,102 @@ export function TrackScreen({ adapter }: TrackScreenProps) {
       <SafeAreaView style={styles.root}>
         <TrackHeader onEdit={handleEdit} />
         <GameArena />
-        <TrackList />
+        <TrackListInner />
       </SafeAreaView>
     </TrackProvider>
+  );
+}
+
+// ── Inner list (needs TrackProvider context) ─────────────────────────────────
+
+function TrackListInner() {
+  const { platforms, focusedPlatformId, weekAvoids } = useTrack();
+  const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
+  const dailyOpenDone = useRef(false);
+  const dailyOpenDateRef = useRef<string | null>(null);
+
+  const listData = useMemo(() => buildListData(platforms), [platforms]);
+
+  const allPlatformIds = useMemo(() => {
+    return listData
+      .filter((item): item is Extract<TrackListItem, { type: 'childRow' | 'platformRow' }> =>
+        item.type === 'childRow' || item.type === 'platformRow')
+      .map((item) => item.platformId);
+  }, [listData]);
+
+  // Daily open animation: expand all on first visit of the day, then stagger-collapse
+  useEffect(() => {
+    const today = getLocalDateString();
+    if (dailyOpenDone.current && dailyOpenDateRef.current === today) return;
+    if (allPlatformIds.length === 0) return;
+
+    dailyOpenDone.current = true;
+    dailyOpenDateRef.current = today;
+
+    setExpandedIds(new Set(allPlatformIds));
+
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    for (let i = 0; i < allPlatformIds.length; i++) {
+      const timer = setTimeout(() => {
+        const id = allPlatformIds[i]!;
+        setExpandedIds((prev) => {
+          const next = new Set(prev);
+          next.delete(id);
+          return next;
+        });
+      }, DAY_CIRCLES_AUTO_COLLAPSE_DELAY_MS + (i * DAY_CIRCLES_COLLAPSE_STAGGER_MS));
+      timers.push(timer);
+    }
+
+    return () => { timers.forEach(clearTimeout); };
+  }, [allPlatformIds]);
+
+  const toggleExpand = useCallback((platformId: string) => {
+    setExpandedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(platformId)) {
+        next.delete(platformId);
+      } else {
+        next.add(platformId);
+      }
+      return next;
+    });
+  }, []);
+
+  const renderItem = useCallback(({ item }: { item: TrackListItem }) => {
+    if (item.type === 'groupHeader') {
+      return (
+        <PlatformGroupHeader
+          figureName={item.figureName}
+          shortName={item.shortName}
+          childPlatformIds={item.childPlatformIds}
+        />
+      );
+    }
+
+    return (
+      <PlatformRow
+        platformId={item.platformId}
+        isChild={item.type === 'childRow'}
+        expanded={expandedIds.has(item.platformId)}
+        onToggleExpand={toggleExpand}
+      />
+    );
+  }, [expandedIds, toggleExpand]);
+
+  const keyExtractor = useCallback((item: TrackListItem) => item.key, []);
+
+  return (
+    <FlatList<TrackListItem>
+      data={listData}
+      keyExtractor={keyExtractor}
+      renderItem={renderItem}
+      extraData={[focusedPlatformId, weekAvoids]}
+      style={styles.list}
+      contentContainerStyle={styles.listContent}
+      accessibilityRole="list"
+      accessibilityLabel={platformsCopy.checklist}
+    />
   );
 }
 
@@ -93,5 +185,11 @@ const styles = StyleSheet.create({
   loadingText: {
     ...theme.type.bodyS,
     color: theme.colors.textSecondary,
+  },
+  list: {
+    flex: 1,
+  },
+  listContent: {
+    paddingBottom: theme.space['3xl'],
   },
 });

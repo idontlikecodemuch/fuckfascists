@@ -94,7 +94,7 @@ API keys and credentials must **only ever be read from environment variables**. 
 │   └── storage/                     ← SqliteAdapter.ts (expo-sqlite SDK 52, mobile only)
 ├── features/
 │   ├── Map/                         ← geolocation scan, map display, flagging
-│   ├── Platforms/                    ← Track screen (platform avoidance). TrackScreen → TrackProvider context → TrackHeader + GameArena + TrackList. NudgeBanner in AppShell.
+│   ├── Platforms/                    ← Track screen (platform avoidance). TrackScreen → TrackProvider context → TrackHeader + GameArena + FlatList (PlatformGroupHeader + PlatformRow + AvoidButton + DayCircles). ArenaFX extracted. NudgeBanner in AppShell.
 │   ├── Scorecard/                   ← generation, drop timing, sharing
 │   ├── Onboarding/                  ← first-run flow (3 screens: Welcome, Permissions, Privacy)
 │   ├── Info/                        ← transparency, about, FAQ
@@ -459,7 +459,7 @@ The entire app is styled as a **vintage 8-bit video game**. This is the foundati
 | SQLite adapter (`app/storage/SqliteAdapter.ts`) | ✅ Done |
 | Map scan, flag, business card, avoid tap | ✅ Done |
 | Platforms, Scorecard, Onboarding, Info screens | ✅ Done |
-| Track screen rebuild (context-driven, flat layout) | ✅ Done — TrackProvider context, GameArena (grid/neutral/defeated), TrackList (flat FlatList: groupHeader+childRow+platformRow), animated DayCircles, NudgeBanner in AppShell |
+| Track screen rebuild (context-driven, flat layout) | ✅ Done — TrackProvider context (todayActions-based defeated), TrackHeader + GameArena + FlatList with PlatformGroupHeader/PlatformRow/AvoidButton/DayCircles. ArenaFX extracted. All files ≤250 lines. |
 | Browser extension (MV3, Chrome + Firefox) | ✅ Done |
 | FEC entity verification run (`verify:entities`) | ✅ Done |
 | Donation data bundled into `entities.json` | ✅ Done |

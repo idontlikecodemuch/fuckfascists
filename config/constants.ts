@@ -78,9 +78,28 @@ export const DAY_CIRCLES_ANIMATE_MS = 300;
 // Hit FX duration after an avoid tap.
 export const ARENA_HIT_FX_MS = 800;
 // Arena height: 16:9 aspect ratio from screen width, capped at this max.
-export const ARENA_MAX_HEIGHT = 220;
-// Sprite defeated threshold — weekly avoids per person needed for defeated state.
-export const SPRITE_DEFEATED_THRESHOLD = 3;
+export const ARENA_HEIGHT = 200;
+
+// ── Track screen layout tuning ───────────────────────────────────────────────
+// All visual sizing for the Track platform list. Adjust these to tune the
+// entire list appearance without opening component files.
+export const TRACK_ROW_PADDING_VERTICAL = 8;
+export const TRACK_ROW_PADDING_HORIZONTAL = 12;
+export const TRACK_CHILD_INDENT = 48;
+export const TRACK_ROW_SPRITE_SIZE = 32;
+export const TRACK_ROW_FONT_SIZE_NAME = 15;
+export const TRACK_ROW_FONT_SIZE_SUBTITLE = 11;
+export const TRACK_ROW_FONT_SIZE_COUNT = 14;
+export const TRACK_ROW_FOCUS_BORDER_COLOR = '#FFC93C';
+export const TRACK_ROW_FOCUS_BG_COLOR = 'rgba(255, 201, 60, 0.08)';
+export const TRACK_ROW_DIMMED_OPACITY = 0.45;
+export const TRACK_BUTTON_WIDTH = 64;
+export const TRACK_BUTTON_HEIGHT = 36;
+export const TRACK_DAY_CIRCLE_SIZE = 28;
+export const TRACK_DAY_CIRCLES_GAP = 4;
+export const TRACK_EXPAND_INDICATOR_SIZE = 14;
+// Grid cell size for arena character select (square, px).
+export const TRACK_ARENA_GRID_CELL_SIZE = 52;
 
 // Controls whether the public figure / CEO name is shown in the UI.
 // true = show, false = hide. Compile-time constant — change and rebuild to toggle.

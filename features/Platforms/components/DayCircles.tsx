@@ -4,9 +4,13 @@ import { platformsCopy } from '../../../copy/platforms';
 import { sharedCopy } from '../../../copy/shared';
 import { getWeekDates, isFutureDate } from '../utils/weekDates';
 import { theme } from '../../../design/tokens';
-import { DAY_CIRCLES_ANIMATE_MS } from '../../../config/constants';
+import {
+  DAY_CIRCLES_ANIMATE_MS,
+  TRACK_DAY_CIRCLE_SIZE,
+  TRACK_DAY_CIRCLES_GAP,
+} from '../../../config/constants';
 
-const ROW_HEIGHT = 56;
+const ROW_HEIGHT = TRACK_DAY_CIRCLE_SIZE + 24; // circle + day label + padding
 
 interface DayCirclesProps {
   weekOf: string;
@@ -18,11 +22,11 @@ interface DayCirclesProps {
 
 /**
  * Animated day circles row (M T W T F S S).
- * Height animates between 0 and ROW_HEIGHT. Circles stay mounted inside —
- * no remount on expand/collapse, just container clip.
+ * Height animates between 0 and ROW_HEIGHT via overflow:hidden container.
+ * Circles stay mounted at full size — container clips them.
  *
- * - Checked: green with checkmark (disabled)
- * - Unchecked past/today: empty, tappable
+ * - Checked: green fill + checkmark, not tappable
+ * - Open (past/today): empty bordered, tappable
  * - Future: faded, not tappable
  */
 export function DayCircles({ weekOf, platformName, dayCounts, onAvoidDate, expanded }: DayCirclesProps) {
@@ -93,13 +97,15 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    paddingVertical: theme.space.sm,
+    paddingVertical: theme.space.xs,
     paddingHorizontal: theme.space.md,
     height: ROW_HEIGHT,
+    alignItems: 'center',
+    gap: TRACK_DAY_CIRCLES_GAP,
   },
   dayColumn: {
     alignItems: 'center',
-    gap: theme.space.xs,
+    gap: 2,
   },
   dayLabel: {
     ...theme.type.caption,
@@ -107,9 +113,9 @@ const styles = StyleSheet.create({
     color: theme.colors.textPrimary,
   },
   circle: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: TRACK_DAY_CIRCLE_SIZE,
+    height: TRACK_DAY_CIRCLE_SIZE,
+    borderRadius: TRACK_DAY_CIRCLE_SIZE / 2,
     borderWidth: theme.borders.standard.width,
     borderColor: theme.colors.frameBlue,
     alignItems: 'center',
@@ -127,7 +133,7 @@ const styles = StyleSheet.create({
   },
   checkmark: {
     fontFamily: theme.fonts.headline,
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: 'bold',
     color: theme.colors.textPrimary,
   },

@@ -12,34 +12,35 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
-### Session: March 19, 2026 (Track screen rebuild)
-**Focus:** Delete and rebuild the Track (Platforms) screen from scratch. Old implementation had accumulated ad hoc patches.
+### Session: March 20, 2026 (Track screen rebuild v2 — component extraction + todayActions)
+**Focus:** Second-pass rebuild of the Track screen. Extracted monolithic TrackRow/TrackList into focused single-responsibility components. Defeated state now driven by todayActions (any avoid = defeated) instead of weekly threshold.
 
 **Changes:**
-1. **Deleted old files:** `PlatformsScreen.tsx`, `GameArena.tsx`, `PlatformRow.tsx`, `PlatformGroup.tsx`
-2. **New architecture — context-driven, flat layout:**
-   - `context/TrackContext.tsx` — shared state provider: `focusedPlatformId`, `weekAvoids`, `todayActions` (set of figure names with today's avoids, resets on app open via local date comparison)
-   - `components/TrackHeader.tsx` — title, week label, total score, EDIT button
-   - `components/GameArena.tsx` — three states: character grid (null focus), single neutral (focused, not in todayActions), single defeated (focused, in todayActions). Arena-scoped FX (speech bubble + floating -1). Transition animation on focus change; skipped for sibling switches (same person, different platform).
-   - `components/TrackList.tsx` — FlatList with flat data array. Three item types: `groupHeader`, `childRow`, `platformRow`. Daily open animation (expand all → stagger-collapse top to bottom on first visit).
-   - `components/TrackRow.tsx` — renders all three item types. Group headers: sprite bust + short name + roll-up count. Child rows: indented, no sprite. Platform rows: sprite + name + figure name. Focus/dimming states. Avoid button: AVOID → ✓ on first tap; second tap on ✓ expands day circles.
-   - `components/DayCircles.tsx` — animated expand/collapse via `Animated.Value` height. 7 circles M–S. Checked = green ✓. Open past/today = tappable. Future = faded/disabled.
-   - `components/NudgeBanner.tsx` — app-wide dismissible banner in AppShell. Shows on Thursday with pump-up copy. Tapping opens Track tab.
-   - `TrackScreen.tsx` — root component: TrackProvider → SafeAreaView → TrackHeader + GameArena + TrackList. Shows PlatformSetupScreen when no roster saved.
-3. **AppShell updated:** imports TrackScreen (replaces PlatformsScreen), adds NudgeBanner above content area
-4. **Dev catalog:** PlatformsSections.tsx updated with placeholder components (old PlatformRow no longer exists as standalone)
-5. **Copy additions:** `avoidedBtn`, `arenaTapA11y`, `nudgeBanner`, `nudgeDismiss`, `nudgeDismissA11y`, `shortParentNames` map
-6. **Constants additions:** `ARENA_TRANSITION_MS`, `DAY_CIRCLES_AUTO_COLLAPSE_DELAY_MS`, `DAY_CIRCLES_COLLAPSE_STAGGER_MS`, `DAY_CIRCLES_ANIMATE_MS`, `ARENA_HIT_FX_MS`, `ARENA_MAX_HEIGHT`, `SPRITE_DEFEATED_THRESHOLD`
+1. **Deleted old files:** `TrackList.tsx`, `TrackRow.tsx` (both accumulated too many responsibilities in v1 rebuild)
+2. **New component architecture:**
+   - `components/AvoidButton.tsx` (75 lines) — ONE Pressable, TWO visual states. "AVOID" (green bg, white text) → "✓" (muted bg, green text). Driven by `avoidedToday` boolean prop.
+   - `components/PlatformGroupHeader.tsx` (93 lines) — sprite bust (always neutral) + short parent name + roll-up avoid count. Tap focuses first child platform.
+   - `components/PlatformRow.tsx` (220 lines) — handles both `childRow` and `platformRow` types via `isChild` prop. Two tap zones: row body (focus/expand/collapse cycle) and AvoidButton. DayCircles always mounted with animated height.
+   - `components/ArenaFX.tsx` (107 lines) — extracted from GameArena: SpeechBubbleFX, FloatingMinusOneFX, `arenaFXRegistry`.
+   - `utils/listData.ts` (62 lines) — extracted from TrackScreen: `TrackListItem` union type and `buildListData()` function.
+   - `components/GameArena.tsx` (209 lines) — rebuilt. Grid sprites ALWAYS neutral. Single character uses `todayActions.has()` for defeated state. `fireHitFX` static property for parent communication.
+   - `components/TrackHeader.tsx` (94 lines) — rebuilt. No screen title (tab says TRACK). Top row: week label + "Edit platforms" (underlined). Count area: avoid count when >0, "LET'S GO!!!!" pump-up when 0.
+   - `TrackScreen.tsx` (195 lines) — rebuilt. Contains `TrackScreen` (root) and `TrackListInner`. Daily open animation with per-day tracking via `dailyOpenDateRef`.
+3. **TrackContext rebuilt** (161 lines) — `isDefeated()` now returns `todayActions.has(figureName)` instead of `personWeeklyAvoids() >= SPRITE_DEFEATED_THRESHOLD`. `avoidForDate()` adds to todayActions for any date including past-day backfills.
+4. **DayCircles rebuilt** (140 lines) — uses `TRACK_DAY_CIRCLE_SIZE` and `TRACK_DAY_CIRCLES_GAP` constants.
+5. **Copy updates:** removed old keys (`title`, `score`, old `avoidedBtn`/`avoidedLabel`/`notAvoidedLabel`/`editBtn`/`editLabel`/`groupHeader`/`arenaTitle`). Added: `editPlatforms`, `editPlatformsA11y`, `avoidCountLabel`, `pumpUp`, new `avoidedBtn` (✓), `avoidBtnA11y`, `avoidedBtnA11y`, `countDash`, `expandIndicator`, `collapseIndicator`, `groupHeaderA11y`. Changed `countLabel` format from `×${n}` to `${n}×`.
+6. **Constants updates:** renamed `ARENA_MAX_HEIGHT` → `ARENA_HEIGHT = 200`. Removed `SPRITE_DEFEATED_THRESHOLD`. Added 16 `TRACK_*` layout tuning constants.
 
-**Screen layout:** Plain flex column. TrackHeader (auto height) → GameArena (16:9 from width, max 220pt) → FlatList (flex: 1, only scrollable element). No sticky headers, no nested scrolling.
+**Screen layout:** Plain flex column. TrackHeader (auto height) → GameArena (fixed 200pt) → FlatList (flex: 1, only scrollable element). No sticky headers, no nested scrolling.
 
-**Files created:** features/Platforms/TrackScreen.tsx, features/Platforms/context/TrackContext.tsx, features/Platforms/components/TrackHeader.tsx, features/Platforms/components/GameArena.tsx, features/Platforms/components/TrackList.tsx, features/Platforms/components/TrackRow.tsx, features/Platforms/components/NudgeBanner.tsx
-**Files modified:** app/gates/AppShell.tsx, copy/platforms.ts, config/constants.ts, features/Platforms/components/DayCircles.tsx, features/Dev/sections/PlatformsSections.tsx, docs/PROGRESS.md
-**Files deleted:** features/Platforms/PlatformsScreen.tsx, features/Platforms/components/GameArena.tsx (old), features/Platforms/components/PlatformRow.tsx, features/Platforms/components/PlatformGroup.tsx
+**Files created:** features/Platforms/components/AvoidButton.tsx, features/Platforms/components/PlatformGroupHeader.tsx, features/Platforms/components/PlatformRow.tsx, features/Platforms/components/ArenaFX.tsx, features/Platforms/utils/listData.ts
+**Files rebuilt:** features/Platforms/TrackScreen.tsx, features/Platforms/context/TrackContext.tsx, features/Platforms/components/TrackHeader.tsx, features/Platforms/components/GameArena.tsx, features/Platforms/components/DayCircles.tsx
+**Files modified:** copy/platforms.ts, config/constants.ts, docs/PROGRESS.md, CLAUDE.md
+**Files deleted:** features/Platforms/components/TrackList.tsx, features/Platforms/components/TrackRow.tsx
 
-**Kept unchanged:** hooks (usePlatformAvoidance, usePlatformRoster, useNudgeNotification), utils (weekDates, platformHelpers), types.ts, platformList.ts, all tests
+**Kept unchanged:** hooks (usePlatformAvoidance, usePlatformRoster, useNudgeNotification), utils (weekDates, platformHelpers), types.ts, platformList.ts, PlatformSetupScreen.tsx, NudgeBanner.tsx, all tests
 
-**Verification:** 12 Platforms tests pass (2 suites). 291 tests pass across 26 suites. 2 pre-existing failures in person model tests (in-flight PoliticalPerson type changes, not related to Track rebuild). TypeScript clean — zero errors.
+**Verification:** 295 tests pass (27 suites). 1 pre-existing failure in personList.test.ts (PoliticalPerson type mismatch, unrelated to Track rebuild). All files under 250-line limit.
 
 ### Session: March 19, 2026 (Shared FX system + App.tsx extraction + people.json docs)
 **Focus:** Three infrastructure tasks — no UI changes.

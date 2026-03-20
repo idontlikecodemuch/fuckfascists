@@ -4,8 +4,6 @@ import type { StorageAdapter } from '../../../core/data';
 import type { Platform, PlatformItem } from '../types';
 import { usePlatformAvoidance } from '../hooks/usePlatformAvoidance';
 import { getLocalDateString } from '../../../core/utils/localDate';
-import { nameToSpriteId } from '../../../core/sprites/spriteLoader';
-import { SPRITE_DEFEATED_THRESHOLD } from '../../../config/constants';
 
 // ── Public figure helpers ────────────────────────────────────────────────────
 
@@ -26,7 +24,7 @@ export interface TrackContextValue {
   totalAvoids: number;
   /** Monday of the current week (YYYY-MM-DD). */
   weekOf: string;
-  /** Set of publicFigureNames that received any avoid action today. */
+  /** Set of publicFigureNames that received any avoid action today. Resets daily. */
   todayActions: Set<string>;
   /** Record an avoid for a platform today. */
   avoid: (platformId: string) => Promise<void>;
@@ -40,7 +38,7 @@ export interface TrackContextValue {
   platforms: Platform[];
   /** Resolve weekly avoids for a specific person (summed across all their platforms). */
   personWeeklyAvoids: (figureName: string) => number;
-  /** Whether a person's sprite should show as defeated. */
+  /** Whether a person's sprite should show as defeated (any avoid today). */
   isDefeated: (figureName: string) => boolean;
 }
 
@@ -72,7 +70,7 @@ export function TrackProvider({ adapter, platforms, children }: TrackProviderPro
     return buildTodayActions(avoidance.items, platforms, sessionDateRef.current);
   });
 
-  // Rebuild todayActions when items change (new avoids come in).
+  // Rebuild todayActions when items change (new avoids come in) or day rolls over.
   useEffect(() => {
     const today = getLocalDateString();
     if (today !== sessionDateRef.current) {
@@ -97,18 +95,16 @@ export function TrackProvider({ adapter, platforms, children }: TrackProviderPro
 
   const avoidForDate = useCallback(async (platformId: string, date: string) => {
     await avoidance.avoidForDate(platformId, date);
-    // Only add to todayActions if the date is today
-    if (date === sessionDateRef.current) {
-      const platform = platforms.find((p) => p.id === platformId);
-      if (platform) {
-        const figure = getDisplayFigure(platform);
-        setTodayActions((prev) => {
-          if (prev.has(figure)) return prev;
-          const next = new Set(prev);
-          next.add(figure);
-          return next;
-        });
-      }
+    // Any avoid action (including past-day backfills) marks the person as acted-upon today
+    const platform = platforms.find((p) => p.id === platformId);
+    if (platform) {
+      const figure = getDisplayFigure(platform);
+      setTodayActions((prev) => {
+        if (prev.has(figure)) return prev;
+        const next = new Set(prev);
+        next.add(figure);
+        return next;
+      });
     }
   }, [avoidance.avoidForDate, platforms]);
 
@@ -118,9 +114,10 @@ export function TrackProvider({ adapter, platforms, children }: TrackProviderPro
       .reduce((sum, item) => sum + item.weeklyCount, 0);
   }, [avoidance.items]);
 
+  // Defeated = any avoid action taken against this person during the current calendar day
   const isDefeated = useCallback((figureName: string): boolean => {
-    return personWeeklyAvoids(figureName) >= SPRITE_DEFEATED_THRESHOLD;
-  }, [personWeeklyAvoids]);
+    return todayActions.has(figureName);
+  }, [todayActions]);
 
   const value = useMemo<TrackContextValue>(() => ({
     focusedPlatformId,
