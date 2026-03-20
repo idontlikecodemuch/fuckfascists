@@ -131,7 +131,7 @@ export function GameArena() {
                 <SpriteView
                   spriteId={fig.spriteId}
                   state="neutral"
-                  size={TRACK_ARENA_GRID_CELL_SIZE - 4}
+                  size={Math.round(TRACK_ARENA_GRID_CELL_SIZE / 0.38)}
                   headOnly
                   opacity={personWeeklyAvoids(fig.name) > 0 ? 1 : 0.5}
                 />

@@ -102,4 +102,12 @@ export class ChromeStorageAdapter implements StorageAdapter {
     const all = await this.getPlatformAvoids();
     return all.filter((e) => e.date >= weekStart && e.date < weekEnd);
   }
+
+  async clearAllPlatformAvoids(): Promise<void> {
+    const data = await chrome.storage.local.get(null);
+    const keysToRemove = Object.keys(data).filter((k) => k.startsWith(PLATFORM_PREFIX));
+    if (keysToRemove.length > 0) {
+      await chrome.storage.local.remove(keysToRemove);
+    }
+  }
 }

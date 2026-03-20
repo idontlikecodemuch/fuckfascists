@@ -99,7 +99,7 @@ export const TRACK_DAY_CIRCLE_SIZE = 28;
 export const TRACK_DAY_CIRCLES_GAP = 4;
 export const TRACK_EXPAND_INDICATOR_SIZE = 14;
 // Grid cell size for arena character select (square, px).
-export const TRACK_ARENA_GRID_CELL_SIZE = 52;
+export const TRACK_ARENA_GRID_CELL_SIZE = 72;
 
 // Controls whether the public figure / CEO name is shown in the UI.
 // true = show, false = hide. Compile-time constant — change and rebuild to toggle.

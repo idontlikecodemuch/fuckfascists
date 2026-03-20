@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import React, { useCallback } from 'react';
+import { View, Text, Pressable, Alert, StyleSheet } from 'react-native';
 import { platformsCopy } from '../../../copy/platforms';
 import { theme } from '../../../design/tokens';
 import { useTrack } from '../context/TrackContext';
@@ -13,11 +13,16 @@ interface TrackHeaderProps {
  * Track screen header. No screen title (tab already says TRACK).
  *
  * Layout:
- *   Top row: "Week of Mar 16" left, "Edit platforms" right (underlined)
+ *   Top row: "Week of Mar 16" left, "Edit platforms" + "Clear data" right
  *   Main area: weekly avoid count (big, amber) or pump-up text when zero
  */
 export function TrackHeader({ onEdit }: TrackHeaderProps) {
-  const { weekOf, totalAvoids } = useTrack();
+  const { weekOf, totalAvoids, clearAll } = useTrack();
+
+  const handleClear = useCallback(async () => {
+    await clearAll();
+    Alert.alert(platformsCopy.clearDataConfirm);
+  }, [clearAll]);
 
   return (
     <View style={styles.container}>
@@ -25,17 +30,30 @@ export function TrackHeader({ onEdit }: TrackHeaderProps) {
         <Text style={styles.weekLabel} allowFontScaling>
           {platformsCopy.weekLabel(formatWeekOf(weekOf))}
         </Text>
-        <Pressable
-          onPress={onEdit}
-          style={styles.editBtn}
-          accessibilityRole="link"
-          accessibilityLabel={platformsCopy.editPlatformsA11y}
-          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-        >
-          <Text style={styles.editText} allowFontScaling>
-            {platformsCopy.editPlatforms}
-          </Text>
-        </Pressable>
+        <View style={styles.topRowActions}>
+          <Pressable
+            onPress={handleClear}
+            style={styles.editBtn}
+            accessibilityRole="button"
+            accessibilityLabel={platformsCopy.clearDataA11y}
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          >
+            <Text style={styles.clearText} allowFontScaling>
+              {platformsCopy.clearData}
+            </Text>
+          </Pressable>
+          <Pressable
+            onPress={onEdit}
+            style={styles.editBtn}
+            accessibilityRole="link"
+            accessibilityLabel={platformsCopy.editPlatformsA11y}
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          >
+            <Text style={styles.editText} allowFontScaling>
+              {platformsCopy.editPlatforms}
+            </Text>
+          </Pressable>
+        </View>
       </View>
       <View style={styles.countArea}>
         {totalAvoids > 0 ? (
@@ -66,6 +84,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  topRowActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: theme.space.md,
+  },
   weekLabel: {
     ...theme.type.caption,
     color: theme.colors.textSecondary,
@@ -77,6 +100,11 @@ const styles = StyleSheet.create({
   editText: {
     ...theme.type.bodyS,
     color: theme.colors.rewardYellow,
+    textDecorationLine: 'underline',
+  },
+  clearText: {
+    ...theme.type.bodyS,
+    color: theme.colors.dangerRed,
     textDecorationLine: 'underline',
   },
   countArea: {

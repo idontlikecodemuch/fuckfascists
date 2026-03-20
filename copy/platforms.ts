@@ -50,6 +50,11 @@ export const platformsCopy = {
     'X Corp': 'X CORP',
   } as Record<string, string>,
 
+  // Dev tools (temporary)
+  clearData: "Clear data",
+  clearDataA11y: "Clear all platform avoid data",
+  clearDataConfirm: "All avoid data cleared.",
+
   // Nudge banner (app-wide, Thursday)
   nudgeTitle: "Your card drops tomorrow.",
   nudgeBody: "Any more fascists you f*cked this week?",

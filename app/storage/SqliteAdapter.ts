@@ -167,4 +167,8 @@ export class SqliteAdapter implements StorageAdapter {
 
     return rows.map((r) => ({ platformId: r.platform_id, date: r.date, count: r.count }));
   }
+
+  async clearAllPlatformAvoids(): Promise<void> {
+    await this.db.runAsync(`DELETE FROM ${TABLE_PLATFORM_AVOIDS}`);
+  }
 }

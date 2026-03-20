@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { Text, FlatList, ActivityIndicator, StyleSheet, SafeAreaView } from 'react-native';
 import type { StorageAdapter } from '../../core/data';
 import { TRACKED_PLATFORMS } from './data/platformList';
@@ -77,13 +77,14 @@ export function TrackScreen({ adapter }: TrackScreenProps) {
   );
 }
 
+// ── Daily open animation guard (module-level, survives unmount/remount) ──────
+let _dailyOpenDate: string | null = null;
+
 // ── Inner list (needs TrackProvider context) ─────────────────────────────────
 
 function TrackListInner() {
   const { platforms, focusedPlatformId, weekAvoids } = useTrack();
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
-  const dailyOpenDone = useRef(false);
-  const dailyOpenDateRef = useRef<string | null>(null);
 
   const listData = useMemo(() => buildListData(platforms), [platforms]);
 
@@ -94,14 +95,14 @@ function TrackListInner() {
       .map((item) => item.platformId);
   }, [listData]);
 
-  // Daily open animation: expand all on first visit of the day, then stagger-collapse
+  // Daily open animation: expand all on first visit of the day, then stagger-collapse.
+  // Guard is module-level so unmount/remount (background, screenshot) does NOT re-trigger.
   useEffect(() => {
     const today = getLocalDateString();
-    if (dailyOpenDone.current && dailyOpenDateRef.current === today) return;
+    if (_dailyOpenDate === today) return;
     if (allPlatformIds.length === 0) return;
 
-    dailyOpenDone.current = true;
-    dailyOpenDateRef.current = today;
+    _dailyOpenDate = today;
 
     setExpandedIds(new Set(allPlatformIds));
 
@@ -161,7 +162,7 @@ function TrackListInner() {
       data={listData}
       keyExtractor={keyExtractor}
       renderItem={renderItem}
-      extraData={[focusedPlatformId, weekAvoids]}
+      extraData={[focusedPlatformId, weekAvoids, expandedIds]}
       style={styles.list}
       contentContainerStyle={styles.listContent}
       accessibilityRole="list"

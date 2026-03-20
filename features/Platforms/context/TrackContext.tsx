@@ -40,6 +40,8 @@ export interface TrackContextValue {
   personWeeklyAvoids: (figureName: string) => number;
   /** Whether a person's sprite should show as defeated (any avoid today). */
   isDefeated: (figureName: string) => boolean;
+  /** Clears all platform avoid data. Dev/testing only. */
+  clearAll: () => Promise<void>;
 }
 
 const TrackCtx = createContext<TrackContextValue | null>(null);
@@ -119,6 +121,12 @@ export function TrackProvider({ adapter, platforms, children }: TrackProviderPro
     return todayActions.has(figureName);
   }, [todayActions]);
 
+  const clearAll = useCallback(async () => {
+    await avoidance.clearAll();
+    setTodayActions(new Set());
+    setFocusedPlatformId(null);
+  }, [avoidance.clearAll]);
+
   const value = useMemo<TrackContextValue>(() => ({
     focusedPlatformId,
     setFocusedPlatformId,
@@ -133,11 +141,12 @@ export function TrackProvider({ adapter, platforms, children }: TrackProviderPro
     platforms,
     personWeeklyAvoids,
     isDefeated,
+    clearAll,
   }), [
     focusedPlatformId, avoidance.items, avoidance.totalAvoids,
     avoidance.weekOf, todayActions, avoid, avoidForDate,
     avoidance.loading, avoidance.error, platforms,
-    personWeeklyAvoids, isDefeated,
+    personWeeklyAvoids, isDefeated, clearAll,
   ]);
 
   return <TrackCtx.Provider value={value}>{children}</TrackCtx.Provider>;

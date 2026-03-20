@@ -45,4 +45,7 @@ export interface StorageAdapter {
    * weekStart is Monday YYYY-MM-DD; weekEnd is the following Monday.
    */
   getPlatformAvoidsForWeek(weekStart: string, weekEnd: string): Promise<PlatformAvoidEvent[]>;
+
+  /** Deletes all platform avoid events. Dev/testing only. */
+  clearAllPlatformAvoids(): Promise<void>;
 }

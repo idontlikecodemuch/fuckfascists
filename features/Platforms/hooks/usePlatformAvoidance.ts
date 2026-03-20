@@ -19,6 +19,8 @@ export interface PlatformAvoidanceState {
   avoid: (platformId: string) => Promise<void>;
   /** Records an avoidance for the given platform on a specific date. */
   avoidForDate: (platformId: string, date: string) => Promise<void>;
+  /** Clears all platform avoid events. Dev/testing only. */
+  clearAll: () => Promise<void>;
 }
 
 /**
@@ -79,6 +81,18 @@ export function usePlatformAvoidance(
     [adapter]
   );
 
+  const clearAll = useCallback(
+    async () => {
+      try {
+        await adapter.clearAllPlatformAvoids();
+        setEvents([]);
+      } catch (err) {
+        setError((err as Error).message);
+      }
+    },
+    [adapter]
+  );
+
   const items: PlatformItem[] = platforms.map((platform) => {
     const platformEvents = events.filter((e) => e.platformId === platform.id);
     const dayCounts = new Map<string, number>();
@@ -91,5 +105,5 @@ export function usePlatformAvoidance(
 
   const totalAvoids = items.reduce((sum, i) => sum + i.weeklyCount, 0);
 
-  return { weekOf, items, totalAvoids, loading, error, avoid, avoidForDate };
+  return { weekOf, items, totalAvoids, loading, error, avoid, avoidForDate, clearAll };
 }
