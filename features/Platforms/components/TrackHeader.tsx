@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react';
-import { View, Text, Pressable, Alert, StyleSheet } from 'react-native';
+import React from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { platformsCopy } from '../../../copy/platforms';
 import { theme } from '../../../design/tokens';
 import { useTrack } from '../context/TrackContext';
@@ -9,20 +9,8 @@ interface TrackHeaderProps {
   onEdit: () => void;
 }
 
-/**
- * Track screen header. No screen title (tab already says TRACK).
- *
- * Layout:
- *   Top row: "Week of Mar 16" left, "Edit platforms" + "Clear data" right
- *   Main area: weekly avoid count (big, amber) or pump-up text when zero
- */
 export function TrackHeader({ onEdit }: TrackHeaderProps) {
-  const { weekOf, totalAvoids, clearAll } = useTrack();
-
-  const handleClear = useCallback(async () => {
-    await clearAll();
-    Alert.alert(platformsCopy.clearDataConfirm);
-  }, [clearAll]);
+  const { totalAvoids, weekOf } = useTrack();
 
   return (
     <View style={styles.container}>
@@ -30,41 +18,25 @@ export function TrackHeader({ onEdit }: TrackHeaderProps) {
         <Text style={styles.weekLabel} allowFontScaling>
           {platformsCopy.weekLabel(formatWeekOf(weekOf))}
         </Text>
-        <View style={styles.topRowActions}>
-          <Pressable
-            onPress={handleClear}
-            style={styles.editBtn}
-            accessibilityRole="button"
-            accessibilityLabel={platformsCopy.clearDataA11y}
-            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-          >
-            <Text style={styles.clearText} allowFontScaling>
-              {platformsCopy.clearData}
-            </Text>
-          </Pressable>
-          <Pressable
-            onPress={onEdit}
-            style={styles.editBtn}
-            accessibilityRole="link"
-            accessibilityLabel={platformsCopy.editPlatformsA11y}
-            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-          >
-            <Text style={styles.editText} allowFontScaling>
-              {platformsCopy.editPlatforms}
-            </Text>
-          </Pressable>
-        </View>
+        <Pressable
+          onPress={onEdit}
+          style={styles.editLink}
+          accessibilityRole="link"
+          accessibilityLabel={platformsCopy.editPlatformsA11y}
+          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+        >
+          <Text style={styles.editText} allowFontScaling>
+            {platformsCopy.editPlatforms}
+          </Text>
+        </Pressable>
       </View>
+
       <View style={styles.countArea}>
-        {totalAvoids > 0 ? (
-          <Text style={styles.countText} allowFontScaling>
-            {platformsCopy.avoidCountLabel(totalAvoids)}
-          </Text>
-        ) : (
-          <Text style={styles.pumpText} allowFontScaling>
-            {platformsCopy.pumpUp}
-          </Text>
-        )}
+        <Text style={styles.countText} allowFontScaling>
+          {totalAvoids > 0
+            ? platformsCopy.avoidCountLabel(totalAvoids)
+            : platformsCopy.pumpUp}
+        </Text>
       </View>
     </View>
   );
@@ -72,28 +44,22 @@ export function TrackHeader({ onEdit }: TrackHeaderProps) {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: theme.colors.bgVoid,
     paddingHorizontal: theme.space.lg,
     paddingTop: theme.space.md,
     paddingBottom: theme.space.sm,
-    borderBottomWidth: theme.borders.standard.width,
-    borderBottomColor: theme.colors.frameBlue,
-    backgroundColor: theme.colors.bgVoid,
   },
   topRow: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  topRowActions: {
-    flexDirection: 'row',
-    alignItems: 'center',
     gap: theme.space.md,
   },
   weekLabel: {
     ...theme.type.caption,
     color: theme.colors.textSecondary,
   },
-  editBtn: {
+  editLink: {
     minHeight: theme.a11y.minTapTarget,
     justifyContent: 'center',
   },
@@ -102,20 +68,10 @@ const styles = StyleSheet.create({
     color: theme.colors.rewardYellow,
     textDecorationLine: 'underline',
   },
-  clearText: {
-    ...theme.type.bodyS,
-    color: theme.colors.dangerRed,
-    textDecorationLine: 'underline',
-  },
   countArea: {
     marginTop: theme.space.xs,
-    paddingBottom: theme.space.xs,
   },
   countText: {
-    ...theme.type.displayM,
-    color: theme.colors.rewardYellow,
-  },
-  pumpText: {
     ...theme.type.displayM,
     color: theme.colors.rewardYellow,
   },

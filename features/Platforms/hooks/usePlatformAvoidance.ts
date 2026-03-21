@@ -16,9 +16,9 @@ export interface PlatformAvoidanceState {
   loading: boolean;
   error: string | null;
   /** Records an avoidance for the given platform today and increments the weekly tally. */
-  avoid: (platformId: string) => Promise<void>;
+  avoid: (platformId: string) => Promise<boolean>;
   /** Records an avoidance for the given platform on a specific date. */
-  avoidForDate: (platformId: string, date: string) => Promise<void>;
+  avoidForDate: (platformId: string, date: string) => Promise<boolean>;
   /** Clears all platform avoid events. Dev/testing only. */
   clearAll: () => Promise<void>;
 }
@@ -27,8 +27,8 @@ export interface PlatformAvoidanceState {
  * Loads the current week's per-platform avoid events (with day-level detail)
  * and provides `avoid` and `avoidForDate` actions.
  *
- * Each tap increments the day's count — the user can avoid the same platform
- * multiple times per day (e.g. resisting the urge to open Instagram repeatedly).
+ * Platform avoids are binary per calendar day: one avoid per platform, per day.
+ * Legacy overcounted events are normalized to a single daily mark in the Track UI.
  */
 export function usePlatformAvoidance(
   adapter: StorageAdapter,
@@ -45,7 +45,7 @@ export function usePlatformAvoidance(
       try {
         const result = await getPlatformAvoidsForWeek(adapter, weekOf);
         if (cancelled) return;
-        setEvents(result);
+        setEvents(normalizePlatformEvents(result));
         setLoading(false);
       } catch (err) {
         if (cancelled) return;
@@ -59,11 +59,17 @@ export function usePlatformAvoidance(
   const avoid = useCallback(
     async (platformId: string) => {
       try {
-        await recordPlatformAvoid(adapter, platformId);
         const today = getLocalDateString();
-        setEvents((prev) => [...prev, { platformId, date: today, count: 1 }]);
+        const recorded = await recordPlatformAvoid(adapter, platformId);
+        if (!recorded) return false;
+        setEvents((prev) => {
+          if (hasPlatformAvoidForDate(prev, platformId, today)) return prev;
+          return [...prev, { platformId, date: today, count: 1 }];
+        });
+        return true;
       } catch (err) {
         setError((err as Error).message);
+        return false;
       }
     },
     [adapter]
@@ -72,10 +78,16 @@ export function usePlatformAvoidance(
   const avoidForDate = useCallback(
     async (platformId: string, date: string) => {
       try {
-        await recordPlatformAvoidForDate(adapter, platformId, date);
-        setEvents((prev) => [...prev, { platformId, date, count: 1 }]);
+        const recorded = await recordPlatformAvoidForDate(adapter, platformId, date);
+        if (!recorded) return false;
+        setEvents((prev) => {
+          if (hasPlatformAvoidForDate(prev, platformId, date)) return prev;
+          return [...prev, { platformId, date, count: 1 }];
+        });
+        return true;
       } catch (err) {
         setError((err as Error).message);
+        return false;
       }
     },
     [adapter]
@@ -106,4 +118,25 @@ export function usePlatformAvoidance(
   const totalAvoids = items.reduce((sum, i) => sum + i.weeklyCount, 0);
 
   return { weekOf, items, totalAvoids, loading, error, avoid, avoidForDate, clearAll };
+}
+
+function normalizePlatformEvents(events: PlatformAvoidEvent[]): PlatformAvoidEvent[] {
+  const deduped = new Map<string, PlatformAvoidEvent>();
+
+  for (const event of events) {
+    if (event.count <= 0) continue;
+    const key = `${event.platformId}:${event.date}`;
+    if (deduped.has(key)) continue;
+    deduped.set(key, { ...event, count: 1 });
+  }
+
+  return Array.from(deduped.values());
+}
+
+function hasPlatformAvoidForDate(
+  events: PlatformAvoidEvent[],
+  platformId: string,
+  date: string,
+): boolean {
+  return events.some((event) => event.platformId === platformId && event.date === date && event.count > 0);
 }

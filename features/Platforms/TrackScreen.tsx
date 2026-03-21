@@ -1,29 +1,16 @@
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
-import { Text, ScrollView, ActivityIndicator, StyleSheet, SafeAreaView } from 'react-native';
+import React, { useCallback, useMemo, useState } from 'react';
+import { ActivityIndicator, SafeAreaView, StyleSheet, Text } from 'react-native';
 import type { StorageAdapter } from '../../core/data';
-import { TRACKED_PLATFORMS } from './data/platformList';
-import { usePlatformRoster } from './hooks/usePlatformRoster';
-import { useNudgeNotification } from './hooks/useNudgeNotification';
-import { TrackProvider, useTrack } from './context/TrackContext';
-import { TrackHeader } from './components/TrackHeader';
-import { GameArena } from './components/GameArena';
-import { PlatformGroupHeader } from './components/PlatformGroupHeader';
-import { PlatformRow } from './components/PlatformRow';
-import { PlatformSetupScreen } from './components/PlatformSetupScreen';
-import { buildListData } from './utils/listData';
-import type { TrackListItem } from './utils/listData';
 import { platformsCopy } from '../../copy/platforms';
 import { theme } from '../../design/tokens';
-import { getLocalDateString } from '../../core/utils/localDate';
-import {
-  DAY_CIRCLES_AUTO_COLLAPSE_DELAY_MS,
-  DAY_CIRCLES_COLLAPSE_STAGGER_MS,
-} from '../../config/constants';
-
-// ── Daily open animation guard (module-level, survives unmount/remount) ──────
-let _dailyOpenDate: string | null = null;
-
-// ── Root screen ──────────────────────────────────────────────────────────────
+import { TrackProvider } from './context/TrackContext';
+import { TRACKED_PLATFORMS } from './data/platformList';
+import { GameArena } from './components/GameArena';
+import { PlatformSetupScreen } from './components/PlatformSetupScreen';
+import { TrackHeader } from './components/TrackHeader';
+import { TrackList } from './components/TrackList';
+import { useNudgeNotification } from './hooks/useNudgeNotification';
+import { usePlatformRoster } from './hooks/usePlatformRoster';
 
 interface TrackScreenProps {
   adapter: StorageAdapter;
@@ -31,12 +18,12 @@ interface TrackScreenProps {
 
 export function TrackScreen({ adapter }: TrackScreenProps) {
   useNudgeNotification();
-  const { selectedIds, saveSelection } = usePlatformRoster();
+  const { saveSelection, selectedIds } = usePlatformRoster();
   const [editing, setEditing] = useState(false);
 
   const activePlatforms = useMemo(() => {
     if (!selectedIds) return [];
-    return TRACKED_PLATFORMS.filter((p) => selectedIds.includes(p.id));
+    return TRACKED_PLATFORMS.filter((platform) => selectedIds.includes(platform.id));
   }, [selectedIds]);
 
   const handleDone = useCallback(async (ids: string[]) => {
@@ -44,13 +31,9 @@ export function TrackScreen({ adapter }: TrackScreenProps) {
     setEditing(false);
   }, [saveSelection]);
 
-  const handleEdit = useCallback(() => {
-    setEditing(true);
-  }, []);
-
   if (selectedIds === null) {
     return (
-      <SafeAreaView style={styles.center}>
+      <SafeAreaView style={styles.loadingScreen}>
         <ActivityIndicator color={theme.colors.frameBlue} />
         <Text style={styles.loadingText} allowFontScaling>
           {platformsCopy.loading}
@@ -72,84 +55,11 @@ export function TrackScreen({ adapter }: TrackScreenProps) {
   return (
     <TrackProvider adapter={adapter} platforms={activePlatforms}>
       <SafeAreaView style={styles.root}>
-        <TrackHeader onEdit={handleEdit} />
+        <TrackHeader onEdit={() => setEditing(true)} />
         <GameArena />
-        <TrackListInner />
+        <TrackList />
       </SafeAreaView>
     </TrackProvider>
-  );
-}
-
-// ── Inner list (needs TrackProvider context) ─────────────────────────────────
-//
-// Uses ScrollView + .map() instead of FlatList. The platform list is always
-// small (5–8 items) so virtualization is unnecessary. FlatList's internal
-// CellRendererComponent memoization prevents context changes (expandedIds,
-// focusedPlatformId) from propagating to child PlatformRow components — a
-// known issue (facebook/react-native#24410). ScrollView renders children
-// directly, so context subscriptions in PlatformRow work as expected.
-
-function TrackListInner() {
-  const { platforms, expandAll, collapseOne } = useTrack();
-
-  const listData = useMemo(() => buildListData(platforms), [platforms]);
-
-  const allPlatformIds = useMemo(() => {
-    return listData
-      .filter((item): item is Extract<TrackListItem, { type: 'childRow' | 'platformRow' }> =>
-        item.type === 'childRow' || item.type === 'platformRow')
-      .map((item) => item.platformId);
-  }, [listData]);
-
-  // Daily open animation: expand all on first visit of the day, then stagger-collapse.
-  // Guard is module-level so unmount/remount (background, screenshot) does NOT re-trigger.
-  useEffect(() => {
-    const today = getLocalDateString();
-    if (_dailyOpenDate === today) return;
-    if (allPlatformIds.length === 0) return;
-
-    _dailyOpenDate = today;
-
-    expandAll(allPlatformIds);
-
-    const timers: ReturnType<typeof setTimeout>[] = [];
-    for (let i = 0; i < allPlatformIds.length; i++) {
-      const timer = setTimeout(() => {
-        collapseOne(allPlatformIds[i]!);
-      }, DAY_CIRCLES_AUTO_COLLAPSE_DELAY_MS + (i * DAY_CIRCLES_COLLAPSE_STAGGER_MS));
-      timers.push(timer);
-    }
-
-    return () => { timers.forEach(clearTimeout); };
-  }, [allPlatformIds, expandAll, collapseOne]);
-
-  return (
-    <ScrollView
-      style={styles.list}
-      contentContainerStyle={styles.listContent}
-      accessibilityRole="list"
-      accessibilityLabel={platformsCopy.checklist}
-    >
-      {listData.map((item) => {
-        if (item.type === 'groupHeader') {
-          return (
-            <PlatformGroupHeader
-              key={item.key}
-              figureName={item.figureName}
-              shortName={item.shortName}
-              childPlatformIds={item.childPlatformIds}
-            />
-          );
-        }
-        return (
-          <PlatformRow
-            key={item.key}
-            platformId={item.platformId}
-            isChild={item.type === 'childRow'}
-          />
-        );
-      })}
-    </ScrollView>
   );
 }
 
@@ -158,21 +68,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.bgVoid,
   },
-  center: {
+  loadingScreen: {
     flex: 1,
-    backgroundColor: theme.colors.bgVoid,
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
     gap: theme.space.md,
+    backgroundColor: theme.colors.bgVoid,
   },
   loadingText: {
     ...theme.type.bodyS,
     color: theme.colors.textSecondary,
-  },
-  list: {
-    flex: 1,
-  },
-  listContent: {
-    paddingBottom: theme.space['3xl'],
   },
 });

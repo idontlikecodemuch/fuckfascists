@@ -1,107 +1,128 @@
-import React, { useRef, useEffect } from 'react';
-import { Text, Animated, StyleSheet } from 'react-native';
-import type { FXRegistration } from '../../../core/fx';
+import React, { useEffect, useMemo, useRef } from 'react';
+import { Animated, StyleSheet, Text } from 'react-native';
+import type { FXComponentProps, FXRegistration } from '../../../core/fx';
 import { theme } from '../../../design/tokens';
 import { ARENA_HIT_FX_MS } from '../../../config/constants';
 
-// ── Speech bubble FX ─────────────────────────────────────────────────────────
-
-function SpeechBubbleFX({ entry, reducedMotion, onComplete }: {
-  entry: { meta?: Record<string, unknown> };
-  reducedMotion: boolean;
-  onComplete: () => void;
-}) {
-  const opacity = useRef(new Animated.Value(1)).current;
-  const text = (entry.meta?.text as string) ?? '!';
-
-  useEffect(() => {
-    if (reducedMotion) {
-      const t = setTimeout(onComplete, ARENA_HIT_FX_MS);
-      return () => clearTimeout(t);
-    }
-    const anim = Animated.timing(opacity, {
-      toValue: 0, duration: ARENA_HIT_FX_MS, useNativeDriver: true,
-    });
-    anim.start(() => onComplete());
-    return () => anim.stop();
-  }, [reducedMotion, onComplete, opacity]);
-
-  return (
-    <Animated.View style={[styles.speechBubble, { opacity }]} pointerEvents="none" accessibilityElementsHidden>
-      <Text style={styles.speechText} allowFontScaling={false}>{text}</Text>
-    </Animated.View>
-  );
+interface ArenaFXMeta {
+  text?: string;
+  x?: number;
+  y?: number;
 }
 
-// ── Floating -1 FX ───────────────────────────────────────────────────────────
+function readMeta(entry: FXComponentProps['entry'], fallbackX: number, fallbackY: number) {
+  const meta = (entry.meta ?? {}) as ArenaFXMeta;
+  const left = `${Math.round((meta.x ?? fallbackX) * 100)}%` as `${number}%`;
+  const top = `${Math.round((meta.y ?? fallbackY) * 100)}%` as `${number}%`;
+  return {
+    text: meta.text ?? '!',
+    left,
+    top,
+  };
+}
 
-function FloatingMinusOneFX({ entry, reducedMotion, onComplete }: {
-  entry: { meta?: Record<string, unknown> };
-  reducedMotion: boolean;
-  onComplete: () => void;
-}) {
+function SpeechBubbleFX({ entry, reducedMotion, onComplete }: FXComponentProps) {
   const opacity = useRef(new Animated.Value(1)).current;
-  const translateY = useRef(new Animated.Value(0)).current;
+  const { left, text, top } = useMemo(() => readMeta(entry, 0.34, 0.2), [entry]);
 
   useEffect(() => {
     if (reducedMotion) {
-      const t = setTimeout(onComplete, ARENA_HIT_FX_MS);
-      return () => clearTimeout(t);
+      const timer = setTimeout(onComplete, ARENA_HIT_FX_MS);
+      return () => clearTimeout(timer);
     }
-    const anim = Animated.parallel([
-      Animated.timing(opacity, { toValue: 0, duration: ARENA_HIT_FX_MS, useNativeDriver: true }),
-      Animated.timing(translateY, { toValue: -40, duration: ARENA_HIT_FX_MS, useNativeDriver: true }),
-    ]);
-    anim.start(() => onComplete());
-    return () => anim.stop();
-  }, [reducedMotion, onComplete, opacity, translateY]);
+
+    const animation = Animated.timing(opacity, {
+      toValue: 0,
+      duration: ARENA_HIT_FX_MS,
+      useNativeDriver: true,
+    });
+    animation.start(() => onComplete());
+    return () => animation.stop();
+  }, [onComplete, opacity, reducedMotion]);
 
   return (
     <Animated.View
-      style={[styles.floatingMinus, { opacity, transform: [{ translateY }] }]}
+      style={[styles.speechBubble, { left, opacity, top }]}
       pointerEvents="none"
       accessibilityElementsHidden
     >
-      <Text style={styles.floatingMinusText} allowFontScaling={false}>-1</Text>
+      <Text style={styles.speechText} allowFontScaling={false}>
+        {text}
+      </Text>
     </Animated.View>
   );
 }
 
-// ── Registry ─────────────────────────────────────────────────────────────────
+function FloatingMinusOneFX({ entry, reducedMotion, onComplete }: FXComponentProps) {
+  const opacity = useRef(new Animated.Value(1)).current;
+  const translateY = useRef(new Animated.Value(0)).current;
+  const { left, top } = useMemo(() => readMeta(entry, 0.38, 0.38), [entry]);
+
+  useEffect(() => {
+    if (reducedMotion) {
+      const timer = setTimeout(onComplete, ARENA_HIT_FX_MS);
+      return () => clearTimeout(timer);
+    }
+
+    const animation = Animated.parallel([
+      Animated.timing(opacity, {
+        toValue: 0,
+        duration: ARENA_HIT_FX_MS,
+        useNativeDriver: true,
+      }),
+      Animated.timing(translateY, {
+        toValue: -36,
+        duration: ARENA_HIT_FX_MS,
+        useNativeDriver: true,
+      }),
+    ]);
+    animation.start(() => onComplete());
+    return () => animation.stop();
+  }, [onComplete, opacity, reducedMotion, translateY]);
+
+  return (
+    <Animated.View
+      style={[
+        styles.floatingMinus,
+        { left, opacity, top, transform: [{ translateX: -12 }, { translateY }] },
+      ]}
+      pointerEvents="none"
+      accessibilityElementsHidden
+    >
+      <Text style={styles.floatingMinusText} allowFontScaling={false}>
+        -1
+      </Text>
+    </Animated.View>
+  );
+}
 
 export const arenaFXRegistry: Record<string, FXRegistration> = {
-  speechBubble: { scope: 'point', component: SpeechBubbleFX as FXRegistration['component'] },
-  floatingMinus: { scope: 'area', component: FloatingMinusOneFX as FXRegistration['component'] },
+  speechBubble: { scope: 'point', component: SpeechBubbleFX },
+  floatingMinus: { scope: 'area', component: FloatingMinusOneFX },
 };
-
-// ── Styles ───────────────────────────────────────────────────────────────────
 
 const styles = StyleSheet.create({
   speechBubble: {
     position: 'absolute',
-    top: 8,
-    alignSelf: 'center',
-    backgroundColor: theme.colors.textPrimary,
+    maxWidth: 120,
     paddingHorizontal: theme.space.sm,
     paddingVertical: theme.space.xs,
     borderWidth: theme.borders.standard.width,
-    borderColor: theme.colors.bgVoid,
-    zIndex: 10,
+    borderColor: theme.colors.frameBlue,
+    backgroundColor: theme.colors.surface1,
+    transform: [{ translateX: -36 }],
   },
   speechText: {
-    ...theme.type.uiLabel,
-    color: theme.colors.bgVoid,
+    ...theme.type.caption,
+    color: theme.colors.textPrimary,
+    fontFamily: theme.fonts.bodySemiBold,
     textTransform: 'uppercase',
   },
   floatingMinus: {
     position: 'absolute',
-    top: '30%',
-    alignSelf: 'center',
-    zIndex: 10,
   },
   floatingMinusText: {
-    ...theme.type.displayM,
+    ...theme.type.displayS,
     color: theme.colors.dangerRed,
-    fontWeight: 'bold',
   },
 });

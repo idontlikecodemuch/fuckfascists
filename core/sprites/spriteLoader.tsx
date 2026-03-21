@@ -119,34 +119,45 @@ interface SpriteViewProps {
   spriteId: string | null;
   state: SpriteState;
   variant?: SpriteVariant;
-  /** Display size in points (square). */
+  /** Visible crop-box size in points (square). */
   size: number;
   /** Optional opacity (e.g. 0.4 for dimmed neutral). */
   opacity?: number;
   /** When true, clips to the top ~38% of the sprite frame (head/face crop). */
   headOnly?: boolean;
+  /** Custom crop ratio (0-1) for top-aligned bust/portrait crops. */
+  cropRatio?: number;
 }
 
-const HEAD_CROP_RATIO = 0.38;
+const DEFAULT_HEAD_CROP_RATIO = 0.38;
 
 /**
  * Renders a single static frame from a CEO sprite sheet.
  * Shows nothing when spriteId is null or no sprite exists in the manifest.
  */
-export function SpriteView({ spriteId, state, variant, size, opacity, headOnly = false }: SpriteViewProps) {
+export function SpriteView({
+  spriteId,
+  state,
+  variant,
+  size,
+  opacity,
+  headOnly = false,
+  cropRatio,
+}: SpriteViewProps) {
   if (!spriteId) return null;
 
   const frame = getSpriteFrame(spriteId, state, variant);
   if (!frame) return null;
 
-  const scale = size / frame.frameWidth;
-  const displayHeight = headOnly ? size * HEAD_CROP_RATIO : size;
+  const resolvedCropRatio = cropRatio ?? (headOnly ? DEFAULT_HEAD_CROP_RATIO : 1);
+  const scale = size / (frame.frameHeight * resolvedCropRatio);
+  const centeredCropLeft = Math.max(0, ((frame.frameWidth * scale) - size) / 2);
 
   return (
     <View
       style={[
         styles.container,
-        { width: size, height: displayHeight, opacity: opacity ?? 1 },
+        { width: size, height: size, opacity: opacity ?? 1 },
       ]}
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"
@@ -157,7 +168,7 @@ export function SpriteView({ spriteId, state, variant, size, opacity, headOnly =
           width: frame.sheetWidth * scale,
           height: frame.sheetHeight * scale,
           position: 'absolute' as const,
-          left: -(frame.offsetX * scale),
+          left: -((frame.offsetX * scale) + centeredCropLeft),
           top: -(frame.offsetY * scale),
         }}
         resizeMode="contain"

@@ -197,7 +197,7 @@ describe('aggregateScorecard', () => {
     );
     const zuck = result.find((p) => p.figureName === 'Mark Zuckerberg');
     expect(zuck).toBeDefined();
-    expect(zuck!.totalCount).toBe(5);
+    expect(zuck!.totalCount).toBe(2);
     expect(zuck!.sources).toHaveLength(2);
   });
 
@@ -215,12 +215,12 @@ describe('aggregateScorecard', () => {
     );
     expect(result).toHaveLength(1);
     expect(result[0].figureName).toBe('Mark Zuckerberg');
-    expect(result[0].totalCount).toBe(5);
+    expect(result[0].totalCount).toBe(2);
     expect(result[0].sources).toHaveLength(2);
     const ig = result[0].sources.find((s) => s.name === 'Instagram');
     const fb = result[0].sources.find((s) => s.name === 'Facebook');
-    expect(ig).toEqual({ name: 'Instagram', count: 3, verb: 'stayed off' });
-    expect(fb).toEqual({ name: 'Facebook', count: 2, verb: 'stayed off' });
+    expect(ig).toEqual({ name: 'Instagram', count: 1, verb: 'stayed off' });
+    expect(fb).toEqual({ name: 'Facebook', count: 1, verb: 'stayed off' });
   });
 
   it('sorts descending by totalCount', async () => {
@@ -239,8 +239,8 @@ describe('aggregateScorecard', () => {
     );
     expect(result).toHaveLength(3);
     expect(result[0].figureName).toBe('Jeff Bezos');       // 10
-    expect(result[1].figureName).toBe('Mark Zuckerberg');  // 5
-    expect(result[2].figureName).toBe('Doug McMillon');    // 2
+    expect(result[1].figureName).toBe('Doug McMillon');    // 2
+    expect(result[2].figureName).toBe('Mark Zuckerberg');  // 1
   });
 
   it('excludes entity avoids outside the week', async () => {

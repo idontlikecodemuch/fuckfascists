@@ -1,60 +1,50 @@
-import React, { useCallback } from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import React from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { SpriteView, nameToSpriteId } from '../../../core/sprites/spriteLoader';
 import { platformsCopy } from '../../../copy/platforms';
 import { theme } from '../../../design/tokens';
-import { useTrack } from '../context/TrackContext';
 import {
-  TRACK_ROW_PADDING_VERTICAL,
-  TRACK_ROW_PADDING_HORIZONTAL,
-  TRACK_ROW_SPRITE_SIZE,
-  TRACK_ROW_DIMMED_OPACITY,
+  TRACK_ROW_FOCUS_BG_COLOR,
+  TRACK_ROW_FOCUS_BORDER_COLOR,
   TRACK_ROW_FONT_SIZE_COUNT,
+  TRACK_ROW_PADDING_HORIZONTAL,
+  TRACK_ROW_PADDING_VERTICAL,
+  TRACK_ROW_SPRITE_SIZE,
 } from '../../../config/constants';
 
 interface PlatformGroupHeaderProps {
   figureName: string;
   shortName: string;
-  childPlatformIds: string[];
+  totalAvoids: number;
+  focused: boolean;
+  onPress: () => void;
 }
 
-/**
- * Group header row for a parent company (e.g. META, X CORP).
- * Shows sprite bust, short name, and roll-up avoid count.
- * Tapping sets focus to this group's publicFigureName.
- */
-export function PlatformGroupHeader({ figureName, shortName, childPlatformIds }: PlatformGroupHeaderProps) {
-  const { focusedPlatformId, setFocusedPlatformId, personWeeklyAvoids } = useTrack();
-  const spriteId = nameToSpriteId(figureName);
-  const totalAvoids = personWeeklyAvoids(figureName);
-
-  const isFocused = focusedPlatformId !== null &&
-    childPlatformIds.includes(focusedPlatformId);
-  const isDimmed = focusedPlatformId !== null && !isFocused;
-
-  const handlePress = useCallback(() => {
-    if (childPlatformIds.length > 0) {
-      setFocusedPlatformId(childPlatformIds[0]!);
-    }
-  }, [childPlatformIds, setFocusedPlatformId]);
-
+export function PlatformGroupHeader({
+  figureName,
+  shortName,
+  totalAvoids,
+  focused,
+  onPress,
+}: PlatformGroupHeaderProps) {
   return (
     <Pressable
-      onPress={handlePress}
-      style={[styles.container, isDimmed && styles.dimmed]}
-      accessibilityRole="header"
+      onPress={onPress}
+      style={[styles.container, focused && styles.focused]}
+      accessibilityRole="button"
       accessibilityLabel={platformsCopy.groupHeaderA11y(shortName, totalAvoids)}
     >
       <SpriteView
-        spriteId={spriteId}
+        spriteId={nameToSpriteId(figureName)}
         state="neutral"
         size={TRACK_ROW_SPRITE_SIZE}
         headOnly
-        opacity={totalAvoids > 0 ? 1 : 0.4}
       />
-      <Text style={styles.name} numberOfLines={1} allowFontScaling>
-        {shortName}
-      </Text>
+      <View style={styles.labelColumn}>
+        <Text style={styles.name} numberOfLines={1} allowFontScaling>
+          {shortName}
+        </Text>
+      </View>
       <Text style={styles.count} allowFontScaling>
         {totalAvoids > 0 ? platformsCopy.countLabel(totalAvoids) : platformsCopy.countDash}
       </Text>
@@ -66,21 +56,27 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: theme.space.sm,
+    minHeight: theme.a11y.minTapTarget,
     paddingHorizontal: TRACK_ROW_PADDING_HORIZONTAL,
     paddingVertical: TRACK_ROW_PADDING_VERTICAL,
-    gap: theme.space.sm,
+    borderTopWidth: theme.borders.standard.width,
     borderBottomWidth: theme.borders.standard.width,
-    borderBottomColor: theme.colors.frameBlue,
+    borderTopColor: theme.colors.highlightBlue,
+    borderBottomColor: theme.colors.bgVoid,
     backgroundColor: theme.colors.surface2,
-    minHeight: theme.a11y.minTapTarget,
   },
-  dimmed: {
-    opacity: TRACK_ROW_DIMMED_OPACITY,
+  focused: {
+    borderLeftWidth: theme.borders.standard.width,
+    borderLeftColor: TRACK_ROW_FOCUS_BORDER_COLOR,
+    backgroundColor: TRACK_ROW_FOCUS_BG_COLOR,
+  },
+  labelColumn: {
+    flex: 1,
   },
   name: {
     ...theme.type.displayS,
-    color: theme.colors.textPrimary,
-    flex: 1,
+    color: theme.colors.rewardYellow,
     letterSpacing: 1,
   },
   count: {

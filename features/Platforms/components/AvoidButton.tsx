@@ -51,25 +51,26 @@ const styles = StyleSheet.create({
     borderWidth: theme.borders.standard.width,
   },
   buttonActive: {
-    backgroundColor: '#2d8a4e',
-    borderColor: '#2d8a4e',
+    backgroundColor: theme.colors.successGreenBright,
+    borderColor: theme.colors.successGreenBright,
   },
   buttonDone: {
-    backgroundColor: '#1a3a1a',
-    borderColor: '#1a3a1a',
+    backgroundColor: theme.colors.successGreenDeep,
+    borderColor: theme.colors.successGreenDeep,
   },
   label: {
     fontFamily: theme.fonts.bodySemiBold,
-    fontSize: 13,
-    letterSpacing: 1,
+    fontSize: theme.type.caption.fontSize,
+    lineHeight: theme.type.caption.lineHeight,
+    letterSpacing: 0.8,
   },
   labelActive: {
-    color: '#FFFFFF',
+    color: theme.colors.textPrimary,
     fontWeight: 'bold',
   },
   labelDone: {
-    color: '#5ab55a',
-    fontSize: 18,
+    color: theme.colors.successGreenText,
+    fontSize: theme.type.displayS.fontSize,
     fontFamily: theme.fonts.headline,
   },
 });

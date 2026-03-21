@@ -1,3 +1,5 @@
+import { theme } from '../design/tokens';
+
 // Scorecard drop window (times in ET)
 export const SCORECARD_WINDOW_START_HOUR = 16; // 4pm ET Friday
 export const SCORECARD_WINDOW_END_HOUR = 15;   // 3pm ET Saturday
@@ -77,6 +79,8 @@ export const DAY_CIRCLES_COLLAPSE_STAGGER_MS = 80;
 export const DAY_CIRCLES_ANIMATE_MS = 300;
 // Hit FX duration after an avoid tap.
 export const ARENA_HIT_FX_MS = 800;
+// Same-person focus pulse instead of a full arena transition.
+export const ARENA_SAME_FIGURE_PULSE_MS = 220;
 // Arena height: 16:9 aspect ratio from screen width, capped at this max.
 export const ARENA_HEIGHT = 200;
 
@@ -90,16 +94,21 @@ export const TRACK_ROW_SPRITE_SIZE = 32;
 export const TRACK_ROW_FONT_SIZE_NAME = 15;
 export const TRACK_ROW_FONT_SIZE_SUBTITLE = 11;
 export const TRACK_ROW_FONT_SIZE_COUNT = 14;
-export const TRACK_ROW_FOCUS_BORDER_COLOR = '#FFC93C';
-export const TRACK_ROW_FOCUS_BG_COLOR = 'rgba(255, 201, 60, 0.08)';
+export const TRACK_ROW_FOCUS_BORDER_COLOR = theme.colors.rewardYellow;
+export const TRACK_ROW_FOCUS_BG_COLOR = theme.colors.trackFocusTint;
 export const TRACK_ROW_DIMMED_OPACITY = 0.45;
 export const TRACK_BUTTON_WIDTH = 64;
 export const TRACK_BUTTON_HEIGHT = 36;
 export const TRACK_DAY_CIRCLE_SIZE = 28;
 export const TRACK_DAY_CIRCLES_GAP = 4;
 export const TRACK_EXPAND_INDICATOR_SIZE = 14;
-// Grid cell size for arena character select (square, px).
-export const TRACK_ARENA_GRID_CELL_SIZE = 72;
+// Arena tuning
+export const TRACK_ARENA_GRID_CELL_SIZE = 84;
+export const TRACK_ARENA_GRID_CROP_RATIO = 0.4;
+export const TRACK_ARENA_SINGLE_CROP_RATIO = 0.68;
+export const TRACK_ARENA_SINGLE_DISPLAY_RATIO = 0.9;
+export const TRACK_ARENA_SINGLE_LEFT_INSET = 16;
+export const TRACK_ARENA_SINGLE_BOTTOM_INSET = 6;
 
 // Controls whether the public figure / CEO name is shown in the UI.
 // true = show, false = hide. Compile-time constant — change and rebuild to toggle.

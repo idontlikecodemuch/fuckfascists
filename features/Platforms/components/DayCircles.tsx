@@ -10,7 +10,7 @@ import {
   TRACK_DAY_CIRCLES_GAP,
 } from '../../../config/constants';
 
-const ROW_HEIGHT = TRACK_DAY_CIRCLE_SIZE + 24; // circle + day label + padding
+const ROW_HEIGHT = TRACK_DAY_CIRCLE_SIZE + theme.type.caption.lineHeight + theme.space.sm;
 
 interface DayCirclesProps {
   weekOf: string;

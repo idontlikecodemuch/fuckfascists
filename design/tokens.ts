@@ -12,6 +12,10 @@ export const theme = {
     rewardYellow: '#FFC93C',
     dangerRed: '#FF3B30',
     successGreen: '#2CCB63',
+    successGreenBright: '#2D8A4E',
+    successGreenDeep: '#1A3A1A',
+    successGreenText: '#5AB55A',
+    trackFocusTint: 'rgba(255, 201, 60, 0.10)',
   },
 
   fonts: {

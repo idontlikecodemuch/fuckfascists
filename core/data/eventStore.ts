@@ -39,10 +39,9 @@ export async function getAllEntityAvoids(
 export async function recordPlatformAvoid(
   adapter: StorageAdapter,
   platformId: string
-): Promise<void> {
+): Promise<boolean> {
   const date = getLocalDateString();
-  // count: 1 is a placeholder — the DB owns the increment atomically (ON CONFLICT DO UPDATE SET count = count + 1).
-  await adapter.upsertPlatformAvoid({ platformId, date, count: 1 });
+  return recordPlatformAvoidForDate(adapter, platformId, date);
 }
 
 /**
@@ -56,8 +55,13 @@ export async function recordPlatformAvoidForDate(
   adapter: StorageAdapter,
   platformId: string,
   date: string
-): Promise<void> {
+): Promise<boolean> {
+  const existingEvents = await adapter.getPlatformAvoids(platformId);
+  const alreadyLogged = existingEvents.some((event) => event.date === date && event.count > 0);
+  if (alreadyLogged) return false;
+
   await adapter.upsertPlatformAvoid({ platformId, date, count: 1 });
+  return true;
 }
 
 /**
@@ -71,7 +75,9 @@ export async function getPlatformWeeklyTotal(
 ): Promise<number> {
   const weekStart = weekOf ?? getLocalWeekStart();
   const weekEnd = nextMondayOfStr(weekStart);
-  const events = await adapter.getPlatformAvoidsForWeek(weekStart, weekEnd);
+  const events = normalizePlatformAvoidEvents(
+    await adapter.getPlatformAvoidsForWeek(weekStart, weekEnd),
+  );
   return events
     .filter((e) => e.platformId === platformId)
     .reduce((sum, e) => sum + e.count, 0);
@@ -87,7 +93,9 @@ export async function getAllPlatformWeeklyTotals(
 ): Promise<Map<string, number>> {
   const weekStart = weekOf ?? getLocalWeekStart();
   const weekEnd = nextMondayOfStr(weekStart);
-  const events = await adapter.getPlatformAvoidsForWeek(weekStart, weekEnd);
+  const events = normalizePlatformAvoidEvents(
+    await adapter.getPlatformAvoidsForWeek(weekStart, weekEnd),
+  );
   const totals = new Map<string, number>();
   for (const e of events) {
     totals.set(e.platformId, (totals.get(e.platformId) ?? 0) + e.count);
@@ -105,7 +113,9 @@ export async function getPlatformAvoidsForWeek(
 ): Promise<PlatformAvoidEvent[]> {
   const weekStart = weekOf ?? getLocalWeekStart();
   const weekEnd = nextMondayOfStr(weekStart);
-  return adapter.getPlatformAvoidsForWeek(weekStart, weekEnd);
+  return normalizePlatformAvoidEvents(
+    await adapter.getPlatformAvoidsForWeek(weekStart, weekEnd),
+  );
 }
 
 /** Returns the Monday immediately following the given weekOf date string. */
@@ -113,6 +123,19 @@ function nextMondayOfStr(weekOf: string): string {
   const d = new Date(`${weekOf}T00:00:00Z`);
   d.setUTCDate(d.getUTCDate() + 7);
   return d.toISOString().slice(0, 10);
+}
+
+function normalizePlatformAvoidEvents(events: PlatformAvoidEvent[]): PlatformAvoidEvent[] {
+  const deduped = new Map<string, PlatformAvoidEvent>();
+
+  for (const event of events) {
+    if (event.count <= 0) continue;
+    const key = `${event.platformId}:${event.date}`;
+    if (deduped.has(key)) continue;
+    deduped.set(key, { ...event, count: 1 });
+  }
+
+  return Array.from(deduped.values());
 }
 
 // ── Date helpers ──────────────────────────────────────────────────────────────
