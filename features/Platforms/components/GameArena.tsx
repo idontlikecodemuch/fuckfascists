@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import { Animated, Image, Pressable, StyleSheet, View } from 'react-native';
+import { Animated, ImageBackground, Pressable, StyleSheet, View } from 'react-native';
 import { SpriteView, nameToSpriteId } from '../../../core/sprites/spriteLoader';
 import { arenaAssets } from '../../../core/arena/arenaAssets';
 import { FXLayer, useFX } from '../../../core/fx';
@@ -11,8 +11,10 @@ import {
   ARENA_TRANSITION_MS,
   TRACK_ARENA_GRID_CELL_SIZE,
   TRACK_ARENA_GRID_CROP_RATIO,
+  TRACK_ARENA_GRID_CROP_OFFSET_Y,
   TRACK_ARENA_SINGLE_BOTTOM_INSET,
   TRACK_ARENA_SINGLE_CROP_RATIO,
+  TRACK_ARENA_SINGLE_CROP_OFFSET_Y,
   TRACK_ARENA_SINGLE_DISPLAY_RATIO,
   TRACK_ARENA_SINGLE_LEFT_INSET,
 } from '../../../config/constants';
@@ -135,7 +137,7 @@ export function GameArena() {
   return (
     <View style={styles.container}>
       {backgroundSource && (
-        <Image source={backgroundSource} style={styles.background} resizeMode="cover" />
+        <ImageBackground source={backgroundSource} style={styles.background} resizeMode="stretch" />
       )}
       <View style={styles.backgroundOverlay} />
 
@@ -154,6 +156,7 @@ export function GameArena() {
               state={todayActions.has(focusedFigureName) ? 'defeated' : 'neutral'}
               size={singleSpriteSize}
               cropRatio={TRACK_ARENA_SINGLE_CROP_RATIO}
+              cropOffsetY={TRACK_ARENA_SINGLE_CROP_OFFSET_Y}
             />
           </Pressable>
         ) : (
@@ -171,6 +174,7 @@ export function GameArena() {
                   state="neutral"
                   size={TRACK_ARENA_GRID_CELL_SIZE}
                   cropRatio={TRACK_ARENA_GRID_CROP_RATIO}
+                  cropOffsetY={TRACK_ARENA_GRID_CROP_OFFSET_Y}
                 />
               </Pressable>
             ))}

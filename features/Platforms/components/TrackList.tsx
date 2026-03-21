@@ -51,19 +51,26 @@ export function TrackList() {
       .map((item) => item.platformId);
   }, [listData]);
   const dailyOpenHandledRef = useRef(false);
+  const collapseTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  const cancelPendingAutoCollapse = useCallback(() => {
+    collapseTimersRef.current.forEach(clearTimeout);
+    collapseTimersRef.current = [];
+  }, []);
 
   useEffect(() => {
     return () => {
+      cancelPendingAutoCollapse();
       clearFocus();
     };
-  }, [clearFocus]);
+  }, [cancelPendingAutoCollapse, clearFocus]);
 
   useEffect(() => {
     if (dailyOpenHandledRef.current || allPlatformIds.length === 0) return;
     dailyOpenHandledRef.current = true;
 
     let cancelled = false;
-    const timers: ReturnType<typeof setTimeout>[] = [];
+    cancelPendingAutoCollapse();
 
     (async () => {
       const today = getLocalDateString();
@@ -77,15 +84,15 @@ export function TrackList() {
         const timer = setTimeout(() => {
           collapseOne(platformId);
         }, DAY_CIRCLES_AUTO_COLLAPSE_DELAY_MS + (index * DAY_CIRCLES_COLLAPSE_STAGGER_MS));
-        timers.push(timer);
+        collapseTimersRef.current.push(timer);
       });
     })();
 
     return () => {
       cancelled = true;
-      timers.forEach(clearTimeout);
+      cancelPendingAutoCollapse();
     };
-  }, [allPlatformIds, collapseOne, expandAll]);
+  }, [allPlatformIds, cancelPendingAutoCollapse, collapseOne, expandAll]);
 
   const getArenaDelay = useCallback((figureName: string) => {
     return focusedFigureName === figureName ? 0 : ARENA_TRANSITION_MS;
@@ -99,7 +106,10 @@ export function TrackList() {
           shortName={item.shortName}
           totalAvoids={personWeeklyAvoids(item.figureName)}
           focused={focusedPlatformId === item.figureName}
-          onPress={() => focusGroup(item.figureName)}
+          onPress={() => {
+            cancelPendingAutoCollapse();
+            focusGroup(item.figureName);
+          }}
         />
       );
     }
@@ -123,6 +133,7 @@ export function TrackList() {
         dimmed={focusedPlatformId !== null && !focused}
         defeated={isDefeated(figureName)}
         onRowPress={() => {
+          cancelPendingAutoCollapse();
           if (focused) {
             toggleRowExpansion(platformId);
           } else {
@@ -130,6 +141,7 @@ export function TrackList() {
           }
         }}
         onAvoidPress={async () => {
+          cancelPendingAutoCollapse();
           const delay = getArenaDelay(figureName);
 
           if (!todayAvoided) {
@@ -147,6 +159,7 @@ export function TrackList() {
           queueArenaHit(figureName, delay);
         }}
         onAvoidDate={async (date) => {
+          cancelPendingAutoCollapse();
           const delay = getArenaDelay(figureName);
 
           if (!focused) focusRow(platformId);
@@ -158,6 +171,7 @@ export function TrackList() {
   }, [
     avoid,
     avoidForDate,
+    cancelPendingAutoCollapse,
     expandedIds,
     focusAndExpandRow,
     focusedPlatformId,
@@ -179,7 +193,13 @@ export function TrackList() {
       renderItem={renderItem}
       style={styles.list}
       contentContainerStyle={styles.listContent}
-      extraData={{ expandedIds, focusedPlatformId, todayActions, weekAvoids }}
+      extraData={{
+        expandedKey: Array.from(expandedIds).join('|'),
+        focusedPlatformId,
+        todayKey: Array.from(todayActions).join('|'),
+        weekAvoids,
+      }}
+      removeClippedSubviews={false}
       accessibilityRole="list"
       accessibilityLabel={platformsCopy.checklist}
     />

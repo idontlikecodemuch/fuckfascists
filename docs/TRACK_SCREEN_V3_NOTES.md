@@ -38,6 +38,7 @@ This matches React's documented batching and updater-queue behavior:
 - The Track screen spec explicitly called for `FlatList` as the only scrollable element, but the workaround replaced it with `ScrollView`.
 - The first-visit day-circle animation was guarded only in module memory, not persisted by date.
 - Platform avoid writes still allowed more than one avoid per platform per day in the data layer.
+- Pending first-visit collapse timers were not canceled on tap, so a row could appear not to expand because its scheduled collapse fired right after the user opened it.
 
 ## What Changed In V3
 
@@ -110,6 +111,12 @@ Expected: daily auto-open animation does not replay.
 10. User logs a platform twice on the same day.
 Expected: second write is ignored in the data layer.
 
+11. User taps a row while the first-visit collapse ripple is still pending.
+Expected: pending collapse timers are canceled so the row stays open.
+
+12. Arena background and portrait crop.
+Expected: background fills the arena without `cover` zoom, and the head crop starts lower so faces are fully visible.
+
 ### Automated coverage added
 
 - [trackUIState.test.ts](/Users/christophershannon/fuckfascists/features/Platforms/__tests__/trackUIState.test.ts)
@@ -122,6 +129,7 @@ Expected: second write is ignored in the data layer.
 - `npx jest --runInBand`
 
 Result: 310 tests passing, 28 suites passing.
+Current follow-up validation after timer/crop/background adjustments: 314 tests passing, 29 suites passing.
 
 ## Rollback Path
 
@@ -169,3 +177,5 @@ Then review and commit explicitly.
 ## Architect Summary
 
 The bug was not primarily a rendering-container issue. It was a state-coordination bug caused by trying to change focus and expansion through separate state setters in the same interaction, while the focus setter also cleared expansion state. The v3 rebuild fixes that by making Track interactions reducer-driven and atomic, restoring the spec'd `FlatList` structure instead of working around it with `ScrollView`.
+
+One additional user-facing issue remained after the first rebuild pass: the daily stagger-collapse timers could still race the user's first tap. That follow-up hardening now cancels pending timers on interaction, disables aggressive list clipping, relaxes the sprite crop window, and switches the arena background off `cover` so it fills without zooming.
