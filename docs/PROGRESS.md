@@ -12,6 +12,15 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: March 21, 2026 (Track pivot planning — simplify list behavior and sprite crop)
+**Focus:** Stop iterating on the fragile inline day-circle animation and document a simpler Track implementation path before another code pass.
+
+**What changed:**
+1. **Platform interaction pivot documented** — added [TRACK_PLATFORM_PIVOT.md](/Users/christophershannon/fuckfascists/docs/TRACK_PLATFORM_PIVOT.md) describing the move from row-local animated height to a data-driven `dayCircles` detail item inserted directly into `FlatList` data.
+2. **Internet vetting recorded** — the pivot is now grounded in the official React batching docs, React Native `FlatList` and `LayoutAnimation` docs, Apple list/disclosure guidance, and the controlled accordion pattern.
+3. **Sprite crop simplification validated** — visually sampled 10 random sprite sheets across both `2x2` and `2x1` tiers. All sampled sheets use the same `728x720` frame geometry, and the face anchor is consistent enough to justify one shared crop rule rather than per-sprite metadata.
+4. **Arena background direction simplified** — the pivot note now keeps arena art on `cover` and recommends only a color/texture fallback layer underneath, matching the fact that the background assets were painted to crop well.
+
 ### Session: March 21, 2026 (Track follow-up — row tap expansion + crop alignment + arena background fit)
 **Focus:** Fix the remaining Track complaints after the v3 rebuild: row taps still feeling non-responsive, faces still clipping inside the sprite crop, and arena backgrounds looking zoomed on narrower assets.
 
