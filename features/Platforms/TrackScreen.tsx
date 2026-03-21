@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
-import { Text, FlatList, ActivityIndicator, StyleSheet, SafeAreaView } from 'react-native';
+import { Text, ScrollView, ActivityIndicator, StyleSheet, SafeAreaView } from 'react-native';
 import type { StorageAdapter } from '../../core/data';
 import { TRACKED_PLATFORMS } from './data/platformList';
 import { usePlatformRoster } from './hooks/usePlatformRoster';
@@ -81,9 +81,16 @@ export function TrackScreen({ adapter }: TrackScreenProps) {
 }
 
 // ── Inner list (needs TrackProvider context) ─────────────────────────────────
+//
+// Uses ScrollView + .map() instead of FlatList. The platform list is always
+// small (5–8 items) so virtualization is unnecessary. FlatList's internal
+// CellRendererComponent memoization prevents context changes (expandedIds,
+// focusedPlatformId) from propagating to child PlatformRow components — a
+// known issue (facebook/react-native#24410). ScrollView renders children
+// directly, so context subscriptions in PlatformRow work as expected.
 
 function TrackListInner() {
-  const { platforms, focusedPlatformId, weekAvoids, expandAll, collapseOne } = useTrack();
+  const { platforms, expandAll, collapseOne } = useTrack();
 
   const listData = useMemo(() => buildListData(platforms), [platforms]);
 
@@ -116,40 +123,33 @@ function TrackListInner() {
     return () => { timers.forEach(clearTimeout); };
   }, [allPlatformIds, expandAll, collapseOne]);
 
-  // PlatformRow reads expandedIds + toggleExpand from context directly,
-  // so renderItem doesn't need to pass expand props.
-  const renderItem = useCallback(({ item }: { item: TrackListItem }) => {
-    if (item.type === 'groupHeader') {
-      return (
-        <PlatformGroupHeader
-          figureName={item.figureName}
-          shortName={item.shortName}
-          childPlatformIds={item.childPlatformIds}
-        />
-      );
-    }
-
-    return (
-      <PlatformRow
-        platformId={item.platformId}
-        isChild={item.type === 'childRow'}
-      />
-    );
-  }, []);
-
-  const keyExtractor = useCallback((item: TrackListItem) => item.key, []);
-
   return (
-    <FlatList<TrackListItem>
-      data={listData}
-      keyExtractor={keyExtractor}
-      renderItem={renderItem}
-      extraData={[focusedPlatformId, weekAvoids]}
+    <ScrollView
       style={styles.list}
       contentContainerStyle={styles.listContent}
       accessibilityRole="list"
       accessibilityLabel={platformsCopy.checklist}
-    />
+    >
+      {listData.map((item) => {
+        if (item.type === 'groupHeader') {
+          return (
+            <PlatformGroupHeader
+              key={item.key}
+              figureName={item.figureName}
+              shortName={item.shortName}
+              childPlatformIds={item.childPlatformIds}
+            />
+          );
+        }
+        return (
+          <PlatformRow
+            key={item.key}
+            platformId={item.platformId}
+            isChild={item.type === 'childRow'}
+          />
+        );
+      })}
+    </ScrollView>
   );
 }
 
