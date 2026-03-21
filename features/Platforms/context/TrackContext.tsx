@@ -27,17 +27,15 @@ export function getDisplayFigure(platform: Platform): string {
 // ── Context value ────────────────────────────────────────────────────────────
 
 export interface TrackContextValue {
-  focusedPlatformId: string | null;
+  selectedPlatformId: string | null;
+  openPlatformId: string | null;
+  arenaFocusKey: string | null;
   focusedFigureName: string | null;
-  expandedIds: Set<string>;
-  focusRow: (platformId: string) => void;
+  focusPlatform: (platformId: string) => void;
+  openPlatformDetails: (platformId: string) => void;
+  togglePlatformDetails: (platformId: string) => void;
   focusGroup: (figureName: string) => void;
   clearFocus: () => void;
-  pressExpandableRow: (platformId: string) => void;
-  toggleRowExpansion: (platformId: string) => void;
-  focusAndExpandRow: (platformId: string) => void;
-  expandAll: (ids: string[]) => void;
-  collapseOne: (platformId: string) => void;
   weekAvoids: PlatformItem[];
   totalAvoids: number;
   weekOf: string;
@@ -75,9 +73,16 @@ export function TrackProvider({ adapter, platforms, children }: TrackProviderPro
   const [arenaHitRequest, setArenaHitRequest] = useState<ArenaHitRequest | null>(null);
   const avoidance = usePlatformAvoidance(adapter, platforms);
 
-  const focusRow = useCallback((platformId: string) => {
-    dispatch({ type: 'focus-row', platformId });
-  }, []);
+  const getFigureName = useCallback((platformId: string) => {
+    const platform = platforms.find((item) => item.id === platformId);
+    return platform ? getDisplayFigure(platform) : null;
+  }, [platforms]);
+
+  const focusPlatform = useCallback((platformId: string) => {
+    const figureName = getFigureName(platformId);
+    if (!figureName) return;
+    dispatch({ type: 'focus-platform', platformId, figureName });
+  }, [getFigureName]);
 
   const focusGroup = useCallback((figureName: string) => {
     dispatch({ type: 'focus-group', figureName });
@@ -87,25 +92,17 @@ export function TrackProvider({ adapter, platforms, children }: TrackProviderPro
     dispatch({ type: 'clear-focus' });
   }, []);
 
-  const pressExpandableRow = useCallback((platformId: string) => {
-    dispatch({ type: 'press-expandable-row', platformId });
-  }, []);
+  const openPlatformDetails = useCallback((platformId: string) => {
+    const figureName = getFigureName(platformId);
+    if (!figureName) return;
+    dispatch({ type: 'open-platform-details', platformId, figureName });
+  }, [getFigureName]);
 
-  const toggleRowExpansion = useCallback((platformId: string) => {
-    dispatch({ type: 'toggle-row-expansion', platformId });
-  }, []);
-
-  const focusAndExpandRow = useCallback((platformId: string) => {
-    dispatch({ type: 'focus-and-expand-row', platformId });
-  }, []);
-
-  const expandAll = useCallback((ids: string[]) => {
-    dispatch({ type: 'expand-all', ids });
-  }, []);
-
-  const collapseOne = useCallback((platformId: string) => {
-    dispatch({ type: 'collapse-one', platformId });
-  }, []);
+  const togglePlatformDetails = useCallback((platformId: string) => {
+    const figureName = getFigureName(platformId);
+    if (!figureName) return;
+    dispatch({ type: 'toggle-platform-details', platformId, figureName });
+  }, [getFigureName]);
 
   const queueArenaHit = useCallback((figureName: string, delayMs = 0) => {
     setArenaHitRequest({
@@ -181,24 +178,20 @@ export function TrackProvider({ adapter, platforms, children }: TrackProviderPro
     dispatch({ type: 'reset' });
   }, [avoidance]);
 
-  const focusedFigureName = useMemo(() => {
-    if (!uiState.focusedPlatformId) return null;
-    const focusedPlatform = platforms.find((platform) => platform.id === uiState.focusedPlatformId);
-    return focusedPlatform ? getDisplayFigure(focusedPlatform) : uiState.focusedPlatformId;
-  }, [platforms, uiState.focusedPlatformId]);
+  const arenaFocusKey = useMemo(() => {
+    return uiState.selectedPlatformId ?? uiState.focusedFigureName;
+  }, [uiState.focusedFigureName, uiState.selectedPlatformId]);
 
   const value = useMemo<TrackContextValue>(() => ({
-    focusedPlatformId: uiState.focusedPlatformId,
-    focusedFigureName,
-    expandedIds: uiState.expandedIds,
-    focusRow,
+    selectedPlatformId: uiState.selectedPlatformId,
+    openPlatformId: uiState.openPlatformId,
+    arenaFocusKey,
+    focusedFigureName: uiState.focusedFigureName,
+    focusPlatform,
+    openPlatformDetails,
+    togglePlatformDetails,
     focusGroup,
     clearFocus,
-    pressExpandableRow,
-    toggleRowExpansion,
-    focusAndExpandRow,
-    expandAll,
-    collapseOne,
     weekAvoids: avoidance.items,
     totalAvoids: avoidance.totalAvoids,
     weekOf: avoidance.weekOf,
@@ -214,6 +207,7 @@ export function TrackProvider({ adapter, platforms, children }: TrackProviderPro
     queueArenaHit,
     clearAll,
   }), [
+    arenaFocusKey,
     arenaHitRequest,
     avoidance.error,
     avoidance.items,
@@ -224,21 +218,18 @@ export function TrackProvider({ adapter, platforms, children }: TrackProviderPro
     avoidForDate,
     clearAll,
     clearFocus,
-    collapseOne,
-    expandAll,
-    focusAndExpandRow,
-    focusedFigureName,
+    focusPlatform,
     focusGroup,
-    focusRow,
     isDefeated,
+    openPlatformDetails,
     personWeeklyAvoids,
     platforms,
-    pressExpandableRow,
     queueArenaHit,
+    togglePlatformDetails,
     todayActions,
-    toggleRowExpansion,
-    uiState.expandedIds,
-    uiState.focusedPlatformId,
+    uiState.focusedFigureName,
+    uiState.openPlatformId,
+    uiState.selectedPlatformId,
   ]);
 
   return <TrackCtx.Provider value={value}>{children}</TrackCtx.Provider>;

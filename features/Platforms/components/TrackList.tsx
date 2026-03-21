@@ -1,5 +1,11 @@
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  FlatList,
+  LayoutAnimation,
+  Platform,
+  StyleSheet,
+  UIManager,
+} from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { getLocalDateString } from '../../../core/utils/localDate';
 import { platformsCopy } from '../../../copy/platforms';
@@ -12,6 +18,7 @@ import {
 import { getDisplayFigure, useTrack } from '../context/TrackContext';
 import type { TrackListItem } from '../utils/listData';
 import { buildListData } from '../utils/listData';
+import { DayCircles } from './DayCircles';
 import { PlatformGroupHeader } from './PlatformGroupHeader';
 import { PlatformRow } from './PlatformRow';
 
@@ -22,39 +29,63 @@ export function TrackList() {
     avoid,
     avoidForDate,
     clearFocus,
-    collapseOne,
-    expandAll,
-    expandedIds,
+    focusPlatform,
     focusedFigureName,
-    focusedPlatformId,
+    openPlatformDetails,
+    openPlatformId,
+    selectedPlatformId,
+    togglePlatformDetails,
     focusGroup,
-    focusRow,
     isDefeated,
     platforms,
     personWeeklyAvoids,
-    pressExpandableRow,
     queueArenaHit,
     todayActions,
     weekAvoids,
     weekOf,
   } = useTrack();
 
-  const listData = useMemo(() => buildListData(platforms), [platforms]);
+  const baseListData = useMemo(() => buildListData(platforms), [platforms]);
+  const [previewOpenIds, setPreviewOpenIds] = useState<string[] | null>(null);
   const platformItemsById = useMemo(() => {
     return new Map(weekAvoids.map((item) => [item.platform.id, item]));
   }, [weekAvoids]);
+  const detailPlatformIds = useMemo(() => {
+    if (previewOpenIds) return new Set(previewOpenIds);
+    return openPlatformId ? new Set([openPlatformId]) : new Set<string>();
+  }, [openPlatformId, previewOpenIds]);
+  const listData = useMemo(() => buildListData(platforms, detailPlatformIds), [detailPlatformIds, platforms]);
   const allPlatformIds = useMemo(() => {
-    return listData
+    return baseListData
       .filter((item): item is Extract<TrackListItem, { type: 'childRow' | 'platformRow' }> =>
         item.type === 'childRow' || item.type === 'platformRow')
       .map((item) => item.platformId);
-  }, [listData]);
+  }, [baseListData]);
   const dailyOpenHandledRef = useRef(false);
   const collapseTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const previewDismissedRef = useRef(false);
+
+  const animateNextLayout = useCallback(() => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+  }, []);
 
   const cancelPendingAutoCollapse = useCallback(() => {
     collapseTimersRef.current.forEach(clearTimeout);
     collapseTimersRef.current = [];
+  }, []);
+
+  const dismissDailyPreview = useCallback(() => {
+    previewDismissedRef.current = true;
+    cancelPendingAutoCollapse();
+    setPreviewOpenIds((prev) => {
+      if (prev === null) return prev;
+      return null;
+    });
+  }, [cancelPendingAutoCollapse]);
+
+  useEffect(() => {
+    if (Platform.OS !== 'android') return;
+    UIManager.setLayoutAnimationEnabledExperimental?.(true);
   }, []);
 
   useEffect(() => {
@@ -67,6 +98,7 @@ export function TrackList() {
   useEffect(() => {
     if (dailyOpenHandledRef.current || allPlatformIds.length === 0) return;
     dailyOpenHandledRef.current = true;
+    previewDismissedRef.current = false;
 
     let cancelled = false;
     cancelPendingAutoCollapse();
@@ -74,14 +106,21 @@ export function TrackList() {
     (async () => {
       const today = getLocalDateString();
       const lastVisit = await SecureStore.getItemAsync(TRACK_DAILY_OPEN_KEY).catch(() => null);
-      if (cancelled || lastVisit === today) return;
+      if (cancelled || previewDismissedRef.current || lastVisit === today) return;
 
-      expandAll(allPlatformIds);
+      animateNextLayout();
+      setPreviewOpenIds(allPlatformIds);
       await SecureStore.setItemAsync(TRACK_DAILY_OPEN_KEY, today).catch(() => undefined);
 
       allPlatformIds.forEach((platformId, index) => {
         const timer = setTimeout(() => {
-          collapseOne(platformId);
+          if (previewDismissedRef.current) return;
+          animateNextLayout();
+          setPreviewOpenIds((prev) => {
+            if (!prev) return prev;
+            const next = prev.filter((id) => id !== platformId);
+            return next.length > 0 ? next : null;
+          });
         }, DAY_CIRCLES_AUTO_COLLAPSE_DELAY_MS + (index * DAY_CIRCLES_COLLAPSE_STAGGER_MS));
         collapseTimersRef.current.push(timer);
       });
@@ -91,7 +130,7 @@ export function TrackList() {
       cancelled = true;
       cancelPendingAutoCollapse();
     };
-  }, [allPlatformIds, cancelPendingAutoCollapse, collapseOne, expandAll]);
+  }, [allPlatformIds, animateNextLayout, cancelPendingAutoCollapse]);
 
   const getArenaDelay = useCallback((figureName: string) => {
     return focusedFigureName === figureName ? 0 : ARENA_TRANSITION_MS;
@@ -104,9 +143,10 @@ export function TrackList() {
           figureName={item.figureName}
           shortName={item.shortName}
           totalAvoids={personWeeklyAvoids(item.figureName)}
-          focused={focusedPlatformId === item.figureName}
+          focused={selectedPlatformId === null && focusedFigureName === item.figureName}
           onPress={() => {
-            cancelPendingAutoCollapse();
+            animateNextLayout();
+            dismissDailyPreview();
             focusGroup(item.figureName);
           }}
         />
@@ -118,61 +158,77 @@ export function TrackList() {
 
     const figureName = getDisplayFigure(platformItem.platform);
     const platformId = platformItem.platform.id;
-    const focused = focusedPlatformId === platformId;
-    const expanded = expandedIds.has(platformId);
+    const focused = selectedPlatformId === platformId;
+    const expanded = detailPlatformIds.has(platformId);
     const todayAvoided = (platformItem.dayCounts.get(getLocalDateString()) ?? 0) > 0;
+
+    if (item.type === 'dayCircles') {
+      return (
+        <DayCircles
+          weekOf={weekOf}
+          platformName={platformItem.platform.name}
+          dayCounts={platformItem.dayCounts}
+          isChild={item.isChild}
+          onAvoidDate={async (date) => {
+            animateNextLayout();
+            dismissDailyPreview();
+            openPlatformDetails(platformId);
+            const delay = getArenaDelay(figureName);
+            const recorded = await avoidForDate(platformId, date);
+            if (recorded) queueArenaHit(figureName, delay);
+          }}
+        />
+      );
+    }
 
     return (
       <PlatformRow
         item={platformItem}
         isChild={item.type === 'childRow'}
-        weekOf={weekOf}
         focused={focused}
         expanded={expanded}
-        dimmed={focusedPlatformId !== null && !focused}
+        dimmed={focusedFigureName !== null && !focused}
         defeated={isDefeated(figureName)}
         onRowPress={() => {
-          cancelPendingAutoCollapse();
-          pressExpandableRow(platformId);
+          animateNextLayout();
+          dismissDailyPreview();
+          togglePlatformDetails(platformId);
         }}
         onAvoidPress={async () => {
-          cancelPendingAutoCollapse();
+          dismissDailyPreview();
           const delay = getArenaDelay(figureName);
 
           if (!todayAvoided) {
-            if (!focused) focusRow(platformId);
+            animateNextLayout();
+            focusPlatform(platformId);
             const recorded = await avoid(platformId);
             if (recorded) queueArenaHit(figureName, delay);
             return;
           }
 
-          pressExpandableRow(platformId);
+          animateNextLayout();
+          togglePlatformDetails(platformId);
           queueArenaHit(figureName, delay);
-        }}
-        onAvoidDate={async (date) => {
-          cancelPendingAutoCollapse();
-          const delay = getArenaDelay(figureName);
-
-          if (!focused) focusRow(platformId);
-          const recorded = await avoidForDate(platformId, date);
-          if (recorded) queueArenaHit(figureName, delay);
         }}
       />
     );
   }, [
     avoid,
     avoidForDate,
-    cancelPendingAutoCollapse,
-    expandedIds,
-    focusedPlatformId,
+    animateNextLayout,
+    detailPlatformIds,
+    dismissDailyPreview,
+    focusPlatform,
+    focusedFigureName,
     focusGroup,
-    focusRow,
     getArenaDelay,
     isDefeated,
+    openPlatformDetails,
     personWeeklyAvoids,
     platformItemsById,
-    pressExpandableRow,
     queueArenaHit,
+    selectedPlatformId,
+    togglePlatformDetails,
     weekOf,
   ]);
 
@@ -184,8 +240,10 @@ export function TrackList() {
       style={styles.list}
       contentContainerStyle={styles.listContent}
       extraData={{
-        expandedKey: Array.from(expandedIds).join('|'),
-        focusedPlatformId,
+        focusedFigureName,
+        openPlatformId,
+        previewOpenIds,
+        selectedPlatformId,
         todayKey: Array.from(todayActions).join('|'),
         weekAvoids,
       }}

@@ -7,7 +7,8 @@ import { platformsCopy } from '../../../copy/platforms';
 export type TrackListItem =
   | { type: 'groupHeader'; key: string; figureName: string; shortName: string; childPlatformIds: string[] }
   | { type: 'childRow'; key: string; platformId: string }
-  | { type: 'platformRow'; key: string; platformId: string };
+  | { type: 'platformRow'; key: string; platformId: string }
+  | { type: 'dayCircles'; key: string; platformId: string; isChild: boolean };
 
 // ── Build flat data array ────────────────────────────────────────────────────
 
@@ -16,7 +17,10 @@ export type TrackListItem =
  * Groups platforms by parentCompany (>1 member = group), singletons standalone.
  * Groups first, then singletons.
  */
-export function buildListData(platforms: Platform[]): TrackListItem[] {
+export function buildListData(
+  platforms: Platform[],
+  detailPlatformIds: ReadonlySet<string> = new Set(),
+): TrackListItem[] {
   const items: TrackListItem[] = [];
   const grouped = new Map<string, Platform[]>();
   const singletons: Platform[] = [];
@@ -51,11 +55,27 @@ export function buildListData(platforms: Platform[]): TrackListItem[] {
 
     for (const member of members) {
       items.push({ type: 'childRow', key: `child-${member.id}`, platformId: member.id });
+      if (detailPlatformIds.has(member.id)) {
+        items.push({
+          type: 'dayCircles',
+          key: `days-${member.id}`,
+          platformId: member.id,
+          isChild: true,
+        });
+      }
     }
   }
 
   for (const p of singletons) {
     items.push({ type: 'platformRow', key: `platform-${p.id}`, platformId: p.id });
+    if (detailPlatformIds.has(p.id)) {
+      items.push({
+        type: 'dayCircles',
+        key: `days-${p.id}`,
+        platformId: p.id,
+        isChild: false,
+      });
+    }
   }
 
   return items;

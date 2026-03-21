@@ -7,7 +7,6 @@ import { getLocalDateString } from '../../../core/utils/localDate';
 import type { PlatformItem } from '../types';
 import { getDisplayFigure } from '../context/TrackContext';
 import { AvoidButton } from './AvoidButton';
-import { DayCircles } from './DayCircles';
 import {
   TRACK_CHILD_INDENT,
   TRACK_EXPAND_INDICATOR_SIZE,
@@ -28,27 +27,23 @@ import {
 interface PlatformRowProps {
   item: PlatformItem;
   isChild: boolean;
-  weekOf: string;
   focused: boolean;
   expanded: boolean;
   dimmed: boolean;
   defeated: boolean;
   onRowPress: () => void;
   onAvoidPress: () => void;
-  onAvoidDate: (date: string) => Promise<void>;
 }
 
 export function PlatformRow({
   item,
   isChild,
-  weekOf,
   focused,
   expanded,
   dimmed,
   defeated,
   onRowPress,
   onAvoidPress,
-  onAvoidDate,
 }: PlatformRowProps) {
   const figureName = getDisplayFigure(item.platform);
   const todayAvoided = (item.dayCounts.get(getLocalDateString()) ?? 0) > 0;
@@ -57,66 +52,56 @@ export function PlatformRow({
     : platformsCopy.countDash;
 
   return (
-    <View>
-      <View style={[styles.row, isChild && styles.childRow, focused && styles.focusedRow]}>
-        <Pressable
-          onPress={onRowPress}
-          style={[styles.rowBody, dimmed && styles.dimmedBody]}
-          accessibilityRole="button"
-          accessibilityLabel={
-            expanded
-              ? platformsCopy.collapseLabel(item.platform.name)
-              : platformsCopy.expandLabel(item.platform.name)
-          }
-        >
-          <Text style={styles.expandIndicator} allowFontScaling={false}>
-            {expanded ? platformsCopy.collapseIndicator : platformsCopy.expandIndicator}
-          </Text>
+    <View style={[styles.row, isChild && styles.childRow, focused && styles.focusedRow]}>
+      <Pressable
+        onPress={onRowPress}
+        style={[styles.rowBody, dimmed && styles.dimmedBody]}
+        accessibilityRole="button"
+        accessibilityLabel={
+          expanded
+            ? platformsCopy.collapseLabel(item.platform.name)
+            : platformsCopy.expandLabel(item.platform.name)
+        }
+      >
+        <Text style={styles.expandIndicator} allowFontScaling={false}>
+          {expanded ? platformsCopy.collapseIndicator : platformsCopy.expandIndicator}
+        </Text>
 
+        {!isChild && (
+          <SpriteView
+            spriteId={nameToSpriteId(figureName)}
+            state={defeated ? 'defeated' : 'neutral'}
+            size={TRACK_ROW_SPRITE_SIZE}
+            cropRatio={TRACK_SPRITE_BUST_CROP_RATIO}
+            cropOffsetX={TRACK_SPRITE_BUST_CROP_OFFSET_X}
+            cropOffsetY={TRACK_SPRITE_BUST_CROP_OFFSET_Y}
+          />
+        )}
+
+        <View style={styles.nameColumn}>
+          <Text style={styles.name} numberOfLines={1} allowFontScaling>
+            {item.platform.name}
+          </Text>
           {!isChild && (
-            <SpriteView
-              spriteId={nameToSpriteId(figureName)}
-              state={defeated ? 'defeated' : 'neutral'}
-              size={TRACK_ROW_SPRITE_SIZE}
-              cropRatio={TRACK_SPRITE_BUST_CROP_RATIO}
-              cropOffsetX={TRACK_SPRITE_BUST_CROP_OFFSET_X}
-              cropOffsetY={TRACK_SPRITE_BUST_CROP_OFFSET_Y}
-            />
-          )}
-
-          <View style={styles.nameColumn}>
-            <Text style={styles.name} numberOfLines={1} allowFontScaling>
-              {item.platform.name}
+            <Text style={styles.subtitle} numberOfLines={1} allowFontScaling>
+              {figureName}
             </Text>
-            {!isChild && (
-              <Text style={styles.subtitle} numberOfLines={1} allowFontScaling>
-                {figureName}
-              </Text>
-            )}
-          </View>
+          )}
+        </View>
 
-          <Text
-            style={[styles.count, item.weeklyCount > 0 && styles.countActive]}
-            allowFontScaling
-            accessibilityLabel={platformsCopy.countA11y(item.weeklyCount, item.platform.name)}
-          >
-            {countLabel}
-          </Text>
-        </Pressable>
+        <Text
+          style={[styles.count, item.weeklyCount > 0 && styles.countActive]}
+          allowFontScaling
+          accessibilityLabel={platformsCopy.countA11y(item.weeklyCount, item.platform.name)}
+        >
+          {countLabel}
+        </Text>
+      </Pressable>
 
-        <AvoidButton
-          avoidedToday={todayAvoided}
-          platformName={item.platform.name}
-          onPress={onAvoidPress}
-        />
-      </View>
-
-      <DayCircles
-        weekOf={weekOf}
+      <AvoidButton
+        avoidedToday={todayAvoided}
         platformName={item.platform.name}
-        dayCounts={item.dayCounts}
-        onAvoidDate={onAvoidDate}
-        expanded={expanded}
+        onPress={onAvoidPress}
       />
     </View>
   );

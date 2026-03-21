@@ -204,3 +204,21 @@ This pivot removes complexity instead of moving it around:
 Recommended path: proceed with the data-driven detail-row pivot and keep the
 visual systems simple unless the rewritten behavior proves a specific exception
 is needed.
+
+## Implementation Status
+
+Implemented on March 21, 2026:
+
+- Track reducer now separates:
+  - `selectedPlatformId`
+  - `openPlatformId`
+  - `focusedFigureName`
+- `TrackList` now renders `dayCircles` as an explicit list item type instead of
+  an animated child inside `PlatformRow`
+- row open/close now uses `LayoutAnimation` around list-data changes
+- the first-visit daily preview is handled locally in `TrackList` by inserting
+  and then removing detail rows
+- arena backgrounds are back on `cover` with the container/background color
+  acting as the fallback layer
+- sprite crop remains shared across `2x2` and `2x1` sheets; no per-sprite
+  metadata was added

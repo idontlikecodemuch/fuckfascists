@@ -12,6 +12,18 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: March 21, 2026 (Track pivot implementation — data-driven detail rows)
+**Focus:** Implement the documented Track pivot so platform expansion stops depending on row-local animated height state.
+
+**What changed:**
+1. **Track state simplified** — `TrackContext` now separates `selectedPlatformId`, `openPlatformId`, and `focusedFigureName`, which removes the old overloaded focus token and the `expandedIds` set.
+2. **List behavior rebuilt around data, not hidden animation state** — `TrackList` now inserts a real `dayCircles` item under the open platform row and uses `LayoutAnimation` for open/close transitions.
+3. **Daily preview simplified** — the once-per-day ripple now lives locally in `TrackList` as a temporary set of open detail rows that collapse in sequence and cancel immediately on interaction.
+4. **Day circles made presentational again** — `DayCircles` is now a plain detail row instead of an internally animated height container.
+5. **Arena background direction aligned with the pivot** — `GameArena` is back on `cover` with the existing background color/overlay acting as the fallback layer; dynamic resize-mode switching was removed.
+6. **Shared crop rule kept simple** — no per-sprite metadata was added. The same shared crop constants continue to drive both `2x2` and `2x1` sheets.
+7. **Verification** — `npx tsc --noEmit` passed and `npx jest --runInBand` passed with 314 tests across 29 suites.
+
 ### Session: March 21, 2026 (Track pivot planning — simplify list behavior and sprite crop)
 **Focus:** Stop iterating on the fragile inline day-circle animation and document a simpler Track implementation path before another code pass.
 

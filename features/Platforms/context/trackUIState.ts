@@ -1,70 +1,83 @@
 export interface TrackUIState {
-  focusedPlatformId: string | null;
-  expandedIds: Set<string>;
+  selectedPlatformId: string | null;
+  openPlatformId: string | null;
+  focusedFigureName: string | null;
 }
 
 export type TrackUIAction =
-  | { type: 'focus-row'; platformId: string }
+  | { type: 'focus-platform'; platformId: string; figureName: string }
+  | { type: 'toggle-platform-details'; platformId: string; figureName: string }
+  | { type: 'open-platform-details'; platformId: string; figureName: string }
   | { type: 'focus-group'; figureName: string }
   | { type: 'clear-focus' }
-  | { type: 'press-expandable-row'; platformId: string }
-  | { type: 'toggle-row-expansion'; platformId: string }
-  | { type: 'focus-and-expand-row'; platformId: string }
-  | { type: 'expand-all'; ids: string[] }
-  | { type: 'collapse-one'; platformId: string }
   | { type: 'reset' };
 
 export const initialTrackUIState: TrackUIState = {
-  focusedPlatformId: null,
-  expandedIds: new Set(),
+  selectedPlatformId: null,
+  openPlatformId: null,
+  focusedFigureName: null,
 };
 
 export function trackUIReducer(state: TrackUIState, action: TrackUIAction): TrackUIState {
   switch (action.type) {
-    case 'focus-row':
-      if (state.focusedPlatformId === action.platformId && state.expandedIds.size === 0) {
+    case 'focus-platform': {
+      const keepOpen = state.openPlatformId === action.platformId;
+      const nextState = {
+        selectedPlatformId: action.platformId,
+        openPlatformId: keepOpen ? action.platformId : null,
+        focusedFigureName: action.figureName,
+      };
+
+      if (
+        state.selectedPlatformId === nextState.selectedPlatformId &&
+        state.openPlatformId === nextState.openPlatformId &&
+        state.focusedFigureName === nextState.focusedFigureName
+      ) {
         return state;
       }
-      return { focusedPlatformId: action.platformId, expandedIds: new Set() };
+
+      return nextState;
+    }
+    case 'toggle-platform-details': {
+      const isOpen =
+        state.selectedPlatformId === action.platformId &&
+        state.openPlatformId === action.platformId;
+
+      return {
+        selectedPlatformId: action.platformId,
+        openPlatformId: isOpen ? null : action.platformId,
+        focusedFigureName: action.figureName,
+      };
+    }
+    case 'open-platform-details':
+      return {
+        selectedPlatformId: action.platformId,
+        openPlatformId: action.platformId,
+        focusedFigureName: action.figureName,
+      };
     case 'focus-group':
-      if (state.focusedPlatformId === action.figureName && state.expandedIds.size === 0) {
+      if (
+        state.selectedPlatformId === null &&
+        state.openPlatformId === null &&
+        state.focusedFigureName === action.figureName
+      ) {
         return state;
       }
-      return { focusedPlatformId: action.figureName, expandedIds: new Set() };
+
+      return {
+        selectedPlatformId: null,
+        openPlatformId: null,
+        focusedFigureName: action.figureName,
+      };
     case 'clear-focus':
-      if (state.focusedPlatformId === null && state.expandedIds.size === 0) {
+      if (
+        state.selectedPlatformId === null &&
+        state.openPlatformId === null &&
+        state.focusedFigureName === null
+      ) {
         return state;
       }
       return initialTrackUIState;
-    case 'press-expandable-row': {
-      const isFocused = state.focusedPlatformId === action.platformId;
-      const isExpanded = state.expandedIds.has(action.platformId);
-
-      return {
-        focusedPlatformId: action.platformId,
-        expandedIds: isFocused && isExpanded ? new Set() : new Set([action.platformId]),
-      };
-    }
-    case 'toggle-row-expansion': {
-      const isExpanded = state.expandedIds.has(action.platformId);
-      return {
-        focusedPlatformId: action.platformId,
-        expandedIds: isExpanded ? new Set() : new Set([action.platformId]),
-      };
-    }
-    case 'focus-and-expand-row':
-      return {
-        focusedPlatformId: action.platformId,
-        expandedIds: new Set([action.platformId]),
-      };
-    case 'expand-all':
-      return { ...state, expandedIds: new Set(action.ids) };
-    case 'collapse-one': {
-      if (!state.expandedIds.has(action.platformId)) return state;
-      const next = new Set(state.expandedIds);
-      next.delete(action.platformId);
-      return { ...state, expandedIds: next };
-    }
     case 'reset':
       return initialTrackUIState;
     default:
