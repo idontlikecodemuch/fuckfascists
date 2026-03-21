@@ -7,6 +7,7 @@ export type TrackUIAction =
   | { type: 'focus-row'; platformId: string }
   | { type: 'focus-group'; figureName: string }
   | { type: 'clear-focus' }
+  | { type: 'press-expandable-row'; platformId: string }
   | { type: 'toggle-row-expansion'; platformId: string }
   | { type: 'focus-and-expand-row'; platformId: string }
   | { type: 'expand-all'; ids: string[] }
@@ -35,6 +36,15 @@ export function trackUIReducer(state: TrackUIState, action: TrackUIAction): Trac
         return state;
       }
       return initialTrackUIState;
+    case 'press-expandable-row': {
+      const isFocused = state.focusedPlatformId === action.platformId;
+      const isExpanded = state.expandedIds.has(action.platformId);
+
+      return {
+        focusedPlatformId: action.platformId,
+        expandedIds: isFocused && isExpanded ? new Set() : new Set([action.platformId]),
+      };
+    }
     case 'toggle-row-expansion': {
       const isExpanded = state.expandedIds.has(action.platformId);
       return {

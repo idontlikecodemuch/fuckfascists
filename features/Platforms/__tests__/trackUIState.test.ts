@@ -1,21 +1,16 @@
 import { initialTrackUIState, trackUIReducer } from '../context/trackUIState';
 
 describe('trackUIReducer user flows', () => {
-  it('opens and closes day circles when the user taps the focused row body', () => {
-    const focused = trackUIReducer(initialTrackUIState, {
-      type: 'focus-row',
-      platformId: 'instagram',
-    });
-
-    const expanded = trackUIReducer(focused, {
-      type: 'toggle-row-expansion',
+  it('opens on the first row tap and closes on the second tap for the same platform', () => {
+    const expanded = trackUIReducer(initialTrackUIState, {
+      type: 'press-expandable-row',
       platformId: 'instagram',
     });
     expect(expanded.focusedPlatformId).toBe('instagram');
     expect(expanded.expandedIds.has('instagram')).toBe(true);
 
     const collapsed = trackUIReducer(expanded, {
-      type: 'toggle-row-expansion',
+      type: 'press-expandable-row',
       platformId: 'instagram',
     });
     expect(collapsed.focusedPlatformId).toBe('instagram');
@@ -34,17 +29,17 @@ describe('trackUIReducer user flows', () => {
 
   it('collapses the previously expanded row when the user focuses a different row', () => {
     const expanded = trackUIReducer(initialTrackUIState, {
-      type: 'focus-and-expand-row',
+      type: 'press-expandable-row',
       platformId: 'instagram',
     });
 
     const switched = trackUIReducer(expanded, {
-      type: 'focus-row',
+      type: 'press-expandable-row',
       platformId: 'youtube',
     });
 
     expect(switched.focusedPlatformId).toBe('youtube');
-    expect(switched.expandedIds.size).toBe(0);
+    expect(Array.from(switched.expandedIds)).toEqual(['youtube']);
   });
 
   it('stores a group focus token without expanding child rows when the user taps a group header', () => {

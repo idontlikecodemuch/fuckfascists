@@ -12,6 +12,15 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: March 21, 2026 (Track follow-up — row tap expansion + crop alignment + arena background fit)
+**Focus:** Fix the remaining Track complaints after the v3 rebuild: row taps still feeling non-responsive, faces still clipping inside the sprite crop, and arena backgrounds looking zoomed on narrower assets.
+
+**What changed:**
+1. **Row-body expansion made atomic** — added a reducer-level `press-expandable-row` action so row taps and `✓` taps do not branch on a render-time `focused` prop. A row tap now opens that row immediately and a second tap collapses it.
+2. **Sprite crop corrected in both axes** — `SpriteView` now supports `cropOffsetX` in addition to `cropOffsetY`. Track bust/grid/single-character crops are nudged slightly left and up so the face stays inside the square window instead of clipping against the top/right edge of the frame.
+3. **Arena background fit corrected** — `GameArena` now picks `cover` only when the selected arena asset aspect ratio is already close to the live arena ratio, and uses `contain` for squarer backgrounds so they stop appearing zoomed in.
+4. **Regression expectations updated** — `trackUIState.test.ts` now reflects the one-tap row-open behavior and verifies that switching rows collapses the prior row while opening the newly selected one.
+
 ### Session: March 21, 2026 (Track screen rebuild v3 — reducer-driven focus + FlatList restore)
 **Focus:** Re-architect the Track screen interaction model so focus, arena state, and day-circle expansion stay in sync. Fix the broken expand/collapse behavior, restore the spec'd `FlatList` layout, and enforce one platform avoid per day.
 

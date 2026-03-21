@@ -1,5 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import { Animated, ImageBackground, Pressable, StyleSheet, View } from 'react-native';
+import {
+  Animated,
+  Image,
+  ImageBackground,
+  Pressable,
+  StyleSheet,
+  View,
+  useWindowDimensions,
+} from 'react-native';
 import { SpriteView, nameToSpriteId } from '../../../core/sprites/spriteLoader';
 import { arenaAssets } from '../../../core/arena/arenaAssets';
 import { FXLayer, useFX } from '../../../core/fx';
@@ -11,9 +19,11 @@ import {
   ARENA_TRANSITION_MS,
   TRACK_ARENA_GRID_CELL_SIZE,
   TRACK_ARENA_GRID_CROP_RATIO,
+  TRACK_ARENA_GRID_CROP_OFFSET_X,
   TRACK_ARENA_GRID_CROP_OFFSET_Y,
   TRACK_ARENA_SINGLE_BOTTOM_INSET,
   TRACK_ARENA_SINGLE_CROP_RATIO,
+  TRACK_ARENA_SINGLE_CROP_OFFSET_X,
   TRACK_ARENA_SINGLE_CROP_OFFSET_Y,
   TRACK_ARENA_SINGLE_DISPLAY_RATIO,
   TRACK_ARENA_SINGLE_LEFT_INSET,
@@ -42,6 +52,7 @@ function pickReaction(): string {
 export function GameArena() {
   const { focusedFigureName, focusedPlatformId, arenaHitRequest, todayActions } = useTrack();
   const fx = useFX();
+  const { width: windowWidth } = useWindowDimensions();
 
   const gridFigures = useMemo<ArenaFigure[]>(() => {
     const seen = new Set<string>();
@@ -133,13 +144,30 @@ export function GameArena() {
 
   const backgroundSource = backgroundKeyRef.current ? arenaAssets[backgroundKeyRef.current] : null;
   const singleSpriteSize = Math.round(ARENA_HEIGHT * TRACK_ARENA_SINGLE_DISPLAY_RATIO);
+  const backgroundResizeMode = useMemo(() => {
+    if (!backgroundSource) return 'cover' as const;
+
+    const asset = Image.resolveAssetSource(backgroundSource);
+    if (!asset?.width || !asset?.height) return 'cover' as const;
+
+    const arenaRatio = windowWidth / ARENA_HEIGHT;
+    const assetRatio = asset.width / asset.height;
+
+    return Math.abs(assetRatio - arenaRatio) > 0.18 ? 'contain' as const : 'cover' as const;
+  }, [backgroundSource, windowWidth]);
 
   return (
     <View style={styles.container}>
       {backgroundSource && (
-        <ImageBackground source={backgroundSource} style={styles.background} resizeMode="stretch" />
+        <ImageBackground
+          source={backgroundSource}
+          style={styles.background}
+          imageStyle={styles.backgroundImage}
+          resizeMode={backgroundResizeMode}
+        >
+          <View style={styles.backgroundOverlay} />
+        </ImageBackground>
       )}
-      <View style={styles.backgroundOverlay} />
 
       <Animated.View
         style={[styles.content, { opacity: contentOpacity, transform: [{ scale: pulseScale }] }]}
@@ -156,6 +184,7 @@ export function GameArena() {
               state={todayActions.has(focusedFigureName) ? 'defeated' : 'neutral'}
               size={singleSpriteSize}
               cropRatio={TRACK_ARENA_SINGLE_CROP_RATIO}
+              cropOffsetX={TRACK_ARENA_SINGLE_CROP_OFFSET_X}
               cropOffsetY={TRACK_ARENA_SINGLE_CROP_OFFSET_Y}
             />
           </Pressable>
@@ -174,6 +203,7 @@ export function GameArena() {
                   state="neutral"
                   size={TRACK_ARENA_GRID_CELL_SIZE}
                   cropRatio={TRACK_ARENA_GRID_CROP_RATIO}
+                  cropOffsetX={TRACK_ARENA_GRID_CROP_OFFSET_X}
                   cropOffsetY={TRACK_ARENA_GRID_CROP_OFFSET_Y}
                 />
               </Pressable>
@@ -204,10 +234,13 @@ const styles = StyleSheet.create({
   },
   background: {
     ...StyleSheet.absoluteFillObject,
+    backgroundColor: theme.colors.bgVoid,
+  },
+  backgroundImage: {
     opacity: 0.32,
   },
   backgroundOverlay: {
-    ...StyleSheet.absoluteFillObject,
+    flex: 1,
     backgroundColor: theme.colors.bgVoid,
     opacity: 0.28,
   },

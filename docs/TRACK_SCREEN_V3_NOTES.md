@@ -52,7 +52,7 @@ This makes the key user interactions atomic:
 
 - focus row
 - focus group
-- toggle focused row expansion
+- open or collapse a row from one row-body press action
 - focus and expand an unfocused row in one transition
 
 ### Structure
@@ -82,13 +82,13 @@ Legacy overcounted platform events are normalized on read so Track and Scorecard
 These were exercised in code and in the interaction model:
 
 1. User taps a row body on an unfocused row.
-Expected: focus shifts, no automatic expansion.
+Expected: row focuses and expands in the same transition.
 
 2. User taps the row body again on the focused row.
-Expected: day circles expand.
+Expected: day circles collapse.
 
 3. User taps the row body a third time.
-Expected: day circles collapse.
+Expected: day circles expand again.
 
 4. User taps `AVOID` on an unfocused row.
 Expected: today logs once, focus shifts, button becomes `✓`, arena hit FX fires.
@@ -100,7 +100,7 @@ Expected: row focuses and day circles expand together.
 Expected: day circles toggle with no extra data write.
 
 7. User taps a different row while one row is expanded.
-Expected: previous row collapses immediately.
+Expected: previous row collapses immediately and the newly tapped row opens.
 
 8. User taps a group header.
 Expected: arena focuses that figure without opening child rows.
@@ -115,7 +115,7 @@ Expected: second write is ignored in the data layer.
 Expected: pending collapse timers are canceled so the row stays open.
 
 12. Arena background and portrait crop.
-Expected: background fills the arena without `cover` zoom, and the head crop starts lower so faces are fully visible.
+Expected: the background uses `cover` only when the asset aspect ratio is already close to the arena and falls back to `contain` otherwise, so scenes stay filled without looking zoomed. Sprite crops are now shifted slightly left and up so faces stay fully visible inside the square crop.
 
 ### Automated coverage added
 
@@ -178,4 +178,4 @@ Then review and commit explicitly.
 
 The bug was not primarily a rendering-container issue. It was a state-coordination bug caused by trying to change focus and expansion through separate state setters in the same interaction, while the focus setter also cleared expansion state. The v3 rebuild fixes that by making Track interactions reducer-driven and atomic, restoring the spec'd `FlatList` structure instead of working around it with `ScrollView`.
 
-One additional user-facing issue remained after the first rebuild pass: the daily stagger-collapse timers could still race the user's first tap. That follow-up hardening now cancels pending timers on interaction, disables aggressive list clipping, relaxes the sprite crop window, and switches the arena background off `cover` so it fills without zooming.
+One additional user-facing issue remained after the first rebuild pass: the daily stagger-collapse timers could still race the user's first tap, and the row-body interaction still depended on render-time `focused` props. The latest follow-up hardens both by canceling pending timers on interaction and routing row-body/`✓` expansion through a single reducer action, while also shifting sprite crops left/up and choosing arena background fit mode by asset aspect ratio so scenes do not look zoomed.

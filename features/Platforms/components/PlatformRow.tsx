@@ -20,6 +20,9 @@ import {
   TRACK_ROW_PADDING_HORIZONTAL,
   TRACK_ROW_PADDING_VERTICAL,
   TRACK_ROW_SPRITE_SIZE,
+  TRACK_SPRITE_BUST_CROP_OFFSET_X,
+  TRACK_SPRITE_BUST_CROP_OFFSET_Y,
+  TRACK_SPRITE_BUST_CROP_RATIO,
 } from '../../../config/constants';
 
 interface PlatformRowProps {
@@ -75,7 +78,9 @@ export function PlatformRow({
               spriteId={nameToSpriteId(figureName)}
               state={defeated ? 'defeated' : 'neutral'}
               size={TRACK_ROW_SPRITE_SIZE}
-              headOnly
+              cropRatio={TRACK_SPRITE_BUST_CROP_RATIO}
+              cropOffsetX={TRACK_SPRITE_BUST_CROP_OFFSET_X}
+              cropOffsetY={TRACK_SPRITE_BUST_CROP_OFFSET_Y}
             />
           )}
 

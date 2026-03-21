@@ -25,7 +25,6 @@ export function TrackList() {
     collapseOne,
     expandAll,
     expandedIds,
-    focusAndExpandRow,
     focusedFigureName,
     focusedPlatformId,
     focusGroup,
@@ -33,8 +32,8 @@ export function TrackList() {
     isDefeated,
     platforms,
     personWeeklyAvoids,
+    pressExpandableRow,
     queueArenaHit,
-    toggleRowExpansion,
     todayActions,
     weekAvoids,
     weekOf,
@@ -134,11 +133,7 @@ export function TrackList() {
         defeated={isDefeated(figureName)}
         onRowPress={() => {
           cancelPendingAutoCollapse();
-          if (focused) {
-            toggleRowExpansion(platformId);
-          } else {
-            focusRow(platformId);
-          }
+          pressExpandableRow(platformId);
         }}
         onAvoidPress={async () => {
           cancelPendingAutoCollapse();
@@ -151,11 +146,7 @@ export function TrackList() {
             return;
           }
 
-          if (focused) {
-            toggleRowExpansion(platformId);
-          } else {
-            focusAndExpandRow(platformId);
-          }
+          pressExpandableRow(platformId);
           queueArenaHit(figureName, delay);
         }}
         onAvoidDate={async (date) => {
@@ -173,7 +164,6 @@ export function TrackList() {
     avoidForDate,
     cancelPendingAutoCollapse,
     expandedIds,
-    focusAndExpandRow,
     focusedPlatformId,
     focusGroup,
     focusRow,
@@ -181,8 +171,8 @@ export function TrackList() {
     isDefeated,
     personWeeklyAvoids,
     platformItemsById,
+    pressExpandableRow,
     queueArenaHit,
-    toggleRowExpansion,
     weekOf,
   ]);
 

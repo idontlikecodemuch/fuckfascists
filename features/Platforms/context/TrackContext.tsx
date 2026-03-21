@@ -33,6 +33,7 @@ export interface TrackContextValue {
   focusRow: (platformId: string) => void;
   focusGroup: (figureName: string) => void;
   clearFocus: () => void;
+  pressExpandableRow: (platformId: string) => void;
   toggleRowExpansion: (platformId: string) => void;
   focusAndExpandRow: (platformId: string) => void;
   expandAll: (ids: string[]) => void;
@@ -84,6 +85,10 @@ export function TrackProvider({ adapter, platforms, children }: TrackProviderPro
 
   const clearFocus = useCallback(() => {
     dispatch({ type: 'clear-focus' });
+  }, []);
+
+  const pressExpandableRow = useCallback((platformId: string) => {
+    dispatch({ type: 'press-expandable-row', platformId });
   }, []);
 
   const toggleRowExpansion = useCallback((platformId: string) => {
@@ -189,6 +194,7 @@ export function TrackProvider({ adapter, platforms, children }: TrackProviderPro
     focusRow,
     focusGroup,
     clearFocus,
+    pressExpandableRow,
     toggleRowExpansion,
     focusAndExpandRow,
     expandAll,
@@ -227,6 +233,7 @@ export function TrackProvider({ adapter, platforms, children }: TrackProviderPro
     isDefeated,
     personWeeklyAvoids,
     platforms,
+    pressExpandableRow,
     queueArenaHit,
     todayActions,
     toggleRowExpansion,

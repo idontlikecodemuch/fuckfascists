@@ -127,7 +127,9 @@ interface SpriteViewProps {
   headOnly?: boolean;
   /** Custom crop ratio (0-1) for top-aligned bust/portrait crops. */
   cropRatio?: number;
-  /** Optional downward crop offset ratio (0-1 of frame height). */
+  /** Optional horizontal crop offset ratio of frame width. Negative reveals more left. */
+  cropOffsetX?: number;
+  /** Optional vertical crop offset ratio of frame height. Negative reveals more top. */
   cropOffsetY?: number;
 }
 
@@ -145,6 +147,7 @@ export function SpriteView({
   opacity,
   headOnly = false,
   cropRatio,
+  cropOffsetX = 0,
   cropOffsetY = 0,
 }: SpriteViewProps) {
   if (!spriteId) return null;
@@ -155,6 +158,7 @@ export function SpriteView({
   const resolvedCropRatio = cropRatio ?? (headOnly ? DEFAULT_HEAD_CROP_RATIO : 1);
   const scale = size / (frame.frameHeight * resolvedCropRatio);
   const centeredCropLeft = Math.max(0, ((frame.frameWidth * scale) - size) / 2);
+  const leftCropOffset = frame.frameWidth * cropOffsetX * scale;
   const topCropOffset = frame.frameHeight * cropOffsetY * scale;
 
   return (
@@ -172,7 +176,7 @@ export function SpriteView({
           width: frame.sheetWidth * scale,
           height: frame.sheetHeight * scale,
           position: 'absolute' as const,
-          left: -((frame.offsetX * scale) + centeredCropLeft),
+          left: -((frame.offsetX * scale) + centeredCropLeft + leftCropOffset),
           top: -((frame.offsetY * scale) + topCropOffset),
         }}
         resizeMode="contain"
