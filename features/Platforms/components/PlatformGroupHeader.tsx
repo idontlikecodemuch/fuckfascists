@@ -1,8 +1,8 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { SpriteView, nameToSpriteId } from '../../../core/sprites/spriteLoader';
 import { platformsCopy } from '../../../copy/platforms';
 import { theme } from '../../../design/tokens';
+import { FigureBadge } from './FigureBadge';
 import {
   TRACK_ROW_FOCUS_BG_COLOR,
   TRACK_ROW_FOCUS_BORDER_COLOR,
@@ -37,8 +37,8 @@ export function PlatformGroupHeader({
       accessibilityRole="button"
       accessibilityLabel={platformsCopy.groupHeaderA11y(shortName, totalAvoids)}
     >
-      <SpriteView
-        spriteId={nameToSpriteId(figureName)}
+      <FigureBadge
+        figureName={figureName}
         state="neutral"
         size={TRACK_ROW_SPRITE_SIZE}
         cropRatio={TRACK_SPRITE_BUST_CROP_RATIO}
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     borderTopWidth: theme.borders.standard.width,
     borderBottomWidth: theme.borders.standard.width,
     borderTopColor: theme.colors.highlightBlue,
-    borderBottomColor: theme.colors.bgVoid,
+    borderBottomColor: TRACK_ROW_FOCUS_BORDER_COLOR,
     backgroundColor: theme.colors.surface2,
   },
   focused: {

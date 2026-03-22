@@ -1,14 +1,18 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { SpriteView, nameToSpriteId } from '../../../core/sprites/spriteLoader';
 import { platformsCopy } from '../../../copy/platforms';
 import { theme } from '../../../design/tokens';
 import { getLocalDateString } from '../../../core/utils/localDate';
 import type { PlatformItem } from '../types';
 import { getDisplayFigure } from '../context/TrackContext';
 import { AvoidButton } from './AvoidButton';
+import { FigureBadge } from './FigureBadge';
 import {
   TRACK_CHILD_INDENT,
+  TRACK_CHILD_FONT_SIZE_COUNT,
+  TRACK_CHILD_FONT_SIZE_NAME,
+  TRACK_CHILD_GUIDE_COLOR,
+  TRACK_CHILD_ROW_BG_COLOR,
   TRACK_EXPAND_INDICATOR_SIZE,
   TRACK_ROW_DIMMED_OPACITY,
   TRACK_ROW_FOCUS_BG_COLOR,
@@ -30,7 +34,6 @@ interface PlatformRowProps {
   focused: boolean;
   expanded: boolean;
   dimmed: boolean;
-  defeated: boolean;
   onRowPress: () => void;
   onAvoidPress: () => void;
 }
@@ -41,7 +44,6 @@ export function PlatformRow({
   focused,
   expanded,
   dimmed,
-  defeated,
   onRowPress,
   onAvoidPress,
 }: PlatformRowProps) {
@@ -63,23 +65,29 @@ export function PlatformRow({
             : platformsCopy.expandLabel(item.platform.name)
         }
       >
-        <Text style={styles.expandIndicator} allowFontScaling={false}>
-          {expanded ? platformsCopy.collapseIndicator : platformsCopy.expandIndicator}
-        </Text>
+          <Text style={styles.expandIndicator} allowFontScaling={false}>
+            {expanded ? platformsCopy.collapseIndicator : platformsCopy.expandIndicator}
+          </Text>
 
-        {!isChild && (
-          <SpriteView
-            spriteId={nameToSpriteId(figureName)}
-            state={defeated ? 'defeated' : 'neutral'}
-            size={TRACK_ROW_SPRITE_SIZE}
-            cropRatio={TRACK_SPRITE_BUST_CROP_RATIO}
-            cropOffsetX={TRACK_SPRITE_BUST_CROP_OFFSET_X}
-            cropOffsetY={TRACK_SPRITE_BUST_CROP_OFFSET_Y}
-          />
+          {isChild && <View style={styles.childGuide} />}
+
+          {!isChild && (
+            <FigureBadge
+              figureName={figureName}
+              state="neutral"
+              size={TRACK_ROW_SPRITE_SIZE}
+              cropRatio={TRACK_SPRITE_BUST_CROP_RATIO}
+              cropOffsetX={TRACK_SPRITE_BUST_CROP_OFFSET_X}
+              cropOffsetY={TRACK_SPRITE_BUST_CROP_OFFSET_Y}
+            />
         )}
 
         <View style={styles.nameColumn}>
-          <Text style={styles.name} numberOfLines={1} allowFontScaling>
+          <Text
+            style={[styles.name, isChild && styles.childName, isChild && focused && styles.childNameFocused]}
+            numberOfLines={1}
+            allowFontScaling
+          >
             {item.platform.name}
           </Text>
           {!isChild && (
@@ -90,7 +98,7 @@ export function PlatformRow({
         </View>
 
         <Text
-          style={[styles.count, item.weeklyCount > 0 && styles.countActive]}
+          style={[styles.count, isChild && styles.childCount, item.weeklyCount > 0 && styles.countActive]}
           allowFontScaling
           accessibilityLabel={platformsCopy.countA11y(item.weeklyCount, item.platform.name)}
         >
@@ -121,6 +129,7 @@ const styles = StyleSheet.create({
   },
   childRow: {
     paddingLeft: TRACK_CHILD_INDENT,
+    backgroundColor: TRACK_CHILD_ROW_BG_COLOR,
   },
   focusedRow: {
     borderLeftWidth: 3,
@@ -144,6 +153,15 @@ const styles = StyleSheet.create({
     fontSize: TRACK_EXPAND_INDICATOR_SIZE,
     textAlign: 'center',
   },
+  childGuide: {
+    width: 12,
+    height: 12,
+    marginRight: theme.space.xs,
+    borderLeftWidth: theme.borders.standard.width,
+    borderBottomWidth: theme.borders.standard.width,
+    borderColor: TRACK_CHILD_GUIDE_COLOR,
+    opacity: 0.85,
+  },
   nameColumn: {
     flex: 1,
     gap: 1,
@@ -151,6 +169,14 @@ const styles = StyleSheet.create({
   name: {
     fontFamily: theme.fonts.bodySemiBold,
     fontSize: TRACK_ROW_FONT_SIZE_NAME,
+    color: theme.colors.textPrimary,
+  },
+  childName: {
+    fontSize: TRACK_CHILD_FONT_SIZE_NAME,
+    fontFamily: theme.fonts.bodyMedium,
+    color: theme.colors.textSecondary,
+  },
+  childNameFocused: {
     color: theme.colors.textPrimary,
   },
   subtitle: {
@@ -164,6 +190,9 @@ const styles = StyleSheet.create({
     fontFamily: theme.fonts.bodySemiBold,
     fontSize: TRACK_ROW_FONT_SIZE_COUNT,
     color: theme.colors.textSecondary,
+  },
+  childCount: {
+    fontSize: TRACK_CHILD_FONT_SIZE_COUNT,
   },
   countActive: {
     color: theme.colors.dangerRed,

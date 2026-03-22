@@ -6,6 +6,7 @@ import { getWeekDates, isFutureDate } from '../utils/weekDates';
 import { theme } from '../../../design/tokens';
 import {
   TRACK_CHILD_INDENT,
+  TRACK_CHILD_ROW_BG_COLOR,
   TRACK_DAY_CIRCLE_SIZE,
   TRACK_DAY_CIRCLES_GAP,
   TRACK_ROW_PADDING_HORIZONTAL,
@@ -80,6 +81,7 @@ const styles = StyleSheet.create({
   },
   childWrapper: {
     paddingLeft: TRACK_CHILD_INDENT,
+    backgroundColor: TRACK_CHILD_ROW_BG_COLOR,
   },
   container: {
     flexDirection: 'row',

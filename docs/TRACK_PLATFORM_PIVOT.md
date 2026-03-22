@@ -222,3 +222,13 @@ Implemented on March 21, 2026:
   acting as the fallback layer
 - sprite crop remains shared across `2x2` and `2x1` sheets; no per-sprite
   metadata was added
+
+Follow-up visual pass implemented on March 21, 2026:
+
+- child platform rows now read as subordinate items through a deeper indent,
+  smaller type, a connector guide, and a softer nested background tint
+- singleton platform rows keep the larger primary treatment
+- small platform-list busts now always use the neutral sprite state so tiny
+  defeated-state halos/stars do not clip awkwardly in row-sized crops
+- missing platform sprites now fall back to a monogram badge instead of
+  rendering as an empty slot; this currently covers `Sundar Pichai` / YouTube

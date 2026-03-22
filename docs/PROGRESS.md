@@ -12,6 +12,16 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: March 21, 2026 (Track list visual hierarchy + sprite fallback polish)
+**Focus:** Make grouped platform rows read more clearly as children and clean up the small platform-list sprite treatment.
+
+**What changed:**
+1. **Hierarchy styling improved** — child rows under group headers now use a deeper indent, smaller name/count type, a connector guide, and a softer nested background tint so they read as sub-items instead of peers.
+2. **Platform busts simplified** — singleton platform rows now always use the neutral sprite bust, which avoids clipping defeated-state stars/halos inside tiny list crops.
+3. **Bust crop relaxed** — shared platform-row bust crop constants were retuned slightly wider and less top-biased so faces sit more naturally in the small list tiles.
+4. **Missing art fallback added** — introduced `FigureBadge` for Track. When a sprite is missing from the manifest, the UI now renders a monogram badge instead of a blank box. This fixes the visible YouTube/Sundar gap without needing new art immediately.
+5. **Verification** — `npx tsc --noEmit` passed and `npx jest --runInBand` passed with 314 tests across 29 suites.
+
 ### Session: March 21, 2026 (Track pivot implementation — data-driven detail rows)
 **Focus:** Implement the documented Track pivot so platform expansion stops depending on row-local animated height state.
 

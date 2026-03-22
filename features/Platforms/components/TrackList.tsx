@@ -36,7 +36,6 @@ export function TrackList() {
     selectedPlatformId,
     togglePlatformDetails,
     focusGroup,
-    isDefeated,
     platforms,
     personWeeklyAvoids,
     queueArenaHit,
@@ -188,7 +187,6 @@ export function TrackList() {
         focused={focused}
         expanded={expanded}
         dimmed={focusedFigureName !== null && !focused}
-        defeated={isDefeated(figureName)}
         onRowPress={() => {
           animateNextLayout();
           dismissDailyPreview();
@@ -222,7 +220,6 @@ export function TrackList() {
     focusedFigureName,
     focusGroup,
     getArenaDelay,
-    isDefeated,
     openPlatformDetails,
     personWeeklyAvoids,
     platformItemsById,

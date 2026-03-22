@@ -6,7 +6,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import { SpriteView, nameToSpriteId } from '../../../core/sprites/spriteLoader';
+import { nameToSpriteId } from '../../../core/sprites/spriteLoader';
 import { arenaAssets } from '../../../core/arena/arenaAssets';
 import { FXLayer, useFX } from '../../../core/fx';
 import { platformsCopy } from '../../../copy/platforms';
@@ -29,6 +29,7 @@ import {
 import { TRACKED_PLATFORMS } from '../data/platformList';
 import { getDisplayFigure, useTrack } from '../context/TrackContext';
 import { arenaFXRegistry } from './ArenaFX';
+import { FigureBadge } from './FigureBadge';
 
 interface ArenaFigure {
   figureName: string;
@@ -165,13 +166,14 @@ export function GameArena() {
             accessibilityRole="button"
             accessibilityLabel={platformsCopy.arenaTapA11y(focusedFigureName)}
           >
-            <SpriteView
-              spriteId={nameToSpriteId(focusedFigureName)}
+            <FigureBadge
+              figureName={focusedFigureName}
               state={todayActions.has(focusedFigureName) ? 'defeated' : 'neutral'}
               size={singleSpriteSize}
               cropRatio={TRACK_ARENA_SINGLE_CROP_RATIO}
               cropOffsetX={TRACK_ARENA_SINGLE_CROP_OFFSET_X}
               cropOffsetY={TRACK_ARENA_SINGLE_CROP_OFFSET_Y}
+              fallbackVariant="arena"
             />
           </Pressable>
         ) : (
@@ -184,13 +186,14 @@ export function GameArena() {
                 accessibilityRole="button"
                 accessibilityLabel={platformsCopy.arenaTapA11y(figure.figureName)}
               >
-                <SpriteView
-                  spriteId={figure.spriteId}
+                <FigureBadge
+                  figureName={figure.figureName}
                   state="neutral"
                   size={TRACK_ARENA_GRID_CELL_SIZE}
                   cropRatio={TRACK_ARENA_GRID_CROP_RATIO}
                   cropOffsetX={TRACK_ARENA_GRID_CROP_OFFSET_X}
                   cropOffsetY={TRACK_ARENA_GRID_CROP_OFFSET_Y}
+                  fallbackVariant="arena"
                 />
               </Pressable>
             ))}
