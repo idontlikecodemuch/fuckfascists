@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import type { MatchingDeps } from '../../../core/matching';
 import { matchEntity } from '../../../core/matching';
-import type { ScanResult } from '../types';
+import type { ScanContext, ScanResult } from '../types';
 import { buildScanResult } from '../utils/buildScanResult';
 
 export type ScanStatus = 'idle' | 'scanning' | 'matched' | 'unmatched' | 'lookup_unavailable' | 'error';
@@ -24,8 +24,8 @@ const INITIAL: EntityScanState = { status: 'idle', result: null, error: null };
 export function useEntityScan(deps: MatchingDeps, areaHash: string) {
   const [state, setState] = useState<EntityScanState>(INITIAL);
 
-  const scan = useCallback(
-    async (businessName: string) => {
+  const scanWithContext = useCallback(
+    async (businessName: string, context: ScanContext | null = null) => {
       const trimmed = businessName.trim();
       if (!trimmed) return;
 
@@ -44,7 +44,7 @@ export function useEntityScan(deps: MatchingDeps, areaHash: string) {
 
         setState({
           status: 'matched',
-          result: buildScanResult(matchResult),
+          result: buildScanResult(matchResult, context),
           error: null,
         });
       } catch (err) {
@@ -62,5 +62,5 @@ export function useEntityScan(deps: MatchingDeps, areaHash: string) {
 
   const reset = useCallback(() => setState(INITIAL), []);
 
-  return { ...state, scan, reset };
+  return { ...state, scan: scanWithContext, reset };
 }

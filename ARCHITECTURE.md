@@ -40,9 +40,9 @@ Three products ship together at v1.0:
                          both import from /core
 ```
 
-**The mobile app** is the primary product. Users scan nearby businesses, tap
-AVOIDED when they skip a flagged one, complete a weekly platform checklist, and
-receive a synchronized weekly scorecard.
+**The mobile app** is the primary product. Users scan nearby businesses, scan
+product barcodes, tap AVOIDED when they skip a flagged company, complete a
+weekly platform checklist, and receive a synchronized weekly scorecard.
 
 **The browser extension** detects flagged domains in-tab, turns the icon amber,
 and lets users log avoidances without leaving the current page.
@@ -76,6 +76,7 @@ both surfaces unless a deliberate V2 divergence is documented first.
 │   └── data/               ← StorageAdapter interface, entity list loader, eventStore
 │
 ├── features/               ← React Native feature modules
+│   ├── Scan/               ← Product barcode scan flow, barcode cache, product → brand → entity
 │   ├── Map/                ← Geolocation scan, entity flag, BusinessCard, avoid tap
 │   ├── Platforms/           ← Platform avoidance tracking (daily increments)
 │   ├── Scorecard/           ← Drop timing, card generation, sharing
@@ -118,6 +119,7 @@ These are not preferences. Violating any of them is a product-ending bug.
 | **No support events** | `EntityAvoidEvent` and `PlatformAvoidEvent` are the only event types. There is no `EntityVisitEvent`, `EntitySupportEvent`, or equivalent. Never add one. |
 | **No personal identifiers** | No account, no email, no device ID. No user ID of any kind in MVP. All data is local-only. |
 | **No backend (MVP)** | All processing is on-device. The only outbound calls are to the FEC API (from device) and the GitHub CDN (for the entity list, drop schedule, and Info content). |
+| **Camera access is contextual and least-privilege** | Product scanning mounts the camera only after explicit user action, stores only the scanned barcode resolution on-device, and does not request audio permission. |
 
 ### The areaHash boundary
 

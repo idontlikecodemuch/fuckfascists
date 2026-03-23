@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { View, Alert, StyleSheet, type ViewStyle } from 'react-native';
 import { MapScreen } from '../../features/Map/MapScreen';
+import { ScanScreen } from '../../features/Scan/ScanScreen';
 import { TrackScreen } from '../../features/Platforms/TrackScreen';
 import { NudgeBanner } from '../../features/Platforms/components/NudgeBanner';
 import { ScorecardScreen } from '../../features/Scorecard/ScorecardScreen';
@@ -54,6 +55,15 @@ export function AppShell({ adapter, entities }: AppShellProps) {
 
   const renderScreen = () => {
     switch (activeTab) {
+      case 'scan':
+        return (
+          <ScanScreen
+            entities={entities}
+            adapter={adapter}
+            fetchOrgs={fetchOrgs}
+            fetchOrgSummary={fetchOrgSummary}
+          />
+        );
       case 'map':
         return (
           <MapScreen

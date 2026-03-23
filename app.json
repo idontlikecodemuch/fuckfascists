@@ -18,6 +18,13 @@
       "expo-asset",
       "expo-secure-store",
       [
+        "expo-camera",
+        {
+          "cameraPermission": "F*ck Fascists uses your camera to scan product barcodes and match brands to corporate donation records.",
+          "recordAudioAndroid": false
+        }
+      ],
+      [
         "expo-font",
         {
           "fonts": [

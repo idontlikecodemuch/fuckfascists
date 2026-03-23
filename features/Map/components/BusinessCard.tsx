@@ -11,6 +11,13 @@ import { SpriteView, nameToSpriteId } from '../../../core/sprites/spriteLoader';
 import { AvoidButton } from './AvoidButton';
 import { DataZone } from './DataZone';
 
+const DISMISS_HIT_SLOP = {
+  top: theme.space.sm,
+  bottom: theme.space.sm,
+  left: theme.space.sm,
+  right: theme.space.sm,
+} as const;
+
 // Re-export banner + resolve for consumers that import from BusinessCard
 export { BusinessBanner, resolveCardMode } from './BusinessBanner';
 export type { BannerVariant, BusinessBannerProps } from './BusinessBanner';
@@ -25,6 +32,7 @@ export interface BusinessCardProps {
   onDismiss: () => void;
   /** Full entity list — enables parent attribution via getDisplayFigure/getParentEntity. */
   allEntities?: Entity[];
+  modal?: boolean;
 }
 
 /** Short display name for parent attribution — strips Inc/Corp/Platforms/.com. */
@@ -63,6 +71,7 @@ export function BusinessCard({
   avoided = false,
   onDismiss,
   allEntities,
+  modal = true,
 }: BusinessCardProps) {
   const { canonicalName, matchedAlias, committeeName, confidence, donationSummary, entity, fecFilingUrl } = result;
 
@@ -76,6 +85,8 @@ export function BusinessCard({
 
   const figureName = entity ? getDisplayFigure(entity, allEntities) : null;
   const spriteId = figureName ? nameToSpriteId(figureName) : null;
+  const barcodeContext = result.context?.kind === 'barcode' ? result.context : null;
+  const barcodeLabel = barcodeContext?.productName ?? barcodeContext?.brandName ?? barcodeContext?.barcode ?? null;
 
   const handleDetailPress = () => {
     // V1: no-op — DataZone's link opens FEC directly
@@ -89,7 +100,7 @@ export function BusinessCard({
   };
 
   return (
-    <View style={styles.cardWrapper} accessibilityViewIsModal accessibilityLabel={mapCopy.cardModalLabel}>
+    <View style={styles.cardWrapper} accessibilityViewIsModal={modal} accessibilityLabel={mapCopy.cardModalLabel}>
       {spriteId && (
         <View style={styles.spritePerch} pointerEvents="none" accessibilityElementsHidden>
           <SpriteView spriteId={spriteId} state={avoided ? 'defeated' : 'neutral'} size={140} />
@@ -98,6 +109,17 @@ export function BusinessCard({
 
       <View style={[styles.card, isMedium && styles.cardMedium]}>
         <View style={styles.nameSection}>
+          {barcodeContext && barcodeLabel && (
+            <View style={styles.contextBlock}>
+              <Text style={styles.contextEyebrow} allowFontScaling>
+                {mapCopy.barcodeContextEyebrow}
+              </Text>
+              <Text style={styles.contextLine} allowFontScaling numberOfLines={2}>
+                {mapCopy.barcodeContextLine(barcodeLabel, barcodeContext.barcode)}
+              </Text>
+            </View>
+          )}
+
           <View style={styles.titleRow}>
             <Text style={styles.name} numberOfLines={2} accessibilityRole="header" allowFontScaling>
               {displayName}
@@ -134,7 +156,7 @@ export function BusinessCard({
           style={styles.dismissButton}
           accessibilityRole="button"
           accessibilityLabel={sharedCopy.dismissLabel}
-          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          hitSlop={DISMISS_HIT_SLOP}
         >
           <Text style={styles.dismissLabel} allowFontScaling>{sharedCopy.dismiss}</Text>
         </Pressable>
@@ -156,6 +178,9 @@ const styles = StyleSheet.create({
   },
   cardMedium: { borderLeftColor: theme.colors.rewardYellow, borderLeftWidth: theme.borders.hero.width },
   nameSection: { padding: theme.space.lg, paddingBottom: theme.space.sm },
+  contextBlock: { marginBottom: theme.space.sm },
+  contextEyebrow: { ...theme.type.caption, color: theme.colors.glowCyan, letterSpacing: 1 },
+  contextLine: { ...theme.type.bodyS, color: theme.colors.textSecondary, marginTop: theme.space.xs },
   titleRow: { flexDirection: 'row', alignItems: 'center', marginBottom: theme.space.xs },
   name: { flex: 1, ...theme.type.displayM, color: theme.colors.textPrimary, marginRight: theme.space.sm },
   parentAttribution: { ...theme.type.bodyS, color: theme.colors.textSecondary, marginTop: 1 },

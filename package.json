@@ -12,13 +12,18 @@
     "build:ext": "node scripts/build-extension.mjs",
     "build:ext:watch": "node scripts/build-extension.mjs --watch",
     "verify:entities": "node scripts/verify-entities.mjs",
-    "fetch:donations": "node scripts/fetch-donation-data.mjs"
+    "fetch:donations": "node scripts/fetch-donation-data.mjs",
+    "fetch:people": "node scripts/fetch-people-data.mjs",
+    "compare:people:bulk": "node scripts/compare-people-bulk.mjs",
+    "build:people:bulk-top": "node scripts/build-bulk-top-donors.mjs",
+    "sync:people:bulk-top": "node scripts/sync-people-from-bulk-top.mjs"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.1.1",
     "dotenv": "^17.3.1",
     "expo": "~52.0.0",
     "expo-asset": "~11.0.5",
+    "expo-camera": "~16.0.18",
     "expo-font": "~13.0.4",
     "expo-haptics": "~14.0.1",
     "expo-location": "~18.0.0",

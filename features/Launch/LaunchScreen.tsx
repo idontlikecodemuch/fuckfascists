@@ -1,12 +1,17 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { View, Text, Pressable, StyleSheet, Animated, AccessibilityInfo, useWindowDimensions } from 'react-native';
+import { View, Text, Pressable, StyleSheet, Animated, AccessibilityInfo, useWindowDimensions, Image } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { launchCopy } from '../../copy/launch';
 import { sharedCopy } from '../../copy/shared';
 import { theme } from '../../design/tokens';
+import {
+  LAUNCH_HERO_LOGO_MAX_HEIGHT,
+  LAUNCH_HERO_LOGO_MAX_WIDTH,
+} from '../../config/constants';
 
 const LAUNCH_DATE_KEY = 'ff_last_launch_date';
 const AUTO_DISMISS_MS = 5000;
+const HERO_LOGO_ASPECT = 1466 / 827;
 
 /**
  * Daily launch screen — shown once per calendar day.
@@ -69,7 +74,11 @@ export function LaunchScreen({ onDismiss }: { onDismiss: () => void }) {
   const messageIndex = Math.floor(Date.now() / 86400000) % launchCopy.messages.length;
   const message = launchCopy.messages[messageIndex];
 
-  const logoWidth = screenWidth * 0.6;
+  // Keep the title logo visually prominent without letting it dominate
+  // larger phones/tablets.
+  const logoMaxWidth = Math.min(screenWidth - theme.space['3xl'] * 2, LAUNCH_HERO_LOGO_MAX_WIDTH);
+  const logoWidth = Math.min(logoMaxWidth, LAUNCH_HERO_LOGO_MAX_HEIGHT * HERO_LOGO_ASPECT);
+  const logoHeight = logoWidth / HERO_LOGO_ASPECT;
 
   return (
     <Pressable
@@ -79,12 +88,14 @@ export function LaunchScreen({ onDismiss }: { onDismiss: () => void }) {
       accessibilityLabel={launchCopy.tapLabel}
     >
       <View style={styles.content}>
-        <Animated.Image
-          source={require('../../assets/pixel/brand/FF_logo.png')}
-          style={[styles.heroLogo, { width: logoWidth, transform: [{ scale: logoScale }] }]}
-          resizeMode="contain"
-          accessibilityLabel={sharedCopy.appName}
-        />
+        <Animated.View style={{ transform: [{ scale: logoScale }] }}>
+          <Image
+            source={require('../../assets/pixel/brand/FF_logo.png')}
+            style={[styles.heroLogo, { width: logoWidth, height: logoHeight }]}
+            resizeMode="contain"
+            accessibilityLabel={sharedCopy.appName}
+          />
+        </Animated.View>
 
         <View style={styles.divider} />
 
@@ -128,7 +139,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.space['3xl'],
   },
   heroLogo: {
-    aspectRatio: 1466 / 827,
     alignSelf: 'center',
     marginBottom: theme.space.md,
   },

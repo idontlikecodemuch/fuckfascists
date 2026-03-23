@@ -1,5 +1,14 @@
 import type { ConfidenceLevel, DonationSummary, Entity } from '../../core/models';
 
+export type ScanContext =
+  | {
+      kind: 'barcode';
+      barcode: string;
+      productName: string | null;
+      brandName: string | null;
+      source: 'cache' | 'open_food_facts';
+    };
+
 /**
  * The result of running a business name through the entity matching pipeline.
  * Safe to display — every field is either public FEC data or a
@@ -18,6 +27,7 @@ export interface ScanResult {
   /** FEC filing URL — present when a committee ID is available (curated or live API). */
   fecFilingUrl: string | null;
   entity: Entity | null;
+  context?: ScanContext | null;
 }
 
 /**

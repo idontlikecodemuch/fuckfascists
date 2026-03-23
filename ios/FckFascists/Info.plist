@@ -46,6 +46,8 @@
     </dict>
     <key>NSFaceIDUsageDescription</key>
     <string>Allow $(PRODUCT_NAME) to access your Face ID biometric data.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>F*ck Fascists uses your camera to scan product barcodes and match brands to corporate donation records.</string>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>F*ck Fascists uses your location to find nearby businesses and check their political donation records.</string>
     <key>NSPhotoLibraryUsageDescription</key>

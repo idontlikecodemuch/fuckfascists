@@ -113,4 +113,22 @@ describe('buildScanResult', () => {
     const result = buildScanResult(makeMatch({ committeeName: null }));
     expect(result.committeeName).toBeNull();
   });
+
+  it('threads scan context through when provided', () => {
+    const result = buildScanResult(makeMatch(), {
+      kind: 'barcode',
+      barcode: '012345678905',
+      productName: 'Doritos Nacho Cheese',
+      brandName: 'Doritos',
+      source: 'open_food_facts',
+    });
+
+    expect(result.context).toEqual({
+      kind: 'barcode',
+      barcode: '012345678905',
+      productName: 'Doritos Nacho Cheese',
+      brandName: 'Doritos',
+      source: 'open_food_facts',
+    });
+  });
 });

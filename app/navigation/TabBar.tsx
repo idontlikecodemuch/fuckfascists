@@ -3,10 +3,11 @@ import { View, Text, Pressable, ImageBackground, StyleSheet, type ViewStyle, typ
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { theme } from '../../design/tokens';
+import { scanCopy } from '../../copy/scan';
 
 const BG_TEXTURE = require('../../assets/pixel/bg_tile_dark_stone.png');
 
-export type Tab = 'map' | 'platforms' | 'report' | 'info' | 'dev';
+export type Tab = 'scan' | 'map' | 'platforms' | 'report' | 'info' | 'dev';
 
 export const TABS: { id: Tab; label: string }[] = [
   { id: 'map',       label: 'MAP'       },
@@ -14,9 +15,11 @@ export const TABS: { id: Tab; label: string }[] = [
   { id: 'report',    label: 'SCORECARD' },
   { id: 'info',      label: 'INFO'      },
   ...(__DEV__ ? [{ id: 'dev' as const, label: 'DEV' }] : []),
+  { id: 'scan',      label: scanCopy.tabLabel },
 ];
 
 const TAB_ICON_NAMES: Record<Tab, keyof typeof Ionicons.glyphMap> = {
+  scan:      'barcode-outline',
   map:       'map-outline',
   platforms: 'checkmark-done-outline',
   report:    'trophy-outline',
@@ -70,10 +73,10 @@ const styles = StyleSheet.create<{
     borderTopWidth: theme.borders.standard.width,
     borderTopColor: theme.colors.frameBlue,
     paddingTop: theme.space.xs,
+    overflow: 'hidden',
   },
   bgTexture: {
     opacity: 0.3,
-    transform: [{ scale: 2 }],
   },
   tabItem: {
     flex: 1,

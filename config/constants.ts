@@ -18,6 +18,7 @@ export const CONFIDENCE_THRESHOLD_MEDIUM = 0.60;
 
 // OpenFEC API base URL — primary data source as of v1.1
 export const FEC_API_BASE_URL = 'https://api.open.fec.gov/v1';
+export const OPEN_FOOD_FACTS_API_BASE_URL = 'https://world.openfoodfacts.org/api/v2';
 
 // Curated entity list update URL
 export const ENTITY_LIST_UPDATE_URL = 'https://raw.githubusercontent.com/idontlikecodemuch/fckfascists-data/main/entities.json';
@@ -38,6 +39,11 @@ export const INFO_CONTENT_URL = 'https://raw.githubusercontent.com/idontlikecode
 export const POI_SEARCH_RADIUS_METERS = 50;
 export const POI_SEARCH_RADIUS_MIN_METERS = 15;
 export const POI_SEARCH_RADIUS_MAX_METERS = 200;
+// Persistent cache TTL for barcode -> brand/entity resolutions.
+// Keeps repeated shelf scans offline after the first successful lookup.
+export const BARCODE_LOOKUP_CACHE_TTL_DAYS = 30;
+export const BARCODE_SCAN_GUIDE_HEIGHT = 128;
+export const BARCODE_SCAN_GUIDE_SIDE_INSET_PERCENT = 14;
 // How long a tap cell's POI name list is cached in-memory before re-querying.
 // Short TTL — only prevents duplicate API calls from accidental double-taps,
 // not meant to persist results across active map exploration.
@@ -67,6 +73,17 @@ export const DEFAULT_SELECTED_PLATFORM_IDS = [
 export const FX_AVOID_DURATION_MS = 3000;
 // Fade-out portion at the end of the avoid celebration (ms).
 export const FX_AVOID_FADE_MS = 400;
+
+// Launch screen art bounds
+export const LAUNCH_HERO_LOGO_MAX_WIDTH = 220;
+export const LAUNCH_HERO_LOGO_MAX_HEIGHT = 140;
+
+// Beta overlay controls
+export const BETA_FLOATING_BUTTON_SIZE = theme.a11y.minTapTarget;
+export const BETA_FLOATING_BUTTON_BOTTOM = 100;
+export const BETA_RESET_BUTTON_WIDTH = theme.a11y.minTapTarget + theme.space.md;
+export const BETA_RESET_BUTTON_HEIGHT = theme.a11y.minTapTarget - theme.space.sm;
+export const BETA_RESET_BUTTON_GAP = theme.space.sm;
 
 // ── Track screen animation timing ────────────────────────────────────────────
 // Arena transition when switching focus from grid/other person to single character.

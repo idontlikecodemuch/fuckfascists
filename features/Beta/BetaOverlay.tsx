@@ -4,6 +4,21 @@ import { captureScreen } from 'react-native-view-shot';
 import * as MediaLibrary from 'expo-media-library';
 import { betaCopy } from '../../copy/beta';
 import { theme } from '../../design/tokens';
+import { resetAppStateForFreshTest } from './resetAppState';
+import {
+  BETA_FLOATING_BUTTON_BOTTOM,
+  BETA_FLOATING_BUTTON_SIZE,
+  BETA_RESET_BUTTON_GAP,
+  BETA_RESET_BUTTON_HEIGHT,
+  BETA_RESET_BUTTON_WIDTH,
+} from '../../config/constants';
+
+const FLOATING_BUTTON_HIT_SLOP = {
+  top: theme.space.sm,
+  bottom: theme.space.sm,
+  left: theme.space.sm,
+  right: theme.space.sm,
+} as const;
 
 /**
  * Floating beta overlay — shown when beta mode is active.
@@ -32,6 +47,28 @@ export function BetaOverlay() {
     }
   }, []);
 
+  const handleReset = useCallback(() => {
+    Alert.alert(
+      betaCopy.resetConfirmTitle,
+      betaCopy.resetConfirmBody,
+      [
+        { text: betaCopy.resetCancelAction, style: 'cancel' },
+        {
+          text: betaCopy.resetConfirmAction,
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await resetAppStateForFreshTest();
+              Alert.alert(betaCopy.resetDone);
+            } catch {
+              Alert.alert(betaCopy.resetFailed);
+            }
+          },
+        },
+      ]
+    );
+  }, []);
+
   return (
     <>
       {/* Beta indicator */}
@@ -43,11 +80,21 @@ export function BetaOverlay() {
 
       {/* Bug report button */}
       <Pressable
+        style={styles.resetButton}
+        onPress={handleReset}
+        accessibilityRole="button"
+        accessibilityLabel={betaCopy.resetButtonLabel}
+        hitSlop={FLOATING_BUTTON_HIT_SLOP}
+      >
+        <Text style={styles.resetText}>{betaCopy.resetButton}</Text>
+      </Pressable>
+
+      <Pressable
         style={styles.bugButton}
         onPress={handleBugReport}
         accessibilityRole="button"
         accessibilityLabel={betaCopy.bugButtonLabel}
-        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+        hitSlop={FLOATING_BUTTON_HIT_SLOP}
       >
         <Text style={styles.bugText}>{betaCopy.bugButton}</Text>
       </Pressable>
@@ -70,17 +117,29 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: theme.colors.textPrimary,
     letterSpacing: 2,
-    fontSize: 9,
   },
   bugButton: {
     position: 'absolute',
-    bottom: 100,
+    bottom: BETA_FLOATING_BUTTON_BOTTOM,
     left: theme.space.md,
-    width: 44,
-    height: 44,
+    width: BETA_FLOATING_BUTTON_SIZE,
+    height: BETA_FLOATING_BUTTON_SIZE,
     backgroundColor: theme.colors.dangerRed,
     borderWidth: theme.borders.standard.width,
     borderColor: theme.colors.frameBlue,
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 999,
+  },
+  resetButton: {
+    position: 'absolute',
+    bottom: BETA_FLOATING_BUTTON_BOTTOM + BETA_FLOATING_BUTTON_SIZE + BETA_RESET_BUTTON_GAP,
+    left: theme.space.md,
+    width: BETA_RESET_BUTTON_WIDTH,
+    height: BETA_RESET_BUTTON_HEIGHT,
+    backgroundColor: theme.colors.bgNav,
+    borderWidth: theme.borders.standard.width,
+    borderColor: theme.colors.rewardYellow,
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 999,
@@ -90,6 +149,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: theme.colors.textPrimary,
     letterSpacing: 1,
-    fontSize: 10,
+  },
+  resetText: {
+    ...theme.type.caption,
+    fontWeight: 'bold',
+    color: theme.colors.rewardYellow,
+    letterSpacing: 1,
   },
 });
