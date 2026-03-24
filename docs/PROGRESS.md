@@ -6,11 +6,28 @@ This document is updated continuously. New instances should read this first — 
 
 ## Current Sprint: MVP V1 — Core Vertical Slice
 
-**Overall status:** Feature-complete. iOS app built and running on simulator. Physical device test next.
+**Overall status:** Feature-complete. Device testing feedback addressed. Physical device re-test next.
 
 ---
 
 ## Recent Sessions (most recent first)
+
+### Session: March 24, 2026 (device testing fixes — 10 issues)
+**Focus:** Fix 10 issues found during physical device testing, spanning safe area handling, camera permissions, onboarding flow, map header sizing, sprite alignment, and copy consistency.
+
+**What changed:**
+1. **Safe area top constant** — added `SAFE_AREA_TOP_MIN` (52pt) in `config/constants.ts`. Applied to `BetaOverlay` (was hardcoded) and `BarcodeScannerSheet` (dynamic `Math.max(insets.top, SAFE_AREA_TOP_MIN)`). `ScanScreen` switched from RN `SafeAreaView` to `react-native-safe-area-context` `SafeAreaView` for proper inset handling.
+2. **Camera permission eager request** — `BarcodeScannerSheet` now calls `requestPermission()` via `useEffect` on mount instead of showing an interstitial "Allow camera" button. Native OS dialog fires immediately when OPEN SCANNER is tapped.
+3. **Map header reduced** — header bar backing shrunk to 75% of original aspect ratio; logo increased from 24pt to 28pt. Search bar top offset recalculated. More map visible behind the banner.
+4. **FigureBadge fallback removed** — no more initials box when sprite is missing. Renders empty slot only. Cleaned up unused styles, imports, `getInitials()` function.
+5. **Arena sprite flush** — `TRACK_ARENA_SINGLE_BOTTOM_INSET` set to 0 (was 6). Character sprites sit flush on arena bottom edge.
+6. **Welcome + Launch logo responsive** — both screens now scale logo to ~22% of screen height (capped at 160pt) instead of fixed width. Prevents overflow on smaller screens.
+7. **Onboarding reorder** — step order changed from welcome → permissions → privacy to welcome → **privacy** → **permissions**. YOUR DATA (privacy promise) now precedes SET UP (permission request). Step indices, navigator comments, copy comments, and test assertions all updated.
+8. **Permissions confirmed state** — cards now show "GRANTED" text + green border when permission is granted (no button). Single bottom CTA only. Eliminates the three simultaneous LET'S GO buttons.
+9. **YOUR DATA dead space** — privacy points list wrapped in a flex-centered container that fills the screen vertically.
+10. **CTA reconciled** — launch screen "TAP TO START" changed to "PRESS START" to match onboarding welcome. Consistent 8-bit arcade reference across both surfaces.
+
+**Verification:** 305 tests pass across 29 suites.
 
 ### Session: March 22, 2026 (barcode scan crash fix + runtime hardening)
 **Focus:** Remove the Scan tab crash, keep the implementation lightweight, and document the final stable flow.

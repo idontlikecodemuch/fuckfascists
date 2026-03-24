@@ -205,6 +205,11 @@ export const POI_SEARCH_RADIUS_MAX_METERS = 200;
 export const TAP_CACHE_TTL_MS = 60 * 1000; // 60 seconds
 export const TAP_DEBOUNCE_MS = 500;
 
+// Minimum safe area top padding for absolute overlays and screens that don't use
+// SafeAreaView. Floor for non-notch devices; notch/island devices use the larger
+// system inset via Math.max(insets.top, SAFE_AREA_TOP_MIN).
+export const SAFE_AREA_TOP_MIN = 52;
+
 // Controls whether the public figure / CEO name is shown in specific UI contexts.
 // SHOW_FIGURE_NAME_IN_CARD: false — business card is an informational FEC data screen.
 // SHOW_FIGURE_NAME_IN_POPUP: true — extension popup benefits from confrontational framing.
@@ -467,7 +472,7 @@ The entire app is styled as a **vintage 8-bit video game**. This is the foundati
 | Design system: tokens + 26 components migrated | ✅ Done — `design/tokens.ts` + all components use theme tokens |
 | Pixel art assets: pipeline + deploy + wired | ✅ Done — 35 assets in `assets/pixel/`, FlagMarker + BusinessCard wired. 107 CEO sprites in `assets/pixel/sprites/`, wired into BusinessCard, PlatformRow, ScorecardView. 4-step keying pipeline with 1px alpha erosion. Brand logos wired (map header, launch, onboarding, icon, splash). 4 arena backgrounds wired into GameArena. UI kit sliced (30 elements): frames wired into BusinessCard + ScorecardView, buttons into AvoidButton + MapControls, input field into MapSearchBar, bar into TabBar, header bar into MapScreen. |
 | Design refinement: 8-bit game energy | ✅ Done — Map header bar, search bar depth, tab bar texture, BusinessCard sprite-left layout + donation hierarchy flip + reward overlay + sprite perch ON card, MatchChooser visual upgrade, GameArena tiled bg texture + rewardYellow cell borders, PlatformGroup parent company grouping + short names + hideSprite/compact child rows, InfoScreen collapsible transparency + section ornamentation, tap-to-dismiss backdrop, AvoidButton depth borders, global highlight lines reduced to 2px |
-| Onboarding tightened (5→3 screens) | ✅ Done — Welcome, Permissions, Privacy |
+| Onboarding tightened (5→3 screens) | ✅ Done — Welcome, Privacy (YOUR DATA), Permissions (SET UP). Privacy promise before permission request. |
 | Beta testing mode | ✅ Done — triple-tap toggle, BetaOverlay, screenshot tool |
 | Daily launch screen | ✅ Done — once per calendar day, rotating messages, 5s auto-dismiss, breathing logo animation |
 | Avoid celebration animation + haptics | ✅ Done — shared FX system (`core/fx/`) with FXLayer + useFX + effect registry; AvoidCelebration effect (scale + fade) |
@@ -475,6 +480,7 @@ The entire app is styled as a **vintage 8-bit video game**. This is the foundati
 | Device visual refinement pass | ✅ Done — launch screen 5s + breathing logo, map header spacing, BusinessCard corners/z-index/sprite 150pt, SpriteView headOnly, GameArena full bleed + all-platforms roster, PlatformRow row-tap + auto-expand, TabBar texture 2x |
 | BusinessCard rebuild + component extraction | ✅ Done — BusinessCard (168 lines), BusinessBanner + resolveCardMode (114), DataZone (161), DetailSheet (placeholder), useMapControls hook (73). Card/banner routing, FXLayer in MapScreen, all files under 250 lines. |
 | App.tsx extraction | ✅ Done — App.tsx (112 lines): fonts + data init + gate chain. OnboardingGate, LaunchGate, AppShell extracted to `app/gates/`. |
+| Device testing fixes (10 issues) | ✅ Done — safe area constant, camera permission eager request, map header reduced, FigureBadge empty fallback, arena sprite flush, responsive logos, onboarding reorder, permissions confirmed state, privacy layout, CTA reconciled to PRESS START |
 | App tested on physical device | 🔄 Pending |
 | Extension tested in Chrome | ✅ Done |
 
