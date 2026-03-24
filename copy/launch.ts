@@ -1,5 +1,5 @@
 export const launchCopy = {
-  tapToStart: "TAP TO START",
+  tapToStart: "PRESS START",
   tapLabel: "Tap anywhere to dismiss and enter the app",
   messages: [
     "Every dollar is a vote.",

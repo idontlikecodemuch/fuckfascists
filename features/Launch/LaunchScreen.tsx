@@ -19,7 +19,7 @@ const HERO_LOGO_ASPECT = 1466 / 827;
  * Logo breathes with a subtle scale pulse — video game title screen energy.
  */
 export function LaunchScreen({ onDismiss }: { onDismiss: () => void }) {
-  const { width: screenWidth } = useWindowDimensions();
+  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
   const [reducedMotion, setReducedMotion] = useState(false);
   const pulseAnim = useRef(new Animated.Value(1)).current;
   const logoScale = useRef(new Animated.Value(1)).current;
@@ -77,7 +77,8 @@ export function LaunchScreen({ onDismiss }: { onDismiss: () => void }) {
   // Keep the title logo visually prominent without letting it dominate
   // larger phones/tablets.
   const logoMaxWidth = Math.min(screenWidth - theme.space['3xl'] * 2, LAUNCH_HERO_LOGO_MAX_WIDTH);
-  const logoWidth = Math.min(logoMaxWidth, LAUNCH_HERO_LOGO_MAX_HEIGHT * HERO_LOGO_ASPECT);
+  const logoMaxScreenHeight = Math.round(screenHeight * 0.22);
+  const logoWidth = Math.min(logoMaxWidth, Math.min(LAUNCH_HERO_LOGO_MAX_HEIGHT, logoMaxScreenHeight) * HERO_LOGO_ASPECT);
   const logoHeight = logoWidth / HERO_LOGO_ASPECT;
 
   return (

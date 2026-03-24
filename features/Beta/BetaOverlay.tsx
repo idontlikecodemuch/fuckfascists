@@ -11,6 +11,7 @@ import {
   BETA_RESET_BUTTON_GAP,
   BETA_RESET_BUTTON_HEIGHT,
   BETA_RESET_BUTTON_WIDTH,
+  SAFE_AREA_TOP_MIN,
 } from '../../config/constants';
 
 const FLOATING_BUTTON_HIT_SLOP = {
@@ -105,7 +106,7 @@ export function BetaOverlay() {
 const styles = StyleSheet.create({
   badge: {
     position: 'absolute',
-    top: 52,
+    top: SAFE_AREA_TOP_MIN,
     left: theme.space.md,
     backgroundColor: theme.colors.dangerRed,
     paddingHorizontal: theme.space.sm,

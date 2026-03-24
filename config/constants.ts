@@ -139,7 +139,13 @@ export const TRACK_ARENA_SINGLE_CROP_OFFSET_X = -0.03;
 export const TRACK_ARENA_SINGLE_CROP_OFFSET_Y = -0.02;
 export const TRACK_ARENA_SINGLE_DISPLAY_RATIO = 0.9;
 export const TRACK_ARENA_SINGLE_LEFT_INSET = 16;
-export const TRACK_ARENA_SINGLE_BOTTOM_INSET = 6;
+export const TRACK_ARENA_SINGLE_BOTTOM_INSET = 0;
+
+// ── Safe area ────────────────────────────────────────────────────────────────
+// Minimum top padding for screens that don't use SafeAreaView or need manual
+// inset handling (e.g. absolute overlays). On notch/island devices the system
+// inset is larger — this is the floor for non-notch devices.
+export const SAFE_AREA_TOP_MIN = 52;
 
 // Controls whether the public figure / CEO name is shown in the UI.
 // true = show, false = hide. Compile-time constant — change and rebuild to toggle.

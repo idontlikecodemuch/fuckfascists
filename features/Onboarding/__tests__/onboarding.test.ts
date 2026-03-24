@@ -7,14 +7,14 @@ describe('ONBOARDING_STEPS', () => {
     expect(ONBOARDING_STEPS[0]).toBe('welcome');
   });
 
-  it('ends with privacy', () => {
-    expect(ONBOARDING_STEPS[ONBOARDING_STEPS.length - 1]).toBe('privacy');
+  it('ends with permissions', () => {
+    expect(ONBOARDING_STEPS[ONBOARDING_STEPS.length - 1]).toBe('permissions');
   });
 
-  it('places permissions before privacy', () => {
-    const permIdx = ONBOARDING_STEPS.indexOf('permissions');
+  it('places privacy before permissions', () => {
     const privacyIdx = ONBOARDING_STEPS.indexOf('privacy');
-    expect(permIdx).toBeLessThan(privacyIdx);
+    const permIdx = ONBOARDING_STEPS.indexOf('permissions');
+    expect(privacyIdx).toBeLessThan(permIdx);
   });
 
   it('contains no duplicate steps', () => {

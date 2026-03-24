@@ -143,7 +143,8 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
   const bannerVariant = cardMode && typeof cardMode === 'object' ? cardMode.banner : null;
   const isCelebrating = fx.active;
   const headerBarHeight = Math.round(screenWidth / HEADER_BAR_ASPECT);
-  const SEARCH_TOP = insets.top + headerBarHeight + theme.space.md;
+  const reducedHeaderHeight = Math.round(headerBarHeight * 0.75);
+  const SEARCH_TOP = insets.top + reducedHeaderHeight + theme.space.md;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -164,9 +165,9 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
         {tapLoadingCoord && <TapLoadingMarker coordinate={tapLoadingCoord} />}
       </MapView>
 
-      <View style={[styles.headerBar, { height: insets.top + headerBarHeight }]} pointerEvents="none">
-        <Image source={HEADER_BAR_ASSET} style={[styles.headerBarImg, { top: insets.top, width: screenWidth, height: headerBarHeight }]} resizeMode="stretch" />
-        <Image source={require('../../assets/pixel/brand/FF_logo_horizontal.png')} style={[styles.headerLogo, { marginTop: insets.top + Math.round(headerBarHeight * 0.2) }]} resizeMode="contain" accessibilityLabel={sharedCopy.appName} />
+      <View style={[styles.headerBar, { height: insets.top + reducedHeaderHeight }]} pointerEvents="none">
+        <Image source={HEADER_BAR_ASSET} style={[styles.headerBarImg, { top: insets.top, width: screenWidth, height: reducedHeaderHeight }]} resizeMode="stretch" />
+        <Image source={require('../../assets/pixel/brand/FF_logo_horizontal.png')} style={[styles.headerLogo, { marginTop: insets.top + Math.round(reducedHeaderHeight * 0.1) }]} resizeMode="contain" accessibilityLabel={sharedCopy.appName} />
       </View>
 
       <MapSearchBar value={searchText} onChangeText={setSearchText} onSubmit={handleSearch} isScanning={status === 'scanning'} topOffset={SEARCH_TOP} />
@@ -202,7 +203,7 @@ const styles = StyleSheet.create({
   map:            { flex: 1 },
   headerBar:      { position: 'absolute', top: 0, left: 0, right: 0, zIndex: 2, alignItems: 'center', overflow: 'visible' as const, backgroundColor: theme.colors.bgVoid },
   headerBarImg:   { position: 'absolute', left: 0 },
-  headerLogo:     { height: 24, aspectRatio: 1536 / 322, zIndex: 3 },
+  headerLogo:     { height: 28, aspectRatio: 1536 / 322, zIndex: 3 },
   backdrop:       { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
   cardContainer:  { position: 'absolute', bottom: 0, left: 0, right: 0, overflow: 'visible' as const, maxHeight: '65%' },
   bannerContainer:{ position: 'absolute', bottom: 80, left: 0, right: 0 },

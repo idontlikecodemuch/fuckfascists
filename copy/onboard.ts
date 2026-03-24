@@ -10,7 +10,7 @@ export const onboardCopy = {
   featureTrack: "TRACK \u2014 Log the platforms you skipped",
   featureScorecard: "SCORECARD \u2014 See your impact every Friday",
 
-  // Screen 2: Permissions (location + notifications combined)
+  // Screen 3: Permissions (location + notifications combined)
   permissionsTitle: "SET UP",
   locTitle: "FIND NEARBY BUSINESSES",
   locWhy: "We use your location to center the map on your neighborhood.",
@@ -21,7 +21,7 @@ export const onboardCopy = {
   notifPromise: "Notifications are local-only. No server push.",
   notifBtn: "ALLOW NOTIFICATIONS",
 
-  // Screen 3: Privacy (tightened)
+  // Screen 2: Privacy (YOUR DATA — privacy promise before permission request)
   privacyTitle: "YOUR DATA",
   noAccounts: "NO ACCOUNTS",
   noAccountsDesc: "No sign-in, no email, no user ID. Ever.",
@@ -37,6 +37,7 @@ export const onboardCopy = {
 
   // Shared
   requesting: "...",
+  confirmed: "GRANTED",
   next: "NEXT",
   skip: "SKIP",
   done: "LET\u2019S GO",

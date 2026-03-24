@@ -18,23 +18,26 @@ const POINTS = [
 
 export function PrivacyScreen({ onNext }: PrivacyScreenProps) {
   return (
-    <OnboardingSlide stepIndex={2} title={onboardCopy.privacyTitle} nextLabel={onboardCopy.done} onNext={onNext}>
-      <View style={styles.list}>
-        {POINTS.map((p) => (
-          <View key={p.label} style={styles.row}>
-            <View style={styles.bullet} accessible={false} />
-            <View style={styles.textBlock}>
-              <Text style={styles.label} allowFontScaling>{p.label}</Text>
-              <Text style={styles.detail} allowFontScaling>{p.detail}</Text>
+    <OnboardingSlide stepIndex={1} title={onboardCopy.privacyTitle} onNext={onNext}>
+      <View style={styles.container}>
+        <View style={styles.list}>
+          {POINTS.map((p) => (
+            <View key={p.label} style={styles.row}>
+              <View style={styles.bullet} accessible={false} />
+              <View style={styles.textBlock}>
+                <Text style={styles.label} allowFontScaling>{p.label}</Text>
+                <Text style={styles.detail} allowFontScaling>{p.detail}</Text>
+              </View>
             </View>
-          </View>
-        ))}
+          ))}
+        </View>
       </View>
     </OnboardingSlide>
   );
 }
 
 const styles = StyleSheet.create({
+  container: { flex: 1, justifyContent: 'center' },
   list:      { gap: theme.space.lg },
   row:       { flexDirection: 'row', gap: theme.space.md, alignItems: 'flex-start' },
   bullet:    { width: 8, height: 8, backgroundColor: theme.colors.dangerRed, marginTop: 5, flexShrink: 0 },

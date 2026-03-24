@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, useWindowDimensions } from 'react-native';
 import { OnboardingSlide } from '../components/OnboardingSlide';
 import { onboardCopy } from '../../../copy/onboard';
 import { sharedCopy } from '../../../copy/shared';
@@ -13,13 +13,21 @@ interface WelcomeScreenProps {
  * Screen 1 — Welcome + How It Works (combined).
  * App name, tagline, body copy, then three feature one-liners.
  */
+const HERO_LOGO_ASPECT = 1466 / 827;
+const HERO_LOGO_MAX_HEIGHT_RATIO = 0.22; // ~22% of screen height — comfortably under half
+
 export function WelcomeScreen({ onNext }: WelcomeScreenProps) {
+  const { height: screenHeight } = useWindowDimensions();
+  const logoMaxHeight = Math.round(screenHeight * HERO_LOGO_MAX_HEIGHT_RATIO);
+  const logoHeight = Math.min(logoMaxHeight, 160);
+  const logoWidth = logoHeight * HERO_LOGO_ASPECT;
+
   return (
     <OnboardingSlide stepIndex={0} title={onboardCopy.welcomeTitle} nextLabel={onboardCopy.letsGo} onNext={onNext}>
       <View style={styles.content}>
         <Image
           source={require('../../../assets/pixel/brand/FF_logo.png')}
-          style={styles.heroLogo}
+          style={[styles.heroLogo, { width: logoWidth, height: logoHeight }]}
           resizeMode="contain"
           accessibilityLabel={sharedCopy.appName}
         />
@@ -50,7 +58,7 @@ export function WelcomeScreen({ onNext }: WelcomeScreenProps) {
 
 const styles = StyleSheet.create({
   content:  { alignItems: 'flex-start' },
-  heroLogo: { width: 200, aspectRatio: 1466 / 827, marginBottom: theme.space.xl },
+  heroLogo: { marginBottom: theme.space.xl },
   tagline:  { ...theme.type.displayS, color: theme.colors.textPrimary, lineHeight: 28, marginBottom: theme.space['2xl'] },
   divider:  { width: 48, height: 4, backgroundColor: theme.colors.dangerRed, marginBottom: theme.space['2xl'] },
   body:     { ...theme.type.bodyM, color: theme.colors.textSecondary, lineHeight: 22, marginBottom: theme.space.lg },

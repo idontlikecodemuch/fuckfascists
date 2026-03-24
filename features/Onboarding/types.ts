@@ -1,7 +1,7 @@
 export const ONBOARDING_STEPS = [
   'welcome',
-  'permissions',
   'privacy',
+  'permissions',
 ] as const;
 
 export type OnboardingStep = typeof ONBOARDING_STEPS[number];

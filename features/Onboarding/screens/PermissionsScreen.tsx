@@ -11,9 +11,11 @@ interface PermissionsScreenProps {
 }
 
 /**
- * Screen 2 — Combined location + notification permissions.
+ * Screen 3 — Combined location + notification permissions.
  * Two stacked permission cards, each with its own Allow button.
  * Tapping Allow fires the OS dialog — grant or deny, we advance.
+ * When granted, card shows a confirmed state (green, "GRANTED" label).
+ * Single bottom CTA only — no per-card "LET'S GO" buttons.
  * "SKIP" at the bottom advances without requesting either.
  */
 export function PermissionsScreen({ onNext }: PermissionsScreenProps) {
@@ -47,7 +49,7 @@ export function PermissionsScreen({ onNext }: PermissionsScreenProps) {
 
   return (
     <OnboardingSlide
-      stepIndex={1}
+      stepIndex={2}
       title={onboardCopy.permissionsTitle}
       nextLabel={allDone ? onboardCopy.done : onboardCopy.next}
       onNext={onNext}
@@ -55,47 +57,55 @@ export function PermissionsScreen({ onNext }: PermissionsScreenProps) {
     >
       <View style={styles.cards}>
         {/* Location card */}
-        <View style={styles.card}>
+        <View style={[styles.card, locGranted && styles.cardDone]}>
           <Text style={styles.cardTitle} allowFontScaling>{onboardCopy.locTitle}</Text>
           <Text style={styles.cardWhy} allowFontScaling>{onboardCopy.locWhy}</Text>
           <View style={styles.promiseBox}>
             <Text style={styles.promiseLabel} allowFontScaling>{onboardCopy.ourPromise}</Text>
             <Text style={styles.promise} allowFontScaling>{onboardCopy.locPromise}</Text>
           </View>
-          <Pressable
-            style={[styles.allowButton, locGranted && styles.allowDone]}
-            onPress={locGranted ? undefined : handleLocation}
-            disabled={locGranted || requesting}
-            accessibilityRole="button"
-            accessibilityLabel={locGranted ? onboardCopy.done : onboardCopy.locBtn}
-            accessibilityState={{ disabled: locGranted || requesting }}
-          >
-            <Text style={styles.allowLabel} allowFontScaling>
-              {locGranted ? onboardCopy.done : onboardCopy.locBtn}
-            </Text>
-          </Pressable>
+          {locGranted ? (
+            <Text style={styles.confirmedLabel} allowFontScaling>{onboardCopy.confirmed}</Text>
+          ) : (
+            <Pressable
+              style={styles.allowButton}
+              onPress={handleLocation}
+              disabled={requesting}
+              accessibilityRole="button"
+              accessibilityLabel={onboardCopy.locBtn}
+              accessibilityState={{ disabled: requesting }}
+            >
+              <Text style={styles.allowLabel} allowFontScaling>
+                {onboardCopy.locBtn}
+              </Text>
+            </Pressable>
+          )}
         </View>
 
         {/* Notifications card */}
-        <View style={styles.card}>
+        <View style={[styles.card, notifGranted && styles.cardDone]}>
           <Text style={styles.cardTitle} allowFontScaling>{onboardCopy.notifTitle}</Text>
           <Text style={styles.cardWhy} allowFontScaling>{onboardCopy.notifWhy}</Text>
           <View style={styles.promiseBox}>
             <Text style={styles.promiseLabel} allowFontScaling>{onboardCopy.ourPromise}</Text>
             <Text style={styles.promise} allowFontScaling>{onboardCopy.notifPromise}</Text>
           </View>
-          <Pressable
-            style={[styles.allowButton, notifGranted && styles.allowDone]}
-            onPress={notifGranted ? undefined : handleNotifications}
-            disabled={notifGranted || requesting}
-            accessibilityRole="button"
-            accessibilityLabel={notifGranted ? onboardCopy.done : onboardCopy.notifBtn}
-            accessibilityState={{ disabled: notifGranted || requesting }}
-          >
-            <Text style={styles.allowLabel} allowFontScaling>
-              {notifGranted ? onboardCopy.done : onboardCopy.notifBtn}
-            </Text>
-          </Pressable>
+          {notifGranted ? (
+            <Text style={styles.confirmedLabel} allowFontScaling>{onboardCopy.confirmed}</Text>
+          ) : (
+            <Pressable
+              style={styles.allowButton}
+              onPress={handleNotifications}
+              disabled={requesting}
+              accessibilityRole="button"
+              accessibilityLabel={onboardCopy.notifBtn}
+              accessibilityState={{ disabled: requesting }}
+            >
+              <Text style={styles.allowLabel} allowFontScaling>
+                {onboardCopy.notifBtn}
+              </Text>
+            </Pressable>
+          )}
         </View>
       </View>
     </OnboardingSlide>
@@ -110,7 +120,8 @@ const styles = StyleSheet.create({
   promiseBox:   { borderWidth: theme.borders.standard.width, borderColor: theme.colors.surface2, padding: theme.space.md, marginBottom: theme.space.lg },
   promiseLabel: { ...theme.type.caption, fontWeight: 'bold', color: theme.colors.rewardYellow, letterSpacing: 2, marginBottom: theme.space.xs },
   promise:      { ...theme.type.bodyS, color: theme.colors.textSecondary, lineHeight: 18 },
-  allowButton:  { backgroundColor: theme.colors.dangerRed, borderWidth: theme.borders.standard.width, borderColor: theme.colors.frameBlue, minHeight: theme.a11y.minTapTarget, alignItems: 'center', justifyContent: 'center', paddingVertical: theme.space.sm },
-  allowDone:    { backgroundColor: theme.colors.successGreen },
-  allowLabel:   { ...theme.type.uiLabel, fontSize: 13, color: theme.colors.textPrimary, letterSpacing: 2 },
+  cardDone:       { borderColor: theme.colors.successGreen },
+  allowButton:    { backgroundColor: theme.colors.dangerRed, borderWidth: theme.borders.standard.width, borderColor: theme.colors.frameBlue, minHeight: theme.a11y.minTapTarget, alignItems: 'center', justifyContent: 'center', paddingVertical: theme.space.sm },
+  allowLabel:     { ...theme.type.uiLabel, fontSize: 13, color: theme.colors.textPrimary, letterSpacing: 2 },
+  confirmedLabel: { ...theme.type.uiLabel, fontSize: 13, color: theme.colors.successGreen, letterSpacing: 2, textAlign: 'center', paddingVertical: theme.space.sm },
 });

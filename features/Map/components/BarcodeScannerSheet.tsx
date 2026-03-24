@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, Text, Pressable, StyleSheet, Linking } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import type { BarcodeScanningResult } from 'expo-camera';
 import { sharedCopy } from '../../../copy/shared';
@@ -8,6 +9,7 @@ import { theme } from '../../../design/tokens';
 import {
   BARCODE_SCAN_GUIDE_HEIGHT,
   BARCODE_SCAN_GUIDE_SIDE_INSET_PERCENT,
+  SAFE_AREA_TOP_MIN,
 } from '../../../config/constants';
 
 interface BarcodeScannerSheetProps {
@@ -25,9 +27,19 @@ export function BarcodeScannerSheet({
   onClose,
   onScanned,
 }: BarcodeScannerSheetProps) {
+  const insets = useSafeAreaInsets();
   const [permission, requestPermission] = useCameraPermissions();
   const [mountError, setMountError] = useState(false);
   const scanLock = useRef(false);
+
+  // Request camera permission immediately when the scanner opens — skip the
+  // interstitial and go straight to the native OS dialog (expo-camera best
+  // practice: call requestPermission() eagerly, not behind a manual button).
+  useEffect(() => {
+    if (visible && permission && !permission.granted && permission.canAskAgain) {
+      requestPermission().catch(() => undefined);
+    }
+  }, [visible, permission, requestPermission]);
 
   useEffect(() => {
     if (!visible) {
@@ -110,8 +122,10 @@ export function BarcodeScannerSheet({
 
   if (!visible) return null;
 
+  const dynamicTop = Math.max(insets.top, SAFE_AREA_TOP_MIN);
+
   return (
-    <View style={styles.root}>
+    <View style={[styles.root, { paddingTop: dynamicTop }]}>
       <View style={styles.header}>
         <Text style={styles.title}>{mapCopy.barcodeScannerTitle}</Text>
         <Pressable onPress={onClose} accessibilityRole="button" accessibilityLabel={sharedCopy.dismissLabel}>
@@ -127,7 +141,6 @@ const styles = StyleSheet.create({
   root: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: theme.colors.bgVoid,
-    paddingTop: theme.space['3xl'],
     paddingHorizontal: theme.space.lg,
     paddingBottom: theme.space.xl,
     zIndex: 20,

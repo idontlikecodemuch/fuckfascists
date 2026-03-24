@@ -11,8 +11,8 @@ interface OnboardingNavigatorProps {
 /**
  * Manages the 3-step onboarding sequence:
  *  1. Welcome + How It Works (combined)
- *  2. Permissions (location + notifications on one screen)
- *  3. Privacy commitments (tightened)
+ *  2. Privacy commitments (YOUR DATA — privacy promise before permission request)
+ *  3. Permissions (location + notifications on one screen)
  */
 export function OnboardingNavigator({ onComplete }: OnboardingNavigatorProps) {
   const [stepIndex, setStepIndex] = useState(0);
