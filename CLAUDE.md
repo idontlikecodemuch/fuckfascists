@@ -404,6 +404,40 @@ These apply to every file, every PR, every AI-generated change.
 
 ---
 
+## Git Workflow Rules
+
+These rules prevent the branch sprawl, orphaned worktrees, and build-state drift that plagued the repo through March 2026. Follow them strictly.
+
+### Branch discipline
+- **`main` is always deployable.** Every commit on `main` must type-check and pass tests. Do not push broken code to `main`.
+- **One feature = one branch.** Name it `{scope}/{short-description}` (e.g. `feat/barcode-scan`, `fix/map-crash`, `data/people-v2`). Delete it after merging.
+- **Do not create parallel branches for the same work.** If a branch exists for a task, continue on that branch — do not fork a new one from a different base.
+- **Rebase or squash before merging to main.** The main branch should have clean, readable history. Avoid merge commits when possible.
+- **Push feature branches to origin** so other agents/sessions can see them. Do not accumulate local-only branches.
+
+### Worktree hygiene
+- **Claude Code worktrees are ephemeral.** They exist for one session's work. When done, commit, push, and remove the worktree.
+- **Never leave more than 2 worktrees alive.** If you see stale worktrees (no unique commits), remove them.
+- **The main worktree must stay on `main`** unless you are actively working on a feature branch and will switch back when done. Never leave the main worktree parked on a stale feature branch.
+
+### Before committing
+- **Stage specific files** — never `git add -A` or `git add .`. Review what you're committing.
+- **Check that new dependencies have matching lockfile + iOS pod entries.** If you add a dep to `package.json`, the `Podfile.lock` and `project.pbxproj` must be updated before committing (run `npm install && cd ios && pod install` locally).
+- **Never commit scratch/working files** (e.g. `entities_GPTpass.json`). Add them to `.gitignore` first.
+- **Never commit bulk data files.** The `tools/fec-bulk/` directory is 91GB+. It is gitignored. If you create new bulk data directories, gitignore them immediately.
+
+### After merging
+- **Delete the merged branch** (local and remote). Do not accumulate dead branches.
+- **Prune remote tracking refs** — `git remote prune origin` after deleting remote branches.
+- **Verify `main` is current** — `git pull origin main` in the main worktree.
+
+### What NOT to do
+- Do not squash-merge a subset of a branch's changes to main and then continue working on the original branch. This creates diverged histories that are painful to reconcile.
+- Do not create worktrees from feature branches. Worktrees should branch from `main`.
+- Do not park uncommitted changes in the main worktree for days. Either commit them on a branch or stash them.
+
+---
+
 ## Copy Management Rules
 
 All user-facing strings live in `copy/` (mobile) or `extension/copy.ts` (extension). Components import from these files. Never hardcode a user-facing string in a component.
