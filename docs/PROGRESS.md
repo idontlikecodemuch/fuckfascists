@@ -6,11 +6,40 @@ This document is updated continuously. New instances should read this first — 
 
 ## Current Sprint: MVP V1 — Core Vertical Slice
 
-**Overall status:** Feature-complete. iOS app built and running on simulator. Physical device test next.
+**Overall status:** Feature-complete. Running on physical iOS device. Continuing device testing and polish.
 
 ---
 
 ## Recent Sessions (most recent first)
+
+### Session: March 24, 2026 (repo cleanup & consolidation)
+**Focus:** Audit and clean up accumulated git state from multiple agents/worktrees. Consolidate branches, remove dead worktrees, fix .gitignore, sync lockfiles, add git workflow rules.
+
+**What changed:**
+1. **Branch consolidation** — merged `claude/model-implementation-tWWD2` data work (expo-file-system dep, data pipeline updates) into `main`. Deleted stale branches: `claude/lucid-bassi`, `claude/model-implementation-tWWD2`, `claude/nice-cori`.
+2. **Worktree cleanup** — removed 4 orphaned worktrees (`.claude/worktrees/lucid-bassi`, `nice-cori`, `model-implementation-tWWD2`, `inspiring-lamport`). Only the main working tree remains.
+3. **.gitignore hardened** — added `tools/fec-bulk/data/` and `tools/fec-bulk/reports/` (91GB of bulk FEC data was unignored). Added `.claude/worktrees/` to prevent worktree artifacts from being tracked.
+4. **Lockfiles synced** — ran `npm install` to regenerate `package-lock.json` after `expo-file-system` was added on a feature branch.
+5. **CLAUDE.md updated** — added Git Workflow Rules section: branch naming, worktree cleanup, merge-to-main policy, bulk data exclusion, lockfile hygiene. Updated script execution rule from blanket ban to "flag before running."
+6. **expo-file-system added** — dependency merged from data branch (needed for file operations in data pipeline work).
+7. **Verification** — 320 tests pass (30 suites), `tsc --noEmit` clean, all lockfiles in sync.
+
+### Session: March 24, 2026 (device testing fixes — 10 issues)
+**Focus:** Fix 10 issues found during physical device testing, spanning safe area handling, camera permissions, onboarding flow, map header sizing, sprite alignment, and copy consistency.
+
+**What changed:**
+1. **Safe area top constant** — added `SAFE_AREA_TOP_MIN` (52pt) in `config/constants.ts`. Applied to `BetaOverlay` and `BarcodeScannerSheet`.
+2. **Camera permission eager request** — `BarcodeScannerSheet` now calls `requestPermission()` via `useEffect` on mount. Native OS dialog fires immediately when OPEN SCANNER is tapped.
+3. **Map header reduced** — header bar backing shrunk to 75% of original aspect ratio; logo increased from 24pt to 28pt.
+4. **FigureBadge fallback removed** — no more initials box when sprite is missing. Renders empty slot only.
+5. **Arena sprite flush** — `TRACK_ARENA_SINGLE_BOTTOM_INSET` set to 0. Character sprites sit flush on arena bottom edge.
+6. **Welcome + Launch logo responsive** — both screens scale logo to ~22% of screen height (capped at 160pt) instead of fixed width.
+7. **Onboarding reorder** — welcome → **privacy** → **permissions**. YOUR DATA now precedes SET UP.
+8. **Permissions confirmed state** — cards show "GRANTED" text + green border when permission is granted. Single bottom CTA only.
+9. **YOUR DATA dead space** — privacy points list wrapped in a flex-centered container.
+10. **CTA reconciled** — launch screen "TAP TO START" changed to "PRESS START" to match onboarding.
+
+**Verification:** 305 tests pass across 29 suites.
 
 ### Session: March 23, 2026 (accessibility audit & fix)
 **Focus:** Full-codebase accessibility audit — labels, hints, roles, states, tap targets — across all surfaces. Cross-referenced against copy/ layer. Fixed all actionable issues.
@@ -545,7 +574,7 @@ This document is updated continuously. New instances should read this first — 
 | Suite | Count | Status |
 |---|---|---|
 | Total passing | 320 | All 30 suites green |
-| Last tsc run | March 23, 2026 | Clean |
+| Last tsc run | March 24, 2026 | Clean |
 
 ---
 
@@ -583,19 +612,20 @@ This document is updated continuously. New instances should read this first — 
 
 | Item | Status | Priority |
 |---|---|---|
-| Physical device geolocation test | Not done | V1 needed |
+| Physical device geolocation test | Done — works, continuing testing | V1 ✅ |
 | 3 entities pending retry (sherwin-williams, baker-hughes, chick-fil-a) | Run plain fetch:donations | Nice to have |
-| people.json individual donor data | Not started | V1.5 |
+| people.json individual donor data | Generated (22K-line people.json with bulk donor data), not yet surfaced in UI | V1.5 |
 | Copy naming cleanup (Label suffix inconsistencies) | Deferred | Pre-1.0 |
 | Scorecard sharing / social export | Not built | V2 |
+| Repo hygiene automation (pre-commit hooks, branch protection) | Not set up | Nice to have |
 
 ---
 
 ## Immediate Next Steps (in order)
 
-1. **iOS simulator smoke test** — launch from simulator, walk the full vertical slice (map scan → flag → business card with topband art → avoid tap with haptics → platforms → scorecard). Verify pixel art markers render on map, topband/corners render in business card, onboarding flows through 3 screens, launch screen appears once per day, beta mode toggle works.
-2. **Physical device geolocation** — test on hardware, not simulator
-3. **Wire remaining pixel art assets** — `marker_flag_selected.png` (selected state), `corners_yellow_reward_0-3.png` (reward corners), `bottom_nav_shell.png`, `search_shell_caps`, `scorecard_preview_stamp`, `onboarding_hero_welcome`, FX animation frames. `business_card_reward_overlay.png` already wired.
+1. **Continue physical device testing** — ongoing polish pass, testing full vertical slice on hardware
+2. **Wire remaining pixel art assets** — `marker_flag_selected.png` (selected state), `corners_yellow_reward_0-3.png` (reward corners), `bottom_nav_shell.png`, `search_shell_caps`, `scorecard_preview_stamp`, `onboarding_hero_welcome`, FX animation frames. `business_card_reward_overlay.png` already wired.
+3. **Surface people.json donor data in UI** — V1.5: individual Schedule A contributions in DataZone
 
 ---
 
@@ -614,10 +644,8 @@ This document is updated continuously. New instances should read this first — 
 
 | Agent | Current task |
 |---|---|
-| Lead Architect (this session) | Documentation, decisions, CC prompt generation |
+| Lead Architect | Documentation, decisions, CC prompt generation |
 | Claude Code | Implementation — awaiting next prompt |
-| Codex | Not yet onboarded — use for data cleaning and pipeline work |
-| Web Agent | Idle — next task: Hyatt subsidiary PAC verification |
 
 ---
 
