@@ -1,0 +1,5975 @@
+{
+  "_meta": {
+    "createdAt": "2026-03-20",
+    "baseFile": "assets/data/entities.json",
+    "baseEntityCount": 448,
+    "reviewMode": "gap-analysis-only",
+    "notes": [
+      "No existing files were modified.",
+      "This file is a review artifact for proposed additions and alias expansions.",
+      "Suggestions are biased toward map-visible retail brands, regional banks, convenience stores, and apparel/luxury chains."
+    ],
+    "updatedAt": "2026-03-20",
+    "additionalPasses": 2,
+    "structureRule": "Distinct companies, houses, subsidiaries, and map-visible consumer entities should be modeled as standalone items with parentEntityId rather than folded into parent aliases. Alias lists should mostly capture spelling, punctuation, and formatting variants.",
+    "staticFieldsFilled": [
+      "canonicalName",
+      "domains (from official review URLs when directly inferable)",
+      "verificationStatus=unverified",
+      "ceoName (where verified or inherited from parent/source)",
+      "publicFigureName (selective, where clearly associated)"
+    ],
+    "pipelineOwnedFields": [
+      "fecCommitteeId",
+      "fecCommitteeRecords",
+      "donationSummary",
+      "lastVerifiedDate"
+    ],
+    "remainingManualFields": [
+      "ceoName for unresolved or fast-changing entries",
+      "publicFigureName for brands without a clearly associated current public figure",
+      "brand domains for child entities whose review URL is a parent corporate page"
+    ],
+    "leadershipPassNotes": [
+      "CEO names were filled where supported by current web checks or inherited from an existing live/source parent for split candidates.",
+      "Public figure names were added selectively for clearly associated current public figures, controlling family leaders, or founder-linked names already central to the brand identity.",
+      "Ambiguous cases, interim structures, and brand entries without a clear current figure were intentionally left blank for manual review."
+    ]
+  },
+  "currentFindings": [
+    {
+      "severity": "medium",
+      "summary": "The review file now includes canonical names, inferred official domains, and unverified status defaults, while intentionally leaving FEC-owned fields alone and flagging CEO/public-figure data as a separate manual verification pass."
+    },
+    {
+      "severity": "high",
+      "summary": "Real mall-directory testing still exposed concrete tenant gaps, especially outlet apparel, footwear, accessories, and luxury brands, plus one false-positive collision where Pandora jewelry was being masked by the unrelated siriusxm/Pandora alias."
+    },
+    {
+      "severity": "high",
+      "summary": "Outlet-style apparel and footwear coverage was still missing a dedicated brand pass; this review file now includes standalone outlet-store brands plus child split candidates for brand banners buried inside live parent entities."
+    },
+    {
+      "severity": "high",
+      "summary": "The review file now separates parent-company proposals from child-entity split candidates so distinct houses, subsidiaries, and consumer banners are not hidden inside alias lists."
+    },
+    {
+      "severity": "high",
+      "summary": "Regional grocery, convenience, and bank coverage is materially thinner than national-chain coverage."
+    },
+    {
+      "severity": "high",
+      "summary": "Several major apparel and luxury groups with physical stores are absent, including Kering, Capri, Tapestry, PVH, Ralph Lauren, and Fast Retailing."
+    },
+    {
+      "severity": "medium",
+      "summary": "The matcher is exact after normalization, so spaced, hyphenated, numeric, and misspelled variants still need explicit aliases."
+    },
+    {
+      "severity": "medium",
+      "summary": "A few parents already exist but still miss major map-facing banners, especially Ahold Delhaize, Kroger, LVMH, 7-Eleven, Circle K, Casey's, and travel-center chains."
+    },
+    {
+      "severity": "medium",
+      "summary": "LVMH exists in the live file, but its house coverage is still too shallow for luxury storefront matching; adding more maison aliases or child entities would materially improve map hits."
+    }
+  ],
+  "proposedNewEntities": [
+    {
+      "id": "heb",
+      "suggestedCanonicalName": "H-E-B, LP",
+      "aliases": [
+        "H-E-B",
+        "HEB",
+        "H E B"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "reviewUrl": "https://www.heb.com/",
+      "note": "Large Texas grocer absent from the current file.",
+      "canonicalName": "H-E-B, LP",
+      "domains": [
+        "heb.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Howard Butt III",
+      "publicFigureName": "Charles Butt"
+    },
+    {
+      "id": "wegmans",
+      "suggestedCanonicalName": "Wegmans Food Markets Inc",
+      "aliases": [
+        "Wegmans",
+        "Wegmans Food Markets"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "reviewUrl": "https://www.wegmans.com/stores/",
+      "note": "Common Northeast map result; absent from current grocery coverage.",
+      "canonicalName": "Wegmans Food Markets Inc",
+      "domains": [
+        "wegmans.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Colleen Wegman",
+      "publicFigureName": "Danny Wegman"
+    },
+    {
+      "id": "giant-eagle",
+      "suggestedCanonicalName": "Giant Eagle Inc",
+      "aliases": [
+        "Giant Eagle"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery",
+        "convenience"
+      ],
+      "reviewUrl": "https://www.gianteagle.com/",
+      "note": "Important Midwest grocer and fuel/convenience family.",
+      "canonicalName": "Giant Eagle Inc",
+      "domains": [
+        "gianteagle.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Bill Artman",
+      "publicFigureName": "David Shapira"
+    },
+    {
+      "id": "sprouts-farmers-market",
+      "suggestedCanonicalName": "Sprouts Farmers Market Inc",
+      "aliases": [
+        "Sprouts",
+        "Sprouts Farmers Market"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "reviewUrl": "https://www.sprouts.com/store-locator/",
+      "note": "Large specialty grocer currently missing.",
+      "canonicalName": "Sprouts Farmers Market Inc",
+      "domains": [
+        "sprouts.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Jack Sinclair"
+    },
+    {
+      "id": "fresh-market",
+      "suggestedCanonicalName": "The Fresh Market Inc",
+      "aliases": [
+        "The Fresh Market",
+        "Fresh Market"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "reviewUrl": "https://www.thefreshmarket.com/stores",
+      "note": "Common map-visible grocery chain absent from the current file.",
+      "canonicalName": "The Fresh Market Inc",
+      "domains": [
+        "thefreshmarket.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Brian Johnson"
+    },
+    {
+      "id": "save-a-lot",
+      "suggestedCanonicalName": "Save A Lot Inc",
+      "aliases": [
+        "Save A Lot",
+        "Save-A-Lot"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "reviewUrl": "https://savealot.com/",
+      "note": "Discount grocer missing from current coverage.",
+      "canonicalName": "Save A Lot Inc",
+      "domains": [
+        "savealot.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Bill Mayo"
+    },
+    {
+      "id": "winco-foods",
+      "suggestedCanonicalName": "WinCo Foods LLC",
+      "aliases": [
+        "WinCo",
+        "WinCo Foods"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "reviewUrl": "https://www.wincofoods.com/stores",
+      "note": "High-volume Western grocer absent from the file.",
+      "canonicalName": "WinCo Foods LLC",
+      "domains": [
+        "wincofoods.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "stater-bros",
+      "suggestedCanonicalName": "Stater Bros Holdings Inc",
+      "aliases": [
+        "Stater Bros",
+        "Stater Bros Markets"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "reviewUrl": "https://www.staterbros.com/store-locator/",
+      "note": "Common Southern California grocery chain missing.",
+      "canonicalName": "Stater Bros Holdings Inc",
+      "domains": [
+        "staterbros.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Pete Van Helden"
+    },
+    {
+      "id": "schnucks",
+      "suggestedCanonicalName": "Schnuck Markets Inc",
+      "aliases": [
+        "Schnucks",
+        "Schnucks Markets"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "reviewUrl": "https://nourish.schnucks.com/store-locations/",
+      "note": "Major Midwest grocery chain absent from the current list.",
+      "canonicalName": "Schnuck Markets Inc",
+      "domains": [
+        "schnucks.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Todd Schnuck",
+      "publicFigureName": "Todd Schnuck"
+    },
+    {
+      "id": "weis-markets",
+      "suggestedCanonicalName": "Weis Markets Inc",
+      "aliases": [
+        "Weis",
+        "Weis Markets"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "reviewUrl": "https://www.weismarkets.com/stores/",
+      "note": "Common Mid-Atlantic grocery chain missing.",
+      "canonicalName": "Weis Markets Inc",
+      "domains": [
+        "weismarkets.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Jonathan H. Weis",
+      "publicFigureName": "Jonathan H. Weis"
+    },
+    {
+      "id": "ingles-markets",
+      "suggestedCanonicalName": "Ingles Markets Inc",
+      "aliases": [
+        "Ingles",
+        "Ingles Markets"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "reviewUrl": "https://www.ingles-markets.com/locations",
+      "note": "Important Southeastern grocer absent from the file.",
+      "canonicalName": "Ingles Markets Inc",
+      "domains": [
+        "ingles-markets.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "golub-corp",
+      "suggestedCanonicalName": "Golub Corp",
+      "aliases": [
+        "Golub Corp"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "reviewUrl": "https://www.pricechopper.com/",
+      "note": "Brand family missing from current grocery coverage.",
+      "canonicalName": "Golub Corp",
+      "domains": [
+        "pricechopper.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "raleys",
+      "suggestedCanonicalName": "Raley's Companies",
+      "aliases": [
+        "Raley's",
+        "Raleys"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "reviewUrl": "https://www.raleys.com/",
+      "note": "West Coast grocery family missing.",
+      "canonicalName": "Raley's Companies",
+      "domains": [
+        "raleys.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "brookshire-grocery",
+      "suggestedCanonicalName": "Brookshire Grocery Co",
+      "aliases": [
+        "Brookshire Grocery Co"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "reviewUrl": "https://www.brookshires.com/",
+      "note": "Regional grocery family missing; kept to the less ambiguous banners.",
+      "canonicalName": "Brookshire Grocery Co",
+      "domains": [
+        "brookshires.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Jerry LeClair"
+    },
+    {
+      "id": "lowes-foods",
+      "suggestedCanonicalName": "Lowes Foods LLC",
+      "aliases": [
+        "Lowes Foods",
+        "Lowe's Foods"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "reviewUrl": "https://www.lowesfoods.com/en/Store-Locator",
+      "note": "Distinct grocer not covered by Lowe's home-improvement entry.",
+      "canonicalName": "Lowes Foods LLC",
+      "domains": [
+        "lowesfoods.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "h-mart",
+      "suggestedCanonicalName": "H Mart Inc",
+      "aliases": [
+        "H Mart",
+        "H-Mart"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "reviewUrl": "https://www.hmart.com/store-locations/",
+      "note": "Common Asian grocery chain missing from current retail coverage.",
+      "canonicalName": "H Mart Inc",
+      "domains": [
+        "hmart.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "patel-brothers",
+      "suggestedCanonicalName": "Patel Brothers Inc",
+      "aliases": [
+        "Patel Brothers",
+        "Patel Bros"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "reviewUrl": "https://www.patelbros.com/about",
+      "note": "Common South Asian grocery chain missing from the file.",
+      "canonicalName": "Patel Brothers Inc",
+      "domains": [
+        "patelbros.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "murphy-usa",
+      "suggestedCanonicalName": "Murphy USA Inc",
+      "aliases": [
+        "Murphy USA",
+        "Murphy Express"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "reviewUrl": "https://www.murphyusa.com/",
+      "note": "Large fuel and convenience footprint absent from current entries; QuickChek is modeled separately below as a child split candidate.",
+      "canonicalName": "Murphy USA Inc",
+      "domains": [
+        "murphyusa.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Mindy West"
+    },
+    {
+      "id": "racetrac",
+      "suggestedCanonicalName": "RaceTrac Inc",
+      "aliases": [
+        "RaceTrac",
+        "RaceWay",
+        "Raceway"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "reviewUrl": "https://www.racetrac.com/Locations",
+      "note": "Common Southeastern fuel and c-store chain missing.",
+      "canonicalName": "RaceTrac Inc",
+      "domains": [
+        "racetrac.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Natalie Morhous"
+    },
+    {
+      "id": "maverik",
+      "suggestedCanonicalName": "Maverik Inc",
+      "aliases": [
+        "Maverik"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "reviewUrl": "https://www.maverik.com/stores/",
+      "note": "Western convenience footprint missing; includes Kum & Go branding.",
+      "canonicalName": "Maverik Inc",
+      "domains": [
+        "maverik.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "royal-farms",
+      "suggestedCanonicalName": "Royal Farms LLC",
+      "aliases": [
+        "Royal Farms"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "reviewUrl": "https://royalfarms.com/",
+      "note": "Common Mid-Atlantic c-store brand missing.",
+      "canonicalName": "Royal Farms LLC",
+      "domains": [
+        "royalfarms.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "rutters",
+      "suggestedCanonicalName": "Rutter's Holdings Inc",
+      "aliases": [
+        "Rutter's",
+        "Rutters"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "reviewUrl": "https://www.rutters.com/",
+      "note": "Important regional c-store chain missing.",
+      "canonicalName": "Rutter's Holdings Inc",
+      "domains": [
+        "rutters.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "yesway",
+      "suggestedCanonicalName": "Yesway LLC",
+      "aliases": [
+        "Yesway"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "reviewUrl": "https://yesway.com/",
+      "note": "Convenience footprint missing; includes Allsup's branding.",
+      "canonicalName": "Yesway LLC",
+      "domains": [
+        "yesway.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Thomas N. Trkla",
+      "publicFigureName": "Thomas N. Trkla"
+    },
+    {
+      "id": "parkers-kitchen",
+      "suggestedCanonicalName": "Parker's Kitchen LLC",
+      "aliases": [
+        "Parker's Kitchen",
+        "Parkers Kitchen"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "reviewUrl": "https://parkerskitchen.com/",
+      "note": "Growing Southeastern c-store chain missing.",
+      "canonicalName": "Parker's Kitchen LLC",
+      "domains": [
+        "parkerskitchen.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Brandon Hofmann",
+      "publicFigureName": "Greg Parker"
+    },
+    {
+      "id": "mapco",
+      "suggestedCanonicalName": "MAPCO Express Inc",
+      "aliases": [
+        "MAPCO",
+        "Mapco"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "reviewUrl": "https://www.mapcorewards.com/locations/",
+      "note": "Common convenience and fuel brand missing.",
+      "canonicalName": "MAPCO Express Inc",
+      "domains": [
+        "mapcorewards.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "eg-america",
+      "suggestedCanonicalName": "EG America LLC",
+      "aliases": [
+        "EG America"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "reviewUrl": "https://eg-america.com/brands/",
+      "note": "Important convenience portfolio missing; kept to the least ambiguous banners.",
+      "canonicalName": "EG America LLC",
+      "domains": [
+        "eg-america.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "buc-ees",
+      "suggestedCanonicalName": "Buc-ee's Ltd",
+      "aliases": [
+        "Buc-ee's",
+        "Buc-ees",
+        "Bucee's"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "reviewUrl": "https://buc-ees.com/locations/",
+      "note": "Very common convenience/gas destination missing from current coverage.",
+      "canonicalName": "Buc-ee's Ltd",
+      "domains": [
+        "buc-ees.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Arch Aplin III",
+      "publicFigureName": "Arch Aplin III"
+    },
+    {
+      "id": "huntington-bancshares",
+      "suggestedCanonicalName": "Huntington Bancshares Inc",
+      "aliases": [
+        "Huntington Bank",
+        "The Huntington National Bank"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "reviewUrl": "https://www.huntington.com/branchlocator",
+      "note": "Major regional bank absent from current finance coverage.",
+      "canonicalName": "Huntington Bancshares Inc",
+      "domains": [
+        "huntington.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Stephen D. Steinour"
+    },
+    {
+      "id": "keycorp",
+      "suggestedCanonicalName": "KeyCorp",
+      "aliases": [
+        "KeyBank",
+        "Key Bank",
+        "KeyCorp"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "reviewUrl": "https://www.key.com/locations/",
+      "note": "Common regional bank missing.",
+      "canonicalName": "KeyCorp",
+      "domains": [
+        "key.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Christopher M. Gorman"
+    },
+    {
+      "id": "fifth-third-bancorp",
+      "suggestedCanonicalName": "Fifth Third Bancorp",
+      "aliases": [
+        "Fifth Third Bank",
+        "Fifth Third"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "reviewUrl": "https://locations.53.com/",
+      "note": "Large regional bank absent from the current list.",
+      "canonicalName": "Fifth Third Bancorp",
+      "domains": [
+        "53.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Tim Spence"
+    },
+    {
+      "id": "citizens-financial-group",
+      "suggestedCanonicalName": "Citizens Financial Group Inc",
+      "aliases": [
+        "Citizens Bank"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "reviewUrl": "https://locations.citizensbank.com/",
+      "note": "Large branch footprint missing from the current finance set.",
+      "canonicalName": "Citizens Financial Group Inc",
+      "domains": [
+        "citizensbank.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Bruce Van Saun"
+    },
+    {
+      "id": "mt-bank",
+      "suggestedCanonicalName": "M&T Bank Corp",
+      "aliases": [
+        "M&T Bank",
+        "MT Bank",
+        "M and T Bank"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "reviewUrl": "https://locations.mtb.com/",
+      "note": "Common Northeast bank missing.",
+      "canonicalName": "M&T Bank Corp",
+      "domains": [
+        "mtb.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "bmo-financial-group",
+      "suggestedCanonicalName": "BMO Financial Group",
+      "aliases": [
+        "BMO Bank",
+        "BMO Harris",
+        "Bank of the West"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "reviewUrl": "https://branches.bmo.com/",
+      "note": "Important U.S. branch brand family missing.",
+      "canonicalName": "BMO Financial Group",
+      "domains": [
+        "bmo.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Darryl White"
+    },
+    {
+      "id": "td-bank",
+      "suggestedCanonicalName": "TD Bank NA",
+      "aliases": [
+        "TD Bank",
+        "TD Bank, America's Most Convenient Bank"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "reviewUrl": "https://locations.td.com/us",
+      "note": "Major East Coast branch brand missing.",
+      "canonicalName": "TD Bank NA",
+      "domains": [
+        "td.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Leo Salom"
+    },
+    {
+      "id": "santander-bank",
+      "suggestedCanonicalName": "Santander Bank NA",
+      "aliases": [
+        "Santander Bank",
+        "Santander"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "reviewUrl": "https://locations.santanderbank.com/",
+      "note": "Common Northeast branch brand missing.",
+      "canonicalName": "Santander Bank NA",
+      "domains": [
+        "santanderbank.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "comerica",
+      "suggestedCanonicalName": "Comerica Inc",
+      "aliases": [
+        "Comerica Bank",
+        "Comerica"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "reviewUrl": "https://locations.comerica.com/",
+      "note": "Regional bank missing from current coverage.",
+      "canonicalName": "Comerica Inc",
+      "domains": [
+        "comerica.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Curtis C. Farmer"
+    },
+    {
+      "id": "old-national-bancorp",
+      "suggestedCanonicalName": "Old National Bancorp",
+      "aliases": [
+        "Old National Bank",
+        "Old National"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "reviewUrl": "https://locations.oldnational.com/",
+      "note": "Common Midwest regional bank missing.",
+      "canonicalName": "Old National Bancorp",
+      "domains": [
+        "oldnational.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "James C. Ryan III"
+    },
+    {
+      "id": "first-citizens-bancshares",
+      "suggestedCanonicalName": "First Citizens BancShares Inc",
+      "aliases": [
+        "First Citizens Bank",
+        "First Citizens"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "reviewUrl": "https://locations.firstcitizens.com/",
+      "note": "Large branch network missing from the current file.",
+      "canonicalName": "First Citizens BancShares Inc",
+      "domains": [
+        "firstcitizens.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Frank B. Holding Jr.",
+      "publicFigureName": "Frank B. Holding Jr."
+    },
+    {
+      "id": "associated-banc-corp",
+      "suggestedCanonicalName": "Associated Banc-Corp",
+      "aliases": [
+        "Associated Bank"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "reviewUrl": "https://www.associatedbank.com/locations",
+      "note": "Important Midwest bank missing.",
+      "canonicalName": "Associated Banc-Corp",
+      "domains": [
+        "associatedbank.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Andrew J. Harmening"
+    },
+    {
+      "id": "southstate",
+      "suggestedCanonicalName": "SouthState Corp",
+      "aliases": [
+        "SouthState Bank",
+        "SouthState"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "reviewUrl": "https://locator.southstatebank.com/",
+      "note": "Large Southeastern regional bank missing.",
+      "canonicalName": "SouthState Corp",
+      "domains": [
+        "southstatebank.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "John Corbett"
+    },
+    {
+      "id": "east-west-bancorp",
+      "suggestedCanonicalName": "East West Bancorp Inc",
+      "aliases": [
+        "East West Bank",
+        "East West"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "reviewUrl": "https://www.eastwestbank.com/locations",
+      "note": "Common bank brand missing, especially in West Coast metros.",
+      "canonicalName": "East West Bancorp Inc",
+      "domains": [
+        "eastwestbank.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Dominic Ng",
+      "publicFigureName": "Dominic Ng"
+    },
+    {
+      "id": "first-horizon",
+      "suggestedCanonicalName": "First Horizon Corp",
+      "aliases": [
+        "First Horizon Bank",
+        "First Horizon",
+        "First Tennessee"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "reviewUrl": "https://www.firsthorizon.com/locations",
+      "note": "Regional bank missing; includes older First Tennessee naming still seen in the wild.",
+      "canonicalName": "First Horizon Corp",
+      "domains": [
+        "firsthorizon.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Bryan Jordan"
+    },
+    {
+      "id": "cadence-bank",
+      "suggestedCanonicalName": "Cadence Bank",
+      "aliases": [
+        "Cadence Bank",
+        "Cadence"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "reviewUrl": "https://www.cadencebank.com/locations/",
+      "note": "Common Southeastern bank brand missing.",
+      "canonicalName": "Cadence Bank",
+      "domains": [
+        "cadencebank.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "James D. Rollins III"
+    },
+    {
+      "id": "fast-retailing",
+      "suggestedCanonicalName": "Fast Retailing Co Ltd",
+      "aliases": [
+        "Fast Retailing",
+        "Fast Retailing Co"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://www.fastretailing.com/careers/en/business/",
+      "note": "Major global apparel group absent from the current list.",
+      "canonicalName": "Fast Retailing Co Ltd",
+      "domains": [
+        "fastretailing.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Tadashi Yanai",
+      "publicFigureName": "Tadashi Yanai"
+    },
+    {
+      "id": "jcrew-group",
+      "suggestedCanonicalName": "J.Crew Group Inc",
+      "aliases": [
+        "J.Crew Group",
+        "J Crew Group"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://www.jcrew.com/",
+      "note": "Common mall and lifestyle brands missing.",
+      "canonicalName": "J.Crew Group Inc",
+      "domains": [
+        "jcrew.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "urban-outfitters",
+      "suggestedCanonicalName": "Urban Outfitters Inc",
+      "aliases": [
+        "URBN"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://www.urbn.com/our-brands/",
+      "note": "Major lifestyle retail group currently missing.",
+      "canonicalName": "Urban Outfitters Inc",
+      "domains": [
+        "urbn.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "pvh",
+      "suggestedCanonicalName": "PVH Corp",
+      "aliases": [
+        "PVH"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://www.pvh.com/",
+      "note": "Common mall and outlet brands missing.",
+      "canonicalName": "PVH Corp",
+      "domains": [
+        "pvh.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Stefan Larsson"
+    },
+    {
+      "id": "tapestry",
+      "suggestedCanonicalName": "Tapestry Inc",
+      "aliases": [
+        "Tapestry"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "reviewUrl": "https://www.tapestry.com/our-brands",
+      "note": "High-value fashion retail gap.",
+      "canonicalName": "Tapestry Inc",
+      "domains": [
+        "tapestry.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Joanne Crevoiserat"
+    },
+    {
+      "id": "capri-holdings",
+      "suggestedCanonicalName": "Capri Holdings Ltd",
+      "aliases": [
+        "Capri Holdings"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "reviewUrl": "https://www.capriholdings.com/our-brands/",
+      "note": "Luxury-store family missing from current coverage.",
+      "canonicalName": "Capri Holdings Ltd",
+      "domains": [
+        "capriholdings.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "John D. Idol"
+    },
+    {
+      "id": "kering",
+      "suggestedCanonicalName": "Kering SA",
+      "aliases": [
+        "Kering"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "reviewUrl": "https://www.kering.com/en/houses/",
+      "note": "Major luxury group missing; high-value map gap.",
+      "canonicalName": "Kering SA",
+      "domains": [
+        "kering.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Luca de Meo",
+      "publicFigureName": "Francois-Henri Pinault"
+    },
+    {
+      "id": "amer-sports",
+      "suggestedCanonicalName": "Amer Sports Inc",
+      "aliases": [
+        "Amer Sports"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "outdoor",
+        "sporting"
+      ],
+      "reviewUrl": "https://www.amersports.com/our-brands/",
+      "note": "Covers the Arc'teryx/Salomon gap the current file misses.",
+      "canonicalName": "Amer Sports Inc",
+      "domains": [
+        "amersports.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "James Zheng"
+    },
+    {
+      "id": "canada-goose",
+      "suggestedCanonicalName": "Canada Goose Holdings Inc",
+      "aliases": [
+        "Canada Goose"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "reviewUrl": "https://www.canadagoose.com/us/en/find-a-store.html",
+      "note": "Common luxury outerwear store presence not currently covered.",
+      "canonicalName": "Canada Goose Holdings Inc",
+      "domains": [
+        "canadagoose.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "lululemon",
+      "suggestedCanonicalName": "Lululemon Athletica Inc",
+      "aliases": [
+        "Lululemon",
+        "lululemon athletica"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://shop.lululemon.com/stores/all",
+      "note": "Very common retail apparel brand missing.",
+      "canonicalName": "Lululemon Athletica Inc",
+      "domains": [
+        "lululemon.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Meghan Frank and Andre Maestrini"
+    },
+    {
+      "id": "ralph-lauren",
+      "suggestedCanonicalName": "Ralph Lauren Corp",
+      "aliases": [
+        "Ralph Lauren",
+        "Polo Ralph Lauren"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "reviewUrl": "https://www.ralphlauren.com/locations",
+      "note": "Common outlet and mall presence currently absent.",
+      "canonicalName": "Ralph Lauren Corp",
+      "domains": [
+        "ralphlauren.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Patrice Louvet",
+      "publicFigureName": "Ralph Lauren"
+    },
+    {
+      "id": "tory-burch",
+      "suggestedCanonicalName": "Tory Burch LLC",
+      "aliases": [
+        "Tory Burch"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "reviewUrl": "https://locations.toryburch.com/",
+      "note": "Common premium-fashion retail brand missing.",
+      "canonicalName": "Tory Burch LLC",
+      "domains": [
+        "toryburch.com"
+      ],
+      "verificationStatus": "unverified",
+      "publicFigureName": "Tory Burch"
+    },
+    {
+      "id": "saks-global",
+      "suggestedCanonicalName": "Saks Global",
+      "aliases": [
+        "Saks Global"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "reviewUrl": "https://www.saksglobal.com/history",
+      "note": "Luxury department-store family missing from current coverage.",
+      "canonicalName": "Saks Global",
+      "domains": [
+        "saksglobal.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Geoffroy van Raemdonck",
+      "publicFigureName": "Richard Baker"
+    },
+    {
+      "id": "academy-sports-outdoors",
+      "suggestedCanonicalName": "Academy Ltd",
+      "aliases": [
+        "Academy Sports + Outdoors",
+        "Academy Sports"
+      ],
+      "categoryTags": [
+        "retail",
+        "sporting"
+      ],
+      "reviewUrl": "https://corporate.academy.com/locations/index.html",
+      "note": "Large sporting-goods chain missing from the file.",
+      "canonicalName": "Academy Ltd",
+      "domains": [
+        "academy.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Steve P. Lawrence"
+    },
+    {
+      "id": "signet-jewelers",
+      "suggestedCanonicalName": "Signet Jewelers Ltd",
+      "aliases": [
+        "Signet Jewelers"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "reviewUrl": "https://www.signetjewelers.com/our-brands/default.aspx",
+      "note": "Mall jewelry footprint missing from current retail coverage.",
+      "canonicalName": "Signet Jewelers Ltd",
+      "domains": [
+        "signetjewelers.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "J.K. Symancyk"
+    },
+    {
+      "id": "harbor-freight",
+      "suggestedCanonicalName": "Harbor Freight Tools USA Inc",
+      "aliases": [
+        "Harbor Freight",
+        "Harbor Freight Tools"
+      ],
+      "categoryTags": [
+        "retail",
+        "home-improvement"
+      ],
+      "reviewUrl": "https://www.harborfreight.com/storelocator",
+      "note": "Very common retail chain missing from the current file.",
+      "canonicalName": "Harbor Freight Tools USA Inc",
+      "domains": [
+        "harborfreight.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "odp-corporation",
+      "suggestedCanonicalName": "ODP Corp",
+      "aliases": [
+        "Office Depot",
+        "OfficeMax",
+        "ODP"
+      ],
+      "categoryTags": [
+        "retail"
+      ],
+      "reviewUrl": "https://www.officedepot.com/storelocator/",
+      "note": "Common office-supply retail footprint missing.",
+      "canonicalName": "ODP Corp",
+      "domains": [
+        "officedepot.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Gerry Smith"
+    },
+    {
+      "id": "zions-bancorporation",
+      "suggestedCanonicalName": "Zions Bancorporation",
+      "aliases": [
+        "Zions Bank"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "reviewUrl": "https://www.zionsbank.com/",
+      "note": "Important regional bank missing from current coverage.",
+      "canonicalName": "Zions Bancorporation",
+      "domains": [
+        "zionsbank.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Harris H. Simmons",
+      "publicFigureName": "Harris H. Simmons"
+    },
+    {
+      "id": "synovus-financial",
+      "suggestedCanonicalName": "Synovus Financial Corp",
+      "aliases": [
+        "Synovus Bank",
+        "Synovus"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "reviewUrl": "https://www.synovus.com/",
+      "note": "Common Southeastern regional bank missing.",
+      "canonicalName": "Synovus Financial Corp",
+      "domains": [
+        "synovus.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Kevin Blair"
+    },
+    {
+      "id": "webster-financial",
+      "suggestedCanonicalName": "Webster Financial Corp",
+      "aliases": [
+        "Webster Bank",
+        "Webster"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "reviewUrl": "https://public.websteronline.com/locations/",
+      "note": "Major Northeast regional bank missing.",
+      "canonicalName": "Webster Financial Corp",
+      "domains": [
+        "websteronline.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "John R. Ciulla"
+    },
+    {
+      "id": "flagstar-financial",
+      "suggestedCanonicalName": "Flagstar Financial Inc",
+      "aliases": [
+        "Flagstar Bank",
+        "Flagstar"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "reviewUrl": "https://www.flagstar.com/",
+      "note": "Large branch network missing from the current file.",
+      "canonicalName": "Flagstar Financial Inc",
+      "domains": [
+        "flagstar.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Joseph M. Otting"
+    },
+    {
+      "id": "frost-bank",
+      "suggestedCanonicalName": "Cullen/Frost Bankers Inc",
+      "aliases": [
+        "Frost Bank",
+        "Frost"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "reviewUrl": "https://www.frostbank.com/",
+      "note": "Important Texas regional bank missing.",
+      "canonicalName": "Cullen/Frost Bankers Inc",
+      "domains": [
+        "frostbank.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Phillip D. Green"
+    },
+    {
+      "id": "umb-financial",
+      "suggestedCanonicalName": "UMB Financial Corp",
+      "aliases": [
+        "UMB Bank",
+        "UMB"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "reviewUrl": "https://www.umb.com/",
+      "note": "Common Midwest bank missing.",
+      "canonicalName": "UMB Financial Corp",
+      "domains": [
+        "umb.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Mariner Kemper",
+      "publicFigureName": "Mariner Kemper"
+    },
+    {
+      "id": "city-national-bank",
+      "suggestedCanonicalName": "City National Corp",
+      "aliases": [
+        "City National Bank"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "reviewUrl": "https://www.cnb.com/",
+      "note": "Common branch brand missing, especially in CA and NY.",
+      "canonicalName": "City National Corp",
+      "domains": [
+        "cnb.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Howard Hammond"
+    },
+    {
+      "id": "bank-ozk",
+      "suggestedCanonicalName": "Bank OZK",
+      "aliases": [
+        "Bank OZK"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "reviewUrl": "https://www.ozk.com/",
+      "note": "Regional bank with physical branches missing.",
+      "canonicalName": "Bank OZK",
+      "domains": [
+        "ozk.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "George G. Gleason II",
+      "publicFigureName": "George G. Gleason II"
+    },
+    {
+      "id": "valley-national-bancorp",
+      "suggestedCanonicalName": "Valley National Bancorp",
+      "aliases": [
+        "Valley Bank",
+        "Valley National Bank"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "reviewUrl": "https://www.valley.com/",
+      "note": "Common Northeast/Southeast bank missing.",
+      "canonicalName": "Valley National Bancorp",
+      "domains": [
+        "valley.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Ira Robbins"
+    },
+    {
+      "id": "first-interstate-bancsystem",
+      "suggestedCanonicalName": "First Interstate BancSystem Inc",
+      "aliases": [
+        "First Interstate Bank",
+        "First Interstate"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "reviewUrl": "https://www.firstinterstatebank.com/",
+      "note": "Important Western regional bank missing.",
+      "canonicalName": "First Interstate BancSystem Inc",
+      "domains": [
+        "firstinterstatebank.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "James A. Reuter"
+    },
+    {
+      "id": "fulton-financial",
+      "suggestedCanonicalName": "Fulton Financial Corp",
+      "aliases": [
+        "Fulton Bank",
+        "Fulton"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "reviewUrl": "https://www.fultonbank.com/",
+      "note": "Common Mid-Atlantic bank missing.",
+      "canonicalName": "Fulton Financial Corp",
+      "domains": [
+        "fultonbank.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Curt Myers"
+    },
+    {
+      "id": "prosperity-bancshares",
+      "suggestedCanonicalName": "Prosperity Bancshares Inc",
+      "aliases": [
+        "Prosperity Bank",
+        "Prosperity"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "reviewUrl": "https://www.prosperitybankusa.com/",
+      "note": "Regional branch network missing, especially in Texas.",
+      "canonicalName": "Prosperity Bancshares Inc",
+      "domains": [
+        "prosperitybankusa.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "David Zalman",
+      "publicFigureName": "David Zalman"
+    },
+    {
+      "id": "commerce-bancshares",
+      "suggestedCanonicalName": "Commerce Bancshares Inc",
+      "aliases": [
+        "Commerce Bank"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "reviewUrl": "https://www.commercebank.com/",
+      "note": "Common Midwest banking brand missing.",
+      "canonicalName": "Commerce Bancshares Inc",
+      "domains": [
+        "commercebank.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "John W. Kemper"
+    },
+    {
+      "id": "united-community-banks",
+      "suggestedCanonicalName": "United Community Banks Inc",
+      "aliases": [
+        "United Community Bank",
+        "United Community"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "reviewUrl": "https://www.ucbi.com/",
+      "note": "Regional bank with branches across the Southeast missing.",
+      "canonicalName": "United Community Banks Inc",
+      "domains": [
+        "ucbi.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "H. Lynn Harton"
+    },
+    {
+      "id": "wafd",
+      "suggestedCanonicalName": "Washington Federal Inc",
+      "aliases": [
+        "WaFd Bank",
+        "Washington Federal"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "reviewUrl": "https://www.wafdbank.com/",
+      "note": "Common Western branch brand missing.",
+      "canonicalName": "Washington Federal Inc",
+      "domains": [
+        "wafdbank.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Brent Beardall"
+    },
+    {
+      "id": "kwik-trip",
+      "suggestedCanonicalName": "Kwik Trip Inc",
+      "aliases": [
+        "Kwik Trip",
+        "Kwik Star",
+        "Kwik Spirits",
+        "Stop-N-Go"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "reviewUrl": "https://www.kwiktrip.com/",
+      "note": "Very common Upper Midwest convenience chain missing.",
+      "canonicalName": "Kwik Trip Inc",
+      "domains": [
+        "kwiktrip.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Scott Zietlow"
+    },
+    {
+      "id": "thorntons",
+      "suggestedCanonicalName": "Thorntons LLC",
+      "aliases": [
+        "Thorntons"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "reviewUrl": "https://www.mythorntons.com/",
+      "note": "Common regional c-store and fuel chain missing.",
+      "canonicalName": "Thorntons LLC",
+      "domains": [
+        "mythorntons.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "stewarts-shops",
+      "suggestedCanonicalName": "Stewart's Shops Corp",
+      "aliases": [
+        "Stewart's Shops",
+        "Stewarts Shops"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "reviewUrl": "https://www.stewartsshops.com/",
+      "note": "Common Northeast convenience brand missing.",
+      "canonicalName": "Stewart's Shops Corp",
+      "domains": [
+        "stewartsshops.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Gary Dake"
+    },
+    {
+      "id": "travelcenters-of-america",
+      "suggestedCanonicalName": "TravelCenters of America Inc",
+      "aliases": [
+        "TravelCenters of America",
+        "TA Petro"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "reviewUrl": "https://www.ta-petro.com/location/",
+      "note": "Travel-center family missing from the current file.",
+      "canonicalName": "TravelCenters of America Inc",
+      "domains": [
+        "ta-petro.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Jason Nordin"
+    },
+    {
+      "id": "bp",
+      "suggestedCanonicalName": "BP plc",
+      "aliases": [
+        "bp",
+        "BP"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience",
+        "energy"
+      ],
+      "reviewUrl": "https://map.bp.com/",
+      "note": "Huge gas and convenience footprint missing.",
+      "canonicalName": "BP plc",
+      "domains": [
+        "bp.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Murray Auchincloss"
+    },
+    {
+      "id": "sunoco",
+      "suggestedCanonicalName": "Sunoco LP",
+      "aliases": [
+        "Sunoco"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience",
+        "energy"
+      ],
+      "reviewUrl": "https://www.sunoco.com/locations",
+      "note": "Common fuel and convenience brand missing.",
+      "canonicalName": "Sunoco LP",
+      "domains": [
+        "sunoco.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Joe Kim"
+    },
+    {
+      "id": "citgo",
+      "suggestedCanonicalName": "Citgo Petroleum Corp",
+      "aliases": [
+        "CITGO",
+        "Citgo"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience",
+        "energy"
+      ],
+      "reviewUrl": "https://www.citgo.com/locator",
+      "note": "Map-visible fuel brand missing from the current file.",
+      "canonicalName": "Citgo Petroleum Corp",
+      "domains": [
+        "citgo.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "wakefern-food",
+      "suggestedCanonicalName": "Wakefern Food Corp",
+      "aliases": [
+        "Wakefern",
+        "Wakefern Food Corp"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "reviewUrl": "https://www.shoprite.com/",
+      "note": "Huge grocery cooperative family missing from current coverage.",
+      "canonicalName": "Wakefern Food Corp",
+      "domains": [
+        "shoprite.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Mike Stigers"
+    },
+    {
+      "id": "bashas",
+      "suggestedCanonicalName": "Bashas' Inc",
+      "aliases": [
+        "Bashas'",
+        "Bashas"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "reviewUrl": "https://www.bashas.com/",
+      "note": "Arizona grocery family missing; Food City here is kept Arizona-specific to avoid broader ambiguity.",
+      "canonicalName": "Bashas' Inc",
+      "domains": [
+        "bashas.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "kvat-food-stores",
+      "suggestedCanonicalName": "K-VA-T Food Stores Inc",
+      "aliases": [
+        "Food City",
+        "Food City Supermarket",
+        "Food City Pharmacy"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "reviewUrl": "https://www.foodcity.com/",
+      "note": "Common Southeastern/Appalachian grocery chain missing.",
+      "canonicalName": "K-VA-T Food Stores Inc",
+      "domains": [
+        "foodcity.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "fresh-thyme",
+      "suggestedCanonicalName": "Fresh Thyme Market",
+      "aliases": [
+        "Fresh Thyme",
+        "Fresh Thyme Market"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "reviewUrl": "https://www.freshthyme.com/store-locator.html",
+      "note": "Specialty grocer missing from current coverage.",
+      "canonicalName": "Fresh Thyme Market",
+      "domains": [
+        "freshthyme.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "gelsons",
+      "suggestedCanonicalName": "Gelson's Markets",
+      "aliases": [
+        "Gelson's",
+        "Gelsons"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "reviewUrl": "https://www.gelsons.com/stores",
+      "note": "Common Southern California grocery chain missing.",
+      "canonicalName": "Gelson's Markets",
+      "domains": [
+        "gelsons.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "market-basket",
+      "suggestedCanonicalName": "Demoulas Super Markets Inc",
+      "aliases": [
+        "Market Basket",
+        "DeMoulas Market Basket",
+        "Demoulas Market Basket"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "reviewUrl": "https://www.shopmarketbasket.com/store-locations",
+      "note": "Very common New England grocery chain missing.",
+      "canonicalName": "Demoulas Super Markets Inc",
+      "domains": [
+        "shopmarketbasket.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "vallarta-supermarkets",
+      "suggestedCanonicalName": "Vallarta Supermarkets Inc",
+      "aliases": [
+        "Vallarta",
+        "Vallarta Supermarkets"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "reviewUrl": "https://vallartasupermarkets.com/en/store-locator/",
+      "note": "Large California grocery chain missing.",
+      "canonicalName": "Vallarta Supermarkets Inc",
+      "domains": [
+        "vallartasupermarkets.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "northgate-gonzalez-market",
+      "suggestedCanonicalName": "Northgate Gonzalez Market",
+      "aliases": [
+        "Northgate Market",
+        "Northgate Gonzalez Market"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "reviewUrl": "https://www.northgatemarket.com/store-locator/",
+      "note": "Common California grocery chain missing.",
+      "canonicalName": "Northgate Gonzalez Market",
+      "domains": [
+        "northgatemarket.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "vf-corporation",
+      "suggestedCanonicalName": "VF Corp",
+      "aliases": [
+        "VF Corporation",
+        "VF Corp"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://www.vfc.com/brands/vans",
+      "note": "Large apparel/outdoor portfolio missing from the current file.",
+      "canonicalName": "VF Corp",
+      "domains": [
+        "vfc.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Bracken Darrell"
+    },
+    {
+      "id": "deckers-brands",
+      "suggestedCanonicalName": "Deckers Outdoor Corp",
+      "aliases": [
+        "Deckers",
+        "Deckers Outdoor"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "footwear"
+      ],
+      "reviewUrl": "https://www.deckers.com/brands/",
+      "note": "Major footwear/apparel family missing.",
+      "canonicalName": "Deckers Outdoor Corp",
+      "domains": [
+        "deckers.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Stefano Caroti"
+    },
+    {
+      "id": "prada-group",
+      "suggestedCanonicalName": "Prada SpA",
+      "aliases": [
+        "Prada Group"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "reviewUrl": "https://www.pradagroup.com/en/brands.html",
+      "note": "Important luxury-store family missing.",
+      "canonicalName": "Prada SpA",
+      "domains": [
+        "pradagroup.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Andrea Guerra",
+      "publicFigureName": "Miuccia Prada"
+    },
+    {
+      "id": "burberry",
+      "suggestedCanonicalName": "Burberry Group plc",
+      "aliases": [
+        "Burberry"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "reviewUrl": "https://us.burberry.com/store-locator/",
+      "note": "Common luxury storefront brand missing.",
+      "canonicalName": "Burberry Group plc",
+      "domains": [
+        "burberry.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Joshua Schulman"
+    },
+    {
+      "id": "aritzia",
+      "suggestedCanonicalName": "Aritzia Inc",
+      "aliases": [
+        "Aritzia",
+        "Babaton",
+        "Wilfred",
+        "TNA",
+        "Super Puff"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://www.aritzia.com/us/en/stores",
+      "note": "Large apparel retailer missing from the file.",
+      "canonicalName": "Aritzia Inc",
+      "domains": [
+        "aritzia.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Jennifer Wong",
+      "publicFigureName": "Brian Hill"
+    },
+    {
+      "id": "dillards",
+      "suggestedCanonicalName": "Dillard's Inc",
+      "aliases": [
+        "Dillard's",
+        "Dillards"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://www.dillards.com/stores",
+      "note": "Major department-store chain missing.",
+      "canonicalName": "Dillard's Inc",
+      "domains": [
+        "dillards.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "William T. Dillard II",
+      "publicFigureName": "William T. Dillard II"
+    },
+    {
+      "id": "belk",
+      "suggestedCanonicalName": "Belk Inc",
+      "aliases": [
+        "Belk"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://www.belk.com/store-locator/",
+      "note": "Common Southeastern department-store brand missing.",
+      "canonicalName": "Belk Inc",
+      "domains": [
+        "belk.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "boscovs",
+      "suggestedCanonicalName": "Boscov's Inc",
+      "aliases": [
+        "Boscov's",
+        "Boscovs"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://www.boscovs.com/stores",
+      "note": "Common Northeast department-store chain missing.",
+      "canonicalName": "Boscov's Inc",
+      "domains": [
+        "boscovs.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "container-store",
+      "suggestedCanonicalName": "The Container Store Group Inc",
+      "aliases": [
+        "The Container Store",
+        "Container Store"
+      ],
+      "categoryTags": [
+        "retail",
+        "home"
+      ],
+      "reviewUrl": "https://www.containerstore.com/locations",
+      "note": "Common map-visible retail chain missing.",
+      "canonicalName": "The Container Store Group Inc",
+      "domains": [
+        "containerstore.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "staples",
+      "suggestedCanonicalName": "Staples Inc",
+      "aliases": [
+        "Staples",
+        "Staples Office Supply"
+      ],
+      "categoryTags": [
+        "retail"
+      ],
+      "reviewUrl": "https://stores.staples.com/",
+      "note": "Major office-supply retail chain missing.",
+      "canonicalName": "Staples Inc",
+      "domains": [
+        "staples.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "moncler",
+      "suggestedCanonicalName": "Moncler SpA",
+      "aliases": [
+        "Moncler"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "reviewUrl": "https://www.moncler.com/en-us/store-locator",
+      "note": "Common luxury outerwear storefront brand missing.",
+      "canonicalName": "Moncler SpA",
+      "domains": [
+        "moncler.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Remo Ruffini",
+      "publicFigureName": "Remo Ruffini"
+    },
+    {
+      "id": "levi-strauss",
+      "suggestedCanonicalName": "Levi Strauss & Co",
+      "aliases": [
+        "Levi Strauss",
+        "Levi Strauss & Co"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://www.levi.com/US/en_US/stores",
+      "note": "Very common apparel and outlet brand family missing.",
+      "canonicalName": "Levi Strauss & Co",
+      "domains": [
+        "levi.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Michelle Gass"
+    },
+    {
+      "id": "express-inc",
+      "suggestedCanonicalName": "Express Inc",
+      "aliases": [
+        "Express",
+        "Bonobos",
+        "UpWest"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://www.express.com/stores",
+      "note": "Common mall/lifestyle retail group missing.",
+      "canonicalName": "Express Inc",
+      "domains": [
+        "express.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "alo-yoga",
+      "suggestedCanonicalName": "Alo Yoga",
+      "aliases": [
+        "Alo Yoga"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://www.aloyoga.com/pages/store-locator",
+      "note": "Common premium-athleisure storefront brand missing.",
+      "canonicalName": "Alo Yoga",
+      "domains": [
+        "aloyoga.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "vuori",
+      "suggestedCanonicalName": "Vuori Inc",
+      "aliases": [
+        "Vuori"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://vuoriclothing.com/pages/store-locator",
+      "note": "Growing premium-athleisure retail brand missing.",
+      "canonicalName": "Vuori Inc",
+      "domains": [
+        "vuoriclothing.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "new-balance",
+      "suggestedCanonicalName": "New Balance Athletics Inc",
+      "aliases": [
+        "New Balance",
+        "NB",
+        "New Balance Factory Store"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "footwear"
+      ],
+      "reviewUrl": "https://stores.newbalance.com/",
+      "note": "Major outlet and brand-store footprint missing from the review file until this pass.",
+      "canonicalName": "New Balance Athletics Inc",
+      "domains": [
+        "newbalance.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Joe Preston"
+    },
+    {
+      "id": "puma",
+      "suggestedCanonicalName": "PUMA SE",
+      "aliases": [
+        "PUMA",
+        "Puma"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "footwear"
+      ],
+      "reviewUrl": "https://stores.puma.com/us/en/",
+      "note": "Common outlet and mall-store brand missing.",
+      "canonicalName": "PUMA SE",
+      "domains": [
+        "puma.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Arthur Hoeld"
+    },
+    {
+      "id": "asics",
+      "suggestedCanonicalName": "ASICS America Corp",
+      "aliases": [
+        "ASICS",
+        "Asics"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "footwear"
+      ],
+      "reviewUrl": "https://www.asics.com/us/en-us/asics/c/asics/",
+      "note": "Brand-specific store presence missing from the current pass.",
+      "canonicalName": "ASICS America Corp",
+      "domains": [
+        "asics.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Yasuhito Hirota"
+    },
+    {
+      "id": "crocs",
+      "suggestedCanonicalName": "Crocs Inc",
+      "aliases": [
+        "Crocs",
+        "Crocs Outlet"
+      ],
+      "categoryTags": [
+        "retail",
+        "footwear"
+      ],
+      "reviewUrl": "https://www.crocs.com/crocs-store-locator/stores.html",
+      "note": "Common outlet and standalone store brand missing.",
+      "canonicalName": "Crocs Inc",
+      "domains": [
+        "crocs.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Andrew Rees"
+    },
+    {
+      "id": "clarks",
+      "suggestedCanonicalName": "Clarks Americas Inc",
+      "aliases": [
+        "Clarks",
+        "Clarks Shoes",
+        "Clarks Outlet"
+      ],
+      "categoryTags": [
+        "retail",
+        "footwear"
+      ],
+      "reviewUrl": "https://www.clarks.com/",
+      "note": "Common footwear outlet brand missing.",
+      "canonicalName": "Clarks Americas Inc",
+      "domains": [
+        "clarks.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "brooks-brothers",
+      "suggestedCanonicalName": "Brooks Brothers Group Inc",
+      "aliases": [
+        "Brooks Brothers",
+        "Brooks Brothers Factory Store"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://stores.brooksbrothers.com/",
+      "note": "Classic outlet-store brand missing.",
+      "canonicalName": "Brooks Brothers Group Inc",
+      "domains": [
+        "brooksbrothers.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "cole-haan",
+      "suggestedCanonicalName": "Cole Haan LLC",
+      "aliases": [
+        "Cole Haan",
+        "Cole Haan Outlet"
+      ],
+      "categoryTags": [
+        "retail",
+        "footwear"
+      ],
+      "reviewUrl": "https://stores.colehaan.com/",
+      "note": "Strong outlet-store footprint missing.",
+      "canonicalName": "Cole Haan LLC",
+      "domains": [
+        "colehaan.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "tommy-bahama",
+      "suggestedCanonicalName": "Tommy Bahama Group Inc",
+      "aliases": [
+        "Tommy Bahama",
+        "Tommy Bahama Outlet"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://www.tommybahama.com/",
+      "note": "Common premium-casual store brand missing.",
+      "canonicalName": "Tommy Bahama Group Inc",
+      "domains": [
+        "tommybahama.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "vineyard-vines",
+      "suggestedCanonicalName": "Vineyard Vines LLC",
+      "aliases": [
+        "vineyard vines",
+        "Vineyard Vines"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://www.vineyardvines.com/",
+      "note": "Common lifestyle store brand missing.",
+      "canonicalName": "Vineyard Vines LLC",
+      "domains": [
+        "vineyardvines.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "johnston-murphy",
+      "suggestedCanonicalName": "Johnston & Murphy",
+      "aliases": [
+        "Johnston & Murphy",
+        "Johnston Murphy"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "footwear"
+      ],
+      "reviewUrl": "https://www.johnstonmurphy.com/on/demandware.store/Sites-johnston-murphy-us-Site/en_US/Stores-FindStores",
+      "note": "Outlet and mall-store brand missing.",
+      "canonicalName": "Johnston & Murphy",
+      "domains": [
+        "johnstonmurphy.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "nautica",
+      "suggestedCanonicalName": "Nautica",
+      "aliases": [
+        "Nautica",
+        "Nautica Outlet"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://www.nautica.com/",
+      "note": "Common outlet-store brand missing.",
+      "canonicalName": "Nautica",
+      "domains": [
+        "nautica.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "lucky-brand",
+      "suggestedCanonicalName": "Lucky Brand",
+      "aliases": [
+        "Lucky Brand",
+        "Lucky Brand Jeans",
+        "Lucky Brand Outlet"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://stores.luckybrand.com/",
+      "note": "Strong outlet-store presence missing.",
+      "canonicalName": "Lucky Brand",
+      "domains": [
+        "luckybrand.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "guess",
+      "suggestedCanonicalName": "Guess Inc",
+      "aliases": [
+        "GUESS",
+        "Guess",
+        "Guess Factory"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://stores.guess.com/",
+      "note": "Common outlet and mall-store brand missing.",
+      "canonicalName": "Guess Inc",
+      "domains": [
+        "guess.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Carlos Alberini"
+    },
+    {
+      "id": "vince",
+      "suggestedCanonicalName": "Vince Holding Corp",
+      "aliases": [
+        "Vince",
+        "Vince Outlet"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://www.vince.com/",
+      "note": "Premium outlet-store brand missing.",
+      "canonicalName": "Vince Holding Corp",
+      "domains": [
+        "vince.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "vera-bradley",
+      "suggestedCanonicalName": "Vera Bradley Inc",
+      "aliases": [
+        "Vera Bradley"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://verabradley.com/",
+      "note": "Common accessory/outlet brand missing.",
+      "canonicalName": "Vera Bradley Inc",
+      "domains": [
+        "verabradley.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "fossil",
+      "suggestedCanonicalName": "Fossil Group Inc",
+      "aliases": [
+        "Fossil",
+        "Fossil Outlet"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "reviewUrl": "https://www.fossil.com/",
+      "note": "Outlet-style accessories brand missing.",
+      "canonicalName": "Fossil Group Inc",
+      "domains": [
+        "fossil.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "jockey",
+      "suggestedCanonicalName": "Jockey International Inc",
+      "aliases": [
+        "Jockey",
+        "Jockey Outlet"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://www.jockey.com/",
+      "note": "Common outlet apparel brand missing.",
+      "canonicalName": "Jockey International Inc",
+      "domains": [
+        "jockey.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "carters",
+      "suggestedCanonicalName": "Carter's Inc",
+      "aliases": [
+        "Carter's",
+        "Carters"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://www.carters.com/",
+      "note": "Common kids-apparel store brand missing.",
+      "canonicalName": "Carter's Inc",
+      "domains": [
+        "carters.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Douglas C. Palladini"
+    },
+    {
+      "id": "oshkosh-bgosh",
+      "suggestedCanonicalName": "OshKosh B'gosh",
+      "aliases": [
+        "OshKosh B'gosh",
+        "OshKosh",
+        "Osh Kosh"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://www.carters.com/",
+      "note": "Common kids-apparel store brand missing; separated from Carter's because it is a map-visible banner.",
+      "canonicalName": "OshKosh B'gosh",
+      "domains": [
+        "carters.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "talbots",
+      "suggestedCanonicalName": "The Talbots Inc",
+      "aliases": [
+        "Talbots",
+        "Talbots Outlet"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://www.talbots.com/",
+      "note": "Common outlet-store brand missing.",
+      "canonicalName": "The Talbots Inc",
+      "domains": [
+        "talbots.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "ann-taylor",
+      "suggestedCanonicalName": "Ann Taylor",
+      "aliases": [
+        "Ann Taylor",
+        "Ann Taylor Factory"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://www.anntaylor.com/",
+      "note": "Common outlet and mall-store brand missing.",
+      "canonicalName": "Ann Taylor",
+      "domains": [
+        "anntaylor.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "loft",
+      "suggestedCanonicalName": "LOFT",
+      "aliases": [
+        "LOFT",
+        "Loft",
+        "LOFT Outlet"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://www.loft.com/",
+      "note": "Common outlet and mall-store brand missing.",
+      "canonicalName": "LOFT",
+      "domains": [
+        "loft.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "chicos",
+      "suggestedCanonicalName": "Chico's",
+      "aliases": [
+        "Chico's",
+        "Chicos"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://www.chicos.com/",
+      "note": "Common outlet-store brand missing.",
+      "canonicalName": "Chico's",
+      "domains": [
+        "chicos.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "white-house-black-market",
+      "suggestedCanonicalName": "White House Black Market",
+      "aliases": [
+        "White House Black Market",
+        "WHBM"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://www.whitehouseblackmarket.com/",
+      "note": "Common outlet and mall-store brand missing.",
+      "canonicalName": "White House Black Market",
+      "domains": [
+        "whitehouseblackmarket.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "soma",
+      "suggestedCanonicalName": "Soma",
+      "aliases": [
+        "Soma",
+        "Soma Intimates"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://www.soma.com/",
+      "note": "Common lingerie/intimates store brand missing.",
+      "canonicalName": "Soma",
+      "domains": [
+        "soma.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "eddie-bauer",
+      "suggestedCanonicalName": "Eddie Bauer LLC",
+      "aliases": [
+        "Eddie Bauer",
+        "Eddie Bauer Outlet"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "outdoor"
+      ],
+      "reviewUrl": "https://www.eddiebauer.com/",
+      "note": "Common outlet and outdoor-apparel brand missing.",
+      "canonicalName": "Eddie Bauer LLC",
+      "domains": [
+        "eddiebauer.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "aeropostale",
+      "suggestedCanonicalName": "Aéropostale Inc",
+      "aliases": [
+        "Aeropostale",
+        "Aéropostale"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://www.aeropostale.com/",
+      "note": "Common outlet/mall-store brand missing.",
+      "canonicalName": "Aéropostale Inc",
+      "domains": [
+        "aeropostale.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "allen-edmonds",
+      "suggestedCanonicalName": "Allen Edmonds Corp",
+      "aliases": [
+        "Allen Edmonds",
+        "Allen Edmonds Outlet"
+      ],
+      "categoryTags": [
+        "retail",
+        "footwear"
+      ],
+      "reviewUrl": "https://www.allenedmonds.com/",
+      "note": "Outlet-style footwear brand missing.",
+      "canonicalName": "Allen Edmonds Corp",
+      "domains": [
+        "allenedmonds.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "altard-state",
+      "suggestedCanonicalName": "Altar'd State",
+      "aliases": [
+        "Altar'd State",
+        "Altard State"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://www.altardstate.com/",
+      "note": "Mall-directory gap from Mall of America.",
+      "canonicalName": "Altar'd State",
+      "domains": [
+        "altardstate.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "aveda",
+      "suggestedCanonicalName": "Aveda",
+      "aliases": [
+        "Aveda"
+      ],
+      "categoryTags": [
+        "retail",
+        "beauty"
+      ],
+      "reviewUrl": "https://www.aveda.com/",
+      "note": "Mall-directory gap from Mall of America.",
+      "canonicalName": "Aveda",
+      "domains": [
+        "aveda.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "boot-barn",
+      "suggestedCanonicalName": "Boot Barn Holdings Inc",
+      "aliases": [
+        "Boot Barn"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "footwear"
+      ],
+      "reviewUrl": "https://www.bootbarn.com/",
+      "note": "Mall-directory gap from Mall of America.",
+      "canonicalName": "Boot Barn Holdings Inc",
+      "domains": [
+        "bootbarn.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "John Hazen"
+    },
+    {
+      "id": "brighton",
+      "suggestedCanonicalName": "Brighton Collectibles",
+      "aliases": [
+        "Brighton",
+        "Brighton Collectibles"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "reviewUrl": "https://www.brighton.com/",
+      "note": "Mall-directory gap from Mall of America.",
+      "canonicalName": "Brighton Collectibles",
+      "domains": [
+        "brighton.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "club-monaco",
+      "suggestedCanonicalName": "Club Monaco",
+      "aliases": [
+        "Club Monaco"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://www.clubmonaco.com/",
+      "note": "Mall-directory gap from Mall of America.",
+      "canonicalName": "Club Monaco",
+      "domains": [
+        "clubmonaco.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "cotton-on",
+      "suggestedCanonicalName": "Cotton On Group",
+      "aliases": [
+        "Cotton On"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://cottonon.com/",
+      "note": "Mall-directory gap from Mall of America.",
+      "canonicalName": "Cotton On Group",
+      "domains": [
+        "cottonon.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "garage",
+      "suggestedCanonicalName": "Garage",
+      "aliases": [
+        "Garage"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://www.garageclothing.com/",
+      "note": "Mall-directory gap from Mall of America.",
+      "canonicalName": "Garage",
+      "domains": [
+        "garageclothing.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "journeys",
+      "suggestedCanonicalName": "Journeys",
+      "aliases": [
+        "Journeys"
+      ],
+      "categoryTags": [
+        "retail",
+        "footwear"
+      ],
+      "reviewUrl": "https://www.journeys.com/",
+      "note": "Mall-directory gap from Mall of America.",
+      "canonicalName": "Journeys",
+      "domains": [
+        "journeys.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "llbean",
+      "suggestedCanonicalName": "L.L.Bean Inc",
+      "aliases": [
+        "L.L.Bean",
+        "LLBean",
+        "L L Bean"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "outdoor"
+      ],
+      "reviewUrl": "https://www.llbean.com/",
+      "note": "Mall-directory gap from Mall of America.",
+      "canonicalName": "L.L.Bean Inc",
+      "domains": [
+        "llbean.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "pacsun",
+      "suggestedCanonicalName": "PacSun",
+      "aliases": [
+        "PacSun",
+        "Pacific Sunwear"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://www.pacsun.com/",
+      "note": "Mall-directory gap from Mall of America.",
+      "canonicalName": "PacSun",
+      "domains": [
+        "pacsun.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "pandora-jewelry",
+      "suggestedCanonicalName": "Pandora Jewelry",
+      "aliases": [
+        "Pandora Jewelry",
+        "Pandora"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "reviewUrl": "https://us.pandora.net/",
+      "note": "Mall-directory gap from Mall of America and a real collision case with the live siriusxm/Pandora alias.",
+      "canonicalName": "Pandora Jewelry",
+      "domains": [
+        "pandora.net"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Berta de Pablos-Barbier"
+    },
+    {
+      "id": "primark",
+      "suggestedCanonicalName": "Primark",
+      "aliases": [
+        "Primark"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://stores.primark.com/en-us",
+      "note": "Mall-directory gap from American Dream.",
+      "canonicalName": "Primark",
+      "domains": [
+        "primark.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "sunglass-hut",
+      "suggestedCanonicalName": "Sunglass Hut",
+      "aliases": [
+        "Sunglass Hut"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "reviewUrl": "https://stores.sunglasshut.com/",
+      "note": "Mall-directory gap from Mall of America.",
+      "canonicalName": "Sunglass Hut",
+      "domains": [
+        "sunglasshut.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "swarovski",
+      "suggestedCanonicalName": "Swarovski",
+      "aliases": [
+        "Swarovski"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "reviewUrl": "https://www.swarovski.com/",
+      "note": "Mall-directory gap from Mall of America.",
+      "canonicalName": "Swarovski",
+      "domains": [
+        "swarovski.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "the-childrens-place",
+      "suggestedCanonicalName": "The Children's Place",
+      "aliases": [
+        "The Children's Place",
+        "Childrens Place"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://www.childrensplace.com/",
+      "note": "Mall-directory gap from Mall of America.",
+      "canonicalName": "The Children's Place",
+      "domains": [
+        "childrensplace.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Muhammad Umair"
+    },
+    {
+      "id": "torrid",
+      "suggestedCanonicalName": "Torrid Holdings Inc",
+      "aliases": [
+        "Torrid"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "reviewUrl": "https://www.torrid.com/",
+      "note": "Mall-directory gap from Mall of America.",
+      "canonicalName": "Torrid Holdings Inc",
+      "domains": [
+        "torrid.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Lisa Harper"
+    },
+    {
+      "id": "zumiez",
+      "suggestedCanonicalName": "Zumiez Inc",
+      "aliases": [
+        "Zumiez"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "footwear"
+      ],
+      "reviewUrl": "https://www.zumiez.com/",
+      "note": "Mall-directory gap from Mall of America.",
+      "canonicalName": "Zumiez Inc",
+      "domains": [
+        "zumiez.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Richard M. Brooks"
+    },
+    {
+      "id": "golden-goose",
+      "suggestedCanonicalName": "Golden Goose",
+      "aliases": [
+        "Golden Goose"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "reviewUrl": "https://www.goldengoose.com/",
+      "note": "Mall-directory gap from South Coast Plaza.",
+      "canonicalName": "Golden Goose",
+      "domains": [
+        "goldengoose.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "hermes",
+      "suggestedCanonicalName": "Hermès",
+      "aliases": [
+        "Hermes",
+        "Hermès"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "reviewUrl": "https://www.hermes.com/us/en/",
+      "note": "Mall-directory gap from South Coast Plaza and American Dream.",
+      "canonicalName": "Hermès",
+      "domains": [
+        "hermes.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "hugo-boss",
+      "suggestedCanonicalName": "HUGO BOSS",
+      "aliases": [
+        "HUGO BOSS",
+        "Hugo Boss",
+        "BOSS",
+        "HUGO"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "reviewUrl": "https://stores.hugoboss.com/",
+      "note": "Mall-directory gap from South Coast Plaza.",
+      "canonicalName": "HUGO BOSS",
+      "domains": [
+        "hugoboss.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Daniel Grieder"
+    },
+    {
+      "id": "jd-sports",
+      "suggestedCanonicalName": "JD Sports",
+      "aliases": [
+        "JD Sports"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "footwear"
+      ],
+      "reviewUrl": "https://www.jdsports.com/store-locator",
+      "note": "Mall-directory gap from South Coast Plaza.",
+      "canonicalName": "JD Sports",
+      "domains": [
+        "jdsports.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Regis Schultz"
+    },
+    {
+      "id": "lanvin",
+      "suggestedCanonicalName": "Lanvin",
+      "aliases": [
+        "Lanvin"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "reviewUrl": "https://us.lanvin.com/",
+      "note": "Mall-directory gap from South Coast Plaza.",
+      "canonicalName": "Lanvin",
+      "domains": [
+        "lanvin.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "montblanc",
+      "suggestedCanonicalName": "Montblanc",
+      "aliases": [
+        "Montblanc"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "reviewUrl": "https://www.montblanc.com/",
+      "note": "Mall-directory gap from South Coast Plaza.",
+      "canonicalName": "Montblanc",
+      "domains": [
+        "montblanc.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "moynat",
+      "suggestedCanonicalName": "Moynat",
+      "aliases": [
+        "Moynat"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "reviewUrl": "https://www.moynat.com/",
+      "note": "Mall-directory gap from South Coast Plaza.",
+      "canonicalName": "Moynat",
+      "domains": [
+        "moynat.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "oscar-de-la-renta",
+      "suggestedCanonicalName": "Oscar de la Renta",
+      "aliases": [
+        "Oscar de la Renta"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "reviewUrl": "https://www.oscardelarenta.com/",
+      "note": "Mall-directory gap from South Coast Plaza.",
+      "canonicalName": "Oscar de la Renta",
+      "domains": [
+        "oscardelarenta.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "porsche-design",
+      "suggestedCanonicalName": "Porsche Design",
+      "aliases": [
+        "Porsche Design"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "reviewUrl": "https://www.porsche-design.com/us/en/",
+      "note": "Mall-directory gap from South Coast Plaza.",
+      "canonicalName": "Porsche Design",
+      "domains": [
+        "porsche-design.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "ferragamo",
+      "suggestedCanonicalName": "Ferragamo",
+      "aliases": [
+        "Ferragamo",
+        "Salvatore Ferragamo"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "reviewUrl": "https://www.ferragamo.com/",
+      "note": "Mall-directory gap from South Coast Plaza.",
+      "canonicalName": "Ferragamo",
+      "domains": [
+        "ferragamo.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "ganni",
+      "suggestedCanonicalName": "GANNI",
+      "aliases": [
+        "GANNI",
+        "Ganni"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "reviewUrl": "https://www.ganni.com/",
+      "note": "Mall-directory gap from South Coast Plaza.",
+      "canonicalName": "GANNI",
+      "domains": [
+        "ganni.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "giorgio-armani",
+      "suggestedCanonicalName": "Giorgio Armani",
+      "aliases": [
+        "Giorgio Armani"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "reviewUrl": "https://www.armani.com/",
+      "note": "Mall-directory gap from South Coast Plaza.",
+      "canonicalName": "Giorgio Armani",
+      "domains": [
+        "armani.com"
+      ],
+      "verificationStatus": "unverified",
+      "publicFigureName": "Giorgio Armani"
+    },
+    {
+      "id": "isabel-marant",
+      "suggestedCanonicalName": "Isabel Marant",
+      "aliases": [
+        "Isabel Marant"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "reviewUrl": "https://us.isabelmarant.com/",
+      "note": "Mall-directory gap from South Coast Plaza.",
+      "canonicalName": "Isabel Marant",
+      "domains": [
+        "isabelmarant.com"
+      ],
+      "verificationStatus": "unverified",
+      "publicFigureName": "Isabel Marant"
+    },
+    {
+      "id": "toys-r-us",
+      "suggestedCanonicalName": "Toys R Us",
+      "aliases": [
+        "Toys R Us",
+        "Toys\"R\"Us"
+      ],
+      "categoryTags": [
+        "retail"
+      ],
+      "reviewUrl": "https://www.toysrus.com/",
+      "note": "Mall-directory gap from American Dream.",
+      "canonicalName": "Toys R Us",
+      "domains": [
+        "toysrus.com"
+      ],
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "itsugar",
+      "suggestedCanonicalName": "IT'SUGAR",
+      "aliases": [
+        "IT'SUGAR",
+        "ITSUGAR",
+        "IT SUGAR"
+      ],
+      "categoryTags": [
+        "retail"
+      ],
+      "reviewUrl": "https://www.itsugar.com/",
+      "note": "Mall-directory gap from American Dream.",
+      "canonicalName": "IT'SUGAR",
+      "domains": [
+        "itsugar.com"
+      ],
+      "verificationStatus": "unverified"
+    }
+  ],
+  "proposedAliasAdds": [
+    {
+      "entityId": "7-eleven",
+      "addAliases": [
+        "7-11",
+        "Seven Eleven",
+        "Seven 11",
+        "Seven-Eleven",
+        "Seven Elevin"
+      ],
+      "reviewUrl": "https://www.7-eleven.com/locations",
+      "note": "Exact matching will not catch word-number or misspelled variants unless they are explicit aliases."
+    },
+    {
+      "entityId": "caseys-general-store",
+      "addAliases": [
+        "Caseys",
+        "Casey's General Stores"
+      ],
+      "reviewUrl": "https://www.caseys.com/store-locator",
+      "note": "Useful because the matcher does not infer store/storeS or apostropheless variants."
+    },
+    {
+      "entityId": "quiktrip",
+      "addAliases": [
+        "Quik Trip"
+      ],
+      "reviewUrl": "https://www.quiktrip.com/qt-locations/",
+      "note": "Spaced variant is common in informal listings."
+    },
+    {
+      "entityId": "pilot-flying-j",
+      "addAliases": [
+        "Pilot Travel Center",
+        "Flying J Travel Center",
+        "PFJ"
+      ],
+      "reviewUrl": "https://pilotflyingj.com/locations",
+      "note": "Travel-center variants commonly appear in map and roadside results."
+    },
+    {
+      "entityId": "loves-travel-stops",
+      "addAliases": [
+        "Love's Travel Stop",
+        "Loves Travel Stop",
+        "Love's Truck Stop"
+      ],
+      "reviewUrl": "https://www.loves.com/en/store-locations",
+      "note": "Adds common travel-stop phrasing currently missing."
+    },
+    {
+      "entityId": "wawa",
+      "addAliases": [
+        "Wawa Food Market",
+        "Wawa Fuel"
+      ],
+      "reviewUrl": "https://www.wawa.com/stores",
+      "note": "Useful for map-visible variants that include store-type words."
+    },
+    {
+      "entityId": "walmart",
+      "addAliases": [
+        "Walmart Neighborhood Market"
+      ],
+      "reviewUrl": "https://www.walmart.com/store/finder",
+      "note": "Common map-facing Walmart sub-banner currently missing."
+    }
+  ],
+  "proposedEntitySplits": [
+    {
+      "id": "louis-vuitton",
+      "sourceEntityId": "lvmh",
+      "sourceType": "live-base",
+      "parentEntityId": "lvmh",
+      "suggestedCanonicalName": "Louis Vuitton",
+      "aliases": [
+        "Louis Vuitton",
+        "LV"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "splitType": "house",
+      "reviewUrl": "https://www.lvmh.com/en/our-maisons/",
+      "note": "Currently bundled under lvmh; stronger modeled as its own child entity.",
+      "canonicalName": "Louis Vuitton",
+      "verificationStatus": "unverified",
+      "ceoName": "Bernard Arnault",
+      "publicFigureName": "Bernard Arnault"
+    },
+    {
+      "id": "dior",
+      "sourceEntityId": "lvmh",
+      "sourceType": "live-base",
+      "parentEntityId": "lvmh",
+      "suggestedCanonicalName": "Dior",
+      "aliases": [
+        "Dior",
+        "Christian Dior"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "splitType": "house",
+      "reviewUrl": "https://www.lvmh.com/en/our-maisons/",
+      "note": "Currently bundled under lvmh; should be a standalone house entity.",
+      "canonicalName": "Dior",
+      "verificationStatus": "unverified",
+      "ceoName": "Bernard Arnault",
+      "publicFigureName": "Bernard Arnault"
+    },
+    {
+      "id": "fendi",
+      "sourceEntityId": "lvmh",
+      "sourceType": "live-base",
+      "parentEntityId": "lvmh",
+      "suggestedCanonicalName": "Fendi",
+      "aliases": [
+        "Fendi"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "splitType": "house",
+      "reviewUrl": "https://www.lvmh.com/en/our-maisons/",
+      "note": "Currently a live alias on lvmh; better as a standalone house entity.",
+      "canonicalName": "Fendi",
+      "verificationStatus": "unverified",
+      "ceoName": "Bernard Arnault",
+      "publicFigureName": "Bernard Arnault"
+    },
+    {
+      "id": "givenchy",
+      "sourceEntityId": "lvmh",
+      "sourceType": "live-base",
+      "parentEntityId": "lvmh",
+      "suggestedCanonicalName": "Givenchy",
+      "aliases": [
+        "Givenchy"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "splitType": "house",
+      "reviewUrl": "https://www.lvmh.com/en/our-maisons/",
+      "note": "Currently a live alias on lvmh; better as a standalone house entity.",
+      "canonicalName": "Givenchy",
+      "verificationStatus": "unverified",
+      "ceoName": "Bernard Arnault",
+      "publicFigureName": "Bernard Arnault"
+    },
+    {
+      "id": "tiffany-and-co",
+      "sourceEntityId": "lvmh",
+      "sourceType": "live-base",
+      "parentEntityId": "lvmh",
+      "suggestedCanonicalName": "Tiffany & Co",
+      "aliases": [
+        "Tiffany & Co",
+        "Tiffany",
+        "Tiffanys"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "splitType": "house",
+      "reviewUrl": "https://www.lvmh.com/en/our-maisons/",
+      "note": "Currently bundled under lvmh; should be split out.",
+      "canonicalName": "Tiffany & Co",
+      "verificationStatus": "unverified",
+      "ceoName": "Bernard Arnault",
+      "publicFigureName": "Bernard Arnault"
+    },
+    {
+      "id": "bulgari",
+      "sourceEntityId": "lvmh",
+      "sourceType": "live-base",
+      "parentEntityId": "lvmh",
+      "suggestedCanonicalName": "Bulgari",
+      "aliases": [
+        "Bulgari",
+        "BVLGARI"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "splitType": "house",
+      "reviewUrl": "https://www.lvmh.com/en/our-maisons/",
+      "note": "Luxury house currently modeled too loosely as a parent alias.",
+      "canonicalName": "Bulgari",
+      "verificationStatus": "unverified",
+      "ceoName": "Bernard Arnault",
+      "publicFigureName": "Bernard Arnault"
+    },
+    {
+      "id": "celine",
+      "sourceEntityId": "lvmh",
+      "sourceType": "live-base",
+      "parentEntityId": "lvmh",
+      "suggestedCanonicalName": "Celine",
+      "aliases": [
+        "Celine"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "splitType": "house",
+      "reviewUrl": "https://www.lvmh.com/en/our-maisons/",
+      "note": "Should be a standalone house entity instead of a parent alias.",
+      "canonicalName": "Celine",
+      "verificationStatus": "unverified",
+      "ceoName": "Bernard Arnault",
+      "publicFigureName": "Bernard Arnault"
+    },
+    {
+      "id": "loewe",
+      "sourceEntityId": "lvmh",
+      "sourceType": "live-base",
+      "parentEntityId": "lvmh",
+      "suggestedCanonicalName": "Loewe",
+      "aliases": [
+        "Loewe"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "splitType": "house",
+      "reviewUrl": "https://www.lvmh.com/en/our-maisons/",
+      "note": "Should be a standalone house entity instead of a parent alias.",
+      "canonicalName": "Loewe",
+      "verificationStatus": "unverified",
+      "ceoName": "Bernard Arnault",
+      "publicFigureName": "Bernard Arnault"
+    },
+    {
+      "id": "rimowa",
+      "sourceEntityId": "lvmh",
+      "sourceType": "live-base",
+      "parentEntityId": "lvmh",
+      "suggestedCanonicalName": "RIMOWA",
+      "aliases": [
+        "Rimowa",
+        "RIMOWA"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "splitType": "house",
+      "reviewUrl": "https://www.lvmh.com/en/our-maisons/",
+      "note": "Distinct retail brand currently grouped under lvmh.",
+      "canonicalName": "RIMOWA",
+      "verificationStatus": "unverified",
+      "ceoName": "Bernard Arnault",
+      "publicFigureName": "Bernard Arnault"
+    },
+    {
+      "id": "loro-piana",
+      "sourceEntityId": "lvmh",
+      "sourceType": "live-base",
+      "parentEntityId": "lvmh",
+      "suggestedCanonicalName": "Loro Piana",
+      "aliases": [
+        "Loro Piana"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "splitType": "house",
+      "reviewUrl": "https://www.lvmh.com/en/our-maisons/",
+      "note": "Distinct luxury house currently grouped under lvmh.",
+      "canonicalName": "Loro Piana",
+      "verificationStatus": "unverified",
+      "ceoName": "Bernard Arnault",
+      "publicFigureName": "Bernard Arnault"
+    },
+    {
+      "id": "kenzo",
+      "sourceEntityId": "lvmh",
+      "sourceType": "live-base",
+      "parentEntityId": "lvmh",
+      "suggestedCanonicalName": "Kenzo",
+      "aliases": [
+        "Kenzo"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "splitType": "house",
+      "reviewUrl": "https://www.lvmh.com/en/our-maisons/",
+      "note": "Distinct house currently grouped under lvmh.",
+      "canonicalName": "Kenzo",
+      "verificationStatus": "unverified",
+      "ceoName": "Bernard Arnault",
+      "publicFigureName": "Bernard Arnault"
+    },
+    {
+      "id": "berluti",
+      "sourceEntityId": "lvmh",
+      "sourceType": "live-base",
+      "parentEntityId": "lvmh",
+      "suggestedCanonicalName": "Berluti",
+      "aliases": [
+        "Berluti"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "splitType": "house",
+      "reviewUrl": "https://www.lvmh.com/en/our-maisons/",
+      "note": "Distinct house currently grouped under lvmh.",
+      "canonicalName": "Berluti",
+      "verificationStatus": "unverified",
+      "ceoName": "Bernard Arnault",
+      "publicFigureName": "Bernard Arnault"
+    },
+    {
+      "id": "emilio-pucci",
+      "sourceEntityId": "lvmh",
+      "sourceType": "live-base",
+      "parentEntityId": "lvmh",
+      "suggestedCanonicalName": "Emilio Pucci",
+      "aliases": [
+        "Emilio Pucci",
+        "Pucci"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "splitType": "house",
+      "reviewUrl": "https://www.lvmh.com/en/our-maisons/",
+      "note": "Distinct house currently grouped under lvmh.",
+      "canonicalName": "Emilio Pucci",
+      "verificationStatus": "unverified",
+      "ceoName": "Bernard Arnault",
+      "publicFigureName": "Bernard Arnault"
+    },
+    {
+      "id": "patou",
+      "sourceEntityId": "lvmh",
+      "sourceType": "live-base",
+      "parentEntityId": "lvmh",
+      "suggestedCanonicalName": "Patou",
+      "aliases": [
+        "Patou"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "splitType": "house",
+      "reviewUrl": "https://www.lvmh.com/en/our-maisons/",
+      "note": "Distinct house currently grouped under lvmh.",
+      "canonicalName": "Patou",
+      "verificationStatus": "unverified",
+      "ceoName": "Bernard Arnault",
+      "publicFigureName": "Bernard Arnault"
+    },
+    {
+      "id": "marc-jacobs",
+      "sourceEntityId": "lvmh",
+      "sourceType": "live-base",
+      "parentEntityId": "lvmh",
+      "suggestedCanonicalName": "Marc Jacobs",
+      "aliases": [
+        "Marc Jacobs"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "splitType": "house",
+      "reviewUrl": "https://www.lvmh.com/en/our-maisons/",
+      "note": "Distinct retail brand currently grouped under lvmh.",
+      "canonicalName": "Marc Jacobs",
+      "verificationStatus": "unverified",
+      "ceoName": "Bernard Arnault",
+      "publicFigureName": "Bernard Arnault"
+    },
+    {
+      "id": "guerlain",
+      "sourceEntityId": "lvmh",
+      "sourceType": "live-base",
+      "parentEntityId": "lvmh",
+      "suggestedCanonicalName": "Guerlain",
+      "aliases": [
+        "Guerlain"
+      ],
+      "categoryTags": [
+        "retail",
+        "beauty",
+        "luxury"
+      ],
+      "splitType": "house",
+      "reviewUrl": "https://www.lvmh.com/en/our-maisons/",
+      "note": "Distinct beauty house currently grouped under lvmh.",
+      "canonicalName": "Guerlain",
+      "verificationStatus": "unverified",
+      "ceoName": "Bernard Arnault",
+      "publicFigureName": "Bernard Arnault"
+    },
+    {
+      "id": "benefit-cosmetics",
+      "sourceEntityId": "lvmh",
+      "sourceType": "live-base",
+      "parentEntityId": "lvmh",
+      "suggestedCanonicalName": "Benefit Cosmetics",
+      "aliases": [
+        "Benefit Cosmetics",
+        "Benefit"
+      ],
+      "categoryTags": [
+        "retail",
+        "beauty"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://www.lvmh.com/en/our-maisons/",
+      "note": "Distinct beauty brand currently grouped under lvmh.",
+      "canonicalName": "Benefit Cosmetics",
+      "verificationStatus": "unverified",
+      "ceoName": "Bernard Arnault",
+      "publicFigureName": "Bernard Arnault"
+    },
+    {
+      "id": "fresh-beauty",
+      "sourceEntityId": "lvmh",
+      "sourceType": "live-base",
+      "parentEntityId": "lvmh",
+      "suggestedCanonicalName": "Fresh",
+      "aliases": [
+        "Fresh"
+      ],
+      "categoryTags": [
+        "retail",
+        "beauty"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://www.lvmh.com/en/our-maisons/",
+      "note": "Distinct beauty brand currently grouped under lvmh.",
+      "canonicalName": "Fresh",
+      "verificationStatus": "unverified",
+      "ceoName": "Bernard Arnault",
+      "publicFigureName": "Bernard Arnault"
+    },
+    {
+      "id": "make-up-for-ever",
+      "sourceEntityId": "lvmh",
+      "sourceType": "live-base",
+      "parentEntityId": "lvmh",
+      "suggestedCanonicalName": "Make Up For Ever",
+      "aliases": [
+        "Make Up For Ever",
+        "MAKE UP FOR EVER"
+      ],
+      "categoryTags": [
+        "retail",
+        "beauty"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://www.lvmh.com/en/our-maisons/",
+      "note": "Distinct beauty brand currently grouped under lvmh.",
+      "canonicalName": "Make Up For Ever",
+      "verificationStatus": "unverified",
+      "ceoName": "Bernard Arnault",
+      "publicFigureName": "Bernard Arnault"
+    },
+    {
+      "id": "acqua-di-parma",
+      "sourceEntityId": "lvmh",
+      "sourceType": "live-base",
+      "parentEntityId": "lvmh",
+      "suggestedCanonicalName": "Acqua di Parma",
+      "aliases": [
+        "Acqua di Parma"
+      ],
+      "categoryTags": [
+        "retail",
+        "beauty",
+        "luxury"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://www.lvmh.com/en/our-maisons/",
+      "note": "Distinct fragrance brand currently grouped under lvmh.",
+      "canonicalName": "Acqua di Parma",
+      "verificationStatus": "unverified",
+      "ceoName": "Bernard Arnault",
+      "publicFigureName": "Bernard Arnault"
+    },
+    {
+      "id": "dfs",
+      "sourceEntityId": "lvmh",
+      "sourceType": "live-base",
+      "parentEntityId": "lvmh",
+      "suggestedCanonicalName": "DFS Group",
+      "aliases": [
+        "DFS"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "splitType": "retail-operator",
+      "reviewUrl": "https://www.lvmh.com/en/our-maisons/",
+      "note": "Distinct retail operator currently grouped under lvmh.",
+      "canonicalName": "DFS Group",
+      "verificationStatus": "unverified",
+      "ceoName": "Bernard Arnault",
+      "publicFigureName": "Bernard Arnault"
+    },
+    {
+      "id": "starboard-cruise-services",
+      "sourceEntityId": "lvmh",
+      "sourceType": "live-base",
+      "parentEntityId": "lvmh",
+      "suggestedCanonicalName": "Starboard Cruise Services",
+      "aliases": [
+        "Starboard Cruise Services"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "splitType": "retail-operator",
+      "reviewUrl": "https://www.lvmh.com/en/our-maisons/",
+      "note": "Distinct retail operator currently grouped under lvmh.",
+      "canonicalName": "Starboard Cruise Services",
+      "verificationStatus": "unverified",
+      "ceoName": "Bernard Arnault",
+      "publicFigureName": "Bernard Arnault"
+    },
+    {
+      "id": "the-giant-company",
+      "sourceEntityId": "ahold-delhaize",
+      "sourceType": "live-base",
+      "parentEntityId": "ahold-delhaize",
+      "suggestedCanonicalName": "The GIANT Company",
+      "aliases": [
+        "The GIANT Company",
+        "Giant Food Stores",
+        "Martin's"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "splitType": "operating-company",
+      "reviewUrl": "https://www.adusa.com/our-brands/",
+      "note": "Currently modeled as parent aliases; should be its own child entity.",
+      "canonicalName": "The GIANT Company",
+      "domains": [
+        "adusa.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Frans Muller"
+    },
+    {
+      "id": "freshdirect",
+      "sourceEntityId": "ahold-delhaize",
+      "sourceType": "live-base",
+      "parentEntityId": "ahold-delhaize",
+      "suggestedCanonicalName": "FreshDirect",
+      "aliases": [
+        "FreshDirect"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "splitType": "subsidiary",
+      "reviewUrl": "https://www.adusa.com/our-brands/",
+      "note": "Distinct consumer entity currently modeled as an alias add candidate.",
+      "canonicalName": "FreshDirect",
+      "domains": [
+        "adusa.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Frans Muller"
+    },
+    {
+      "id": "holiday-stationstores",
+      "sourceEntityId": "circle-k",
+      "sourceType": "live-base",
+      "parentEntityId": "circle-k",
+      "suggestedCanonicalName": "Holiday Stationstores",
+      "aliases": [
+        "Holiday",
+        "Holiday Station Stores",
+        "Holiday Stationstores"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.circlek.com/",
+      "note": "Distinct convenience banner currently grouped under circle-k.",
+      "canonicalName": "Holiday Stationstores",
+      "verificationStatus": "unverified",
+      "ceoName": "Brian Hannasch"
+    },
+    {
+      "id": "speedway",
+      "sourceEntityId": "7-eleven",
+      "sourceType": "live-base",
+      "parentEntityId": "7-eleven",
+      "suggestedCanonicalName": "Speedway LLC",
+      "aliases": [
+        "Speedway"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "splitType": "subsidiary",
+      "reviewUrl": "https://www.7-eleven.com/",
+      "note": "Distinct convenience brand currently grouped under 7-eleven.",
+      "canonicalName": "Speedway LLC",
+      "verificationStatus": "unverified",
+      "ceoName": "Joe DePinto"
+    },
+    {
+      "id": "stripes",
+      "sourceEntityId": "7-eleven",
+      "sourceType": "live-base",
+      "parentEntityId": "7-eleven",
+      "suggestedCanonicalName": "Stripes",
+      "aliases": [
+        "Stripes"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.7-eleven.com/",
+      "note": "Distinct convenience banner currently grouped under 7-eleven.",
+      "canonicalName": "Stripes",
+      "verificationStatus": "unverified",
+      "ceoName": "Joe DePinto"
+    },
+    {
+      "id": "central-market",
+      "sourceEntityId": "heb",
+      "sourceType": "review-parent",
+      "parentEntityId": "heb",
+      "suggestedCanonicalName": "Central Market",
+      "aliases": [
+        "Central Market"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.heb.com/",
+      "note": "Distinct consumer banner currently grouped under heb.",
+      "canonicalName": "Central Market",
+      "verificationStatus": "unverified",
+      "ceoName": "Howard Butt III",
+      "publicFigureName": "Charles Butt"
+    },
+    {
+      "id": "joe-vs-smart-shop",
+      "sourceEntityId": "heb",
+      "sourceType": "review-parent",
+      "parentEntityId": "heb",
+      "suggestedCanonicalName": "Joe V's Smart Shop",
+      "aliases": [
+        "Joe V's Smart Shop"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.heb.com/",
+      "note": "Distinct consumer banner currently grouped under heb.",
+      "canonicalName": "Joe V's Smart Shop",
+      "verificationStatus": "unverified",
+      "ceoName": "Howard Butt III",
+      "publicFigureName": "Charles Butt"
+    },
+    {
+      "id": "market-district",
+      "sourceEntityId": "giant-eagle",
+      "sourceType": "review-parent",
+      "parentEntityId": "giant-eagle",
+      "suggestedCanonicalName": "Market District",
+      "aliases": [
+        "Market District"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.gianteagle.com/",
+      "note": "Distinct consumer banner currently grouped under giant-eagle.",
+      "canonicalName": "Market District",
+      "verificationStatus": "unverified",
+      "ceoName": "Bill Artman",
+      "publicFigureName": "David Shapira"
+    },
+    {
+      "id": "getgo",
+      "sourceEntityId": "giant-eagle",
+      "sourceType": "review-parent",
+      "parentEntityId": "giant-eagle",
+      "suggestedCanonicalName": "GetGo",
+      "aliases": [
+        "GetGo",
+        "GetGo Cafe + Market"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.gianteagle.com/",
+      "note": "Distinct convenience banner currently grouped under giant-eagle.",
+      "canonicalName": "GetGo",
+      "verificationStatus": "unverified",
+      "ceoName": "Bill Artman",
+      "publicFigureName": "David Shapira"
+    },
+    {
+      "id": "price-chopper",
+      "sourceEntityId": "golub-corp",
+      "sourceType": "review-parent",
+      "parentEntityId": "golub-corp",
+      "suggestedCanonicalName": "Price Chopper",
+      "aliases": [
+        "Price Chopper"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.pricechopper.com/",
+      "note": "Distinct consumer banner currently grouped under golub-corp.",
+      "canonicalName": "Price Chopper",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "market-32",
+      "sourceEntityId": "golub-corp",
+      "sourceType": "review-parent",
+      "parentEntityId": "golub-corp",
+      "suggestedCanonicalName": "Market 32",
+      "aliases": [
+        "Market 32"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.pricechopper.com/",
+      "note": "Distinct consumer banner currently grouped under golub-corp.",
+      "canonicalName": "Market 32",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "bel-air",
+      "sourceEntityId": "raleys",
+      "sourceType": "review-parent",
+      "parentEntityId": "raleys",
+      "suggestedCanonicalName": "Bel Air",
+      "aliases": [
+        "Bel Air"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.raleys.com/",
+      "note": "Distinct consumer banner currently grouped under raleys.",
+      "canonicalName": "Bel Air",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "nob-hill-foods",
+      "sourceEntityId": "raleys",
+      "sourceType": "review-parent",
+      "parentEntityId": "raleys",
+      "suggestedCanonicalName": "Nob Hill Foods",
+      "aliases": [
+        "Nob Hill Foods"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.raleys.com/",
+      "note": "Distinct consumer banner currently grouped under raleys.",
+      "canonicalName": "Nob Hill Foods",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "quickchek",
+      "sourceEntityId": "murphy-usa",
+      "sourceType": "review-parent",
+      "parentEntityId": "murphy-usa",
+      "suggestedCanonicalName": "QuickChek",
+      "aliases": [
+        "QuickChek"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "splitType": "subsidiary",
+      "reviewUrl": "https://quickchek.com/",
+      "note": "Distinct operating brand currently grouped under murphy-usa.",
+      "canonicalName": "QuickChek",
+      "domains": [
+        "quickchek.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Mindy West"
+    },
+    {
+      "id": "kum-and-go",
+      "sourceEntityId": "maverik",
+      "sourceType": "review-parent",
+      "parentEntityId": "maverik",
+      "suggestedCanonicalName": "Kum & Go",
+      "aliases": [
+        "Kum & Go",
+        "Kum and Go"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "splitType": "subsidiary",
+      "reviewUrl": "https://www.maverik.com/",
+      "note": "Distinct operating brand currently grouped under maverik.",
+      "canonicalName": "Kum & Go",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "allsups",
+      "sourceEntityId": "yesway",
+      "sourceType": "review-parent",
+      "parentEntityId": "yesway",
+      "suggestedCanonicalName": "Allsup's",
+      "aliases": [
+        "Allsup's",
+        "Allsups"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://yesway.com/",
+      "note": "Distinct consumer banner currently grouped under yesway.",
+      "canonicalName": "Allsup's",
+      "verificationStatus": "unverified",
+      "ceoName": "Thomas N. Trkla",
+      "publicFigureName": "Thomas N. Trkla"
+    },
+    {
+      "id": "cumberland-farms",
+      "sourceEntityId": "eg-america",
+      "sourceType": "review-parent",
+      "parentEntityId": "eg-america",
+      "suggestedCanonicalName": "Cumberland Farms",
+      "aliases": [
+        "Cumberland Farms"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "splitType": "subsidiary",
+      "reviewUrl": "https://eg-america.com/brands/",
+      "note": "Distinct operating brand currently grouped under eg-america.",
+      "canonicalName": "Cumberland Farms",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "turkey-hill",
+      "sourceEntityId": "eg-america",
+      "sourceType": "review-parent",
+      "parentEntityId": "eg-america",
+      "suggestedCanonicalName": "Turkey Hill",
+      "aliases": [
+        "Turkey Hill"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://eg-america.com/brands/",
+      "note": "Distinct convenience banner currently grouped under eg-america.",
+      "canonicalName": "Turkey Hill",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "loaf-n-jug",
+      "sourceEntityId": "eg-america",
+      "sourceType": "review-parent",
+      "parentEntityId": "eg-america",
+      "suggestedCanonicalName": "Loaf 'N Jug",
+      "aliases": [
+        "Loaf 'N Jug",
+        "Loaf N Jug"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://eg-america.com/brands/",
+      "note": "Distinct convenience banner currently grouped under eg-america.",
+      "canonicalName": "Loaf 'N Jug",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "uniqlo",
+      "sourceEntityId": "fast-retailing",
+      "sourceType": "review-parent",
+      "parentEntityId": "fast-retailing",
+      "suggestedCanonicalName": "UNIQLO",
+      "aliases": [
+        "UNIQLO",
+        "Uniqlo"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://www.fastretailing.com/",
+      "note": "Distinct retail brand currently grouped under fast-retailing.",
+      "canonicalName": "UNIQLO",
+      "verificationStatus": "unverified",
+      "ceoName": "Tadashi Yanai",
+      "publicFigureName": "Tadashi Yanai"
+    },
+    {
+      "id": "theory",
+      "sourceEntityId": "fast-retailing",
+      "sourceType": "review-parent",
+      "parentEntityId": "fast-retailing",
+      "suggestedCanonicalName": "Theory",
+      "aliases": [
+        "Theory"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://www.fastretailing.com/",
+      "note": "Distinct retail brand currently grouped under fast-retailing.",
+      "canonicalName": "Theory",
+      "verificationStatus": "unverified",
+      "ceoName": "Tadashi Yanai",
+      "publicFigureName": "Tadashi Yanai"
+    },
+    {
+      "id": "jcrew",
+      "sourceEntityId": "jcrew-group",
+      "sourceType": "review-parent",
+      "parentEntityId": "jcrew-group",
+      "suggestedCanonicalName": "J.Crew",
+      "aliases": [
+        "J.Crew",
+        "J Crew"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://www.jcrew.com/",
+      "note": "Distinct retail brand currently grouped under jcrew-group.",
+      "canonicalName": "J.Crew",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "madewell",
+      "sourceEntityId": "jcrew-group",
+      "sourceType": "review-parent",
+      "parentEntityId": "jcrew-group",
+      "suggestedCanonicalName": "Madewell",
+      "aliases": [
+        "Madewell"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://www.jcrew.com/",
+      "note": "Distinct retail brand currently grouped under jcrew-group.",
+      "canonicalName": "Madewell",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "anthropologie",
+      "sourceEntityId": "urban-outfitters",
+      "sourceType": "review-parent",
+      "parentEntityId": "urban-outfitters",
+      "suggestedCanonicalName": "Anthropologie",
+      "aliases": [
+        "Anthropologie"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://www.urbn.com/our-brands/",
+      "note": "Distinct retail brand currently grouped under urban-outfitters.",
+      "canonicalName": "Anthropologie",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "free-people",
+      "sourceEntityId": "urban-outfitters",
+      "sourceType": "review-parent",
+      "parentEntityId": "urban-outfitters",
+      "suggestedCanonicalName": "Free People",
+      "aliases": [
+        "Free People"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://www.urbn.com/our-brands/",
+      "note": "Distinct retail brand currently grouped under urban-outfitters.",
+      "canonicalName": "Free People",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "terrain",
+      "sourceEntityId": "urban-outfitters",
+      "sourceType": "review-parent",
+      "parentEntityId": "urban-outfitters",
+      "suggestedCanonicalName": "Terrain",
+      "aliases": [
+        "Terrain"
+      ],
+      "categoryTags": [
+        "retail",
+        "home"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://www.urbn.com/our-brands/",
+      "note": "Distinct retail brand currently grouped under urban-outfitters.",
+      "canonicalName": "Terrain",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "calvin-klein",
+      "sourceEntityId": "pvh",
+      "sourceType": "review-parent",
+      "parentEntityId": "pvh",
+      "suggestedCanonicalName": "Calvin Klein",
+      "aliases": [
+        "Calvin Klein"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://www.pvh.com/",
+      "note": "Distinct retail brand currently grouped under pvh.",
+      "canonicalName": "Calvin Klein",
+      "verificationStatus": "unverified",
+      "ceoName": "Stefan Larsson"
+    },
+    {
+      "id": "tommy-hilfiger",
+      "sourceEntityId": "pvh",
+      "sourceType": "review-parent",
+      "parentEntityId": "pvh",
+      "suggestedCanonicalName": "Tommy Hilfiger",
+      "aliases": [
+        "Tommy Hilfiger"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://www.pvh.com/",
+      "note": "Distinct retail brand currently grouped under pvh.",
+      "canonicalName": "Tommy Hilfiger",
+      "verificationStatus": "unverified",
+      "ceoName": "Stefan Larsson"
+    },
+    {
+      "id": "coach",
+      "sourceEntityId": "tapestry",
+      "sourceType": "review-parent",
+      "parentEntityId": "tapestry",
+      "suggestedCanonicalName": "Coach",
+      "aliases": [
+        "Coach"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "splitType": "house",
+      "reviewUrl": "https://www.tapestry.com/our-brands",
+      "note": "Distinct retail house currently grouped under tapestry.",
+      "canonicalName": "Coach",
+      "verificationStatus": "unverified",
+      "ceoName": "Joanne Crevoiserat"
+    },
+    {
+      "id": "kate-spade",
+      "sourceEntityId": "tapestry",
+      "sourceType": "review-parent",
+      "parentEntityId": "tapestry",
+      "suggestedCanonicalName": "Kate Spade",
+      "aliases": [
+        "Kate Spade",
+        "Kate Spade New York"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "splitType": "house",
+      "reviewUrl": "https://www.tapestry.com/our-brands",
+      "note": "Distinct retail house currently grouped under tapestry.",
+      "canonicalName": "Kate Spade",
+      "verificationStatus": "unverified",
+      "ceoName": "Joanne Crevoiserat"
+    },
+    {
+      "id": "stuart-weitzman",
+      "sourceEntityId": "tapestry",
+      "sourceType": "review-parent",
+      "parentEntityId": "tapestry",
+      "suggestedCanonicalName": "Stuart Weitzman",
+      "aliases": [
+        "Stuart Weitzman"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "splitType": "house",
+      "reviewUrl": "https://www.tapestry.com/our-brands",
+      "note": "Distinct retail house currently grouped under tapestry.",
+      "canonicalName": "Stuart Weitzman",
+      "verificationStatus": "unverified",
+      "ceoName": "Joanne Crevoiserat"
+    },
+    {
+      "id": "michael-kors",
+      "sourceEntityId": "capri-holdings",
+      "sourceType": "review-parent",
+      "parentEntityId": "capri-holdings",
+      "suggestedCanonicalName": "Michael Kors",
+      "aliases": [
+        "Michael Kors",
+        "Michael Kors Collection"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "splitType": "house",
+      "reviewUrl": "https://www.capriholdings.com/our-brands/",
+      "note": "Distinct retail house currently grouped under capri-holdings.",
+      "canonicalName": "Michael Kors",
+      "verificationStatus": "unverified",
+      "ceoName": "John D. Idol"
+    },
+    {
+      "id": "jimmy-choo",
+      "sourceEntityId": "capri-holdings",
+      "sourceType": "review-parent",
+      "parentEntityId": "capri-holdings",
+      "suggestedCanonicalName": "Jimmy Choo",
+      "aliases": [
+        "Jimmy Choo"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "splitType": "house",
+      "reviewUrl": "https://www.capriholdings.com/our-brands/",
+      "note": "Distinct retail house currently grouped under capri-holdings.",
+      "canonicalName": "Jimmy Choo",
+      "verificationStatus": "unverified",
+      "ceoName": "John D. Idol"
+    },
+    {
+      "id": "versace",
+      "sourceEntityId": "capri-holdings",
+      "sourceType": "review-parent",
+      "parentEntityId": "capri-holdings",
+      "suggestedCanonicalName": "Versace",
+      "aliases": [
+        "Versace"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "splitType": "house",
+      "reviewUrl": "https://www.capriholdings.com/our-brands/",
+      "note": "Distinct retail house currently grouped under capri-holdings.",
+      "canonicalName": "Versace",
+      "verificationStatus": "unverified",
+      "ceoName": "John D. Idol"
+    },
+    {
+      "id": "gucci",
+      "sourceEntityId": "kering",
+      "sourceType": "review-parent",
+      "parentEntityId": "kering",
+      "suggestedCanonicalName": "Gucci",
+      "aliases": [
+        "Gucci"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "splitType": "house",
+      "reviewUrl": "https://www.kering.com/en/houses/",
+      "note": "Distinct retail house currently grouped under kering.",
+      "canonicalName": "Gucci",
+      "verificationStatus": "unverified",
+      "ceoName": "Luca de Meo",
+      "publicFigureName": "Francois-Henri Pinault"
+    },
+    {
+      "id": "saint-laurent",
+      "sourceEntityId": "kering",
+      "sourceType": "review-parent",
+      "parentEntityId": "kering",
+      "suggestedCanonicalName": "Saint Laurent",
+      "aliases": [
+        "Saint Laurent",
+        "YSL"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "splitType": "house",
+      "reviewUrl": "https://www.kering.com/en/houses/",
+      "note": "Distinct retail house currently grouped under kering.",
+      "canonicalName": "Saint Laurent",
+      "verificationStatus": "unverified",
+      "ceoName": "Luca de Meo",
+      "publicFigureName": "Francois-Henri Pinault"
+    },
+    {
+      "id": "balenciaga",
+      "sourceEntityId": "kering",
+      "sourceType": "review-parent",
+      "parentEntityId": "kering",
+      "suggestedCanonicalName": "Balenciaga",
+      "aliases": [
+        "Balenciaga"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "splitType": "house",
+      "reviewUrl": "https://www.kering.com/en/houses/",
+      "note": "Distinct retail house currently grouped under kering.",
+      "canonicalName": "Balenciaga",
+      "verificationStatus": "unverified",
+      "ceoName": "Luca de Meo",
+      "publicFigureName": "Francois-Henri Pinault"
+    },
+    {
+      "id": "bottega-veneta",
+      "sourceEntityId": "kering",
+      "sourceType": "review-parent",
+      "parentEntityId": "kering",
+      "suggestedCanonicalName": "Bottega Veneta",
+      "aliases": [
+        "Bottega Veneta"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "splitType": "house",
+      "reviewUrl": "https://www.kering.com/en/houses/",
+      "note": "Distinct retail house currently grouped under kering.",
+      "canonicalName": "Bottega Veneta",
+      "verificationStatus": "unverified",
+      "ceoName": "Luca de Meo",
+      "publicFigureName": "Francois-Henri Pinault"
+    },
+    {
+      "id": "alexander-mcqueen",
+      "sourceEntityId": "kering",
+      "sourceType": "review-parent",
+      "parentEntityId": "kering",
+      "suggestedCanonicalName": "Alexander McQueen",
+      "aliases": [
+        "Alexander McQueen",
+        "McQueen"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "splitType": "house",
+      "reviewUrl": "https://www.kering.com/en/houses/",
+      "note": "Distinct retail house currently grouped under kering.",
+      "canonicalName": "Alexander McQueen",
+      "verificationStatus": "unverified",
+      "ceoName": "Luca de Meo",
+      "publicFigureName": "Francois-Henri Pinault"
+    },
+    {
+      "id": "arcteryx",
+      "sourceEntityId": "amer-sports",
+      "sourceType": "review-parent",
+      "parentEntityId": "amer-sports",
+      "suggestedCanonicalName": "Arc'teryx",
+      "aliases": [
+        "Arc'teryx",
+        "Arcteryx"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "outdoor"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://www.amersports.com/our-brands/",
+      "note": "Distinct retail brand currently grouped under amer-sports.",
+      "canonicalName": "Arc'teryx",
+      "verificationStatus": "unverified",
+      "ceoName": "James Zheng"
+    },
+    {
+      "id": "salomon",
+      "sourceEntityId": "amer-sports",
+      "sourceType": "review-parent",
+      "parentEntityId": "amer-sports",
+      "suggestedCanonicalName": "Salomon",
+      "aliases": [
+        "Salomon"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "outdoor"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://www.amersports.com/our-brands/",
+      "note": "Distinct retail brand currently grouped under amer-sports.",
+      "canonicalName": "Salomon",
+      "verificationStatus": "unverified",
+      "ceoName": "James Zheng"
+    },
+    {
+      "id": "saks-fifth-avenue",
+      "sourceEntityId": "saks-global",
+      "sourceType": "review-parent",
+      "parentEntityId": "saks-global",
+      "suggestedCanonicalName": "Saks Fifth Avenue",
+      "aliases": [
+        "Saks Fifth Avenue"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.saksglobal.com/history",
+      "note": "Distinct consumer banner currently grouped under saks-global.",
+      "canonicalName": "Saks Fifth Avenue",
+      "verificationStatus": "unverified",
+      "ceoName": "Geoffroy van Raemdonck",
+      "publicFigureName": "Richard Baker"
+    },
+    {
+      "id": "saks-off-5th",
+      "sourceEntityId": "saks-global",
+      "sourceType": "review-parent",
+      "parentEntityId": "saks-global",
+      "suggestedCanonicalName": "Saks OFF 5TH",
+      "aliases": [
+        "Saks OFF 5TH",
+        "Saks Off 5th"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.saksglobal.com/history",
+      "note": "Distinct consumer banner currently grouped under saks-global.",
+      "canonicalName": "Saks OFF 5TH",
+      "verificationStatus": "unverified",
+      "ceoName": "Geoffroy van Raemdonck",
+      "publicFigureName": "Richard Baker"
+    },
+    {
+      "id": "neiman-marcus",
+      "sourceEntityId": "saks-global",
+      "sourceType": "review-parent",
+      "parentEntityId": "saks-global",
+      "suggestedCanonicalName": "Neiman Marcus",
+      "aliases": [
+        "Neiman Marcus"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.saksglobal.com/history",
+      "note": "Distinct consumer banner currently grouped under saks-global.",
+      "canonicalName": "Neiman Marcus",
+      "verificationStatus": "unverified",
+      "ceoName": "Geoffroy van Raemdonck",
+      "publicFigureName": "Richard Baker"
+    },
+    {
+      "id": "bergdorf-goodman",
+      "sourceEntityId": "saks-global",
+      "sourceType": "review-parent",
+      "parentEntityId": "saks-global",
+      "suggestedCanonicalName": "Bergdorf Goodman",
+      "aliases": [
+        "Bergdorf Goodman"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.saksglobal.com/history",
+      "note": "Distinct consumer banner currently grouped under saks-global.",
+      "canonicalName": "Bergdorf Goodman",
+      "verificationStatus": "unverified",
+      "ceoName": "Geoffroy van Raemdonck",
+      "publicFigureName": "Richard Baker"
+    },
+    {
+      "id": "kay-jewelers",
+      "sourceEntityId": "signet-jewelers",
+      "sourceType": "review-parent",
+      "parentEntityId": "signet-jewelers",
+      "suggestedCanonicalName": "Kay Jewelers",
+      "aliases": [
+        "Kay Jewelers"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.signetjewelers.com/our-brands/default.aspx",
+      "note": "Distinct consumer banner currently grouped under signet-jewelers.",
+      "canonicalName": "Kay Jewelers",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "zales",
+      "sourceEntityId": "signet-jewelers",
+      "sourceType": "review-parent",
+      "parentEntityId": "signet-jewelers",
+      "suggestedCanonicalName": "Zales",
+      "aliases": [
+        "Zales"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.signetjewelers.com/our-brands/default.aspx",
+      "note": "Distinct consumer banner currently grouped under signet-jewelers.",
+      "canonicalName": "Zales",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "jared",
+      "sourceEntityId": "signet-jewelers",
+      "sourceType": "review-parent",
+      "parentEntityId": "signet-jewelers",
+      "suggestedCanonicalName": "Jared",
+      "aliases": [
+        "Jared",
+        "Jared The Galleria Of Jewelry"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.signetjewelers.com/our-brands/default.aspx",
+      "note": "Distinct consumer banner currently grouped under signet-jewelers.",
+      "canonicalName": "Jared",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "shoprite",
+      "sourceEntityId": "wakefern-food",
+      "sourceType": "review-parent",
+      "parentEntityId": "wakefern-food",
+      "suggestedCanonicalName": "ShopRite",
+      "aliases": [
+        "ShopRite"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.shoprite.com/",
+      "note": "Distinct consumer banner currently grouped under wakefern-food.",
+      "canonicalName": "ShopRite",
+      "verificationStatus": "unverified",
+      "ceoName": "Mike Stigers"
+    },
+    {
+      "id": "price-rite",
+      "sourceEntityId": "wakefern-food",
+      "sourceType": "review-parent",
+      "parentEntityId": "wakefern-food",
+      "suggestedCanonicalName": "Price Rite",
+      "aliases": [
+        "Price Rite",
+        "Price Rite Marketplace"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.shoprite.com/",
+      "note": "Distinct consumer banner currently grouped under wakefern-food.",
+      "canonicalName": "Price Rite",
+      "verificationStatus": "unverified",
+      "ceoName": "Mike Stigers"
+    },
+    {
+      "id": "fresh-grocer",
+      "sourceEntityId": "wakefern-food",
+      "sourceType": "review-parent",
+      "parentEntityId": "wakefern-food",
+      "suggestedCanonicalName": "The Fresh Grocer",
+      "aliases": [
+        "The Fresh Grocer",
+        "Fresh Grocer"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.shoprite.com/",
+      "note": "Distinct consumer banner currently grouped under wakefern-food.",
+      "canonicalName": "The Fresh Grocer",
+      "verificationStatus": "unverified",
+      "ceoName": "Mike Stigers"
+    },
+    {
+      "id": "ajs-fine-foods",
+      "sourceEntityId": "bashas",
+      "sourceType": "review-parent",
+      "parentEntityId": "bashas",
+      "suggestedCanonicalName": "AJ's Fine Foods",
+      "aliases": [
+        "AJ's Fine Foods",
+        "AJs Fine Foods"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.bashas.com/",
+      "note": "Distinct consumer banner currently grouped under bashas.",
+      "canonicalName": "AJ's Fine Foods",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "the-north-face",
+      "sourceEntityId": "vf-corporation",
+      "sourceType": "review-parent",
+      "parentEntityId": "vf-corporation",
+      "suggestedCanonicalName": "The North Face",
+      "aliases": [
+        "The North Face"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "outdoor"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://www.vfc.com/brands/vans",
+      "note": "Distinct retail brand currently grouped under vf-corporation.",
+      "canonicalName": "The North Face",
+      "verificationStatus": "unverified",
+      "ceoName": "Bracken Darrell"
+    },
+    {
+      "id": "vans",
+      "sourceEntityId": "vf-corporation",
+      "sourceType": "review-parent",
+      "parentEntityId": "vf-corporation",
+      "suggestedCanonicalName": "Vans",
+      "aliases": [
+        "Vans"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://www.vfc.com/brands/vans",
+      "note": "Distinct retail brand currently grouped under vf-corporation.",
+      "canonicalName": "Vans",
+      "verificationStatus": "unverified",
+      "ceoName": "Bracken Darrell"
+    },
+    {
+      "id": "timberland",
+      "sourceEntityId": "vf-corporation",
+      "sourceType": "review-parent",
+      "parentEntityId": "vf-corporation",
+      "suggestedCanonicalName": "Timberland",
+      "aliases": [
+        "Timberland"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "outdoor"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://www.vfc.com/",
+      "note": "Distinct retail brand currently grouped under vf-corporation.",
+      "canonicalName": "Timberland",
+      "verificationStatus": "unverified",
+      "ceoName": "Bracken Darrell"
+    },
+    {
+      "id": "ugg",
+      "sourceEntityId": "deckers-brands",
+      "sourceType": "review-parent",
+      "parentEntityId": "deckers-brands",
+      "suggestedCanonicalName": "UGG",
+      "aliases": [
+        "UGG"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "footwear"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://www.deckers.com/brands/",
+      "note": "Distinct retail brand currently grouped under deckers-brands.",
+      "canonicalName": "UGG",
+      "verificationStatus": "unverified",
+      "ceoName": "Stefano Caroti"
+    },
+    {
+      "id": "hoka",
+      "sourceEntityId": "deckers-brands",
+      "sourceType": "review-parent",
+      "parentEntityId": "deckers-brands",
+      "suggestedCanonicalName": "HOKA",
+      "aliases": [
+        "HOKA",
+        "Hoka"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "footwear"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://www.deckers.com/brands/",
+      "note": "Distinct retail brand currently grouped under deckers-brands.",
+      "canonicalName": "HOKA",
+      "verificationStatus": "unverified",
+      "ceoName": "Stefano Caroti"
+    },
+    {
+      "id": "prada",
+      "sourceEntityId": "prada-group",
+      "sourceType": "review-parent",
+      "parentEntityId": "prada-group",
+      "suggestedCanonicalName": "Prada",
+      "aliases": [
+        "Prada"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "splitType": "house",
+      "reviewUrl": "https://www.pradagroup.com/en/brands.html",
+      "note": "Distinct retail house currently grouped under prada-group.",
+      "canonicalName": "Prada",
+      "verificationStatus": "unverified",
+      "ceoName": "Andrea Guerra",
+      "publicFigureName": "Miuccia Prada"
+    },
+    {
+      "id": "miu-miu",
+      "sourceEntityId": "prada-group",
+      "sourceType": "review-parent",
+      "parentEntityId": "prada-group",
+      "suggestedCanonicalName": "Miu Miu",
+      "aliases": [
+        "Miu Miu"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "splitType": "house",
+      "reviewUrl": "https://www.pradagroup.com/en/brands.html",
+      "note": "Distinct retail house currently grouped under prada-group.",
+      "canonicalName": "Miu Miu",
+      "verificationStatus": "unverified",
+      "ceoName": "Andrea Guerra",
+      "publicFigureName": "Miuccia Prada"
+    },
+    {
+      "id": "dockers",
+      "sourceEntityId": "levi-strauss",
+      "sourceType": "review-parent",
+      "parentEntityId": "levi-strauss",
+      "suggestedCanonicalName": "Dockers",
+      "aliases": [
+        "Dockers"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://www.levi.com/",
+      "note": "Distinct apparel brand currently grouped under levi-strauss.",
+      "canonicalName": "Dockers",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "bonobos",
+      "sourceEntityId": "express-inc",
+      "sourceType": "review-parent",
+      "parentEntityId": "express-inc",
+      "suggestedCanonicalName": "Bonobos",
+      "aliases": [
+        "Bonobos"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://www.express.com/",
+      "note": "Distinct consumer brand currently grouped under express-inc.",
+      "canonicalName": "Bonobos",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "arco",
+      "sourceEntityId": "bp",
+      "sourceType": "review-parent",
+      "parentEntityId": "bp",
+      "suggestedCanonicalName": "ARCO",
+      "aliases": [
+        "ARCO"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience",
+        "energy"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://map.bp.com/",
+      "note": "Distinct fuel/convenience banner currently grouped under bp.",
+      "canonicalName": "ARCO",
+      "verificationStatus": "unverified",
+      "ceoName": "Murray Auchincloss"
+    },
+    {
+      "id": "ampm",
+      "sourceEntityId": "bp",
+      "sourceType": "review-parent",
+      "parentEntityId": "bp",
+      "suggestedCanonicalName": "ampm",
+      "aliases": [
+        "ampm",
+        "am pm"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://map.bp.com/",
+      "note": "Distinct convenience banner currently grouped under bp.",
+      "canonicalName": "ampm",
+      "verificationStatus": "unverified",
+      "ceoName": "Murray Auchincloss"
+    },
+    {
+      "id": "aplus",
+      "sourceEntityId": "sunoco",
+      "sourceType": "review-parent",
+      "parentEntityId": "sunoco",
+      "suggestedCanonicalName": "APlus",
+      "aliases": [
+        "APlus",
+        "A-Plus"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.sunoco.com/locations",
+      "note": "Distinct convenience banner currently grouped under sunoco.",
+      "canonicalName": "APlus",
+      "verificationStatus": "unverified",
+      "ceoName": "Joe Kim"
+    },
+    {
+      "id": "petro-stopping-center",
+      "sourceEntityId": "travelcenters-of-america",
+      "sourceType": "review-parent",
+      "parentEntityId": "travelcenters-of-america",
+      "suggestedCanonicalName": "Petro Stopping Center",
+      "aliases": [
+        "Petro Stopping Center"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.ta-petro.com/location/",
+      "note": "Distinct travel-center banner currently grouped under travelcenters-of-america.",
+      "canonicalName": "Petro Stopping Center",
+      "verificationStatus": "unverified",
+      "ceoName": "Jason Nordin"
+    },
+    {
+      "id": "food-4-less",
+      "sourceEntityId": "kroger",
+      "sourceType": "live-base",
+      "parentEntityId": "kroger",
+      "suggestedCanonicalName": "Food 4 Less",
+      "aliases": [
+        "Food 4 Less"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.thekrogerco.com/",
+      "note": "Distinct consumer banner currently grouped under kroger.",
+      "canonicalName": "Food 4 Less",
+      "domains": [
+        "thekrogerco.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Rodney McMullen"
+    },
+    {
+      "id": "foods-co",
+      "sourceEntityId": "kroger",
+      "sourceType": "live-base",
+      "parentEntityId": "kroger",
+      "suggestedCanonicalName": "Foods Co",
+      "aliases": [
+        "Foods Co"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.thekrogerco.com/",
+      "note": "Distinct consumer banner currently grouped under kroger.",
+      "canonicalName": "Foods Co",
+      "domains": [
+        "thekrogerco.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Rodney McMullen"
+    },
+    {
+      "id": "metro-market",
+      "sourceEntityId": "kroger",
+      "sourceType": "live-base",
+      "parentEntityId": "kroger",
+      "suggestedCanonicalName": "Metro Market",
+      "aliases": [
+        "Metro Market"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.thekrogerco.com/",
+      "note": "Distinct consumer banner currently grouped under kroger.",
+      "canonicalName": "Metro Market",
+      "domains": [
+        "thekrogerco.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Rodney McMullen"
+    },
+    {
+      "id": "pick-n-save",
+      "sourceEntityId": "kroger",
+      "sourceType": "live-base",
+      "parentEntityId": "kroger",
+      "suggestedCanonicalName": "Pick 'n Save",
+      "aliases": [
+        "Pick 'n Save",
+        "Pick n Save"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.thekrogerco.com/",
+      "note": "Distinct consumer banner currently grouped under kroger.",
+      "canonicalName": "Pick 'n Save",
+      "domains": [
+        "thekrogerco.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Rodney McMullen"
+    },
+    {
+      "id": "jay-c-food-store",
+      "sourceEntityId": "kroger",
+      "sourceType": "live-base",
+      "parentEntityId": "kroger",
+      "suggestedCanonicalName": "Jay C Food Store",
+      "aliases": [
+        "Jay C Food Store"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.thekrogerco.com/",
+      "note": "Distinct consumer banner currently grouped under kroger.",
+      "canonicalName": "Jay C Food Store",
+      "domains": [
+        "thekrogerco.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Rodney McMullen"
+    },
+    {
+      "id": "gap",
+      "sourceEntityId": "gap-inc",
+      "sourceType": "live-base",
+      "parentEntityId": "gap-inc",
+      "suggestedCanonicalName": "Gap",
+      "aliases": [
+        "Gap"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://www.gap.com/",
+      "note": "Brand-specific store currently folded into the corporate gap-inc entry.",
+      "canonicalName": "Gap",
+      "verificationStatus": "unverified",
+      "ceoName": "Richard Dickson"
+    },
+    {
+      "id": "old-navy",
+      "sourceEntityId": "gap-inc",
+      "sourceType": "live-base",
+      "parentEntityId": "gap-inc",
+      "suggestedCanonicalName": "Old Navy",
+      "aliases": [
+        "Old Navy"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://oldnavy.gap.com/",
+      "note": "Distinct store brand currently grouped under gap-inc.",
+      "canonicalName": "Old Navy",
+      "domains": [
+        "oldnavy.gap.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Richard Dickson"
+    },
+    {
+      "id": "banana-republic",
+      "sourceEntityId": "gap-inc",
+      "sourceType": "live-base",
+      "parentEntityId": "gap-inc",
+      "suggestedCanonicalName": "Banana Republic",
+      "aliases": [
+        "Banana Republic"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://bananarepublic.gap.com/",
+      "note": "Distinct store brand currently grouped under gap-inc.",
+      "canonicalName": "Banana Republic",
+      "domains": [
+        "bananarepublic.gap.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Richard Dickson"
+    },
+    {
+      "id": "athleta",
+      "sourceEntityId": "gap-inc",
+      "sourceType": "live-base",
+      "parentEntityId": "gap-inc",
+      "suggestedCanonicalName": "Athleta",
+      "aliases": [
+        "Athleta"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://athleta.gap.com/",
+      "note": "Distinct store brand currently grouped under gap-inc.",
+      "canonicalName": "Athleta",
+      "domains": [
+        "athleta.gap.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Richard Dickson"
+    },
+    {
+      "id": "gap-factory",
+      "sourceEntityId": "gap-inc",
+      "sourceType": "live-base",
+      "parentEntityId": "gap-inc",
+      "suggestedCanonicalName": "Gap Factory",
+      "aliases": [
+        "Gap Factory"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.gapfactory.com/",
+      "note": "Distinct outlet banner currently grouped under gap-inc.",
+      "canonicalName": "Gap Factory",
+      "domains": [
+        "gapfactory.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Richard Dickson"
+    },
+    {
+      "id": "banana-republic-factory",
+      "sourceEntityId": "gap-inc",
+      "sourceType": "live-base",
+      "parentEntityId": "gap-inc",
+      "suggestedCanonicalName": "Banana Republic Factory",
+      "aliases": [
+        "Banana Republic Factory"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://bananarepublicfactory.gapfactory.com/",
+      "note": "Distinct outlet banner currently grouped under gap-inc.",
+      "canonicalName": "Banana Republic Factory",
+      "domains": [
+        "gapfactory.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Richard Dickson"
+    },
+    {
+      "id": "converse",
+      "sourceEntityId": "nike",
+      "sourceType": "live-base",
+      "parentEntityId": "nike",
+      "suggestedCanonicalName": "Converse",
+      "aliases": [
+        "Converse"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "footwear"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://www.converse.com/",
+      "note": "Distinct retail brand currently grouped under nike.",
+      "canonicalName": "Converse",
+      "verificationStatus": "unverified",
+      "domains": [
+        "converse.com"
+      ],
+      "ceoName": "Elliott Hill"
+    },
+    {
+      "id": "reebok",
+      "sourceEntityId": "adidas",
+      "sourceType": "live-base",
+      "parentEntityId": "adidas",
+      "suggestedCanonicalName": "Reebok",
+      "aliases": [
+        "Reebok"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "footwear"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://www.reebok.com/",
+      "note": "Distinct retail brand currently grouped under adidas.",
+      "canonicalName": "Reebok",
+      "verificationStatus": "unverified",
+      "domains": [
+        "reebok.com"
+      ],
+      "ceoName": "Bjorn Gulden"
+    },
+    {
+      "id": "sorel",
+      "sourceEntityId": "columbia-sportswear",
+      "sourceType": "live-base",
+      "parentEntityId": "columbia-sportswear",
+      "suggestedCanonicalName": "SOREL",
+      "aliases": [
+        "SOREL",
+        "Sorel"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "footwear"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://www.sorel.com/",
+      "note": "Distinct store brand currently grouped under columbia-sportswear.",
+      "canonicalName": "SOREL",
+      "verificationStatus": "unverified",
+      "domains": [
+        "sorel.com"
+      ],
+      "ceoName": "Tim Boyle"
+    },
+    {
+      "id": "mountain-hardwear",
+      "sourceEntityId": "columbia-sportswear",
+      "sourceType": "live-base",
+      "parentEntityId": "columbia-sportswear",
+      "suggestedCanonicalName": "Mountain Hardwear",
+      "aliases": [
+        "Mountain Hardwear"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "outdoor"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://www.mountainhardwear.com/",
+      "note": "Distinct outdoor brand currently grouped under columbia-sportswear.",
+      "canonicalName": "Mountain Hardwear",
+      "verificationStatus": "unverified",
+      "domains": [
+        "mountainhardwear.com"
+      ],
+      "ceoName": "Tim Boyle"
+    },
+    {
+      "id": "prana",
+      "sourceEntityId": "columbia-sportswear",
+      "sourceType": "live-base",
+      "parentEntityId": "columbia-sportswear",
+      "suggestedCanonicalName": "prAna",
+      "aliases": [
+        "prAna",
+        "Prana"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "outdoor"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://www.prana.com/",
+      "note": "Distinct outdoor/apparel brand currently grouped under columbia-sportswear.",
+      "canonicalName": "prAna",
+      "domains": [
+        "prana.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Tim Boyle"
+    },
+    {
+      "id": "bloomingdales",
+      "sourceEntityId": "macys",
+      "sourceType": "live-base",
+      "parentEntityId": "macys",
+      "suggestedCanonicalName": "Bloomingdale's",
+      "aliases": [
+        "Bloomingdale's",
+        "Bloomingdales"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.bloomingdales.com/",
+      "note": "Distinct department-store banner currently grouped under macys.",
+      "canonicalName": "Bloomingdale's",
+      "verificationStatus": "unverified",
+      "domains": [
+        "bloomingdales.com"
+      ],
+      "ceoName": "Tony Spring"
+    },
+    {
+      "id": "bluemercury",
+      "sourceEntityId": "macys",
+      "sourceType": "live-base",
+      "parentEntityId": "macys",
+      "suggestedCanonicalName": "Bluemercury",
+      "aliases": [
+        "Bluemercury"
+      ],
+      "categoryTags": [
+        "retail",
+        "beauty"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://bluemercury.com/",
+      "note": "Distinct beauty-store banner currently grouped under macys.",
+      "canonicalName": "Bluemercury",
+      "verificationStatus": "unverified",
+      "domains": [
+        "bluemercury.com"
+      ],
+      "ceoName": "Tony Spring"
+    },
+    {
+      "id": "tj-maxx",
+      "sourceEntityId": "tjx-companies",
+      "sourceType": "live-base",
+      "parentEntityId": "tjx-companies",
+      "suggestedCanonicalName": "TJ Maxx",
+      "aliases": [
+        "TJ Maxx",
+        "T.J. Maxx"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://tjmaxx.tjx.com/",
+      "note": "Distinct store banner currently grouped under tjx-companies.",
+      "canonicalName": "TJ Maxx",
+      "domains": [
+        "tjmaxx.tjx.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Ernie Herrman"
+    },
+    {
+      "id": "marshalls",
+      "sourceEntityId": "tjx-companies",
+      "sourceType": "live-base",
+      "parentEntityId": "tjx-companies",
+      "suggestedCanonicalName": "Marshalls",
+      "aliases": [
+        "Marshalls"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.marshalls.com/",
+      "note": "Distinct store banner currently grouped under tjx-companies.",
+      "canonicalName": "Marshalls",
+      "verificationStatus": "unverified",
+      "domains": [
+        "marshalls.com"
+      ],
+      "ceoName": "Ernie Herrman"
+    },
+    {
+      "id": "homegoods",
+      "sourceEntityId": "tjx-companies",
+      "sourceType": "live-base",
+      "parentEntityId": "tjx-companies",
+      "suggestedCanonicalName": "HomeGoods",
+      "aliases": [
+        "HomeGoods"
+      ],
+      "categoryTags": [
+        "retail",
+        "home"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.homegoods.com/",
+      "note": "Distinct store banner currently grouped under tjx-companies.",
+      "canonicalName": "HomeGoods",
+      "verificationStatus": "unverified",
+      "domains": [
+        "homegoods.com"
+      ],
+      "ceoName": "Ernie Herrman"
+    },
+    {
+      "id": "sierra",
+      "sourceEntityId": "tjx-companies",
+      "sourceType": "live-base",
+      "parentEntityId": "tjx-companies",
+      "suggestedCanonicalName": "Sierra",
+      "aliases": [
+        "Sierra"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "outdoor"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.sierra.com/",
+      "note": "Distinct store banner currently grouped under tjx-companies.",
+      "canonicalName": "Sierra",
+      "verificationStatus": "unverified",
+      "domains": [
+        "sierra.com"
+      ],
+      "ceoName": "Ernie Herrman"
+    },
+    {
+      "id": "nordstrom-rack",
+      "sourceEntityId": "nordstrom",
+      "sourceType": "live-base",
+      "parentEntityId": "nordstrom",
+      "suggestedCanonicalName": "Nordstrom Rack",
+      "aliases": [
+        "Nordstrom Rack"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.nordstromrack.com/",
+      "note": "Distinct outlet banner currently grouped under nordstrom.",
+      "canonicalName": "Nordstrom Rack",
+      "verificationStatus": "unverified",
+      "domains": [
+        "nordstromrack.com"
+      ],
+      "ceoName": "Erik Nordstrom"
+    },
+    {
+      "id": "champs-sports",
+      "sourceEntityId": "foot-locker",
+      "sourceType": "live-base",
+      "parentEntityId": "foot-locker",
+      "suggestedCanonicalName": "Champs Sports",
+      "aliases": [
+        "Champs Sports"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "footwear"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.champssports.com/",
+      "note": "Distinct store banner currently grouped under foot-locker.",
+      "canonicalName": "Champs Sports",
+      "verificationStatus": "unverified",
+      "domains": [
+        "champssports.com"
+      ],
+      "ceoName": "Mary Dillon"
+    },
+    {
+      "id": "kids-foot-locker",
+      "sourceEntityId": "foot-locker",
+      "sourceType": "live-base",
+      "parentEntityId": "foot-locker",
+      "suggestedCanonicalName": "Kids Foot Locker",
+      "aliases": [
+        "Kids Foot Locker"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "footwear"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.kidsfootlocker.com/",
+      "note": "Distinct store banner currently grouped under foot-locker.",
+      "canonicalName": "Kids Foot Locker",
+      "verificationStatus": "unverified",
+      "domains": [
+        "kidsfootlocker.com"
+      ],
+      "ceoName": "Mary Dillon"
+    },
+    {
+      "id": "wss",
+      "sourceEntityId": "foot-locker",
+      "sourceType": "live-base",
+      "parentEntityId": "foot-locker",
+      "suggestedCanonicalName": "WSS",
+      "aliases": [
+        "WSS"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "footwear"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.shopwss.com/",
+      "note": "Distinct store banner currently grouped under foot-locker.",
+      "canonicalName": "WSS",
+      "domains": [
+        "shopwss.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Mary Dillon"
+    },
+    {
+      "id": "atmos",
+      "sourceEntityId": "foot-locker",
+      "sourceType": "live-base",
+      "parentEntityId": "foot-locker",
+      "suggestedCanonicalName": "atmos",
+      "aliases": [
+        "atmos"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "footwear"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.atmosusa.com/",
+      "note": "Distinct sneaker/lifestyle banner currently grouped under foot-locker.",
+      "canonicalName": "atmos",
+      "domains": [
+        "atmosusa.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Mary Dillon"
+    },
+    {
+      "id": "aerie",
+      "sourceEntityId": "american-eagle",
+      "sourceType": "live-base",
+      "parentEntityId": "american-eagle",
+      "suggestedCanonicalName": "Aerie",
+      "aliases": [
+        "Aerie"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://www.ae.com/us/en/c/aerie/cat4840006",
+      "note": "Distinct store brand currently grouped under american-eagle.",
+      "canonicalName": "Aerie",
+      "verificationStatus": "unverified",
+      "ceoName": "Jay Schottenstein"
+    },
+    {
+      "id": "hollister",
+      "sourceEntityId": "abercrombie-fitch",
+      "sourceType": "live-base",
+      "parentEntityId": "abercrombie-fitch",
+      "suggestedCanonicalName": "Hollister",
+      "aliases": [
+        "Hollister",
+        "Hollister Co"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://www.hollisterco.com/",
+      "note": "Distinct store brand currently grouped under abercrombie-fitch.",
+      "canonicalName": "Hollister",
+      "verificationStatus": "unverified",
+      "domains": [
+        "hollisterco.com"
+      ],
+      "ceoName": "Fran Horowitz"
+    },
+    {
+      "id": "abercrombie-kids",
+      "sourceEntityId": "abercrombie-fitch",
+      "sourceType": "live-base",
+      "parentEntityId": "abercrombie-fitch",
+      "suggestedCanonicalName": "abercrombie kids",
+      "aliases": [
+        "abercrombie kids"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://www.abercrombie.com/",
+      "note": "Distinct kids-store brand currently grouped under abercrombie-fitch.",
+      "canonicalName": "abercrombie kids",
+      "verificationStatus": "unverified",
+      "ceoName": "Fran Horowitz"
+    },
+    {
+      "id": "pink",
+      "sourceEntityId": "victorias-secret",
+      "sourceType": "live-base",
+      "parentEntityId": "victorias-secret",
+      "suggestedCanonicalName": "PINK",
+      "aliases": [
+        "PINK",
+        "Pink"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://www.victoriassecret.com/us/pink",
+      "note": "Distinct store brand currently grouped under victorias-secret.",
+      "canonicalName": "PINK",
+      "verificationStatus": "unverified",
+      "ceoName": "Hillary Super"
+    },
+    {
+      "id": "dds-discounts",
+      "sourceEntityId": "ross-stores",
+      "sourceType": "live-base",
+      "parentEntityId": "ross-stores",
+      "suggestedCanonicalName": "dd's DISCOUNTS",
+      "aliases": [
+        "dd's Discounts",
+        "dds Discounts"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "splitType": "banner",
+      "reviewUrl": "https://www.ddsdiscounts.com/",
+      "note": "Distinct store banner currently grouped under ross-stores.",
+      "canonicalName": "dd's DISCOUNTS",
+      "domains": [
+        "ddsdiscounts.com"
+      ],
+      "verificationStatus": "unverified",
+      "ceoName": "Barbara Rentler"
+    },
+    {
+      "id": "urban-outfitters-store",
+      "sourceEntityId": "urban-outfitters",
+      "sourceType": "review-parent",
+      "parentEntityId": "urban-outfitters",
+      "suggestedCanonicalName": "Urban Outfitters",
+      "aliases": [
+        "Urban Outfitters"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "splitType": "brand",
+      "reviewUrl": "https://www.urbn.com/our-brands/",
+      "note": "Brand-specific store gap surfaced by Mall of America.",
+      "canonicalName": "Urban Outfitters",
+      "verificationStatus": "unverified"
+    }
+  ]
+}
