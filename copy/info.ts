@@ -1,4 +1,5 @@
 export const infoCopy = {
+  tabLabel: "INFO",
   title: "INFO",
   about: "ABOUT",
   data: "HOW IT WORKS",
@@ -10,4 +11,6 @@ export const infoCopy = {
   faqExpand: "Tap to expand answer",
   chevronOpen: "\u25B2",
   chevronClosed: "\u25BC",
+  transparencyToggleLabel: "Data transparency details",
+  versionLabel: "App version",
 } as const;

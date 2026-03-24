@@ -57,7 +57,7 @@ export function DayCircles({ weekOf, platformName, dayCounts, onAvoidDate, isChi
                 accessibilityRole="button"
                 accessibilityLabel={a11yLabel}
                 accessibilityState={{ disabled: checked || future }}
-                hitSlop={{ top: 4, bottom: 4, left: 4, right: 4 }}
+                hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
               >
                 {checked && (
                   <Text style={styles.checkmark} allowFontScaling={false}>

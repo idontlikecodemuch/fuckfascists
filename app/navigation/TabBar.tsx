@@ -3,6 +3,10 @@ import { View, Text, Pressable, ImageBackground, StyleSheet, type ViewStyle, typ
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { theme } from '../../design/tokens';
+import { mapCopy } from '../../copy/map';
+import { platformsCopy } from '../../copy/platforms';
+import { scorecardCopy } from '../../copy/scorecard';
+import { infoCopy } from '../../copy/info';
 import { scanCopy } from '../../copy/scan';
 
 const BG_TEXTURE = require('../../assets/pixel/bg_tile_dark_stone.png');
@@ -10,10 +14,10 @@ const BG_TEXTURE = require('../../assets/pixel/bg_tile_dark_stone.png');
 export type Tab = 'scan' | 'map' | 'platforms' | 'report' | 'info' | 'dev';
 
 export const TABS: { id: Tab; label: string }[] = [
-  { id: 'map',       label: 'MAP'       },
-  { id: 'platforms', label: 'TRACK'     },
-  { id: 'report',    label: 'SCORECARD' },
-  { id: 'info',      label: 'INFO'      },
+  { id: 'map',       label: mapCopy.tabLabel       },
+  { id: 'platforms', label: platformsCopy.tabLabel  },
+  { id: 'report',    label: scorecardCopy.tabLabel  },
+  { id: 'info',      label: infoCopy.tabLabel       },
   ...(__DEV__ ? [{ id: 'dev' as const, label: 'DEV' }] : []),
   { id: 'scan',      label: scanCopy.tabLabel },
 ];

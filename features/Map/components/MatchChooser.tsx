@@ -35,7 +35,7 @@ function ConfidenceTag({ level }: { level: number }) {
 export function MatchChooser({ results, onSelect, onDismiss }: MatchChooserProps) {
   return (
     <View style={styles.overlay}>
-      <View style={styles.card}>
+      <View style={styles.card} accessibilityViewIsModal accessibilityLabel={mapCopy.chooserModalLabel}>
         <Text
           style={styles.heading}
           accessibilityRole="header"

@@ -30,10 +30,15 @@ export function InfoScreen({ onVersionTap }: InfoScreenProps) {
 
         {/* ── Page header ── */}
         <View style={styles.pageHeader}>
-          <Text style={styles.pageTitle} accessibilityRole="header" allowFontScaling={false}>
+          <Text style={styles.pageTitle} accessibilityRole="header" allowFontScaling>
             {infoCopy.title}
           </Text>
-          <Pressable onPress={onVersionTap} hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}>
+          <Pressable
+            onPress={onVersionTap}
+            hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+            accessibilityRole="button"
+            accessibilityLabel={infoCopy.versionLabel}
+          >
             <Text style={styles.pageVersion} allowFontScaling>v{content.version}</Text>
           </Pressable>
         </View>
@@ -53,6 +58,7 @@ export function InfoScreen({ onVersionTap }: InfoScreenProps) {
             onPress={() => setShowTransparency((v) => !v)}
             style={styles.collapseToggle}
             accessibilityRole="button"
+            accessibilityLabel={infoCopy.transparencyToggleLabel}
             accessibilityState={{ expanded: showTransparency }}
             accessibilityHint={showTransparency ? infoCopy.faqCollapse : infoCopy.faqExpand}
           >

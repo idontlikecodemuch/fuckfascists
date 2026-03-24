@@ -1,4 +1,5 @@
 export const mapCopy = {
+  tabLabel: "MAP",
   mapLabel: "Map showing nearby flagged businesses",
   searchPlaceholder: "Search a business name...",
   searchLabel: "Search for a business",
@@ -44,7 +45,9 @@ export const mapCopy = {
   barcodePermissionBody: "Allow camera access to scan product barcodes in-store.",
   barcodePermissionDeniedBody: "Camera access is off for this app. Enable it in Settings to scan product barcodes.",
   barcodePermissionAction: "Allow camera",
+  barcodePermissionActionLabel: "Grant camera access to scan barcodes",
   barcodeSettingsAction: "Open settings",
+  barcodeSettingsActionLabel: "Open device settings to enable camera access",
   barcodeUnavailableTitle: "Camera unavailable",
   barcodeUnavailableBody: "This runtime can’t open the camera scanner. Rebuild the app or try on a physical device.",
   barcodeFallbackLabel: "barcode",
@@ -62,6 +65,10 @@ export const mapCopy = {
   // DataZone
   dataZoneDetail: "See full breakdown \u2192",
   dataZoneDetailLabel: "See full FEC breakdown",
+  // Barcode scanner — screen reader
+  barcodeCameraLabel: "Camera viewfinder for barcode scanning",
+  // Chooser — screen reader
+  chooserModalLabel: "Choose which business to view",
   // Card — screen reader
   cardAvoidedAnnouncement: (name: string) => `Avoided ${name}. Well done.`,
   cardModalLabel: "Business detail card",

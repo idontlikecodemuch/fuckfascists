@@ -30,6 +30,7 @@ export function AvoidButton({ avoidedToday, platformName, onPress }: AvoidButton
           ? platformsCopy.avoidedBtnA11y(platformName)
           : platformsCopy.avoidBtnA11y(platformName)
       }
+      accessibilityState={{ selected: avoidedToday }}
       hitSlop={{ top: 4, bottom: 4, left: 4, right: 4 }}
     >
       <Text

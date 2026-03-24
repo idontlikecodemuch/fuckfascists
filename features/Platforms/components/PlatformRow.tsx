@@ -64,8 +64,9 @@ export function PlatformRow({
             ? platformsCopy.collapseLabel(item.platform.name)
             : platformsCopy.expandLabel(item.platform.name)
         }
+        accessibilityState={{ expanded }}
       >
-          <Text style={styles.expandIndicator} allowFontScaling={false}>
+          <Text style={styles.expandIndicator} allowFontScaling={false} accessible={false}>
             {expanded ? platformsCopy.collapseIndicator : platformsCopy.expandIndicator}
           </Text>
 

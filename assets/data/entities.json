@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "totalEntities": 448,
-    "updatedAt": "2026-03-12",
+    "totalEntities": 479,
+    "updatedAt": "2026-03-23",
     "formatVersion": "1.0"
   },
   "entities": [
@@ -163,7 +163,11 @@
           }
         ]
       },
-      "verificationStatus": "pipeline"
+      "verificationStatus": "pipeline",
+      "associatedPersonIds": [
+        "jim-c-walton",
+        "rob-walton"
+      ]
     },
     {
       "id": "amazon",
@@ -173,22 +177,18 @@
         "Amazon.com",
         "Whole Foods",
         "Whole Foods Market",
-        "Twitch",
         "Audible",
         "Zappos",
         "Amazon Prime",
-        "Ring",
         "Woot"
       ],
       "domains": [
         "amazon.com",
         "wholefoods.com",
-        "twitch.tv",
         "audible.com",
         "zappos.com",
         "goodreads.com",
         "imdb.com",
-        "ring.com",
         "woot.com"
       ],
       "categoryTags": [
@@ -310,7 +310,10 @@
           }
         ]
       },
-      "verificationStatus": "pipeline"
+      "verificationStatus": "pipeline",
+      "associatedPersonIds": [
+        "jeff-bezos"
+      ]
     },
     {
       "id": "meta",
@@ -451,7 +454,11 @@
         ]
       },
       "verificationStatus": "pipeline",
-      "notes": "C00502906 confirmed correct. Active through 2025-2026 cycle. Prior no-activity flag was incorrect."
+      "notes": "C00502906 confirmed correct. Active through 2025-2026 cycle. Prior no-activity flag was incorrect.",
+      "associatedPersonIds": [
+        "jan-koum",
+        "sheryl-sandberg"
+      ]
     },
     {
       "id": "x-twitter",
@@ -474,7 +481,10 @@
       "publicFigureName": "Elon Musk",
       "lastVerifiedDate": "2026-03-04",
       "verificationStatus": "manual",
-      "fecCommitteeId": null
+      "fecCommitteeId": null,
+      "associatedPersonIds": [
+        "elon-musk"
+      ]
     },
     {
       "id": "tesla",
@@ -496,7 +506,10 @@
       "notes": "No corporate PAC — Elon Musk donates personally via America PAC. See people.json for individual donations.",
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-04",
-      "verificationStatus": "manual"
+      "verificationStatus": "manual",
+      "associatedPersonIds": [
+        "elon-musk"
+      ]
     },
     {
       "id": "spacex",
@@ -650,7 +663,10 @@
           }
         ]
       },
-      "verificationStatus": "pipeline"
+      "verificationStatus": "pipeline",
+      "associatedPersonIds": [
+        "elon-musk"
+      ]
     },
     {
       "id": "target",
@@ -895,7 +911,11 @@
           }
         ]
       },
-      "verificationStatus": "pipeline"
+      "verificationStatus": "pipeline",
+      "associatedPersonIds": [
+        "arthur-blank",
+        "bernard-marcus"
+      ]
     },
     {
       "id": "lowes",
@@ -1428,7 +1448,10 @@
           }
         ]
       },
-      "verificationStatus": "pipeline"
+      "verificationStatus": "pipeline",
+      "associatedPersonIds": [
+        "david-cohen"
+      ]
     },
     {
       "id": "chevron",
@@ -1927,6 +1950,9 @@
           "id": "C00236489",
           "status": "active"
         }
+      ],
+      "associatedPersonIds": [
+        "charles-koch"
       ]
     },
     {
@@ -2243,7 +2269,12 @@
       "ceoName": "Stephen Schwarzman",
       "lastVerifiedDate": "2026-03-04",
       "verificationStatus": "manual",
-      "fecCommitteeId": null
+      "fecCommitteeId": null,
+      "associatedPersonIds": [
+        "hamilton-e-james",
+        "jonathan-d-gray",
+        "stephen-a-schwarzman"
+      ]
     },
     {
       "id": "bank-of-america",
@@ -2868,7 +2899,10 @@
           }
         ]
       },
-      "verificationStatus": "pipeline"
+      "verificationStatus": "pipeline",
+      "associatedPersonIds": [
+        "frederick-smith"
+      ]
     },
     {
       "id": "altria",
@@ -3275,7 +3309,11 @@
       "publicFigureName": "Richard Uihlein",
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-04",
-      "verificationStatus": "manual"
+      "verificationStatus": "manual",
+      "associatedPersonIds": [
+        "elizabeth-uihlein",
+        "richard-uihlein"
+      ]
     },
     {
       "id": "kroger",
@@ -3449,7 +3487,10 @@
       "ceoName": "Ron Vachris",
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "manual"
+      "verificationStatus": "manual",
+      "associatedPersonIds": [
+        "james-sinegal"
+      ]
     },
     {
       "id": "walgreens",
@@ -4809,7 +4850,7 @@
       ],
       "ceoName": "Heidi Petz",
       "fecCommitteeId": "C00170027",
-      "lastVerifiedDate": "",
+      "lastVerifiedDate": "2026-03-23",
       "notes": "PAC dissolved, historical data still accessible via FEC",
       "donationSummary": {
         "committeeId": "C00170027",
@@ -5111,8 +5152,8 @@
         "apparel"
       ],
       "ceoName": "Sky Xu",
-      "fecCommitteeId": "",
-      "lastVerifiedDate": "2026-03-09",
+      "fecCommitteeId": "C00900340",
+      "lastVerifiedDate": "2026-03-23",
       "donationSummary": {
         "committeeId": "C00900340",
         "committeeName": "SHEIN DISTRIBUTION CORPORATION POLITICAL ACTION COMMITTEE",
@@ -5126,8 +5167,8 @@
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00900340/",
         "raw": []
       },
-      "verificationStatus": "unverified",
-      "notes": "Chinese parent. C00900340 requires name verification."
+      "verificationStatus": "pipeline",
+      "notes": "Chinese parent."
     },
     {
       "id": "hm",
@@ -6483,9 +6524,7 @@
       "id": "conocophillips",
       "canonicalName": "ConocoPhillips",
       "aliases": [
-        "ConocoPhillips",
-        "Conoco",
-        "Phillips 66"
+        "ConocoPhillips"
       ],
       "domains": [
         "conocophillips.com"
@@ -6593,7 +6632,8 @@
           }
         ]
       },
-      "verificationStatus": "pipeline"
+      "verificationStatus": "pipeline",
+      "notes": "Removed Conoco/Phillips 66 overlap after Phillips 66 became the downstream company and retained the Conoco, Phillips 66, and 76 fuel brands in the May 1, 2012 spin-off."
     },
     {
       "id": "phillips-66",
@@ -6918,14 +6958,12 @@
       "id": "marathon-petroleum",
       "canonicalName": "Marathon Petroleum Corp",
       "aliases": [
-        "Marathon Petroleum",
         "Marathon",
-        "Speedway",
+        "Marathon Petroleum",
         "MPLX"
       ],
       "domains": [
-        "marathonpetroleum.com",
-        "speedway.com"
+        "marathonpetroleum.com"
       ],
       "categoryTags": [
         "energy"
@@ -7058,7 +7096,8 @@
           }
         ]
       },
-      "verificationStatus": "pipeline"
+      "verificationStatus": "pipeline",
+      "notes": "Removed Speedway after 7-Eleven completed the acquisition on May 14, 2021."
     },
     {
       "id": "halliburton",
@@ -7219,7 +7258,7 @@
       ],
       "ceoName": "Lorenzo Simonelli",
       "fecCommitteeId": "C00042010",
-      "lastVerifiedDate": "",
+      "lastVerifiedDate": "2026-03-23",
       "notes": "PAC dissolved, historical data still accessible via FEC",
       "donationSummary": {
         "committeeId": "C00042010",
@@ -7609,16 +7648,15 @@
       "id": "southern-company",
       "canonicalName": "Southern Company",
       "aliases": [
-        "Southern Company",
-        "Georgia Power",
         "Alabama Power",
+        "Georgia Power",
         "Mississippi Power",
-        "Gulf Power"
+        "Southern Company"
       ],
       "domains": [
-        "southerncompany.com",
+        "alabamapower.com",
         "georgiapower.com",
-        "alabamapower.com"
+        "southerncompany.com"
       ],
       "categoryTags": [
         "energy",
@@ -7703,7 +7741,8 @@
           }
         ]
       },
-      "verificationStatus": "pipeline"
+      "verificationStatus": "pipeline",
+      "notes": "Removed Gulf Power overlap after Southern Company completed the sale to NextEra Energy on January 1, 2019."
     },
     {
       "id": "dominion-energy",
@@ -8600,7 +8639,7 @@
         "utilities"
       ],
       "ceoName": "Patti Poppe",
-      "fecCommitteeId": "",
+      "fecCommitteeId": "C00003780",
       "lastVerifiedDate": "2026-03-09",
       "notes": "C00003780 flagged as dissolved. No confirmed active replacement PAC found.",
       "donationSummary": {
@@ -8616,7 +8655,7 @@
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00003780/",
         "raw": []
       },
-      "verificationStatus": "unverified"
+      "verificationStatus": "pipeline"
     },
     {
       "id": "citigroup",
@@ -9703,18 +9742,16 @@
       "canonicalName": "Charles Schwab Corp",
       "aliases": [
         "Charles Schwab",
-        "Schwab",
-        "TD Ameritrade"
+        "Schwab"
       ],
       "domains": [
-        "schwab.com",
-        "tdameritrade.com"
+        "schwab.com"
       ],
       "categoryTags": [
         "finance"
       ],
       "ceoName": "Rick Wurster",
-      "fecCommitteeId": "",
+      "fecCommitteeId": "C00370114",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
         "committeeId": "C00370114",
@@ -9734,8 +9771,11 @@
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00370114/",
         "raw": []
       },
-      "verificationStatus": "unverified",
-      "notes": "C00370114 did not exist in 2023-2024 cycle per OpenSecrets. Last active 2019-2020."
+      "verificationStatus": "pipeline",
+      "notes": "C00370114 did not exist in 2023-2024 cycle per OpenSecrets. Last active 2019-2020. | Removed TD Ameritrade overlap after adding a dedicated historical TD Ameritrade entity following Charles Schwab integration.",
+      "associatedPersonIds": [
+        "charles-r-schwab"
+      ]
     },
     {
       "id": "berkshire-hathaway",
@@ -9760,7 +9800,7 @@
       ],
       "ceoName": "Warren Buffett",
       "publicFigureName": "Warren Buffett",
-      "fecCommitteeId": "",
+      "fecCommitteeId": "C00324483",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
         "committeeId": "C00324483",
@@ -9781,7 +9821,7 @@
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00324483/",
         "raw": []
       },
-      "verificationStatus": "unverified",
+      "verificationStatus": "pipeline",
       "notes": "C00324483 is BERKSHIRE HATHAWAY ENERGY COMPANY PAC (subsidiary only). No confirmed holding company PAC."
     },
     {
@@ -10845,8 +10885,6 @@
       "aliases": [
         "Microsoft",
         "Xbox",
-        "LinkedIn",
-        "GitHub",
         "Azure",
         "Bing",
         "Teams",
@@ -10859,8 +10897,6 @@
       "domains": [
         "microsoft.com",
         "xbox.com",
-        "linkedin.com",
-        "github.com",
         "azure.com",
         "bing.com"
       ],
@@ -11030,7 +11066,12 @@
           }
         ]
       },
-      "verificationStatus": "pipeline"
+      "verificationStatus": "pipeline",
+      "associatedPersonIds": [
+        "brad-smith",
+        "james-kevin-scott",
+        "john-thompson"
+      ]
     },
     {
       "id": "google-alphabet",
@@ -11046,7 +11087,6 @@
         "Google Cloud",
         "Android",
         "Waymo",
-        "DeepMind",
         "Pixel"
       ],
       "domains": [
@@ -11168,7 +11208,10 @@
           }
         ]
       },
-      "verificationStatus": "pipeline"
+      "verificationStatus": "pipeline",
+      "associatedPersonIds": [
+        "eric-schmidt"
+      ]
     },
     {
       "id": "netflix",
@@ -11220,7 +11263,10 @@
           }
         ]
       },
-      "verificationStatus": "pipeline"
+      "verificationStatus": "pipeline",
+      "associatedPersonIds": [
+        "reed-hastings"
+      ]
     },
     {
       "id": "uber",
@@ -11241,7 +11287,7 @@
         "transportation"
       ],
       "ceoName": "Dara Khosrowshahi",
-      "fecCommitteeId": "",
+      "fecCommitteeId": "C00907683",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
         "committeeId": "C00907683",
@@ -11256,7 +11302,7 @@
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00907683/",
         "raw": []
       },
-      "verificationStatus": "unverified",
+      "verificationStatus": "pipeline",
       "notes": "C00907683 reported no activity in 2023-2024 per prior research."
     },
     {
@@ -11690,7 +11736,11 @@
           }
         ]
       },
-      "verificationStatus": "pipeline"
+      "verificationStatus": "pipeline",
+      "associatedPersonIds": [
+        "evan-goldberg",
+        "lawrence-ellison"
+      ]
     },
     {
       "id": "ibm",
@@ -12000,7 +12050,11 @@
           }
         ]
       },
-      "verificationStatus": "pipeline"
+      "verificationStatus": "pipeline",
+      "associatedPersonIds": [
+        "irwin-jacobs",
+        "mark-epstein"
+      ]
     },
     {
       "id": "amd",
@@ -12076,10 +12130,10 @@
       "id": "nvidia",
       "canonicalName": "Nvidia Corp",
       "aliases": [
-        "Nvidia",
-        "NVIDIA",
         "GeForce",
-        "RTX"
+        "GeForce RTX",
+        "Nvidia",
+        "NVIDIA"
       ],
       "domains": [
         "nvidia.com"
@@ -12090,23 +12144,23 @@
       "ceoName": "Jensen Huang",
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "manual"
+      "verificationStatus": "manual",
+      "notes": "Replaced the bare RTX alias with GeForce RTX to avoid collisions with RTX Corp while preserving the NVIDIA product-line reference."
     },
     {
       "id": "dell-technologies",
       "canonicalName": "Dell Technologies Inc",
       "aliases": [
-        "Dell Technologies",
-        "Dell",
-        "EMC",
-        "VMware",
         "Alienware",
-        "Dell EMC"
+        "Dell",
+        "Dell EMC",
+        "Dell Technologies",
+        "EMC"
       ],
       "domains": [
+        "alienware.com",
         "dell.com",
-        "emc.com",
-        "alienware.com"
+        "emc.com"
       ],
       "categoryTags": [
         "tech"
@@ -12240,7 +12294,8 @@
           }
         ]
       },
-      "verificationStatus": "pipeline"
+      "verificationStatus": "pipeline",
+      "notes": "Removed VMware overlap after Dell Technologies completed the VMware spin-off on November 1, 2021."
     },
     {
       "id": "hp-inc",
@@ -12258,7 +12313,7 @@
         "tech"
       ],
       "ceoName": "Enrique Lores",
-      "fecCommitteeId": "",
+      "fecCommitteeId": "C00626648",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
         "committeeId": "C00626648",
@@ -12278,7 +12333,7 @@
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00626648/",
         "raw": []
       },
-      "verificationStatus": "unverified",
+      "verificationStatus": "pipeline",
       "notes": "C00626648 last active 2021-2022. No confirmed 2024 activity."
     },
     {
@@ -12580,7 +12635,11 @@
           }
         ]
       },
-      "verificationStatus": "pipeline"
+      "verificationStatus": "pipeline",
+      "associatedPersonIds": [
+        "jacob-helberg",
+        "peter-thiel"
+      ]
     },
     {
       "id": "snowflake",
@@ -12689,15 +12748,12 @@
       "canonicalName": "Verizon Communications Inc",
       "aliases": [
         "Verizon",
-        "Verizon Wireless",
         "Verizon Fios",
-        "Yahoo",
-        "AOL"
+        "Verizon Wireless"
       ],
       "domains": [
         "verizon.com",
-        "verizonwireless.com",
-        "yahoo.com"
+        "verizonwireless.com"
       ],
       "categoryTags": [
         "telecom",
@@ -12706,7 +12762,7 @@
       "ceoName": "Hans Vestberg",
       "fecCommitteeId": "C00186288",
       "lastVerifiedDate": "2026-03-11",
-      "notes": "CORRECTED: C00025163 dissolved. Active: VERIZON COMMUNICATIONS PAC.",
+      "notes": "CORRECTED: C00025163 dissolved. Active: VERIZON COMMUNICATIONS PAC. | Removed Yahoo/AOL overlap after Verizon sold those assets to Apollo in September 2021.",
       "donationSummary": {
         "committeeId": "C00186288",
         "committeeName": "VERIZON COMMUNICATIONS, INC. POLITICAL ACTION COMMITTEE (VERIZON PAC)",
@@ -13497,7 +13553,10 @@
             "isReceipt": false
           }
         ]
-      }
+      },
+      "associatedPersonIds": [
+        "cantey-ergen"
+      ]
     },
     {
       "id": "directv",
@@ -13515,7 +13574,7 @@
         "media"
       ],
       "ceoName": "Bill Morrow",
-      "fecCommitteeId": "",
+      "fecCommitteeId": "C00331991",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
         "committeeId": "C00331991",
@@ -13533,7 +13592,7 @@
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00331991/",
         "raw": []
       },
-      "verificationStatus": "unverified",
+      "verificationStatus": "pipeline",
       "notes": "C00331991 last active 2018. DirecTV spun off from AT&T 2021. No confirmed active PAC."
     },
     {
@@ -13645,7 +13704,10 @@
           }
         ]
       },
-      "verificationStatus": "pipeline"
+      "verificationStatus": "pipeline",
+      "associatedPersonIds": [
+        "k-rupert-murdoch"
+      ]
     },
     {
       "id": "news-corp",
@@ -13758,7 +13820,10 @@
           }
         ]
       },
-      "verificationStatus": "pipeline"
+      "verificationStatus": "pipeline",
+      "associatedPersonIds": [
+        "k-rupert-murdoch"
+      ]
     },
     {
       "id": "sinclair-broadcast",
@@ -13853,6 +13918,9 @@
           "id": "C00562660",
           "status": "active"
         }
+      ],
+      "associatedPersonIds": [
+        "david-smith"
       ]
     },
     {
@@ -14250,7 +14318,7 @@
         "gaming"
       ],
       "ceoName": "Tom Reeg",
-      "fecCommitteeId": "",
+      "fecCommitteeId": "C00342311",
       "lastVerifiedDate": "2026-03-09",
       "notes": "C00342311 dissolved. No confirmed active replacement despite $115k org contributions in 2024.",
       "donationSummary": {
@@ -14266,7 +14334,7 @@
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00342311/",
         "raw": []
       },
-      "verificationStatus": "unverified"
+      "verificationStatus": "pipeline"
     },
     {
       "id": "las-vegas-sands",
@@ -14359,7 +14427,11 @@
           }
         ]
       },
-      "verificationStatus": "pipeline"
+      "verificationStatus": "pipeline",
+      "associatedPersonIds": [
+        "miriam-adelson",
+        "sheldon-adelson"
+      ]
     },
     {
       "id": "disney",
@@ -19026,7 +19098,7 @@
       "ceoName": "Andrew Cathy",
       "publicFigureName": "S. Truett Cathy",
       "fecCommitteeId": "C00323287",
-      "lastVerifiedDate": "",
+      "lastVerifiedDate": "2026-03-23",
       "notes": "PAC dissolved, historical data still accessible via FEC",
       "donationSummary": {
         "committeeId": "C00323287",
@@ -21336,7 +21408,7 @@
         "travel"
       ],
       "ceoName": "Jason Liberty",
-      "fecCommitteeId": "",
+      "fecCommitteeId": "C00869230",
       "lastVerifiedDate": "2026-03-09",
       "donationSummary": {
         "committeeId": "C00869230",
@@ -21353,7 +21425,7 @@
         "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00869230/",
         "raw": []
       },
-      "verificationStatus": "unverified",
+      "verificationStatus": "pipeline",
       "notes": "Liberian/Cayman incorporated. C00869230 requires name verification."
     },
     {
@@ -22975,7 +23047,10 @@
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-05",
       "parentEntityId": "berkshire-hathaway",
-      "verificationStatus": "manual"
+      "verificationStatus": "manual",
+      "associatedPersonIds": [
+        "james-a-haslam"
+      ]
     },
     {
       "id": "loves-travel-stops",
@@ -23494,7 +23569,10 @@
       "ceoName": "Sean Gamble",
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "manual"
+      "verificationStatus": "manual",
+      "associatedPersonIds": [
+        "lee-roy-mitchell"
+      ]
     },
     {
       "id": "gannett",
@@ -23627,7 +23705,10 @@
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-05",
       "parentEntityId": "iac",
-      "verificationStatus": "manual"
+      "verificationStatus": "manual",
+      "associatedPersonIds": [
+        "barry-diller"
+      ]
     },
     {
       "id": "buzzfeed",
@@ -23991,7 +24072,10 @@
       "ceoName": "Varun Krishna",
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "manual"
+      "verificationStatus": "manual",
+      "associatedPersonIds": [
+        "daniel-gilbert"
+      ]
     },
     {
       "id": "sofi",
@@ -24497,7 +24581,10 @@
       "publicFigureName": "Barry Diller",
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "manual"
+      "verificationStatus": "manual",
+      "associatedPersonIds": [
+        "barry-diller"
+      ]
     },
     {
       "id": "adt",
@@ -25337,8 +25424,7 @@
       "aliases": [
         "IAC",
         "InterActiveCorp",
-        "IAC/InterActiveCorp",
-        "Dotdash Meredith"
+        "IAC/InterActiveCorp"
       ],
       "domains": [
         "iac.com"
@@ -25421,7 +25507,10 @@
           }
         ]
       },
-      "verificationStatus": "pipeline"
+      "verificationStatus": "pipeline",
+      "associatedPersonIds": [
+        "barry-diller"
+      ]
     },
     {
       "id": "sony-group",
@@ -25472,7 +25561,6 @@
         "Stop & Shop",
         "Giant Food",
         "Hannaford",
-        "Food Lion",
         "Peapod"
       ],
       "domains": [
@@ -25523,8 +25611,7 @@
         "Twix",
         "Pedigree",
         "Wrigley",
-        "Kind Snacks",
-        "Kellanova"
+        "Kind Snacks"
       ],
       "domains": [
         "mars.com"
@@ -25570,7 +25657,6 @@
         "Shell",
         "Shell Oil",
         "Shell Gas",
-        "Jiffy Lube",
         "Shell Energy"
       ],
       "domains": [
@@ -25591,9 +25677,7 @@
       "canonicalName": "Recruit Holdings Co Ltd",
       "aliases": [
         "Recruit Holdings",
-        "Recruit",
-        "Indeed",
-        "Glassdoor"
+        "Recruit"
       ],
       "domains": [
         "recruit-holdings.com"
@@ -25615,8 +25699,6 @@
       "aliases": [
         "ByteDance",
         "Byte Dance",
-        "TikTok",
-        "Douyin",
         "CapCut",
         "Lemon8"
       ],
@@ -25874,13 +25956,12 @@
       "id": "adobe",
       "canonicalName": "Adobe Inc",
       "aliases": [
+        "Acrobat",
         "Adobe",
         "Adobe Creative Cloud",
-        "Photoshop",
         "Illustrator",
-        "Acrobat",
-        "Premiere Pro",
-        "Figma"
+        "Photoshop",
+        "Premiere Pro"
       ],
       "domains": [
         "adobe.com",
@@ -25896,7 +25977,8 @@
       "publicFigureName": "Shantanu Narayen",
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "manual"
+      "verificationStatus": "manual",
+      "notes": "Removed Figma overlap after the Adobe acquisition was terminated on December 18, 2023."
     },
     {
       "id": "canva",
@@ -26036,7 +26118,11 @@
       "parentEntityId": "microsoft",
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "manual"
+      "verificationStatus": "manual",
+      "associatedPersonIds": [
+        "allen-blue",
+        "reid-hoffman"
+      ]
     },
     {
       "id": "github",
@@ -26233,7 +26319,10 @@
       "parentEntityId": "spacex",
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "manual"
+      "verificationStatus": "manual",
+      "associatedPersonIds": [
+        "elon-musk"
+      ]
     },
     {
       "id": "perplexity-ai",
@@ -26294,7 +26383,6 @@
         "Moët Hennessy",
         "Christian Dior",
         "Tiffany & Co",
-        "Sephora",
         "Givenchy",
         "Fendi"
       ],
@@ -26321,8 +26409,7 @@
         "Naver",
         "Naver Corp",
         "LINE",
-        "Snow",
-        "Poshmark"
+        "Snow"
       ],
       "domains": [
         "navercorp.com",
@@ -26387,7 +26474,10 @@
       "publicFigureName": "Jeff Bezos",
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "manual"
+      "verificationStatus": "manual",
+      "associatedPersonIds": [
+        "jeff-bezos"
+      ]
     },
     {
       "id": "cloudflare",
@@ -26456,7 +26546,10 @@
       "publicFigureName": "Ev Williams",
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "manual"
+      "verificationStatus": "manual",
+      "associatedPersonIds": [
+        "evan-williams"
+      ]
     },
     {
       "id": "npr",
@@ -26598,7 +26691,10 @@
       "publicFigureName": "Laurene Powell Jobs",
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "manual"
+      "verificationStatus": "manual",
+      "associatedPersonIds": [
+        "laurene-powell-jobs"
+      ]
     },
     {
       "id": "the-guardian",
@@ -26836,6 +26932,1036 @@
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-05",
       "verificationStatus": "manual"
+    },
+    {
+      "id": "bloomberg",
+      "canonicalName": "Bloomberg L.P.",
+      "aliases": [
+        "Bloomberg",
+        "Bloomberg LP",
+        "Bloomberg Inc"
+      ],
+      "domains": [
+        "bloomberg.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "media",
+        "news"
+      ],
+      "publicFigureName": "Michael Bloomberg",
+      "fecCommitteeId": "",
+      "verificationStatus": "unverified",
+      "lastVerifiedDate": "2026-03-23",
+      "associatedPersonIds": [
+        "michael-r-bloomberg"
+      ]
+    },
+    {
+      "id": "citadel",
+      "canonicalName": "Citadel LLC",
+      "aliases": [
+        "Citadel",
+        "Citadel Investment Group"
+      ],
+      "domains": [
+        "citadel.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "investing"
+      ],
+      "ceoName": "Ken Griffin",
+      "publicFigureName": "Ken Griffin",
+      "fecCommitteeId": "C00815704",
+      "verificationStatus": "pipeline",
+      "lastVerifiedDate": "2026-03-23",
+      "associatedPersonIds": [
+        "ken-griffin",
+        "kenneth-c-griffin"
+      ],
+      "donationSummary": {
+        "committeeId": "C00815704",
+        "committeeName": "CITADEL SECURITIES POLITICAL ACTION COMMITTEE (CITADEL SECURITIES PAC)",
+        "lastUpdated": "2026-03-23",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00815704/",
+        "recentCycle": 2024,
+        "recentRepubs": 13500,
+        "recentDems": 15000,
+        "totalRepubs": 13500,
+        "totalDems": 15000,
+        "activeCycles": [
+          2022,
+          2024
+        ],
+        "raw": [
+          {
+            "lineNumber": "23",
+            "description": "POLITICAL CONTRIBUTION",
+            "amount": 4500,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "21B",
+            "description": "PAC COMPLIANCE CONSULTING",
+            "amount": 12187.519999999997,
+            "cycle": 2024,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "farallon-capital",
+      "canonicalName": "Farallon Capital Management, L.L.C.",
+      "aliases": [
+        "Farallon Capital",
+        "Farallon Capital Management"
+      ],
+      "domains": [
+        "faralloncapital.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "investing"
+      ],
+      "publicFigureName": "Tom Steyer",
+      "fecCommitteeId": "",
+      "verificationStatus": "unverified",
+      "lastVerifiedDate": "2026-03-23",
+      "associatedPersonIds": [
+        "thomas-f-steyer"
+      ]
+    },
+    {
+      "id": "soros-fund-management",
+      "canonicalName": "Soros Fund Management LLC",
+      "aliases": [
+        "Soros Fund Management"
+      ],
+      "domains": [],
+      "categoryTags": [
+        "finance",
+        "investing"
+      ],
+      "publicFigureName": "George Soros",
+      "fecCommitteeId": "",
+      "verificationStatus": "unverified",
+      "lastVerifiedDate": "2026-03-23",
+      "associatedPersonIds": [
+        "george-soros"
+      ]
+    },
+    {
+      "id": "susquehanna-international-group",
+      "canonicalName": "Susquehanna International Group, LLP",
+      "aliases": [
+        "Susquehanna International Group",
+        "Susquehanna",
+        "SIG"
+      ],
+      "domains": [
+        "sig.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "investing"
+      ],
+      "publicFigureName": "Jeff Yass",
+      "fecCommitteeId": "C00360412",
+      "verificationStatus": "pipeline",
+      "lastVerifiedDate": "2026-03-23",
+      "associatedPersonIds": [
+        "jeff-yass"
+      ]
+    },
+    {
+      "id": "elliott-management",
+      "canonicalName": "Elliott Management",
+      "aliases": [
+        "Elliott Management",
+        "Elliott Investment Management"
+      ],
+      "domains": [],
+      "categoryTags": [
+        "finance",
+        "investing"
+      ],
+      "publicFigureName": "Paul Singer",
+      "fecCommitteeId": "",
+      "verificationStatus": "unverified",
+      "lastVerifiedDate": "2026-03-23",
+      "associatedPersonIds": [
+        "paul-e-singer"
+      ]
+    },
+    {
+      "id": "asana",
+      "canonicalName": "Asana, Inc.",
+      "aliases": [
+        "Asana"
+      ],
+      "domains": [
+        "asana.com"
+      ],
+      "categoryTags": [
+        "productivity",
+        "saas",
+        "tech"
+      ],
+      "ceoName": "Dan Rogers",
+      "publicFigureName": "Dustin Moskovitz",
+      "fecCommitteeId": "",
+      "verificationStatus": "unverified",
+      "lastVerifiedDate": "2026-03-23",
+      "associatedPersonIds": [
+        "dustin-a-moskovitz"
+      ]
+    },
+    {
+      "id": "newsweb-corporation",
+      "canonicalName": "Newsweb Corporation",
+      "aliases": [
+        "Newsweb"
+      ],
+      "domains": [],
+      "categoryTags": [
+        "media",
+        "news",
+        "radio"
+      ],
+      "publicFigureName": "Fred Eychaner",
+      "fecCommitteeId": "",
+      "verificationStatus": "unverified",
+      "lastVerifiedDate": "2026-03-23",
+      "associatedPersonIds": [
+        "fred-eychaner"
+      ]
+    },
+    {
+      "id": "renaissance-technologies",
+      "canonicalName": "Renaissance Technologies LLC",
+      "aliases": [
+        "Renaissance Technologies",
+        "Rentec"
+      ],
+      "domains": [
+        "rentec.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "investing"
+      ],
+      "publicFigureName": "James Simons",
+      "fecCommitteeId": "C00440214",
+      "verificationStatus": "pipeline",
+      "lastVerifiedDate": "2026-03-23",
+      "associatedPersonIds": [
+        "henry-laufer",
+        "james-simons",
+        "robert-mercer"
+      ],
+      "donationSummary": {
+        "committeeId": "C00440214",
+        "committeeName": "RENTECH, INC. EMPLOYEES POLITICAL ACTION COMMITTEE",
+        "lastUpdated": "2026-03-23",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00440214/",
+        "recentCycle": 2016,
+        "recentRepubs": 0,
+        "recentDems": 0,
+        "totalRepubs": 0,
+        "totalDems": 0,
+        "activeCycles": [
+          2016
+        ],
+        "raw": [
+          {
+            "lineNumber": "29",
+            "description": "",
+            "amount": 32286.739999999998,
+            "cycle": 2016,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "abc-supply",
+      "canonicalName": "ABC Supply Co., Inc.",
+      "aliases": [
+        "ABC Supply",
+        "ABC Supply Co",
+        "ABC Supply Co., Inc."
+      ],
+      "domains": [
+        "abcsupply.com"
+      ],
+      "categoryTags": [
+        "home-improvement",
+        "retail"
+      ],
+      "ceoName": "Keith Rozolis",
+      "publicFigureName": "Diane Hendricks",
+      "fecCommitteeId": "",
+      "verificationStatus": "unverified",
+      "lastVerifiedDate": "2026-03-23",
+      "associatedPersonIds": [
+        "diane-hendricks"
+      ]
+    },
+    {
+      "id": "simon-property-group",
+      "canonicalName": "Simon Property Group, Inc.",
+      "aliases": [
+        "Simon Property Group",
+        "Simon"
+      ],
+      "domains": [
+        "simon.com"
+      ],
+      "categoryTags": [
+        "real-estate"
+      ],
+      "publicFigureName": "Deborah Simon",
+      "fecCommitteeId": "",
+      "verificationStatus": "unverified",
+      "lastVerifiedDate": "2026-03-23",
+      "associatedPersonIds": [
+        "deborah-simon"
+      ]
+    },
+    {
+      "id": "stephens-inc",
+      "canonicalName": "Stephens Inc.",
+      "aliases": [
+        "Stephens",
+        "Stephens Inc"
+      ],
+      "domains": [
+        "stephens.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "investing"
+      ],
+      "ceoName": "Warren Stephens",
+      "publicFigureName": "Warren Stephens",
+      "fecCommitteeId": "C00107763",
+      "verificationStatus": "pipeline",
+      "lastVerifiedDate": "2026-03-23",
+      "associatedPersonIds": [
+        "warren-a-stephens"
+      ]
+    },
+    {
+      "id": "mountaire",
+      "canonicalName": "Mountaire Farms",
+      "aliases": [
+        "Mountaire",
+        "Mountaire Farms",
+        "Mountaire Corporation"
+      ],
+      "domains": [
+        "mountaire.com"
+      ],
+      "categoryTags": [
+        "agriculture",
+        "food"
+      ],
+      "publicFigureName": "Ronald Cameron",
+      "fecCommitteeId": "",
+      "verificationStatus": "unverified",
+      "lastVerifiedDate": "2026-03-23",
+      "associatedPersonIds": [
+        "ronald-cameron"
+      ]
+    },
+    {
+      "id": "paloma-partners",
+      "canonicalName": "Paloma Partners Management Company",
+      "aliases": [
+        "Paloma Partners",
+        "Paloma Partners Management Company"
+      ],
+      "domains": [
+        "paloma.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "investing"
+      ],
+      "publicFigureName": "Donald Sussman",
+      "fecCommitteeId": "",
+      "verificationStatus": "unverified",
+      "lastVerifiedDate": "2026-03-23",
+      "associatedPersonIds": [
+        "donald-sussman",
+        "s-donald-sussman"
+      ]
+    },
+    {
+      "id": "ryan-specialty",
+      "canonicalName": "Ryan Specialty Holdings, Inc.",
+      "aliases": [
+        "Ryan Specialty",
+        "Ryan Specialty Group"
+      ],
+      "domains": [
+        "ryanspecialty.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "insurance"
+      ],
+      "publicFigureName": "Patrick Ryan",
+      "fecCommitteeId": "",
+      "verificationStatus": "unverified",
+      "lastVerifiedDate": "2026-03-23",
+      "associatedPersonIds": [
+        "patrick-g-ryan"
+      ]
+    },
+    {
+      "id": "duchossois-group",
+      "canonicalName": "The Duchossois Group",
+      "aliases": [
+        "Duchossois Group",
+        "The Duchossois Group"
+      ],
+      "domains": [],
+      "categoryTags": [
+        "holding-company"
+      ],
+      "publicFigureName": "Craig Duchossois",
+      "fecCommitteeId": "C00212308",
+      "verificationStatus": "pipeline",
+      "lastVerifiedDate": "2026-03-23",
+      "associatedPersonIds": [
+        "craig-j-duchossois"
+      ],
+      "donationSummary": {
+        "committeeId": "C00212308",
+        "committeeName": "DUCHOSSOIS GROUP PAC",
+        "lastUpdated": "2026-03-23",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00212308/",
+        "recentCycle": 2018,
+        "recentRepubs": 0,
+        "recentDems": 0,
+        "totalRepubs": 12000,
+        "totalDems": 5000,
+        "activeCycles": [
+          2016,
+          2018
+        ],
+        "raw": [
+          {
+            "lineNumber": "29",
+            "description": "DONATION",
+            "amount": 79096.04,
+            "cycle": 2018,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "21B",
+            "description": "ACCOUNT ANALYSIS FEE",
+            "amount": 714.5500000000001,
+            "cycle": 2018,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "21B",
+            "description": "ACCOUNT ANALYSIS FEE",
+            "amount": 850.89,
+            "cycle": 2016,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "23",
+            "description": "PRIMARY & GENERAL ELECTION",
+            "amount": 15000,
+            "cycle": 2016,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "29",
+            "description": "PENALTY FOR POST GENERAL ELECTION",
+            "amount": 935,
+            "cycle": 2016,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "ftx",
+      "canonicalName": "FTX Trading Ltd.",
+      "aliases": [
+        "FTX"
+      ],
+      "domains": [
+        "ftx.com"
+      ],
+      "categoryTags": [
+        "crypto",
+        "finance"
+      ],
+      "publicFigureName": "Sam Bankman-Fried",
+      "fecCommitteeId": "",
+      "verificationStatus": "unverified",
+      "notes": "Historical entity added from people.json V2 forward refs. FTX collapsed into bankruptcy proceedings in 2022.",
+      "lastVerifiedDate": "2026-03-23",
+      "associatedPersonIds": [
+        "samuel-bankman-fried"
+      ]
+    },
+    {
+      "id": "lone-pine-capital",
+      "canonicalName": "Lone Pine Capital LLC",
+      "aliases": [
+        "Lone Pine Capital"
+      ],
+      "domains": [],
+      "categoryTags": [
+        "finance",
+        "investing"
+      ],
+      "publicFigureName": "Stephen Mandel",
+      "fecCommitteeId": "",
+      "verificationStatus": "unverified",
+      "lastVerifiedDate": "2026-03-23",
+      "associatedPersonIds": [
+        "stephen-mandel"
+      ]
+    },
+    {
+      "id": "marcus-millichap",
+      "canonicalName": "Marcus & Millichap, Inc.",
+      "aliases": [
+        "Marcus & Millichap",
+        "Marcus and Millichap"
+      ],
+      "domains": [
+        "marcusmillichap.com"
+      ],
+      "categoryTags": [
+        "real-estate"
+      ],
+      "publicFigureName": "George Marcus",
+      "fecCommitteeId": "",
+      "verificationStatus": "unverified",
+      "lastVerifiedDate": "2026-03-23",
+      "associatedPersonIds": [
+        "george-m-marcus"
+      ]
+    },
+    {
+      "id": "energy-transfer",
+      "canonicalName": "Energy Transfer LP",
+      "aliases": [
+        "Energy Transfer"
+      ],
+      "domains": [
+        "energytransfer.com"
+      ],
+      "categoryTags": [
+        "energy",
+        "oil-gas"
+      ],
+      "publicFigureName": "Kelcy Warren",
+      "fecCommitteeId": "C00438754",
+      "verificationStatus": "pipeline",
+      "lastVerifiedDate": "2026-03-23",
+      "associatedPersonIds": [
+        "kelcy-warren"
+      ],
+      "donationSummary": {
+        "committeeId": "C00438754",
+        "committeeName": "ENERGY TRANSFER EMPLOYEE MANAGEMENT COMPANY PAC (ENERGY TRANSFER PAC)",
+        "lastUpdated": "2026-03-23",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00438754/",
+        "recentCycle": 2024,
+        "recentRepubs": 84500,
+        "recentDems": 1000,
+        "totalRepubs": 708100,
+        "totalDems": 27750,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
+        "raw": [
+          {
+            "lineNumber": "29",
+            "description": "CONTRIBUTION",
+            "amount": 398000,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "23",
+            "description": "CONTRIBUTION",
+            "amount": 155439.98,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "21B",
+            "description": "IN-KIND TO BATTLEGROUND VICTORY 2024 FOR CATERING SERVICE ON 10/9",
+            "amount": 10495.2,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "23",
+            "description": "CONTRIBUTION TO JOINT FUNDRAISING CMTE.",
+            "amount": 83000,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "29",
+            "description": "CONTRIBUTION-PA HD 11",
+            "amount": 259850,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "21B",
+            "description": "CHECK ORDER",
+            "amount": 400.48,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "28A",
+            "description": "REFUND OF CONTRIBUTION MADE",
+            "amount": 11,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "29",
+            "description": "CONTRIBUTION-IL SD3-PRIMARY 2022",
+            "amount": 349345,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "23",
+            "description": "CONTRIBUTION TO JOINT FUNDRAISING CMTE.",
+            "amount": 40000,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "29",
+            "description": "CONTRIBUTION-LA HD7-PRIMARY 2019",
+            "amount": 230961.4,
+            "cycle": 2018,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "23",
+            "description": "CONTRIBUTION-GENERAL 2018",
+            "amount": 85200,
+            "cycle": 2018,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "21B",
+            "description": "CHECK ORDER",
+            "amount": 271.69,
+            "cycle": 2018,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "29",
+            "description": "CONTRIBUTION-PA HD28",
+            "amount": 253650,
+            "cycle": 2016,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "21B",
+            "description": "BANK SERVICE CHARGE",
+            "amount": 179.7,
+            "cycle": 2016,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "23",
+            "description": "CONTRIBUTION-2016 PRIMARY",
+            "amount": 14500,
+            "cycle": 2016,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "td-ameritrade",
+      "canonicalName": "TD Ameritrade",
+      "aliases": [
+        "TD Ameritrade"
+      ],
+      "domains": [
+        "tdameritrade.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "investing"
+      ],
+      "publicFigureName": "Joe Ricketts",
+      "fecCommitteeId": "C00396887",
+      "verificationStatus": "pipeline",
+      "notes": "Historical entity added from people.json V2 forward refs. TD Ameritrade was acquired by Charles Schwab and the standalone brand was retired.",
+      "lastVerifiedDate": "2026-03-23",
+      "associatedPersonIds": [
+        "j-joe-ricketts"
+      ],
+      "donationSummary": {
+        "committeeId": "C00396887",
+        "committeeName": "TD AMERITRADE HOLDING CORPORATION PAC",
+        "lastUpdated": "2026-03-23",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00396887/",
+        "recentCycle": 2020,
+        "recentRepubs": 10500,
+        "recentDems": 3000,
+        "totalRepubs": 27000,
+        "totalDems": 10000,
+        "activeCycles": [
+          2016,
+          2018,
+          2020
+        ],
+        "raw": [
+          {
+            "lineNumber": "23",
+            "description": "POLITICAL CONTRIBUTION",
+            "amount": 5000,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "23",
+            "description": "POLITICAL CONTRIBUTION",
+            "amount": 2500,
+            "cycle": 2018,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "23",
+            "description": "POLITICAL CONTRIBUTION",
+            "amount": 8000,
+            "cycle": 2016,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "reyes-holdings",
+      "canonicalName": "Reyes Holdings, LLC",
+      "aliases": [
+        "Reyes Holdings"
+      ],
+      "domains": [
+        "reyesholdings.com"
+      ],
+      "categoryTags": [
+        "beverage",
+        "food",
+        "logistics"
+      ],
+      "publicFigureName": "Chris Reyes",
+      "fecCommitteeId": "",
+      "verificationStatus": "unverified",
+      "lastVerifiedDate": "2026-03-23",
+      "associatedPersonIds": [
+        "j-christopher-reyes",
+        "m-jude-reyes"
+      ]
+    },
+    {
+      "id": "interactive-brokers",
+      "canonicalName": "Interactive Brokers Group, Inc.",
+      "aliases": [
+        "Interactive Brokers",
+        "IBKR"
+      ],
+      "domains": [
+        "interactivebrokers.com",
+        "ibkr.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "investing"
+      ],
+      "publicFigureName": "Thomas Peterffy",
+      "fecCommitteeId": "",
+      "verificationStatus": "unverified",
+      "lastVerifiedDate": "2026-03-23",
+      "associatedPersonIds": [
+        "thomas-peterffy"
+      ]
+    },
+    {
+      "id": "saban-entertainment",
+      "canonicalName": "Saban Entertainment",
+      "aliases": [
+        "Saban Entertainment"
+      ],
+      "domains": [],
+      "categoryTags": [
+        "entertainment",
+        "television"
+      ],
+      "publicFigureName": "Haim Saban",
+      "fecCommitteeId": "",
+      "verificationStatus": "unverified",
+      "notes": "Historical entity added from people.json V2 forward refs. Saban Entertainment is no longer an active standalone company.",
+      "lastVerifiedDate": "2026-03-23",
+      "associatedPersonIds": [
+        "haim-saban"
+      ]
+    },
+    {
+      "id": "roivant-sciences",
+      "canonicalName": "Roivant Sciences Ltd.",
+      "aliases": [
+        "Roivant Sciences",
+        "Roivant"
+      ],
+      "domains": [
+        "roivant.com"
+      ],
+      "categoryTags": [
+        "healthcare",
+        "pharma"
+      ],
+      "publicFigureName": "Vivek Ramaswamy",
+      "fecCommitteeId": "",
+      "verificationStatus": "unverified",
+      "lastVerifiedDate": "2026-03-23",
+      "associatedPersonIds": [
+        "vivek-ramaswamy"
+      ]
+    },
+    {
+      "id": "fisher-investments",
+      "canonicalName": "Fisher Investments",
+      "aliases": [
+        "Fisher Investments"
+      ],
+      "domains": [
+        "fisherinvestments.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "investing"
+      ],
+      "publicFigureName": "Ken Fisher",
+      "fecCommitteeId": "",
+      "verificationStatus": "unverified",
+      "lastVerifiedDate": "2026-03-23",
+      "associatedPersonIds": [
+        "kenneth-l-fisher"
+      ]
+    },
+    {
+      "id": "new-balance",
+      "canonicalName": "New Balance Athletics, Inc.",
+      "aliases": [
+        "New Balance"
+      ],
+      "domains": [
+        "newbalance.com"
+      ],
+      "categoryTags": [
+        "apparel",
+        "footwear"
+      ],
+      "ceoName": "Joe Preston",
+      "publicFigureName": "James Davis",
+      "fecCommitteeId": "",
+      "verificationStatus": "unverified",
+      "lastVerifiedDate": "2026-03-23",
+      "associatedPersonIds": [
+        "james-s-davis"
+      ]
+    },
+    {
+      "id": "sequoia-capital",
+      "canonicalName": "Sequoia Capital",
+      "aliases": [
+        "Sequoia Capital",
+        "Sequoia"
+      ],
+      "domains": [
+        "sequoiacap.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "investing"
+      ],
+      "publicFigureName": "Michael Moritz",
+      "fecCommitteeId": "",
+      "verificationStatus": "unverified",
+      "lastVerifiedDate": "2026-03-23",
+      "associatedPersonIds": [
+        "michael-moritz"
+      ]
+    },
+    {
+      "id": "grosvenor-capital-management",
+      "canonicalName": "GCM Grosvenor",
+      "aliases": [
+        "GCM Grosvenor",
+        "Grosvenor Capital Management"
+      ],
+      "domains": [
+        "gcmgrosvenor.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "investing"
+      ],
+      "publicFigureName": "Michael Sacks",
+      "fecCommitteeId": "",
+      "verificationStatus": "unverified",
+      "lastVerifiedDate": "2026-03-23",
+      "associatedPersonIds": [
+        "michael-sacks"
+      ]
+    },
+    {
+      "id": "intercontinental-exchange",
+      "canonicalName": "Intercontinental Exchange, Inc.",
+      "aliases": [
+        "Intercontinental Exchange",
+        "ICE"
+      ],
+      "domains": [
+        "theice.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "fintech"
+      ],
+      "ceoName": "Jeffrey Sprecher",
+      "publicFigureName": "Jeffrey Sprecher",
+      "fecCommitteeId": "C00443168",
+      "verificationStatus": "pipeline",
+      "lastVerifiedDate": "2026-03-23",
+      "associatedPersonIds": [
+        "jeffrey-sprecher"
+      ],
+      "donationSummary": {
+        "committeeId": "C00443168",
+        "committeeName": "INTERCONTINENTAL EXCHANGE INC PAC",
+        "lastUpdated": "2026-03-23",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00443168/",
+        "recentCycle": 2024,
+        "recentRepubs": 87000,
+        "recentDems": 50500,
+        "totalRepubs": 391000,
+        "totalDems": 262000,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
+        "raw": [
+          {
+            "lineNumber": "23",
+            "description": "",
+            "amount": 51000,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "29",
+            "description": "",
+            "amount": 5000,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "23",
+            "description": "",
+            "amount": 22500,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "29",
+            "description": "",
+            "amount": 3070.38,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "23",
+            "description": "",
+            "amount": 21000,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "29",
+            "description": "SPONSORSHIP FOR AN EVENT",
+            "amount": 1500,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "23",
+            "description": "",
+            "amount": 41000,
+            "cycle": 2018,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "29",
+            "description": "CHRIS CARR, ATTORNEY GENERAL  GA",
+            "amount": 6600,
+            "cycle": 2018,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "23",
+            "description": "2016 PAC CONTRIBUTION",
+            "amount": 94000,
+            "cycle": 2016,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "silver-eagle-beverages",
+      "canonicalName": "Silver Eagle Beverages",
+      "aliases": [
+        "Silver Eagle Beverages",
+        "Silver Eagle"
+      ],
+      "domains": [],
+      "categoryTags": [
+        "beverage",
+        "logistics"
+      ],
+      "publicFigureName": "John Nau",
+      "fecCommitteeId": "",
+      "verificationStatus": "unverified",
+      "lastVerifiedDate": "2026-03-23",
+      "associatedPersonIds": [
+        "john-l-nau"
+      ]
     }
   ]
 }

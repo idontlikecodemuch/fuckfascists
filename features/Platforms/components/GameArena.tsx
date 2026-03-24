@@ -1,5 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
+  AccessibilityInfo,
   Animated,
   ImageBackground,
   Pressable,
@@ -51,6 +52,15 @@ function pickReaction(): string {
 export function GameArena() {
   const { arenaFocusKey, focusedFigureName, arenaHitRequest, todayActions } = useTrack();
   const fx = useFX();
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    AccessibilityInfo.isReduceMotionEnabled().then((enabled) => {
+      if (!cancelled) setReducedMotion(enabled);
+    });
+    return () => { cancelled = true; };
+  }, []);
 
   const gridFigures = useMemo<ArenaFigure[]>(() => {
     const seen = new Set<string>();
@@ -86,7 +96,7 @@ export function GameArena() {
       previous.figureName === focusedFigureName &&
       previous.focusId !== arenaFocusKey;
 
-    if (sameFigureDifferentTarget) {
+    if (sameFigureDifferentTarget && !reducedMotion) {
       pulseScale.setValue(1);
       Animated.sequence([
         Animated.timing(pulseScale, {
@@ -100,7 +110,7 @@ export function GameArena() {
           useNativeDriver: true,
         }),
       ]).start();
-    } else if (previous.figureName !== focusedFigureName) {
+    } else if (previous.figureName !== focusedFigureName && !reducedMotion) {
       contentOpacity.setValue(0);
       Animated.timing(contentOpacity, {
         toValue: 1,
@@ -113,7 +123,7 @@ export function GameArena() {
       figureName: focusedFigureName,
       focusId: arenaFocusKey,
     };
-  }, [arenaFocusKey, contentOpacity, focusedFigureName, pulseScale]);
+  }, [arenaFocusKey, contentOpacity, focusedFigureName, pulseScale, reducedMotion]);
 
   const fireHitFX = useCallback((x = 0.34, y = 0.22) => {
     const text = pickReaction();
@@ -151,6 +161,8 @@ export function GameArena() {
           style={styles.background}
           imageStyle={styles.backgroundImage}
           resizeMode="cover"
+          accessible={false}
+          importantForAccessibility="no-hide-descendants"
         >
           <View style={styles.backgroundOverlay} />
         </ImageBackground>

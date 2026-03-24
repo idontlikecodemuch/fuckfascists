@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, Text, Pressable, StyleSheet, Linking } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import type { BarcodeScanningResult } from 'expo-camera';
 import { sharedCopy } from '../../../copy/shared';
@@ -9,7 +8,6 @@ import { theme } from '../../../design/tokens';
 import {
   BARCODE_SCAN_GUIDE_HEIGHT,
   BARCODE_SCAN_GUIDE_SIDE_INSET_PERCENT,
-  SAFE_AREA_TOP_MIN,
 } from '../../../config/constants';
 
 interface BarcodeScannerSheetProps {
@@ -27,19 +25,9 @@ export function BarcodeScannerSheet({
   onClose,
   onScanned,
 }: BarcodeScannerSheetProps) {
-  const insets = useSafeAreaInsets();
   const [permission, requestPermission] = useCameraPermissions();
   const [mountError, setMountError] = useState(false);
   const scanLock = useRef(false);
-
-  // Request camera permission immediately when the scanner opens — skip the
-  // interstitial and go straight to the native OS dialog (expo-camera best
-  // practice: call requestPermission() eagerly, not behind a manual button).
-  useEffect(() => {
-    if (visible && permission && !permission.granted && permission.canAskAgain) {
-      requestPermission().catch(() => undefined);
-    }
-  }, [visible, permission, requestPermission]);
 
   useEffect(() => {
     if (!visible) {
@@ -79,6 +67,8 @@ export function BarcodeScannerSheet({
             <Pressable
               onPress={() => requestPermission().catch(() => undefined)}
               style={styles.primaryButton}
+              accessibilityRole="button"
+              accessibilityLabel={mapCopy.barcodePermissionActionLabel}
             >
               <Text style={styles.primaryButtonText}>{mapCopy.barcodePermissionAction}</Text>
             </Pressable>
@@ -86,6 +76,8 @@ export function BarcodeScannerSheet({
             <Pressable
               onPress={() => Linking.openSettings().catch(() => undefined)}
               style={styles.primaryButton}
+              accessibilityRole="button"
+              accessibilityLabel={mapCopy.barcodeSettingsActionLabel}
             >
               <Text style={styles.primaryButtonText}>{mapCopy.barcodeSettingsAction}</Text>
             </Pressable>
@@ -111,8 +103,9 @@ export function BarcodeScannerSheet({
           onBarcodeScanned={busy ? undefined : handleBarcodeScanned}
           onMountError={() => setMountError(true)}
           barcodeScannerSettings={{ barcodeTypes: [...PRODUCT_BARCODE_TYPES] }}
+          accessibilityLabel={mapCopy.barcodeCameraLabel}
         />
-        <View style={styles.scanGuide} pointerEvents="none" />
+        <View style={styles.scanGuide} pointerEvents="none" accessible={false} />
         <Text style={styles.helpText}>
           {busy ? mapCopy.barcodeResolving : mapCopy.barcodeGuide}
         </Text>
@@ -122,13 +115,17 @@ export function BarcodeScannerSheet({
 
   if (!visible) return null;
 
-  const dynamicTop = Math.max(insets.top, SAFE_AREA_TOP_MIN);
-
   return (
-    <View style={[styles.root, { paddingTop: dynamicTop }]}>
+    <View style={styles.root} accessibilityViewIsModal>
       <View style={styles.header}>
-        <Text style={styles.title}>{mapCopy.barcodeScannerTitle}</Text>
-        <Pressable onPress={onClose} accessibilityRole="button" accessibilityLabel={sharedCopy.dismissLabel}>
+        <Text style={styles.title} accessibilityRole="header">{mapCopy.barcodeScannerTitle}</Text>
+        <Pressable
+          onPress={onClose}
+          accessibilityRole="button"
+          accessibilityLabel={sharedCopy.dismissLabel}
+          style={styles.closeButton}
+          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+        >
           <Text style={styles.closeText}>{sharedCopy.dismiss}</Text>
         </Pressable>
       </View>
@@ -141,6 +138,7 @@ const styles = StyleSheet.create({
   root: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: theme.colors.bgVoid,
+    paddingTop: theme.space['3xl'],
     paddingHorizontal: theme.space.lg,
     paddingBottom: theme.space.xl,
     zIndex: 20,
@@ -156,6 +154,12 @@ const styles = StyleSheet.create({
     color: theme.colors.textPrimary,
     flex: 1,
     marginRight: theme.space.md,
+  },
+  closeButton: {
+    minHeight: theme.a11y.minTapTarget,
+    minWidth: theme.a11y.minTapTarget,
+    alignItems: 'center' as const,
+    justifyContent: 'center' as const,
   },
   closeText: {
     ...theme.type.bodyS,

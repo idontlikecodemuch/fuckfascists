@@ -1,17 +1,16 @@
 import React, { useRef, useCallback } from 'react';
 import { View, Text, Pressable, StyleSheet, Alert } from 'react-native';
-import { captureScreen } from 'react-native-view-shot';
-import * as MediaLibrary from 'expo-media-library';
 import { betaCopy } from '../../copy/beta';
 import { theme } from '../../design/tokens';
 import { resetAppStateForFreshTest } from './resetAppState';
+import { captureBetaScreenshot } from './betaScreenshot';
+import type { Tab } from '../../app/navigation/TabBar';
 import {
   BETA_FLOATING_BUTTON_BOTTOM,
   BETA_FLOATING_BUTTON_SIZE,
   BETA_RESET_BUTTON_GAP,
   BETA_RESET_BUTTON_HEIGHT,
   BETA_RESET_BUTTON_WIDTH,
-  SAFE_AREA_TOP_MIN,
 } from '../../config/constants';
 
 const FLOATING_BUTTON_HIT_SLOP = {
@@ -21,32 +20,30 @@ const FLOATING_BUTTON_HIT_SLOP = {
   right: theme.space.sm,
 } as const;
 
+interface BetaOverlayProps {
+  activeTab: Tab;
+}
+
 /**
  * Floating beta overlay — shown when beta mode is active.
  * - "BETA" indicator badge in top-left
- * - "BUG" floating button in bottom-left — captures screenshot and saves to camera roll
+ * - "BUG" floating button in bottom-left — captures screenshot with surface-named filename
  */
-export function BetaOverlay() {
+export function BetaOverlay({ activeTab }: BetaOverlayProps) {
   const capturing = useRef(false);
 
   const handleBugReport = useCallback(async () => {
     if (capturing.current) return;
     capturing.current = true;
     try {
-      const { status } = await MediaLibrary.requestPermissionsAsync();
-      if (status !== 'granted') {
-        Alert.alert(betaCopy.screenshotFailed);
-        return;
-      }
-      const uri = await captureScreen({ format: 'png', quality: 1 });
-      await MediaLibrary.saveToLibraryAsync(uri);
-      Alert.alert(betaCopy.screenshotSaved);
+      const filename = await captureBetaScreenshot(activeTab);
+      Alert.alert(betaCopy.screenshotSaved(filename));
     } catch {
       Alert.alert(betaCopy.screenshotFailed);
     } finally {
       capturing.current = false;
     }
-  }, []);
+  }, [activeTab]);
 
   const handleReset = useCallback(() => {
     Alert.alert(
@@ -106,7 +103,7 @@ export function BetaOverlay() {
 const styles = StyleSheet.create({
   badge: {
     position: 'absolute',
-    top: SAFE_AREA_TOP_MIN,
+    top: 52,
     left: theme.space.md,
     backgroundColor: theme.colors.dangerRed,
     paddingHorizontal: theme.space.sm,

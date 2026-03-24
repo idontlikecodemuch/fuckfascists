@@ -25,6 +25,8 @@ export function UnmatchedBanner({ searchText, onOpenSearch, variant = 'no_match'
         onPress={onOpenSearch}
         accessibilityRole="link"
         accessibilityLabel={mapCopy.fecSearchLabel}
+        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+        style={styles.linkTap}
       >
         <Text style={styles.link} allowFontScaling>{mapCopy.fecSearch}</Text>
       </Pressable>
@@ -46,5 +48,6 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   text: { ...theme.type.bodyS, color: theme.colors.textPrimary },
+  linkTap: { minHeight: theme.a11y.minTapTarget, justifyContent: 'center' as const },
   link: { ...theme.type.bodyS, color: theme.colors.highlightBlue, textDecorationLine: 'underline' },
 });

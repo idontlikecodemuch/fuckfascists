@@ -29,6 +29,13 @@ const TOP_N = 3;
  *
  * Rendered as a React Native View for react-native-view-shot capture.
  * Exposed via forwardRef so the parent can pass a ref for view capture.
+ *
+ * allowFontScaling={false} is used throughout this component because the
+ * scorecard is captured as a bitmap for sharing via react-native-view-shot.
+ * Dynamic Type scaling would break the fixed layout of the captured image,
+ * producing clipped or overflowing text in the shared output. The scorecard
+ * is a short-lived summary screen, not a reading-heavy surface — the
+ * trade-off is acceptable for V1.
  */
 export const ScorecardView = forwardRef<View, ScorecardViewProps>(
   ({ data, onSwitchTab }, ref) => {
@@ -56,7 +63,12 @@ export const ScorecardView = forwardRef<View, ScorecardViewProps>(
           </Text>
         </View>
 
-        {/* ── Empty state ── */}
+        {/* ── Empty state ──
+         * A11y note: inline <Text onPress> links are below the 44pt minimum tap
+         * target. This is an intentional exception — the empty state is a
+         * one-time motivational moment read as a sentence, and wrapping each
+         * word in a full-size Pressable would break the reading flow. The
+         * links are also reachable via VoiceOver swipe-through navigation. */}
         {isEmpty && (
           <View style={styles.emptyState}>
             <Text style={styles.emptyText} allowFontScaling={false}>

@@ -1,4 +1,5 @@
 export const platformsCopy = {
+  tabLabel: "TRACK",
   // Header
   weekLabel: (weekOf: string) => `Week of ${weekOf}`,
   editPlatforms: "Edit platforms",

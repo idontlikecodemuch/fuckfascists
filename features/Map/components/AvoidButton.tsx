@@ -44,8 +44,6 @@ export function AvoidButton({ onPress, disabled = false }: AvoidButtonProps) {
     setError(false);
 
     if (!reducedMotion) {
-      // Haptic feedback — console.log for device verification
-      console.log('[AvoidButton] Firing haptic feedback');
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
 
       // Scale punch + flash pulse

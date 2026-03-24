@@ -44,6 +44,7 @@ export function MapControls({ onZoomIn, onZoomOut, onLocation, locationLoading }
         accessibilityRole="button"
         accessibilityLabel={mapCopy.locationLabel}
         disabled={locationLoading}
+        accessibilityState={{ disabled: locationLoading }}
         hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
       >
         {locationLoading

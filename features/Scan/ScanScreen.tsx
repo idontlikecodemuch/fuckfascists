@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { ScrollView, View, Text, Pressable, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, ScrollView, View, Text, Pressable, StyleSheet } from 'react-native';
 import type { Entity } from '../../core/models';
 import type { MatchingDeps } from '../../core/matching';
 import type { StorageAdapter } from '../../core/data';
@@ -104,12 +103,19 @@ export function ScanScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Sc
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.hero}>
-          <Text style={styles.heading}>{scanCopy.heading}</Text>
+          <Text style={styles.heading} accessibilityRole="header" allowFontScaling>{scanCopy.heading}</Text>
           <Text style={styles.body}>{scanCopy.body}</Text>
           <Pressable
             onPress={handleOpenScanner}
             disabled={isResolving || status === 'scanning'}
             style={[styles.cta, (isResolving || status === 'scanning') && styles.ctaBusy]}
+            accessibilityRole="button"
+            accessibilityLabel={
+              isResolving || status === 'scanning'
+                ? scanCopy.busyActionLabel
+                : scanCopy.primaryActionLabel
+            }
+            accessibilityState={{ disabled: isResolving || status === 'scanning' }}
           >
             <Text style={styles.ctaLabel}>
               {isResolving || status === 'scanning' ? scanCopy.busyAction : scanCopy.primaryAction}

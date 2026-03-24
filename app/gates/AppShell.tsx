@@ -100,7 +100,7 @@ export function AppShell({ adapter, entities }: AppShellProps) {
       <NudgeBanner onPress={handleNudgePress} />
       <View style={styles.content}>{renderScreen()}</View>
       <TabBar activeTab={activeTab} onSelect={setActiveTab} />
-      {betaEnabled && <BetaOverlay />}
+      {betaEnabled && <BetaOverlay activeTab={activeTab} />}
     </View>
   );
 }

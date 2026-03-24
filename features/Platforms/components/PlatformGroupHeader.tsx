@@ -36,6 +36,7 @@ export function PlatformGroupHeader({
       style={[styles.container, focused && styles.focused]}
       accessibilityRole="button"
       accessibilityLabel={platformsCopy.groupHeaderA11y(shortName, totalAvoids)}
+      accessibilityState={{ expanded: focused }}
     >
       <FigureBadge
         figureName={figureName}

@@ -92,6 +92,23 @@ async function searchCommittees(name, apiKey) {
 
 function delay(ms) { return new Promise((r) => setTimeout(r, ms)); }
 
+function clearVerificationNote(entity) {
+  if (typeof entity.notes !== 'string') return;
+  const cleaned = entity.notes
+    .replace(/\s*C\d+\s+requires name verification\.?/i, '')
+    .replace(/\s{2,}/g, ' ')
+    .replace(/\s+\./g, '.')
+    .trim();
+  if (cleaned) entity.notes = cleaned;
+  else delete entity.notes;
+}
+
+function markVerified(entity, status) {
+  entity.verificationStatus = status;
+  entity.lastVerifiedDate = new Date().toISOString().slice(0, 10);
+  clearVerificationNote(entity);
+}
+
 function pickBest(results, normalizedQuery) {
   let bestScore = 0, bestId = null, bestName = null;
   for (const r of results) {
@@ -145,7 +162,7 @@ async function phase1(entities, apiKey, force) {
 
     if (best.bestScore >= THRESHOLD_AUTO && best.bestId) {
       entity.fecCommitteeId = best.bestId;
-      entity.verificationStatus = 'pipeline';
+      markVerified(entity, 'pipeline');
       autoVerified++;
       console.log(`  ✓ ${entity.canonicalName} → ${best.bestId} (${best.bestScore.toFixed(3)})`);
     } else if (best.bestScore >= THRESHOLD_NEAR && best.bestId) {
@@ -190,7 +207,7 @@ async function phase2(nearMisses, autoVerified) {
 
       if (ans === 'y') {
         entity.fecCommitteeId = bestId;
-        entity.verificationStatus = 'pipeline';
+        markVerified(entity, 'pipeline');
         manualVerified++;
         console.log(`  ✓ Accepted.`);
         done = true;
