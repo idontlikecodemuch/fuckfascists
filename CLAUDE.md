@@ -399,7 +399,7 @@ These apply to every file, every PR, every AI-generated change.
 - **When fixing a bug** — exhaust the existing pattern before introducing a new one. If you do introduce a new pattern, remove the old implementation
 - **Environments are cleanly separated** — no prod config leaking into dev and vice versa
 - **No one-off scripts in source files** — if a script only runs once, it doesn't belong in the codebase
-- **No script execution in CC** — never run npm scripts, shell commands, or data pipeline scripts (fetch:donations, verify:entities, tsc, etc.) from within a CC session. Scripts are run manually by the developer. CC handles code changes only.
+- **Flag before running scripts** — do not run unnecessary, unsafe, or potentially destructive scripts without flagging them first. Safe operations (`npm install`, `pod install`, `tsc --noEmit`, `jest`, build commands) are fine. Data pipeline scripts that make external API calls (`fetch:donations`, `verify:entities`, `fetch:people`) or modify data files should be flagged with what they do and what they'll change before execution. Never run scripts that could cost money, hit rate limits, or modify production data without explicit approval.
 - **All visual constants from design tokens** — colors, spacing, typography, borders, and accessibility values must be imported from `design/tokens.ts`. Never hardcode hex values, pixel measurements, or font names in components. See `design/component-rules.md` for per-component token usage.
 
 ---
