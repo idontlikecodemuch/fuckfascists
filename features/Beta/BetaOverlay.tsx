@@ -1,6 +1,7 @@
 import React, { useRef, useCallback } from 'react';
 import { View, Text, Pressable, StyleSheet, Alert } from 'react-native';
 import { betaCopy } from '../../copy/beta';
+import { harnessCopy } from '../../copy/harness';
 import { theme } from '../../design/tokens';
 import { resetAppStateForFreshTest } from './resetAppState';
 import { captureBetaScreenshot } from './betaScreenshot';
@@ -22,14 +23,18 @@ const FLOATING_BUTTON_HIT_SLOP = {
 
 interface BetaOverlayProps {
   activeTab: Tab;
+  /** Open the screenshot harness modal. Only provided in __DEV__. */
+  onOpenHarness?: () => void;
 }
 
 /**
  * Floating beta overlay — shown when beta mode is active.
  * - "BETA" indicator badge in top-left
- * - "BUG" floating button in bottom-left — captures screenshot with surface-named filename
+ * - "SHOTS" button — opens screenshot harness (dev only)
+ * - "RESET" button — clears app state
+ * - "BUG" button — captures single screenshot
  */
-export function BetaOverlay({ activeTab }: BetaOverlayProps) {
+export function BetaOverlay({ activeTab, onOpenHarness }: BetaOverlayProps) {
   const capturing = useRef(false);
 
   const handleBugReport = useCallback(async () => {
@@ -67,6 +72,9 @@ export function BetaOverlay({ activeTab }: BetaOverlayProps) {
     );
   }, []);
 
+  const resetBottom = BETA_FLOATING_BUTTON_BOTTOM + BETA_FLOATING_BUTTON_SIZE + BETA_RESET_BUTTON_GAP;
+  const shotsBottom = resetBottom + BETA_RESET_BUTTON_HEIGHT + BETA_RESET_BUTTON_GAP;
+
   return (
     <>
       {/* Beta indicator */}
@@ -76,7 +84,20 @@ export function BetaOverlay({ activeTab }: BetaOverlayProps) {
         </Text>
       </View>
 
-      {/* Bug report button */}
+      {/* Screenshot harness button — dev only */}
+      {onOpenHarness && (
+        <Pressable
+          style={[styles.shotsButton, { bottom: shotsBottom }]}
+          onPress={onOpenHarness}
+          accessibilityRole="button"
+          accessibilityLabel={harnessCopy.shotsButtonLabel}
+          hitSlop={FLOATING_BUTTON_HIT_SLOP}
+        >
+          <Text style={styles.shotsText}>{harnessCopy.shotsButton}</Text>
+        </Pressable>
+      )}
+
+      {/* Reset button */}
       <Pressable
         style={styles.resetButton}
         onPress={handleReset}
@@ -87,6 +108,7 @@ export function BetaOverlay({ activeTab }: BetaOverlayProps) {
         <Text style={styles.resetText}>{betaCopy.resetButton}</Text>
       </Pressable>
 
+      {/* Bug report button */}
       <Pressable
         style={styles.bugButton}
         onPress={handleBugReport}
@@ -142,6 +164,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     zIndex: 999,
   },
+  shotsButton: {
+    position: 'absolute',
+    left: theme.space.md,
+    width: BETA_RESET_BUTTON_WIDTH,
+    height: BETA_RESET_BUTTON_HEIGHT,
+    backgroundColor: theme.colors.bgNav,
+    borderWidth: theme.borders.standard.width,
+    borderColor: theme.colors.highlightBlue,
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 999,
+  },
   bugText: {
     ...theme.type.caption,
     fontWeight: 'bold',
@@ -152,6 +186,12 @@ const styles = StyleSheet.create({
     ...theme.type.caption,
     fontWeight: 'bold',
     color: theme.colors.rewardYellow,
+    letterSpacing: 1,
+  },
+  shotsText: {
+    ...theme.type.caption,
+    fontWeight: 'bold',
+    color: theme.colors.highlightBlue,
     letterSpacing: 1,
   },
 });
