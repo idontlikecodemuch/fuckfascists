@@ -36,6 +36,7 @@ import {
   renderScanResultPreAvoid,
   renderScanResultPostAvoid,
   renderScanNoMatch,
+  renderNotificationThursday,
 } from './contentStates';
 
 const RENDERERS: Record<string, () => React.ReactElement> = {
@@ -79,6 +80,9 @@ const RENDERERS: Record<string, () => React.ReactElement> = {
 
   // Tab bar — reuses map default (tab bar is always visible via AppShell)
   tabbar_full: renderMapDefault,
+
+  // Notification — forced NudgeBanner regardless of day
+  notification_thursday: renderNotificationThursday,
 };
 
 /**
