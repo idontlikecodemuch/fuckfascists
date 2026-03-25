@@ -52,7 +52,8 @@ export interface TrackContextValue {
   clearAll: () => Promise<void>;
 }
 
-const TrackCtx = createContext<TrackContextValue | null>(null);
+/** Exported for dev-only harness mock injection. Production code uses useTrack(). */
+export const TrackCtx = createContext<TrackContextValue | null>(null);
 
 export function useTrack(): TrackContextValue {
   const ctx = useContext(TrackCtx);

@@ -20,6 +20,15 @@ import { theme } from '../../design/tokens';
 const CatalogScreen = __DEV__
   ? require('../../features/Dev/CatalogScreen').CatalogScreen
   : () => null;
+// Screenshot harness — available in all builds behind the beta mode triple-tap.
+// Lazy-loaded on first open to avoid bloating the production bundle startup.
+let _ScreenshotHarness: React.ComponentType<{ onClose: () => void }> | null = null;
+function getScreenshotHarness() {
+  if (!_ScreenshotHarness) {
+    _ScreenshotHarness = require('../../features/Dev/ScreenshotHarness').ScreenshotHarness;
+  }
+  return _ScreenshotHarness!;
+}
 
 interface AppShellProps {
   adapter: StorageAdapter;
@@ -33,6 +42,7 @@ interface AppShellProps {
 export function AppShell({ adapter, entities }: AppShellProps) {
   const { betaEnabled, registerTap } = useBetaMode();
   const [activeTab, setActiveTab] = useState<Tab>('map');
+  const [harnessOpen, setHarnessOpen] = useState(false);
 
   const handleVersionTap = useCallback(async () => {
     const toggled = await registerTap();
@@ -95,12 +105,31 @@ export function AppShell({ adapter, entities }: AppShellProps) {
     setActiveTab('platforms');
   }, []);
 
+  const handleOpenHarness = useCallback(() => {
+    setHarnessOpen(true);
+  }, []);
+
+  const handleCloseHarness = useCallback(() => {
+    setHarnessOpen(false);
+  }, []);
+
+  // Screenshot harness takes over the full screen when open (beta mode only)
+  if (betaEnabled && harnessOpen) {
+    const Harness = getScreenshotHarness();
+    return <Harness onClose={handleCloseHarness} />;
+  }
+
   return (
     <View style={styles.root}>
       <NudgeBanner onPress={handleNudgePress} />
       <View style={styles.content}>{renderScreen()}</View>
       <TabBar activeTab={activeTab} onSelect={setActiveTab} />
-      {betaEnabled && <BetaOverlay activeTab={activeTab} />}
+      {betaEnabled && (
+        <BetaOverlay
+          activeTab={activeTab}
+          onOpenHarness={handleOpenHarness}
+        />
+      )}
     </View>
   );
 }

@@ -141,6 +141,12 @@ export const TRACK_ARENA_SINGLE_DISPLAY_RATIO = 0.9;
 export const TRACK_ARENA_SINGLE_LEFT_INSET = 16;
 export const TRACK_ARENA_SINGLE_BOTTOM_INSET = 0;
 
+// ── Screenshot harness (dev only) ────────────────────────────────────────────
+// Time to wait after rendering a step before capturing (ms).
+export const HARNESS_STEP_SETTLE_MS = 400;
+// Time to wait after capture before advancing to next step (ms).
+export const HARNESS_CAPTURE_DELAY_MS = 400;
+
 // ── Safe area ────────────────────────────────────────────────────────────────
 // Minimum top padding for screens that don't use SafeAreaView or need manual
 // inset handling (e.g. absolute overlays). On notch/island devices the system
