@@ -10,6 +10,7 @@ import { FaqItem } from '../../Info/components/FaqItem';
 import { LinkRow } from '../../Info/components/LinkRow';
 import { BusinessCard } from '../../Map/components/BusinessCard';
 import { BarcodeLookupBanner } from '../../Map/components/BarcodeLookupBanner';
+import { platformsCopy } from '../../../copy/platforms';
 import { infoCopy } from '../../../copy/info';
 import { scanCopy } from '../../../copy/scan';
 import { scorecardCopy } from '../../../copy/scorecard';
@@ -34,14 +35,14 @@ const noopAsync = async () => {};
 
 export function renderScorecardPopulated(): React.ReactElement {
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scroll}>
-        <View style={styles.topBar}>
-          <Text style={styles.topBarTitle} accessibilityRole="header" allowFontScaling>
+    <SafeAreaView style={s.container}>
+      <ScrollView contentContainerStyle={s.scroll}>
+        <View style={s.topBar}>
+          <Text style={s.topBarTitle} accessibilityRole="header" allowFontScaling>
             {scorecardCopy.title}
           </Text>
         </View>
-        <View style={styles.cardWrapper}>
+        <View style={s.cardWrapper}>
           <ScorecardView data={harnessScorecardPopulated} />
         </View>
       </ScrollView>
@@ -51,14 +52,14 @@ export function renderScorecardPopulated(): React.ReactElement {
 
 export function renderScorecardEmpty(): React.ReactElement {
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scroll}>
-        <View style={styles.topBar}>
-          <Text style={styles.topBarTitle} accessibilityRole="header" allowFontScaling>
+    <SafeAreaView style={s.container}>
+      <ScrollView contentContainerStyle={s.scroll}>
+        <View style={s.topBar}>
+          <Text style={s.topBarTitle} accessibilityRole="header" allowFontScaling>
             {scorecardCopy.title}
           </Text>
         </View>
-        <View style={styles.cardWrapper}>
+        <View style={s.cardWrapper}>
           <ScorecardView data={harnessScorecardEmpty} />
         </View>
       </ScrollView>
@@ -68,92 +69,53 @@ export function renderScorecardEmpty(): React.ReactElement {
 
 // ── Info ────────────────────────────────────────────────────────────────────
 
-export function renderInfoDefault(): React.ReactElement {
+function InfoShell({ children }: { children: React.ReactNode }) {
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scroll}>
-        <View style={styles.infoHeader}>
-          <Text style={styles.infoTitle} allowFontScaling>{infoCopy.title}</Text>
-        </View>
-        <InfoSection title={infoCopy.about}>
-          <View style={styles.pad}>
-            <Text style={styles.tagline} allowFontScaling>{harnessAbout.tagline}</Text>
-            <Text style={styles.body} allowFontScaling>{harnessAbout.description}</Text>
-          </View>
-        </InfoSection>
-        <InfoSection title={infoCopy.data}>
-          <View style={styles.collapseToggle}>
-            <Text style={styles.collapseText}>+</Text>
-          </View>
-        </InfoSection>
-        <InfoSection title={infoCopy.faq}>
-          {harnessFaqs.map((e) => <FaqItem key={e.id} entry={e} />)}
-        </InfoSection>
-        <InfoSection title={infoCopy.links}>
-          {harnessLinks.map((e) => <LinkRow key={e.id} entry={e} />)}
-        </InfoSection>
+    <SafeAreaView style={s.container}>
+      <ScrollView contentContainerStyle={s.scroll}>
+        <View style={s.infoHeader}><Text style={s.infoTitle} allowFontScaling>{infoCopy.title}</Text></View>
+        {children}
       </ScrollView>
     </SafeAreaView>
   );
+}
+
+function AboutSection() {
+  return (
+    <InfoSection title={infoCopy.about}>
+      <View style={s.pad}>
+        <Text style={s.tagline} allowFontScaling>{harnessAbout.tagline}</Text>
+        <Text style={s.body} allowFontScaling>{harnessAbout.description}</Text>
+      </View>
+    </InfoSection>
+  );
+}
+
+export function renderInfoDefault(): React.ReactElement {
+  return (<InfoShell><AboutSection /><InfoSection title={infoCopy.data}><View style={s.collapseToggle}><Text style={s.collapseText}>+</Text></View></InfoSection><InfoSection title={infoCopy.faq}>{harnessFaqs.map((e) => <FaqItem key={e.id} entry={e} />)}</InfoSection><InfoSection title={infoCopy.links}>{harnessLinks.map((e) => <LinkRow key={e.id} entry={e} />)}</InfoSection></InfoShell>);
 }
 
 export function renderInfoTransparency(): React.ReactElement {
-  return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scroll}>
-        <View style={styles.infoHeader}>
-          <Text style={styles.infoTitle} allowFontScaling>{infoCopy.title}</Text>
-        </View>
-        <InfoSection title={infoCopy.about}>
-          <View style={styles.pad}>
-            <Text style={styles.tagline} allowFontScaling>{harnessAbout.tagline}</Text>
-            <Text style={styles.body} allowFontScaling>{harnessAbout.description}</Text>
-          </View>
-        </InfoSection>
-        <InfoSection title={infoCopy.data}>
-          <View style={styles.collapseToggle}>
-            <Text style={styles.collapseText}>{'\u2212'}</Text>
-          </View>
-          {harnessTransparency.map((p) => (
-            <View key={p.id} style={styles.tPoint}>
-              <Text style={styles.tTitle} allowFontScaling>{p.title}</Text>
-              <Text style={styles.tBody} allowFontScaling>{p.body}</Text>
-            </View>
-          ))}
-        </InfoSection>
-      </ScrollView>
-    </SafeAreaView>
-  );
+  return (<InfoShell><AboutSection /><InfoSection title={infoCopy.data}><View style={s.collapseToggle}><Text style={s.collapseText}>{'\u2212'}</Text></View>{harnessTransparency.map((p) => (<View key={p.id} style={s.tPoint}><Text style={s.tTitle} allowFontScaling>{p.title}</Text><Text style={s.tBody} allowFontScaling>{p.body}</Text></View>))}</InfoSection></InfoShell>);
 }
 
 export function renderInfoFaq(): React.ReactElement {
-  return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scroll}>
-        <View style={styles.infoHeader}>
-          <Text style={styles.infoTitle} allowFontScaling>{infoCopy.title}</Text>
-        </View>
-        <InfoSection title={infoCopy.faq}>
-          {harnessFaqs.map((e) => <FaqItem key={e.id} entry={e} />)}
-        </InfoSection>
-      </ScrollView>
-    </SafeAreaView>
-  );
+  return (<InfoShell><InfoSection title={infoCopy.faq}>{harnessFaqs.map((e) => <FaqItem key={e.id} entry={e} />)}</InfoSection></InfoShell>);
 }
 
 // ── Scan ────────────────────────────────────────────────────────────────────
 
 function ScanHero({ children }: { children?: React.ReactNode }) {
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scanContent}>
-        <View style={styles.scanHero}>
-          <Text style={styles.scanHeading} allowFontScaling>{scanCopy.heading}</Text>
-          <Text style={styles.scanBody}>{scanCopy.body}</Text>
-          <Pressable style={styles.scanCta} accessibilityRole="button">
-            <Text style={styles.scanCtaLabel}>{scanCopy.primaryAction}</Text>
+    <SafeAreaView style={s.container}>
+      <ScrollView contentContainerStyle={s.scanContent}>
+        <View style={s.scanHero}>
+          <Text style={s.scanHeading} allowFontScaling>{scanCopy.heading}</Text>
+          <Text style={s.scanBody}>{scanCopy.body}</Text>
+          <Pressable style={s.scanCta} accessibilityRole="button">
+            <Text style={s.scanCtaLabel}>{scanCopy.primaryAction}</Text>
           </Pressable>
-          <Text style={styles.scanFootnote}>{scanCopy.footnote}</Text>
+          <Text style={s.scanFootnote}>{scanCopy.footnote}</Text>
         </View>
         {children}
       </ScrollView>
@@ -169,8 +131,8 @@ export function renderScanScannerOpen(): React.ReactElement {
   // Scanner is a native camera sheet — render the hero with a "scanner open" overlay
   return (
     <ScanHero>
-      <View style={styles.scannerPlaceholder}>
-        <Text style={styles.scannerText}>SCANNER ACTIVE</Text>
+      <View style={s.scannerPlaceholder}>
+        <Text style={s.scannerText}>SCANNER ACTIVE</Text>
       </View>
     </ScanHero>
   );
@@ -214,33 +176,64 @@ export function renderScanNoMatch(): React.ReactElement {
   );
 }
 
+// ── Notification ────────────────────────────────────────────────────────────
+
+/**
+ * Force-render the NudgeBanner regardless of day-of-week.
+ * Reproduces the banner layout from NudgeBanner.tsx without the Thursday guard.
+ */
+export function renderNotificationThursday(): React.ReactElement {
+  return (
+    <SafeAreaView style={s.container}>
+      {/* Forced nudge banner — always visible */}
+      <View style={s.nudgeBanner}>
+        <View style={s.nudgeBody}>
+          <Text style={s.nudgeText} numberOfLines={1} allowFontScaling>
+            {platformsCopy.nudgeBanner}
+          </Text>
+        </View>
+        <View style={s.nudgeDismissBtn}>
+          <Text style={s.nudgeDismissText}>{platformsCopy.nudgeDismiss}</Text>
+        </View>
+      </View>
+      {/* Map placeholder below the banner */}
+      <View style={s.notifMapPlaceholder} />
+    </SafeAreaView>
+  );
+}
+
 // ── Styles ──────────────────────────────────────────────────────────────────
 
-const styles = StyleSheet.create({
+const { lg, sm, md, xl } = theme.space;
+const fb = theme.colors.frameBlue;
+const s = StyleSheet.create({
   container: { flex: 1, backgroundColor: theme.colors.bgVoid },
   scroll: { paddingBottom: theme.space['4xl'] },
-  topBar: { backgroundColor: theme.colors.bgNav, padding: theme.space.lg, borderBottomWidth: theme.borders.hero.width, borderColor: theme.colors.frameBlue },
+  topBar: { backgroundColor: theme.colors.bgNav, padding: lg, borderBottomWidth: 4, borderColor: fb },
   topBarTitle: { ...theme.type.displayM, color: theme.colors.textPrimary, letterSpacing: 3 },
-  cardWrapper: { margin: theme.space.lg },
-  // Info
-  infoHeader: { backgroundColor: theme.colors.bgNav, padding: theme.space.lg, borderBottomWidth: theme.borders.hero.width, borderColor: theme.colors.frameBlue },
+  cardWrapper: { margin: lg },
+  infoHeader: { backgroundColor: theme.colors.bgNav, padding: lg, borderBottomWidth: 4, borderColor: fb },
   infoTitle: { ...theme.type.displayM, color: theme.colors.textPrimary, letterSpacing: 3 },
-  pad: { padding: theme.space.lg },
-  tagline: { ...theme.type.uiLabel, color: theme.colors.rewardYellow, marginBottom: theme.space.md, lineHeight: 22, textAlign: 'center' },
-  body: { ...theme.type.bodyS, fontSize: 13, color: theme.colors.textSecondary, lineHeight: 21 },
-  collapseToggle: { minHeight: theme.a11y.minTapTarget, alignItems: 'center', justifyContent: 'center', backgroundColor: theme.colors.surface1 },
+  pad: { padding: lg },
+  tagline: { ...theme.type.uiLabel, color: theme.colors.rewardYellow, marginBottom: md, lineHeight: 22, textAlign: 'center' }, body: { ...theme.type.bodyS, fontSize: 13, color: theme.colors.textSecondary, lineHeight: 21 },
+  collapseToggle: { minHeight: 44, alignItems: 'center', justifyContent: 'center', backgroundColor: theme.colors.surface1 },
   collapseText: { ...theme.type.caption, color: theme.colors.highlightBlue },
-  tPoint: { padding: theme.space.lg, borderBottomWidth: theme.borders.hero.width, borderColor: theme.colors.surface2 },
+  tPoint: { padding: lg, borderBottomWidth: 4, borderColor: theme.colors.surface2 },
   tTitle: { ...theme.type.bodyS, fontWeight: 'bold', color: theme.colors.textPrimary, marginBottom: 6, letterSpacing: 1 },
   tBody: { ...theme.type.bodyS, color: theme.colors.textSecondary, lineHeight: 20 },
-  // Scan
-  scanContent: { paddingHorizontal: theme.space.lg, paddingBottom: theme.space['4xl'] * 3 },
-  scanHero: { marginTop: theme.space['3xl'], marginBottom: theme.space.xl, padding: theme.space.lg, borderWidth: theme.borders.standard.width, borderColor: theme.colors.frameBlue, backgroundColor: theme.colors.surface1 },
-  scanHeading: { ...theme.type.displayL, color: theme.colors.textPrimary, marginBottom: theme.space.sm },
+  scanContent: { paddingHorizontal: lg, paddingBottom: theme.space['4xl'] * 3 },
+  scanHero: { marginTop: theme.space['3xl'], marginBottom: xl, padding: lg, borderWidth: 2, borderColor: fb, backgroundColor: theme.colors.surface1 },
+  scanHeading: { ...theme.type.displayL, color: theme.colors.textPrimary, marginBottom: sm },
   scanBody: { ...theme.type.bodyM, color: theme.colors.textSecondary },
-  scanCta: { marginTop: theme.space.xl, minHeight: theme.a11y.minTapTarget, alignItems: 'center', justifyContent: 'center', borderWidth: theme.borders.hero.width, borderColor: theme.colors.frameBlue, backgroundColor: theme.colors.bgNav },
+  scanCta: { marginTop: xl, minHeight: 44, alignItems: 'center', justifyContent: 'center', borderWidth: 4, borderColor: fb, backgroundColor: theme.colors.bgNav },
   scanCtaLabel: { ...theme.type.displayS, color: theme.colors.rewardYellow },
-  scanFootnote: { ...theme.type.bodyS, color: theme.colors.textSecondary, marginTop: theme.space.md },
-  scannerPlaceholder: { marginTop: theme.space.lg, height: 200, backgroundColor: theme.colors.surface1, borderWidth: theme.borders.standard.width, borderColor: theme.colors.frameBlue, alignItems: 'center', justifyContent: 'center' },
+  scanFootnote: { ...theme.type.bodyS, color: theme.colors.textSecondary, marginTop: md },
+  scannerPlaceholder: { marginTop: lg, height: 200, backgroundColor: theme.colors.surface1, borderWidth: 2, borderColor: fb, alignItems: 'center', justifyContent: 'center' },
   scannerText: { ...theme.type.displayS, color: theme.colors.textSecondary, letterSpacing: 3 },
+  nudgeBanner: { flexDirection: 'row', alignItems: 'center', backgroundColor: theme.colors.rewardYellow, paddingHorizontal: lg, paddingVertical: sm, minHeight: 44 },
+  nudgeBody: { flex: 1, justifyContent: 'center', minHeight: 44 },
+  nudgeText: { ...theme.type.uiLabel, color: theme.colors.bgVoid },
+  nudgeDismissBtn: { minWidth: 44, minHeight: 44, alignItems: 'center', justifyContent: 'center', marginLeft: sm },
+  nudgeDismissText: { ...theme.type.caption, color: theme.colors.bgVoid, fontWeight: 'bold', letterSpacing: 1 },
+  notifMapPlaceholder: { flex: 1, backgroundColor: '#1a2744' },
 });
