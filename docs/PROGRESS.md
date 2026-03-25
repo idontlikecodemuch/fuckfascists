@@ -12,6 +12,19 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: March 24, 2026 (OFF products sync + cleanup)
+**Focus:** Turn the modular `products.json` layer into a real UPC-focused producer dataset by scanning the local Open Food Facts bulk archive, checkpointing the work, and tightening alias quality without touching `entities.json` or `people.json`.
+
+**What changed:**
+1. **Checkpointed OFF sync script added** — introduced `scripts/sync-products-from-off.py`, a resumable products-only importer that parses the local OFF Mongo dump directly, checkpoints progress under `tools/off-bulk/checkpoints/`, and can rebuild `products.json` from checkpointed results without rescanning the archive.
+2. **Full OFF pass completed** — scanned `4,403,001` OFF product documents with `0` parse errors and wrote the final products snapshot back into `assets/data/products.json`.
+3. **Research layer expanded and grounded in DB evidence** — `producerResearch` now contains `206` seeded producer entries with OFF-backed `dbMatchedProductCount`, `dbObservedPrefixes`, `dbObservedBrands`, `dbConfirmedAliases`, and `dbSuggestedAliases`.
+4. **Runtime producer lookup now uses repeated OFF prefix evidence** — `products.json` now exposes `18` entity-linked runtime producers with filtered prefix sets, including high-coverage parents like Pepsico, Coca-Cola, Conagra Brands, General Mills, Mondelez International, Mars, and Kellanova.
+5. **Alias cleanup rules added** — runtime brands now strip producer self-names, legal-entity labels, generic descriptor junk, and obvious partner-company contamination so `observedBrands` stays closer to real shelf brands.
+6. **Coverage is now mostly blocked by missing entities, not missing OFF data** — `184/206` research entries matched OFF, `174/206` retained prefixes, and `155` missing-entity candidates already have OFF-derived prefixes waiting on a future entity pass.
+7. **Deep documentation added** — [PRODUCTS_DATA_PIPELINE.md](/Users/christophershannon/fuckfascists/docs/PRODUCTS_DATA_PIPELINE.md) now documents the full products/OFF workflow, checkpointing model, cleanup heuristics, current coverage, and next-step queue.
+8. **Verification** — `npm test -- --runTestsByPath features/Map/__tests__/barcodeHelpers.test.ts` passes after the products rebuild.
+
 ### Session: March 24, 2026 (repo cleanup & consolidation)
 **Focus:** Audit and clean up accumulated git state from multiple agents/worktrees. Consolidate branches, remove dead worktrees, fix .gitignore, sync lockfiles, add git workflow rules.
 
