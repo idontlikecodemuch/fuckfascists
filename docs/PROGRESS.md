@@ -12,6 +12,22 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: March 27, 2026 (onboarding structure fixes)
+**Focus:** Fix structural issues in onboarding flow flagged by copy lead — hardcoded step indices and missing permission status check on mount.
+
+**What changed:**
+1. **stepIndex passed from navigator** — all three screens (`WelcomeScreen`, `PrivacyScreen`, `PermissionsScreen`) now accept `stepIndex` as a prop from `OnboardingNavigator` instead of hardcoding `0`, `1`, `2`. Reordering `ONBOARDING_STEPS` now automatically updates progress dots.
+2. **Permission status check on mount** — `PermissionsScreen` checks `Location.getForegroundPermissionsAsync()` and `Notifications.getPermissionsAsync()` on mount. Already-granted permissions show "GRANTED" state immediately (handles crash mid-onboarding, re-installs, etc.).
+3. **Beta mode bypass** — permission check reads `ff_beta_mode` from SecureStore directly (onboarding runs before `AppShell` where `useBetaMode` lives). When beta is on, the check is skipped so testers see the full permissions flow.
+4. **Navigator switch case order** — fixed to match actual flow (welcome → privacy → permissions).
+
+**Deferred:**
+- `useOnboarding` `.then()` chain → `async/await` (minor, does not affect behavior)
+- `ourPromise` → `promiseLabel` rename (copy pass)
+- `copy/onboard.ts` restructure to group keys by screen (copy pass)
+
+**Verification:** 7 onboarding tests pass, `tsc --noEmit` clean.
+
 ### Session: March 24, 2026 (repo cleanup & consolidation)
 **Focus:** Audit and clean up accumulated git state from multiple agents/worktrees. Consolidate branches, remove dead worktrees, fix .gitignore, sync lockfiles, add git workflow rules.
 

@@ -5,6 +5,7 @@ import { onboardCopy } from '../../../copy/onboard';
 import { theme } from '../../../design/tokens';
 
 interface PrivacyScreenProps {
+  stepIndex: number;
   onNext: () => void;
 }
 
@@ -16,9 +17,9 @@ const POINTS = [
   { label: onboardCopy.openSource,  detail: onboardCopy.openSourceDesc },
 ] as const;
 
-export function PrivacyScreen({ onNext }: PrivacyScreenProps) {
+export function PrivacyScreen({ stepIndex, onNext }: PrivacyScreenProps) {
   return (
-    <OnboardingSlide stepIndex={1} title={onboardCopy.privacyTitle} onNext={onNext}>
+    <OnboardingSlide stepIndex={stepIndex} title={onboardCopy.privacyTitle} onNext={onNext}>
       <View style={styles.container}>
         <View style={styles.list}>
           {POINTS.map((p) => (

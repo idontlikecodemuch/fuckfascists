@@ -6,6 +6,7 @@ import { sharedCopy } from '../../../copy/shared';
 import { theme } from '../../../design/tokens';
 
 interface WelcomeScreenProps {
+  stepIndex: number;
   onNext: () => void;
 }
 
@@ -16,14 +17,14 @@ interface WelcomeScreenProps {
 const HERO_LOGO_ASPECT = 1466 / 827;
 const HERO_LOGO_MAX_HEIGHT_RATIO = 0.22; // ~22% of screen height — comfortably under half
 
-export function WelcomeScreen({ onNext }: WelcomeScreenProps) {
+export function WelcomeScreen({ stepIndex, onNext }: WelcomeScreenProps) {
   const { height: screenHeight } = useWindowDimensions();
   const logoMaxHeight = Math.round(screenHeight * HERO_LOGO_MAX_HEIGHT_RATIO);
   const logoHeight = Math.min(logoMaxHeight, 160);
   const logoWidth = logoHeight * HERO_LOGO_ASPECT;
 
   return (
-    <OnboardingSlide stepIndex={0} title={onboardCopy.welcomeTitle} nextLabel={onboardCopy.letsGo} onNext={onNext}>
+    <OnboardingSlide stepIndex={stepIndex} title={onboardCopy.welcomeTitle} nextLabel={onboardCopy.letsGo} onNext={onNext}>
       <View style={styles.content}>
         <Image
           source={require('../../../assets/pixel/brand/FF_logo.png')}

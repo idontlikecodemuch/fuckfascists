@@ -30,12 +30,12 @@ export function OnboardingNavigator({ onComplete }: OnboardingNavigatorProps) {
 
   switch (currentStep) {
     case 'welcome':
-      return <WelcomeScreen onNext={advance} />;
-
-    case 'permissions':
-      return <PermissionsScreen onNext={advance} />;
+      return <WelcomeScreen stepIndex={stepIndex} onNext={advance} />;
 
     case 'privacy':
-      return <PrivacyScreen onNext={advance} />;
+      return <PrivacyScreen stepIndex={stepIndex} onNext={advance} />;
+
+    case 'permissions':
+      return <PermissionsScreen stepIndex={stepIndex} onNext={advance} />;
   }
 }

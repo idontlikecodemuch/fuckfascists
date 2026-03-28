@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import * as Location from 'expo-location';
 import * as Notifications from 'expo-notifications';
+import * as SecureStore from 'expo-secure-store';
 import { OnboardingSlide } from '../components/OnboardingSlide';
 import { onboardCopy } from '../../../copy/onboard';
 import { theme } from '../../../design/tokens';
 
+const BETA_KEY = 'ff_beta_mode';
+
 interface PermissionsScreenProps {
+  stepIndex: number;
   onNext: () => void;
 }
 
@@ -18,10 +22,30 @@ interface PermissionsScreenProps {
  * Single bottom CTA only — no per-card "LET'S GO" buttons.
  * "SKIP" at the bottom advances without requesting either.
  */
-export function PermissionsScreen({ onNext }: PermissionsScreenProps) {
+export function PermissionsScreen({ stepIndex, onNext }: PermissionsScreenProps) {
   const [locGranted, setLocGranted] = useState(false);
   const [notifGranted, setNotifGranted] = useState(false);
   const [requesting, setRequesting] = useState(false);
+
+  // Check if permissions were already granted (e.g. crash mid-onboarding, re-run).
+  // Skipped in beta mode so testers can see the full permissions flow.
+  useEffect(() => {
+    let cancelled = false;
+    async function checkExisting() {
+      const beta = await SecureStore.getItemAsync(BETA_KEY);
+      if (beta === 'true' || cancelled) return;
+
+      const [loc, notif] = await Promise.all([
+        Location.getForegroundPermissionsAsync(),
+        Notifications.getPermissionsAsync(),
+      ]);
+      if (cancelled) return;
+      if (loc.granted) setLocGranted(true);
+      if (notif.granted) setNotifGranted(true);
+    }
+    checkExisting();
+    return () => { cancelled = true; };
+  }, []);
 
   async function handleLocation() {
     if (requesting) return;
@@ -49,7 +73,7 @@ export function PermissionsScreen({ onNext }: PermissionsScreenProps) {
 
   return (
     <OnboardingSlide
-      stepIndex={2}
+      stepIndex={stepIndex}
       title={onboardCopy.permissionsTitle}
       nextLabel={allDone ? onboardCopy.done : onboardCopy.next}
       onNext={onNext}
