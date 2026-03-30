@@ -193,6 +193,8 @@ export const mockAbout: AboutContent = {
   tagline: 'Your money is a vote. Make it count.',
   description: 'F*ck Fascists helps you identify and avoid businesses that donate to Republican campaigns and authoritarian politics.',
   organization: 'F*ck Fascists Project · 501(c)(4) nonprofit',
+  ethosTitle: 'WHAT WE BELIEVE',
+  ethos: 'Every dollar is a vote. We believe in transparency, accountability, and the power of informed consumer choices.',
   sourceCodeUrl: 'https://github.com/fuckfascists',
 };
 

@@ -710,6 +710,9 @@ After writing any file, scan it once for deprecated APIs, `.then()` chains, `var
 ### service-worker.ts over 250 lines (Priority: V1 cleanup)
 `extension/background/service-worker.ts` is 389 lines — over the 250-line file limit. Pre-existing violation; was 361 lines before the API key removal session. Refactor plan: extract `handleCheckDomain`, `isBundledDataFresh`, and related data-fetch logic into `extension/background/domainCheck.ts`. The message router, tab lifecycle listeners, and alarm handler stay in `service-worker.ts`.
 
+### Placeholder URLs and email in copy/shared.ts (Priority: V1 launch blocker)
+`contactEmail`, `extensionChromeUrl`, and `extensionFirefoxUrl` in `copy/shared.ts` are temporary placeholders (GitHub repo links and `hello@fckfascists.com`). Before launch: replace `extensionChromeUrl` and `extensionFirefoxUrl` with real Chrome Web Store / Firefox Add-ons URLs once the extensions are published, and confirm `contactEmail` is a real monitored address. Search for `"[need to change"` across the codebase to catch any other placeholders that may have been missed.
+
 ### CYCLES_SINCE_2016 — cycle constant update (Priority: V1.5)
 `CYCLES_SINCE_2016` in `scripts/fetch-donation-data.mjs` and `core/api/FECClient.ts` must be updated manually when a new election cycle begins. Both are candidates for renaming to `CYCLES_TO_FETCH` (more accurate now that 2026 is included) — not blocking for MVP but should be done alongside the next cycle update.
 

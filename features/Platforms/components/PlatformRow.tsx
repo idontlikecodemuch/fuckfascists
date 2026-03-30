@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { platformsCopy } from '../../../copy/platforms';
 import { theme } from '../../../design/tokens';
 import { getLocalDateString } from '../../../core/utils/localDate';
+import { SparkleDecoration } from '../../../core/fx';
 import type { PlatformItem } from '../types';
 import { getDisplayFigure } from '../context/TrackContext';
 import { AvoidButton } from './AvoidButton';
@@ -12,7 +13,6 @@ import {
   TRACK_CHILD_FONT_SIZE_COUNT,
   TRACK_CHILD_FONT_SIZE_NAME,
   TRACK_CHILD_GUIDE_COLOR,
-  TRACK_CHILD_ROW_BG_COLOR,
   TRACK_EXPAND_INDICATOR_SIZE,
   TRACK_ROW_DIMMED_OPACITY,
   TRACK_ROW_FOCUS_BG_COLOR,
@@ -85,7 +85,12 @@ export function PlatformRow({
 
         <View style={styles.nameColumn}>
           <Text
-            style={[styles.name, isChild && styles.childName, isChild && focused && styles.childNameFocused]}
+            style={[
+              styles.name,
+              isChild && styles.childName,
+              focused && styles.nameFocused,
+              isChild && focused && styles.childNameFocused,
+            ]}
             numberOfLines={1}
             allowFontScaling
           >
@@ -112,6 +117,8 @@ export function PlatformRow({
         platformName={item.platform.name}
         onPress={onAvoidPress}
       />
+
+      {focused && <SparkleDecoration />}
     </View>
   );
 }
@@ -124,16 +131,17 @@ const styles = StyleSheet.create({
     minHeight: theme.a11y.minTapTarget,
     paddingHorizontal: TRACK_ROW_PADDING_HORIZONTAL,
     paddingVertical: TRACK_ROW_PADDING_VERTICAL,
-    borderBottomWidth: theme.borders.standard.width,
-    borderBottomColor: theme.colors.surface2,
-    backgroundColor: theme.colors.surface1,
+    borderBottomWidth: 1,
+    borderBottomColor: theme.colors.bevelDark,
+    backgroundColor: theme.colors.panelInner,
+    overflow: 'visible',
   },
   childRow: {
     paddingLeft: TRACK_CHILD_INDENT,
-    backgroundColor: TRACK_CHILD_ROW_BG_COLOR,
+    backgroundColor: theme.colors.panelInner,
   },
   focusedRow: {
-    borderLeftWidth: 3,
+    borderLeftWidth: theme.borders.accent.width,
     borderLeftColor: TRACK_ROW_FOCUS_BORDER_COLOR,
     backgroundColor: TRACK_ROW_FOCUS_BG_COLOR,
   },
@@ -172,13 +180,16 @@ const styles = StyleSheet.create({
     fontSize: TRACK_ROW_FONT_SIZE_NAME,
     color: theme.colors.textPrimary,
   },
+  nameFocused: {
+    color: theme.colors.focusText,
+  },
   childName: {
     fontSize: TRACK_CHILD_FONT_SIZE_NAME,
     fontFamily: theme.fonts.bodyMedium,
     color: theme.colors.textSecondary,
   },
   childNameFocused: {
-    color: theme.colors.textPrimary,
+    color: theme.colors.focusText,
   },
   subtitle: {
     fontFamily: theme.fonts.body,

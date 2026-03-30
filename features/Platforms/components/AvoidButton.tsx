@@ -2,6 +2,7 @@ import React from 'react';
 import { Pressable, Text, StyleSheet } from 'react-native';
 import { platformsCopy } from '../../../copy/platforms';
 import { theme } from '../../../design/tokens';
+import { bevelAmberRaised, bevelGreenInset } from '../../../design/bevel';
 import { TRACK_BUTTON_WIDTH, TRACK_BUTTON_HEIGHT } from '../../../config/constants';
 
 interface AvoidButtonProps {
@@ -16,8 +17,8 @@ interface AvoidButtonProps {
  * ONE button, TWO visual states. Label and colors swap based on avoidedToday.
  * Same position, same size, same component instance at all times.
  *
- * State A (not avoided): "AVOID" — bright green bg, white text
- * State B (avoided):     "✓"     — muted green bg, green text
+ * State A (not avoided): "AVOID" — amber bg, raised bevel, white text
+ * State B (avoided):     "✓"     — deep green bg, inset bevel, green text
  */
 export function AvoidButton({ avoidedToday, platformName, onPress }: AvoidButtonProps) {
   return (
@@ -49,15 +50,15 @@ const styles = StyleSheet.create({
     height: TRACK_BUTTON_HEIGHT,
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: theme.borders.standard.width,
+    borderRadius: theme.radii.button,
   },
   buttonActive: {
-    backgroundColor: theme.colors.successGreenBright,
-    borderColor: theme.colors.successGreenBright,
+    backgroundColor: theme.colors.amberAction,
+    ...bevelAmberRaised,
   },
   buttonDone: {
     backgroundColor: theme.colors.successGreenDeep,
-    borderColor: theme.colors.successGreenDeep,
+    ...bevelGreenInset,
   },
   label: {
     fontFamily: theme.fonts.bodySemiBold,

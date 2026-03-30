@@ -238,7 +238,7 @@ export const harnessScorecardEmpty: ScorecardViewData = { weekOf: today, persons
 
 // ── Info ────────────────────────────────────────────────────────────────────
 
-export const harnessAbout: AboutContent = { tagline: 'Your money is a vote. Make it count.', description: 'F*ck Fascists helps you identify and avoid businesses that donate to Republican campaigns.', organization: 'F*ck Fascists Project \u00b7 501(c)(4) nonprofit', sourceCodeUrl: 'https://github.com/fuckfascists' };
+export const harnessAbout: AboutContent = { tagline: 'Your money is a vote. Make it count.', description: 'F*ck Fascists helps you identify and avoid businesses that donate to Republican campaigns.', organization: 'F*ck Fascists Project \u00b7 501(c)(4) nonprofit', ethosTitle: 'WHAT WE BELIEVE', ethos: 'Every dollar is a vote.', sourceCodeUrl: 'https://github.com/fuckfascists' };
 export const harnessTransparency: TransparencyPoint[] = [{ id: 't1', title: 'DATA SOURCE', body: 'All donation data comes from the Federal Election Commission.' }, { id: 't2', title: 'MATCHING', body: 'Business names are matched using Jaro-Winkler similarity scoring.' }];
 export const harnessFaqs: FaqEntry[] = [{ id: 'f1', q: 'Where does the donation data come from?', a: 'All data is sourced from the FEC API.' }, { id: 'f2', q: 'Is my location tracked?', a: 'No. GPS coordinates are session-only and never stored.' }];
 export const harnessLinks: LinkEntry[] = [{ id: 'l1', label: 'Source Code (GitHub)', url: 'https://github.com/fuckfascists', category: 'source' }, { id: 'l2', label: 'FEC.gov', url: 'https://www.fec.gov', category: 'source' }];

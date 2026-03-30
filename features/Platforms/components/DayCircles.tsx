@@ -4,11 +4,12 @@ import { platformsCopy } from '../../../copy/platforms';
 import { sharedCopy } from '../../../copy/shared';
 import { getWeekDates, isFutureDate } from '../utils/weekDates';
 import { theme } from '../../../design/tokens';
+import { bevelInset, bevelGreenInset } from '../../../design/bevel';
 import {
   TRACK_CHILD_INDENT,
-  TRACK_CHILD_ROW_BG_COLOR,
   TRACK_DAY_CIRCLE_SIZE,
   TRACK_DAY_CIRCLES_GAP,
+  TRACK_ROW_FOCUS_BG_COLOR,
   TRACK_ROW_PADDING_HORIZONTAL,
 } from '../../../config/constants';
 
@@ -36,6 +37,7 @@ export function DayCircles({ weekOf, platformName, dayCounts, onAvoidDate, isChi
           const count = dayCounts.get(date) ?? 0;
           const checked = count > 0;
           const future = isFutureDate(date);
+          const isToday = date === new Date().toISOString().slice(0, 10);
 
           const a11yLabel = future
             ? platformsCopy.dayFutureLabel(dayLabel)
@@ -45,14 +47,21 @@ export function DayCircles({ weekOf, platformName, dayCounts, onAvoidDate, isChi
 
           return (
             <View key={date} style={styles.dayColumn}>
-              <Text style={styles.dayLabel} allowFontScaling>{dayLabel}</Text>
+              <Text
+                style={[styles.dayLabel, isToday && styles.dayLabelToday]}
+                allowFontScaling
+              >
+                {dayLabel}
+              </Text>
               <Pressable
                 onPress={(!checked && !future) ? async () => { await onAvoidDate(date); } : undefined}
                 disabled={checked || future}
                 style={[
-                  styles.circle,
-                  checked && styles.circleChecked,
-                  future && styles.circleFuture,
+                  styles.tile,
+                  checked && styles.tileChecked,
+                  !checked && !future && styles.tileOpen,
+                  !checked && !future && isToday && styles.tileToday,
+                  future && styles.tileFuture,
                 ]}
                 accessibilityRole="button"
                 accessibilityLabel={a11yLabel}
@@ -75,13 +84,12 @@ export function DayCircles({ weekOf, platformName, dayCounts, onAvoidDate, isChi
 
 const styles = StyleSheet.create({
   wrapper: {
-    backgroundColor: theme.colors.surface1,
+    backgroundColor: TRACK_ROW_FOCUS_BG_COLOR,
     borderBottomWidth: 1,
-    borderBottomColor: theme.colors.surface2,
+    borderBottomColor: theme.colors.bevelDark,
   },
   childWrapper: {
     paddingLeft: TRACK_CHILD_INDENT,
-    backgroundColor: TRACK_CHILD_ROW_BG_COLOR,
   },
   container: {
     flexDirection: 'row',
@@ -100,29 +108,37 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: theme.colors.textPrimary,
   },
-  circle: {
+  dayLabelToday: {
+    color: theme.colors.focusAccent,
+  },
+  tile: {
     width: TRACK_DAY_CIRCLE_SIZE,
     height: TRACK_DAY_CIRCLE_SIZE,
-    borderRadius: TRACK_DAY_CIRCLE_SIZE / 2,
-    borderWidth: theme.borders.standard.width,
-    borderColor: theme.colors.frameBlue,
+    borderRadius: theme.radii.token,
+    ...bevelInset,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: theme.colors.surface1,
+    backgroundColor: theme.colors.panelOuter,
   },
-  circleChecked: {
-    backgroundColor: theme.colors.successGreen,
-    borderColor: theme.colors.successGreen,
+  tileChecked: {
+    backgroundColor: theme.colors.successGreenDeep,
+    ...bevelGreenInset,
   },
-  circleFuture: {
-    borderColor: theme.colors.textSecondary,
-    backgroundColor: 'transparent',
-    opacity: 0.3,
+  tileOpen: {
+    borderBottomColor: theme.colors.bevelLight,
+    borderRightColor: theme.colors.bevelLight,
+  },
+  tileToday: {
+    borderBottomColor: theme.colors.focusAccent,
+    borderRightColor: theme.colors.focusAccent,
+  },
+  tileFuture: {
+    opacity: 0.2,
   },
   checkmark: {
     fontFamily: theme.fonts.headline,
     fontSize: 12,
     fontWeight: 'bold',
-    color: theme.colors.textPrimary,
+    color: theme.colors.successGreenText,
   },
 });

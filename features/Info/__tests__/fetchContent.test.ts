@@ -10,6 +10,8 @@ const VALID_CONTENT: InfoContent = {
     tagline: 'New tagline',
     description: 'New description',
     organization: 'New org',
+    ethosTitle: 'Test ethos title',
+    ethos: 'Test ethos body',
     sourceCodeUrl: 'https://github.com/test',
   },
   transparency: [{ id: 'a', title: 'T', body: 'B' }],

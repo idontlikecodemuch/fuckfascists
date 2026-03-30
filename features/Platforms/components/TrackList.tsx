@@ -5,6 +5,7 @@ import {
   Platform,
   StyleSheet,
   UIManager,
+  View,
 } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { getLocalDateString } from '../../../core/utils/localDate';
@@ -136,19 +137,31 @@ export function TrackList() {
   }, [focusedFigureName]);
 
   const renderItem = useCallback(({ item }: { item: TrackListItem }) => {
+    if (item.type === 'panelStart') {
+      return <View style={styles.panelTopCap} />;
+    }
+    if (item.type === 'panelEnd') {
+      return <View style={styles.panelBottomCap} />;
+    }
+    if (item.type === 'separator') {
+      return <View style={styles.separator} />;
+    }
+
     if (item.type === 'groupHeader') {
       return (
-        <PlatformGroupHeader
-          figureName={item.figureName}
-          shortName={item.shortName}
-          totalAvoids={personWeeklyAvoids(item.figureName)}
-          focused={selectedPlatformId === null && focusedFigureName === item.figureName}
-          onPress={() => {
-            animateNextLayout();
-            dismissDailyPreview();
-            focusGroup(item.figureName);
-          }}
-        />
+        <View style={styles.panelSides}>
+          <PlatformGroupHeader
+            figureName={item.figureName}
+            shortName={item.shortName}
+            totalAvoids={personWeeklyAvoids(item.figureName)}
+            focused={selectedPlatformId === null && focusedFigureName === item.figureName}
+            onPress={() => {
+              animateNextLayout();
+              dismissDailyPreview();
+              focusGroup(item.figureName);
+            }}
+          />
+        </View>
       );
     }
 
@@ -163,52 +176,56 @@ export function TrackList() {
 
     if (item.type === 'dayCircles') {
       return (
-        <DayCircles
-          weekOf={weekOf}
-          platformName={platformItem.platform.name}
-          dayCounts={platformItem.dayCounts}
-          isChild={item.isChild}
-          onAvoidDate={async (date) => {
-            animateNextLayout();
-            dismissDailyPreview();
-            openPlatformDetails(platformId);
-            const delay = getArenaDelay(figureName);
-            const recorded = await avoidForDate(platformId, date);
-            if (recorded) queueArenaHit(figureName, delay);
-          }}
-        />
+        <View style={styles.panelSides}>
+          <DayCircles
+            weekOf={weekOf}
+            platformName={platformItem.platform.name}
+            dayCounts={platformItem.dayCounts}
+            isChild={item.isChild}
+            onAvoidDate={async (date) => {
+              animateNextLayout();
+              dismissDailyPreview();
+              openPlatformDetails(platformId);
+              const delay = getArenaDelay(figureName);
+              const recorded = await avoidForDate(platformId, date);
+              if (recorded) queueArenaHit(figureName, delay);
+            }}
+          />
+        </View>
       );
     }
 
     return (
-      <PlatformRow
-        item={platformItem}
-        isChild={item.type === 'childRow'}
-        focused={focused}
-        expanded={expanded}
-        dimmed={focusedFigureName !== null && !focused}
-        onRowPress={() => {
-          animateNextLayout();
-          dismissDailyPreview();
-          togglePlatformDetails(platformId);
-        }}
-        onAvoidPress={async () => {
-          dismissDailyPreview();
-          const delay = getArenaDelay(figureName);
-
-          if (!todayAvoided) {
+      <View style={styles.panelSides}>
+        <PlatformRow
+          item={platformItem}
+          isChild={item.type === 'childRow'}
+          focused={focused}
+          expanded={expanded}
+          dimmed={focusedFigureName !== null && !focused}
+          onRowPress={() => {
             animateNextLayout();
-            focusPlatform(platformId);
-            const recorded = await avoid(platformId);
-            if (recorded) queueArenaHit(figureName, delay);
-            return;
-          }
+            dismissDailyPreview();
+            togglePlatformDetails(platformId);
+          }}
+          onAvoidPress={async () => {
+            dismissDailyPreview();
+            const delay = getArenaDelay(figureName);
 
-          animateNextLayout();
-          togglePlatformDetails(platformId);
-          queueArenaHit(figureName, delay);
-        }}
-      />
+            if (!todayAvoided) {
+              animateNextLayout();
+              focusPlatform(platformId);
+              const recorded = await avoid(platformId);
+              if (recorded) queueArenaHit(figureName, delay);
+              return;
+            }
+
+            animateNextLayout();
+            togglePlatformDetails(platformId);
+            queueArenaHit(figureName, delay);
+          }}
+        />
+      </View>
     );
   }, [
     avoid,
@@ -257,5 +274,47 @@ const styles = StyleSheet.create({
   },
   listContent: {
     paddingBottom: theme.space['3xl'],
+  },
+  panelTopCap: {
+    marginHorizontal: theme.space.sm,
+    height: 4,
+    backgroundColor: theme.colors.panelOuter,
+    borderTopWidth: theme.borders.bevel.width,
+    borderLeftWidth: theme.borders.bevel.width,
+    borderRightWidth: theme.borders.bevel.width,
+    borderTopColor: theme.colors.bevelLight,
+    borderLeftColor: theme.colors.bevelLight,
+    borderRightColor: theme.colors.bevelDark,
+    borderTopLeftRadius: theme.radii.sharp,
+    borderTopRightRadius: theme.radii.sharp,
+  },
+  panelBottomCap: {
+    marginHorizontal: theme.space.sm,
+    height: 4,
+    backgroundColor: theme.colors.panelOuter,
+    borderBottomWidth: theme.borders.bevel.width,
+    borderLeftWidth: theme.borders.bevel.width,
+    borderRightWidth: theme.borders.bevel.width,
+    borderBottomColor: theme.colors.bevelDark,
+    borderLeftColor: theme.colors.bevelLight,
+    borderRightColor: theme.colors.bevelDark,
+    borderBottomLeftRadius: theme.radii.sharp,
+    borderBottomRightRadius: theme.radii.sharp,
+  },
+  panelSides: {
+    marginHorizontal: theme.space.sm,
+    borderLeftWidth: theme.borders.bevel.width,
+    borderRightWidth: theme.borders.bevel.width,
+    borderLeftColor: theme.colors.bevelLight,
+    borderRightColor: theme.colors.bevelDark,
+    backgroundColor: theme.colors.panelOuter,
+    overflow: 'visible',
+  },
+  separator: {
+    height: 1,
+    marginHorizontal: theme.space.sm,
+    backgroundColor: theme.colors.panelBorder,
+    opacity: 0.15,
+    marginVertical: theme.space.xs,
   },
 });

@@ -15,7 +15,28 @@ export const theme = {
     successGreenBright: '#2D8A4E',
     successGreenDeep: '#1A3A1A',
     successGreenText: '#5AB55A',
-    trackFocusTint: 'rgba(255, 201, 60, 0.10)',
+    trackFocusTint: 'rgba(40, 120, 200, 0.08)',
+
+    // Panel bevel system — cool grey at rest
+    bevelLight: '#3A3E42',
+    bevelDark: '#141618',
+    bevelInsetLight: '#222528',
+    bevelInsetDark: '#0A0B0C',
+    panelOuter: '#0A0B0C',
+    panelInner: '#0E1012',
+    panelBorder: '#2A2D30',
+
+    // Focus system — blue, panels shift from grey to blue on focus
+    focusAccent: '#2878C8',
+    focusBevelLight: '#4A9AE8',
+    focusBevelDark: '#1A4A7A',
+    focusTint: 'rgba(40, 120, 200, 0.08)',
+    focusText: '#C0DAF0',
+
+    // Amber action — AVOID button
+    amberAction: '#A07810',
+    amberActionLight: '#D4A017',
+    amberActionDark: '#7A5A08',
   },
 
   fonts: {
@@ -50,6 +71,14 @@ export const theme = {
     standard: { width: 2, style: 'solid' as const },
     hero: { width: 4, style: 'solid' as const },
     dashed: { width: 2, style: 'dashed' as const },
+    bevel: { width: 2, style: 'solid' as const },
+    accent: { width: 3, style: 'solid' as const },
+  },
+
+  radii: {
+    sharp: 2,
+    button: 3,
+    token: 8,
   },
 
   effects: {

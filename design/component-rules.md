@@ -208,14 +208,19 @@ All components reference tokens from `design/tokens.ts`. Never hardcode hex valu
 
 | Property | Token |
 |---|---|
-| Background (default) | `colors.surface1` |
-| Background (active/heavy) | `colors.surface2` |
-| Border (default) | `borders.standard` in `colors.frameBlue` |
-| Border (heavy/active) | `borders.hero` in `colors.highlightBlue` |
-| Name | `type.uiLabel` / `colors.textPrimary` |
-| Count (when active) | `type.displayS` / `colors.rewardYellow` |
+| Background (default) | `colors.panelInner` |
+| Background (focused) | `colors.focusTint` (via `TRACK_ROW_FOCUS_BG_COLOR`) |
+| Row separator | 1px `colors.bevelDark` |
+| Focus accent bar | `borders.accent` (3px) in `colors.focusAccent` (left border) |
+| Name (default) | `type.uiLabel` / `colors.textPrimary` |
+| Name (focused) | `colors.focusText` |
+| Count (active, > 0) | `colors.dangerRed` |
+| Count (zero) | `colors.textSecondary` |
+| Dimmed opacity | `TRACK_ROW_DIMMED_OPACITY` on body |
 
-**Decoration:** Left edge accent line in `colors.highlightBlue` (2px). Reward flash on tap (<500ms, respects reduced-motion).
+**Bevel system:** Row sits inside a beveled panel container (panelSides wrapper in TrackList). Grey raised bevel (`bevelRaised` from `design/bevel.ts`) on panel edges. Background `colors.panelOuter` on outer edge, `colors.panelInner` for content area. Corner radius `radii.sharp`.
+
+**Decoration:** Left edge accent bar in `colors.focusAccent` (3px) when focused. `<SparkleDecoration />` rendered on focused rows. Expanded state (day circles visible) shares `focusTint` background.
 
 **Props:**
 - `hideSprite?: boolean` — hides the sprite when row is inside a group that already shows the figure in its header.
@@ -393,15 +398,63 @@ All components reference tokens from `design/tokens.ts`. Never hardcode hex valu
 
 | Property | Token |
 |---|---|
-| Header background | `colors.surface1` |
-| Header top border | `borders.standard` in `colors.highlightBlue` |
-| Header bottom shadow | `borders.standard` in `colors.bgVoid` |
-| Header text | `type.displayS` / `colors.rewardYellow` |
+| Header background | `colors.panelInner` |
+| Header bottom border (rest) | 1px `colors.panelBorder` |
+| Header bottom border (focused) | 2px `colors.focusAccent` |
+| Header text (rest) | `type.displayS` / `colors.textSecondary` |
+| Header text (focused) | `colors.highlightBlue` |
+| Count (rest) | `colors.textSecondary` |
+| Count (focused) | `colors.highlightBlue` |
+| Avatar frame (rest) | `bevelRaised` from `design/bevel.ts`, bg `colors.panelOuter` |
+| Avatar frame (focused) | `bevelFocusRaised` from `design/bevel.ts` |
 
-**Sprites:** 32pt sprite bust in header. Same state logic as arena (neutral/defeated based on total avoids).
+**Bevel system:** Group container wrapped in beveled panel (panelSides/panelTopCap/panelBottomCap in TrackList). Grey raised bevel at rest, blue focus bevel when focused. Background `colors.panelOuter` on outer edge, `colors.panelInner` for content area.
+
+**Sprites:** 32pt sprite bust in header. Same state logic as arena (neutral/defeated based on total avoids). Avatar wrapped in `bevelRaised` frame; shifts to `bevelFocusRaised` when focused.
+
+**Decoration:** `<SparkleDecoration />` rendered when header is focused. When a child row is focused, header stays at full opacity — only dims when focus leaves the group entirely.
 
 **Copy:** Header text via `platformsCopy.groupHeader(parentCompany, totalAvoids)` — renders as "META — 5×". Parent names are shortened via `shortParentName()` in PlatformsScreen (strips Inc/Corp/Platforms/.com, uppercases).
 
 **Children:** Individual `PlatformRow` components indented below the header with `hideSprite` and `compact` props. Standalone platforms (no siblings sharing parentCompany) render without a group header.
 
 **Accessibility:** Header text includes parent name and rolled-up total.
+
+---
+
+## 17. Bevel Utility
+
+**Purpose:** Shared style objects for beveled depth effects used across Track screen components.
+
+**Location:** `design/bevel.ts`
+
+| Export | Description |
+|---|---|
+| `bevelRaised` | Grey raised bevel: `bevelLight` top/left, `bevelDark` bottom/right. Panels, action buttons, avatar frames. |
+| `bevelInset` | Grey inset bevel: `bevelInsetDark` top/left, `bevelInsetLight` bottom/right. Day tiles, confirmed buttons. |
+| `bevelFocusRaised` | Blue focus bevel: `focusBevelLight` top/left, `focusBevelDark` bottom/right. Active panels. |
+| `bevelGreenInset` | Green inset bevel for confirmed/checked states. |
+| `bevelAmberRaised` | Amber raised bevel for AVOID button: `amberActionLight` top/left, `amberActionDark` bottom/right. |
+
+All exports are `ViewStyle` objects. Spread into component styles.
+
+---
+
+## 18. SparkleDecoration
+
+**Purpose:** Ambient sparkle decoration for focused/active states on the Track screen.
+
+**Location:** `core/fx/SparkleDecoration.tsx`, exported from `core/fx/index.ts`
+
+| Property | Token |
+|---|---|
+| Spark color | `colors.rewardYellow` |
+| Spark characters | U+2726 (✦) and U+2727 (✧) |
+| Font sizes | 7-10px |
+| Position | Absolute, clustered near top-right of parent |
+
+**Animation:** Looping opacity (0.2 → 1.0 → 0.2) and scale (0.7 → 1.2 → 0.7), 1200ms ease-in-out. Each spark staggered by 300ms. `pointerEvents: 'none'`. Parent needs `overflow: 'visible'`.
+
+**Reduced motion:** Static sparks at 0.6 opacity (mid-point), no animation.
+
+**Usage:** Ambient decoration, not part of the FX system. Persistent while parent is active. Render as `<SparkleDecoration />` inside focused rows, headers, and singleton panels.

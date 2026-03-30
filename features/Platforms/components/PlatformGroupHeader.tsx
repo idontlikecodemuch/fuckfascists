@@ -2,10 +2,10 @@ import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { platformsCopy } from '../../../copy/platforms';
 import { theme } from '../../../design/tokens';
+import { bevelRaised, bevelFocusRaised } from '../../../design/bevel';
+import { SparkleDecoration } from '../../../core/fx';
 import { FigureBadge } from './FigureBadge';
 import {
-  TRACK_ROW_FOCUS_BG_COLOR,
-  TRACK_ROW_FOCUS_BORDER_COLOR,
   TRACK_ROW_FONT_SIZE_COUNT,
   TRACK_ROW_PADDING_HORIZONTAL,
   TRACK_ROW_PADDING_VERTICAL,
@@ -38,22 +38,25 @@ export function PlatformGroupHeader({
       accessibilityLabel={platformsCopy.groupHeaderA11y(shortName, totalAvoids)}
       accessibilityState={{ expanded: focused }}
     >
-      <FigureBadge
-        figureName={figureName}
-        state="neutral"
-        size={TRACK_ROW_SPRITE_SIZE}
-        cropRatio={TRACK_SPRITE_BUST_CROP_RATIO}
-        cropOffsetX={TRACK_SPRITE_BUST_CROP_OFFSET_X}
-        cropOffsetY={TRACK_SPRITE_BUST_CROP_OFFSET_Y}
-      />
+      <View style={[styles.avatarFrame, focused && styles.avatarFrameFocused]}>
+        <FigureBadge
+          figureName={figureName}
+          state="neutral"
+          size={TRACK_ROW_SPRITE_SIZE}
+          cropRatio={TRACK_SPRITE_BUST_CROP_RATIO}
+          cropOffsetX={TRACK_SPRITE_BUST_CROP_OFFSET_X}
+          cropOffsetY={TRACK_SPRITE_BUST_CROP_OFFSET_Y}
+        />
+      </View>
       <View style={styles.labelColumn}>
-        <Text style={styles.name} numberOfLines={1} allowFontScaling>
+        <Text style={[styles.name, focused && styles.nameFocused]} numberOfLines={1} allowFontScaling>
           {shortName}
         </Text>
       </View>
-      <Text style={styles.count} allowFontScaling>
+      <Text style={[styles.count, focused && styles.countFocused]} allowFontScaling>
         {totalAvoids > 0 ? platformsCopy.countLabel(totalAvoids) : platformsCopy.countDash}
       </Text>
+      {focused && <SparkleDecoration />}
     </Pressable>
   );
 }
@@ -66,30 +69,41 @@ const styles = StyleSheet.create({
     minHeight: theme.a11y.minTapTarget,
     paddingHorizontal: TRACK_ROW_PADDING_HORIZONTAL,
     paddingVertical: TRACK_ROW_PADDING_VERTICAL,
-    borderTopWidth: theme.borders.standard.width,
-    borderBottomWidth: theme.borders.standard.width,
-    borderTopColor: theme.colors.highlightBlue,
-    borderBottomColor: TRACK_ROW_FOCUS_BORDER_COLOR,
-    backgroundColor: theme.colors.surface2,
+    borderBottomWidth: 1,
+    borderBottomColor: theme.colors.panelBorder,
+    backgroundColor: theme.colors.panelInner,
+    overflow: 'visible',
   },
   focused: {
-    borderLeftWidth: theme.borders.standard.width,
-    borderLeftColor: TRACK_ROW_FOCUS_BORDER_COLOR,
-    backgroundColor: TRACK_ROW_FOCUS_BG_COLOR,
+    borderBottomWidth: 2,
+    borderBottomColor: theme.colors.focusAccent,
+  },
+  avatarFrame: {
+    ...bevelRaised,
+    backgroundColor: theme.colors.panelOuter,
+  },
+  avatarFrameFocused: {
+    ...bevelFocusRaised,
   },
   labelColumn: {
     flex: 1,
   },
   name: {
     ...theme.type.displayS,
-    color: theme.colors.rewardYellow,
+    color: theme.colors.textSecondary,
     letterSpacing: 1,
+  },
+  nameFocused: {
+    color: theme.colors.highlightBlue,
   },
   count: {
     fontFamily: theme.fonts.bodySemiBold,
     fontSize: TRACK_ROW_FONT_SIZE_COUNT,
-    color: theme.colors.rewardYellow,
+    color: theme.colors.textSecondary,
     minWidth: 28,
     textAlign: 'right',
+  },
+  countFocused: {
+    color: theme.colors.highlightBlue,
   },
 });
