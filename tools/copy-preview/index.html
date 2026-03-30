@@ -6,41 +6,32 @@
 <title>F*CK FASCISTS — Copy Review Tool</title>
 <link href="https://fonts.googleapis.com/css2?family=Bungee&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-/* ── Reset & Dark Palette ─────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
   --bg-void: #070B12; --bg-nav: #0D1424; --surface1: #15284B; --surface2: #1A2742;
   --text-primary: #DCE7F6; --text-secondary: #A8B4C8;
   --frame-blue: #2F63FF; --highlight-blue: #5FAEFF; --glow-cyan: #7AF2FF;
-  --reward-yellow: #FFC93C; --danger-red: #FF3B30; --success-green: #2CCB63;
+  --reward-yellow: #FFC93C; --danger-red: #FF3B30;
   --font-headline: 'Bungee', monospace; --font-body: 'IBM Plex Sans', sans-serif;
 }
 html, body { height: 100%; background: var(--bg-void); color: var(--text-primary); font-family: var(--font-body); font-size: 14px; }
-
-/* ── Layout ───────────────────────────────────────────────────────────── */
 .app { display: flex; flex-direction: column; height: 100vh; }
 .toolbar { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: var(--bg-nav); border-bottom: 2px solid var(--frame-blue); flex-shrink: 0; flex-wrap: wrap; }
 .toolbar-title { font-family: var(--font-headline); font-size: 14px; color: var(--danger-red); letter-spacing: 2px; margin-right: auto; white-space: nowrap; }
 .main { display: flex; flex: 1; overflow: hidden; }
-
-/* Left panel — screenshot */
 .panel-left { width: 430px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; padding: 16px; border-right: 2px solid var(--surface2); overflow-y: auto; }
 .device-frame { width: 390px; height: 844px; border: 3px solid var(--frame-blue); border-radius: 12px; overflow: hidden; background: var(--surface1); position: relative; flex-shrink: 0; }
 .device-frame img { width: 100%; height: 100%; object-fit: contain; }
 .placeholder { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; color: var(--text-secondary); font-family: var(--font-headline); font-size: 13px; text-align: center; letter-spacing: 2px; padding: 20px; line-height: 1.6; }
-
-/* Right panel — copy fields */
 .panel-right { flex: 1; overflow-y: auto; padding: 16px 20px; }
 .copy-group { margin-bottom: 20px; }
 .copy-group-title { font-family: var(--font-headline); font-size: 12px; color: var(--reward-yellow); letter-spacing: 2px; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid var(--surface2); }
 .copy-field { margin-bottom: 10px; }
-.copy-field-meta { font-size: 11px; color: var(--text-secondary); margin-bottom: 3px; font-family: var(--font-body); font-weight: 500; }
+.copy-field-meta { font-size: 11px; color: var(--text-secondary); margin-bottom: 3px; font-weight: 500; }
 .copy-field-meta .file-ref { color: var(--highlight-blue); }
 .copy-field textarea { width: 100%; background: var(--surface1); color: var(--text-primary); border: 1px solid var(--surface2); padding: 8px 10px; font-family: var(--font-body); font-size: 13px; line-height: 1.5; resize: vertical; min-height: 36px; border-radius: 2px; transition: border-color 0.15s; }
 .copy-field textarea:focus { outline: none; border-color: var(--highlight-blue); }
 .copy-field textarea.changed { border-color: var(--reward-yellow); background: rgba(255,201,60,0.06); }
-
-/* Toolbar controls */
 select, button { font-family: var(--font-body); font-size: 13px; font-weight: 600; border: 2px solid var(--frame-blue); background: var(--surface1); color: var(--text-primary); padding: 6px 12px; cursor: pointer; letter-spacing: 1px; border-radius: 0; }
 select { min-width: 220px; }
 select:focus, button:focus { outline: 2px solid var(--glow-cyan); outline-offset: 1px; }
@@ -74,15 +65,45 @@ optgroup { font-weight: 600; }
   </div>
 </div>
 
-<script>
-// ── Inline data ──────────────────────────────────────────────────────────
-const MANIFEST = {"steps":[{"id":"launch_default","surface":"launch","state":"default","filename":"ff_launch_default.png"},{"id":"onboard_welcome","surface":"onboard","state":"welcome","filename":"ff_onboard_welcome.png"},{"id":"onboard_privacy","surface":"onboard","state":"privacy","filename":"ff_onboard_privacy.png"},{"id":"onboard_perms_pregrant","surface":"onboard","state":"perms_pregrant","filename":"ff_onboard_perms_pregrant.png"},{"id":"onboard_perms_granted","surface":"onboard","state":"perms_granted","filename":"ff_onboard_perms_granted.png"},{"id":"map_default","surface":"map","state":"default","filename":"ff_map_default.png"},{"id":"map_card_pre_avoid","surface":"map","state":"card_pre_avoid","filename":"ff_map_card_pre_avoid.png"},{"id":"map_card_post_avoid","surface":"map","state":"card_post_avoid","filename":"ff_map_card_post_avoid.png"},{"id":"map_match_chooser","surface":"map","state":"match_chooser","filename":"ff_map_match_chooser.png"},{"id":"map_no_match","surface":"map","state":"no_match","filename":"ff_map_no_match.png"},{"id":"track_collapsed","surface":"track","state":"collapsed","filename":"ff_track_collapsed.png"},{"id":"track_expanded","surface":"track","state":"expanded","filename":"ff_track_expanded.png"},{"id":"track_avoided","surface":"track","state":"avoided","filename":"ff_track_avoided.png"},{"id":"track_arena_neutral","surface":"track","state":"arena_neutral","filename":"ff_track_arena_neutral.png"},{"id":"track_arena_portrait","surface":"track","state":"arena_portrait","filename":"ff_track_arena_portrait.png"},{"id":"track_setup","surface":"track","state":"setup","filename":"ff_track_setup.png"},{"id":"scorecard_populated","surface":"scorecard","state":"populated","filename":"ff_scorecard_populated.png"},{"id":"scorecard_empty","surface":"scorecard","state":"empty","filename":"ff_scorecard_empty.png"},{"id":"info_default","surface":"info","state":"default","filename":"ff_info_default.png"},{"id":"info_transparency","surface":"info","state":"transparency","filename":"ff_info_transparency.png"},{"id":"info_faq","surface":"info","state":"faq","filename":"ff_info_faq.png"},{"id":"scan_default","surface":"scan","state":"default","filename":"ff_scan_default.png"},{"id":"scan_scanner_open","surface":"scan","state":"scanner_open","filename":"ff_scan_scanner_open.png"},{"id":"scan_result_pre_avoid","surface":"scan","state":"result_pre_avoid","filename":"ff_scan_result_pre_avoid.png"},{"id":"scan_result_post_avoid","surface":"scan","state":"result_post_avoid","filename":"ff_scan_result_post_avoid.png"},{"id":"scan_no_match","surface":"scan","state":"no_match","filename":"ff_scan_no_match.png"},{"id":"tabbar_full","surface":"tabbar","state":"full","filename":"ff_tabbar_full.png"},{"id":"notification_thursday","surface":"notification","state":"thursday","filename":"ff_notification_thursday.png"}]};
+<!-- Load copy data from external JS file (works with file:// protocol) -->
+<script src="copy-all.js"></script>
 
-// Map surface → relevant copy file sections and their visual regions
+<script>
+const MANIFEST = {"steps":[
+  {"id":"launch_default","surface":"launch","state":"default","filename":"ff_launch_default.png"},
+  {"id":"onboard_welcome","surface":"onboard","state":"welcome","filename":"ff_onboard_welcome.png"},
+  {"id":"onboard_privacy","surface":"onboard","state":"privacy","filename":"ff_onboard_privacy.png"},
+  {"id":"onboard_perms_pregrant","surface":"onboard","state":"perms_pregrant","filename":"ff_onboard_perms_pregrant.png"},
+  {"id":"onboard_perms_granted","surface":"onboard","state":"perms_granted","filename":"ff_onboard_perms_granted.png"},
+  {"id":"map_default","surface":"map","state":"default","filename":"ff_map_default.png"},
+  {"id":"map_card_pre_avoid","surface":"map","state":"card_pre_avoid","filename":"ff_map_card_pre_avoid.png"},
+  {"id":"map_card_post_avoid","surface":"map","state":"card_post_avoid","filename":"ff_map_card_post_avoid.png"},
+  {"id":"map_match_chooser","surface":"map","state":"match_chooser","filename":"ff_map_match_chooser.png"},
+  {"id":"map_no_match","surface":"map","state":"no_match","filename":"ff_map_no_match.png"},
+  {"id":"track_collapsed","surface":"track","state":"collapsed","filename":"ff_track_collapsed.png"},
+  {"id":"track_expanded","surface":"track","state":"expanded","filename":"ff_track_expanded.png"},
+  {"id":"track_avoided","surface":"track","state":"avoided","filename":"ff_track_avoided.png"},
+  {"id":"track_arena_neutral","surface":"track","state":"arena_neutral","filename":"ff_track_arena_neutral.png"},
+  {"id":"track_arena_portrait","surface":"track","state":"arena_portrait","filename":"ff_track_arena_portrait.png"},
+  {"id":"track_setup","surface":"track","state":"setup","filename":"ff_track_setup.png"},
+  {"id":"scorecard_populated","surface":"scorecard","state":"populated","filename":"ff_scorecard_populated.png"},
+  {"id":"scorecard_empty","surface":"scorecard","state":"empty","filename":"ff_scorecard_empty.png"},
+  {"id":"info_default","surface":"info","state":"default","filename":"ff_info_default.png"},
+  {"id":"info_transparency","surface":"info","state":"transparency","filename":"ff_info_transparency.png"},
+  {"id":"info_faq","surface":"info","state":"faq","filename":"ff_info_faq.png"},
+  {"id":"scan_default","surface":"scan","state":"default","filename":"ff_scan_default.png"},
+  {"id":"scan_scanner_open","surface":"scan","state":"scanner_open","filename":"ff_scan_scanner_open.png"},
+  {"id":"scan_result_pre_avoid","surface":"scan","state":"result_pre_avoid","filename":"ff_scan_result_pre_avoid.png"},
+  {"id":"scan_result_post_avoid","surface":"scan","state":"result_post_avoid","filename":"ff_scan_result_post_avoid.png"},
+  {"id":"scan_no_match","surface":"scan","state":"no_match","filename":"ff_scan_no_match.png"},
+  {"id":"tabbar_full","surface":"tabbar","state":"full","filename":"ff_tabbar_full.png"},
+  {"id":"notification_thursday","surface":"notification","state":"thursday","filename":"ff_notification_thursday.png"}
+]};
+
 const SURFACE_COPY_MAP = {
   launch: { launch: { header: ['tapToStart','tapLabel'], body: ['messages.0','messages.1','messages.2','messages.3','messages.4','messages.5','messages.6'] } },
   onboard: { onboard: { header: ['welcomeTitle','appDisplay','tagline','privacyTitle','permissionsTitle'], body: ['body','note','featureMap','featureTrack','featureScorecard','noAccounts','noAccountsDesc','noLocation','noLocationDesc','noHistory','noHistoryDesc','onDevice','onDeviceDesc','openSource','openSourceDesc','ourPromise','locTitle','locWhy','locPromise','notifTitle','notifWhy','notifPromise'], cta: ['letsGo','locBtn','notifBtn','confirmed','next','skip','done'], labels: ['progressStep'] } },
-  map: { map: { header: ['tabLabel','searchPlaceholder','searchLabel','searchHint'], body: ['scanning','search','mediumWarning','pacDataLine','parentAttribution','fecLink','fecLinkLabel','tapLoading','tapNoMatch'], cta: ['avoidLabel','avoidConfirmed','avoidRetry','avoidMarkLabel','avoidDoneLabel','avoidRetryLabel'], labels: ['zoomInLabel','zoomOutLabel','locationLabel','markerAvoided','markerFlagged','scanIcon','scanningIcon','loadingIcon'], errors: ['noMatch','lookupFailed','fecSearch','fecSearchLabel'], 'match chooser': ['chooserHeading','chooserRow','chooserDismiss','chooserModalLabel'], barcode: ['barcodeButton','barcodeScannerTitle','barcodePreparing','barcodeGuide','barcodeResolving','barcodePermissionTitle','barcodePermissionBody','barcodePermissionDeniedBody','barcodePermissionAction','barcodePermissionActionLabel','barcodeSettingsAction','barcodeSettingsActionLabel','barcodeUnavailableTitle','barcodeUnavailableBody','barcodeFallbackLabel','barcodeNoMatch','barcodeLookupFailed','barcodeUnsupported','barcodeContextEyebrow','barcodeContextLine','barcodeCameraLabel'], banner: ['bannerNoMatch','bannerLookupFailed','bannerNoPac','bannerDissolved','bannerDismissLabel'], data: ['dataZoneDetail','dataZoneDetailLabel','cardAvoidedAnnouncement','cardModalLabel'] }, shared: { labels: ['appName','gop','dem','verified','matched','confidenceHigh','confidenceMedium','warningIcon','checkmark'], data: ['donationUnavail','donationNoneOnFile','totalSince','activeCycles','confidenceA11y','totalSince2016','recentCycleShort'] } },
+  map: { map: { header: ['tabLabel','searchPlaceholder','searchLabel','searchHint'], body: ['scanning','search','mediumWarning','pacDataLine','parentAttribution','fecLink','fecLinkLabel','tapLoading','tapNoMatch'], cta: ['avoidLabel','avoidConfirmed','avoidRetry','avoidMarkLabel','avoidDoneLabel','avoidRetryLabel'], labels: ['zoomInLabel','zoomOutLabel','locationLabel','markerAvoided','markerFlagged'], errors: ['noMatch','lookupFailed','fecSearch','fecSearchLabel'], 'match chooser': ['chooserHeading','chooserRow','chooserDismiss','chooserModalLabel'], barcode: ['barcodeButton','barcodeScannerTitle','barcodePreparing','barcodeGuide','barcodeResolving','barcodePermissionTitle','barcodePermissionBody','barcodePermissionDeniedBody','barcodePermissionAction','barcodePermissionActionLabel','barcodeSettingsAction','barcodeSettingsActionLabel','barcodeUnavailableTitle','barcodeUnavailableBody','barcodeFallbackLabel','barcodeNoMatch','barcodeLookupFailed','barcodeUnsupported','barcodeContextEyebrow','barcodeContextLine','barcodeCameraLabel'], banner: ['bannerNoMatch','bannerLookupFailed','bannerNoPac','bannerDissolved','bannerDismissLabel'], data: ['dataZoneDetail','dataZoneDetailLabel','cardAvoidedAnnouncement','cardModalLabel'] }, shared: { labels: ['appName','gop','dem','verified','matched','confidenceHigh','confidenceMedium','warningIcon','checkmark'], data: ['donationUnavail','donationNoneOnFile','totalSince','activeCycles','confidenceA11y','totalSince2016','recentCycleShort'] } },
   track: { platforms: { header: ['tabLabel','weekLabel','editPlatforms','editPlatformsA11y','avoidCountLabel','pumpUp','loading','checklist'], body: ['avoidBtn','avoidedBtn','avoidBtnA11y','avoidedBtnA11y','countLabel','countDash','countA11y','expandIndicator','collapseIndicator','rowSubtitle'], setup: ['setupTitle','setupSubhead','setupDone'], 'day circles': ['dayLabels','dayCheckedLabel','dayUncheckedLabel','dayFutureLabel','expandLabel','collapseLabel'], arena: ['spriteReactions','arenaTapA11y','groupHeaderA11y'], 'short names': ['shortParentNames.Meta Platforms','shortParentNames.Amazon.com Inc','shortParentNames.Alphabet Inc','shortParentNames.X Corp'], nudge: ['nudgeTitle','nudgeBody','nudgeBanner','nudgeDismiss','nudgeDismissA11y'] } },
   scorecard: { scorecard: { header: ['tabLabel','title','dateRange','dropTime'], body: ['framingLine','totalCount','personCount','sourceSkipped','sourceAvoided','sourceWalkedPast','sourceStayedOff','othersLine'], cta: ['shareBtn','shareLabel','previewBtn','previewLabel','shareHeader'], labels: ['previewStamp','previewA11y','dataAttribution','loadingLabel','tagline','cta'], empty: ['emptyMap','emptyTrack','emptyBefore','emptyMiddle','emptyAfter'] } },
   info: { info: { header: ['tabLabel','title','about','data','faq','links'], labels: ['linkText','linkLabel','faqCollapse','faqExpand','chevronOpen','chevronClosed','transparencyToggleLabel','versionLabel'] }, infoContent: { about: ['about.tagline','about.description','about.organization'], transparency: ['transparency.data-source.title','transparency.data-source.body','transparency.fec-filings.title','transparency.fec-filings.body','transparency.confidence.title','transparency.confidence.body','transparency.entity-list.title','transparency.entity-list.body','transparency.storage.title','transparency.storage.body','transparency.no-server.title','transparency.no-server.body'], faq: ['faq.trust.q','faq.trust.a','faq.wrong-match.q','faq.wrong-match.a','faq.tracking.q','faq.tracking.a','faq.why-republican.q','faq.why-republican.a','faq.add-business.q','faq.add-business.a','faq.matched-badge.q','faq.matched-badge.a','faq.free.q','faq.free.a','faq.extension-sync.q','faq.extension-sync.a','faq.internet.q','faq.internet.a','faq.edit-platforms.q','faq.edit-platforms.a'], links: ['links.fec.label','links.fec.url','links.source-code.label','links.source-code.url','links.data-repo.label','links.data-repo.url','links.issues.label','links.issues.url','links.privacy.label','links.privacy.url'] } },
@@ -92,18 +113,10 @@ const SURFACE_COPY_MAP = {
 };
 
 // ── State ────────────────────────────────────────────────────────────────
-let COPY_SOURCE = {};
-let copyData = {};
+// COPY_ALL_DATA is loaded from copy-all.js via <script src>
+let COPY_SOURCE = (typeof COPY_ALL_DATA !== 'undefined') ? COPY_ALL_DATA : {};
+let copyData = JSON.parse(JSON.stringify(COPY_SOURCE));
 let currentStepId = MANIFEST.steps[0].id;
-
-// Load copy-all.json inline via fetch, falling back to embedded
-async function loadCopyData() {
-  try {
-    const resp = await fetch('copy-all.json');
-    if (resp.ok) { COPY_SOURCE = await resp.json(); }
-  } catch { /* use empty */ }
-  copyData = JSON.parse(JSON.stringify(COPY_SOURCE));
-}
 
 function getVal(file, key) {
   return copyData[file] && copyData[file][key] !== undefined ? copyData[file][key] : '';
@@ -112,14 +125,10 @@ function getSrcVal(file, key) {
   return COPY_SOURCE[file] && COPY_SOURCE[file][key] !== undefined ? COPY_SOURCE[file][key] : '';
 }
 
-// ── Populate state selector ──────────────────────────────────────────────
 function buildSelector() {
   const sel = document.getElementById('stateSelector');
   const groups = {};
-  MANIFEST.steps.forEach(s => {
-    if (!groups[s.surface]) groups[s.surface] = [];
-    groups[s.surface].push(s);
-  });
+  MANIFEST.steps.forEach(s => { if (!groups[s.surface]) groups[s.surface] = []; groups[s.surface].push(s); });
   sel.innerHTML = '';
   for (const [surface, steps] of Object.entries(groups)) {
     const og = document.createElement('optgroup');
@@ -137,12 +146,10 @@ function buildSelector() {
   sel.addEventListener('change', () => { currentStepId = sel.value; render(); });
 }
 
-// ── Render screenshot ────────────────────────────────────────────────────
 function renderScreenshot() {
   const frame = document.getElementById('deviceFrame');
   const step = MANIFEST.steps.find(s => s.id === currentStepId);
   if (!step) { frame.innerHTML = '<div class="placeholder">Unknown state</div>'; return; }
-
   const img = new Image();
   img.src = `screenshots/${step.filename}`;
   img.alt = `${step.surface} — ${step.state}`;
@@ -150,20 +157,17 @@ function renderScreenshot() {
     frame.innerHTML = `<div class="placeholder">${step.surface.toUpperCase()}<br>${step.state.replace(/_/g,' ').toUpperCase()}<br><br>Screenshot not yet captured.<br>Run the harness to generate.</div>`;
   };
   img.onload = () => { frame.innerHTML = ''; frame.appendChild(img); };
-  // Show placeholder while loading
   frame.innerHTML = `<div class="placeholder">${step.surface.toUpperCase()}<br>${step.state.replace(/_/g,' ').toUpperCase()}</div>`;
 }
 
-// ── Render copy fields ───────────────────────────────────────────────────
+function escapeHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
 function renderCopyFields() {
   const panel = document.getElementById('copyPanel');
   const step = MANIFEST.steps.find(s => s.id === currentStepId);
   if (!step) { panel.innerHTML = ''; return; }
-
-  const surface = step.surface;
-  const mapping = SURFACE_COPY_MAP[surface];
+  const mapping = SURFACE_COPY_MAP[step.surface];
   if (!mapping) { panel.innerHTML = '<p style="color:var(--text-secondary);padding:20px;">No copy fields mapped for this surface.</p>'; return; }
-
   let html = '';
   for (const [file, regions] of Object.entries(mapping)) {
     for (const [region, keys] of Object.entries(regions)) {
@@ -173,59 +177,36 @@ function renderCopyFields() {
         const srcVal = getSrcVal(file, key);
         const changed = val !== srcVal;
         const rows = Math.max(1, Math.ceil(String(val).length / 60));
-        html += `<div class="copy-field">`;
-        html += `<div class="copy-field-meta"><span class="file-ref">${file}.${key}</span></div>`;
-        html += `<textarea data-file="${file}" data-key="${key}" rows="${rows}" class="${changed ? 'changed' : ''}">${escapeHtml(String(val))}</textarea>`;
-        html += `</div>`;
+        html += `<div class="copy-field"><div class="copy-field-meta"><span class="file-ref">${file}.${key}</span></div>`;
+        html += `<textarea data-file="${file}" data-key="${key}" rows="${rows}" class="${changed ? 'changed' : ''}">${escapeHtml(String(val))}</textarea></div>`;
       });
       html += `</div>`;
     }
   }
   panel.innerHTML = html;
-
-  // Attach listeners
   panel.querySelectorAll('textarea').forEach(ta => {
     ta.addEventListener('input', (e) => {
-      const f = e.target.dataset.file;
-      const k = e.target.dataset.key;
+      const f = e.target.dataset.file, k = e.target.dataset.key;
       copyData[f][k] = e.target.value;
-      const isChanged = e.target.value !== getSrcVal(f, k);
-      e.target.classList.toggle('changed', isChanged);
+      e.target.classList.toggle('changed', e.target.value !== getSrcVal(f, k));
     });
   });
 }
 
-function escapeHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
+function render() { renderScreenshot(); renderCopyFields(); }
 
-function render() {
-  renderScreenshot();
-  renderCopyFields();
-}
-
-// ── Export diff ───────────────────────────────────────────────────────────
 function exportDiff() {
   const diff = {};
   for (const [file, keys] of Object.entries(copyData)) {
     for (const [key, val] of Object.entries(keys)) {
-      if (val !== getSrcVal(file, key)) {
-        if (!diff[file]) diff[file] = {};
-        diff[file][key] = val;
-      }
+      if (val !== getSrcVal(file, key)) { if (!diff[file]) diff[file] = {}; diff[file][key] = val; }
     }
   }
   if (Object.keys(diff).length === 0) { alert('No changes to export.'); return; }
   const blob = new Blob([JSON.stringify(diff, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'copy-diff.json';
-  a.click();
-  URL.revokeObjectURL(url);
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'copy-diff.json'; a.click();
 }
 
-// ── Upload proposed copy ─────────────────────────────────────────────────
 function handleUpload(e) {
   const file = e.target.files[0];
   if (!file) return;
@@ -233,36 +214,24 @@ function handleUpload(e) {
   reader.onload = (ev) => {
     try {
       const proposed = JSON.parse(ev.target.result);
-      for (const [f, keys] of Object.entries(proposed)) {
-        if (!copyData[f]) copyData[f] = {};
-        for (const [k, v] of Object.entries(keys)) {
-          copyData[f][k] = v;
-        }
-      }
+      // Replace source data entirely if it has the full structure, otherwise merge as diff
+      const isFullReplace = Object.keys(proposed).length > 3;
+      if (isFullReplace) { COPY_SOURCE = proposed; copyData = JSON.parse(JSON.stringify(proposed)); }
+      else { for (const [f, keys] of Object.entries(proposed)) { if (!copyData[f]) copyData[f] = {}; for (const [k, v] of Object.entries(keys)) { copyData[f][k] = v; } } }
       render();
-    } catch (err) {
-      alert('Invalid JSON file: ' + err.message);
-    }
+    } catch (err) { alert('Invalid JSON: ' + err.message); }
   };
   reader.readAsText(file);
   e.target.value = '';
 }
 
-// ── Reset ────────────────────────────────────────────────────────────────
-function resetAll() {
-  copyData = JSON.parse(JSON.stringify(COPY_SOURCE));
-  render();
-}
+function resetAll() { copyData = JSON.parse(JSON.stringify(COPY_SOURCE)); render(); }
 
-// ── Init ─────────────────────────────────────────────────────────────────
 document.getElementById('exportBtn').addEventListener('click', exportDiff);
 document.getElementById('uploadInput').addEventListener('change', handleUpload);
 document.getElementById('resetBtn').addEventListener('click', resetAll);
-
-loadCopyData().then(() => {
-  buildSelector();
-  render();
-});
+buildSelector();
+render();
 </script>
 </body>
 </html>

@@ -27,8 +27,9 @@ tools/img-gen/output/
 tools/img-gen/.env
 tools/img-gen/cache_id.txt
 
-# FEC bulk data (91GB+ of raw individual contribution files)
+# Bulk data archives (FEC + OFF)
 tools/fec-bulk/
+tools/off-bulk/
 
 # Scratch / working files
 entities_GPTpass.json
