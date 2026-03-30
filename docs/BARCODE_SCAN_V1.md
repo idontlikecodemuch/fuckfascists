@@ -1,6 +1,6 @@
 # Barcode Scan V1
 
-Last updated: March 22, 2026 (stability hardening)
+Last updated: March 24, 2026 (OFF-backed products data layer)
 
 ## Why this exists
 
@@ -13,9 +13,11 @@ V1 closes that gap with a dedicated `SCAN BETA` tab.
 - A new top-level `SCAN BETA` section in the app tab bar.
 - Camera-based barcode scanning using `expo-camera`.
 - Support limited to retail product barcodes we actually care about: `UPC-A` and `EAN-13`.
-- One-step product resolution via Open Food Facts on cache miss.
+- A bundled `products.json` file that maps known producer-family prefixes to existing entity IDs before any network lookup happens.
+- Open Food Facts resolution on remaining misses after local cache + producer-prefix checks.
 - On-device persistent cache of barcode resolutions so repeat scans stop hitting the network.
 - Reuse of the existing entity/FEC card flow once a brand is resolved.
+- A checkpointed OFF bulk-data pipeline that can rebuild `products.json` without touching `entities.json` or rescanning the full archive every time cleanup rules change.
 - Follow-up UI fix: clipped the tab bar texture layer and removed its scaled repeat transform so the stone background does not bleed upward over screen content on iOS.
 
 ## Stability correction after first pass
@@ -34,7 +36,7 @@ The final implementation fixes that and simplifies the scanner surface:
 
 ## What did not ship
 
-- No giant bundled `product.json`.
+- No giant bundled product catalog.
 - No attempt to decode a company from the first 2 digits.
 - No use of `people.json` in this flow.
 - No new repository yet.
@@ -44,15 +46,44 @@ The final implementation fixes that and simplifies the scanner surface:
 The correct long-term data shape is:
 
 1. `entities.json` stays the parent-company source of truth.
-2. `people.json` remains unrelated to barcode scanning.
-3. If curated scan data is needed, add a `brands.json` or `barcode-brands.json` file to the existing data repo, not a massive product catalog.
+2. `products.json` is a separate modular file that references existing entity IDs without mutating `entities.json`.
+3. `people.json` remains unrelated to barcode scanning.
+4. If curated scan data is needed, add a `brands.json` or `barcode-brands.json` file to the existing data repo, not a massive product catalog.
 
 Why:
 
 - GS1 documentation says the complete GTIN does not carry standalone meaning without a database lookup.
 - GS1 company prefixes are variable-length, so "first 2 digits" is not a reliable product/company rule.
+- Producer-family prefix hints are still useful when the real question is "who likely made this?" rather than "what exact SKU is this?"
 - Open Food Facts is a better fit for live product lookup than shipping millions of items in-app.
 - Open Food Facts brand strings can be matched into our existing bundled entity alias graph, which means we already have most of the "brand -> parent company" layer.
+- Keeping product-producer data in a separate file lets us expand product coverage now without mixing in a larger `entities.json` / FEC / people-data cleanup at the same time.
+
+## Current products data status
+
+The local `products.json` file is no longer a tiny hand-curated placeholder.
+
+Current state:
+
+- `206` `producerResearch` entries seeded from public producer/brand research
+- OFF bulk archive scanned locally and checkpointed
+- `4,403,001` OFF product documents processed with `0` parse errors
+- `18` entity-linked runtime producers exposed in `producers`
+- research entries now carry OFF-backed:
+  - `dbObservedPrefixes`
+  - `dbObservedBrands`
+  - `dbConfirmedAliases`
+  - `dbSuggestedAliases`
+
+The runtime `producers` layer is intentionally conservative:
+
+- only existing entity IDs are activated
+- prefixes must survive repeated-evidence thresholds
+- runtime `observedBrands` are cleaned to remove producer self-labels, legal-entity strings, obvious descriptor junk, and partner-company contamination
+
+Deep reference:
+
+- `docs/PRODUCTS_DATA_PIPELINE.md`
 
 ## Runtime flow
 
@@ -65,16 +96,19 @@ Why:
 7. Camera reads `UPC-A` or `EAN-13`.
 8. Barcode is normalized to GTIN-13 for lookup/caching.
 9. App checks local barcode cache in SQLite.
-10. On cache miss, app calls Open Food Facts with only the fields needed for brand resolution.
-11. Returned brand/owner strings are matched against bundled entity aliases.
-12. On match, the existing business card flow renders with a `SCANNED PRODUCT` context block.
-13. On miss, the user sees a dismissible barcode-specific banner instead of a generic FEC failure state.
+10. On cache miss, app checks the bundled producer-prefix index for a likely parent-company hit.
+11. If a producer-prefix hit is found, the existing entity/FEC flow runs locally and the UI labels it as a likely producer match.
+12. On remaining miss, app calls Open Food Facts with only the fields needed for brand resolution.
+13. Returned brand/owner strings are matched against bundled entity aliases.
+14. On match, the existing business card flow renders with a `SCANNED PRODUCT` or `LIKELY PRODUCER` context block.
+15. On miss, the user sees a dismissible barcode-specific banner instead of a generic FEC failure state.
 
 ## Why this is lightweight
 
 - We do not ship a national product database.
 - We do not ship a "top 100 products" list that will go stale fast.
 - We only cache barcodes the user has actually scanned.
+- We resolve many common producer-family hits from a bundled modular prefix file before hitting any network.
 - We only ask Open Food Facts for brand-level fields.
 - We only hit the existing FEC flow after a brand is confidently mapped into the bundled entity list.
 - We do not request microphone/audio permission for this feature.
@@ -112,6 +146,7 @@ Core app changes:
 - `ios/FckFascists/Info.plist`
 - `package.json`
 - `package-lock.json`
+- `assets/data/products.json`
 
 Barcode-specific implementation:
 
@@ -120,8 +155,15 @@ Barcode-specific implementation:
 - `features/Map/components/BarcodeScannerSheet.tsx`
 - `features/Map/components/BarcodeLookupBanner.tsx`
 - `features/Map/barcode/normalizeBarcode.ts`
+- `features/Map/barcode/productIndex.ts`
 - `features/Map/barcode/openFoodFacts.ts`
 - `features/Map/barcode/barcodeCacheStore.ts`
+
+Products data pipeline:
+
+- `scripts/sync-products-from-off.py`
+- `tools/off-bulk/checkpoints/`
+- `docs/PRODUCTS_DATA_PIPELINE.md`
 
 Shared UI/result plumbing:
 
@@ -164,9 +206,10 @@ Notes:
 
 - Open Food Facts coverage is good for grocery scanning, but not universal.
 - Brand strings returned by a product database will never perfectly align with parent-company aliases without continued curation.
+- The local OFF-derived producer layer is much stronger now, but runtime quality still depends on the current entity coverage in `entities.json`. Many strong producer candidates are still held in `producerResearch` until a separate entity pass lands.
 - The current repo has an existing Expo dependency mismatch: `@expo/vector-icons@15.1.1` expects a newer `expo-font` than this SDK 52 app currently pins. `expo-camera` was installed with legacy peer resolution to avoid rewriting unrelated dependencies during this feature pass.
 - Full iOS simulator build verification is still partially environment-sensitive in this repo right now because the local Xcode/CoreSimulator/CocoaPods setup can fail before app code is fully evaluated. The scan flow itself is covered by TypeScript, focused Jest tests, plist validation, and the native permission fix.
 
 ## Recommended next step
 
-If scan coverage needs a real boost without bloating the app, add a curated `brands.json` file to the existing `fckfascists-data` repo and fetch/bundle it the same way we already handle `entities.json`.
+If scan coverage needs a real boost without bloating the app, the highest-value next step is a separate `entities.json` pass for producer candidates that already have strong OFF evidence in `producerResearch`, then a `--rebuild-from-checkpoint` products sync so those candidates can become runtime producers without rerunning the full archive scan.

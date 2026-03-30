@@ -13,6 +13,8 @@ F*ck Fascists makes corporate political donation data visible at the moment it m
 **On your phone:**
 When you're near a business, the app checks whether that company has donated to Republican campaigns or authoritarian political movements. If it has, you'll see a flag — who they donated to, how much, and a direct link to the FEC data. If you decide to walk away, you tap "Avoided." That's it. No judgment, no moralizing. Just a small win counted.
 
+The app also includes a `SCAN BETA` barcode flow for shelf products. It uses a bundled producer-prefix layer for fast local matches and falls back to Open Food Facts for remaining product lookups.
+
 **In your browser:**
 The extension quietly watches for flagged retailers as you shop online. A subtle indicator lets you know before you click "Buy." Same data, same transparency, same choice — yours to make.
 
@@ -87,7 +89,7 @@ If that's you, welcome.
 
 ## Status
 
-Currently in active development. MVP targets: map screen, browser extension, weekly scorecard, and curated entity list of 400+ major US corporations with verified FEC data.
+Currently in active development. MVP targets: map screen, browser extension, weekly scorecard, barcode scan beta, and a curated entity list of 400+ major US corporations with verified FEC data.
 
 Contributions, issues, and data corrections welcome.
 

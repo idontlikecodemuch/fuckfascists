@@ -12,21 +12,28 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
-### Session: March 27, 2026 (onboarding structure fixes)
-**Focus:** Fix structural issues in onboarding flow flagged by copy lead — hardcoded step indices and missing permission status check on mount.
+### Session: March 24, 2026 (OFF products sync + cleanup)
+**Focus:** Turn the modular `products.json` layer into a real UPC-focused producer dataset by scanning the local Open Food Facts bulk archive, checkpointing the work, and tightening alias quality without touching `entities.json` or `people.json`.
 
 **What changed:**
-1. **stepIndex passed from navigator** — all three screens (`WelcomeScreen`, `PrivacyScreen`, `PermissionsScreen`) now accept `stepIndex` as a prop from `OnboardingNavigator` instead of hardcoding `0`, `1`, `2`. Reordering `ONBOARDING_STEPS` now automatically updates progress dots.
-2. **Permission status check on mount** — `PermissionsScreen` checks `Location.getForegroundPermissionsAsync()` and `Notifications.getPermissionsAsync()` on mount. Already-granted permissions show "GRANTED" state immediately (handles crash mid-onboarding, re-installs, etc.).
-3. **Beta mode bypass** — permission check reads `ff_beta_mode` from SecureStore directly (onboarding runs before `AppShell` where `useBetaMode` lives). When beta is on, the check is skipped so testers see the full permissions flow.
-4. **Navigator switch case order** — fixed to match actual flow (welcome → privacy → permissions).
+1. **Checkpointed OFF sync script added** — introduced `scripts/sync-products-from-off.py`, a resumable products-only importer that parses the local OFF Mongo dump directly, checkpoints progress under `tools/off-bulk/checkpoints/`, and can rebuild `products.json` from checkpointed results without rescanning the archive.
+2. **Full OFF pass completed** — scanned `4,403,001` OFF product documents with `0` parse errors and wrote the final products snapshot back into `assets/data/products.json`.
+3. **Research layer expanded and grounded in DB evidence** — `producerResearch` now contains `206` seeded producer entries with OFF-backed `dbMatchedProductCount`, `dbObservedPrefixes`, `dbObservedBrands`, `dbConfirmedAliases`, and `dbSuggestedAliases`.
+4. **Runtime producer lookup now uses repeated OFF prefix evidence** — `products.json` now exposes `18` entity-linked runtime producers with filtered prefix sets, including high-coverage parents like Pepsico, Coca-Cola, Conagra Brands, General Mills, Mondelez International, Mars, and Kellanova.
+5. **Alias cleanup rules added** — runtime brands now strip producer self-names, legal-entity labels, generic descriptor junk, and obvious partner-company contamination so `observedBrands` stays closer to real shelf brands.
+6. **Coverage is now mostly blocked by missing entities, not missing OFF data** — `184/206` research entries matched OFF, `174/206` retained prefixes, and `155` missing-entity candidates already have OFF-derived prefixes waiting on a future entity pass.
+7. **Deep documentation added** — [PRODUCTS_DATA_PIPELINE.md](/Users/christophershannon/fuckfascists/docs/PRODUCTS_DATA_PIPELINE.md) now documents the full products/OFF workflow, checkpointing model, cleanup heuristics, current coverage, and next-step queue.
+8. **Verification** — `npm test -- --runTestsByPath features/Map/__tests__/barcodeHelpers.test.ts` passes after the products rebuild.
 
-**Deferred:**
-- `useOnboarding` `.then()` chain → `async/await` (minor, does not affect behavior)
-- `ourPromise` → `promiseLabel` rename (copy pass)
-- `copy/onboard.ts` restructure to group keys by screen (copy pass)
+### Session: March 24, 2026 (producer-prefix scan layer)
+**Focus:** Add a modular, local producer-prefix index so product scans can degrade gracefully to likely parent-company matches without touching `entities.json`.
 
-**Verification:** 7 onboarding tests pass, `tsc --noEmit` clean.
+**What changed:**
+1. **Modular products index added** — introduced `assets/data/products.json`, a separate file that references existing entity IDs only and keeps producer expansion out of `entities.json` for now.
+2. **Scan flow now prefers local producer hints** — barcode scans now check cache first, then the bundled producer-prefix index, and only call Open Food Facts on remaining misses.
+3. **Confidence is explicit** — producer-prefix hits render as `LIKELY PRODUCER` and use a medium-confidence score instead of pretending to be exact product matches.
+4. **Graceful degradation improved** — common producer-family hits can now resolve locally even if the network is unavailable or OFF is rate-limited.
+5. **Documentation updated** — [BARCODE_SCAN_V1.md](/Users/christophershannon/fuckfascists/docs/BARCODE_SCAN_V1.md) and [SPEC_VS_CURRENT.md](/Users/christophershannon/fuckfascists/docs/SPEC_VS_CURRENT.md) now describe the modular `products.json` layer and the rule that future entity additions happen in a separate clean data pass.
 
 ### Session: March 24, 2026 (repo cleanup & consolidation)
 **Focus:** Audit and clean up accumulated git state from multiple agents/worktrees. Consolidate branches, remove dead worktrees, fix .gitignore, sync lockfiles, add git workflow rules.
@@ -39,6 +46,7 @@ This document is updated continuously. New instances should read this first — 
 5. **CLAUDE.md updated** — added Git Workflow Rules section: branch naming, worktree cleanup, merge-to-main policy, bulk data exclusion, lockfile hygiene. Updated script execution rule from blanket ban to "flag before running."
 6. **expo-file-system added** — dependency merged from data branch (needed for file operations in data pipeline work).
 7. **Verification** — 320 tests pass (30 suites), `tsc --noEmit` clean, all lockfiles in sync.
+8. **Producer-prefix scan layer added modularly** — scan now checks a separate `products.json` file that points into existing entity IDs before calling Open Food Facts. This keeps product-producer expansion isolated from later `entities.json` / FEC / people cleanup work.
 
 ### Session: March 24, 2026 (device testing fixes — 10 issues)
 **Focus:** Fix 10 issues found during physical device testing, spanning safe area handling, camera permissions, onboarding flow, map header sizing, sprite alignment, and copy consistency.
