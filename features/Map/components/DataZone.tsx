@@ -20,8 +20,8 @@ interface DataZoneProps {
  * Self-contained data display for the business card.
  *
  * V1 content:
- *   - Total donations since 2016 (GOP + DEM)
- *   - Most recent cycle donations (GOP + DEM)
+ *   - Total donations since 2016 (R + D)
+ *   - Most recent cycle donations (R + D)
  *   - Active cycles list
  *   - Source attribution (PAC committee name)
  *   - FEC link
@@ -44,11 +44,11 @@ export function DataZone({ donationSummary, committeeName, fecUrl, onDetailPress
             {sharedCopy.totalSince2016}
           </Text>
           <View style={styles.totalRow}>
-            <Text style={styles.totalGOP} allowFontScaling>
-              {sharedCopy.gop} {formatDonationAmount(donationSummary!.totalRepubs)}
+            <Text style={styles.totalR} allowFontScaling>
+              {sharedCopy.partyR} {formatDonationAmount(donationSummary!.totalRepubs)}
             </Text>
-            <Text style={styles.totalDEM} allowFontScaling>
-              {sharedCopy.dem} {formatDonationAmount(donationSummary!.totalDems)}
+            <Text style={styles.totalD} allowFontScaling>
+              {sharedCopy.partyD} {formatDonationAmount(donationSummary!.totalDems)}
             </Text>
           </View>
 
@@ -122,11 +122,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: theme.space.lg,
   },
-  totalGOP: {
+  totalR: {
     ...theme.type.displayS,
     color: theme.colors.dangerRed,
   },
-  totalDEM: {
+  totalD: {
     ...theme.type.displayS,
     color: theme.colors.highlightBlue,
   },

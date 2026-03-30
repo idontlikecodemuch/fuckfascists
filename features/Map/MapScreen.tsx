@@ -18,8 +18,11 @@ import { UnmatchedBanner } from './components/UnmatchedBanner';
 import { TapLoadingMarker } from './components/TapLoadingMarker';
 import { MatchChooser } from './components/MatchChooser';
 import { NoMatchToast } from './components/NoMatchToast';
+import { HintBanner } from './components/HintBanner';
 import type { MapPin, ScanResult } from './types';
 import { MapControls } from './components/MapControls';
+import { useMapHints } from './hooks/useMapHints';
+import type { HintId } from './hooks/useMapHints';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { mapCopy } from '../../copy/map';
 import { sharedCopy } from '../../copy/shared';
@@ -47,6 +50,12 @@ interface MapScreenProps {
  */
 const HEADER_BAR_ASPECT = 1482 / 153;
 
+const HINT_COPY: Record<HintId, string> = {
+  search: mapCopy.hintSearch,
+  tap: mapCopy.hintTap,
+  barcode: mapCopy.hintBarcode,
+};
+
 export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: MapScreenProps) {
   const insets = useSafeAreaInsets();
   const { width: screenWidth } = useWindowDimensions();
@@ -72,6 +81,7 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
     handleMapPress, handlePoiClick, resetTapPins, clearLatestTapBatch, markTapPinAvoided,
   } = useTapSearch(deps, location.areaHash ?? '', regionRef);
 
+  const hints = useMapHints();
   const fx = useFX();
   const [avoidedResult, setAvoidedResult] = useState<ScanResult | null>(null);
   const avoidDismissTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -171,6 +181,11 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
       </View>
 
       <MapSearchBar value={searchText} onChangeText={setSearchText} onSubmit={handleSearch} isScanning={status === 'scanning'} topOffset={SEARCH_TOP} />
+      {hints.activeHint && !activeResult && (
+        <View style={[styles.hintContainer, { top: SEARCH_TOP + theme.a11y.minTapTarget + theme.space.xs }]}>
+          <HintBanner message={HINT_COPY[hints.activeHint]} onDismiss={() => hints.dismiss(hints.activeHint!)} />
+        </View>
+      )}
       <MapControls onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} onLocation={handleLocationPress} locationLoading={location.loading} />
 
       {latestTapBatch.length >= 2 && !activeResult && <MatchChooser results={latestTapBatch} onSelect={handleChooserSelect} onDismiss={handleChooserDismiss} />}
@@ -206,5 +221,6 @@ const styles = StyleSheet.create({
   headerLogo:     { height: 28, aspectRatio: 1536 / 322, zIndex: 3 },
   backdrop:       { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
   cardContainer:  { position: 'absolute', bottom: 0, left: 0, right: 0, overflow: 'visible' as const, maxHeight: '65%' },
+  hintContainer:  { position: 'absolute', left: theme.space.lg, right: theme.space.lg, zIndex: 1 },
   bannerContainer:{ position: 'absolute', bottom: 80, left: 0, right: 0 },
 });

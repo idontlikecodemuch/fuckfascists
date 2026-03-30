@@ -141,6 +141,15 @@ export const TRACK_ARENA_SINGLE_DISPLAY_RATIO = 0.9;
 export const TRACK_ARENA_SINGLE_LEFT_INSET = 16;
 export const TRACK_ARENA_SINGLE_BOTTOM_INSET = 0;
 
+// ── Parent company short names (Track screen group headers) ──────────────────
+// Data mapping for display — not user-facing copy.
+export const SHORT_PARENT_NAMES: Record<string, string> = {
+  'Meta Platforms': 'META',
+  'Amazon.com Inc': 'AMAZON',
+  'Alphabet Inc': 'ALPHABET',
+  'X Corp': 'X CORP',
+};
+
 // ── Screenshot harness (dev only) ────────────────────────────────────────────
 // Time to wait after rendering a step before capturing (ms).
 export const HARNESS_STEP_SETTLE_MS = 400;

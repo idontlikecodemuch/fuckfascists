@@ -2,10 +2,10 @@ export const platformsCopy = {
   tabLabel: "TRACK",
   // Header
   weekLabel: (weekOf: string) => `Week of ${weekOf}`,
-  editPlatforms: "Edit platforms",
+  editPlatforms: "Edit",
   editPlatformsA11y: "Edit platform selection",
-  avoidCountLabel: (n: number) => `${n}\u00d7 avoids this week`,
-  pumpUp: "LET'S GO!!!!",
+  avoidCountLabel: (n: number) => `${n}\u00d7 this week`,
+  pumpUp: "NOTHING AVOIDED YET",
   loading: "Loading platform data",
   checklist: "Platform checklist",
 
@@ -24,8 +24,8 @@ export const platformsCopy = {
   rowSubtitle: (company: string, ceo: string) => `${company} \u00b7 CEO: ${ceo}`,
 
   // Setup screen
-  setupTitle: "SELECT YOUR TARGETS",
-  setupSubhead: "Choose the platforms you want to track. You can change this anytime.",
+  setupTitle: "CHOOSE PLATFORMS",
+  setupSubhead: "Pick the platforms you want to avoid. Change anytime.",
   setupDone: "DONE",
 
   // Day circles
@@ -39,17 +39,9 @@ export const platformsCopy = {
   // Parent company group headers
   groupHeaderA11y: (name: string, total: number) => `${name} \u2014 ${total}\u00d7 this week`,
 
-  // Arena sprite tap reactions (cosmetic only \u2014 no data logged)
-  spriteReactions: ["ow!", "stop!", "no!", "hey!"] as readonly string[],
+  // Arena sprite tap reactions (cosmetic only — no data logged)
+  spriteReactions: ["ow!", "quit it!", "no!", "hey!", "FCK!"] as readonly string[],
   arenaTapA11y: (name: string) => `${name} sprite. Tap for reaction.`,
-
-  // Short parent company names for group headers
-  shortParentNames: {
-    'Meta Platforms': 'META',
-    'Amazon.com Inc': 'AMAZON',
-    'Alphabet Inc': 'ALPHABET',
-    'X Corp': 'X CORP',
-  } as Record<string, string>,
 
   // Dev tools (temporary)
   clearData: "Clear data",
@@ -57,9 +49,14 @@ export const platformsCopy = {
   clearDataConfirm: "All avoid data cleared.",
 
   // Nudge banner (app-wide, Thursday)
-  nudgeTitle: "Your card drops tomorrow.",
-  nudgeBody: "Any more fascists you f*cked this week?",
-  nudgeBanner: "Scorecard drops tomorrow \u2014 log your avoids!",
+  nudgeTitle: "Your scorecard is almost ready.",
+  nudgeBody: "Any avoids left to log?",
+  nudgeBanner: "Scorecard is almost ready \u2014 any avoids left to log?",
   nudgeDismiss: "DISMISS",
   nudgeDismissA11y: "Dismiss nudge banner",
+
+  // Perfect week
+  perfectWeekTitle: "PERFECT WEEK",
+  perfectWeekBody: (name: string) => `You avoided ${name} every single day. \uD83E\uDD18\uD83C\uDFFD`,
+  perfectWeekA11y: (name: string) => `Perfect week \u2014 avoided ${name} all seven days`,
 } as const;

@@ -41,6 +41,8 @@ function isAbout(v: unknown): boolean {
     typeof a['tagline'] === 'string' &&
     typeof a['description'] === 'string' &&
     typeof a['organization'] === 'string' &&
+    typeof a['ethosTitle'] === 'string' &&
+    typeof a['ethos'] === 'string' &&
     typeof a['sourceCodeUrl'] === 'string'
   );
 }

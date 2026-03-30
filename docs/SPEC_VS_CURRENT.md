@@ -23,7 +23,8 @@ This document tracks where the current implementation aligns with, deviates from
 | Gamified scorecard | Weekly drop, shareable | Weekly scorecard implemented |
 | Platform avoidance tracking | Daily checklist for social/streaming/delivery | Platform avoidance implemented |
 | 8-bit visual design system | Pixel art aesthetic, dark palette, chunky borders | `design/tokens.ts` + all 26 components migrated to theme tokens (Bungee + IBMPlexSans fonts, dark palette, hero/standard borders). 35 pixel art assets + 107 CEO sprite sheets deployed. Full design refinement: map header bar, tab bar texture, search bar depth, BusinessCard rebuilt as 3 composable files (BusinessCard + BusinessBanner + DataZone) with card/banner routing via resolveCardMode(), shared FX system (`core/fx/`) with FXLayer + useFX + effect registry replacing CelebrationOverlay, MatchChooser visual upgrade, GameArena sprite grid with cosmetic tap FX, PlatformGroup parent company grouping, InfoScreen collapsible transparency + section ornamentation. 4-step keying pipeline with 1px alpha erosion. |
-| Onboarding flow | Multi-screen first-run flow | 3 screens: Welcome, Permissions (location+notifications combined), Privacy |
+| Onboarding flow | Multi-screen first-run flow | 3 screens: Welcome, Privacy (WHAT WE DON'T DO), Permissions (BEFORE WE START) — with open-source tappable link and actual OS permission result checking |
+| Map first-use hints | Onboarding tooltips for map features | Three-stage dismissable hints (search → tap → barcode) persisted via SecureStore |
 | Beta testing mode | Hidden dev tools | Triple-tap version label → BetaOverlay with screenshot tool |
 
 ---

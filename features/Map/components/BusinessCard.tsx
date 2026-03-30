@@ -95,7 +95,7 @@ export function BusinessCard({
   const handleAvoid = async () => {
     await onAvoid();
     AccessibilityInfo.announceForAccessibility(
-      mapCopy.cardAvoidedAnnouncement(displayName),
+      mapCopy.cardAvoidedAnnouncement,
     );
   };
 

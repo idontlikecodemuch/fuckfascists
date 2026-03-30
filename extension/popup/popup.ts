@@ -72,13 +72,13 @@ function renderFlag(flag: TabFlag) {
 
   if (flag.donationDataAvailable && flag.recentCycle !== null) {
     recentAmountEl.textContent =
-      `${extCopy.gopPrefix}${formatDonationAmount(flag.recentRepubs)}${extCopy.demSep}${formatDonationAmount(flag.recentDems)}`;
+      `${extCopy.rPrefix}${formatDonationAmount(flag.recentRepubs)}${extCopy.dSep}${formatDonationAmount(flag.recentDems)}`;
     recentCycleEl.textContent  = `${extCopy.cyclePrefix}${formatCycleLabel(flag.recentCycle)}`;
     recentAmountEl.hidden = false;
     recentCycleEl.hidden  = false;
 
     totalSince2016.textContent =
-      `${extCopy.totalPrefix}${formatDonationAmount(flag.totalRepubs)}${extCopy.demSep}${formatDonationAmount(flag.totalDems)}`;
+      `${extCopy.totalPrefix}${formatDonationAmount(flag.totalRepubs)}${extCopy.dSep}${formatDonationAmount(flag.totalDems)}`;
     totalSince2016.hidden = false;
 
     if (flag.activeCycles.length > 0) {

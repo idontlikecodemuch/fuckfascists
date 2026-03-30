@@ -12,6 +12,43 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: March 30, 2026 (Copy rewrite + structural follow-ups)
+**Focus:** Complete copy rewrite across all 11 copy files and 9+ component files based on the Voice & Ethos Framework v3.2. Then implement 6 structural follow-up tasks flagged during the rewrite.
+
+**What changed:**
+
+**Copy rewrite (11 files):**
+1. `copy/shared.ts` — brand name "FCK FASCISTS" (no asterisk), party labels `R:`/`D:` replacing `GOP`/`DEM`, app-wide URL variables (`siteUrl`, `repoUrl`, `dataRepoUrl`, `issuesUrl`, `privacyUrl`, `contactEmail`, extension URLs), site URL `fckfascists.com`
+2. `copy/onboard.ts` — voice rewrite, renamed variables, added `featureScan`, `privacySubhead`, `openSourceLink`. Removed `note`, `ourPromise`, `done`
+3. `copy/map.ts` — voice fixes, first-use hint copy added, `cardAvoidedAnnouncement` changed from function to static string
+4. `copy/platforms.ts` — voice updates, added `perfectWeek*` copy, `shortParentNames` moved out to config
+5. `copy/scorecard.ts` — collapsed 4 source verbs into single `sourceLine`, new tokenized empty state, imports `sharedCopy` for CTA URL
+6. `copy/info.ts` — "HOW IT WORKS" → "THE DATA"
+7. `copy/infoContent.ts` — full rewrite, imports `sharedCopy` for URLs, added ethos section, new FAQ/transparency entries
+8. `copy/launch.ts` — all 7 rotating messages replaced
+9. `copy/scan.ts` — body and footnote rewritten
+10. `copy/beta.ts` — no changes needed
+11. `extension/copy.ts` — `gopPrefix` → `rPrefix`, `demSep` → `dSep`, content voice updates
+
+**Component updates (10 files):**
+- `App.tsx`, `DataZone.tsx`, `BusinessCard.tsx`, `WelcomeScreen.tsx`, `PrivacyScreen.tsx`, `PermissionsScreen.tsx`, `ScorecardView.tsx`, `extension/popup/popup.ts`, `Dev/harnessRenderers/gateStates.tsx`
+- Key changes: R:/D: labels everywhere, tokenized scorecard empty state, tappable open-source link, actual OS permission result checking
+
+**Structural follow-ups (6 tasks):**
+1. Info ethos section — `InfoScreen.tsx` renders `ethosTitle` + `ethos`. Validation + types updated.
+2. Map first-use hints — `useMapHints` hook + `HintBanner` component + `MapScreen` integration
+3. PrivacyScreen tappable link — "Check it yourself." opens GitHub repo
+4. `shortParentNames` moved from copy to `config/constants.ts` as `SHORT_PARENT_NAMES`
+5. PermissionsScreen checks actual `{ granted }` from OS dialog
+6. dSep V2 flag added to CLAUDE.md Known Limitations
+
+**Pending:**
+- TBD copy placeholders (`contactEmail`, extension URLs) still `"[need to change!!]"`
+- Map hints need device testing
+- `about.ethos` needs CDN JSON update when info.json is next deployed
+
+---
+
 ### Session: March 24, 2026 (OFF products sync + cleanup)
 **Focus:** Turn the modular `products.json` layer into a real UPC-focused producer dataset by scanning the local Open Food Facts bulk archive, checkpointing the work, and tightening alias quality without touching `entities.json` or `people.json`.
 

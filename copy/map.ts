@@ -1,9 +1,9 @@
 export const mapCopy = {
   tabLabel: "MAP",
-  mapLabel: "Map showing nearby flagged businesses",
+  mapLabel: "Map showing nearby businesses with political funding on file",
   searchPlaceholder: "Search a business name...",
   searchLabel: "Search for a business",
-  searchHint: "Type a business name and press search to check its FEC donation record",
+  searchHint: "Search a business to see its political funding record",
   scanning: "Scanning\u2026",
   search: "Search",
   scanIcon: "\u2315",
@@ -26,11 +26,12 @@ export const mapCopy = {
   avoidDoneLabel: "Avoided \u2014 confirmed",
   avoidRetryLabel: "Avoid failed \u2014 try again",
   markerAvoided: (name: string) => `Avoided: ${name}`,
-  markerFlagged: (name: string, confidenceLabel: string) => `Flagged business: ${name}. Confidence: ${confidenceLabel}. Tap for details.`,
+  markerFlagged: (name: string, confidenceLabel: string) =>
+    `Business with political funding on file: ${name}. Confidence: ${confidenceLabel}. Tap for details.`,
   tapLoading: "Searching nearby businesses",
   tapNoMatch: "No match found",
-  noMatch: (text: string) => `Couldn\u2019t match \u201C${text}\u201D to an FEC filing.`,
-  lookupFailed: (text: string) => `FEC.gov lookup failed for \u201C${text}\u201D \u2014 try again later.`,
+  noMatch: (text: string) => `No FEC record found for \u201C${text}\u201D.`,
+  lookupFailed: (text: string) => `Couldn\u2019t reach FEC.gov for \u201C${text}\u201D. Try again later.`,
   fecSearch: "Search FEC.gov \u2197",
   fecSearchLabel: "Search FEC.gov directly",
   chooserHeading: (n: number) => `${n} MATCHES FOUND`,
@@ -49,18 +50,18 @@ export const mapCopy = {
   barcodeSettingsAction: "Open settings",
   barcodeSettingsActionLabel: "Open device settings to enable camera access",
   barcodeUnavailableTitle: "Camera unavailable",
-  barcodeUnavailableBody: "This runtime can’t open the camera scanner. Rebuild the app or try on a physical device.",
+  barcodeUnavailableBody: "Camera not available. Check your device settings.",
   barcodeFallbackLabel: "barcode",
-  barcodeNoMatch: (label: string) => `Couldn\u2019t map \u201C${label}\u201D to a tracked parent company.`,
+  barcodeNoMatch: (label: string) => `Couldn\u2019t trace \u201C${label}\u201D to a company in our records.`,
   barcodeLookupFailed: (label: string) => `Barcode lookup failed for \u201C${label}\u201D. Try again in a moment.`,
-  barcodeUnsupported: (label: string) => `\u201C${label}\u201D isn\u2019t a supported retail barcode. Try a UPC or EAN code.`,
+  barcodeUnsupported: (label: string) => `\u201C${label}\u201D isn\u2019t a supported barcode type. Try a UPC or EAN code.`,
   barcodeContextEyebrow: "SCANNED PRODUCT",
   barcodeContextLine: (label: string, barcode: string) => `${label} \u00b7 BARCODE ${barcode}`,
-  // Banner states — lightweight dismissible bar for non-card results
-  bannerNoMatch: (text: string) => `No FEC match for \u201C${text}\u201D.`,
-  bannerLookupFailed: (text: string) => `Lookup failed for \u201C${text}\u201D \u2014 try again later.`,
+  // Banner states
+  bannerNoMatch: (text: string) => `No FEC record for \u201C${text}\u201D.`,
+  bannerLookupFailed: (text: string) => `Couldn\u2019t reach FEC.gov for \u201C${text}\u201D. Try again later.`,
   bannerNoPac: (name: string) => `${name} has no corporate PAC on file.`,
-  bannerDissolved: (name: string) => `${name}\u2019s PAC is dissolved with no recorded donations.`,
+  bannerDissolved: (name: string) => `${name}\u2019s PAC is dissolved. No recorded activity.`,
   bannerDismissLabel: "Dismiss banner",
   // DataZone
   dataZoneDetail: "See full breakdown \u2192",
@@ -70,6 +71,11 @@ export const mapCopy = {
   // Chooser — screen reader
   chooserModalLabel: "Choose which business to view",
   // Card — screen reader
-  cardAvoidedAnnouncement: (name: string) => `Avoided ${name}. Well done.`,
+  cardAvoidedAnnouncement: "Avoided. Nice!",
   cardModalLabel: "Business detail card",
+  // First-use hints (persist dismissal via SecureStore)
+  hintSearch: "Search a business or tap on the map to see its political funding.",
+  hintTap: "Tap any business on the map to pull up its record.",
+  hintBarcode: "Use the UPC button to scan a product barcode.",
+  hintDismissLabel: "Dismiss hint",
 } as const;

@@ -50,6 +50,14 @@ export function InfoScreen({ onVersionTap }: InfoScreenProps) {
             <Text style={styles.body} allowFontScaling>{about.description}</Text>
             <Text style={styles.org} allowFontScaling>{about.organization}</Text>
           </View>
+          {about.ethos ? (
+            <View style={styles.ethosBlock}>
+              <Text style={styles.ethosTitle} accessibilityRole="header" allowFontScaling>
+                {about.ethosTitle}
+              </Text>
+              <Text style={styles.ethosBody} allowFontScaling>{about.ethos}</Text>
+            </View>
+          ) : null}
         </InfoSection>
 
         {/* ── Transparency (collapsible) ── */}
@@ -105,6 +113,9 @@ const styles = StyleSheet.create({
   tagline:     { ...theme.type.uiLabel, color: theme.colors.rewardYellow, marginBottom: theme.space.md, lineHeight: 22, textAlign: 'center' as const },
   body:        { ...theme.type.bodyS, fontSize: 13, color: theme.colors.textSecondary, lineHeight: 21, marginBottom: 10 },
   org:         { ...theme.type.caption, color: theme.colors.textSecondary, fontStyle: 'italic' },
+  ethosBlock:  { padding: theme.space.lg, borderTopWidth: theme.borders.standard.width, borderColor: theme.colors.surface2 },
+  ethosTitle:  { ...theme.type.displayS, fontSize: 14, color: theme.colors.rewardYellow, letterSpacing: 2, marginBottom: theme.space.sm },
+  ethosBody:   { ...theme.type.bodyS, fontSize: 13, color: theme.colors.textSecondary, lineHeight: 21 },
   collapseToggle: { minHeight: theme.a11y.minTapTarget, alignItems: 'center', justifyContent: 'center', backgroundColor: theme.colors.surface1, borderBottomWidth: theme.borders.standard.width, borderColor: theme.colors.surface2 },
   collapseText:   { ...theme.type.caption, color: theme.colors.highlightBlue },
   tPoint:      { padding: theme.space.lg, borderBottomWidth: theme.borders.hero.width, borderColor: theme.colors.surface2 },

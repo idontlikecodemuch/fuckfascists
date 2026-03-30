@@ -75,7 +75,7 @@ function PermissionsGrantedMock() {
     <OnboardingSlide
       stepIndex={2}
       title={onboardCopy.permissionsTitle}
-      nextLabel={onboardCopy.done}
+      nextLabel={onboardCopy.next}
       onNext={noop}
       onSkip={noop}
     >
@@ -83,19 +83,13 @@ function PermissionsGrantedMock() {
         <View style={[grantedStyles.card, grantedStyles.cardDone]}>
           <Text style={grantedStyles.cardTitle} allowFontScaling>{onboardCopy.locTitle}</Text>
           <Text style={grantedStyles.cardWhy} allowFontScaling>{onboardCopy.locWhy}</Text>
-          <View style={grantedStyles.promiseBox}>
-            <Text style={grantedStyles.promiseLabel} allowFontScaling>{onboardCopy.ourPromise}</Text>
-            <Text style={grantedStyles.promise} allowFontScaling>{onboardCopy.locPromise}</Text>
-          </View>
+          <Text style={grantedStyles.promise} allowFontScaling>{onboardCopy.locPromise}</Text>
           <Text style={grantedStyles.confirmedLabel} allowFontScaling>{onboardCopy.confirmed}</Text>
         </View>
         <View style={[grantedStyles.card, grantedStyles.cardDone]}>
           <Text style={grantedStyles.cardTitle} allowFontScaling>{onboardCopy.notifTitle}</Text>
           <Text style={grantedStyles.cardWhy} allowFontScaling>{onboardCopy.notifWhy}</Text>
-          <View style={grantedStyles.promiseBox}>
-            <Text style={grantedStyles.promiseLabel} allowFontScaling>{onboardCopy.ourPromise}</Text>
-            <Text style={grantedStyles.promise} allowFontScaling>{onboardCopy.notifPromise}</Text>
-          </View>
+          <Text style={grantedStyles.promise} allowFontScaling>{onboardCopy.notifPromise}</Text>
           <Text style={grantedStyles.confirmedLabel} allowFontScaling>{onboardCopy.confirmed}</Text>
         </View>
       </View>
@@ -137,23 +131,11 @@ const grantedStyles = StyleSheet.create({
     lineHeight: 20,
     marginBottom: theme.space.md,
   },
-  promiseBox: {
-    borderWidth: theme.borders.standard.width,
-    borderColor: theme.colors.surface2,
-    padding: theme.space.md,
-    marginBottom: theme.space.lg,
-  },
-  promiseLabel: {
-    ...theme.type.caption,
-    fontWeight: 'bold',
-    color: theme.colors.rewardYellow,
-    letterSpacing: 2,
-    marginBottom: theme.space.xs,
-  },
   promise: {
     ...theme.type.bodyS,
     color: theme.colors.textSecondary,
     lineHeight: 18,
+    marginBottom: theme.space.md,
   },
   confirmedLabel: {
     ...theme.type.uiLabel,

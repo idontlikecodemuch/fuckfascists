@@ -2,7 +2,7 @@ export const infoCopy = {
   tabLabel: "INFO",
   title: "INFO",
   about: "ABOUT",
-  data: "HOW IT WORKS",
+  data: "THE DATA",
   faq: "FAQ",
   links: "LINKS & SOURCE",
   linkText: (label: string) => `${label} \u2197`,

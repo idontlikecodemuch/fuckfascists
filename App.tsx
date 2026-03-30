@@ -13,6 +13,7 @@ import { theme } from './design/tokens';
 import { OnboardingGate } from './app/gates/OnboardingGate';
 import { LaunchGate } from './app/gates/LaunchGate';
 import { AppShell } from './app/gates/AppShell';
+import { sharedCopy } from './copy/shared';
 import { SqliteAdapter } from './app/storage/SqliteAdapter';
 import { fetchEntityList, parseEntityList } from './core/data';
 import type { StorageAdapter } from './core/data';
@@ -64,7 +65,7 @@ export default function App() {
     return (
       <SafeAreaProvider>
         <View style={styles.splash}>
-          <Text style={styles.splashTitle}>F*CK{'\n'}FASCISTS</Text>
+          <Text style={styles.splashTitle}>{sharedCopy.appName.replace(' ', '\n')}</Text>
           <ActivityIndicator color={theme.colors.rewardYellow} style={styles.splashSpinner} />
         </View>
       </SafeAreaProvider>

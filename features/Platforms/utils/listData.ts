@@ -1,6 +1,6 @@
 import type { Platform } from '../types';
 import { getDisplayFigure } from '../context/TrackContext';
-import { platformsCopy } from '../../../copy/platforms';
+import { SHORT_PARENT_NAMES } from '../../../config/constants';
 
 // ── List item types ──────────────────────────────────────────────────────────
 
@@ -42,7 +42,7 @@ export function buildListData(
 
   for (const [company, members] of grouped) {
     const figure = getDisplayFigure(members[0]!);
-    const shortName = platformsCopy.shortParentNames[company]
+    const shortName = SHORT_PARENT_NAMES[company]
       ?? company.replace(/,?\s*(Inc|Corp|LLC|Ltd|\.com)\.?/gi, '').trim().toUpperCase();
 
     items.push({

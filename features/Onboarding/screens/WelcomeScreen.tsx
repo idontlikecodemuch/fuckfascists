@@ -46,12 +46,9 @@ export function WelcomeScreen({ stepIndex, onNext }: WelcomeScreenProps) {
         <View style={styles.features}>
           <Text style={styles.feature} allowFontScaling>{onboardCopy.featureMap}</Text>
           <Text style={styles.feature} allowFontScaling>{onboardCopy.featureTrack}</Text>
+          <Text style={styles.feature} allowFontScaling>{onboardCopy.featureScan}</Text>
           <Text style={styles.feature} allowFontScaling>{onboardCopy.featureScorecard}</Text>
         </View>
-
-        <Text style={styles.note} allowFontScaling>
-          {onboardCopy.note}
-        </Text>
       </View>
     </OnboardingSlide>
   );
@@ -63,7 +60,6 @@ const styles = StyleSheet.create({
   tagline:  { ...theme.type.displayS, color: theme.colors.textPrimary, lineHeight: 28, marginBottom: theme.space['2xl'] },
   divider:  { width: 48, height: 4, backgroundColor: theme.colors.dangerRed, marginBottom: theme.space['2xl'] },
   body:     { ...theme.type.bodyM, color: theme.colors.textSecondary, lineHeight: 22, marginBottom: theme.space.lg },
-  features: { gap: theme.space.sm, marginBottom: theme.space['2xl'] },
+  features: { gap: theme.space.sm },
   feature:  { ...theme.type.caption, fontWeight: 'bold', color: theme.colors.rewardYellow, letterSpacing: 1 },
-  note:     { ...theme.type.caption, color: theme.colors.textSecondary, letterSpacing: 1 },
 });

@@ -16,6 +16,8 @@ export interface AboutContent {
   tagline: string;
   description: string;
   organization: string;
+  ethosTitle: string;
+  ethos: string;
   sourceCodeUrl: string;
 }
 

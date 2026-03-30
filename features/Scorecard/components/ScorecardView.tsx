@@ -71,24 +71,11 @@ export const ScorecardView = forwardRef<View, ScorecardViewProps>(
          * links are also reachable via VoiceOver swipe-through navigation. */}
         {isEmpty && (
           <View style={styles.emptyState}>
+            <Text style={styles.emptyTitle} allowFontScaling={false}>
+              {scorecardCopy.emptyTitle}
+            </Text>
             <Text style={styles.emptyText} allowFontScaling={false}>
-              {scorecardCopy.emptyBefore}
-              <Text
-                style={styles.emptyLink}
-                onPress={onSwitchTab ? () => onSwitchTab('map') : undefined}
-                accessibilityRole={onSwitchTab ? 'link' : undefined}
-              >
-                {scorecardCopy.emptyMap}
-              </Text>
-              {scorecardCopy.emptyMiddle}
-              <Text
-                style={styles.emptyLink}
-                onPress={onSwitchTab ? () => onSwitchTab('platforms') : undefined}
-                accessibilityRole={onSwitchTab ? 'link' : undefined}
-              >
-                {scorecardCopy.emptyTrack}
-              </Text>
-              {scorecardCopy.emptyAfter}
+              {renderEmptyBody(scorecardCopy.emptyBody, onSwitchTab)}
             </Text>
           </View>
         )}
@@ -186,14 +173,36 @@ function extractLastName(fullName: string): string {
   return parts[parts.length - 1];
 }
 
-/** Formats a source using the verb-specific copy functions. */
+/** Formats a source line — single verb for all avoid types. */
 function formatSource(source: ScorecardSource): string {
-  switch (source.verb) {
-    case 'stayed off':  return scorecardCopy.sourceStayedOff(source.name, source.count);
-    case 'skipped':     return scorecardCopy.sourceSkipped(source.name, source.count);
-    case 'walked past': return scorecardCopy.sourceWalkedPast(source.name, source.count);
-    default:            return scorecardCopy.sourceAvoided(source.name, source.count);
-  }
+  return scorecardCopy.sourceLine(source.name, source.count);
+}
+
+/** Renders the empty state body, replacing {map} and {track} tokens with tappable links. */
+function renderEmptyBody(
+  template: string,
+  onSwitchTab?: (tab: string) => void,
+): React.ReactNode[] {
+  const TOKEN_MAP: Record<string, { label: string; tab: string }> = {
+    map: { label: 'Map', tab: 'map' },
+    track: { label: 'Track', tab: 'platforms' },
+  };
+  return template.split(/\{(\w+)\}/).map((part, i) => {
+    const token = TOKEN_MAP[part];
+    if (token) {
+      return (
+        <Text
+          key={i}
+          style={styles.emptyLink}
+          onPress={onSwitchTab ? () => onSwitchTab(token.tab) : undefined}
+          accessibilityRole={onSwitchTab ? 'link' : undefined}
+        >
+          {token.label}
+        </Text>
+      );
+    }
+    return <React.Fragment key={i}>{part}</React.Fragment>;
+  });
 }
 
 // ── Styles ────────────────────────────────────────────────────────────────────
@@ -207,6 +216,7 @@ const styles = StyleSheet.create({
   weekRange:      { ...theme.type.caption, fontSize: 10, color: theme.colors.textSecondary, marginTop: 6, letterSpacing: 1 },
   // Empty state
   emptyState:     { padding: theme.space['3xl'], alignItems: 'center' },
+  emptyTitle:     { ...theme.type.displayM, color: theme.colors.dangerRed, letterSpacing: 2, marginBottom: theme.space.md },
   emptyText:      { ...theme.type.bodyS, fontSize: 13, color: theme.colors.dangerRed, textAlign: 'center', lineHeight: 22, fontWeight: 'bold' },
   emptyLink:      { color: theme.colors.rewardYellow, textDecorationLine: 'underline' },
   // Body
