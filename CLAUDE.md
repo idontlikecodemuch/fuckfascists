@@ -504,6 +504,7 @@ All user-facing strings live in `copy/` (mobile) or `extension/copy.ts` (extensi
 - **Audit:** run `bash scripts/audit-copy.sh` at the end of any session that creates or modifies UI components. Fix any hits before committing.
 - **Info editorial content** (FAQ answers, about text, methodology) lives in `copy/infoContent.ts` as a bundled default. `useInfoContent` hook fetches from `INFO_CONTENT_URL` in the background and replaces bundled content if a valid update is available. Fetch failure silently falls back to bundled. This is the same pattern as entities.json: bundled first, fetch if available, stale bundled as fallback.
 - **Info UI chrome** (section headers, labels, icons) stays in `copy/info.ts` — bundled only, updated via app releases.
+- **Copy-preview tool sync** — `tools/copy-preview/` contains an interactive HTML review tool with a consolidated `copy-all.json` (flat JSON of all copy files) and `copy-all.js` (auto-generated JS wrapper). **After any session that modifies copy files, regenerate both files** to keep the review tool in sync. Regeneration: update `copy-all.json` by hand (flatten functions to `{param}` templates, arrays to dot notation), then run `node -e "const j=require('./tools/copy-preview/copy-all.json');require('fs').writeFileSync('./tools/copy-preview/copy-all.js','// Auto-generated from copy-all.json — do not edit directly.\nvar COPY_ALL_DATA = '+JSON.stringify(j,null,2)+';\n')"`. Also update `SURFACE_COPY_MAP` in `index.html` if keys were added, removed, or renamed.
 
 ---
 
