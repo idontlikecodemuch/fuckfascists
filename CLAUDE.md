@@ -29,6 +29,7 @@ These documents are the authoritative reference for the project. New instances s
 | App Spec (original) | /docs/FuckFascists_AppSpec_ORIGINAL.docx | Canonical product vision as originally written — do not modify |
 | README | /README.md | Plain-English public overview — keep current with major feature changes |
 | Spec vs. Current State | /docs/SPEC_VS_CURRENT.md | Living document tracking alignment, deviations, and open decisions |
+| Voice & Ethos Framework | /docs/FCK_VOICE_FRAMEWORK.md | Canonical voice guide — two voices (Clark the Clerk + The Sh*tposter), tone rules, copy patterns |
 | CLAUDE.md | /CLAUDE.md | Technical reference for AI agents — update continuously |
 
 **Update cadence:** PROGRESS.md after every session. CLAUDE.md continuously. README.md and SPEC_VS_CURRENT.md when features ship or decisions resolve. Never modify the original spec. When PROGRESS.md exceeds ~10K tokens, move sessions older than one week to PROGRESS_ARCHIVE.md.
