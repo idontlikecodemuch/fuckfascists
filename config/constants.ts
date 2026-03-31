@@ -59,13 +59,17 @@ export const NUDGE_DAY = 4;    // Thursday
 export const NUDGE_HOUR = 19;  // 7pm local time
 
 // Default platforms pre-checked on the setup screen.
-// IDs from features/Platforms/data/platformList.ts.
+// Must match defaultSelected: true entries in assets/data/platforms.json.
+// NOTE: 'twitter' was renamed to 'x-twitter' in platforms.json v1.
+// Existing users with 'twitter' in their saved roster will not auto-migrate.
 export const DEFAULT_SELECTED_PLATFORM_IDS = [
-  'twitter',
-  'instagram',
   'facebook',
-  'amazon',
+  'instagram',
   'youtube',
+  'amazon',
+  'tiktok',
+  'x-twitter',
+  'netflix',
 ];
 
 // ── Shared FX system ─────────────────────────────────────────────────────────

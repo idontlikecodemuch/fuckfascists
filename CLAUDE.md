@@ -709,6 +709,12 @@ After writing any file, scan it once for deprecated APIs, `.then()` chains, `var
 
 ## Known Limitations / Technical Debt
 
+### platforms.json — match-group entity missing (Priority: V1 cleanup)
+`assets/data/platforms.json` references `entityId: "match-group"` for the Match Group parent (Tinder, Hinge, OkCupid). No matching entity exists in `entities.json`. As a result, these three child platforms have `ceoName: ''`, no sprite, no FEC data, and `parentCompany` falls back to the raw string `'match-group'`. Add a `match-group` entity to `entities.json` to fix. Run `verify-entities.mjs` to locate the correct FEC committee ID.
+
+### platforms.json — storage migration needed for renamed/removed IDs (Priority: V1 cleanup)
+The platforms.json v1 roster renamed `twitter` → `x-twitter` and removed `amazon-prime`. Existing user data (SQLite avoid events, SecureStore roster) referencing the old IDs is not auto-migrated — events become invisible and saved rosters silently drop those platforms. A one-time migration step is needed before shipping to users who have run older builds. The migration should: (1) rename `platformId: 'twitter'` rows to `'x-twitter'` in the platform_avoids table; (2) update stored roster arrays in SecureStore to replace `'twitter'` with `'x-twitter'` and drop `'amazon-prime'`.
+
 ### service-worker.ts over 250 lines (Priority: V1 cleanup)
 `extension/background/service-worker.ts` is 389 lines — over the 250-line file limit. Pre-existing violation; was 361 lines before the API key removal session. Refactor plan: extract `handleCheckDomain`, `isBundledDataFresh`, and related data-fetch logic into `extension/background/domainCheck.ts`. The message router, tab lifecycle listeners, and alarm handler stay in `service-worker.ts`.
 

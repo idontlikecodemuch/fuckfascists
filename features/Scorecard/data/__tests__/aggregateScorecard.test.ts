@@ -41,18 +41,21 @@ const noTagsEntity: Entity = {
 };
 
 const instagramPlatform: Platform = {
-  id: 'instagram', name: 'Instagram', parentCompany: 'Meta Platforms',
-  ceoName: 'Mark Zuckerberg', categoryTags: ['social'],
+  id: 'instagram', name: 'Instagram', entityId: 'meta',
+  parentCompany: 'Meta Platforms', ceoName: 'Mark Zuckerberg',
+  categoryTags: ['social'], sortOrder: 102, defaultSelected: true,
 };
 
 const facebookPlatform: Platform = {
-  id: 'facebook', name: 'Facebook', parentCompany: 'Meta Platforms',
-  ceoName: 'Mark Zuckerberg', categoryTags: ['social'],
+  id: 'facebook', name: 'Facebook', entityId: 'meta',
+  parentCompany: 'Meta Platforms', ceoName: 'Mark Zuckerberg',
+  categoryTags: ['social'], sortOrder: 101, defaultSelected: true,
 };
 
 const amazonPlatform: Platform = {
-  id: 'amazon-shop', name: 'Amazon', parentCompany: 'Amazon.com Inc',
-  ceoName: 'Andy Jassy', categoryTags: ['shopping', 'streaming'],
+  id: 'amazon-shop', name: 'Amazon', entityId: 'amazon',
+  parentCompany: 'Amazon.com Inc', ceoName: 'Andy Jassy',
+  categoryTags: ['shopping', 'streaming'], sortOrder: 301, defaultSelected: true,
 };
 
 const allEntities = [walmart, amazon, meta, instagram, noTagsEntity];

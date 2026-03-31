@@ -1,0 +1,151 @@
+{
+  "version": 1,
+  "platforms": [
+    {
+      "id": "meta",
+      "name": "Meta",
+      "entityId": "meta",
+      "sortOrder": 100,
+      "children": [
+        { "id": "facebook",  "name": "Facebook",  "defaultSelected": true,  "sortOrder": 101 },
+        { "id": "instagram", "name": "Instagram", "defaultSelected": true,  "sortOrder": 102 },
+        { "id": "whatsapp",  "name": "WhatsApp",  "defaultSelected": false, "sortOrder": 103 },
+        { "id": "messenger", "name": "Messenger", "defaultSelected": false, "sortOrder": 104 },
+        { "id": "threads",   "name": "Threads",   "defaultSelected": false, "sortOrder": 105 }
+      ]
+    },
+    {
+      "id": "alphabet",
+      "name": "Alphabet",
+      "entityId": "google-alphabet",
+      "sortOrder": 200,
+      "children": [
+        { "id": "youtube", "name": "YouTube", "defaultSelected": true,  "sortOrder": 201 },
+        { "id": "gemini",  "name": "Gemini",  "defaultSelected": false, "sortOrder": 202 }
+      ]
+    },
+    {
+      "id": "amazon-group",
+      "name": "Amazon",
+      "entityId": "amazon",
+      "sortOrder": 300,
+      "children": [
+        { "id": "amazon", "name": "Amazon", "defaultSelected": true,  "sortOrder": 301 },
+        { "id": "twitch", "name": "Twitch", "defaultSelected": false, "sortOrder": 302 }
+      ]
+    },
+    {
+      "id": "tiktok",
+      "name": "TikTok",
+      "entityId": "bytedance",
+      "defaultSelected": true,
+      "sortOrder": 400
+    },
+    {
+      "id": "x-twitter",
+      "name": "X / Twitter",
+      "entityId": "x-twitter",
+      "defaultSelected": true,
+      "sortOrder": 500
+    },
+    {
+      "id": "netflix",
+      "name": "Netflix",
+      "entityId": "netflix",
+      "defaultSelected": true,
+      "sortOrder": 600
+    },
+    {
+      "id": "uber",
+      "name": "Uber",
+      "entityId": "uber",
+      "defaultSelected": false,
+      "sortOrder": 700
+    },
+    {
+      "id": "chatgpt",
+      "name": "ChatGPT",
+      "entityId": "openai",
+      "defaultSelected": false,
+      "sortOrder": 800
+    },
+    {
+      "id": "reddit",
+      "name": "Reddit",
+      "entityId": "reddit",
+      "defaultSelected": false,
+      "sortOrder": 900
+    },
+    {
+      "id": "paypal-venmo",
+      "name": "PayPal / Venmo",
+      "entityId": "paypal",
+      "defaultSelected": false,
+      "sortOrder": 1000
+    },
+    {
+      "id": "spotify",
+      "name": "Spotify",
+      "entityId": "spotify",
+      "defaultSelected": false,
+      "sortOrder": 1100
+    },
+    {
+      "id": "snapchat",
+      "name": "Snapchat",
+      "entityId": "snap",
+      "defaultSelected": false,
+      "sortOrder": 1200
+    },
+    {
+      "id": "walmart",
+      "name": "Walmart",
+      "entityId": "walmart",
+      "defaultSelected": false,
+      "sortOrder": 1300
+    },
+    {
+      "id": "claude",
+      "name": "Claude AI",
+      "entityId": "anthropic",
+      "defaultSelected": false,
+      "sortOrder": 1400
+    },
+    {
+      "id": "pinterest",
+      "name": "Pinterest",
+      "entityId": "pinterest",
+      "defaultSelected": false,
+      "sortOrder": 1500
+    },
+    {
+      "id": "discord",
+      "name": "Discord",
+      "entityId": "discord",
+      "defaultSelected": false,
+      "sortOrder": 1600
+    },
+    {
+      "id": "match-group",
+      "name": "Match Group",
+      "entityId": "match-group",
+      "sortOrder": 1700,
+      "children": [
+        { "id": "tinder",  "name": "Tinder",  "defaultSelected": false, "sortOrder": 1701 },
+        { "id": "hinge",   "name": "Hinge",   "defaultSelected": false, "sortOrder": 1702 },
+        { "id": "okcupid", "name": "OkCupid", "defaultSelected": false, "sortOrder": 1703 }
+      ]
+    },
+    {
+      "id": "microsoft",
+      "name": "Microsoft",
+      "entityId": "microsoft",
+      "sortOrder": 1800,
+      "children": [
+        { "id": "linkedin",     "name": "LinkedIn",       "defaultSelected": false, "sortOrder": 1801 },
+        { "id": "github",       "name": "GitHub",         "defaultSelected": false, "sortOrder": 1802 },
+        { "id": "bing-copilot", "name": "Bing / Copilot", "defaultSelected": false, "sortOrder": 1803 }
+      ]
+    }
+  ]
+}

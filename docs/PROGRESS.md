@@ -12,6 +12,28 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: March 31, 2026 (Data-driven platform roster — platforms.json)
+**Focus:** Replace the hardcoded platform array in `platformList.ts` with a data-driven roster loaded from `assets/data/platforms.json`.
+
+**What changed:**
+- `assets/data/platforms.json` — NEW. 18 top-level entries (5 groups + 13 singletons), 28 leaf platforms total. Groups: Meta, Alphabet, Amazon, Match Group, Microsoft. Covers major social, streaming, shopping, AI, and dating platforms.
+- `features/Platforms/types.ts` — Added 5 new raw JSON types (`RawPlatformChild`, `RawPlatformGroup`, `RawPlatformSingleton`, `RawPlatformEntry`, `PlatformFile`). Updated `Platform` interface with 3 new required fields: `entityId` (links to entities.json), `sortOrder` (display order), `defaultSelected` (setup screen pre-check).
+- `features/Platforms/data/platformList.ts` — Completely rewritten. Exports `parsePlatformFile`, `flattenPlatforms`, and `TRACKED_PLATFORMS` (computed synchronously at module load from bundled JSON + entity enrichment). Groups are expanded to their children; children inherit parent's `entityId`. Entity enrichment populates `parentCompany`, `ceoName`, `publicFigureName`, `categoryTags` from entities.json. Fallback: if entity not found, `parentCompany` = entityId, `ceoName` = ''.
+- `config/constants.ts` — Updated `DEFAULT_SELECTED_PLATFORM_IDS` to match new JSON defaults: `['facebook', 'instagram', 'youtube', 'amazon', 'tiktok', 'x-twitter', 'netflix']`.
+- `features/Platforms/__tests__/platformList.test.ts` — Fully rewritten: 26 tests covering `parsePlatformFile`, `flattenPlatforms`, and `TRACKED_PLATFORMS` singleton.
+- `features/Dev/harnessFixtures.ts` — Fixture Platform objects updated with new required fields (`entityId`, `sortOrder`, `defaultSelected`).
+- `features/Scorecard/data/__tests__/aggregateScorecard.test.ts` — Fixture Platform objects updated with new required fields.
+
+**All 339 tests passing (30 suites).**
+
+**Known flags (action required before launch):**
+1. `match-group` entityId not found in entities.json — Tinder/Hinge/OkCupid render with `ceoName: ''` and no sprite. Add `match-group` entity to entities.json to fix.
+2. `twitter` → `x-twitter` ID rename: existing user avoid events stored as `platformId: 'twitter'` are orphaned (invisible in new UI). Saved rosters with 'twitter' silently drop it. A migration step is needed.
+3. `amazon-prime` removed: any stored avoids become invisible (not deleted, just unmatched).
+4. `tiktok` uses `entityId: "bytedance"` — a separate `tiktok` entity also exists in entities.json. Intentional (company-level attribution), but worth confirming.
+
+---
+
 ### Session: March 30, 2026 (LayoutAnimation → reanimated migration)
 **Focus:** Replace `LayoutAnimation` with `react-native-reanimated` to fix persistent SIGABRT/SIGKILL crashes on the Track screen and on app launch.
 

@@ -150,24 +150,29 @@ export const harnessNoMatchNotice: BarcodeNotice = {
 // ── Platforms ───────────────────────────────────────────────────────────────
 
 const twitterPlatform: Platform = {
-  id: 'twitter', name: 'X / Twitter', parentCompany: 'X Corp',
-  ceoName: 'Linda Yaccarino', publicFigureName: 'Elon Musk', categoryTags: ['social'],
+  id: 'twitter', name: 'X / Twitter', entityId: 'x-twitter',
+  parentCompany: 'X Corp', ceoName: 'Linda Yaccarino', publicFigureName: 'Elon Musk',
+  categoryTags: ['social'], sortOrder: 500, defaultSelected: true,
 };
 const instagramPlatform: Platform = {
-  id: 'instagram', name: 'Instagram', parentCompany: 'Meta Platforms',
-  ceoName: 'Mark Zuckerberg', categoryTags: ['social'],
+  id: 'instagram', name: 'Instagram', entityId: 'meta',
+  parentCompany: 'Meta Platforms Inc', ceoName: 'Mark Zuckerberg',
+  categoryTags: ['social'], sortOrder: 102, defaultSelected: true,
 };
 const facebookPlatform: Platform = {
-  id: 'facebook', name: 'Facebook', parentCompany: 'Meta Platforms',
-  ceoName: 'Mark Zuckerberg', categoryTags: ['social'],
+  id: 'facebook', name: 'Facebook', entityId: 'meta',
+  parentCompany: 'Meta Platforms Inc', ceoName: 'Mark Zuckerberg',
+  categoryTags: ['social'], sortOrder: 101, defaultSelected: true,
 };
 const amazonPlatform: Platform = {
-  id: 'amazon', name: 'Amazon', parentCompany: 'Amazon.com Inc',
-  ceoName: 'Andy Jassy', publicFigureName: 'Jeff Bezos', categoryTags: ['shopping'],
+  id: 'amazon', name: 'Amazon', entityId: 'amazon',
+  parentCompany: 'Amazon.com Inc', ceoName: 'Andy Jassy', publicFigureName: 'Jeff Bezos',
+  categoryTags: ['retail', 'tech'], sortOrder: 301, defaultSelected: true,
 };
 const youtubePlatform: Platform = {
-  id: 'youtube', name: 'YouTube', parentCompany: 'Alphabet Inc',
-  ceoName: 'Sundar Pichai', categoryTags: ['streaming', 'social'],
+  id: 'youtube', name: 'YouTube', entityId: 'google-alphabet',
+  parentCompany: 'Alphabet Inc', ceoName: 'Sundar Pichai',
+  categoryTags: ['streaming', 'social'], sortOrder: 201, defaultSelected: true,
 };
 
 export const harnessPlatforms: Platform[] = [
