@@ -175,7 +175,7 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
       </MapView>
 
       <View style={[styles.headerBar, { height: insets.top + headerBarHeight }]} pointerEvents="none">
-        <Image source={require('../../assets/pixel/bg_tile_dark_stone.png')} style={[styles.headerBgStrip, { height: insets.top + Math.round(headerBarHeight * 0.15) }]} resizeMode="repeat" />
+        <Image source={require('../../assets/pixel/bg_tile_dark_stone.png')} style={[styles.headerBgStrip, { height: insets.top + Math.round(headerBarHeight * 0.15) }]} resizeMode="cover" />
         <Image source={HEADER_BAR_ASSET} style={[styles.headerBarImg, { top: insets.top, width: screenWidth, height: headerBarHeight }]} resizeMode="stretch" />
         <Image source={require('../../assets/pixel/brand/FF_logo_horizontal.png')} style={[styles.headerLogo, { marginTop: insets.top + Math.round(headerBarHeight * 0.15) }]} resizeMode="contain" accessibilityLabel={sharedCopy.appName} />
       </View>
