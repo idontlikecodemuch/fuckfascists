@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import type { Entity } from '../../../core/models';
 import type { StorageAdapter } from '../../../core/data';
 import type { Platform } from '../../Platforms/types';
@@ -20,6 +20,15 @@ export function useScorecard(
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Refs keep entities/platforms current without listing them as effect deps.
+  // They are stable for the session (loaded once in App.tsx) but using refs
+  // prevents a spurious aggregateScorecard re-run if the array reference ever
+  // changes without the content changing (e.g. a parent re-render).
+  const entitiesRef = useRef(entities);
+  const platformsRef = useRef(platforms);
+  entitiesRef.current = entities;
+  platformsRef.current = platforms;
+
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
@@ -28,7 +37,7 @@ export function useScorecard(
 
     (async () => {
       try {
-        const persons = await aggregateScorecard(adapter, entities, platforms, weekOf);
+        const persons = await aggregateScorecard(adapter, entitiesRef.current, platformsRef.current, weekOf);
         if (cancelled) return;
         const grandTotal = persons.reduce((sum, p) => sum + p.totalCount, 0);
         setData({ weekOf, persons, grandTotal, isPreview });
@@ -41,7 +50,7 @@ export function useScorecard(
     })();
 
     return () => { cancelled = true; };
-  }, [adapter, entities, platforms, weekOf, isPreview]);
+  }, [adapter, weekOf, isPreview]);
 
   return { data, loading, error };
 }

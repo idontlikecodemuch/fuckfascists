@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import type { BarcodeScanningResult } from 'expo-camera';
 import type { Entity } from '../../../core/models';
 import { getCachedBarcodeLookup, setCachedBarcodeLookup } from '../barcode/barcodeCacheStore';
@@ -27,6 +27,12 @@ export interface BarcodeSearchTarget {
 export function useBarcodeSearch(entities: Entity[]) {
   const [isResolving, setIsResolving] = useState(false);
   const [notice, setNotice] = useState<BarcodeNotice | null>(null);
+
+  // Ref keeps entities current without making resolveBarcode unstable.
+  // resolveBarcode is called on demand (never a useEffect dep), so recreating
+  // it on every entities reference change is unnecessary churn.
+  const entitiesRef = useRef(entities);
+  entitiesRef.current = entities;
 
   const clearNotice = useCallback(() => setNotice(null), []);
 
@@ -68,7 +74,7 @@ export function useBarcodeSearch(entities: Entity[]) {
           return null;
         }
 
-        const live = await lookupBarcodeViaOpenFoodFacts(normalized, entities);
+        const live = await lookupBarcodeViaOpenFoodFacts(normalized, entitiesRef.current);
         if (live.kind === 'matched') {
           await setCachedBarcodeLookup({
             barcode: normalized.gtin13,
@@ -119,7 +125,7 @@ export function useBarcodeSearch(entities: Entity[]) {
         setIsResolving(false);
       }
     },
-    [entities]
+    []
   );
 
   return {
