@@ -574,6 +574,7 @@ The entire app is styled as a **vintage 8-bit video game**. This is the foundati
 | Repo cleanup + git workflow rules | ✅ Done — branch consolidation, worktree cleanup, .gitignore hardened, lockfiles synced, Git Workflow Rules in CLAUDE.md |
 | Copy rewrite (Voice & Ethos Framework v3.2) | ✅ Done — 11 copy files + 10 component files. Brand "FCK FASCISTS", R:/D: labels, app-wide URL variables, tokenized scorecard empty state, collapsed source verbs, new ethos section, map first-use hints, tappable open-source link, actual OS permission checking. `shortParentNames` moved to `config/constants.ts`. |
 | Info screen game UI restyle | ✅ Done — star field bg (bg_stars.gif), amber plaque about section (3px bevel, corner brackets, neon rule, SparkleDecoration info variant), inset-beveled "Built to Last" panel, beveled FAQ accordions (grey bevel, blue focus state, ▼/▲ chevrons, sparkles on expand), plain text links (highlightBlue), Bungee/highlightBlue section headers. InfoDecorations.tsx extracted. |
+| Onboarding + MapSearchBar restyle | ✅ Done — Star field bg + neon bar + amber beveled CTAs w/ sparkles on all 3 onboarding screens. Beveled square progress dots. Welcome: centered + green checkmark features. Privacy: inset-bevel panels w/ blue accent bar. Permissions: raised-bevel cards w/ status dots, amber ALLOW, green granted badges. MapSearchBar: 3-state bevel (default/focused/scanning), drop shadow, SparkleDecoration. |
 | App tested on physical device | 🔄 Pending |
 | Extension tested in Chrome | ✅ Done |
 

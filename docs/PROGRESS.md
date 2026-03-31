@@ -12,6 +12,24 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: March 31, 2026 (Onboarding + MapSearchBar visual restyle)
+**Focus:** Visual styling pass on the three onboarding screens and the map search bar. No changes to component hierarchy, navigation logic, permission handling, search execution, copy strings, or accessibility attributes.
+
+**What changed:**
+
+1. **OnboardingSlide.tsx** — Star field background (12 scattered white View dots, 1-2px, low opacity). Neon bar under header (3-segment row: dim focusAccent edges, bright highlightBlue center). CTA button restyled: amber raised bevel (`bevelAmberRaised`), `rewardYellow` fill, dark text, `theme.radii.button` corners, `SparkleDecoration` on CTA. SKIP remains plain `textSecondary`.
+2. **ProgressDots.tsx** — Restyled as beveled squares (10px). Upcoming: grey inset bevel (`bevelInset`) + `panelOuter` fill. Active: amber raised bevel (`bevelAmberRaised`) + `rewardYellow` fill. Completed: blue raised bevel (`bevelFocusRaised`) + `focusAccent` fill.
+3. **WelcomeScreen.tsx** — Centered content. Feature items: green checkmark (`successGreenText`) + Bungee function label (`successGreenText`) + em-dash + description in `textSecondary`. Parsed from existing copy strings.
+4. **PrivacyScreen.tsx** — Privacy guarantees: inset-bevel panels (`bevelInset`, `panelInner` bg). 6px `focusAccent` vertical accent bar on left. Labels in Bungee / `highlightBlue`. "Check it yourself" link in `highlightBlue` (was `rewardYellow`).
+5. **PermissionsScreen.tsx** — Permission cards: grey raised-bevel (`bevelRaised`). Status indicator: small dot + OFFLINE/ONLINE text. Granted state: green left accent bar, `successGreenText` title, green inset-bevel GRANTED badge. ALLOW buttons: amber raised bevel (same as CTA). Sparkles render on both cards when both granted. Auto-advance label in `highlightBlue` at reduced opacity.
+6. **MapSearchBar.tsx** — Full bevel restyle with three states. Default: 2px blue bevel outer frame + 1px subtler inner frame, `panelInner` bg, drop shadow (iOS: black, offset 6, opacity 0.6, radius 12; Android: elevation 8), `SparkleDecoration` near icon. Focused: outer brightens to `highlightBlue`/`focusAccent`, inner bg shifts to saturated blue (#112244), 3px `highlightBlue` left accent bar, shadow picks up blue tint. Scanning: outer/inner shift to `glowCyan` tones, dark cyan bg, no sparkles.
+
+**Files modified:** `features/Onboarding/components/OnboardingSlide.tsx`, `features/Onboarding/components/ProgressDots.tsx`, `features/Onboarding/screens/WelcomeScreen.tsx`, `features/Onboarding/screens/PrivacyScreen.tsx`, `features/Onboarding/screens/PermissionsScreen.tsx`, `features/Map/components/MapSearchBar.tsx`
+
+**Tests:** 339 tests pass (30 suites). TypeScript clean (pre-existing Dev/catalogMocks errors only).
+
+---
+
 ### Session: March 31, 2026 (Data-driven platform roster — platforms.json)
 **Focus:** Replace the hardcoded platform array in `platformList.ts` with a data-driven roster loaded from `assets/data/platforms.json`.
 

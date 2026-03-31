@@ -6,6 +6,8 @@ import * as SecureStore from 'expo-secure-store';
 import { OnboardingSlide } from '../components/OnboardingSlide';
 import { onboardCopy } from '../../../copy/onboard';
 import { theme } from '../../../design/tokens';
+import { bevelRaised, bevelAmberRaised, bevelGreenInset } from '../../../design/bevel';
+import { SparkleDecoration } from '../../../core/fx';
 
 const BETA_KEY = 'ff_beta_mode';
 
@@ -16,19 +18,15 @@ interface PermissionsScreenProps {
 
 /**
  * Screen 3 — Combined location + notification permissions.
- * Two stacked permission cards, each with its own Allow button.
- * Tapping Allow fires the OS dialog. Only shows confirmed state if actually granted.
- * When both permissions are granted, auto-advances to next screen.
- * Single bottom CTA only — no per-card buttons.
- * "SKIP" at the bottom advances without requesting either.
+ * Grey raised-bevel cards with status indicators.
+ * Granted cards get green left accent bar, sparkles, and green title.
+ * Amber raised-bevel ALLOW buttons. Green inset-bevel GRANTED label.
  */
 export function PermissionsScreen({ stepIndex, onNext }: PermissionsScreenProps) {
   const [locGranted, setLocGranted] = useState(false);
   const [notifGranted, setNotifGranted] = useState(false);
   const [requesting, setRequesting] = useState(false);
 
-  // Check if permissions were already granted (e.g. crash mid-onboarding, re-run).
-  // Skipped in beta mode so testers can see the full permissions flow.
   useEffect(() => {
     let cancelled = false;
     async function checkExisting() {
@@ -69,10 +67,11 @@ export function PermissionsScreen({ stepIndex, onNext }: PermissionsScreenProps)
     }
   }
 
-  // Auto-advance when both permissions are resolved
   useEffect(() => {
     if (locGranted && notifGranted) onNext();
   }, [locGranted, notifGranted, onNext]);
+
+  const bothGranted = locGranted && notifGranted;
 
   return (
     <OnboardingSlide
@@ -84,63 +83,202 @@ export function PermissionsScreen({ stepIndex, onNext }: PermissionsScreenProps)
     >
       <View style={styles.cards}>
         {/* Location card */}
-        <View style={[styles.card, locGranted && styles.cardDone]}>
-          <Text style={styles.cardTitle} allowFontScaling>{onboardCopy.locTitle}</Text>
-          <Text style={styles.cardWhy} allowFontScaling>{onboardCopy.locWhy}</Text>
-          <Text style={styles.promise} allowFontScaling>{onboardCopy.locPromise}</Text>
-          {locGranted ? (
-            <Text style={styles.confirmedLabel} allowFontScaling>{onboardCopy.confirmed}</Text>
-          ) : (
-            <Pressable
-              style={styles.allowButton}
-              onPress={handleLocation}
-              disabled={requesting}
-              accessibilityRole="button"
-              accessibilityLabel={onboardCopy.locBtn}
-              accessibilityState={{ disabled: requesting }}
-            >
-              <Text style={styles.allowLabel} allowFontScaling>
-                {onboardCopy.locBtn}
+        <View style={[styles.card, locGranted && styles.cardGranted]}>
+          {locGranted && <View style={styles.greenAccent} />}
+          <View style={styles.cardInner}>
+            <View style={styles.statusRow}>
+              <View style={[styles.statusDot, locGranted && styles.statusDotOn]} />
+              <Text
+                style={[styles.statusText, locGranted && styles.statusTextOn]}
+                allowFontScaling
+              >
+                {locGranted ? 'ONLINE' : 'OFFLINE'}
               </Text>
-            </Pressable>
-          )}
+            </View>
+            <Text
+              style={[styles.cardTitle, locGranted && styles.cardTitleGranted]}
+              allowFontScaling
+            >
+              {onboardCopy.locTitle}
+            </Text>
+            <Text style={styles.cardWhy} allowFontScaling>{onboardCopy.locWhy}</Text>
+            <Text style={styles.promise} allowFontScaling>{onboardCopy.locPromise}</Text>
+            {locGranted ? (
+              <View style={styles.grantedBadge}>
+                <Text style={styles.grantedLabel} allowFontScaling>
+                  {onboardCopy.confirmed}
+                </Text>
+              </View>
+            ) : (
+              <Pressable
+                style={styles.allowButton}
+                onPress={handleLocation}
+                disabled={requesting}
+                accessibilityRole="button"
+                accessibilityLabel={onboardCopy.locBtn}
+                accessibilityState={{ disabled: requesting }}
+              >
+                <Text style={styles.allowLabel} allowFontScaling>
+                  {onboardCopy.locBtn}
+                </Text>
+              </Pressable>
+            )}
+          </View>
+          {bothGranted && <SparkleDecoration />}
         </View>
 
         {/* Notifications card */}
-        <View style={[styles.card, notifGranted && styles.cardDone]}>
-          <Text style={styles.cardTitle} allowFontScaling>{onboardCopy.notifTitle}</Text>
-          <Text style={styles.cardWhy} allowFontScaling>{onboardCopy.notifWhy}</Text>
-          <Text style={styles.promise} allowFontScaling>{onboardCopy.notifPromise}</Text>
-          {notifGranted ? (
-            <Text style={styles.confirmedLabel} allowFontScaling>{onboardCopy.confirmed}</Text>
-          ) : (
-            <Pressable
-              style={styles.allowButton}
-              onPress={handleNotifications}
-              disabled={requesting}
-              accessibilityRole="button"
-              accessibilityLabel={onboardCopy.notifBtn}
-              accessibilityState={{ disabled: requesting }}
-            >
-              <Text style={styles.allowLabel} allowFontScaling>
-                {onboardCopy.notifBtn}
+        <View style={[styles.card, notifGranted && styles.cardGranted]}>
+          {notifGranted && <View style={styles.greenAccent} />}
+          <View style={styles.cardInner}>
+            <View style={styles.statusRow}>
+              <View style={[styles.statusDot, notifGranted && styles.statusDotOn]} />
+              <Text
+                style={[styles.statusText, notifGranted && styles.statusTextOn]}
+                allowFontScaling
+              >
+                {notifGranted ? 'ONLINE' : 'OFFLINE'}
               </Text>
-            </Pressable>
-          )}
+            </View>
+            <Text
+              style={[styles.cardTitle, notifGranted && styles.cardTitleGranted]}
+              allowFontScaling
+            >
+              {onboardCopy.notifTitle}
+            </Text>
+            <Text style={styles.cardWhy} allowFontScaling>{onboardCopy.notifWhy}</Text>
+            <Text style={styles.promise} allowFontScaling>{onboardCopy.notifPromise}</Text>
+            {notifGranted ? (
+              <View style={styles.grantedBadge}>
+                <Text style={styles.grantedLabel} allowFontScaling>
+                  {onboardCopy.confirmed}
+                </Text>
+              </View>
+            ) : (
+              <Pressable
+                style={styles.allowButton}
+                onPress={handleNotifications}
+                disabled={requesting}
+                accessibilityRole="button"
+                accessibilityLabel={onboardCopy.notifBtn}
+                accessibilityState={{ disabled: requesting }}
+              >
+                <Text style={styles.allowLabel} allowFontScaling>
+                  {onboardCopy.notifBtn}
+                </Text>
+              </Pressable>
+            )}
+          </View>
+          {bothGranted && <SparkleDecoration />}
         </View>
+
+        {bothGranted && (
+          <Text style={styles.autoAdvance} allowFontScaling>
+            {onboardCopy.next}...
+          </Text>
+        )}
       </View>
     </OnboardingSlide>
   );
 }
 
 const styles = StyleSheet.create({
-  cards:        { gap: theme.space.xl },
-  card:         { borderWidth: theme.borders.hero.width, borderColor: theme.colors.frameBlue, padding: theme.space.lg, backgroundColor: theme.colors.surface1 },
-  cardTitle:    { ...theme.type.displayS, fontSize: 13, color: theme.colors.rewardYellow, letterSpacing: 2, marginBottom: theme.space.sm },
-  cardWhy:      { ...theme.type.bodyS, color: theme.colors.textSecondary, lineHeight: 20, marginBottom: theme.space.md },
-  promise:      { ...theme.type.bodyS, color: theme.colors.textSecondary, lineHeight: 18, marginBottom: theme.space.md },
-  cardDone:       { borderColor: theme.colors.successGreen },
-  allowButton:    { backgroundColor: theme.colors.dangerRed, borderWidth: theme.borders.standard.width, borderColor: theme.colors.frameBlue, minHeight: theme.a11y.minTapTarget, alignItems: 'center', justifyContent: 'center', paddingVertical: theme.space.sm },
-  allowLabel:     { ...theme.type.uiLabel, fontSize: 13, color: theme.colors.textPrimary, letterSpacing: 2 },
-  confirmedLabel: { ...theme.type.uiLabel, fontSize: 13, color: theme.colors.successGreen, letterSpacing: 2, textAlign: 'center', paddingVertical: theme.space.sm },
+  cards: { gap: theme.space.xl },
+  card: {
+    ...bevelRaised,
+    backgroundColor: theme.colors.panelInner,
+    flexDirection: 'row',
+    overflow: 'visible',
+  },
+  cardGranted: {
+    borderLeftColor: theme.colors.successGreenText,
+  },
+  greenAccent: {
+    width: 3,
+    backgroundColor: theme.colors.successGreenText,
+  },
+  cardInner: {
+    flex: 1,
+    padding: theme.space.lg,
+  },
+  statusRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: theme.space.xs,
+    marginBottom: theme.space.sm,
+  },
+  statusDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: theme.colors.textSecondary,
+  },
+  statusDotOn: {
+    backgroundColor: theme.colors.successGreenText,
+  },
+  statusText: {
+    ...theme.type.caption,
+    color: theme.colors.textSecondary,
+    letterSpacing: 1,
+  },
+  statusTextOn: {
+    color: theme.colors.successGreenText,
+  },
+  cardTitle: {
+    fontFamily: theme.fonts.headline,
+    fontSize: 13,
+    color: theme.colors.rewardYellow,
+    letterSpacing: 2,
+    marginBottom: theme.space.sm,
+  },
+  cardTitleGranted: {
+    color: theme.colors.successGreenText,
+  },
+  cardWhy: {
+    ...theme.type.bodyS,
+    color: theme.colors.textSecondary,
+    lineHeight: 20,
+    marginBottom: theme.space.md,
+  },
+  promise: {
+    ...theme.type.bodyS,
+    color: theme.colors.textSecondary,
+    lineHeight: 18,
+    marginBottom: theme.space.md,
+  },
+  allowButton: {
+    ...bevelAmberRaised,
+    backgroundColor: theme.colors.rewardYellow,
+    borderRadius: theme.radii.button,
+    minHeight: theme.a11y.minTapTarget,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: theme.space.sm,
+  },
+  allowLabel: {
+    ...theme.type.uiLabel,
+    fontSize: 13,
+    color: theme.colors.bgVoid,
+    letterSpacing: 2,
+  },
+  grantedBadge: {
+    ...bevelGreenInset,
+    backgroundColor: theme.colors.successGreenDeep,
+    minHeight: theme.a11y.minTapTarget,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: theme.space.sm,
+  },
+  grantedLabel: {
+    ...theme.type.uiLabel,
+    fontSize: 13,
+    color: theme.colors.successGreenText,
+    letterSpacing: 2,
+  },
+  autoAdvance: {
+    ...theme.type.bodyS,
+    color: theme.colors.highlightBlue,
+    opacity: 0.6,
+    textAlign: 'center',
+  },
 });
