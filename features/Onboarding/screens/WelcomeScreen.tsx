@@ -12,10 +12,25 @@ interface WelcomeScreenProps {
 
 /**
  * Screen 1 — Welcome + How It Works (combined).
- * App name, tagline, body copy, then three feature one-liners.
+ * Centered layout. App logo, tagline, body, then feature one-liners
+ * with green checkmarks and Bungee function labels.
  */
 const HERO_LOGO_ASPECT = 1466 / 827;
-const HERO_LOGO_MAX_HEIGHT_RATIO = 0.22; // ~22% of screen height — comfortably under half
+const HERO_LOGO_MAX_HEIGHT_RATIO = 0.22;
+
+/** Feature items parsed from copy: "LABEL — description" */
+const FEATURES = [
+  onboardCopy.featureMap,
+  onboardCopy.featureTrack,
+  onboardCopy.featureScan,
+  onboardCopy.featureScorecard,
+] as const;
+
+function parseFeature(raw: string): { label: string; desc: string } {
+  const idx = raw.indexOf(' \u2014 ');
+  if (idx === -1) return { label: raw, desc: '' };
+  return { label: raw.slice(0, idx), desc: raw.slice(idx + 3) };
+}
 
 export function WelcomeScreen({ stepIndex, onNext }: WelcomeScreenProps) {
   const { height: screenHeight } = useWindowDimensions();
@@ -44,10 +59,18 @@ export function WelcomeScreen({ stepIndex, onNext }: WelcomeScreenProps) {
         </Text>
 
         <View style={styles.features}>
-          <Text style={styles.feature} allowFontScaling>{onboardCopy.featureMap}</Text>
-          <Text style={styles.feature} allowFontScaling>{onboardCopy.featureTrack}</Text>
-          <Text style={styles.feature} allowFontScaling>{onboardCopy.featureScan}</Text>
-          <Text style={styles.feature} allowFontScaling>{onboardCopy.featureScorecard}</Text>
+          {FEATURES.map((raw) => {
+            const { label, desc } = parseFeature(raw);
+            return (
+              <Text key={label} style={styles.featureLine} allowFontScaling>
+                <Text style={styles.checkmark}>{sharedCopy.checkmark} </Text>
+                <Text style={styles.featureLabel}>{label}</Text>
+                {desc ? (
+                  <Text style={styles.featureDesc}> {'\u2014'} {desc}</Text>
+                ) : null}
+              </Text>
+            );
+          })}
         </View>
       </View>
     </OnboardingSlide>
@@ -55,11 +78,43 @@ export function WelcomeScreen({ stepIndex, onNext }: WelcomeScreenProps) {
 }
 
 const styles = StyleSheet.create({
-  content:  { alignItems: 'flex-start' },
+  content: { alignItems: 'center' },
   heroLogo: { marginBottom: theme.space.xl },
-  tagline:  { ...theme.type.displayS, color: theme.colors.textPrimary, lineHeight: 28, marginBottom: theme.space['2xl'] },
-  divider:  { width: 48, height: 4, backgroundColor: theme.colors.dangerRed, marginBottom: theme.space['2xl'] },
-  body:     { ...theme.type.bodyM, color: theme.colors.textSecondary, lineHeight: 22, marginBottom: theme.space.lg },
-  features: { gap: theme.space.sm },
-  feature:  { ...theme.type.caption, fontWeight: 'bold', color: theme.colors.rewardYellow, letterSpacing: 1 },
+  tagline: {
+    ...theme.type.displayS,
+    color: theme.colors.textPrimary,
+    lineHeight: 28,
+    marginBottom: theme.space['2xl'],
+    textAlign: 'center',
+  },
+  divider: {
+    width: 48,
+    height: 4,
+    backgroundColor: theme.colors.dangerRed,
+    marginBottom: theme.space['2xl'],
+  },
+  body: {
+    ...theme.type.bodyM,
+    color: theme.colors.textSecondary,
+    lineHeight: 22,
+    marginBottom: theme.space.lg,
+    textAlign: 'center',
+  },
+  features: { gap: theme.space.md, alignSelf: 'stretch' },
+  featureLine: { lineHeight: 20 },
+  checkmark: {
+    ...theme.type.bodyM,
+    color: theme.colors.successGreenText,
+    fontWeight: 'bold',
+  },
+  featureLabel: {
+    fontFamily: theme.fonts.headline,
+    fontSize: 13,
+    color: theme.colors.successGreenText,
+    letterSpacing: 1,
+  },
+  featureDesc: {
+    ...theme.type.bodyS,
+    color: theme.colors.textSecondary,
+  },
 });

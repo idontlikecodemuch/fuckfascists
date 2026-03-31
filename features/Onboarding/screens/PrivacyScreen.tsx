@@ -4,6 +4,7 @@ import { OnboardingSlide } from '../components/OnboardingSlide';
 import { onboardCopy } from '../../../copy/onboard';
 import { sharedCopy } from '../../../copy/shared';
 import { theme } from '../../../design/tokens';
+import { bevelInset } from '../../../design/bevel';
 
 interface PrivacyScreenProps {
   stepIndex: number;
@@ -26,8 +27,8 @@ export function PrivacyScreen({ stepIndex, onNext }: PrivacyScreenProps) {
         </Text>
         <View style={styles.list}>
           {POINTS.map((p) => (
-            <View key={p.label} style={styles.row}>
-              <View style={styles.bullet} accessible={false} />
+            <View key={p.label} style={styles.panel}>
+              <View style={styles.accentBar} accessible={false} />
               <View style={styles.textBlock}>
                 <Text style={styles.label} allowFontScaling>{p.label}</Text>
                 <Text style={styles.detail} allowFontScaling>{p.detail}</Text>
@@ -35,8 +36,8 @@ export function PrivacyScreen({ stepIndex, onNext }: PrivacyScreenProps) {
             </View>
           ))}
           {/* Open source — with tappable link to repo */}
-          <View style={styles.row}>
-            <View style={styles.bullet} accessible={false} />
+          <View style={styles.panel}>
+            <View style={styles.accentBar} accessible={false} />
             <View style={styles.textBlock}>
               <Text style={styles.label} allowFontScaling>{onboardCopy.openSource}</Text>
               <Text style={styles.detail} allowFontScaling>
@@ -60,12 +61,35 @@ export function PrivacyScreen({ stepIndex, onNext }: PrivacyScreenProps) {
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center' },
-  subhead:   { ...theme.type.bodyS, color: theme.colors.textSecondary, lineHeight: 20, marginBottom: theme.space.xl },
-  list:      { gap: theme.space.lg },
-  row:       { flexDirection: 'row', gap: theme.space.md, alignItems: 'flex-start' },
-  bullet:    { width: 8, height: 8, backgroundColor: theme.colors.dangerRed, marginTop: 5, flexShrink: 0 },
-  textBlock: { flex: 1 },
-  label:     { ...theme.type.caption, fontWeight: 'bold', color: theme.colors.textPrimary, letterSpacing: 1, marginBottom: 3 },
-  detail:    { ...theme.type.bodyS, color: theme.colors.textSecondary, lineHeight: 18 },
-  link:      { color: theme.colors.rewardYellow, textDecorationLine: 'underline' as const },
+  subhead: {
+    ...theme.type.bodyS,
+    color: theme.colors.textSecondary,
+    lineHeight: 20,
+    marginBottom: theme.space.xl,
+  },
+  list: { gap: theme.space.md },
+  panel: {
+    ...bevelInset,
+    backgroundColor: theme.colors.panelInner,
+    flexDirection: 'row',
+    overflow: 'hidden',
+  },
+  accentBar: {
+    width: 6,
+    backgroundColor: theme.colors.focusAccent,
+  },
+  textBlock: {
+    flex: 1,
+    paddingVertical: theme.space.md,
+    paddingHorizontal: theme.space.md,
+  },
+  label: {
+    fontFamily: theme.fonts.headline,
+    fontSize: 11,
+    color: theme.colors.highlightBlue,
+    letterSpacing: 2,
+    marginBottom: theme.space.xs,
+  },
+  detail: { ...theme.type.bodyS, color: theme.colors.textSecondary, lineHeight: 18 },
+  link: { color: theme.colors.highlightBlue, textDecorationLine: 'underline' as const },
 });
