@@ -12,6 +12,43 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: March 30, 2026 (Business card visual upgrade)
+**Focus:** Bring BusinessCard, BusinessBanner, DataZone, and AvoidButton into the same visual language as the Track screen — blue chrome bevel, amber actions, sprite-left layout, post-avoid sparkles.
+
+**What changed:**
+1. **BusinessCard** — blue focus bevel (`focusBevelLight`/`focusBevelDark`) replaces old `frameBlue` hero border; `panelInner` background replaces `surface1`. Sprite moved inside card to left side (no frame, no centered perch above); brand name + parent attribution left-aligned beside sprite. `⚠ MATCHED` confidence badge is now tappable — shows Alert with explanation; amber border (`amberActionLight`) on `panelInner` background; inline medium-confidence disclaimer removed. `SparkleDecoration variant="large"` (5 sparks, 12–18px) renders top-right when `avoided === true`. DISMISS is stacked below AVOID button with `focusBevelDark` top border.
+2. **AvoidButton** — AVOID state: `amberAction` bg + `bevelAmberRaised`, white (`textPrimary`) label, `radii.button` corners. AVOIDED state: `successGreenDeep` bg + `bevelGreenInset`, `successGreenText` label.
+3. **DataZone** — section divider updated from `surface2` → `focusBevelDark`.
+4. **BusinessBanner** — blue focus bevel frame (`bevelFocusRaised`), `panelInner` background. Left accent bar distinguishes variant: amber (`amberActionLight`) for dissolved, red (`dangerRed`) for lookup_failed, neutral grey (`panelBorder`) for no_match/no_pac.
+5. **SparkleDecoration** — added `variant?: 'default' | 'large'` prop. Large: 5 sparks at 12–18px, staggered delays. Backwards-compatible default unchanged.
+6. **copy/map.ts** — added `confidenceBadgeHint`, `confidenceAlertTitle`, `confidenceAlertBody` for tappable badge.
+7. **copy-preview tool** — `copy-all.json` + `copy-all.js` regenerated with new map keys.
+
+**Files modified:** `copy/map.ts`, `core/fx/SparkleDecoration.tsx`, `features/Map/components/BusinessCard.tsx`, `features/Map/components/BusinessBanner.tsx`, `features/Map/components/DataZone.tsx`, `features/Map/components/AvoidButton.tsx`, `tools/copy-preview/copy-all.json`, `tools/copy-preview/copy-all.js`
+
+**Tests:** 104 tests pass. TypeScript clean.
+
+**Commit:** `a5de7eb`
+
+---
+
+### Session: March 30, 2026 (Track screen visual upgrade)
+**Focus:** Bring the Track screen into the 8-bit cockpit visual language — beveled panels, blue focus chrome, amber AVOID actions, sparkle decoration.
+
+**What changed:**
+1. **Bevel system** — `design/bevel.ts` added with `bevelRaised`, `bevelInset`, `bevelFocusRaised`, `bevelGreenInset`, `bevelAmberRaised` per-side border style objects.
+2. **Token additions** — `design/tokens.ts` expanded: panel system (`panelOuter`, `panelInner`, `panelBorder`, `bevel*`), focus system (`focusAccent`, `focusBevelLight`, `focusBevelDark`, `focusTint`, `focusText`), amber action system (`amberAction`, `amberActionLight`, `amberActionDark`), additional radii/constants.
+3. **SparkleDecoration** — `core/fx/SparkleDecoration.tsx` added, exported from `core/fx/index.ts`. 3 animated gold stars positioned top-right of parent, reduced-motion safe.
+4. **PlatformGroupHeader** — blue focus bevel on focused group header; `panelOuter`/`panelInner` double-frame background; `focusText` label color on focus.
+5. **PlatformRow** — `panelInner` background; focused row gets blue left border + `focusTint` bg; `SparkleDecoration` renders on focused row.
+6. **AvoidButton (Track)** — amber raised bevel (`bevelAmberRaised`); AVOIDED state uses green inset bevel (`bevelGreenInset`) + `successGreenDeep` bg.
+7. **DayCircles** — inset bevel on day tiles; blue today indicator.
+8. **config/constants.ts** — `TRACK_ROW_FOCUS_BG_COLOR`, `TRACK_ROW_FOCUS_BORDER_COLOR`, and 30+ `TRACK_*` sizing constants added.
+
+**Commit:** `6d16507`
+
+---
+
 ### Session: March 30, 2026 (Copy rewrite + structural follow-ups)
 **Focus:** Complete copy rewrite across all 11 copy files and 9+ component files based on the Voice & Ethos Framework v3.2. Then implement 6 structural follow-up tasks flagged during the rewrite.
 
