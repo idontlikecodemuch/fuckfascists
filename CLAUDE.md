@@ -572,6 +572,7 @@ The entire app is styled as a **vintage 8-bit video game**. This is the foundati
 | Device testing fixes (10 issues) | ✅ Done — safe area constant, camera permission eager request, map header reduced, FigureBadge empty fallback, arena sprite flush, responsive logos, onboarding reorder, permissions confirmed state, privacy layout, CTA reconciled to PRESS START |
 | Repo cleanup + git workflow rules | ✅ Done — branch consolidation, worktree cleanup, .gitignore hardened, lockfiles synced, Git Workflow Rules in CLAUDE.md |
 | Copy rewrite (Voice & Ethos Framework v3.2) | ✅ Done — 11 copy files + 10 component files. Brand "FCK FASCISTS", R:/D: labels, app-wide URL variables, tokenized scorecard empty state, collapsed source verbs, new ethos section, map first-use hints, tappable open-source link, actual OS permission checking. `shortParentNames` moved to `config/constants.ts`. |
+| Info screen game UI restyle | ✅ Done — star field bg (bg_stars.gif), amber plaque about section (3px bevel, corner brackets, neon rule, SparkleDecoration info variant), inset-beveled "Built to Last" panel, beveled FAQ accordions (grey bevel, blue focus state, ▼/▲ chevrons, sparkles on expand), plain text links (highlightBlue), Bungee/highlightBlue section headers. InfoDecorations.tsx extracted. |
 | App tested on physical device | 🔄 Pending |
 | Extension tested in Chrome | ✅ Done |
 
@@ -729,6 +730,9 @@ Schedule E (independent expenditures) is not tracked. IEs are spending by outsid
 
 ### AIRMap.m nil guard patch — ✅ Resolved
 `AIRMap.m` in the `react-native-maps` pod has nil guards on `insertReactSubview:atIndex:`, `removeReactSubview:`, and `addSubview:`. The Podfile `post_install` hook now re-applies this patch automatically after every `pod install`. The hook is idempotent — it detects existing guards and skips if already present. No manual intervention required.
+
+### SparkleDecoration — `info` variant uses hardcoded pixel offsets (Priority: V1.5)
+`SparkleDecoration` positions sparks using absolute `top`/`right` pixel values. The `info` variant (used on the Info screen about plaque) places sparks across all four edges, but uses hardcoded `right` values (200, 220) to reach the left side of the parent. On a ~375pt-wide phone (panel ~343pt) these land roughly in the left-center area — close enough for decoration, but on wider devices (tablets, landscape) the sparks drift toward center instead of hugging the left edge. Fix options: (1) add `left`/`bottom` support to the render loop and use those directly, (2) accept a `containerWidth` prop and compute positions as percentages, or (3) use `useWindowDimensions` to derive positions dynamically. Not blocking — decorative only.
 
 ### V2: Extension copy — `dSep` naming cleanup (Priority: V2)
 `dSep` in `extension/copy.ts` does double duty: it's the mid-dot separator between R and D amounts AND the D: label (value: `" · D: "`). Asymmetric with `rPrefix`. Consider splitting into `dPrefix` + a shared `separator` constant, or renaming both to `rLabel`/`dLabel` for clarity. Low priority — cosmetic only, no functional impact.
