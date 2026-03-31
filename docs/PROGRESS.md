@@ -12,6 +12,22 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: March 30, 2026 (LayoutAnimation → reanimated migration)
+**Focus:** Replace `LayoutAnimation` with `react-native-reanimated` to fix persistent SIGABRT/SIGKILL crashes on the Track screen and on app launch.
+
+**Root cause:** `LayoutAnimation.configureNext` is broken on RN 0.76 + `newArchEnabled: true` (known regression facebook/react-native#47617). Also: `babel.config.js` was in a worktree subdirectory — Metro couldn't find it when building from Xcode → reanimated worklet runtime hung on startup → OS watchdog SIGKILL.
+
+**What changed:**
+- `features/Platforms/components/TrackList.tsx` — removed `LayoutAnimation`/`Platform`/`UIManager`; removed `animateNextLayout` + all 7 call sites; `FlatList` → `Animated.FlatList` with `itemLayoutAnimation={LinearTransition.duration(250)}`; dayCircles wrapped in `Animated.View entering={FadeIn.duration(200)}`
+- `babel.config.js` — created at project root with `react-native-reanimated/plugin`
+- `package.json` + `package-lock.json` — `react-native-reanimated@3.16.7` added
+- `ios/Podfile.lock` + `project.pbxproj` — reanimated native pod integrated
+- `CLAUDE.md` — LayoutAnimation RN 0.76 rule + infinite render loop / SIGABRT pattern documented
+
+**Commit:** `7b1deb3`
+
+---
+
 ### Session: March 30, 2026 (Stabilize array deps in useScorecard + useBarcodeSearch)
 **Focus:** Preventive fix — eliminate unstable array prop references as `useEffect`/`useCallback` dependencies in two hooks identified during a render-loop audit.
 

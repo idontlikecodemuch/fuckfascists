@@ -1,12 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
-  FlatList,
-  LayoutAnimation,
-  Platform,
   StyleSheet,
-  UIManager,
   View,
 } from 'react-native';
+import Animated, { FadeIn, LinearTransition } from 'react-native-reanimated';
 import * as SecureStore from 'expo-secure-store';
 import { getLocalDateString } from '../../../core/utils/localDate';
 import { platformsCopy } from '../../../copy/platforms';
@@ -65,10 +62,6 @@ export function TrackList() {
   const collapseTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
   const previewDismissedRef = useRef(false);
 
-  const animateNextLayout = useCallback(() => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-  }, []);
-
   const cancelPendingAutoCollapse = useCallback(() => {
     collapseTimersRef.current.forEach(clearTimeout);
     collapseTimersRef.current = [];
@@ -82,11 +75,6 @@ export function TrackList() {
       return null;
     });
   }, [cancelPendingAutoCollapse]);
-
-  useEffect(() => {
-    if (Platform.OS !== 'android') return;
-    UIManager.setLayoutAnimationEnabledExperimental?.(true);
-  }, []);
 
   useEffect(() => {
     return () => {
@@ -108,14 +96,12 @@ export function TrackList() {
       const lastVisit = await SecureStore.getItemAsync(TRACK_DAILY_OPEN_KEY).catch(() => null);
       if (cancelled || previewDismissedRef.current || lastVisit === today) return;
 
-      animateNextLayout();
       setPreviewOpenIds(allPlatformIds);
       await SecureStore.setItemAsync(TRACK_DAILY_OPEN_KEY, today).catch(() => undefined);
 
       allPlatformIds.forEach((platformId, index) => {
         const timer = setTimeout(() => {
           if (previewDismissedRef.current) return;
-          animateNextLayout();
           setPreviewOpenIds((prev) => {
             if (!prev) return prev;
             const next = prev.filter((id) => id !== platformId);
@@ -130,7 +116,7 @@ export function TrackList() {
       cancelled = true;
       cancelPendingAutoCollapse();
     };
-  }, [allPlatformIds, animateNextLayout, cancelPendingAutoCollapse]);
+  }, [allPlatformIds, cancelPendingAutoCollapse]);
 
   const getArenaDelay = useCallback((figureName: string) => {
     return focusedFigureName === figureName ? 0 : ARENA_TRANSITION_MS;
@@ -156,7 +142,6 @@ export function TrackList() {
             totalAvoids={personWeeklyAvoids(item.figureName)}
             focused={selectedPlatformId === null && focusedFigureName === item.figureName}
             onPress={() => {
-              animateNextLayout();
               dismissDailyPreview();
               focusGroup(item.figureName);
             }}
@@ -176,14 +161,13 @@ export function TrackList() {
 
     if (item.type === 'dayCircles') {
       return (
-        <View style={styles.panelSides}>
+        <Animated.View entering={FadeIn.duration(200)} style={styles.panelSides}>
           <DayCircles
             weekOf={weekOf}
             platformName={platformItem.platform.name}
             dayCounts={platformItem.dayCounts}
             isChild={item.isChild}
             onAvoidDate={async (date) => {
-              animateNextLayout();
               dismissDailyPreview();
               openPlatformDetails(platformId);
               const delay = getArenaDelay(figureName);
@@ -191,7 +175,7 @@ export function TrackList() {
               if (recorded) queueArenaHit(figureName, delay);
             }}
           />
-        </View>
+        </Animated.View>
       );
     }
 
@@ -204,7 +188,6 @@ export function TrackList() {
           expanded={expanded}
           dimmed={focusedFigureName !== null && !focused}
           onRowPress={() => {
-            animateNextLayout();
             dismissDailyPreview();
             togglePlatformDetails(platformId);
           }}
@@ -213,14 +196,12 @@ export function TrackList() {
             const delay = getArenaDelay(figureName);
 
             if (!todayAvoided) {
-              animateNextLayout();
               focusPlatform(platformId);
               const recorded = await avoid(platformId);
               if (recorded) queueArenaHit(figureName, delay);
               return;
             }
 
-            animateNextLayout();
             togglePlatformDetails(platformId);
             queueArenaHit(figureName, delay);
           }}
@@ -230,7 +211,6 @@ export function TrackList() {
   }, [
     avoid,
     avoidForDate,
-    animateNextLayout,
     detailPlatformIds,
     dismissDailyPreview,
     focusPlatform,
@@ -247,7 +227,8 @@ export function TrackList() {
   ]);
 
   return (
-    <FlatList
+    <Animated.FlatList
+      itemLayoutAnimation={LinearTransition.duration(250)}
       data={listData}
       keyExtractor={(item) => item.key}
       renderItem={renderItem}
