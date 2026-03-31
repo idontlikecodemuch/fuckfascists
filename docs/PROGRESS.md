@@ -12,6 +12,30 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: March 30, 2026 (Track screen crash fix — infinite render loop)
+**Focus:** Diagnose and fix a SIGABRT crash triggered by tapping platform rows or group headers on the Track screen.
+
+**Root cause:** Two bugs compounding:
+1. `usePlatformAvoidance` computed `items` inline in the hook body (not memoized) — producing a new array reference on every render.
+2. `TrackContext` derived `todayActions` via `useState + useEffect([avoidance.items])` — since `avoidance.items` was always a new reference, the effect fired on every render, calling `setTodayActions`, triggering another render, ad infinitum.
+3. Every tap also called `LayoutAnimation.configureNext`. Rapid-fire state updates mid-animation caused Fabric's C++ view-list sort to receive inconsistent data → `SIGABRT: _LIBCPP_ASSERT_SEMANTIC_REQUIREMENT "Your comparator is not a valid strict-weak ordering"`.
+
+**Fix:**
+1. `usePlatformAvoidance.ts` — wrapped `items` and `totalAvoids` in `useMemo([events, platforms])`. Reference is now stable unless events or platforms actually change.
+2. `TrackContext.tsx` — replaced `todayActions` `useState + useEffect` with `useMemo([avoidance.items])`. Removed manual `setTodayActions` calls from `avoid`, `avoidForDate`, and `clearAll` — `todayActions` now updates reactively in the same render pass as the event state change.
+
+**No functional change** — same computed values, same user-visible behavior.
+
+**Files modified:** `features/Platforms/hooks/usePlatformAvoidance.ts`, `features/Platforms/context/TrackContext.tsx`
+
+**Tests:** 64 tests pass. TypeScript clean.
+
+**CLAUDE.md:** Added note on unmemoized hook return values as `useEffect` dependencies causing infinite loops + Fabric SIGABRT.
+
+**Commits:** `a5de7eb` (business card) → `6492097` (docs) → this fix
+
+---
+
 ### Session: March 30, 2026 (Business card visual upgrade)
 **Focus:** Bring BusinessCard, BusinessBanner, DataZone, and AvoidButton into the same visual language as the Track screen — blue chrome bevel, amber actions, sprite-left layout, post-avoid sparkles.
 

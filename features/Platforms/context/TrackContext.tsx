@@ -2,7 +2,6 @@ import React, {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useReducer,
   useRef,
@@ -113,54 +112,25 @@ export function TrackProvider({ adapter, platforms, children }: TrackProviderPro
     });
   }, []);
 
+  // todayActions is derived data — useMemo prevents the useState+useEffect
+  // pattern that caused an infinite loop: avoidance.items is now stable (memoized
+  // in usePlatformAvoidance), so this only recomputes when events actually change.
   const sessionDateRef = useRef(getLocalDateString());
-  const [todayActions, setTodayActions] = useState<Set<string>>(() =>
-    buildTodayActions(avoidance.items, sessionDateRef.current, getDisplayFigure),
-  );
-
-  useEffect(() => {
+  const todayActions = useMemo(() => {
     const today = getLocalDateString();
-    if (today !== sessionDateRef.current) {
-      sessionDateRef.current = today;
-    }
-    setTodayActions(buildTodayActions(avoidance.items, sessionDateRef.current, getDisplayFigure));
+    sessionDateRef.current = today;
+    return buildTodayActions(avoidance.items, today, getDisplayFigure);
   }, [avoidance.items]);
 
   const avoid = useCallback(async (platformId: string) => {
     const recorded = await avoidance.avoid(platformId);
-    if (!recorded) return false;
-
-    const platform = platforms.find((item) => item.id === platformId);
-    if (platform) {
-      const figureName = getDisplayFigure(platform);
-      setTodayActions((prev) => {
-        if (prev.has(figureName)) return prev;
-        const next = new Set(prev);
-        next.add(figureName);
-        return next;
-      });
-    }
-
-    return true;
-  }, [avoidance, platforms]);
+    return recorded;
+  }, [avoidance]);
 
   const avoidForDate = useCallback(async (platformId: string, date: string) => {
     const recorded = await avoidance.avoidForDate(platformId, date);
-    if (!recorded) return false;
-
-    const platform = platforms.find((item) => item.id === platformId);
-    if (platform) {
-      const figureName = getDisplayFigure(platform);
-      setTodayActions((prev) => {
-        if (prev.has(figureName)) return prev;
-        const next = new Set(prev);
-        next.add(figureName);
-        return next;
-      });
-    }
-
-    return true;
-  }, [avoidance, platforms]);
+    return recorded;
+  }, [avoidance]);
 
   const personWeeklyAvoids = useCallback((figureName: string): number => {
     return avoidance.items
@@ -174,7 +144,6 @@ export function TrackProvider({ adapter, platforms, children }: TrackProviderPro
 
   const clearAll = useCallback(async () => {
     await avoidance.clearAll();
-    setTodayActions(new Set());
     setArenaHitRequest(null);
     dispatch({ type: 'reset' });
   }, [avoidance]);

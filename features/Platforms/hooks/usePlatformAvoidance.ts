@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import type { StorageAdapter } from '../../../core/data';
 import {
   recordPlatformAvoid,
@@ -105,7 +105,7 @@ export function usePlatformAvoidance(
     [adapter]
   );
 
-  const items: PlatformItem[] = platforms.map((platform) => {
+  const items = useMemo<PlatformItem[]>(() => platforms.map((platform) => {
     const platformEvents = events.filter((e) => e.platformId === platform.id);
     const dayCounts = new Map<string, number>();
     for (const e of platformEvents) {
@@ -113,9 +113,12 @@ export function usePlatformAvoidance(
     }
     const weeklyCount = platformEvents.reduce((sum, e) => sum + e.count, 0);
     return { platform, weeklyCount, dayCounts };
-  });
+  }), [events, platforms]);
 
-  const totalAvoids = items.reduce((sum, i) => sum + i.weeklyCount, 0);
+  const totalAvoids = useMemo(
+    () => items.reduce((sum, i) => sum + i.weeklyCount, 0),
+    [items],
+  );
 
   return { weekOf, items, totalAvoids, loading, error, avoid, avoidForDate, clearAll };
 }
