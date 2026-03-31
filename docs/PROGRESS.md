@@ -12,6 +12,37 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: March 30, 2026 (Track screen crash fix — reanimated migration)
+**Focus:** Diagnose and fix persistent SIGABRT crash on Track screen platform taps. Fix two related React hook stability issues. Apply Business Card visual sprint (blue chrome / amber / beveled panels). Update all docs.
+
+**Root causes identified:**
+1. **Infinite render loop** — `usePlatformAvoidance` returned `items` computed inline (new array ref every render). `TrackContext.tsx` had `todayActions` computed via `useState + useEffect([avoidance.items])` — fired every render. Together: state update → re-render → new items ref → effect fires → state update → loop. Fixed with `useMemo` for `items`/`totalAvoids` in `usePlatformAvoidance.ts` and converting `todayActions` to `useMemo` in `TrackContext.tsx`.
+2. **`LayoutAnimation.configureNext` broken on RN 0.76 + new arch** — known Fabric regression (facebook/react-native#47617). Every `animateNextLayout()` call → SIGABRT in the C++ animation driver. Fixed by migrating to `react-native-reanimated` 3.16.7.
+
+**What changed:**
+- `features/Platforms/hooks/usePlatformAvoidance.ts` — `items` and `totalAvoids` wrapped in `useMemo`
+- `features/Platforms/context/TrackContext.tsx` — `todayActions` converted from `useState+useEffect` to `useMemo`; `avoid`/`avoidForDate`/`clearAll` simplified
+- `features/Scorecard/hooks/useScorecard.ts` — sync-ref pattern for `entities`/`platforms` props; effect deps reduced to `[adapter, weekOf, isPreview]`
+- `features/Map/hooks/useBarcodeSearch.ts` — sync-ref pattern for `entities` prop; `resolveBarcode` dep array `[]`
+- `features/Platforms/components/TrackList.tsx` — removed `LayoutAnimation`, `Platform`, `UIManager`; removed `animateNextLayout` callback and all 7 call sites; removed Android UIManager useEffect; changed `FlatList` → `Animated.FlatList` with `itemLayoutAnimation={LinearTransition.duration(250)}`; dayCircles items wrapped in `Animated.View entering={FadeIn.duration(200)}`
+- `babel.config.js` — created with `react-native-reanimated/plugin` (required for reanimated)
+- `package.json` + `package-lock.json` — `react-native-reanimated@3.16.7` added
+- `ios/Podfile.lock` — reanimated native pod added (pod install run)
+- `features/Map/components/BusinessCard.tsx` — blue focus bevel, sprite-left layout, tappable confidence badge, large sparkles on avoided state
+- `features/Map/components/AvoidButton.tsx` — amber raised bevel for AVOID, green inset for AVOIDED
+- `features/Map/components/DataZone.tsx` — border updated to focusBevelDark
+- `features/Map/components/BusinessBanner.tsx` — blue focus bevel, variant accent bar
+- `core/fx/SparkleDecoration.tsx` — `variant="large"` prop added (5 larger sparks, staggered)
+- `copy/map.ts` — `confidenceBadgeHint`, `confidenceAlertTitle`, `confidenceAlertBody` added
+- `tools/copy-preview/copy-all.json` + `copy-all.js` — regenerated
+- `CLAUDE.md` — added `LayoutAnimation` RN 0.76 rule, infinite render loop / SIGABRT pattern, sync-ref pattern
+
+**Pending:**
+- App still needs device build + test after reanimated migration
+- `AIRMap.m` nil guard must be re-verified after pod install (post_install hook should have re-applied it)
+
+---
+
 ### Session: March 30, 2026 (Copy rewrite + structural follow-ups)
 **Focus:** Complete copy rewrite across all 11 copy files and 9+ component files based on the Voice & Ethos Framework v3.2. Then implement 6 structural follow-up tasks flagged during the rewrite.
 
