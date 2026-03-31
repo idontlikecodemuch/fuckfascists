@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.space.lg,
     paddingBottom: theme.space.sm,
     borderTopWidth: 1,
-    borderTopColor: theme.colors.surface2,
+    borderTopColor: theme.colors.focusBevelDark,
   },
   totalLabel: {
     ...theme.type.caption,

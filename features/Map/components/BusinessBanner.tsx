@@ -1,9 +1,10 @@
 import React from 'react';
-import { Text, Pressable, StyleSheet } from 'react-native';
+import { View, Text, Pressable, StyleSheet } from 'react-native';
 import type { ScanResult } from '../types';
 import { sharedCopy } from '../../../copy/shared';
 import { mapCopy } from '../../../copy/map';
 import { theme } from '../../../design/tokens';
+import { bevelFocusRaised } from '../../../design/bevel';
 
 /**
  * Banner variant — lightweight dismissible bar, no avatar, no AVOID button.
@@ -61,6 +62,15 @@ export function resolveCardMode(
   return { banner: 'no_pac' };
 }
 
+/** Left accent bar color per banner variant. */
+function accentColor(variant: BannerVariant): string {
+  switch (variant) {
+    case 'dissolved': return theme.colors.amberActionLight;
+    case 'lookup_failed': return theme.colors.dangerRed;
+    default: return theme.colors.panelBorder;
+  }
+}
+
 /**
  * Lightweight dismissible bar for non-card results.
  * No avatar, no AVOID button — informational only.
@@ -83,6 +93,7 @@ export function BusinessBanner({ displayName, variant, onDismiss }: BusinessBann
       accessibilityLabel={message}
       accessibilityHint={mapCopy.bannerDismissLabel}
     >
+      <View style={[styles.accentBar, { backgroundColor: accentColor(variant) }]} />
       <Text style={styles.bannerText} allowFontScaling>{message}</Text>
       <Text style={styles.bannerDismiss} allowFontScaling>{sharedCopy.dismiss}</Text>
     </Pressable>
@@ -91,24 +102,31 @@ export function BusinessBanner({ displayName, variant, onDismiss }: BusinessBann
 
 const styles = StyleSheet.create({
   banner: {
-    backgroundColor: theme.colors.surface1,
-    borderWidth: theme.borders.standard.width,
-    borderColor: theme.colors.rewardYellow,
+    ...bevelFocusRaised,
+    backgroundColor: theme.colors.panelInner,
+    borderRadius: theme.radii.sharp,
     marginHorizontal: theme.space.lg,
-    padding: theme.space.md,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     minHeight: theme.a11y.minTapTarget,
+    overflow: 'hidden',
+  },
+  accentBar: {
+    width: 3,
+    alignSelf: 'stretch',
+    marginRight: theme.space.sm,
   },
   bannerText: {
     ...theme.type.bodyS,
     color: theme.colors.textPrimary,
     flex: 1,
+    paddingVertical: theme.space.md,
     marginRight: theme.space.sm,
   },
   bannerDismiss: {
     ...theme.type.bodyS,
     color: theme.colors.textSecondary,
+    paddingVertical: theme.space.md,
+    paddingRight: theme.space.md,
   },
 });

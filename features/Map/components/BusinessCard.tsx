@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Pressable, StyleSheet, AccessibilityInfo } from 'react-native';
+import { Alert, View, Text, Pressable, StyleSheet, AccessibilityInfo } from 'react-native';
 import type { ScanResult } from '../types';
 import type { Entity } from '../../../core/models';
 import { getDisplayFigure, getParentEntity } from '../../../core/models';
@@ -7,7 +7,9 @@ import { CONFIDENCE_THRESHOLD_HIGH, CONFIDENCE_THRESHOLD_MEDIUM } from '../../..
 import { sharedCopy } from '../../../copy/shared';
 import { mapCopy } from '../../../copy/map';
 import { theme } from '../../../design/tokens';
+import { bevelFocusRaised } from '../../../design/bevel';
 import { SpriteView, nameToSpriteId } from '../../../core/sprites/spriteLoader';
+import { SparkleDecoration } from '../../../core/fx';
 import { AvoidButton } from './AvoidButton';
 import { DataZone } from './DataZone';
 
@@ -46,23 +48,29 @@ function ConfidenceBadge({ confidence }: { confidence: number }) {
   if (confidence >= CONFIDENCE_THRESHOLD_HIGH) return null;
   if (confidence < CONFIDENCE_THRESHOLD_MEDIUM) return null;
   return (
-    <View
+    <Pressable
+      onPress={() =>
+        Alert.alert(mapCopy.confidenceAlertTitle, mapCopy.confidenceAlertBody)
+      }
       style={styles.badge}
+      accessibilityRole="button"
       accessibilityLabel={sharedCopy.confidenceA11y(sharedCopy.confidenceMedium)}
+      accessibilityHint={mapCopy.confidenceBadgeHint}
     >
       <Text style={styles.badgeText}>{sharedCopy.confidenceMedium}</Text>
-    </View>
+    </Pressable>
   );
 }
 
 /**
- * Business card — clean three-section layout:
- *   1. Sprite + brand name + parent attribution + confidence
+ * Business card — three-section layout:
+ *   1. Header: sprite left + brand name / parent attribution right
  *   2. DataZone (self-contained donation data display)
  *   3. Avoid button + dismiss
  *
- * Sprite renders ABOVE the card via negative marginBottom on the perch.
- * No celebration/victory code — that lives in MapScreen (FXLayer).
+ * Sprite sits inside the card on the left side — no frame, no centered perch.
+ * Blue chrome bevel (focusBevelLight/focusBevelDark) — card is always in the active state.
+ * SparkleDecoration (large) renders when avoided.
  */
 export function BusinessCard({
   result,
@@ -100,44 +108,45 @@ export function BusinessCard({
   };
 
   return (
-    <View style={styles.cardWrapper} accessibilityViewIsModal={modal} accessibilityLabel={mapCopy.cardModalLabel}>
-      {spriteId && (
-        <View style={styles.spritePerch} pointerEvents="none" accessibilityElementsHidden>
-          <SpriteView spriteId={spriteId} state={avoided ? 'defeated' : 'neutral'} size={140} />
-        </View>
-      )}
-
-      <View style={[styles.card, isMedium && styles.cardMedium]}>
-        <View style={styles.nameSection}>
-          {barcodeContext && barcodeLabel && (
-            <View style={styles.contextBlock}>
-              <Text style={styles.contextEyebrow} allowFontScaling>
-                {mapCopy.barcodeContextEyebrow}
-              </Text>
-              <Text style={styles.contextLine} allowFontScaling numberOfLines={2}>
-                {mapCopy.barcodeContextLine(barcodeLabel, barcodeContext.barcode)}
-              </Text>
+    <View
+      style={styles.cardWrapper}
+      accessibilityViewIsModal={modal}
+      accessibilityLabel={mapCopy.cardModalLabel}
+    >
+      <View style={styles.card}>
+        {/* Header: sprite left, name right */}
+        <View style={styles.headerRow}>
+          {spriteId && (
+            <View style={styles.spriteSide} pointerEvents="none" accessibilityElementsHidden>
+              <SpriteView spriteId={spriteId} state={avoided ? 'defeated' : 'neutral'} size={140} />
             </View>
           )}
 
-          <View style={styles.titleRow}>
-            <Text style={styles.name} numberOfLines={2} accessibilityRole="header" allowFontScaling>
-              {displayName}
-            </Text>
-            <ConfidenceBadge confidence={confidence} />
+          <View style={[styles.nameSide, !spriteId && styles.nameSideNoSprite]}>
+            {barcodeContext && barcodeLabel && (
+              <View style={styles.contextBlock}>
+                <Text style={styles.contextEyebrow} allowFontScaling>
+                  {mapCopy.barcodeContextEyebrow}
+                </Text>
+                <Text style={styles.contextLine} allowFontScaling numberOfLines={2}>
+                  {mapCopy.barcodeContextLine(barcodeLabel, barcodeContext.barcode)}
+                </Text>
+              </View>
+            )}
+
+            <View style={styles.titleRow}>
+              <Text style={styles.name} numberOfLines={2} accessibilityRole="header" allowFontScaling>
+                {displayName}
+              </Text>
+              <ConfidenceBadge confidence={confidence} />
+            </View>
+
+            {showParent && (
+              <Text style={styles.parentAttribution} numberOfLines={1} allowFontScaling>
+                {mapCopy.parentAttribution(parentName!)}
+              </Text>
+            )}
           </View>
-
-          {showParent && (
-            <Text style={styles.parentAttribution} numberOfLines={1} allowFontScaling>
-              {mapCopy.parentAttribution(parentName!)}
-            </Text>
-          )}
-
-          {isMedium && (
-            <Text style={styles.disclaimer} accessibilityRole="alert" allowFontScaling>
-              {mapCopy.mediumWarning}
-            </Text>
-          )}
         </View>
 
         <DataZone
@@ -149,17 +158,19 @@ export function BusinessCard({
 
         <View style={styles.actSection}>
           <AvoidButton onPress={handleAvoid} disabled={avoidDisabled} />
+
+          <Pressable
+            onPress={onDismiss}
+            style={styles.dismissButton}
+            accessibilityRole="button"
+            accessibilityLabel={sharedCopy.dismissLabel}
+            hitSlop={DISMISS_HIT_SLOP}
+          >
+            <Text style={styles.dismissLabel} allowFontScaling>{sharedCopy.dismiss}</Text>
+          </Pressable>
         </View>
 
-        <Pressable
-          onPress={onDismiss}
-          style={styles.dismissButton}
-          accessibilityRole="button"
-          accessibilityLabel={sharedCopy.dismissLabel}
-          hitSlop={DISMISS_HIT_SLOP}
-        >
-          <Text style={styles.dismissLabel} allowFontScaling>{sharedCopy.dismiss}</Text>
-        </Pressable>
+        {avoided && <SparkleDecoration variant="large" />}
       </View>
     </View>
   );
@@ -167,27 +178,56 @@ export function BusinessCard({
 
 const styles = StyleSheet.create({
   cardWrapper: { overflow: 'visible' as const },
-  spritePerch: { alignSelf: 'center', marginBottom: -40, zIndex: 20 },
   card: {
-    backgroundColor: theme.colors.surface1,
-    borderColor: theme.colors.frameBlue,
-    borderWidth: theme.borders.hero.width,
-    borderTopColor: theme.colors.highlightBlue,
-    borderBottomColor: theme.colors.bgVoid,
+    ...bevelFocusRaised,
+    backgroundColor: theme.colors.panelInner,
+    borderRadius: theme.radii.sharp,
     marginHorizontal: theme.space.sm,
+    overflow: 'visible' as const,
   },
-  cardMedium: { borderLeftColor: theme.colors.rewardYellow, borderLeftWidth: theme.borders.hero.width },
-  nameSection: { padding: theme.space.lg, paddingBottom: theme.space.sm },
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  spriteSide: {
+    paddingLeft: theme.space.sm,
+    paddingTop: theme.space.sm,
+  },
+  nameSide: {
+    flex: 1,
+    paddingLeft: theme.space.sm,
+    paddingRight: theme.space.lg,
+    paddingTop: theme.space.lg,
+    paddingBottom: theme.space.sm,
+  },
+  nameSideNoSprite: {
+    paddingLeft: theme.space.lg,
+  },
   contextBlock: { marginBottom: theme.space.sm },
   contextEyebrow: { ...theme.type.caption, color: theme.colors.glowCyan, letterSpacing: 1 },
   contextLine: { ...theme.type.bodyS, color: theme.colors.textSecondary, marginTop: theme.space.xs },
   titleRow: { flexDirection: 'row', alignItems: 'center', marginBottom: theme.space.xs },
   name: { flex: 1, ...theme.type.displayM, color: theme.colors.textPrimary, marginRight: theme.space.sm },
   parentAttribution: { ...theme.type.bodyS, color: theme.colors.textSecondary, marginTop: 1 },
-  disclaimer: { ...theme.type.caption, color: theme.colors.rewardYellow, marginTop: theme.space.xs },
-  badge: { paddingHorizontal: 6, paddingVertical: 2, borderWidth: theme.borders.standard.width, backgroundColor: theme.colors.rewardYellow, borderColor: theme.colors.rewardYellow },
-  badgeText: { ...theme.type.caption, fontSize: 10, color: theme.colors.bgVoid, fontWeight: 'bold' },
-  actSection: { paddingHorizontal: theme.space.lg, paddingBottom: theme.space.md },
-  dismissButton: { alignItems: 'center', paddingVertical: theme.space.sm, borderTopWidth: theme.borders.standard.width, borderTopColor: theme.colors.surface2 },
+  badge: {
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderWidth: theme.borders.standard.width,
+    borderColor: theme.colors.amberActionLight,
+    backgroundColor: theme.colors.panelInner,
+    borderRadius: theme.radii.sharp,
+  },
+  badgeText: { ...theme.type.caption, fontSize: 10, color: theme.colors.amberActionLight, fontWeight: 'bold' },
+  actSection: {
+    paddingHorizontal: theme.space.lg,
+    paddingBottom: theme.space.md,
+  },
+  dismissButton: {
+    alignItems: 'center',
+    paddingVertical: theme.space.sm,
+    marginTop: theme.space.sm,
+    borderTopWidth: 1,
+    borderTopColor: theme.colors.focusBevelDark,
+  },
   dismissLabel: { ...theme.type.bodyS, color: theme.colors.textSecondary },
 });

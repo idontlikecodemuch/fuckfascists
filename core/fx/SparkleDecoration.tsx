@@ -8,18 +8,32 @@ const SPARKS = [
   { char: '\u2726', size: 7, top: -2, right: 24, delay: 600 },
 ] as const;
 
+const LARGE_SPARKS = [
+  { char: '\u2726', size: 16, top: -6, right: 16, delay: 0 },
+  { char: '\u2727', size: 13, top: 8, right: 6, delay: 250 },
+  { char: '\u2726', size: 12, top: -4, right: 32, delay: 500 },
+  { char: '\u2727', size: 18, top: 4, right: 48, delay: 750 },
+  { char: '\u2726', size: 14, top: -2, right: 22, delay: 400 },
+] as const;
+
 const CYCLE_MS = 1200;
 
+interface SparkleDecorationProps {
+  /** 'large' uses 5 sparks at 12–18px for bigger celebration moments (e.g. business card post-avoid). */
+  variant?: 'default' | 'large';
+}
+
 /**
- * Ambient sparkle decoration. 3 small animated text elements rendering
- * alternating stars in rewardYellow. Positioned absolute near top-right
- * of parent. Parent needs overflow: 'visible'.
+ * Ambient sparkle decoration. Animated text elements rendering alternating stars
+ * in rewardYellow. Positioned absolute near top-right of parent.
+ * Parent needs overflow: 'visible'.
  *
  * Reduced motion: static sparks at 0.6 opacity, no animation.
  */
-export function SparkleDecoration() {
+export function SparkleDecoration({ variant = 'default' }: SparkleDecorationProps) {
+  const sparks = variant === 'large' ? LARGE_SPARKS : SPARKS;
   const reducedMotion = useRef(false);
-  const anims = useRef(SPARKS.map(() => new Animated.Value(0))).current;
+  const anims = useRef(sparks.map(() => new Animated.Value(0))).current;
 
   useEffect(() => {
     let cancelled = false;
@@ -35,7 +49,7 @@ export function SparkleDecoration() {
       anims.forEach((anim, i) => {
         const loop = Animated.loop(
           Animated.sequence([
-            Animated.delay(SPARKS[i]!.delay),
+            Animated.delay(sparks[i]!.delay),
             Animated.timing(anim, {
               toValue: 1,
               duration: CYCLE_MS / 2,
@@ -56,11 +70,11 @@ export function SparkleDecoration() {
       cancelled = true;
       anims.forEach((a) => a.stopAnimation());
     };
-  }, [anims]);
+  }, [anims, sparks]);
 
   return (
     <>
-      {SPARKS.map((spark, i) => {
+      {sparks.map((spark, i) => {
         const opacity = anims[i]!.interpolate({
           inputRange: [0, 1],
           outputRange: [0.2, 1.0],

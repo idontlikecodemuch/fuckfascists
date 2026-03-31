@@ -70,6 +70,10 @@ export const mapCopy = {
   barcodeCameraLabel: "Camera viewfinder for barcode scanning",
   // Chooser — screen reader
   chooserModalLabel: "Choose which business to view",
+  // Confidence badge
+  confidenceBadgeHint: "Tap to learn what medium confidence means",
+  confidenceAlertTitle: "\u26A0 Medium Confidence",
+  confidenceAlertBody: "This match was found in FEC records but the name similarity is below our high-confidence threshold. The data is real \u2014 verify the business name before acting.",
   // Card — screen reader
   cardAvoidedAnnouncement: "Avoided. Nice!",
   cardModalLabel: "Business detail card",

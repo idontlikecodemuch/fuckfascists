@@ -3,6 +3,7 @@ import { Animated, Pressable, Text, StyleSheet, AccessibilityInfo } from 'react-
 import * as Haptics from 'expo-haptics';
 import { mapCopy } from '../../../copy/map';
 import { theme } from '../../../design/tokens';
+import { bevelAmberRaised, bevelGreenInset } from '../../../design/bevel';
 
 interface AvoidButtonProps {
   onPress: () => Promise<void>;
@@ -92,13 +93,9 @@ export function AvoidButton({ onPress, disabled = false }: AvoidButtonProps) {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: theme.colors.rewardYellow,
-    borderColor: theme.colors.bgVoid,
-    borderWidth: theme.borders.hero.width,
-    borderTopColor: theme.colors.bgVoid,
-    borderTopWidth: theme.borders.standard.width,
-    borderBottomColor: theme.colors.highlightBlue,
-    borderBottomWidth: theme.borders.standard.width,
+    ...bevelAmberRaised,
+    backgroundColor: theme.colors.amberAction,
+    borderRadius: theme.radii.button,
     minHeight: 56,
     paddingVertical: theme.space.md,
     paddingHorizontal: theme.space.xl,
@@ -106,8 +103,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   confirmed: {
-    backgroundColor: theme.colors.successGreen,
-    borderColor: theme.colors.bgVoid,
+    ...bevelGreenInset,
+    backgroundColor: theme.colors.successGreenDeep,
   },
   errored: {
     backgroundColor: theme.colors.dangerRed,
@@ -115,11 +112,12 @@ const styles = StyleSheet.create({
   },
   label: {
     ...theme.type.displayM,
-    color: theme.colors.bgVoid,
+    color: theme.colors.textPrimary,
     letterSpacing: 3,
   },
   labelConfirmed: {
     ...theme.type.displayS,
+    color: theme.colors.successGreenText,
     letterSpacing: 2,
   },
 });
