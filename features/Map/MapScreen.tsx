@@ -175,6 +175,7 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
       </MapView>
 
       <View style={[styles.headerBar, { height: insets.top + headerBarHeight }]} pointerEvents="none">
+        <View style={[styles.headerBgStrip, { height: insets.top + Math.round(headerBarHeight * 0.1) }]} />
         <Image source={HEADER_BAR_ASSET} style={[styles.headerBarImg, { top: insets.top, width: screenWidth, height: headerBarHeight }]} resizeMode="stretch" />
         <Image source={require('../../assets/pixel/brand/FF_logo_horizontal.png')} style={[styles.headerLogo, { marginTop: insets.top + Math.round(headerBarHeight * 0.1) }]} resizeMode="contain" accessibilityLabel={sharedCopy.appName} />
       </View>
@@ -215,7 +216,8 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
 const styles = StyleSheet.create({
   container:      { flex: 1, backgroundColor: theme.colors.bgVoid },
   map:            { flex: 1 },
-  headerBar:      { position: 'absolute', top: 0, left: 0, right: 0, zIndex: 2, alignItems: 'center', overflow: 'visible' as const, backgroundColor: theme.colors.bgVoid },
+  headerBar:      { position: 'absolute', top: 0, left: 0, right: 0, zIndex: 2, alignItems: 'center', overflow: 'visible' as const },
+  headerBgStrip:  { position: 'absolute', top: 0, left: 0, right: 0, backgroundColor: theme.colors.bgVoid },
   headerBarImg:   { position: 'absolute', left: 0 },
   headerLogo:     { height: 28, aspectRatio: 1536 / 322, zIndex: 3 },
   backdrop:       { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
