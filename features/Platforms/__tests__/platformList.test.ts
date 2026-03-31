@@ -79,7 +79,7 @@ describe('flattenPlatforms', () => {
   it('singletons use their own entityId', () => {
     const platforms = flattenPlatforms(file, []);
     const tiktok = platforms.find((p) => p.id === 'tiktok');
-    expect(tiktok?.entityId).toBe('bytedance');
+    expect(tiktok?.entityId).toBe('tiktok');
     const xTwitter = platforms.find((p) => p.id === 'x-twitter');
     expect(xTwitter?.entityId).toBe('x-twitter');
   });

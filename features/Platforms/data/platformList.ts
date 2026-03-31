@@ -109,3 +109,11 @@ export const TRACKED_PLATFORMS: Platform[] = (() => {
   const entities = parseEntityList(bundledEntitiesRaw);
   return flattenPlatforms(file, entities);
 })();
+
+/**
+ * Platform IDs where defaultSelected is true in platforms.json.
+ * Used by the setup screen as the initial pre-checked set for new users.
+ * Derived from the data — no separate constant to keep in sync.
+ */
+export const DEFAULT_SELECTED_PLATFORM_IDS: string[] =
+  TRACKED_PLATFORMS.filter((p) => p.defaultSelected).map((p) => p.id);

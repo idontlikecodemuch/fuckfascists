@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import * as SecureStore from 'expo-secure-store';
-import { DEFAULT_SELECTED_PLATFORM_IDS } from '../../../config/constants';
+import { DEFAULT_SELECTED_PLATFORM_IDS } from '../data/platformList';
 
 const ROSTER_KEY = 'platform_roster';
 

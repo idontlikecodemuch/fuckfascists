@@ -58,19 +58,6 @@ export const TAP_DEBOUNCE_MS = 500;
 export const NUDGE_DAY = 4;    // Thursday
 export const NUDGE_HOUR = 19;  // 7pm local time
 
-// Default platforms pre-checked on the setup screen.
-// Must match defaultSelected: true entries in assets/data/platforms.json.
-// NOTE: 'twitter' was renamed to 'x-twitter' in platforms.json v1.
-// Existing users with 'twitter' in their saved roster will not auto-migrate.
-export const DEFAULT_SELECTED_PLATFORM_IDS = [
-  'facebook',
-  'instagram',
-  'youtube',
-  'amazon',
-  'tiktok',
-  'x-twitter',
-  'netflix',
-];
 
 // ── Shared FX system ─────────────────────────────────────────────────────────
 // Duration an avoid celebration effect stays on screen (ms).
