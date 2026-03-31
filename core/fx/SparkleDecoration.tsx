@@ -16,11 +16,21 @@ const LARGE_SPARKS = [
   { char: '\u2726', size: 14, top: -2, right: 22, delay: 400 },
 ] as const;
 
+// Info about plaque — 5 sparks spread across four edges, sizes 10-14px.
+// Uses negative right values to place sparks on the left side of parent.
+const INFO_SPARKS = [
+  { char: '\u2726', size: 12, top: -6, right: 20, delay: 0 },      // top-right
+  { char: '\u2727', size: 10, top: -4, right: 200, delay: 200 },    // top-left area
+  { char: '\u2726', size: 14, top: 120, right: 8, delay: 400 },     // bottom-right area
+  { char: '\u2727', size: 11, top: 100, right: 220, delay: 600 },   // bottom-left area
+  { char: '\u2726', size: 13, top: 50, right: -6, delay: 300 },     // mid-right edge
+] as const;
+
 const CYCLE_MS = 1200;
 
 interface SparkleDecorationProps {
-  /** 'large' uses 5 sparks at 12–18px for bigger celebration moments (e.g. business card post-avoid). */
-  variant?: 'default' | 'large';
+  /** 'large' uses 5 sparks at 12–18px. 'info' spreads 5 sparks (10-14px) across all edges. */
+  variant?: 'default' | 'large' | 'info';
 }
 
 /**
@@ -31,7 +41,7 @@ interface SparkleDecorationProps {
  * Reduced motion: static sparks at 0.6 opacity, no animation.
  */
 export function SparkleDecoration({ variant = 'default' }: SparkleDecorationProps) {
-  const sparks = variant === 'large' ? LARGE_SPARKS : SPARKS;
+  const sparks = variant === 'info' ? INFO_SPARKS : variant === 'large' ? LARGE_SPARKS : SPARKS;
   const reducedMotion = useRef(false);
   const anims = useRef(sparks.map(() => new Animated.Value(0))).current;
 

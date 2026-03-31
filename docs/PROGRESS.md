@@ -32,6 +32,27 @@ This document is updated continuously. New instances should read this first — 
 
 ---
 
+### Session: March 31, 2026 (Info screen game UI restyle)
+**Focus:** Bring the Info screen into the game UI design language — star field background, beveled panels, amber-framed about section, blue-highlighted accordions.
+
+**What changed:**
+1. **InfoScreen.tsx** — complete visual restyle. About section extracted from InfoSection wrapper into standalone amber plaque (3px amber bevel, 1px inner border, `#050810` opaque background, corner brackets, neon rule divider). "Built to Last" ethos panel uses inset bevel (`#080a0e` background). Transparency and FAQ use beveled accordion panels. Version label moved from header to below links. Star field background via `bg_stars.gif`.
+2. **InfoDecorations.tsx** — new file. `StarField` (ImageBackground with bg_stars.gif), `CornerBrackets` (four 2px amber L-brackets at plaque corners), `NeonRule` (3px focusAccent bar with 1px highlightBlue highlight and 5px endpoint dots).
+3. **InfoSection.tsx** — simplified to standalone Bungee/highlightBlue label above children. Removed container borders and dark header strip.
+4. **FaqItem.tsx** — grey bevel panels (`bevelRaised`), ▼/▲ chevrons (from `infoCopy`), expanded state: 3px focusAccent left accent bar, focusTint header bg, focusText question text, highlightBlue chevron, focusTint answer area. `SparkleDecoration` (default variant) renders on expanded items.
+5. **LinkRow.tsx** — plain text links in highlightBlue with ↗ suffix. Removed category color coding, underlines, panel borders.
+6. **SparkleDecoration.tsx** — added `'info'` variant: 5 sparks at 10–14px spread across all four edges of parent (for about plaque).
+7. **design/bevel.ts** — added `bevelAmberPlaque` (3px thick amber bevel for Info about section).
+8. **assets/pixel/bg/bg_stars.gif** — star field background asset.
+
+**Known limitation:** `SparkleDecoration` `info` variant uses hardcoded pixel `right` values (200, 220) to approximate left-edge placement. Works well on ~375pt phones but drifts on wider screens. Documented in CLAUDE.md Known Limitations for V1.5 fix.
+
+**Files modified:** `design/bevel.ts`, `core/fx/SparkleDecoration.tsx`, `features/Info/InfoScreen.tsx`, `features/Info/components/InfoDecorations.tsx` (new), `features/Info/components/InfoSection.tsx`, `features/Info/components/FaqItem.tsx`, `features/Info/components/LinkRow.tsx`, `assets/pixel/bg/bg_stars.gif` (new)
+
+**Tests:** 320 tests pass. TypeScript clean.
+
+---
+
 ### Session: March 30, 2026 (LayoutAnimation → reanimated migration)
 **Focus:** Replace `LayoutAnimation` with `react-native-reanimated` to fix persistent SIGABRT/SIGKILL crashes on the Track screen and on app launch.
 

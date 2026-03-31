@@ -58,3 +58,13 @@ export const bevelAmberRaised: ViewStyle = {
   borderBottomColor: theme.colors.amberActionDark,
   borderRightColor: theme.colors.amberActionDark,
 };
+
+// ── Amber plaque bevel (Info about section — thick 3px frame) ───────────────
+
+export const bevelAmberPlaque: ViewStyle = {
+  borderWidth: 3,
+  borderTopColor: theme.colors.amberActionLight,
+  borderLeftColor: theme.colors.amberActionLight,
+  borderBottomColor: theme.colors.amberActionDark,
+  borderRightColor: theme.colors.amberActionDark,
+};
