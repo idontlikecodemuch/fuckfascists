@@ -48,7 +48,7 @@ interface MapScreenProps {
  * Session rule: GPS coordinates live only in component state.
  * They are never written to disk, transmitted, or passed to core/data.
  */
-const HEADER_BAR_ASPECT = 1482 / 153;
+const HEADER_BAR_ASPECT = 1242 / 153;
 
 const HINT_COPY: Record<HintId, string> = {
   search: mapCopy.hintSearch,
@@ -153,8 +153,7 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
   const bannerVariant = cardMode && typeof cardMode === 'object' ? cardMode.banner : null;
   const isCelebrating = fx.active;
   const headerBarHeight = Math.round(screenWidth / HEADER_BAR_ASPECT);
-  const reducedHeaderHeight = Math.round(headerBarHeight * 0.75);
-  const SEARCH_TOP = insets.top + reducedHeaderHeight + theme.space.md;
+  const SEARCH_TOP = insets.top + headerBarHeight + theme.space.md;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -175,9 +174,9 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
         {tapLoadingCoord && <TapLoadingMarker coordinate={tapLoadingCoord} />}
       </MapView>
 
-      <View style={[styles.headerBar, { height: insets.top + reducedHeaderHeight }]} pointerEvents="none">
-        <Image source={HEADER_BAR_ASSET} style={[styles.headerBarImg, { top: insets.top, width: screenWidth, height: reducedHeaderHeight }]} resizeMode="stretch" />
-        <Image source={require('../../assets/pixel/brand/FF_logo_horizontal.png')} style={[styles.headerLogo, { marginTop: insets.top + Math.round(reducedHeaderHeight * 0.1) }]} resizeMode="contain" accessibilityLabel={sharedCopy.appName} />
+      <View style={[styles.headerBar, { height: insets.top + headerBarHeight }]} pointerEvents="none">
+        <Image source={HEADER_BAR_ASSET} style={[styles.headerBarImg, { top: insets.top, width: screenWidth, height: headerBarHeight }]} resizeMode="stretch" />
+        <Image source={require('../../assets/pixel/brand/FF_logo_horizontal.png')} style={[styles.headerLogo, { marginTop: insets.top + Math.round(headerBarHeight * 0.1) }]} resizeMode="contain" accessibilityLabel={sharedCopy.appName} />
       </View>
 
       <MapSearchBar value={searchText} onChangeText={setSearchText} onSubmit={handleSearch} isScanning={status === 'scanning'} topOffset={SEARCH_TOP} />

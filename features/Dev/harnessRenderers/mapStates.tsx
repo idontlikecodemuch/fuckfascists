@@ -23,14 +23,13 @@ import {
 const noop = () => {};
 const noopAsync = async () => {};
 
-const HEADER_BAR_ASPECT = 1482 / 153;
+const HEADER_BAR_ASPECT = 1242 / 153;
 
 function MapShell({ children }: { children?: React.ReactNode }) {
   const insets = useSafeAreaInsets();
   const { width: screenWidth } = useWindowDimensions();
   const headerBarHeight = Math.round(screenWidth / HEADER_BAR_ASPECT);
-  const reducedHeaderHeight = Math.round(headerBarHeight * 0.75);
-  const searchTop = insets.top + reducedHeaderHeight + theme.space.md;
+  const searchTop = insets.top + headerBarHeight + theme.space.md;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -38,15 +37,15 @@ function MapShell({ children }: { children?: React.ReactNode }) {
       <View style={styles.mapPlaceholder} />
 
       {/* Header bar */}
-      <View style={[styles.headerBar, { height: insets.top + reducedHeaderHeight }]} pointerEvents="none">
+      <View style={[styles.headerBar, { height: insets.top + headerBarHeight }]} pointerEvents="none">
         <Image
           source={HEADER_BAR_ASSET}
-          style={[styles.headerBarImg, { top: insets.top, width: screenWidth, height: reducedHeaderHeight }]}
+          style={[styles.headerBarImg, { top: insets.top, width: screenWidth, height: headerBarHeight }]}
           resizeMode="stretch"
         />
         <Image
           source={require('../../../assets/pixel/brand/FF_logo_horizontal.png')}
-          style={[styles.headerLogo, { marginTop: insets.top + Math.round(reducedHeaderHeight * 0.1) }]}
+          style={[styles.headerLogo, { marginTop: insets.top + Math.round(headerBarHeight * 0.1) }]}
           resizeMode="contain"
           accessibilityLabel={sharedCopy.appName}
         />
