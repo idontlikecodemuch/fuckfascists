@@ -175,7 +175,9 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
       </MapView>
 
       <View style={[styles.headerBar, { height: insets.top + headerBarHeight }]} pointerEvents="none">
-        <Image source={require('../../assets/pixel/bg_tile_dark_stone.png')} style={[styles.headerBgStrip, { height: insets.top + Math.round(headerBarHeight * 0.15) }]} resizeMode="cover" />
+        <View style={[styles.headerBgStrip, { height: insets.top + Math.round(headerBarHeight * 0.15) }]}>
+          <Image source={require('../../assets/pixel/bg_tile_dark_stone.png')} style={styles.headerBgTile} resizeMode="repeat" />
+        </View>
         <Image source={HEADER_BAR_ASSET} style={[styles.headerBarImg, { top: insets.top, width: screenWidth, height: headerBarHeight }]} resizeMode="stretch" />
         <Image source={require('../../assets/pixel/brand/FF_logo_horizontal.png')} style={[styles.headerLogo, { marginTop: insets.top + Math.round(headerBarHeight * 0.15) }]} resizeMode="contain" accessibilityLabel={sharedCopy.appName} />
       </View>
@@ -217,7 +219,8 @@ const styles = StyleSheet.create({
   container:      { flex: 1, backgroundColor: theme.colors.bgVoid },
   map:            { flex: 1 },
   headerBar:      { position: 'absolute', top: 0, left: 0, right: 0, zIndex: 2, alignItems: 'center', overflow: 'visible' as const },
-  headerBgStrip:  { position: 'absolute', top: 0, left: 0, width: '100%' },
+  headerBgStrip:  { position: 'absolute', top: 0, left: 0, width: '100%', overflow: 'hidden' },
+  headerBgTile:   { width: '100%', height: '100%', transform: [{ scale: 2.5 }] },
   headerBarImg:   { position: 'absolute', left: 0 },
   headerLogo:     { height: 42, aspectRatio: 1536 / 322, zIndex: 3 },
   backdrop:       { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
