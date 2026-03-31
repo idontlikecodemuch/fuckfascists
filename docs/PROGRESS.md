@@ -12,6 +12,23 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: March 30, 2026 (Stabilize array deps in useScorecard + useBarcodeSearch)
+**Focus:** Preventive fix — eliminate unstable array prop references as `useEffect`/`useCallback` dependencies in two hooks identified during a render-loop audit.
+
+**What changed:**
+1. **`useScorecard.ts`** — `entities` and `platforms` moved from `useEffect` dep array to refs (`entitiesRef`, `platformsRef`), synced synchronously on every render. Effect now deps on `[adapter, weekOf, isPreview]` only. Prevents `aggregateScorecard` (async DB read) from re-running on any parent re-render that produces a new array reference — which would cause a loading flash and unnecessary DB churn.
+2. **`useBarcodeSearch.ts`** — `entities` moved to `entitiesRef`, `resolveBarcode` dep array is now `[]`. Callback is called on demand, never a downstream effect dep, so recreating it on array reference churn was unnecessary. Now fully stable.
+
+**Pattern used:** sync-ref — `const ref = useRef(val); ref.current = val;` on every render keeps the value current without listing it as a reactive dep.
+
+**No functional change.**
+
+**Files modified:** `features/Scorecard/hooks/useScorecard.ts`, `features/Map/hooks/useBarcodeSearch.ts`
+
+**Commit:** `b04a27d`
+
+---
+
 ### Session: March 30, 2026 (Track screen crash fix — infinite render loop)
 **Focus:** Diagnose and fix a SIGABRT crash triggered by tapping platform rows or group headers on the Track screen.
 
