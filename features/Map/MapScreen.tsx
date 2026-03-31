@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
   container:      { flex: 1, backgroundColor: theme.colors.bgVoid },
   map:            { flex: 1 },
   headerBar:      { position: 'absolute', top: 0, left: 0, right: 0, zIndex: 2, alignItems: 'center', overflow: 'visible' as const },
-  headerBgStrip:  { position: 'absolute', top: 0, left: 0, right: 0 },
+  headerBgStrip:  { position: 'absolute', top: 0, left: 0, width: '100%' },
   headerBarImg:   { position: 'absolute', left: 0 },
   headerLogo:     { height: 42, aspectRatio: 1536 / 322, zIndex: 3 },
   backdrop:       { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
