@@ -19,7 +19,7 @@ This document is updated continuously. New instances should read this first — 
 
 1. **Bundle ID:** `app.json` updated — iOS `bundleIdentifier` → `com.fckapp.fck`, Android `package` → `com.fckapp.fck` (added android section).
 2. **Onboarding swipe gestures:** `OnboardingNavigator.tsx` now wraps screens in a `PanResponder` view. Swipe left to advance, swipe right to go back. Existing button navigation unchanged. Uses velocity + distance thresholds (50px / 0.3 velocity). No new dependencies.
-3. **Arena grid responsive sizing:** Grid cell size now computed dynamically from figure count and available arena dimensions via `computeGridCellSize()` (extracted to `platformHelpers.ts`). Cells shrink from 84px down to 40px minimum as more figures are tracked. Prevents overflow when many platforms are tracked. Fighting-game character-select pattern.
+3. **Arena grid responsive sizing:** Grid cell size now computed dynamically from figure count and available arena dimensions via `computeGridCellSize()` (extracted to `platformHelpers.ts`). Pure math — tries every column count, picks the layout that maximizes cell size. No hardcoded min/max pixel constants. Prevents overflow when many platforms are tracked.
 4. **File cleanup:** Moved `assets/pixel/old/` (35 legacy files) to `tools/reference/pixel-old/`. Moved `bill-gates_gpt.png` and `jay-schottenstein_redo.png` to `tools/reference/renamed-sprites/`. Added `tools/reference/` to `.gitignore`.
 
 **Audit — Sprite gap analysis:**
@@ -28,6 +28,8 @@ This document is updated continuously. New instances should read this first — 
 - 403 missing sprites
 - 10 of 18 platform parent figures missing sprites (Andy Jassy, Sundar Pichai, Shou Zi Chew, Greg Peters, Dara Khosrowshahi, Alex Chriss, Steve Huffman, Bill Ready, Jason Citron, Dario Amodei)
 - Bug found: `daniel-ervr.png` sprite exists but H&M entity has `ceoName: "Daniel Ervér"` (accent) — `nameToSpriteId()` produces `daniel-ervér`, not `daniel-ervr`. Sprite won't resolve at runtime.
+
+**Simplification pass:** Onboarding swipe refactored — dropped `useCallback`/`stepRef` sync-ref pattern in favor of `setStepIndex` functional updaters (stable in PanResponder's stale closure). Arena grid dropped `TRACK_ARENA_GRID_CELL_MIN`/`_MAX` constants in favor of pure computation.
 
 **Flags:**
 - `GameArena.tsx` is 291 lines — pre-existing violation (was 281), noted in known debt.
