@@ -129,7 +129,7 @@ export function GameArena() {
     const text = pickReaction();
     fx.fire('speechBubble', 'point', { text, x, y });
     fx.fire('floatingMinus', 'area', { x: x + 0.05, y: y + 0.18 });
-  }, [fx]);
+  }, [fx.fire]);
 
   useEffect(() => {
     if (!arenaHitRequest) return;

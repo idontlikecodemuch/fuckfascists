@@ -12,6 +12,32 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: March 31, 2026 (Six fixes + two audits)
+**Focus:** Six independent bug fixes across Track, Scorecard, BusinessCard, Map, and Launch screens. Two read-only audits (asset bundling, file cleanup).
+
+**What changed:**
+
+1. **FIX 1 — Track screen infinite FX loop:** `FXLayer.tsx` created a new inline callback per entry on every render, triggering useEffect re-fires in all FX effect components. Extracted `FXEntryRenderer` wrapper that memoizes the callback via `useCallback`. Also fixed `GameArena.tsx` `fireHitFX` dependency from `[fx]` (unstable object) to `[fx.fire]` (stable callback).
+2. **FIX 2 — Scorecard platform figure name:** `aggregateScorecard.ts` used `platform.ceoName` for platform avoids instead of `publicFigureName ?? ceoName`. Amazon showed "Andy Jassy" instead of "Jeff Bezos". Fixed to match entity avoid path which already uses `getDisplayFigure()`. Added test.
+3. **FIX 3 — BusinessCard sprite breakout:** Sprite was contained inside card. Changed `spriteSide` from `paddingTop: sm` to `marginTop: -40` so sprite floats above card frame, overlapping the map behind it. Card already has `overflow: 'visible'`.
+4. **FIX 4 — Map banners auto-dismiss:** `BusinessBanner` now auto-dismisses after 5 seconds via `useEffect` timer. DISMISS label moved below message text (column layout). Added backdrop `Pressable` in `MapScreen` for tap-outside dismissal.
+5. **FIX 5 — Map no-match ghost marker:** New `NoMatchMarker` component — greyed-out fading dot at tap location when no entity match found. Added `tapNoMatchCoord` state to `useTapSearch`. Ghost marker fades over 2.5s. Removed `console.log` statements from useTapSearch (production path cleanup).
+6. **FIX 6 — Launch screen random message:** Changed from deterministic day-of-year rotation to `Math.random()` per app open, wrapped in `useState` initializer for stability.
+
+**Audits:**
+- **AUDIT A (Asset Bundling):** All image assets use local `require()` paths. No remote image URLs. No issues found.
+- **AUDIT B (File Cleanup):** 35 legacy files in `assets/pixel/old/` (duplicates, unreferenced). 2 unused sprite variants (`bill-gates_gpt.png`, `jay-schottenstein_redo.png`). ~25 potentially unused pixel art files (corners, fx_money_drop, faq_link_icon, business_card, onboarding, search_shell_caps, bottom_nav_shell, bg_tile_pixel_grid, scorecard_preview_stamp). No broken require() references.
+
+**Flags:**
+- `console.log` removed from `useTapSearch.ts` production paths.
+- `GameArena.tsx` `fireHitFX` had unstable `[fx]` dep — secondary FX loop contributor, fixed.
+
+**Files modified:** `core/fx/FXLayer.tsx`, `features/Platforms/components/GameArena.tsx`, `features/Scorecard/data/aggregateScorecard.ts`, `features/Scorecard/data/__tests__/aggregateScorecard.test.ts`, `features/Map/components/BusinessCard.tsx`, `features/Map/components/BusinessBanner.tsx`, `features/Map/MapScreen.tsx`, `features/Map/hooks/useTapSearch.ts`, `features/Map/components/NoMatchMarker.tsx` (new), `features/Launch/LaunchScreen.tsx`
+
+**Tests:** 340 tests pass (30 suites). +1 new test for platform publicFigureName resolution.
+
+---
+
 ### Session: March 31, 2026 (Onboarding + MapSearchBar visual restyle)
 **Focus:** Visual styling pass on the three onboarding screens and the map search bar. No changes to component hierarchy, navigation logic, permission handling, search execution, copy strings, or accessibility attributes.
 

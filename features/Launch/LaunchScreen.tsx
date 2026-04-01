@@ -70,9 +70,10 @@ export function LaunchScreen({ onDismiss }: { onDismiss: () => void }) {
     return () => clearTimeout(timer);
   }, []);
 
-  // Pick a rotating daily message based on day-of-year
-  const messageIndex = Math.floor(Date.now() / 86400000) % launchCopy.messages.length;
-  const message = launchCopy.messages[messageIndex];
+  // Pick a random message each app open
+  const [message] = useState(() =>
+    launchCopy.messages[Math.floor(Math.random() * launchCopy.messages.length)]
+  );
 
   // Keep the title logo visually prominent without letting it dominate
   // larger phones/tablets.

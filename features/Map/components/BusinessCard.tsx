@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
   },
   spriteSide: {
     paddingLeft: theme.space.sm,
-    paddingTop: theme.space.sm,
+    marginTop: -40,
   },
   nameSide: {
     flex: 1,

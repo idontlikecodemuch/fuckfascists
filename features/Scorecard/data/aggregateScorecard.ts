@@ -87,7 +87,7 @@ export async function aggregateScorecard(
 
   for (const [platformId, count] of platformCounts) {
     const platform = platformIndex.get(platformId);
-    const figureName = platform?.ceoName ?? platformId;
+    const figureName = platform?.publicFigureName ?? platform?.ceoName ?? platformId;
     const displayName = platform?.name ?? platformId;
     const verb = platform ? verbForCategory(platform.categoryTags) : 'avoided';
     addSource(personMap, figureName, displayName, count, verb);

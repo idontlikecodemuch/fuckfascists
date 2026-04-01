@@ -18,6 +18,7 @@ import { UnmatchedBanner } from './components/UnmatchedBanner';
 import { TapLoadingMarker } from './components/TapLoadingMarker';
 import { MatchChooser } from './components/MatchChooser';
 import { NoMatchToast } from './components/NoMatchToast';
+import { NoMatchMarker } from './components/NoMatchMarker';
 import { HintBanner } from './components/HintBanner';
 import type { MapPin, ScanResult } from './types';
 import { MapControls } from './components/MapControls';
@@ -77,7 +78,7 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
   } = useMapControls(location.coords, location.requestLocation);
 
   const {
-    tapPins, tapLoadingCoord, tapNoMatch, latestTapBatch, setLatestTapBatch,
+    tapPins, tapLoadingCoord, tapNoMatch, tapNoMatchCoord, latestTapBatch, setLatestTapBatch,
     handleMapPress, handlePoiClick, resetTapPins, clearLatestTapBatch, markTapPinAvoided,
   } = useTapSearch(deps, location.areaHash ?? '', regionRef);
 
@@ -172,6 +173,7 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
             }} />
         ))}
         {tapLoadingCoord && <TapLoadingMarker coordinate={tapLoadingCoord} />}
+        {tapNoMatchCoord && <NoMatchMarker coordinate={tapNoMatchCoord} />}
       </MapView>
 
       <View style={[styles.headerBar, { height: insets.top + headerBarHeight }]} pointerEvents="none">
@@ -202,9 +204,12 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
       )}
 
       {activeResult && bannerVariant && (
-        <View style={styles.bannerContainer}>
-          <BusinessBanner displayName={activeResult.matchedAlias || activeResult.canonicalName} variant={bannerVariant} onDismiss={handleDismiss} />
-        </View>
+        <>
+          <Pressable style={styles.backdrop} onPress={handleDismiss} accessibilityRole="button" accessibilityLabel={sharedCopy.dismissLabel} />
+          <View style={styles.bannerContainer}>
+            <BusinessBanner displayName={activeResult.matchedAlias || activeResult.canonicalName} variant={bannerVariant} onDismiss={handleDismiss} />
+          </View>
+        </>
       )}
 
       <FXLayer entries={fx.entries} registry={defaultFXRegistry} reducedMotion={fx.reducedMotion} onComplete={fx.remove} />

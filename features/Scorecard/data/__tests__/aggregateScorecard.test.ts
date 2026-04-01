@@ -54,7 +54,7 @@ const facebookPlatform: Platform = {
 
 const amazonPlatform: Platform = {
   id: 'amazon-shop', name: 'Amazon', entityId: 'amazon',
-  parentCompany: 'Amazon.com Inc', ceoName: 'Andy Jassy',
+  parentCompany: 'Amazon.com Inc', ceoName: 'Andy Jassy', publicFigureName: 'Jeff Bezos',
   categoryTags: ['shopping', 'streaming'], sortOrder: 301, defaultSelected: true,
 };
 
@@ -224,6 +224,21 @@ describe('aggregateScorecard', () => {
     const fb = result[0].sources.find((s) => s.name === 'Facebook');
     expect(ig).toEqual({ name: 'Instagram', count: 1, verb: 'stayed off' });
     expect(fb).toEqual({ name: 'Facebook', count: 1, verb: 'stayed off' });
+  });
+
+  it('uses publicFigureName for platform avoids when present', async () => {
+    const platformEvents: PlatformAvoidEvent[] = [
+      { platformId: 'amazon-shop', date: '2024-03-11', count: 2 },
+    ];
+    const result = await aggregateScorecard(
+      makeAdapter([], platformEvents),
+      allEntities,
+      [amazonPlatform],
+      WEEK,
+    );
+    expect(result).toHaveLength(1);
+    // Should use publicFigureName (Jeff Bezos), not ceoName (Andy Jassy)
+    expect(result[0].figureName).toBe('Jeff Bezos');
   });
 
   it('sorts descending by totalCount', async () => {

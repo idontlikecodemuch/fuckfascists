@@ -84,6 +84,8 @@ export function useTapSearch(deps: MatchingDeps, areaHash: string, regionRef?: R
   const [latestTapBatch, setLatestTapBatch] = useState<ScanResult[]>([]);
   /** True briefly after a tap search yields no matches — drives the no-match toast. */
   const [tapNoMatch, setTapNoMatch] = useState(false);
+  /** Coordinate of the most recent no-match tap — drives ghost marker rendering. */
+  const [tapNoMatchCoord, setTapNoMatchCoord] = useState<LatLng | null>(null);
   const tapNoMatchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const cellCache = useRef<Map<string, CellCacheEntry>>(new Map());
   const lastTapAt = useRef<number>(0);
@@ -118,13 +120,18 @@ export function useTapSearch(deps: MatchingDeps, areaHash: string, regionRef?: R
 
       setLatestTapBatch(batchResults);
 
-      // Show a brief no-match toast when the tap found POI names but none matched.
+      // Show a brief no-match toast + ghost marker when the tap found POI names but none matched.
       if (batchResults.length === 0 && names.length > 0) {
         if (tapNoMatchTimer.current) clearTimeout(tapNoMatchTimer.current);
         setTapNoMatch(true);
-        tapNoMatchTimer.current = setTimeout(() => setTapNoMatch(false), TAP_NO_MATCH_DISPLAY_MS);
+        setTapNoMatchCoord(coordinate);
+        tapNoMatchTimer.current = setTimeout(() => {
+          setTapNoMatch(false);
+          setTapNoMatchCoord(null);
+        }, TAP_NO_MATCH_DISPLAY_MS);
       } else {
         setTapNoMatch(false);
+        setTapNoMatchCoord(null);
       }
 
       if (newPins.length > 0) {
@@ -158,11 +165,9 @@ export function useTapSearch(deps: MatchingDeps, areaHash: string, regionRef?: R
         const cached = cellCache.current.get(cellKey);
 
         if (cached && cached.expiresAt > Date.now()) {
-          console.log('[useTapSearch] cache hit for cell', cellKey);
           await processTapNames(cached.names, coordinate);
           return;
         }
-        console.log('[useTapSearch] searchNearby radius:', Math.round(radius), 'm');
         const names = await MapKitSearch.searchNearby(
           coordinate.latitude,
           coordinate.longitude,
@@ -218,6 +223,7 @@ export function useTapSearch(deps: MatchingDeps, areaHash: string, regionRef?: R
     tapPins,
     tapLoadingCoord,
     tapNoMatch,
+    tapNoMatchCoord,
     latestTapBatch,
     setLatestTapBatch,
     handleMapPress,
