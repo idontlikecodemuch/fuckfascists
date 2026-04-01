@@ -12,6 +12,33 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 1, 2026 (Bundle ID, onboarding swipe, arena grid, file cleanup, sprite audit)
+**Focus:** Four implementation tasks + sprite gap analysis audit.
+
+**What changed:**
+
+1. **Bundle ID:** `app.json` updated — iOS `bundleIdentifier` → `com.fckapp.fck`, Android `package` → `com.fckapp.fck` (added android section).
+2. **Onboarding swipe gestures:** `OnboardingNavigator.tsx` now wraps screens in a `PanResponder` view. Swipe left to advance, swipe right to go back. Existing button navigation unchanged. Uses velocity + distance thresholds (50px / 0.3 velocity). No new dependencies.
+3. **Arena grid responsive sizing:** Grid cell size now computed dynamically from figure count and available arena dimensions via `computeGridCellSize()` (extracted to `platformHelpers.ts`). Cells shrink from 84px down to 40px minimum as more figures are tracked. Prevents overflow when many platforms are tracked. Fighting-game character-select pattern.
+4. **File cleanup:** Moved `assets/pixel/old/` (35 legacy files) to `tools/reference/pixel-old/`. Moved `bill-gates_gpt.png` and `jay-schottenstein_redo.png` to `tools/reference/renamed-sprites/`. Added `tools/reference/` to `.gitignore`.
+
+**Audit — Sprite gap analysis:**
+- 505 unique figure names referenced across entities.json + platforms.json
+- 102 have sprites (~20% coverage)
+- 403 missing sprites
+- 10 of 18 platform parent figures missing sprites (Andy Jassy, Sundar Pichai, Shou Zi Chew, Greg Peters, Dara Khosrowshahi, Alex Chriss, Steve Huffman, Bill Ready, Jason Citron, Dario Amodei)
+- Bug found: `daniel-ervr.png` sprite exists but H&M entity has `ceoName: "Daniel Ervér"` (accent) — `nameToSpriteId()` produces `daniel-ervér`, not `daniel-ervr`. Sprite won't resolve at runtime.
+
+**Flags:**
+- `GameArena.tsx` is 291 lines — pre-existing violation (was 281), noted in known debt.
+- `daniel-ervr.png` sprite filename mismatch — needs rename to `daniel-ervér.png` or entity data fix.
+
+**Files modified:** `app.json`, `features/Onboarding/OnboardingNavigator.tsx`, `features/Platforms/components/GameArena.tsx`, `features/Platforms/utils/platformHelpers.ts`, `config/constants.ts`, `.gitignore`
+
+**Tests:** 340 tests pass (30 suites). No failures.
+
+---
+
 ### Session: March 31, 2026 (Six fixes + two audits)
 **Focus:** Six independent bug fixes across Track, Scorecard, BusinessCard, Map, and Launch screens. Two read-only audits (asset bundling, file cleanup).
 

@@ -31,6 +31,9 @@ tools/img-gen/cache_id.txt
 tools/fec-bulk/
 tools/off-bulk/
 
+# Reference files (old assets, renamed sprites — local only)
+tools/reference/
+
 # Scratch / working files
 entities_GPTpass.json
 

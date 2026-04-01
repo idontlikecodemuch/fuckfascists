@@ -37,10 +37,13 @@
       ]
     ],
     "ios": {
-      "bundleIdentifier": "com.anonymous.fuckfascists",
+      "bundleIdentifier": "com.fckapp.fck",
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "F*ck Fascists uses your location to find nearby businesses and check their political donation records."
       }
+    },
+    "android": {
+      "package": "com.fckapp.fck"
     }
   }
 }

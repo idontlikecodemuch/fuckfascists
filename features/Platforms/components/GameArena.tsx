@@ -6,6 +6,7 @@ import {
   Pressable,
   StyleSheet,
   View,
+  useWindowDimensions,
 } from 'react-native';
 import { nameToSpriteId } from '../../../core/sprites/spriteLoader';
 import { arenaAssets } from '../../../core/arena/arenaAssets';
@@ -16,7 +17,6 @@ import {
   ARENA_HEIGHT,
   ARENA_SAME_FIGURE_PULSE_MS,
   ARENA_TRANSITION_MS,
-  TRACK_ARENA_GRID_CELL_SIZE,
   TRACK_ARENA_GRID_CROP_RATIO,
   TRACK_ARENA_GRID_CROP_OFFSET_X,
   TRACK_ARENA_GRID_CROP_OFFSET_Y,
@@ -31,6 +31,7 @@ import { TRACKED_PLATFORMS } from '../data/platformList';
 import { getDisplayFigure, useTrack } from '../context/TrackContext';
 import { arenaFXRegistry } from './ArenaFX';
 import { FigureBadge } from './FigureBadge';
+import { computeGridCellSize } from '../utils/platformHelpers';
 
 interface ArenaFigure {
   figureName: string;
@@ -52,6 +53,7 @@ function pickReaction(): string {
 export function GameArena() {
   const { arenaFocusKey, focusedFigureName, arenaHitRequest, todayActions } = useTrack();
   const fx = useFX();
+  const { width: screenWidth } = useWindowDimensions();
   const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
@@ -75,6 +77,17 @@ export function GameArena() {
 
     return figures;
   }, []);
+
+  const gridCellSize = useMemo(
+    () => computeGridCellSize(
+      gridFigures.length,
+      screenWidth,
+      ARENA_HEIGHT,
+      theme.space.xs,
+      theme.space.sm,
+    ),
+    [gridFigures.length, screenWidth],
+  );
 
   const contentOpacity = useRef(new Animated.Value(1)).current;
   const pulseScale = useRef(new Animated.Value(1)).current;
@@ -194,14 +207,14 @@ export function GameArena() {
               <Pressable
                 key={figure.spriteId}
                 onPress={handleGridTap}
-                style={styles.gridCell}
+                style={[styles.gridCell, { width: gridCellSize, height: gridCellSize }]}
                 accessibilityRole="button"
                 accessibilityLabel={platformsCopy.arenaTapA11y(figure.figureName)}
               >
                 <FigureBadge
                   figureName={figure.figureName}
                   state="neutral"
-                  size={TRACK_ARENA_GRID_CELL_SIZE}
+                  size={gridCellSize}
                   cropRatio={TRACK_ARENA_GRID_CROP_RATIO}
                   cropOffsetX={TRACK_ARENA_GRID_CROP_OFFSET_X}
                   cropOffsetY={TRACK_ARENA_GRID_CROP_OFFSET_Y}
@@ -258,8 +271,6 @@ const styles = StyleSheet.create({
     padding: theme.space.sm,
   },
   gridCell: {
-    width: TRACK_ARENA_GRID_CELL_SIZE,
-    height: TRACK_ARENA_GRID_CELL_SIZE,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: theme.borders.standard.width,

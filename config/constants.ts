@@ -122,6 +122,8 @@ export const TRACK_FIGURE_FALLBACK_BORDER_COLOR = theme.colors.highlightBlue;
 export const TRACK_FIGURE_FALLBACK_TEXT_COLOR = theme.colors.rewardYellow;
 // Arena tuning
 export const TRACK_ARENA_GRID_CELL_SIZE = 84;
+export const TRACK_ARENA_GRID_CELL_MIN = 40;
+export const TRACK_ARENA_GRID_CELL_MAX = 84;
 export const TRACK_ARENA_GRID_CROP_RATIO = 0.48;
 export const TRACK_ARENA_GRID_CROP_OFFSET_X = -0.06;
 export const TRACK_ARENA_GRID_CROP_OFFSET_Y = -0.03;
