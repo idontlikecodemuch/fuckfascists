@@ -1,8 +1,4 @@
 import { theme } from '../../../design/tokens';
-import {
-  TRACK_ARENA_GRID_CELL_MIN,
-  TRACK_ARENA_GRID_CELL_MAX,
-} from '../../../config/constants';
 
 /**
  * Formats a YYYY-MM-DD week-of date for display.
@@ -16,9 +12,12 @@ export function formatWeekOf(weekOf: string): string {
 }
 
 /**
- * Compute a grid cell size that fits all figures within the arena.
- * Mimics classic fighting-game character-select: a tight grid of evenly-sized
- * portraits that fills the available space without overflow.
+ * Compute the largest square cell size that fits N figures in a grid
+ * within the given arena dimensions. Pure math — no magic constants.
+ *
+ * Tries every possible column count (1..N) and picks the layout that
+ * maximizes cell size while fitting all rows. The cell size is the
+ * minimum of what the width and height allow for that column count.
  */
 export function computeGridCellSize(
   figureCount: number,
@@ -27,24 +26,24 @@ export function computeGridCellSize(
   gap: number,
   padding: number,
 ): number {
-  if (figureCount === 0) return TRACK_ARENA_GRID_CELL_MAX;
+  if (figureCount === 0) return 0;
 
   const availableW = arenaWidth - padding * 2;
   const availableH = arenaHeight - padding * 2;
-  const borderW = theme.borders.standard.width * 2;
+  const border = theme.borders.standard.width * 2;
 
-  let bestSize = TRACK_ARENA_GRID_CELL_MAX;
-  for (let size = TRACK_ARENA_GRID_CELL_MAX; size >= TRACK_ARENA_GRID_CELL_MIN; size--) {
-    const cellTotal = size + borderW;
-    const cols = Math.max(1, Math.floor((availableW + gap) / (cellTotal + gap)));
+  let best = 0;
+
+  for (let cols = 1; cols <= figureCount; cols++) {
     const rows = Math.ceil(figureCount / cols);
-    const totalHeight = rows * cellTotal + (rows - 1) * gap;
-    if (totalHeight <= availableH) {
-      bestSize = size;
-      break;
-    }
-    bestSize = size;
+    // Max cell size that fits cols columns in the available width
+    const cellW = (availableW - (cols - 1) * gap) / cols - border;
+    // Max cell size that fits rows in the available height
+    const cellH = (availableH - (rows - 1) * gap) / rows - border;
+    // Square cells: constrained by the smaller dimension
+    const size = Math.floor(Math.min(cellW, cellH));
+    if (size > best) best = size;
   }
 
-  return Math.max(bestSize, TRACK_ARENA_GRID_CELL_MIN);
+  return Math.max(best, 1);
 }
