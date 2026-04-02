@@ -741,6 +741,9 @@ Schedule E (independent expenditures) is not tracked. IEs are spending by outsid
 ### SparkleDecoration — `info` variant uses hardcoded pixel offsets (Priority: V1.5)
 `SparkleDecoration` positions sparks using absolute `top`/`right` pixel values. The `info` variant (used on the Info screen about plaque) places sparks across all four edges, but uses hardcoded `right` values (200, 220) to reach the left side of the parent. On a ~375pt-wide phone (panel ~343pt) these land roughly in the left-center area — close enough for decoration, but on wider devices (tablets, landscape) the sparks drift toward center instead of hugging the left edge. Fix options: (1) add `left`/`bottom` support to the render loop and use those directly, (2) accept a `containerWidth` prop and compute positions as percentages, or (3) use `useWindowDimensions` to derive positions dynamically. Not blocking — decorative only.
 
+### Xcode project name — consider renaming before App Store (Priority: pre-App Store)
+Pre-App Store: consider renaming Xcode project from FckFascists to FCK. Internal only — not user-facing, not blocking beta.
+
 ### V2: Extension copy — `dSep` naming cleanup (Priority: V2)
 `dSep` in `extension/copy.ts` does double duty: it's the mid-dot separator between R and D amounts AND the D: label (value: `" · D: "`). Asymmetric with `rPrefix`. Consider splitting into `dPrefix` + a shared `separator` constant, or renaming both to `rLabel`/`dLabel` for clarity. Low priority — cosmetic only, no functional impact.
 
