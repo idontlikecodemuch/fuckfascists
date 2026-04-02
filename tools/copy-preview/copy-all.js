@@ -2,14 +2,14 @@
 var COPY_ALL_DATA = {
   "shared": {
     "appName": "FCK FASCISTS",
-    "siteUrl": "fckfascists.com",
+    "siteUrl": "fckapp.com",
     "repoUrl": "https://github.com/idontlikecodemuch/fuckfascists",
     "dataRepoUrl": "https://github.com/idontlikecodemuch/fckfascists-data",
     "issuesUrl": "https://github.com/idontlikecodemuch/fuckfascists/issues",
-    "privacyUrl": "https://github.com/idontlikecodemuch/fuckfascists/blob/main/PRIVACY.md",
-    "contactEmail": "[need to change!!]",
-    "extensionChromeUrl": "[need to change!!]",
-    "extensionFirefoxUrl": "[need to change!!]",
+    "privacyUrl": "https://fckapp.com/privacy",
+    "contactEmail": "info@fckapp.com",
+    "extensionChromeUrl": "https://fckapp.com/extension/chrome",
+    "extensionFirefoxUrl": "https://fckapp.com/extension/firefox",
     "dismiss": "DISMISS",
     "dismissLabel": "Dismiss",
     "partyR": "R:",
@@ -168,7 +168,7 @@ var COPY_ALL_DATA = {
     "emptyTitle": "NO ONE. YET.",
     "emptyBody": "Hit the {map}. Hit {track}.\nGive us something to work with.",
     "tagline": "The fascists won't f*ck themselves. 🤌🏽",
-    "cta": "fckfascists.com",
+    "cta": "fckapp.com",
     "dataAttribution": "DATA: FEC.GOV",
     "loadingLabel": "Loading scorecard"
   },
