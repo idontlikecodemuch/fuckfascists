@@ -6,7 +6,7 @@
     "newArchEnabled": true,
     "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/pixel/brand/FF_logo.png",
+      "icon": "./assets/pixel/brand/icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#070B12"
     },
