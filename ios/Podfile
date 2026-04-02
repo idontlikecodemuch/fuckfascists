@@ -62,50 +62,5 @@ target 'FckFascists' do
         end
       end
     end
-
-    # ── AIRMap.m nil guard patch ──────────────────────────────────────────────
-    # Fabric (new arch) can pass nil subviews when a <Marker> has a falsy key.
-    # This causes NSInvalidArgumentException in insertReactSubview:atIndex:,
-    # removeReactSubview:, and addSubview:. The guards below prevent the crash.
-    # See CLAUDE.md "react-native-maps — AIRMap insertReactSubview:atIndex: nil crash".
-    airmap_path = File.join(__dir__, '..', 'node_modules', 'react-native-maps', 'ios', 'AirMaps', 'AIRMap.m')
-    if File.exist?(airmap_path)
-      code = File.read(airmap_path)
-      patched = false
-
-      # Guard addSubview:
-      if code.include?('-(void)addSubview:(UIView *)view {') && !code.include?('if(view == nil) return;')
-        code.gsub!(
-          '-(void)addSubview:(UIView *)view {',
-          "-(void)addSubview:(UIView *)view {\n    if(view == nil) return;"
-        )
-        patched = true
-      end
-
-      # Guard insertReactSubview:atIndex:
-      if code.include?('- (void)insertReactSubview:(id<RCTComponent>)subview atIndex:(NSInteger)atIndex {') &&
-         !code.match?(/insertReactSubview:.*atIndex:.*\{[^}]*if \(subview == nil\) return;/m)
-        code.gsub!(
-          '- (void)insertReactSubview:(id<RCTComponent>)subview atIndex:(NSInteger)atIndex {',
-          "- (void)insertReactSubview:(id<RCTComponent>)subview atIndex:(NSInteger)atIndex {\n    // Guard: Fabric reconciler can pass nil when a child has a falsy key.\n    if (subview == nil) return;"
-        )
-        patched = true
-      end
-
-      # Guard removeReactSubview:
-      if code.include?('- (void)removeReactSubview:(id<RCTComponent>)subview {') &&
-         !code.match?(/removeReactSubview:.*\{[^}]*if \(subview == nil\) return;/m)
-        code.gsub!(
-          '- (void)removeReactSubview:(id<RCTComponent>)subview {',
-          "- (void)removeReactSubview:(id<RCTComponent>)subview {\n    if (subview == nil) return;"
-        )
-        patched = true
-      end
-
-      if patched
-        File.write(airmap_path, code)
-        Pod::UI.puts "AIRMap.m: nil guard patch applied."
-      end
-    end
   end
 end
