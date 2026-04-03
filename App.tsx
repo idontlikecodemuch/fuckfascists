@@ -15,10 +15,11 @@ import { LaunchGate } from './app/gates/LaunchGate';
 import { AppShell } from './app/gates/AppShell';
 import { sharedCopy } from './copy/shared';
 import { SqliteAdapter } from './app/storage/SqliteAdapter';
-import { fetchEntityList, parseEntityList } from './core/data';
+import { fetchEntityList, parseEntityList, fetchPeopleList, parsePeopleList } from './core/data';
 import type { StorageAdapter } from './core/data';
-import type { Entity } from './core/models';
+import type { Entity, PoliticalPerson } from './core/models';
 import bundledEntitiesRaw from './assets/data/entities.json';
+import bundledPeopleRaw from './assets/data/people.bundle.json';
 
 // ─── App ──────────────────────────────────────────────────────────────────────
 
@@ -40,6 +41,9 @@ export default function App() {
   const [entities, setEntities] = useState<Entity[]>(() =>
     parseEntityList(bundledEntitiesRaw)
   );
+  const [people, setPeople] = useState<PoliticalPerson[]>(() =>
+    parsePeopleList(bundledPeopleRaw)
+  );
 
   // Open SQLite and run migrations once on mount.
   useEffect(() => {
@@ -55,6 +59,15 @@ export default function App() {
     let cancelled = false;
     fetchEntityList(parseEntityList(bundledEntitiesRaw))
       .then((list) => { if (!cancelled) setEntities(list); })
+      .catch(() => { /* bundled list already set as initial state */ });
+    return () => { cancelled = true; };
+  }, []);
+
+  // Attempt to refresh people list from CDN; falls back to bundled on failure.
+  useEffect(() => {
+    let cancelled = false;
+    fetchPeopleList(parsePeopleList(bundledPeopleRaw))
+      .then((list) => { if (!cancelled) setPeople(list); })
       .catch(() => { /* bundled list already set as initial state */ });
     return () => { cancelled = true; };
   }, []);
@@ -78,7 +91,7 @@ export default function App() {
     <SafeAreaProvider>
       <OnboardingGate>
         <LaunchGate>
-          <AppShell adapter={adapter} entities={entities} />
+          <AppShell adapter={adapter} entities={entities} people={people} />
         </LaunchGate>
       </OnboardingGate>
     </SafeAreaProvider>

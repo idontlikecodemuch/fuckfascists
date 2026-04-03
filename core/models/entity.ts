@@ -1,4 +1,5 @@
 import type { DonationSummary } from './cache';
+import type { PoliticalPerson } from './person';
 
 /**
  * A single FEC committee record for an entity. Entities may have more than one
@@ -109,6 +110,25 @@ export function getParentEntity(
 ): Entity | undefined {
   if (!entity.parentEntityId) return undefined;
   return allEntities.find((e) => e.id === entity.parentEntityId);
+}
+
+/**
+ * Returns associated people (with donation data) for an entity.
+ * Includes people linked to the parent entity for subsidiaries.
+ * Pure function — safe to call in any context.
+ */
+export function getAssociatedPeople(
+  entity: Entity,
+  allPeople: PoliticalPerson[],
+  allEntities?: Entity[],
+): PoliticalPerson[] {
+  const ids = new Set(entity.associatedPersonIds ?? []);
+  if (entity.parentEntityId && allEntities) {
+    const parent = allEntities.find((e) => e.id === entity.parentEntityId);
+    for (const pid of parent?.associatedPersonIds ?? []) ids.add(pid);
+  }
+  if (ids.size === 0) return [];
+  return allPeople.filter((p) => ids.has(p.id) && p.donationSummary != null);
 }
 
 /**

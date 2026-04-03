@@ -13,7 +13,7 @@ import { TabBar, type Tab } from '../navigation/TabBar';
 import { betaCopy } from '../../copy/beta';
 import { FECClient } from '../../core/api';
 import type { StorageAdapter } from '../../core/data';
-import type { Entity } from '../../core/models';
+import type { Entity, PoliticalPerson } from '../../core/models';
 import { theme } from '../../design/tokens';
 
 // Dev-only catalog — conditional import keeps it out of production bundles.
@@ -33,13 +33,14 @@ function getScreenshotHarness() {
 interface AppShellProps {
   adapter: StorageAdapter;
   entities: Entity[];
+  people: PoliticalPerson[];
 }
 
 /**
  * Main app shell — tab navigation, screen rendering, beta overlay.
  * Rendered only after onboarding and launch gates have passed.
  */
-export function AppShell({ adapter, entities }: AppShellProps) {
+export function AppShell({ adapter, entities, people }: AppShellProps) {
   const { betaEnabled, registerTap } = useBetaMode();
   const [activeTab, setActiveTab] = useState<Tab>('map');
   const [harnessOpen, setHarnessOpen] = useState(false);
@@ -69,6 +70,7 @@ export function AppShell({ adapter, entities }: AppShellProps) {
         return (
           <ScanScreen
             entities={entities}
+            people={people}
             adapter={adapter}
             fetchOrgs={fetchOrgs}
             fetchOrgSummary={fetchOrgSummary}
@@ -78,6 +80,7 @@ export function AppShell({ adapter, entities }: AppShellProps) {
         return (
           <MapScreen
             entities={entities}
+            people={people}
             adapter={adapter}
             fetchOrgs={fetchOrgs}
             fetchOrgSummary={fetchOrgSummary}

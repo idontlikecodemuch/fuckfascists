@@ -1,8 +1,8 @@
 import React from 'react';
 import { Alert, View, Text, Pressable, StyleSheet, AccessibilityInfo } from 'react-native';
 import type { ScanResult } from '../types';
-import type { Entity } from '../../../core/models';
-import { getDisplayFigure, getParentEntity } from '../../../core/models';
+import type { Entity, PoliticalPerson } from '../../../core/models';
+import { getDisplayFigure, getParentEntity, getAssociatedPeople } from '../../../core/models';
 import { CONFIDENCE_THRESHOLD_HIGH, CONFIDENCE_THRESHOLD_MEDIUM } from '../../../config/constants';
 import { sharedCopy } from '../../../copy/shared';
 import { mapCopy } from '../../../copy/map';
@@ -34,6 +34,8 @@ export interface BusinessCardProps {
   onDismiss: () => void;
   /** Full entity list — enables parent attribution via getDisplayFigure/getParentEntity. */
   allEntities?: Entity[];
+  /** People list — enables associated person donation data in DataZone. */
+  people?: PoliticalPerson[];
   modal?: boolean;
 }
 
@@ -79,6 +81,7 @@ export function BusinessCard({
   avoided = false,
   onDismiss,
   allEntities,
+  people,
   modal = true,
 }: BusinessCardProps) {
   const { canonicalName, matchedAlias, committeeName, confidence, donationSummary, entity, fecFilingUrl } = result;
@@ -93,6 +96,7 @@ export function BusinessCard({
 
   const figureName = entity ? getDisplayFigure(entity, allEntities) : null;
   const spriteId = figureName ? nameToSpriteId(figureName) : null;
+  const associatedPeople = entity && people ? getAssociatedPeople(entity, people, allEntities) : [];
   const barcodeContext = result.context?.kind === 'barcode' ? result.context : null;
   const barcodeLabel = barcodeContext?.productName ?? barcodeContext?.brandName ?? barcodeContext?.barcode ?? null;
 
@@ -154,6 +158,7 @@ export function BusinessCard({
           committeeName={committeeName}
           fecUrl={fecUrl}
           onDetailPress={handleDetailPress}
+          associatedPeople={associatedPeople}
         />
 
         <View style={styles.actSection}>

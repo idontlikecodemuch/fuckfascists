@@ -25,4 +25,6 @@ export const sharedCopy = {
   confidenceA11y: (label: string) => `Confidence: ${label}`,
   totalSince2016: "TOTAL SINCE 2016",
   recentCycleShort: (rAmt: string, dAmt: string, cycle: string) => `Recent (${cycle}): R: ${rAmt} \u00b7 D: ${dAmt}`,
+  sourcesLabel: "Sources (FEC):",
+  donationsLinkSuffix: "donations",
 } as const;

@@ -80,6 +80,15 @@ export interface PoliticalPerson {
   notes?: string;
 }
 
+/**
+ * Builds an FEC individual contributions search URL for a person.
+ * Uses the first fecSearchName (FEC filing format) or falls back to canonicalName.
+ */
+export function makeFecIndividualUrl(person: PoliticalPerson): string {
+  const name = person.fecSearchNames?.[0] ?? person.canonicalName;
+  return `https://www.fec.gov/data/receipts/individual-contributions/?contributor_name=${encodeURIComponent(name)}`;
+}
+
 export function getPersonDisplayName(person: PoliticalPerson): string {
   if (person.displayName.trim().length > 0) {
     return person.displayName;

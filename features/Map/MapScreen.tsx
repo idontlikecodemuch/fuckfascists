@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import { View, Image, Pressable, StyleSheet, SafeAreaView, Linking, Platform, useWindowDimensions } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
-import type { Entity } from '../../core/models';
+import type { Entity, PoliticalPerson } from '../../core/models';
 import type { MatchingDeps } from '../../core/matching';
 import type { StorageAdapter } from '../../core/data';
 import {
@@ -39,6 +39,7 @@ import { headerBar as HEADER_BAR_ASSET } from '../../core/ui/uiAssets';
 
 interface MapScreenProps {
   entities: Entity[];
+  people: PoliticalPerson[];
   adapter: StorageAdapter;
   fetchOrgs: MatchingDeps['fetchOrgs'];
   fetchOrgSummary: MatchingDeps['fetchOrgSummary'];
@@ -64,7 +65,7 @@ const HINT_COPY: Record<HintId, string> = {
   barcode: mapCopy.hintBarcode,
 };
 
-export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: MapScreenProps) {
+export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummary }: MapScreenProps) {
   const insets = useSafeAreaInsets();
   const { width: screenWidth } = useWindowDimensions();
   const [searchText, setSearchText] = useState('');
@@ -262,7 +263,7 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
         <>
           <Pressable style={styles.backdrop} onPress={isCelebrating ? undefined : handleDismiss} accessibilityRole="button" accessibilityLabel={sharedCopy.dismissLabel} disabled={isCelebrating} />
           <View style={styles.cardContainer} pointerEvents={isCelebrating ? 'none' : 'auto'}>
-            <BusinessCard result={activeResult} onAvoid={handleAvoid} avoidDisabled={!activeResult.entity} avoided={avoidedResult === activeResult || avoidedTodayRef.current.has(activeResult.entityId ?? activeResult.fecCommitteeId)} onDismiss={handleDismiss} allEntities={entities} />
+            <BusinessCard result={activeResult} onAvoid={handleAvoid} avoidDisabled={!activeResult.entity} avoided={avoidedResult === activeResult || avoidedTodayRef.current.has(activeResult.entityId ?? activeResult.fecCommitteeId)} onDismiss={handleDismiss} allEntities={entities} people={people} />
           </View>
         </>
       )}

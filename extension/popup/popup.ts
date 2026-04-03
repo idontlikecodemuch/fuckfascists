@@ -71,14 +71,30 @@ function renderFlag(flag: TabFlag) {
   }
 
   if (flag.donationDataAvailable && flag.recentCycle !== null) {
-    recentAmountEl.textContent =
-      `${extCopy.rPrefix}${formatDonationAmount(flag.recentRepubs)}${extCopy.dSep}${formatDonationAmount(flag.recentDems)}`;
+    // Larger party amount first + bigger
+    const rRecent = flag.recentRepubs;
+    const dRecent = flag.recentDems;
+    const rTotal = flag.totalRepubs;
+    const dTotal = flag.totalDems;
+
+    if (rRecent >= dRecent) {
+      recentAmountEl.innerHTML =
+        `<span class="amount-primary">${extCopy.rPrefix}${formatDonationAmount(rRecent)}</span>${extCopy.dSep}<span class="amount-secondary">${formatDonationAmount(dRecent)}</span>`;
+    } else {
+      recentAmountEl.innerHTML =
+        `<span class="amount-primary">D: ${formatDonationAmount(dRecent)}</span> \u00b7 <span class="amount-secondary">R: ${formatDonationAmount(rRecent)}</span>`;
+    }
     recentCycleEl.textContent  = `${extCopy.cyclePrefix}${formatCycleLabel(flag.recentCycle)}`;
     recentAmountEl.hidden = false;
     recentCycleEl.hidden  = false;
 
-    totalSince2016.textContent =
-      `${extCopy.totalPrefix}${formatDonationAmount(flag.totalRepubs)}${extCopy.dSep}${formatDonationAmount(flag.totalDems)}`;
+    if (rTotal >= dTotal) {
+      totalSince2016.innerHTML =
+        `Total since 2016: <span class="amount-primary">${extCopy.rPrefix}${formatDonationAmount(rTotal)}</span> \u00b7 <span class="amount-secondary">D: ${formatDonationAmount(dTotal)}</span>`;
+    } else {
+      totalSince2016.innerHTML =
+        `Total since 2016: <span class="amount-primary">D: ${formatDonationAmount(dTotal)}</span> \u00b7 <span class="amount-secondary">R: ${formatDonationAmount(rTotal)}</span>`;
+    }
     totalSince2016.hidden = false;
 
     if (flag.activeCycles.length > 0) {

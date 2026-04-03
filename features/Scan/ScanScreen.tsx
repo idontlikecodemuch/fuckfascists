@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { SafeAreaView, ScrollView, View, Text, Pressable, StyleSheet } from 'react-native';
-import type { Entity } from '../../core/models';
+import type { Entity, PoliticalPerson } from '../../core/models';
 import type { MatchingDeps } from '../../core/matching';
 import type { StorageAdapter } from '../../core/data';
 import { makeCacheDeps, recordEntityAvoid } from '../../core/data';
@@ -15,12 +15,13 @@ import { theme } from '../../design/tokens';
 
 interface ScanScreenProps {
   entities: Entity[];
+  people: PoliticalPerson[];
   adapter: StorageAdapter;
   fetchOrgs: MatchingDeps['fetchOrgs'];
   fetchOrgSummary: MatchingDeps['fetchOrgSummary'];
 }
 
-export function ScanScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: ScanScreenProps) {
+export function ScanScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummary }: ScanScreenProps) {
   const deps = useMemo<MatchingDeps>(
     () => ({ entities, fetchOrgs, fetchOrgSummary, ...makeCacheDeps(adapter) }),
     [adapter, entities, fetchOrgs, fetchOrgSummary]
@@ -132,6 +133,7 @@ export function ScanScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Sc
             avoided={isAvoided}
             onDismiss={handleDismiss}
             allEntities={entities}
+            people={people}
             modal={false}
           />
         )}
