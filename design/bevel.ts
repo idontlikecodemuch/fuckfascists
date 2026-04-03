@@ -49,6 +49,16 @@ export const bevelGreenInset: ViewStyle = {
   borderRightColor: '#2A5A2A',
 };
 
+// ── Green raised bevel (selected/online cells) ─────────────────────────────
+
+export const bevelGreenRaised: ViewStyle = {
+  borderWidth: theme.borders.bevel.width,
+  borderTopColor: theme.colors.successGreenBright,
+  borderLeftColor: theme.colors.successGreenBright,
+  borderBottomColor: theme.colors.successGreenDeep,
+  borderRightColor: theme.colors.successGreenDeep,
+};
+
 // ── Amber raised bevel (AVOID button) ───────────────────────────────────────
 
 export const bevelAmberRaised: ViewStyle = {
