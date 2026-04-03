@@ -12,6 +12,25 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 3, 2026 (PlatformSetupScreen visual redesign)
+**Focus:** Redesign platform setup/selection screen to match game UI design language.
+
+**What changed:**
+
+1. **PlatformSetupScreen — 2-column grid layout:** Replaced single-column FlatList of full-height cards with a compact 2-column grid (`numColumns={2}`). Each cell shows only a checkbox and platform name — removed parent company line, CEO name, and category tags. Selected platforms sort to the top by `sortOrder`.
+2. **Star field background:** Added `StarField` (from InfoDecorations) behind the grid. Cells have opaque backgrounds so stars show in the gaps.
+3. **Neon rule:** Added blue `NeonRule` divider below the header subtitle.
+4. **Beveled grid cells:** Unselected cells use grey `bevelRaised` with `panelInner` background and `textSecondary` name. Selected cells use green `bevelGreenRaised` with `successGreenDeep` background, 4px `successGreenText` left accent bar, and `textPrimary` name.
+5. **Beveled checkboxes:** Unselected: `bevelInset` with dark fill. Selected: `bevelGreenInset` with green checkmark.
+6. **Amber DONE button:** `bevelAmberRaised` with `rewardYellow` fill, `theme.radii.button` corners, `SparkleDecoration` (default variant, 3 sparks top-right) when enabled.
+7. **New bevel style:** Added `bevelGreenRaised` export to `design/bevel.ts` — `successGreenBright` top/left, `successGreenDeep` bottom/right.
+
+**What did NOT change:** Selection logic, persistence, data flow, copy strings, navigation, accessibility roles/labels.
+
+**Files changed:**
+- `features/Platforms/components/PlatformSetupScreen.tsx` — full visual rewrite
+- `design/bevel.ts` — added `bevelGreenRaised`
+
 ### Session: April 3, 2026 (people entity override workflow + review queue)
 **Focus:** Make `people.json` maintainable for entity-link review by separating human-reviewed link decisions from generated donor data and creating a triage queue for unresolved high-priority donors.
 
