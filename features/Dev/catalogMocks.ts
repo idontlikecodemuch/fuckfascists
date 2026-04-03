@@ -112,12 +112,66 @@ export const chooser2Results: ScanResult[] = [highConfResult, medConfResult];
 
 // ── Platform items ──────────────────────────────────────────────────────────
 
-const twitterPlatform: Platform = { id: 'twitter', name: 'X / Twitter', parentCompany: 'X Corp', ceoName: 'Linda Yaccarino', categoryTags: ['social'] };
-const instagramPlatform: Platform = { id: 'instagram', name: 'Instagram', parentCompany: 'Meta Platforms', ceoName: 'Mark Zuckerberg', categoryTags: ['social'] };
-const amazonPlatform: Platform = { id: 'amazon', name: 'Amazon', parentCompany: 'Amazon.com Inc', ceoName: 'Andy Jassy', categoryTags: ['shopping', 'streaming'] };
-const facebookPlatform: Platform = { id: 'facebook', name: 'Facebook', parentCompany: 'Meta Platforms', ceoName: 'Mark Zuckerberg', categoryTags: ['social'] };
-const youtubePlatform: Platform = { id: 'youtube', name: 'YouTube', parentCompany: 'Alphabet Inc', ceoName: 'Sundar Pichai', categoryTags: ['streaming', 'social'] };
-const whatsappPlatform: Platform = { id: 'whatsapp', name: 'WhatsApp', parentCompany: 'Meta Platforms', ceoName: 'Mark Zuckerberg', categoryTags: ['messaging'] };
+const twitterPlatform: Platform = {
+  id: 'twitter',
+  name: 'X / Twitter',
+  entityId: 'x-twitter',
+  parentCompany: 'X Corp',
+  ceoName: 'Linda Yaccarino',
+  categoryTags: ['social'],
+  sortOrder: 1,
+  defaultSelected: true,
+};
+const instagramPlatform: Platform = {
+  id: 'instagram',
+  name: 'Instagram',
+  entityId: 'meta',
+  parentCompany: 'Meta Platforms',
+  ceoName: 'Mark Zuckerberg',
+  categoryTags: ['social'],
+  sortOrder: 2,
+  defaultSelected: true,
+};
+const amazonPlatform: Platform = {
+  id: 'amazon',
+  name: 'Amazon',
+  entityId: 'amazon',
+  parentCompany: 'Amazon.com Inc',
+  ceoName: 'Andy Jassy',
+  categoryTags: ['shopping', 'streaming'],
+  sortOrder: 3,
+  defaultSelected: true,
+};
+const facebookPlatform: Platform = {
+  id: 'facebook',
+  name: 'Facebook',
+  entityId: 'meta',
+  parentCompany: 'Meta Platforms',
+  ceoName: 'Mark Zuckerberg',
+  categoryTags: ['social'],
+  sortOrder: 4,
+  defaultSelected: true,
+};
+const youtubePlatform: Platform = {
+  id: 'youtube',
+  name: 'YouTube',
+  entityId: 'google-alphabet',
+  parentCompany: 'Alphabet Inc',
+  ceoName: 'Sundar Pichai',
+  categoryTags: ['streaming', 'social'],
+  sortOrder: 5,
+  defaultSelected: true,
+};
+const whatsappPlatform: Platform = {
+  id: 'whatsapp',
+  name: 'WhatsApp',
+  entityId: 'meta',
+  parentCompany: 'Meta Platforms',
+  ceoName: 'Mark Zuckerberg',
+  categoryTags: ['messaging'],
+  sortOrder: 6,
+  defaultSelected: true,
+};
 
 export const partialPlatformItems: PlatformItem[] = [
   { platform: twitterPlatform, weeklyCount: 5, dayCounts: new Map([['2026-03-09', 2], ['2026-03-10', 1], ['2026-03-11', 2]]) },

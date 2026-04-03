@@ -1,7 +1,41 @@
+export type PersonEntityBenefitBasis =
+  | 'control_owner'
+  | 'executive'
+  | 'founder_stake'
+  | 'family_control'
+  | 'major_shareholder'
+  | 'board_material'
+  | 'board_routine'
+  | 'weak';
+
+export type PersonEntityLinkConfidence = 'high' | 'medium' | 'manual-review';
+
 export interface PoliticalRoleRecord {
   role: string;
   startYear: number | null;
   endYear: number | null;
+  /**
+   * Why this person is economically linked to the entity.
+   * Pipeline target: populate for every accepted link. Optional only for legacy data.
+   */
+  benefitBasis?: PersonEntityBenefitBasis;
+  /**
+   * Whether the relationship is current. Pipeline target: always populate.
+   * Consumers should treat undefined as true for legacy records until backfilled.
+   */
+  isCurrent?: boolean;
+  /**
+   * Verified ownership percentage when public evidence supports a numeric figure.
+   */
+  ownershipPct?: number | null;
+  /**
+   * Confidence in the link itself, not in the donor totals.
+   */
+  confidence?: PersonEntityLinkConfidence;
+  /**
+   * Freeform audit note for borderline or manually reviewed links.
+   */
+  notes?: string;
 }
 
 export interface PoliticalPersonContribution {
@@ -15,10 +49,10 @@ export interface PoliticalPersonContribution {
 }
 
 export interface PoliticalPersonDonationSummary {
-  totalGOP: number;
-  totalDEM: number;
-  recentCycleGOP: number;
-  recentCycleDEM: number;
+  totalR: number;
+  totalD: number;
+  recentCycleR: number;
+  recentCycleD: number;
   recentCycle: string;
   activeCycles: number[];
   raw: PoliticalPersonContribution[];

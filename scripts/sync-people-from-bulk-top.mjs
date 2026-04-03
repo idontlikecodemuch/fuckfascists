@@ -1,13 +1,19 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import {
+  DEFAULT_PEOPLE_ENTITY_OVERRIDES_PATH,
+  loadPeopleEntityOverrides,
+  normalizeEntityRoleRecord,
+} from './lib/peopleEntityOverrides.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PEOPLE_PATH = path.join(__dirname, '../assets/data/people.json');
 const ENTITIES_PATH = path.join(__dirname, '../assets/data/entities.json');
 const DEFAULT_BULK_TOP_PATH = path.join(__dirname, '../tools/fec-bulk/reports/top-donors-bulk-1000.json');
 const DEFAULT_SUMMARY_PATH = path.join(__dirname, '../tools/fec-bulk/reports/top-donors-bulk-1000-merge-summary.json');
-const FORMAT_VERSION = '1.2';
+const DEFAULT_REVIEW_QUEUE_PATH = path.join(__dirname, '../tools/fec-bulk/reports/people-entity-review-queue.json');
+const FORMAT_VERSION = '1.3';
 const DISPLAY_SKIP_TOKENS = new Set(['MR', 'MRS', 'MS', 'MISS', 'DR', 'MD', 'PHD', 'DDS', 'DVM', 'ESQ']);
 const COMMON_NAME_OVERRIDES = {
   'bernard-marcus': 'Bernie Marcus',
@@ -283,6 +289,8 @@ const ROLE_OVERRIDES = {
     palantir: { role: 'Senior Advisor to the CEO', startYear: null, endYear: null },
   },
 };
+let runtimeCommonNameOverrides = COMMON_NAME_OVERRIDES;
+let runtimeRoleOverrides = ROLE_OVERRIDES;
 
 function today() {
   return new Date().toISOString().slice(0, 10);
@@ -293,6 +301,8 @@ function parseArgs(argv) {
     input: DEFAULT_BULK_TOP_PATH,
     output: PEOPLE_PATH,
     summary: DEFAULT_SUMMARY_PATH,
+    overrides: DEFAULT_PEOPLE_ENTITY_OVERRIDES_PATH,
+    reviewQueue: DEFAULT_REVIEW_QUEUE_PATH,
     keepExtra: false,
   };
 
@@ -306,6 +316,12 @@ function parseArgs(argv) {
     } else if (arg.startsWith('--summary=')) {
       const value = arg.slice('--summary='.length).trim();
       if (value) args.summary = path.resolve(process.cwd(), value);
+    } else if (arg.startsWith('--overrides=')) {
+      const value = arg.slice('--overrides='.length).trim();
+      if (value) args.overrides = path.resolve(process.cwd(), value);
+    } else if (arg.startsWith('--review-queue=')) {
+      const value = arg.slice('--review-queue='.length).trim();
+      if (value) args.reviewQueue = path.resolve(process.cwd(), value);
     } else if (arg === '--keep-extra') {
       args.keepExtra = true;
     }
@@ -437,22 +453,7 @@ function unique(values) {
 }
 
 function normalizeRoleRecord(value) {
-  if (typeof value !== 'object' || value === null) return null;
-
-  const role = normalizeWhitespace(value.role ?? '');
-  if (!role) return null;
-
-  const normalizeYear = (year) => {
-    if (year === null || year === undefined || year === '') return null;
-    const parsed = Number.parseInt(String(year), 10);
-    return Number.isFinite(parsed) ? parsed : null;
-  };
-
-  return {
-    role,
-    startYear: normalizeYear(value.startYear),
-    endYear: normalizeYear(value.endYear),
-  };
+  return normalizeEntityRoleRecord(value);
 }
 
 function roleRecord(role, startYear = null, endYear = null) {
@@ -630,7 +631,7 @@ function mergeEntityLinks({
     addEntity(match.entityId, match.role ? roleRecord(match.role) : null);
   }
 
-  for (const [entityId, override] of Object.entries(ROLE_OVERRIDES[personId] ?? {})) {
+  for (const [entityId, override] of Object.entries(runtimeRoleOverrides[personId] ?? {})) {
     if (!seen.has(entityId)) {
       seen.add(entityId);
       associatedEntityIds.push(entityId);
@@ -735,7 +736,7 @@ function buildMergedPerson(donor, matches, usedIds, entityMatcher) {
   const displayName = normalizeWhitespace(primary?.displayName) || toDisplayName(canonicalName);
   const baseId = normalizeWhitespace(primary?.id) || slugify(displayName || canonicalName) || `donor-${donor.donorRankBulk}`;
   const commonName = normalizeCommonName(
-    sortedMatches.find((person) => normalizeWhitespace(person.commonName))?.commonName ?? COMMON_NAME_OVERRIDES[baseId],
+    sortedMatches.find((person) => normalizeWhitespace(person.commonName))?.commonName ?? runtimeCommonNameOverrides[baseId],
     displayName
   );
   const aliases = unique([
@@ -815,7 +816,7 @@ function buildMeta(existingMeta, bulkMeta, people, duplicateKeysCollapsed, dupli
       'FEC bulk individual contributions (by_date files) for donor ranking, with entity matching and any existing Schedule A API hydration preserved when available.',
     cyclesScanned: Array.isArray(bulkMeta?.cycles) ? bulkMeta.cycles : existingMeta?.cyclesScanned ?? [2016, 2018, 2020, 2022, 2024],
     methodology:
-      'Ranked from FEC bulk individual-contribution files by normalized donor key across selected cycles; people-first matching checks donor names, common names, and exact employer aliases before preserving any existing hydrated Schedule A summaries, aliases, and entity links.',
+      'Ranked from FEC bulk individual-contribution files by normalized donor key across selected cycles; people-first matching checks donor names, common names, and exact employer aliases before preserving any existing hydrated Schedule A summaries, aliases, and entity links. Curated person-to-entity overrides come from scripts/data/people-entity-overrides.json; unresolved high-priority cases belong in tools/fec-bulk/reports/people-entity-review-queue.json.',
     contributorIdCoverage,
     summaryCycles: existingMeta?.summaryCycles ?? [2016, 2018, 2020, 2022, 2024],
     discoveryCycles: Array.isArray(bulkMeta?.cycles) ? bulkMeta.cycles : existingMeta?.discoveryCycles ?? [2016, 2018, 2020, 2022, 2024],
@@ -941,6 +942,15 @@ function collapseDuplicateDisplayNames(people) {
 
 async function main() {
   const args = parseArgs(process.argv.slice(2));
+  const loadedOverrides = await loadPeopleEntityOverrides(args.overrides);
+  runtimeCommonNameOverrides =
+    Object.keys(loadedOverrides.commonNameOverrides).length > 0
+      ? loadedOverrides.commonNameOverrides
+      : COMMON_NAME_OVERRIDES;
+  runtimeRoleOverrides =
+    Object.keys(loadedOverrides.roleOverrides).length > 0
+      ? loadedOverrides.roleOverrides
+      : ROLE_OVERRIDES;
   const existingRaw = JSON.parse(await readFile(PEOPLE_PATH, 'utf8'));
   const entitiesRaw = JSON.parse(await readFile(ENTITIES_PATH, 'utf8'));
   const bulkRaw = JSON.parse(await readFile(args.input, 'utf8'));

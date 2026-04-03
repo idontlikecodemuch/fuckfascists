@@ -659,40 +659,132 @@ After writing any file, scan it once for deprecated APIs, `.then()` chains, `var
 
 ### associatedPersonIds — entity → people.json linkage
 - `Entity.associatedPersonIds[]` references `PoliticalPerson.id` values in `people.json`.
-- Bidirectional: `PoliticalPerson.associatedEntityIds[]` references `Entity.id` values in `entities.json`.
-- `PoliticalPerson.rolesByEntity` maps entity IDs to role strings (e.g. `{ "tesla": "CEO & Founder", "x-twitter": "Owner" }`).
-- V1: linkage is established but not surfaced in UI. V1.5: personal Schedule A contributions will appear in DataZone when available.
-- Integrity rule: every ID in `associatedPersonIds` must exist in `people.json`, and vice versa for `associatedEntityIds`. Enforced by `scripts/verify-data-integrity.mjs` — run after any entity/person data changes.
+- `people.json` is allowed to stay ahead of `entities.json`: `PoliticalPerson.associatedEntityIds[]` may include V2-only company IDs that are not live yet.
+- Live entity reverse links stay strict: `Entity.associatedPersonIds[]` should only mirror people linked to IDs that exist in the current V1 `entities.json`.
+- V2-only company links are also mirrored into `tools/fec-bulk/reports/people-v2-deferred-entity-links.json` so the forward refs stay reviewable while `entities.json` remains the clean live graph.
+- `PoliticalPerson.rolesByEntity` maps entity IDs to role records (e.g. `{ "tesla": { role: "CEO", startYear: 2008, endYear: null, benefitBasis: "executive", isCurrent: true, confidence: "high" } }`).
+- V1: linkage is data-only and not surfaced in UI. V1.5+: personal Schedule A contributions may appear in DataZone when live entity coverage is ready.
+- Integrity rule: every ID in `associatedPersonIds` must exist in `people.json`; undeclared forward refs in `people.json` are a data bug, but declared V2 forward refs are allowed.
+- Use `scripts/verify-data-integrity.mjs` to audit the live files before and after data updates.
+
+### Person ↔ entity matching standard
+- Matching is based on **economic benefit**, not ideology, fame, or generalized association.
+- Core test: would ordinary consumer spending at this business reasonably improve this person's **wealth or financial position** through the company?
+- Do not merge this with display-figure logic. Matching decides who is linked in `people.json`; display remains `publicFigureName -> getDisplayFigure()` on the entity side.
+- Documentation status: the internal methodology is now defined here, but the public-facing Info / FAQ copy for this rule still needs to be written in app voice before rollout. Treat that as a separate copy task; do not improvise product copy from the technical spec.
+
+### Person ↔ entity matching algorithm
+1. Gather public evidence for role, ownership, governance position, and current status.
+   Accept primary evidence first: company filings, proxy statements, investor relations, official leadership/board pages, and strong business reporting.
+   Do not rely on employer strings alone for link creation.
+2. Assign a `benefitBasis` to every accepted relationship:
+   - `control_owner`
+   - `executive`
+   - `founder_stake`
+   - `family_control`
+   - `major_shareholder`
+   - `board_material`
+   - `board_routine`
+   - `weak`
+3. Auto-include when evidence supports:
+   - current CEO, president, chair, executive chair, owner, co-owner
+   - founder with ongoing stake or control
+   - controlling family member
+   - major shareholder
+   - board chair
+4. Include only with stronger evidence when:
+   - board member + meaningful equity or unusually large stock-based compensation
+   - former founder or former executive + verified ongoing material stake
+   - family member + verified ownership or control
+5. Do not include by default when the relationship is only:
+   - former employment
+   - honorary/advisory title
+   - family name
+   - ordinary independent board seat with routine director compensation only
+   - small passive shareholding
+   - employer-field inference only
+6. Ownership thresholds:
+   - public company: `5%+` beneficial ownership -> include
+   - public company: `1% to 5%` -> include if also founder, chair, executive, or otherwise central to company control
+   - public company: `<1%` -> not enough by itself
+   - private company: require explicit evidence such as `owner`, `co-owner`, `controlling shareholder`, `major shareholder`, or equivalent
+7. Currentness:
+   - populate `isCurrent` for every accepted link
+   - default to `true` unless there is evidence of departure
+   - when there is evidence of departure, set `isCurrent: false` and populate `endYear`
+8. Auditability:
+   - every accepted link should eventually store `benefitBasis`
+   - borderline/manual-review cases should carry a freeform `notes` field explaining the call
+   - `confidence` applies to the relationship link itself, not the donor totals
 
 ### Data file separation
 - `entities.json` + `fecCommitteeId` → corporate PAC contributions via `/committees/{id}/totals/` and `/schedules/schedule_b/`
 - `people.json` + `fecContributorId` (or `fecSearchNames`) → individual Schedule A contributions via `/schedules/schedule_a/?contributor_name=`
+- Local bulk hydration for people lives in `scripts/hydrate-people-from-bulk.mjs` and uses downloaded FEC `indiv*/by_date/` files plus `cm*.txt` committee masters.
 - Do not conflate — different FEC endpoints, different data semantics, different query patterns.
+
+### People ↔ entity maintenance workflow
+- Treat `assets/data/people.json` as a generated artifact, not the hand-edited source of truth for person↔entity relationship data.
+- Human-reviewed accepted links live in `scripts/data/people-entity-overrides.json`.
+- Regenerate the donor/person file with `npm run sync:people:bulk-top`.
+- Regenerate the manual triage list with `npm run build:people:entity-review-queue`.
+- Before shipping or wiring app-bundled people data, run `npm run strip:people:raw`. This preserves the full source-of-truth file at `assets/data/people.json` and writes the slim bundled copy to `assets/data/people.bundle.json`, keeping `donationSummary.raw` only for people linked to live `entities.json` records. Use `--mode=none` if the app later needs a fully raw-free bundle.
+- `tools/fec-bulk/reports/people-entity-review-queue.json` is only a review worksheet. Its candidate suggestions are heuristic leads, not accepted links.
+- A person may still appear in the review queue even after a manual link is added if the linked company ID is only a forward ref in `people.json` and still needs a real `entities.json` record.
+- For manual-review cases, record the final decision in `scripts/data/people-entity-overrides.json` using `benefitBasis`, `isCurrent`, `confidence`, and `notes` rather than editing `people.json` directly.
+- Preferred maintenance order:
+  1. Update `scripts/data/people-entity-overrides.json`
+  2. Run `npm run sync:people:bulk-top`
+  3. Run `npm run build:people:entity-review-queue`
+  4. Run `npm run strip:people:raw`
+  5. Only then inspect `assets/data/people.json`, `assets/data/people.bundle.json`, and the review queue output
 
 ### people.json schema — `PoliticalPerson`
 ```typescript
 {
   id: string                           // lowercase-hyphenated slug (e.g. "elon-musk")
   canonicalName: string                // FEC lookup format: "LAST, FIRST" or "LAST, FIRST M."
+  displayName: string                  // consumer-facing display label (e.g. "Elon Musk")
+  commonName?: string                  // optional shortened/common form (e.g. "Ken Griffin")
   aliases: string[]                    // consumer-facing display names (e.g. ["Elon Musk"])
   fecContributorId?: string | null     // stable FEC contributor ID when available
   fecSearchNames?: string[]            // alternate contributor_name variants in FEC filings
   primaryState?: string                // disambiguation for common names
   primaryEmployer?: string             // disambiguation for common names
   primaryOccupation?: string           // disambiguation for common names
-  totalIndividualContributions?: number // aggregate amount from donor pipeline
   donorRank?: number                   // ranking from donor pipeline
+  tier?: number                        // UI/display grouping derived from donorRank
   associatedEntityIds: string[]        // refs to entities.json IDs
-  rolesByEntity: { [entityId: string]: string }  // entity id → role
-  totalIndividualRepubs?: number       // aggregate GOP individual contributions
-  totalIndividualDems?: number         // aggregate DEM individual contributions
-  activeCycles?: number[]              // election cycles with activity
+  rolesByEntity: {
+    [entityId: string]: {
+      role: string
+      startYear: number | null
+      endYear: number | null
+      benefitBasis?: 'control_owner' | 'executive' | 'founder_stake' | 'family_control' | 'major_shareholder' | 'board_material' | 'board_routine' | 'weak'
+      isCurrent?: boolean              // pipeline target: always populated; treat undefined as true for legacy rows
+      ownershipPct?: number | null
+      confidence?: 'high' | 'medium' | 'manual-review'
+      notes?: string
+    }
+  }
+  donationSummary?: {
+    totalR: number
+    totalD: number
+    recentCycleR: number
+    recentCycleD: number
+    recentCycle: string
+    activeCycles: number[]
+    raw: PoliticalPersonContribution[]
+    lastUpdated: string
+  }
   verificationStatus: 'manual' | 'pipeline' | 'unverified'
   lastVerifiedDate: string             // YYYY-MM-DD
   notes?: string                       // e.g. "Also donated via America PAC"
 }
 ```
 `getPersonDisplayName(person)` returns the first alias, or de-formats the canonical FEC name as a fallback.
+People `R/D` totals are resolved from committee party metadata when available and may use curated committee-ID overrides for obvious partisan PACs; `raw[]` remains the authoritative committee-cycle record.
+High-confidence committee verification notes live in `tools/fec-bulk/reports/committee-party-verification-2026-04-03.md`; as of April 3, 2026, the curated bulk pass resolves about `85.67%` of hydrated raw dollars into `R` / `D` and intentionally leaves cross-partisan, independent, and thin-evidence committees unclassified.
 
 ---
 

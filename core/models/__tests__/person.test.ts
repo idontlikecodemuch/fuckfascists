@@ -16,15 +16,40 @@ describe('PoliticalPerson interface', () => {
       tier: 1,
       associatedEntityIds: ['tesla', 'x-twitter', 'spacex'],
       rolesByEntity: {
-        tesla: { role: 'CEO & Founder', startYear: 2008, endYear: null },
-        'x-twitter': { role: 'Owner', startYear: 2022, endYear: null },
-        spacex: { role: 'CEO & Founder', startYear: 2002, endYear: null },
+        tesla: {
+          role: 'CEO & Founder',
+          startYear: 2008,
+          endYear: null,
+          benefitBasis: 'executive',
+          isCurrent: true,
+          ownershipPct: 12.8,
+          confidence: 'high',
+          notes: 'Current CEO with substantial equity stake.',
+        },
+        'x-twitter': {
+          role: 'Owner',
+          startYear: 2022,
+          endYear: null,
+          benefitBasis: 'control_owner',
+          isCurrent: true,
+          ownershipPct: null,
+          confidence: 'high',
+        },
+        spacex: {
+          role: 'CEO & Founder',
+          startYear: 2002,
+          endYear: null,
+          benefitBasis: 'founder_stake',
+          isCurrent: true,
+          ownershipPct: null,
+          confidence: 'high',
+        },
       },
       donationSummary: {
-        totalGOP: 7_000_000,
-        totalDEM: 0,
-        recentCycleGOP: 5_000_000,
-        recentCycleDEM: 0,
+        totalR: 7_000_000,
+        totalD: 0,
+        recentCycleR: 5_000_000,
+        recentCycleD: 0,
         recentCycle: '2023-24',
         activeCycles: [2020, 2022, 2024],
         raw: [
@@ -38,10 +63,10 @@ describe('PoliticalPerson interface', () => {
             contributionDate: '2024-08-01',
           },
         ],
-        lastUpdated: '2026-03-19',
+        lastUpdated: '2026-04-02',
       },
       verificationStatus: 'pipeline',
-      lastVerifiedDate: '2026-03-05',
+      lastVerifiedDate: '2026-04-02',
       notes: 'Also donated via America PAC',
     };
 
@@ -52,10 +77,12 @@ describe('PoliticalPerson interface', () => {
     expect(person.aliases).toContain('Elon Musk');
     expect(person.associatedEntityIds).toHaveLength(3);
     expect(person.rolesByEntity['tesla']?.role).toBe('CEO & Founder');
+    expect(person.rolesByEntity['tesla']?.benefitBasis).toBe('executive');
+    expect(person.rolesByEntity['tesla']?.isCurrent).toBe(true);
     expect(person.donationSummary?.activeCycles).toContain(2024);
     expect(person.fecSearchNames).toContain('MUSK, ELON R.');
     expect(person.primaryEmployer).toBe('SPACEX');
-    expect(person.donationSummary?.totalGOP).toBe(7_000_000);
+    expect(person.donationSummary?.totalR).toBe(7_000_000);
     expect(person.tier).toBe(1);
   });
 
@@ -91,8 +118,24 @@ describe('PoliticalPerson interface', () => {
       aliases: ['Test Person'],
       associatedEntityIds: ['corp-a', 'corp-b'],
       rolesByEntity: {
-        'corp-a': { role: 'CEO', startYear: 2019, endYear: null },
-        'corp-b': { role: 'Board Member', startYear: 2021, endYear: 2024 },
+        'corp-a': {
+          role: 'CEO',
+          startYear: 2019,
+          endYear: null,
+          benefitBasis: 'executive',
+          isCurrent: true,
+          confidence: 'high',
+        },
+        'corp-b': {
+          role: 'Board Member',
+          startYear: 2021,
+          endYear: 2024,
+          benefitBasis: 'board_material',
+          isCurrent: false,
+          ownershipPct: 2.3,
+          confidence: 'manual-review',
+          notes: 'Included because proxy shows meaningful stock ownership.',
+        },
       },
       verificationStatus: 'pipeline',
       lastVerifiedDate: '2026-01-01',
@@ -101,6 +144,7 @@ describe('PoliticalPerson interface', () => {
     expect(Object.keys(person.rolesByEntity)).toHaveLength(2);
     expect(person.rolesByEntity['corp-a']?.role).toBe('CEO');
     expect(person.rolesByEntity['corp-b']?.role).toBe('Board Member');
+    expect(person.rolesByEntity['corp-b']?.isCurrent).toBe(false);
   });
 
   it('associatedEntityIds is an array of strings', () => {
@@ -119,7 +163,7 @@ describe('PoliticalPerson interface', () => {
     expect(Array.isArray(person.associatedEntityIds)).toBe(true);
   });
 
-  it('prefers aliases for display and falls back to canonicalName', () => {
+  it('prefers displayName and falls back to canonicalName formatting', () => {
     const aliased: PoliticalPerson = {
       id: 'p2',
       canonicalName: 'MUSK, ELON',

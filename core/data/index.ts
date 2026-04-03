@@ -11,6 +11,7 @@ export {
 } from './schema';
 
 export { fetchEntityList, parseEntityList } from './entityList';
+export { fetchPeopleList, parsePeopleList } from './personList';
 
 export {
   recordEntityAvoid,

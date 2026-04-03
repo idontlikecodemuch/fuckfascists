@@ -12,6 +12,73 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 3, 2026 (people entity override workflow + review queue)
+**Focus:** Make `people.json` maintainable for entity-link review by separating human-reviewed link decisions from generated donor data and creating a triage queue for unresolved high-priority donors.
+
+**What changed:**
+1. **Accepted-link source file added** — created [`scripts/data/people-entity-overrides.json`](/Users/christophershannon/fuckfascists/scripts/data/people-entity-overrides.json) as the human-reviewed source of truth for person→entity relationship overrides, including `role`, `benefitBasis`, `isCurrent`, optional `ownershipPct`, `confidence`, and `notes`.
+2. **Shared override normalizer added** — created [`scripts/lib/peopleEntityOverrides.mjs`](/Users/christophershannon/fuckfascists/scripts/lib/peopleEntityOverrides.mjs) so both sync pipelines normalize relationship records the same way and infer `benefitBasis` / `isCurrent` consistently.
+3. **Bulk-top sync now uses override data** — updated [`scripts/sync-people-from-bulk-top.mjs`](/Users/christophershannon/fuckfascists/scripts/sync-people-from-bulk-top.mjs) to load curated overrides from the new source file instead of relying only on hardcoded relationship maps.
+4. **Legacy API sync kept aligned** — updated [`scripts/fetch-people-data.mjs`](/Users/christophershannon/fuckfascists/scripts/fetch-people-data.mjs) to honor the same override file, so the API path and bulk path no longer drift on relationship metadata.
+5. **Manual review queue added** — created [`scripts/build-people-entity-review-queue.mjs`](/Users/christophershannon/fuckfascists/scripts/build-people-entity-review-queue.mjs) plus `npm run build:people:entity-review-queue` to produce [`tools/fec-bulk/reports/people-entity-review-queue.json`](/Users/christophershannon/fuckfascists/tools/fec-bulk/reports/people-entity-review-queue.json), ordered by top unlinked donors first.
+6. **Queue heuristics tightened** — refined the candidate-matching pass to prefer exact or distinctive employer/entity alias overlap and stop surfacing junk one-token matches like `america`, `general`, or `florida`.
+7. **Generated donor file refreshed** — reran the bulk-top sync so [`assets/data/people.json`](/Users/christophershannon/fuckfascists/assets/data/people.json) now reflects the override workflow and enriched relationship records. Current summary: `997` people, `86` linked people, `72` unique linked entities, `4` declared forward refs, and `976` hydrated people.
+8. **First manual curation wave landed** — added high-confidence reviewed links for Isaac Perlmutter → Disney, Seth Klarman → Baupost Group, J.B. Pritzker → Pritzker Group, John W. Childs → J.W. Childs Associates, and Robert Bigelow → Bigelow Aerospace, with relationship `confidence` and `notes` captured in the override source.
+9. **Bundled people file slimmed for app use** — added [`scripts/strip-people-raw.mjs`](/Users/christophershannon/fuckfascists/scripts/strip-people-raw.mjs) and `npm run strip:people:raw`. The full source-of-truth file remains [`assets/data/people.json`](/Users/christophershannon/fuckfascists/assets/data/people.json) with all `145,451` raw rows intact. The script writes a separate bundled copy at [`assets/data/people.bundle.json`](/Users/christophershannon/fuckfascists/assets/data/people.bundle.json), keeping `raw` only for `82` people linked to live entities and reducing retained line items to `9,911` (`2,319,869` bytes, about `2.3 MB`).
+10. **Workflow documented for future instances** — updated [`CLAUDE.md`](/Users/christophershannon/fuckfascists/CLAUDE.md) so future sessions know the correct maintenance order: edit overrides, regenerate `people.json`, regenerate the review queue, build `people.bundle.json`, then inspect outputs.
+
+**Verification:**
+- `node --check scripts/lib/peopleEntityOverrides.mjs`
+- `node --check scripts/sync-people-from-bulk-top.mjs`
+- `node --check scripts/fetch-people-data.mjs`
+- `node --check scripts/build-people-entity-review-queue.mjs`
+- `npm run sync:people:bulk-top`
+- `npm run build:people:entity-review-queue`
+
+**Next likely step:** review the top rows in `tools/fec-bulk/reports/people-entity-review-queue.json`, add accepted manual calls into `scripts/data/people-entity-overrides.json`, and rerun the two generation commands until the entity-linked donor set is strong enough to wire into the UI.
+
+### Session: April 3, 2026 (committee verification pass for people R/D totals)
+**Focus:** Deep web-verify the highest-dollar still-unclassified committees in `people.json`, document the evidence, and only promote high-confidence committees into `R` / `D` buckets.
+
+**What changed:**
+1. **Verification report added** — created [`tools/fec-bulk/reports/committee-party-verification-2026-04-03.md`](/Users/christophershannon/fuckfascists/tools/fec-bulk/reports/committee-party-verification-2026-04-03.md) with source-backed findings for the biggest unresolved committees, including which ones should remain intentionally unclassified.
+2. **First-pass committee overrides expanded** — added high-confidence overrides for obvious Republican / Democratic committees such as `RIGHT FOR AMERICA`, `OPPORTUNITY MATTERS FUND`, `MAHA PAC`, `SAVING ARIZONA PAC`, `PERSIST PAC`, `MOVEMENT VOTER PAC`, `GEORGIA UNITED VICTORY`, `FAIR COURTS AMERICA`, `PROTECT THE HOUSE 2024`, `TECH FOR CAMPAIGNS`, and others.
+3. **Second-pass obvious committees resolved** — after rerunning hydration and re-ranking the unknowns, added another wave of overrides for committees like `MAGA INC.`, `PACRONYM`, `BIDEN ACTION FUND`, `ONE FOR ALL COMMITTEE`, `REBUILDING AMERICA NOW`, `TOM STEYER PAC`, and `REFORM AMERICA FUND`.
+4. **Third-pass obvious committees resolved** — added another smaller verification wave for `DMFI PAC`, `MCCARTHY VICTORY FUND`, `WORKING FAMILIES PARTY PAC`, `GROW THE MAJORITY`, and `CLEARPATH ACTION FUND`, while continuing to leave anti-Trump or clearly cross-partisan committees unclassified.
+5. **Beneficiary-lens pass completed** — revisited the remaining big unknowns from a second perspective: not how the committee brands itself, but who the spending actually helps electorally. That moved committees such as `REPUBLICAN ACCOUNTABILITY PAC`, `THE LINCOLN PROJECT`, `DEMOCRACY PAC`, `PROTECT THE HOUSE`, and `AMERICAN EXCEPTIONALISM PAC`, then a final obvious follow-on group including `HILLARY ACTION FUND`, `COMMUNITY CHANGE VOTERS`, `GREAT AMERICA PAC`, and `SWING LEFT`.
+6. **Cross-partisan / independent edge cases still preserved as unknowns** — even after the beneficiary pass, I deliberately kept committees such as `WITH HONOR FUND`, `UNITE AMERICA PAC`, `TEAM KENNEDY`, `OUR PRINCIPLES PAC`, `DEMOCRACYFIRST PAC`, `AMERICAN-DNA PAC, INC.`, and `BETTER FUTURE MI FUND` unclassified because the evidence still points to bipartisan / independent / anti-Trump protest politics or remains too thin to assign a fair label.
+7. **Live donor file rehydrated five times from bulk** — reran `npm run hydrate:people:bulk` after each verification wave so [assets/data/people.json](/Users/christophershannon/fuckfascists/assets/data/people.json) reflects the curated decisions rather than just the report.
+8. **Coverage materially improved** — the hydrated file remains `976 / 997` people matched, but the resolved share of all raw committee dollars increased from `75.23%` to `85.67%`. Unclassified dollars dropped from `24.35%` to `14.33%`.
+9. **Current top unknowns are now mostly true edge cases** — the remaining biggest unresolved committees are `WITH HONOR FUND`, `UNITE AMERICA PAC`, `TEAM KENNEDY`, `AMERICAN-DNA PAC, INC.`, `BETTER FUTURE MI FUND`, `OUR PRINCIPLES PAC`, `DEMOCRACYFIRST PAC`, and a smaller set like `MISSOURI STANDS UNITED`, `THE IMPACT FUND`, `JSTREETPAC`, and `TRUST IN THE MISSION PAC`.
+
+**Verification:**
+- `node --check scripts/hydrate-people-from-bulk.mjs`
+- `node --check scripts/fetch-people-data.mjs`
+- `npm run hydrate:people:bulk`
+- Local raw-row recomputation of `R/D/unknown` coverage after each pass
+
+**Next likely step:** keep the verification report as the evidence log, then continue one committee at a time only when the remaining unknowns are either large enough or obvious enough to justify another curated override.
+
+### Session: April 2, 2026 (people bulk hydration + R/D naming alignment)
+**Focus:** Hydrate `people.json` from downloaded FEC bulk files, align the people schema on `R` / `D` naming, and leave the branch in a usable donor-data state without relying on live API calls.
+
+**What changed:**
+1. **People schema aligned to current donor shape** — rebuilt `core/models/person.ts`, refreshed `core/models/__tests__/person.test.ts`, and added `core/data/personList.ts` plus `core/data/__tests__/personList.test.ts` so the app now understands wrapped `people.json`, role records, `commonName`, and `donationSummary.totalR/totalD/recentCycleR/recentCycleD`.
+2. **Bulk hydrator added** — created `scripts/hydrate-people-from-bulk.mjs` and `npm run hydrate:people:bulk`. It scans local `tools/fec-bulk/indiv*/by_date/*.txt` files with exact donor-name matching, joins committee metadata from local `cm*.txt` files, aggregates `raw` by `committeeId:cycle`, and writes hydrated Schedule A-style summaries back into `assets/data/people.json`.
+3. **Legacy API script kept compatible** — updated `scripts/fetch-people-data.mjs` to use schema version `1.3`, preserve `commonName`, normalize older `totalGOP/totalDEM` payloads into `R/D`, and emit the new field names going forward. `scripts/sync-people-from-bulk-top.mjs` now also writes `formatVersion: 1.3`.
+4. **Hydration completed for the live donor file** — `assets/data/people.json` is now `formatVersion: 1.3`, `41 MB`, with `976 / 997` people hydrated from bulk data, `145,451` aggregated committee-cycle rows, and `75.23%` of total dollars currently resolved into `R/D` buckets. The remaining `24.35%` stays unclassified rather than being guessed.
+5. **Curated committee party resolution added** — bulk hydration now uses `committee.party` when present, then a maintained committee-ID override list for obvious partisan PACs (for example `SMP`, `HMP`, `Harris Victory Fund`, `Priorities USA Action`, `America PAC`, `Trump Victory`, `Senate Majority PAC`, `House Majority PAC`, `ACTBLUE` / `WINRED`-style cases). This materially improved the usefulness of `R/D` totals while keeping `raw[]` intact for auditability.
+6. **Known remaining gaps documented by the data itself** — `21` donor records still missed bulk hydration due to unresolved name variants / edge-case contributor labels. The largest remaining unclassified committees are mostly independent or ideologically obvious but not yet explicitly curated (for example `Republican Accountability PAC`, `MAHA PAC`, `Unite America PAC`, `With Honor Fund`, `Jefferson Rising`, `Movement Voter PAC`).
+
+**Verification:**
+- `node --check scripts/hydrate-people-from-bulk.mjs`
+- `node --check scripts/fetch-people-data.mjs`
+- `npx jest core/models/__tests__/person.test.ts core/data/__tests__/personList.test.ts --runInBand`
+- `npm run hydrate:people:bulk`
+- `npm run compare:people:bulk -- --ids=miriam-adelson,michael-r-bloomberg,richard-uihlein,timothy-mellon,kenneth-c-griffin --cycles=2016,2018,2020,2022,2024`
+
+**Next likely step:** recover the remaining 21 unmatched donors with better alias/nickname variants, then keep expanding the committee-party override list only where the partisan alignment is genuinely obvious.
+
 ### Session: April 1, 2026 (Bundle ID, onboarding swipe, arena grid, file cleanup, sprite audit)
 **Focus:** Four implementation tasks + sprite gap analysis audit.
 

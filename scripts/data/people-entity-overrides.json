@@ -1,0 +1,1106 @@
+{
+  "_meta": {
+    "formatVersion": "1.0",
+    "updatedAt": "2026-04-03",
+    "description": "Curated person-to-entity overrides and common-name overrides used when generating assets/data/people.json from bulk donor data.",
+    "methodology": "Human-reviewed accepted links only. Record borderline decisions in notes/confidence here; unresolved cases belong in the generated review queue."
+  },
+  "people": {
+    "allen-blue": {
+      "entityLinks": {
+        "linkedin": {
+          "role": "Co-Founder & VP, Product Strategy",
+          "startYear": 2002,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "arthur-blank": {
+      "entityLinks": {
+        "home-depot": {
+          "role": "Co-Founder",
+          "startYear": 1978,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "barry-c-diller": {
+      "entityLinks": {
+        "angi": {
+          "role": "Chairman & Senior Executive",
+          "startYear": 2017,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null
+        },
+        "dotdash-meredith": {
+          "role": "Chairman & Senior Executive",
+          "startYear": 2021,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null
+        },
+        "iac": {
+          "role": "Chairman & Senior Executive",
+          "startYear": 1995,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "bernard-marcus": {
+      "commonName": "Bernie Marcus",
+      "entityLinks": {
+        "home-depot": {
+          "role": "Co-Founder",
+          "startYear": 1978,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "brad-smith": {
+      "entityLinks": {
+        "microsoft": {
+          "role": "Vice Chair & President",
+          "startYear": 2021,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "brian-david-armstrong": {
+      "entityLinks": {
+        "coinbase": {
+          "role": "Co-Founder & CEO",
+          "startYear": 2012,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "cantey-ergen": {
+      "commonName": "Candy Ergen",
+      "entityLinks": {
+        "dish-network": {
+          "role": "Co-Founder & Senior Advisor",
+          "startYear": 1980,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "charles-r-schwab": {
+      "commonName": "Charles Schwab",
+      "entityLinks": {
+        "charles-schwab": {
+          "role": "Founder & Chairman",
+          "startYear": 1971,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "craig-j-duchossois": {
+      "entityLinks": {
+        "duchossois-group": {
+          "role": "Executive Chairman",
+          "startYear": null,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "daniel-gilbert": {
+      "entityLinks": {
+        "rocket-companies": {
+          "role": "Founder & Chairman",
+          "startYear": 1985,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "david-cohen": {
+      "entityLinks": {
+        "comcast": {
+          "role": "Former Senior Executive Vice President",
+          "startYear": null,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": false,
+          "ownershipPct": null
+        }
+      }
+    },
+    "deborah-simon": {
+      "entityLinks": {
+        "simon-property-group": {
+          "role": "Former Senior Vice President & Family Shareholder",
+          "startYear": null,
+          "endYear": null,
+          "benefitBasis": "family_control",
+          "isCurrent": false,
+          "ownershipPct": null
+        }
+      }
+    },
+    "diane-hendricks": {
+      "entityLinks": {
+        "abc-supply": {
+          "role": "Co-Founder & Chair",
+          "startYear": 1982,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "donald-sussman": {
+      "entityLinks": {
+        "paloma-partners": {
+          "role": "Founder",
+          "startYear": null,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "dustin-a-moskovitz": {
+      "entityLinks": {
+        "asana": {
+          "role": "Co-Founder & Board Chair",
+          "startYear": 2008,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "elizabeth-uihlein": {
+      "entityLinks": {
+        "uline": {
+          "role": "Co-Founder & President",
+          "startYear": 1980,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "elon-musk": {
+      "entityLinks": {
+        "spacex": {
+          "role": "Founder & CEO",
+          "startYear": 2002,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        },
+        "tesla": {
+          "role": "CEO",
+          "startYear": 2008,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null
+        },
+        "x-twitter": {
+          "role": "Owner & CTO",
+          "startYear": 2022,
+          "endYear": null,
+          "benefitBasis": "control_owner",
+          "isCurrent": true,
+          "ownershipPct": null
+        },
+        "xai": {
+          "role": "Founder",
+          "startYear": 2023,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "eric-schmidt": {
+      "entityLinks": {
+        "google-alphabet": {
+          "role": "Former CEO & Executive Chairman",
+          "startYear": 2001,
+          "endYear": 2019,
+          "benefitBasis": "executive",
+          "isCurrent": false,
+          "ownershipPct": null
+        }
+      }
+    },
+    "evan-goldberg": {
+      "entityLinks": {
+        "oracle": {
+          "role": "NetSuite Founder & Executive Vice President",
+          "startYear": 1998,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "evan-williams": {
+      "commonName": "Ev Williams",
+      "entityLinks": {
+        "medium": {
+          "role": "Founder & Chairman",
+          "startYear": 2012,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "fred-eychaner": {
+      "entityLinks": {
+        "newsweb-corporation": {
+          "role": "Chairman & President",
+          "startYear": null,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "frederick-smith": {
+      "commonName": "Fred Smith",
+      "entityLinks": {
+        "fedex": {
+          "role": "Founder & Former Executive Chairman",
+          "startYear": 1973,
+          "endYear": 2025,
+          "benefitBasis": "founder_stake",
+          "isCurrent": false,
+          "ownershipPct": null
+        }
+      }
+    },
+    "george-m-marcus": {
+      "entityLinks": {
+        "marcus-millichap": {
+          "role": "Founder & Chairman",
+          "startYear": 1971,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "george-soros": {
+      "entityLinks": {
+        "soros-fund-management": {
+          "role": "Founder & Chairman",
+          "startYear": 1970,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "haim-saban": {
+      "entityLinks": {
+        "saban-entertainment": {
+          "role": "Founder & Former Chairman & CEO",
+          "startYear": null,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": false,
+          "ownershipPct": null
+        }
+      }
+    },
+    "hamilton-e-james": {
+      "entityLinks": {
+        "blackstone": {
+          "role": "Executive Vice Chairman",
+          "startYear": 2018,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "henry-laufer": {
+      "entityLinks": {
+        "renaissance-technologies": {
+          "role": "Former Executive",
+          "startYear": null,
+          "endYear": null,
+          "benefitBasis": "weak",
+          "isCurrent": false,
+          "ownershipPct": null
+        }
+      }
+    },
+    "howard-w-lutnick": {
+      "commonName": "Howard Lutnick"
+    },
+    "isaac-perlmutter": {
+      "entityLinks": {
+        "disney": {
+          "role": "Major Shareholder; Former Marvel Chairman",
+          "startYear": 2009,
+          "endYear": null,
+          "benefitBasis": "major_shareholder",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Disney stated in December 2023 that Perlmutter owned more than 25 million Disney shares through Trian's proxy fight and described him as a former Disney executive."
+        }
+      }
+    },
+    "irwin-jacobs": {
+      "entityLinks": {
+        "qualcomm": {
+          "role": "Co-Founder",
+          "startYear": 1985,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "j-christopher-reyes": {
+      "commonName": "Chris Reyes",
+      "entityLinks": {
+        "reyes-holdings": {
+          "role": "Co-Chairman",
+          "startYear": null,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "j-joe-ricketts": {
+      "commonName": "Joe Ricketts",
+      "entityLinks": {
+        "td-ameritrade": {
+          "role": "Founder & Former Chairman",
+          "startYear": 1975,
+          "endYear": 2011,
+          "benefitBasis": "founder_stake",
+          "isCurrent": false,
+          "ownershipPct": null
+        }
+      }
+    },
+    "jacob-helberg": {
+      "entityLinks": {
+        "palantir": {
+          "role": "Senior Advisor to the CEO",
+          "startYear": null,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "james-a-haslam": {
+      "commonName": "Jim Haslam",
+      "entityLinks": {
+        "pilot-flying-j": {
+          "role": "Founder",
+          "startYear": 1958,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "james-kevin-scott": {
+      "commonName": "Kevin Scott",
+      "entityLinks": {
+        "microsoft": {
+          "role": "CTO",
+          "startYear": 2017,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "james-s-davis": {
+      "commonName": "Jim Davis",
+      "entityLinks": {
+        "new-balance": {
+          "role": "Chairman",
+          "startYear": null,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "james-simons": {
+      "commonName": "Jim Simons",
+      "entityLinks": {
+        "renaissance-technologies": {
+          "role": "Founder & Former Chairman",
+          "startYear": 1982,
+          "endYear": 2024,
+          "benefitBasis": "founder_stake",
+          "isCurrent": false,
+          "ownershipPct": null
+        }
+      }
+    },
+    "james-sinegal": {
+      "commonName": "Jim Sinegal",
+      "entityLinks": {
+        "costco": {
+          "role": "Co-Founder",
+          "startYear": 1983,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "jan-koum": {
+      "entityLinks": {
+        "meta": {
+          "role": "Former Board Member",
+          "startYear": 2014,
+          "endYear": 2018,
+          "benefitBasis": "board_routine",
+          "isCurrent": false,
+          "ownershipPct": null
+        }
+      }
+    },
+    "jay-robert-pritzker": {
+      "commonName": "J.B. Pritzker",
+      "entityLinks": {
+        "pritzker-group": {
+          "role": "Managing Partner",
+          "startYear": 1996,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Official Pritzker Group materials describe J.B. Pritzker as Pritzker Group managing partner and say the firm has operated since 1996."
+        }
+      }
+    },
+    "jeff-bezos": {
+      "entityLinks": {
+        "amazon": {
+          "role": "Founder & Executive Chair",
+          "startYear": 1994,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        },
+        "washington-post": {
+          "role": "Owner",
+          "startYear": 2013,
+          "endYear": null,
+          "benefitBasis": "control_owner",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "jeff-yass": {
+      "entityLinks": {
+        "susquehanna-international-group": {
+          "role": "Co-Founder & Managing Director",
+          "startYear": 1987,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "jeffrey-sprecher": {
+      "entityLinks": {
+        "intercontinental-exchange": {
+          "role": "Founder, Chair & CEO",
+          "startYear": 2000,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "jim-c-walton": {
+      "commonName": "Jim Walton",
+      "entityLinks": {
+        "walmart": {
+          "role": "Former Board Member",
+          "startYear": 2005,
+          "endYear": 2016,
+          "benefitBasis": "board_routine",
+          "isCurrent": false,
+          "ownershipPct": null
+        }
+      }
+    },
+    "john-l-nau": {
+      "commonName": "John Nau III",
+      "entityLinks": {
+        "silver-eagle-beverages": {
+          "role": "Chairman & CEO",
+          "startYear": null,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "john-thompson": {
+      "entityLinks": {
+        "microsoft": {
+          "role": "Former Chairman & Board Member",
+          "startYear": 2012,
+          "endYear": 2021,
+          "benefitBasis": "executive",
+          "isCurrent": false,
+          "ownershipPct": null
+        }
+      }
+    },
+    "john-w-childs": {
+      "entityLinks": {
+        "jw-childs-associates": {
+          "role": "Founder & Chairman",
+          "startYear": 1995,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "The official J.W. Childs Associates team page says John W. Childs is Chairman of the firm he founded in 1995."
+        }
+      }
+    },
+    "jonathan-d-gray": {
+      "commonName": "Jon Gray",
+      "entityLinks": {
+        "blackstone": {
+          "role": "President & COO",
+          "startYear": 2018,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "k-rupert-murdoch": {
+      "commonName": "Rupert Murdoch",
+      "entityLinks": {
+        "fox-corporation": {
+          "role": "Chairman Emeritus",
+          "startYear": 2023,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": false,
+          "ownershipPct": null
+        }
+      }
+    },
+    "kelcy-warren": {
+      "entityLinks": {
+        "energy-transfer": {
+          "role": "Executive Chairman",
+          "startYear": null,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "ken-griffin": {
+      "entityLinks": {
+        "citadel": {
+          "role": "Founder & CEO",
+          "startYear": 1990,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "kenneth-c-griffin": {
+      "commonName": "Ken Griffin",
+      "entityLinks": {
+        "citadel": {
+          "role": "Founder & CEO",
+          "startYear": 1990,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "kenneth-l-fisher": {
+      "commonName": "Ken Fisher",
+      "entityLinks": {
+        "fisher-investments": {
+          "role": "Founder & Executive Chairman",
+          "startYear": 1979,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "laurene-powell-jobs": {
+      "entityLinks": {
+        "the-atlantic": {
+          "role": "Owner",
+          "startYear": 2017,
+          "endYear": null,
+          "benefitBasis": "control_owner",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "lawrence-ellison": {
+      "commonName": "Larry Ellison",
+      "entityLinks": {
+        "oracle": {
+          "role": "Founder, Executive Chairman & CTO",
+          "startYear": 1977,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "lee-roy-mitchell": {
+      "entityLinks": {
+        "cinemark": {
+          "role": "Founder & Board Member",
+          "startYear": 1984,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "m-jude-reyes": {
+      "commonName": "Jude Reyes",
+      "entityLinks": {
+        "reyes-holdings": {
+          "role": "Vice Chairman",
+          "startYear": null,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "mark-epstein": {
+      "entityLinks": {
+        "qualcomm": {
+          "role": "Senior Vice President",
+          "startYear": null,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "michael-moritz": {
+      "entityLinks": {
+        "sequoia-capital": {
+          "role": "Partner & Former Chair",
+          "startYear": null,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": false,
+          "ownershipPct": null
+        }
+      }
+    },
+    "michael-r-bloomberg": {
+      "commonName": "Mike Bloomberg",
+      "entityLinks": {
+        "bloomberg": {
+          "role": "Founder",
+          "startYear": 1981,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "michael-sacks": {
+      "commonName": "Mike Sacks",
+      "entityLinks": {
+        "grosvenor-capital-management": {
+          "role": "Chairman & CEO",
+          "startYear": null,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "miriam-adelson": {
+      "entityLinks": {
+        "las-vegas-sands": {
+          "role": "Majority Shareholder",
+          "startYear": 2021,
+          "endYear": null,
+          "benefitBasis": "control_owner",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "patrick-g-ryan": {
+      "commonName": "Pat Ryan",
+      "entityLinks": {
+        "ryan-specialty": {
+          "role": "Founder & Executive Chairman",
+          "startYear": 2010,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "paul-e-singer": {
+      "commonName": "Paul Singer",
+      "entityLinks": {
+        "elliott-management": {
+          "role": "Founder, President & Co-CEO",
+          "startYear": 1977,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "peter-thiel": {
+      "entityLinks": {
+        "palantir": {
+          "role": "Co-Founder & Chair",
+          "startYear": 2003,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "reed-hastings": {
+      "entityLinks": {
+        "netflix": {
+          "role": "Co-Founder & Executive Chairman",
+          "startYear": 2023,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "reid-hoffman": {
+      "entityLinks": {
+        "linkedin": {
+          "role": "Co-Founder",
+          "startYear": 2002,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "richard-e-uihlein": {
+      "entityLinks": {
+        "uline": {
+          "role": "Founder & President",
+          "startYear": 1980,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "richard-uihlein": {
+      "entityLinks": {
+        "uline": {
+          "role": "Founder & President",
+          "startYear": 1980,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "robert-t-bigelow": {
+      "entityLinks": {
+        "bigelow-aerospace": {
+          "role": "Founder & President",
+          "startYear": 1999,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Bigelow Aerospace's official 'Who We Are' page identifies Robert T. Bigelow as the company's founder and president and dates the founding to 1999."
+        }
+      }
+    },
+    "rob-walton": {
+      "entityLinks": {
+        "walmart": {
+          "role": "Former Chairman",
+          "startYear": 1992,
+          "endYear": 2015,
+          "benefitBasis": "executive",
+          "isCurrent": false,
+          "ownershipPct": null
+        }
+      }
+    },
+    "robert-mercer": {
+      "entityLinks": {
+        "renaissance-technologies": {
+          "role": "Former Co-CEO",
+          "startYear": null,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": false,
+          "ownershipPct": null
+        }
+      }
+    },
+    "ronald-cameron": {
+      "entityLinks": {
+        "mountaire": {
+          "role": "Chairman",
+          "startYear": null,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "s-donald-sussman": {
+      "entityLinks": {
+        "paloma-partners": {
+          "role": "Founder & Chairman",
+          "startYear": null,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "safra-catz": {
+      "entityLinks": {
+        "oracle": {
+          "role": "CEO",
+          "startYear": 2014,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "samuel-bankman-fried": {
+      "entityLinks": {
+        "ftx": {
+          "role": "Founder & Former CEO",
+          "startYear": 2019,
+          "endYear": 2022,
+          "benefitBasis": "founder_stake",
+          "isCurrent": false,
+          "ownershipPct": null
+        }
+      }
+    },
+    "sheldon-adelson": {
+      "entityLinks": {
+        "las-vegas-sands": {
+          "role": "Founder & CEO",
+          "startYear": 1989,
+          "endYear": 2021,
+          "benefitBasis": "founder_stake",
+          "isCurrent": false,
+          "ownershipPct": null
+        }
+      }
+    },
+    "seth-klarman": {
+      "entityLinks": {
+        "baupost-group": {
+          "role": "CEO & Portfolio Manager",
+          "startYear": 1982,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Baupost's official About and Team pages identify Seth Klarman as CEO & Portfolio Manager and say he has overseen the firm's investments since its 1982 inception."
+        }
+      }
+    },
+    "sheryl-sandberg": {
+      "entityLinks": {
+        "meta": {
+          "role": "Former COO",
+          "startYear": 2008,
+          "endYear": 2022,
+          "benefitBasis": "executive",
+          "isCurrent": false,
+          "ownershipPct": null
+        }
+      }
+    },
+    "stephen-a-schwarzman": {
+      "entityLinks": {
+        "blackstone": {
+          "role": "Co-Founder, Chairman & CEO",
+          "startYear": 1985,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "stephen-mandel": {
+      "entityLinks": {
+        "lone-pine-capital": {
+          "role": "Founder",
+          "startYear": 1997,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "thomas-f-steyer": {
+      "commonName": "Tom Steyer",
+      "entityLinks": {
+        "farallon-capital": {
+          "role": "Founder",
+          "startYear": 1986,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "thomas-peterffy": {
+      "entityLinks": {
+        "interactive-brokers": {
+          "role": "Founder & Chairman",
+          "startYear": 1977,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "vivek-ramaswamy": {
+      "entityLinks": {
+        "roivant-sciences": {
+          "role": "Founder & Former CEO",
+          "startYear": 2014,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": false,
+          "ownershipPct": null
+        }
+      }
+    },
+    "warren-a-stephens": {
+      "commonName": "Warren Stephens",
+      "entityLinks": {
+        "stephens-inc": {
+          "role": "Chairman, President & CEO",
+          "startYear": null,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    }
+  }
+}

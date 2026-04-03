@@ -3,12 +3,17 @@ import 'dotenv/config';
 import { readFile, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import {
+  DEFAULT_PEOPLE_ENTITY_OVERRIDES_PATH,
+  loadPeopleEntityOverrides,
+  normalizeEntityRoleRecord,
+} from './lib/peopleEntityOverrides.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PEOPLE_PATH = path.join(__dirname, '../assets/data/people.json');
 const ENTITIES_PATH = path.join(__dirname, '../assets/data/entities.json');
 const FEC_API_BASE = 'https://api.open.fec.gov/v1';
-const PERSON_SCHEMA_VERSION = '1.1';
+const PERSON_SCHEMA_VERSION = '1.3';
 
 const CACHE_TTL_DAYS = 60;
 const DEFAULT_LIMIT = 3800;
@@ -66,6 +71,7 @@ const ROLE_OVERRIDES = {
     'coinbase': { role: 'Co-Founder & CEO', startYear: 2012, endYear: null },
   },
 };
+let runtimeRoleOverrides = ROLE_OVERRIDES;
 
 function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -85,6 +91,7 @@ function parseArgs(argv) {
     startRank: 1,
     endRank: null,
     writeInterval: DEFAULT_WRITE_INTERVAL,
+    overrides: DEFAULT_PEOPLE_ENTITY_OVERRIDES_PATH,
     augmentDiscovery: argv.includes('--augment-discovery'),
     discoverOnly: argv.includes('--discover-only'),
     force: argv.includes('--force'),
@@ -124,6 +131,9 @@ function parseArgs(argv) {
     } else if (arg.startsWith('--write-interval=')) {
       const value = Number.parseInt(arg.slice('--write-interval='.length), 10);
       if (Number.isFinite(value) && value > 0) args.writeInterval = value;
+    } else if (arg.startsWith('--overrides=')) {
+      const value = arg.slice('--overrides='.length).trim();
+      if (value) args.overrides = path.resolve(process.cwd(), value);
     }
   }
 
@@ -293,6 +303,25 @@ function roleRecord(role, startYear = null, endYear = null) {
 
 function roundCurrency(value) {
   return Number.parseFloat(parseAmount(value).toFixed(2));
+}
+
+function normalizeDonationSummary(summary) {
+  if (!summary || typeof summary !== 'object') return undefined;
+
+  return {
+    totalR: roundCurrency(summary.totalR ?? summary.totalGOP ?? 0),
+    totalD: roundCurrency(summary.totalD ?? summary.totalDEM ?? 0),
+    recentCycleR: roundCurrency(summary.recentCycleR ?? summary.recentCycleGOP ?? 0),
+    recentCycleD: roundCurrency(summary.recentCycleD ?? summary.recentCycleDEM ?? 0),
+    recentCycle: normalizeWhitespace(summary.recentCycle ?? ''),
+    activeCycles: Array.isArray(summary.activeCycles)
+      ? summary.activeCycles
+          .map((cycle) => Number.parseInt(String(cycle), 10))
+          .filter((cycle) => Number.isFinite(cycle) && cycle > 0)
+      : [],
+    raw: Array.isArray(summary.raw) ? summary.raw : [],
+    lastUpdated: typeof summary.lastUpdated === 'string' ? summary.lastUpdated : '',
+  };
 }
 
 function isFresh(person) {
@@ -471,20 +500,9 @@ function buildEntityLookup(entities) {
 
 function normalizeRoleRecord(value) {
   if (typeof value === 'string' && value.trim().length > 0) {
-    return roleRecord(normalizeWhitespace(value));
+    return normalizeEntityRoleRecord({ role: normalizeWhitespace(value) });
   }
-  if (typeof value !== 'object' || value === null) return null;
-
-  const role = normalizeWhitespace(value.role ?? '');
-  if (!role) return null;
-
-  const normalizeYear = (year) => {
-    if (year === null || year === undefined || year === '') return null;
-    const parsed = Number.parseInt(String(year), 10);
-    return Number.isFinite(parsed) ? parsed : null;
-  };
-
-  return roleRecord(role, normalizeYear(value.startYear), normalizeYear(value.endYear));
+  return normalizeEntityRoleRecord(value);
 }
 
 function normalizeRolesByEntity(rawRoles) {
@@ -535,7 +553,7 @@ function mergeEntityLinks({
     }
   }
 
-  for (const [entityId, override] of Object.entries(ROLE_OVERRIDES[personId] ?? {})) {
+  for (const [entityId, override] of Object.entries(runtimeRoleOverrides[personId] ?? {})) {
     addEntity(entityId, override);
   }
 
@@ -568,6 +586,7 @@ function normalizeSeedPerson(raw, index, entityLookup) {
     id,
     canonicalName,
     displayName,
+    commonName: normalizeWhitespace(raw.commonName) || undefined,
     aliases: buildAliases(canonicalName, fecSearchNames, Array.isArray(raw.aliases) ? raw.aliases : []),
     fecContributorId: typeof raw.fecContributorId === 'string' ? raw.fecContributorId : null,
     fecSearchNames,
@@ -578,7 +597,7 @@ function normalizeSeedPerson(raw, index, entityLookup) {
     primaryOccupation: normalizeWhitespace(raw.primaryOccupation) || undefined,
     donorRank,
     tier: raw.tier ?? inferTier(donorRank),
-    donationSummary: raw.donationSummary ?? undefined,
+    donationSummary: normalizeDonationSummary(raw.donationSummary),
     lastVerifiedDate: typeof raw.lastVerifiedDate === 'string' ? raw.lastVerifiedDate : '',
     verificationStatus:
       raw.verificationStatus === 'manual' || raw.verificationStatus === 'unverified'
@@ -893,18 +912,18 @@ async function fetchPersonDonationSummary(person, apiKey) {
   const activeCycles = Array.from(new Set(raw.map((entry) => entry.cycle))).sort((a, b) => a - b);
   const recentCycle = activeCycles.length > 0 ? activeCycles[activeCycles.length - 1] : 0;
 
-  let totalGOP = 0;
-  let totalDEM = 0;
-  let recentCycleGOP = 0;
-  let recentCycleDEM = 0;
+  let totalR = 0;
+  let totalD = 0;
+  let recentCycleR = 0;
+  let recentCycleD = 0;
 
   for (const entry of raw) {
     if (entry.committeeParty === 'REP') {
-      totalGOP += entry.amount;
-      if (entry.cycle === recentCycle) recentCycleGOP += entry.amount;
+      totalR += entry.amount;
+      if (entry.cycle === recentCycle) recentCycleR += entry.amount;
     } else if (entry.committeeParty === 'DEM') {
-      totalDEM += entry.amount;
-      if (entry.cycle === recentCycle) recentCycleDEM += entry.amount;
+      totalD += entry.amount;
+      if (entry.cycle === recentCycle) recentCycleD += entry.amount;
     }
   }
 
@@ -914,10 +933,10 @@ async function fetchPersonDonationSummary(person, apiKey) {
     primaryEmployer: chooseTopKey(employers) || person.primaryEmployer,
     primaryOccupation: chooseTopKey(occupations) || person.primaryOccupation,
     donationSummary: {
-      totalGOP: roundCurrency(totalGOP),
-      totalDEM: roundCurrency(totalDEM),
-      recentCycleGOP: roundCurrency(recentCycleGOP),
-      recentCycleDEM: roundCurrency(recentCycleDEM),
+      totalR: roundCurrency(totalR),
+      totalD: roundCurrency(totalD),
+      recentCycleR: roundCurrency(recentCycleR),
+      recentCycleD: roundCurrency(recentCycleD),
       recentCycle: cycleLabel(recentCycle),
       activeCycles,
       raw,
@@ -956,13 +975,17 @@ async function writePeople(parsed, people, metaExtras = {}) {
 }
 
 async function main() {
+  const args = parseArgs(process.argv.slice(2));
+  const loadedOverrides = await loadPeopleEntityOverrides(args.overrides);
+  runtimeRoleOverrides =
+    Object.keys(loadedOverrides.roleOverrides).length > 0
+      ? loadedOverrides.roleOverrides
+      : ROLE_OVERRIDES;
   const apiKey = process.env['FEC_API_KEY'];
   if (!apiKey) {
     console.error('ERROR: FEC_API_KEY is not set. Add it to your .env file.');
     process.exit(1);
   }
-
-  const args = parseArgs(process.argv.slice(2));
 
   const rawEntities = JSON.parse(await readFile(ENTITIES_PATH, 'utf8'));
   const entities = Array.isArray(rawEntities) ? rawEntities : rawEntities.entities;
