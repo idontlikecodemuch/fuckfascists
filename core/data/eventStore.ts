@@ -1,4 +1,4 @@
-import type { EntityAvoidEvent, PlatformAvoidEvent } from '../models';
+import type { AvoidPin, EntityAvoidEvent, PlatformAvoidEvent } from '../models';
 import type { StorageAdapter } from './adapters';
 import { getLocalDateString, getLocalWeekStart } from '../utils/localDate';
 
@@ -25,6 +25,41 @@ export async function getAllEntityAvoids(
   adapter: StorageAdapter
 ): Promise<EntityAvoidEvent[]> {
   return adapter.getEntityAvoids();
+}
+
+/** Returns all entity avoid events for a specific date. */
+export async function getEntityAvoidsForDate(
+  adapter: StorageAdapter,
+  date?: string
+): Promise<EntityAvoidEvent[]> {
+  return adapter.getEntityAvoidsForDate(date ?? getLocalDateString());
+}
+
+// ── Avoid pins (map coordinate persistence) ──────────────────────────────────
+
+/**
+ * Persists a map pin for an avoided entity. Only called after a successful avoid.
+ * Coordinates stored locally, encrypted at rest, auto-purged daily.
+ */
+export async function recordAvoidPin(
+  adapter: StorageAdapter,
+  pin: Omit<AvoidPin, 'date'>
+): Promise<void> {
+  await adapter.upsertAvoidPin({ ...pin, date: getLocalDateString() });
+}
+
+/** Returns today's avoid pins for map hydration on launch. */
+export async function getTodayAvoidPins(
+  adapter: StorageAdapter
+): Promise<AvoidPin[]> {
+  return adapter.getAvoidPinsForDate(getLocalDateString());
+}
+
+/** Purges avoid pins older than today. Call on app launch. */
+export async function purgeOldAvoidPins(
+  adapter: StorageAdapter
+): Promise<void> {
+  await adapter.clearOldAvoidPins(getLocalDateString());
 }
 
 // ── Platform avoid events ──────────────────────────────────────────────────────

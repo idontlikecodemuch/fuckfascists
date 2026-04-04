@@ -77,7 +77,12 @@ function computeSearchRadius(region: Region | null): number {
  */
 const TAP_NO_MATCH_DISPLAY_MS = 2000;
 
-export function useTapSearch(deps: MatchingDeps, areaHash: string, regionRef?: React.RefObject<Region>) {
+export function useTapSearch(
+  deps: MatchingDeps,
+  areaHash: string,
+  regionRef?: React.RefObject<Region>,
+  avoidedTodayRef?: React.RefObject<Set<string>>,
+) {
   const [tapPins, setTapPins] = useState<MapPin[]>([]);
   const [tapLoadingCoord, setTapLoadingCoord] = useState<LatLng | null>(null);
   /** Scan results from the most recent tap — drives the MatchChooser when length ≥ 2. */
@@ -112,9 +117,9 @@ export function useTapSearch(deps: MatchingDeps, areaHash: string, regionRef?: R
         newPins.push({
           id,
           name: scanResult.matchedAlias || scanResult.canonicalName,
-          coords: coordinate, // session-only — never persisted
+          coords: coordinate,
           result: scanResult,
-          avoided: false,
+          avoided: avoidedTodayRef?.current?.has(id) ?? false,
         });
       }
 

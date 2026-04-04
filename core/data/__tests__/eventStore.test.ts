@@ -24,6 +24,10 @@ function makeAdapter(
     getPlatformAvoids: jest.fn().mockResolvedValue([]),
     getPlatformAvoidsForWeek: jest.fn().mockResolvedValue([]),
     clearAllPlatformAvoids: jest.fn().mockResolvedValue(undefined),
+    upsertAvoidPin: jest.fn().mockResolvedValue(undefined),
+    getAvoidPinsForDate: jest.fn().mockResolvedValue([]),
+    getEntityAvoidsForDate: jest.fn().mockResolvedValue([]),
+    clearOldAvoidPins: jest.fn().mockResolvedValue(undefined),
     ...overrides,
   } as jest.Mocked<StorageAdapter>;
 }

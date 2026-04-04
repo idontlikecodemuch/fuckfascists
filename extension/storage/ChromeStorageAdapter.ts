@@ -1,5 +1,5 @@
 import type { StorageAdapter } from '../../core/data/adapters';
-import type { EntityAvoidEvent, LocalCache, PlatformAvoidEvent } from '../../core/models';
+import type { AvoidPin, EntityAvoidEvent, LocalCache, PlatformAvoidEvent } from '../../core/models';
 
 // ─── Key helpers ──────────────────────────────────────────────────────────────
 
@@ -110,4 +110,14 @@ export class ChromeStorageAdapter implements StorageAdapter {
       await chrome.storage.local.remove(keysToRemove);
     }
   }
+
+  // ── Avoid pins — not used by the extension (mobile-only) ──────────────────
+
+  async upsertAvoidPin(_pin: AvoidPin): Promise<void> { /* no-op */ }
+  async getAvoidPinsForDate(_date: string): Promise<AvoidPin[]> { return []; }
+  async getEntityAvoidsForDate(date: string): Promise<EntityAvoidEvent[]> {
+    const all = await this.getEntityAvoids();
+    return all.filter((e) => e.date === date);
+  }
+  async clearOldAvoidPins(_beforeDate: string): Promise<void> { /* no-op */ }
 }

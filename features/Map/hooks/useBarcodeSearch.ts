@@ -8,7 +8,7 @@ import type { ScanContext } from '../types';
 import { mapCopy } from '../../../copy/map';
 
 export interface BarcodeNotice {
-  kind: 'unsupported' | 'no_match' | 'lookup_unavailable';
+  kind: 'unsupported' | 'no_match' | 'not_in_database' | 'lookup_unavailable';
   label: string;
 }
 
@@ -96,6 +96,24 @@ export function useBarcodeSearch(entities: Entity[]) {
               source: 'open_food_facts',
             },
           };
+        }
+
+        if (live.kind === 'not_in_database') {
+          await setCachedBarcodeLookup({
+            barcode: normalized.gtin13,
+            searchTerm: null,
+            productName: null,
+            brandName: null,
+            source: 'open_food_facts',
+            status: 'no_match',
+            fetchedAt: Date.now(),
+          });
+
+          setNotice({
+            kind: 'not_in_database',
+            label: live.barcode,
+          });
+          return null;
         }
 
         if (live.kind === 'no_match') {

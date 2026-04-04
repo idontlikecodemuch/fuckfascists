@@ -2,13 +2,15 @@
  * SQLite DDL for the local database.
  * Used by the mobile app's SqliteAdapter — not imported by the browser extension.
  *
- * Privacy reminder: coordinates and browsing history are NEVER stored.
+ * Privacy note: coordinates are stored ONLY for avoided entities (entity_avoid_pins),
+ * locally encrypted, and auto-purged daily. Browsing history is NEVER stored.
  * Only affirmative avoidance actions are recorded — there is no "support" table.
  */
 
 export const TABLE_ENTITY_AVOIDS = 'entity_avoid_events';
 export const TABLE_PLATFORM_AVOIDS = 'platform_avoid_events';
 export const TABLE_CACHE = 'cache';
+export const TABLE_AVOID_PINS = 'entity_avoid_pins';
 
 /**
  * entity_avoid_events
@@ -55,5 +57,27 @@ export const DDL_CACHE = `
   );
 `;
 
+/**
+ * entity_avoid_pins
+ * Stores map pin coordinates for avoided entities — used to hydrate the map
+ * with today's avoided markers on launch.
+ *
+ * PRIVACY RELAXATION: This deliberately stores coordinates locally.
+ * Coordinates are stored only for entities the user has actively avoided,
+ * only on-device (iOS Data Protection encrypted at rest), and auto-purged daily.
+ * This may be reverted to session-only storage if the team decides coordinates
+ * should never be persisted. See Known Limitations in CLAUDE.md.
+ */
+export const DDL_AVOID_PINS = `
+  CREATE TABLE IF NOT EXISTS ${TABLE_AVOID_PINS} (
+    entity_id TEXT NOT NULL,
+    date      TEXT NOT NULL,
+    latitude  REAL NOT NULL,
+    longitude REAL NOT NULL,
+    name      TEXT NOT NULL,
+    PRIMARY KEY (entity_id, date)
+  );
+`;
+
 /** Ordered list of all DDL statements — run in sequence to initialize the DB. */
-export const ALL_DDL = [DDL_ENTITY_AVOIDS, DDL_PLATFORM_AVOIDS, DDL_CACHE] as const;
+export const ALL_DDL = [DDL_ENTITY_AVOIDS, DDL_PLATFORM_AVOIDS, DDL_CACHE, DDL_AVOID_PINS] as const;

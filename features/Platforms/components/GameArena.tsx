@@ -8,7 +8,7 @@ import {
   View,
   useWindowDimensions,
 } from 'react-native';
-import { nameToSpriteId } from '../../../core/sprites/spriteLoader';
+import { nameToSpriteId, hasSprite } from '../../../core/sprites/spriteLoader';
 import { arenaAssets } from '../../../core/arena/arenaAssets';
 import { FXLayer, useFX } from '../../../core/fx';
 import { platformsCopy } from '../../../copy/platforms';
@@ -72,6 +72,7 @@ export function GameArena() {
       const figureName = getDisplayFigure(platform);
       if (seen.has(figureName)) continue;
       seen.add(figureName);
+      if (!hasSprite(figureName)) continue;
       figures.push({ figureName, spriteId: nameToSpriteId(figureName) });
     }
 
@@ -185,22 +186,24 @@ export function GameArena() {
         style={[styles.content, { opacity: contentOpacity, transform: [{ scale: pulseScale }] }]}
       >
         {focusedFigureName ? (
-          <Pressable
-            onPress={handleArenaTap}
-            style={styles.singleCharacter}
-            accessibilityRole="button"
-            accessibilityLabel={platformsCopy.arenaTapA11y(focusedFigureName)}
-          >
-            <FigureBadge
-              figureName={focusedFigureName}
-              state={todayActions.has(focusedFigureName) ? 'defeated' : 'neutral'}
-              size={singleSpriteSize}
-              cropRatio={TRACK_ARENA_SINGLE_CROP_RATIO}
-              cropOffsetX={TRACK_ARENA_SINGLE_CROP_OFFSET_X}
-              cropOffsetY={TRACK_ARENA_SINGLE_CROP_OFFSET_Y}
-              fallbackVariant="arena"
-            />
-          </Pressable>
+          hasSprite(focusedFigureName) ? (
+            <Pressable
+              onPress={handleArenaTap}
+              style={styles.singleCharacter}
+              accessibilityRole="button"
+              accessibilityLabel={platformsCopy.arenaTapA11y(focusedFigureName)}
+            >
+              <FigureBadge
+                figureName={focusedFigureName}
+                state={todayActions.has(focusedFigureName) ? 'defeated' : 'neutral'}
+                size={singleSpriteSize}
+                cropRatio={TRACK_ARENA_SINGLE_CROP_RATIO}
+                cropOffsetX={TRACK_ARENA_SINGLE_CROP_OFFSET_X}
+                cropOffsetY={TRACK_ARENA_SINGLE_CROP_OFFSET_Y}
+                fallbackVariant="arena"
+              />
+            </Pressable>
+          ) : null
         ) : (
           <View style={styles.grid}>
             {gridFigures.map((figure) => (

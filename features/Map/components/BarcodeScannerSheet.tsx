@@ -100,6 +100,7 @@ export function BarcodeScannerSheet({
         <CameraView
           style={styles.camera}
           facing="back"
+          autofocus="on"
           onBarcodeScanned={busy ? undefined : handleBarcodeScanned}
           onMountError={() => setMountError(true)}
           barcodeScannerSettings={{ barcodeTypes: [...PRODUCT_BARCODE_TYPES] }}

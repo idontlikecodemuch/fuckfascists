@@ -15,6 +15,8 @@ export function BarcodeLookupBanner({ notice, onDismiss }: BarcodeLookupBannerPr
     switch (notice.kind) {
       case 'unsupported':
         return mapCopy.barcodeUnsupported(notice.label);
+      case 'not_in_database':
+        return mapCopy.barcodeNotInDatabase(notice.label);
       case 'lookup_unavailable':
         return mapCopy.barcodeLookupFailed(notice.label);
       case 'no_match':

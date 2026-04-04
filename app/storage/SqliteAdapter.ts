@@ -1,10 +1,11 @@
 import * as SQLite from 'expo-sqlite';
 import type { StorageAdapter } from '../../core/data';
-import type { EntityAvoidEvent, LocalCache, PlatformAvoidEvent } from '../../core/models';
+import type { AvoidPin, EntityAvoidEvent, LocalCache, PlatformAvoidEvent } from '../../core/models';
 import {
   TABLE_ENTITY_AVOIDS,
   TABLE_PLATFORM_AVOIDS,
   TABLE_CACHE,
+  TABLE_AVOID_PINS,
   ALL_DDL,
 } from '../../core/data';
 
@@ -30,6 +31,14 @@ interface PlatformAvoidRow {
   count: number;
 }
 
+interface AvoidPinRow {
+  entity_id: string;
+  date: string;
+  latitude: number;
+  longitude: number;
+  name: string;
+}
+
 // ── Adapter ───────────────────────────────────────────────────────────────────
 
 /**
@@ -45,7 +54,7 @@ export class SqliteAdapter implements StorageAdapter {
   private constructor(private readonly db: SQLite.SQLiteDatabase) {}
 
   /** Current schema version — increment whenever DDL changes. */
-  private static readonly SCHEMA_VERSION = 2;
+  private static readonly SCHEMA_VERSION = 3;
 
   /** Opens the database and runs schema migrations. */
   static async open(name = 'fuckfascists.db'): Promise<SqliteAdapter> {
@@ -170,5 +179,44 @@ export class SqliteAdapter implements StorageAdapter {
 
   async clearAllPlatformAvoids(): Promise<void> {
     await this.db.runAsync(`DELETE FROM ${TABLE_PLATFORM_AVOIDS}`);
+  }
+
+  // ── Avoid pins ────────────────────────────────────────────────────────────
+
+  async upsertAvoidPin(pin: AvoidPin): Promise<void> {
+    await this.db.runAsync(
+      `INSERT OR REPLACE INTO ${TABLE_AVOID_PINS} (entity_id, date, latitude, longitude, name)
+       VALUES (?, ?, ?, ?, ?)`,
+      [pin.entityId, pin.date, pin.latitude, pin.longitude, pin.name],
+    );
+  }
+
+  async getAvoidPinsForDate(date: string): Promise<AvoidPin[]> {
+    const rows = await this.db.getAllAsync<AvoidPinRow>(
+      `SELECT * FROM ${TABLE_AVOID_PINS} WHERE date = ?`,
+      [date],
+    );
+    return rows.map((r) => ({
+      entityId: r.entity_id,
+      date: r.date,
+      latitude: r.latitude,
+      longitude: r.longitude,
+      name: r.name,
+    }));
+  }
+
+  async getEntityAvoidsForDate(date: string): Promise<EntityAvoidEvent[]> {
+    const rows = await this.db.getAllAsync<EntityAvoidRow>(
+      `SELECT * FROM ${TABLE_ENTITY_AVOIDS} WHERE date = ?`,
+      [date],
+    );
+    return rows.map((r) => ({ entityId: r.entity_id, date: r.date, count: r.count }));
+  }
+
+  async clearOldAvoidPins(beforeDate: string): Promise<void> {
+    await this.db.runAsync(
+      `DELETE FROM ${TABLE_AVOID_PINS} WHERE date < ?`,
+      [beforeDate],
+    );
   }
 }

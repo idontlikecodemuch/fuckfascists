@@ -14,7 +14,7 @@ interface FlagMarkerProps {
   name: string;
   confidence: number; // 0–1 score
   avoided: boolean;
-  onPress: () => void;
+  onPress?: () => void;
 }
 
 /**

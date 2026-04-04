@@ -70,6 +70,11 @@ function pickVariant(seed: string): SpriteVariant {
   return (Math.abs(hash) % 2) === 0 ? 'A' : 'B';
 }
 
+/** Returns true when a sprite exists for the given display name. */
+export function hasSprite(figureName: string): boolean {
+  return getSpriteFrame(nameToSpriteId(figureName), 'neutral') !== null;
+}
+
 // ── Core lookup ──────────────────────────────────────────────────────────────
 
 /**

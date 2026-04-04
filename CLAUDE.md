@@ -43,7 +43,7 @@ These documents are the authoritative reference for the project. New instances s
 These are not preferences. They are constraints. Never violate them.
 
 1. **Avoids only** — The data model cannot contain a "support" event. If a user visited a flagged business or used a flagged platform, nothing is stored. Only affirmative avoidance actions are recorded.
-2. **No geolocation storage** — Location is accessed session-only (on explicit user action). Coordinates are never written to disk or transmitted.
+2. **Minimal geolocation storage** — Location is accessed session-only (on explicit user action). Coordinates are never transmitted. **Exception:** avoided-entity pin coordinates are stored locally (encrypted, auto-purged daily) to hydrate the map on relaunch. See "Privacy relaxation" in Data Model section. This exception is a candidate for rewrite.
 3. **No browsing history** — The extension detects domains in-memory only. Nothing about what a user browsed is ever persisted.
 4. **No personal identifiers** — No accounts, no emails, no user IDs in MVP. All data is local-only.
 5. **No backend in MVP** — All processing is on-device. The only outbound calls are to the OpenFEC API (directly from the device), the Open Food Facts API (barcode → brand resolution), and to fetch the curated entity/people list updates (static files on GitHub/CDN).
@@ -295,10 +295,13 @@ LocalCache {
 ```
 
 ### What is NEVER stored
-- Any geolocation coordinates
+- Any geolocation coordinates **except** avoided-entity pin coordinates (see exception below)
 - Any browsing history or visited URLs
 - Any record of visiting or using a flagged entity ("support" events)
 - Any personal identifier (name, email, device ID)
+
+### Privacy relaxation: avoided-entity pin coordinates
+**Added 2026-04-03.** Map pin coordinates for avoided entities are stored locally in SQLite (`entity_avoid_pins` table), encrypted at rest by iOS Data Protection. Only coordinates for entities the user has actively avoided are stored — not scanned or tapped entities. Rows are auto-purged daily. This enables the map to show today's avoided markers on app relaunch. **This is a candidate for rewrite** — the team may decide to revert to session-only pin storage if any coordinate persistence is unacceptable. See Known Limitations.
 
 ---
 
@@ -830,6 +833,9 @@ Schedule E (independent expenditures) is not tracked. IEs are spending by outsid
 
 ### AIRMap.m nil guard patch — ✅ Resolved
 `AIRMap.m` in the `react-native-maps` pod has nil guards on `insertReactSubview:atIndex:`, `removeReactSubview:`, and `addSubview:`. The Podfile `post_install` hook now re-applies this patch automatically after every `pod install`. The hook is idempotent — it detects existing guards and skips if already present. No manual intervention required.
+
+### Avoided-entity pin coordinate storage — privacy relaxation candidate (Priority: V1.5)
+`entity_avoid_pins` SQLite table stores coordinates for avoided entities locally (encrypted at rest, auto-purged daily). This was added to enable map hydration on relaunch — showing today's avoided markers without re-tapping. The original privacy principle was "coordinates are never written to disk." This relaxation stores only avoided-entity coordinates, only locally, and only for the current day. **Candidate for rewrite** if the team decides any coordinate persistence is unacceptable. Revert path: remove the table, remove hydration logic in `MapScreen.tsx`, pins become session-only again.
 
 ### SparkleDecoration — `info` variant uses hardcoded pixel offsets (Priority: V1.5)
 `SparkleDecoration` positions sparks using absolute `top`/`right` pixel values. The `info` variant (used on the Info screen about plaque) places sparks across all four edges, but uses hardcoded `right` values (200, 220) to reach the left side of the parent. On a ~375pt-wide phone (panel ~343pt) these land roughly in the left-center area — close enough for decoration, but on wider devices (tablets, landscape) the sparks drift toward center instead of hugging the left edge. Fix options: (1) add `left`/`bottom` support to the render loop and use those directly, (2) accept a `containerWidth` prop and compute positions as percentages, or (3) use `useWindowDimensions` to derive positions dynamically. Not blocking — decorative only.

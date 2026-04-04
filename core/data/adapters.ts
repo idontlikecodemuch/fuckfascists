@@ -1,4 +1,4 @@
-import type { EntityAvoidEvent, LocalCache, PlatformAvoidEvent } from '../models';
+import type { AvoidPin, EntityAvoidEvent, LocalCache, PlatformAvoidEvent } from '../models';
 
 /**
  * Platform-agnostic storage contract.
@@ -48,4 +48,18 @@ export interface StorageAdapter {
 
   /** Deletes all platform avoid events. Dev/testing only. */
   clearAllPlatformAvoids(): Promise<void>;
+
+  // ── Avoid pins (map coordinate persistence) ───────────────────────────────
+
+  /** Inserts or replaces an avoid pin for (entityId, date). */
+  upsertAvoidPin(pin: AvoidPin): Promise<void>;
+
+  /** Returns all avoid pins for the given date (YYYY-MM-DD). */
+  getAvoidPinsForDate(date: string): Promise<AvoidPin[]>;
+
+  /** Returns all entity avoid events for the given date (YYYY-MM-DD). */
+  getEntityAvoidsForDate(date: string): Promise<EntityAvoidEvent[]>;
+
+  /** Deletes avoid pins older than the given date. */
+  clearOldAvoidPins(beforeDate: string): Promise<void>;
 }

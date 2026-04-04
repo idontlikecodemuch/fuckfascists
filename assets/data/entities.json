@@ -25657,7 +25657,10 @@
         "Shell",
         "Shell Oil",
         "Shell Gas",
-        "Shell Energy"
+        "Shell Energy",
+        "Shell Gas Station",
+        "Shell Station",
+        "Shell Service Station"
       ],
       "domains": [
         "shell.com",
@@ -25670,6 +25673,30 @@
       "ceoName": "Wael Sawan",
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-05",
+      "verificationStatus": "manual"
+    },
+    {
+      "id": "sunoco",
+      "canonicalName": "Sunoco LP",
+      "aliases": [
+        "Sunoco",
+        "Sunoco Gas",
+        "Sunoco Gas Station",
+        "Sunoco Station"
+      ],
+      "domains": [
+        "sunoco.com",
+        "gosunocogo.com"
+      ],
+      "categoryTags": [
+        "energy",
+        "oil-gas",
+        "fuel"
+      ],
+      "ceoName": "Karl Fails",
+      "parentEntityId": "energy-transfer",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-03",
       "verificationStatus": "manual"
     },
     {

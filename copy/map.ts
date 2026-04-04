@@ -53,6 +53,7 @@ export const mapCopy = {
   barcodeUnavailableBody: "Camera not available. Check your device settings.",
   barcodeFallbackLabel: "barcode",
   barcodeNoMatch: (label: string) => `Couldn\u2019t trace \u201C${label}\u201D to a company in our records.`,
+  barcodeNotInDatabase: (label: string) => `Product not found in the barcode database for \u201C${label}\u201D.`,
   barcodeLookupFailed: (label: string) => `Barcode lookup failed for \u201C${label}\u201D. Try again in a moment.`,
   barcodeUnsupported: (label: string) => `\u201C${label}\u201D isn\u2019t a supported barcode type. Try a UPC or EAN code.`,
   barcodeContextEyebrow: "SCANNED PRODUCT",

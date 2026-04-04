@@ -7,6 +7,7 @@ import { SparkleDecoration } from '../../../core/fx';
 import { FigureBadge } from './FigureBadge';
 import {
   TRACK_ROW_FONT_SIZE_COUNT,
+  TRACK_ROW_FONT_SIZE_SUBTITLE,
   TRACK_ROW_PADDING_HORIZONTAL,
   TRACK_ROW_PADDING_VERTICAL,
   TRACK_ROW_SPRITE_SIZE,
@@ -52,6 +53,9 @@ export function PlatformGroupHeader({
         <Text style={[styles.name, focused && styles.nameFocused]} numberOfLines={1} allowFontScaling>
           {shortName}
         </Text>
+        <Text style={styles.subtitle} numberOfLines={1} allowFontScaling>
+          {figureName}
+        </Text>
       </View>
       <Text style={[styles.count, focused && styles.countFocused]} allowFontScaling>
         {totalAvoids > 0 ? platformsCopy.countLabel(totalAvoids) : platformsCopy.countDash}
@@ -87,6 +91,7 @@ const styles = StyleSheet.create({
   },
   labelColumn: {
     flex: 1,
+    gap: 1,
   },
   name: {
     ...theme.type.displayS,
@@ -95,6 +100,11 @@ const styles = StyleSheet.create({
   },
   nameFocused: {
     color: theme.colors.highlightBlue,
+  },
+  subtitle: {
+    fontFamily: theme.fonts.body,
+    fontSize: TRACK_ROW_FONT_SIZE_SUBTITLE,
+    color: theme.colors.textSecondary,
   },
   count: {
     fontFamily: theme.fonts.bodySemiBold,

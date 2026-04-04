@@ -4,7 +4,14 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import type { Entity } from '../../core/models';
 import type { MatchingDeps } from '../../core/matching';
 import type { StorageAdapter } from '../../core/data';
-import { makeCacheDeps, recordEntityAvoid } from '../../core/data';
+import {
+  makeCacheDeps,
+  recordEntityAvoid,
+  getEntityAvoidsForDate,
+  recordAvoidPin,
+  getTodayAvoidPins,
+  purgeOldAvoidPins,
+} from '../../core/data';
 import { useLocation } from './hooks/useLocation';
 import { useEntityScan } from './hooks/useEntityScan';
 import { useTapSearch } from './hooks/useTapSearch';
@@ -65,6 +72,38 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
   const [activeResult, setActiveResult] = useState<ScanResult | null>(null);
   const isTextSearch = useRef(false);
 
+  const avoidedTodayRef = useRef(new Set<string>());
+
+  // Hydrate today's avoided entities + persisted pins on mount
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      await purgeOldAvoidPins(adapter);
+      const [todayAvoids, todayPins] = await Promise.all([
+        getEntityAvoidsForDate(adapter),
+        getTodayAvoidPins(adapter),
+      ]);
+      if (cancelled) return;
+      for (const a of todayAvoids) avoidedTodayRef.current.add(a.entityId);
+      if (todayPins.length > 0) {
+        setPins((prev) => {
+          const existing = new Set(prev.map((p) => p.id));
+          const hydrated: MapPin[] = todayPins
+            .filter((p) => !existing.has(p.entityId))
+            .map((p) => ({
+              id: p.entityId,
+              name: p.name,
+              coords: { latitude: p.latitude, longitude: p.longitude },
+              result: null,
+              avoided: true,
+            }));
+          return [...prev, ...hydrated];
+        });
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [adapter]);
+
   const location = useLocation();
   const deps = useMemo<MatchingDeps>(
     () => ({ entities, fetchOrgs, fetchOrgSummary, ...makeCacheDeps(adapter) }),
@@ -80,7 +119,7 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
   const {
     tapPins, tapLoadingCoord, tapNoMatch, tapNoMatchCoord, latestTapBatch, setLatestTapBatch,
     handleMapPress, handlePoiClick, resetTapPins, clearLatestTapBatch, markTapPinAvoided,
-  } = useTapSearch(deps, location.areaHash ?? '', regionRef);
+  } = useTapSearch(deps, location.areaHash ?? '', regionRef, avoidedTodayRef);
 
   const hints = useMapHints();
   const fx = useFX();
@@ -93,7 +132,8 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
     if (status !== 'matched' || !result || !location.coords || isTextSearch.current) return;
     const id = result.entityId ?? result.fecCommitteeId;
     if (!id) return;
-    const newPin: MapPin = { id, name: result.matchedAlias || result.canonicalName, coords: location.coords, result, avoided: false };
+    const alreadyAvoided = avoidedTodayRef.current.has(id);
+    const newPin: MapPin = { id, name: result.matchedAlias || result.canonicalName, coords: location.coords, result, avoided: alreadyAvoided };
     setPins((prev) => prev.some((p) => p.id === id) ? prev : [...prev, newPin]);
   }, [status, result, location.coords]);
 
@@ -108,10 +148,26 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
     setActiveResult(null); setAvoidedResult(null); reset(); setSearchText('');
   }, [reset]);
 
+  // Ref holds latest pins+tapPins so handleAvoid can access coordinates without
+  // a circular dependency on the allPins memo.
+  const allPinsRef = useRef<MapPin[]>([]);
+
   const handleAvoid = useCallback(async () => {
     if (!activeResult?.entity) return;
     const entityId = activeResult.entityId ?? activeResult.fecCommitteeId;
+    if (avoidedTodayRef.current.has(entityId)) return;
     await recordEntityAvoid(adapter, entityId);
+    avoidedTodayRef.current.add(entityId);
+    // Persist pin coordinates for map hydration on next launch
+    const pin = allPinsRef.current.find((p) => p.id === entityId);
+    if (pin) {
+      await recordAvoidPin(adapter, {
+        entityId,
+        latitude: pin.coords.latitude,
+        longitude: pin.coords.longitude,
+        name: pin.name,
+      });
+    }
     setPins((prev) => prev.map((p) => (p.id === entityId ? { ...p, avoided: true } : p)));
     markTapPinAvoided(entityId);
     setAvoidedResult(activeResult);
@@ -129,7 +185,10 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
 
   const handleNewResult = useCallback((r: ScanResult) => {
     if (avoidDismissTimer.current) clearTimeout(avoidDismissTimer.current);
-    setAvoidedResult(null); setActiveResult(r);
+    const entityId = r.entityId ?? r.fecCommitteeId;
+    const alreadyAvoided = entityId ? avoidedTodayRef.current.has(entityId) : false;
+    setAvoidedResult(alreadyAvoided ? r : null);
+    setActiveResult(r);
   }, []);
 
   useEffect(() => {
@@ -146,7 +205,9 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
   const allPins = useMemo(() => {
     const pinKey = (p: MapPin) => `${p.id}-${p.coords.latitude}-${p.coords.longitude}`;
     const existing = new Set(pins.map(pinKey));
-    return [...pins, ...tapPins.filter((p) => !existing.has(pinKey(p)))];
+    const merged = [...pins, ...tapPins.filter((p) => !existing.has(pinKey(p)))];
+    allPinsRef.current = merged;
+    return merged;
   }, [pins, tapPins]);
 
   const cardMode = activeResult ? resolveCardMode(activeResult) : null;
@@ -165,13 +226,16 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
         onPress={Platform.OS === 'ios' ? handleMapPress : undefined} onPoiClick={handlePoiClick}
         showsUserLocation showsMyLocationButton={false} accessibilityLabel={mapCopy.mapLabel}
       >
-        {allPins.map((pin) => (
-          <FlagMarker key={`${pin.id}-${pin.coords.latitude}-${pin.coords.longitude}`} coordinate={pin.coords} name={pin.name} confidence={pin.result.confidence} avoided={pin.avoided}
-            onPress={() => {
-              const co = allPins.filter((p) => p.coords.latitude === pin.coords.latitude && p.coords.longitude === pin.coords.longitude);
-              co.length >= 2 ? setLatestTapBatch(co.map((p) => p.result)) : handleNewResult(pin.result);
-            }} />
-        ))}
+        {allPins.map((pin) => {
+          const pinResult = pin.result;
+          return (
+            <FlagMarker key={`${pin.id}-${pin.coords.latitude}-${pin.coords.longitude}`} coordinate={pin.coords} name={pin.name} confidence={pinResult?.confidence ?? 1} avoided={pin.avoided}
+              onPress={pinResult ? () => {
+                const co = allPins.filter((p): p is MapPin & { result: ScanResult } => p.coords.latitude === pin.coords.latitude && p.coords.longitude === pin.coords.longitude && p.result !== null);
+                co.length >= 2 ? setLatestTapBatch(co.map((p) => p.result)) : handleNewResult(pinResult);
+              } : undefined} />
+          );
+        })}
         {tapLoadingCoord && <TapLoadingMarker coordinate={tapLoadingCoord} />}
         {tapNoMatchCoord && <NoMatchMarker coordinate={tapNoMatchCoord} />}
       </MapView>
@@ -198,7 +262,7 @@ export function MapScreen({ entities, adapter, fetchOrgs, fetchOrgSummary }: Map
         <>
           <Pressable style={styles.backdrop} onPress={isCelebrating ? undefined : handleDismiss} accessibilityRole="button" accessibilityLabel={sharedCopy.dismissLabel} disabled={isCelebrating} />
           <View style={styles.cardContainer} pointerEvents={isCelebrating ? 'none' : 'auto'}>
-            <BusinessCard result={activeResult} onAvoid={handleAvoid} avoidDisabled={!activeResult.entity} avoided={avoidedResult === activeResult || allPins.some((p) => p.result === activeResult && p.avoided)} onDismiss={handleDismiss} allEntities={entities} />
+            <BusinessCard result={activeResult} onAvoid={handleAvoid} avoidDisabled={!activeResult.entity} avoided={avoidedResult === activeResult || avoidedTodayRef.current.has(activeResult.entityId ?? activeResult.fecCommitteeId)} onDismiss={handleDismiss} allEntities={entities} />
           </View>
         </>
       )}

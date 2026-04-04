@@ -31,13 +31,14 @@ export interface ScanResult {
 }
 
 /**
- * A flagged business pinned on the map for this session.
- * coords are in-memory only — they are NEVER persisted or transmitted.
+ * A flagged business pinned on the map.
+ * Coordinates are stored locally only for avoided pins (auto-purged daily).
+ * Non-avoided pin coords are in-memory only — never persisted.
  */
 export interface MapPin {
   id: string;                                           // entityId ?? fecCommitteeId
   name: string;                                         // display name
-  coords: { latitude: number; longitude: number };      // session-only
-  result: ScanResult;
+  coords: { latitude: number; longitude: number };
+  result: ScanResult | null;                            // null for hydrated avoid-only pins
   avoided: boolean;                                     // toggled after user taps AVOIDED
 }

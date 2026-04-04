@@ -25,6 +25,7 @@ export interface BarcodeLookupTarget {
 export type BarcodeLookupOutcome =
   | { kind: 'matched'; target: BarcodeLookupTarget }
   | { kind: 'no_match'; barcode: string; productName: string | null; brandName: string | null }
+  | { kind: 'not_in_database'; barcode: string }
   | { kind: 'lookup_unavailable'; barcode: string };
 
 function splitBrands(value: string | undefined): string[] {
@@ -101,10 +102,8 @@ export async function lookupBarcodeViaOpenFoodFacts(
     const payload = (await response.json()) as OpenFoodFactsResponse;
     if (payload.status !== 1 || !payload.product) {
       return {
-        kind: 'no_match',
+        kind: 'not_in_database',
         barcode: barcode.displayCode,
-        productName: null,
-        brandName: null,
       };
     }
 

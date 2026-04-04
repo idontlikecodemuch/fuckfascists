@@ -12,6 +12,41 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 3, 2026 (P1 device testing fixes batch)
+**Focus:** Five device-testing bugs: Track screen CEO names, arena sprites, map avoid state, barcode scanner, entity alias gaps.
+
+**What changed:**
+
+1. **P1-A: CEO name on parent company group headers** — `PlatformGroupHeader` now shows the CEO/public figure name as a subtitle beneath the company short name, matching how singleton `PlatformRow` displays it. Uses same font/color tokens.
+
+2. **P1-B: Arena sprite filtering** — `GameArena` grid mode now filters out figures without sprites; grid cell sizing uses the filtered count. Single-character mode skips the `Pressable` when no sprite exists. Added `hasSprite()` utility to `core/sprites/spriteLoader.tsx`.
+
+3. **P1-C: Map avoid state — one avoid per entity per day** — Added `entity_avoid_pins` SQLite table to persist avoided pin coordinates locally (encrypted, auto-purged daily). Map hydrates today's avoided markers on mount. `handleAvoid` checks `avoidedTodayRef` to prevent duplicate avoids. `handleNewResult` opens card in post-avoid state for already-avoided entities. Tap pins inherit avoided state from today's avoids. **PRIVACY RELAXATION:** Coordinates now stored locally for avoided entities only — see Known Limitations in CLAUDE.md.
+
+4. **P1-D: Barcode scanner error messaging + autofocus** — Distinguished "product not in database" (`not_in_database`) from "product found but no entity match" (`no_match`) and "network error" (`lookup_unavailable`). Added `barcodeNotInDatabase` copy key. Added `autofocus="on"` to `CameraView` for close-range scanning.
+
+5. **P1-E: Shell and Sunoco entity fixes** — Added `"Shell Gas Station"`, `"Shell Station"`, `"Shell Service Station"` aliases to Shell entity. Added new `sunoco` entity (Sunoco LP, `parentEntityId: "energy-transfer"`, `fecCommitteeId: ""` — needs `verify:entities` run).
+
+**Pipeline tasks needed:**
+- Run `npm run verify:entities` for Sunoco to find FEC committee ID
+- Run `npm run fetch:donations` for Sunoco after verification
+
+**Files changed:**
+- `features/Platforms/components/PlatformGroupHeader.tsx` (P1-A)
+- `core/sprites/spriteLoader.tsx` (P1-B)
+- `features/Platforms/components/GameArena.tsx` (P1-B)
+- `core/data/schema.ts`, `core/data/adapters.ts`, `core/data/eventStore.ts`, `core/data/index.ts` (P1-C)
+- `core/models/events.ts`, `core/models/index.ts` (P1-C)
+- `app/storage/SqliteAdapter.ts`, `extension/storage/ChromeStorageAdapter.ts` (P1-C)
+- `features/Map/MapScreen.tsx`, `features/Map/types.ts`, `features/Map/components/MapMarker.tsx` (P1-C)
+- `features/Map/hooks/useTapSearch.ts` (P1-C)
+- `copy/map.ts` (P1-D)
+- `features/Map/hooks/useBarcodeSearch.ts`, `features/Map/barcode/openFoodFacts.ts` (P1-D)
+- `features/Map/components/BarcodeLookupBanner.tsx`, `features/Map/components/BarcodeScannerSheet.tsx` (P1-D)
+- `assets/data/entities.json` (P1-E)
+- `CLAUDE.md` (privacy relaxation docs)
+- Test mocks updated: `core/data/__tests__/cacheStore.test.ts`, `core/data/__tests__/eventStore.test.ts`, `features/Scorecard/data/__tests__/aggregateScorecard.test.ts`
+
 ### Session: April 3, 2026 (PlatformSetupScreen visual redesign)
 **Focus:** Redesign platform setup/selection screen to match game UI design language.
 
