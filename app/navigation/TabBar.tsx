@@ -55,6 +55,11 @@ export function TabBar({ activeTab, onSelect }: { activeTab: Tab; onSelect: (t: 
             <Text style={[styles.tabLabel, active && styles.tabLabelActive]} allowFontScaling={false}>
               {label}
             </Text>
+            {id === 'scan' && (
+              <Text style={[styles.tabQualifier, active && styles.tabQualifierActive]} allowFontScaling={false}>
+                {scanCopy.tabBetaQualifier}
+              </Text>
+            )}
           </Pressable>
         );
       })}
@@ -63,13 +68,15 @@ export function TabBar({ activeTab, onSelect }: { activeTab: Tab; onSelect: (t: 
 }
 
 const styles = StyleSheet.create<{
-  tabBar:         ViewStyle;
-  bgTexture:      ImageStyle;
-  tabItem:        ViewStyle;
-  tabItemActive:  ViewStyle;
-  tabIconSpacing: ViewStyle;
-  tabLabel:       TextStyle;
-  tabLabelActive: TextStyle;
+  tabBar:             ViewStyle;
+  bgTexture:          ImageStyle;
+  tabItem:            ViewStyle;
+  tabItemActive:      ViewStyle;
+  tabIconSpacing:     ViewStyle;
+  tabLabel:           TextStyle;
+  tabLabelActive:     TextStyle;
+  tabQualifier:       TextStyle;
+  tabQualifierActive: TextStyle;
 }>({
   tabBar: {
     flexDirection: 'row',
@@ -104,5 +111,16 @@ const styles = StyleSheet.create<{
   },
   tabLabelActive: {
     color: theme.colors.rewardYellow,
+  },
+  tabQualifier: {
+    fontFamily: theme.fonts.body,
+    fontSize: 7,
+    lineHeight: 9,
+    color: theme.colors.textSecondary,
+    opacity: 0.7,
+  },
+  tabQualifierActive: {
+    color: theme.colors.rewardYellow,
+    opacity: 0.7,
   },
 });

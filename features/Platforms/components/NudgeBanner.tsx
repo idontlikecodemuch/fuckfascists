@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { platformsCopy } from '../../../copy/platforms';
 import { theme } from '../../../design/tokens';
 import { NUDGE_DAY } from '../../../config/constants';
@@ -19,6 +20,7 @@ interface NudgeBannerProps {
  */
 export function NudgeBanner({ onPress }: NudgeBannerProps) {
   const [dismissed, setDismissed] = useState(false);
+  const insets = useSafeAreaInsets();
 
   const today = new Date().getDay(); // 0=Sun
   const isNudgeDay = today === NUDGE_DAY;
@@ -30,7 +32,7 @@ export function NudgeBanner({ onPress }: NudgeBannerProps) {
   if (!isNudgeDay || dismissed) return null;
 
   return (
-    <View style={styles.container} accessibilityRole="alert">
+    <View style={[styles.container, { top: insets.top }]} accessibilityRole="alert">
       <Pressable
         onPress={onPress}
         style={styles.body}
@@ -58,6 +60,10 @@ export function NudgeBanner({ onPress }: NudgeBannerProps) {
 
 const styles = StyleSheet.create({
   container: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    zIndex: 10,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: theme.colors.rewardYellow,

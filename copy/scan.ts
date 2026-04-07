@@ -1,5 +1,6 @@
 export const scanCopy = {
-  tabLabel: 'SCAN BETA',
+  tabLabel: 'SCAN',
+  tabBetaQualifier: '(BETA)',
   heading: 'SCAN A PRODUCT',
   body: 'Scan it. Trace it. Here\u2019s the funding record.',
   primaryAction: 'OPEN SCANNER',
