@@ -92,6 +92,9 @@ export const ARENA_SAME_FIGURE_PULSE_MS = 220;
 // Arena height: 16:9 aspect ratio from screen width, capped at this max.
 export const ARENA_HEIGHT = 200;
 
+// StarFieldBg parallax — master toggle for tilt-based parallax on star backgrounds.
+export const STARBG_PARALLAX_ENABLED = true;
+
 // ── Track screen layout tuning ───────────────────────────────────────────────
 // All visual sizing for the Track platform list. Adjust these to tune the
 // entire list appearance without opening component files.

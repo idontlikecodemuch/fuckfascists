@@ -6,7 +6,7 @@ import { onboardCopy } from '../../../copy/onboard';
 import { theme } from '../../../design/tokens';
 import { bevelAmberRaised } from '../../../design/bevel';
 import { SparkleDecoration } from '../../../core/fx';
-import { StarField } from '../../Info/components/InfoDecorations';
+import { StarFieldBg } from '../../../core/starbg';
 
 interface OnboardingSlideProps {
   stepIndex: number;
@@ -34,7 +34,7 @@ export function OnboardingSlide({
 }: OnboardingSlideProps) {
   return (
     <SafeAreaView style={styles.container}>
-      <StarField />
+      <StarFieldBg seed={`onboard-${stepIndex}`} />
 
       {/* Header */}
       <View style={styles.header}>

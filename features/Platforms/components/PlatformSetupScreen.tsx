@@ -96,7 +96,7 @@ export function PlatformSetupScreen({ platforms, initialSelection, onDone }: Pla
 
   return (
     <SafeAreaView style={styles.container}>
-      <StarField />
+      <StarField seed="platform-setup" />
 
       <View style={styles.header}>
         <Text style={styles.title} accessibilityRole="header" allowFontScaling>

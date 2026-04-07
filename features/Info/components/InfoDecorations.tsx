@@ -1,19 +1,10 @@
 import React from 'react';
-import { View, ImageBackground, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { theme } from '../../../design/tokens';
 
 // ── Star field background ───────────────────────────────────────────────────
-// Uses the bg_stars.gif asset as a full-height background behind all content.
-
-const BG_STARS = require('../../../assets/pixel/bg/bg_stars.gif');
-
-export function StarField() {
-  return (
-    <View style={[StyleSheet.absoluteFill, { pointerEvents: 'none' }]} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-      <ImageBackground source={BG_STARS} style={StyleSheet.absoluteFill} resizeMode="cover" />
-    </View>
-  );
-}
+// Re-exports StarFieldBg as StarField so existing consumers keep working.
+export { StarFieldBg as StarField } from '../../../core/starbg';
 
 // ── Corner brackets for amber plaque ────────────────────────────────────────
 

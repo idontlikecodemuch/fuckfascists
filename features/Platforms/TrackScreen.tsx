@@ -56,7 +56,7 @@ export function TrackScreen({ adapter }: TrackScreenProps) {
   return (
     <TrackProvider adapter={adapter} platforms={activePlatforms}>
       <SafeAreaView style={styles.root}>
-        <StarField />
+        <StarField seed="track" />
         <TrackHeader onEdit={() => setEditing(true)} />
         <GameArena />
         <TrackList />

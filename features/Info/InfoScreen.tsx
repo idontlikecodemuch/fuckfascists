@@ -23,7 +23,7 @@ export function InfoScreen({ onVersionTap }: InfoScreenProps) {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scroll}>
-        <StarField />
+        <StarField seed="info" />
 
         {/* ── Page header (placeholder for future asset) ── */}
         <View style={styles.pageHeader}>
