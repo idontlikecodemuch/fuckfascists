@@ -12,6 +12,7 @@ export const extCopy = {
   weeklyPlat: "PLATFORMS: ",
   rPrefix: "R: ",
   dSep: " \u00b7 D: ",
+  oSep: " \u00b7 O: ",
   cyclePrefix: "in ",
   totalPrefix: "Total since 2016: R: ",
   activeCycles: "Active cycles: ",

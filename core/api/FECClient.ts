@@ -204,6 +204,12 @@ export class FECClient {
     }
 
     const raw: FECLineItem[] = Array.from(rawMap.values());
+    let totalO = 0;
+    let recentO = 0;
+    for (const item of raw) {
+      totalO += item.amount;
+      if (item.cycle === recentCycle) recentO += item.amount;
+    }
 
     const today = new Date().toISOString().slice(0, 10);
 
@@ -215,6 +221,8 @@ export class FECClient {
       recentDems,
       totalRepubs,
       totalDems,
+      totalO,
+      recentO,
       activeCycles,
       raw,
       lastUpdated:     today,

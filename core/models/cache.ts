@@ -16,6 +16,8 @@ export interface DonationSummary {
   recentDems: number;            // Democrat donations in most recent cycle only
   totalRepubs: number;           // total Republican donations from 2016 onward
   totalDems: number;             // total Democrat donations from 2016 onward
+  totalO?: number;               // total non-R non-D donations from 2016 onward (sum of raw[])
+  recentO?: number;              // non-R non-D donations in most recent cycle only
   activeCycles: number[];        // all cycles with activity since 2016, ascending
   raw: FECLineItem[];            // non-Republican non-Democrat line items; stored for future use
   lastUpdated: string;           // YYYY-MM-DD

@@ -237,6 +237,8 @@ describe('FECClient', () => {
 
       expect(result.totalRepubs).toBe(500_000);
       expect(result.totalDems).toBe(300_000);
+      expect(result.totalO).toBe(0);
+      expect(result.recentO).toBe(0);
       expect(result.raw).toHaveLength(0);
     });
 
@@ -250,6 +252,8 @@ describe('FECClient', () => {
 
       expect(result.totalRepubs).toBe(0);
       expect(result.totalDems).toBe(0);
+      expect(result.totalO).toBe(100_000);
+      expect(result.recentO).toBe(100_000);
       expect(result.raw).toHaveLength(1);
       expect(result.raw[0]).toMatchObject({ amount: 100_000, cycle: 2024, isReceipt: false });
     });

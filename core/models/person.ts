@@ -51,8 +51,10 @@ export interface PoliticalPersonContribution {
 export interface PoliticalPersonDonationSummary {
   totalR: number;
   totalD: number;
+  totalO?: number;              // non-R non-D donations (unclassified committees)
   recentCycleR: number;
   recentCycleD: number;
+  recentCycleO?: number;        // unclassified in most recent cycle only
   recentCycle: string;
   activeCycles: number[];
   raw: PoliticalPersonContribution[];

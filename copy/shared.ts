@@ -12,6 +12,7 @@ export const sharedCopy = {
   dismissLabel: "Dismiss",
   partyR: "R:",
   partyD: "D:",
+  partyO: "O:",
   verified: "VERIFIED",
   matched: "MATCHED",
   confidenceHigh: "HIGH",

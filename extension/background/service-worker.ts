@@ -233,6 +233,7 @@ async function handleCheckDomain(hostname: string, tabId: number): Promise<void>
     recentDems:            donationSummary?.recentDems ?? 0,
     totalRepubs:           donationSummary?.totalRepubs ?? 0,
     totalDems:             donationSummary?.totalDems ?? 0,
+    totalO:                donationSummary?.totalO ?? 0,
     activeCycles:          donationSummary?.activeCycles ?? [],
     fecCommitteeUrl:       donationSummary?.fecCommitteeUrl ?? (committeeId ? fecFilingUrl(committeeId) : null),
     confidence:            entityConfidence(undefined),

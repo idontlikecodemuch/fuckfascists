@@ -76,6 +76,8 @@ function renderFlag(flag: TabFlag) {
     const dRecent = flag.recentDems;
     const rTotal = flag.totalRepubs;
     const dTotal = flag.totalDems;
+    const oTotal = flag.totalO ?? 0;
+    const oSuffix = oTotal > 0 ? `${extCopy.oSep}${formatDonationAmount(oTotal)}` : '';
 
     if (rRecent >= dRecent) {
       recentAmountEl.innerHTML =
@@ -90,10 +92,10 @@ function renderFlag(flag: TabFlag) {
 
     if (rTotal >= dTotal) {
       totalSince2016.innerHTML =
-        `Total since 2016: <span class="amount-primary">${extCopy.rPrefix}${formatDonationAmount(rTotal)}</span> \u00b7 <span class="amount-secondary">D: ${formatDonationAmount(dTotal)}</span>`;
+        `Total since 2016: <span class="amount-primary">${extCopy.rPrefix}${formatDonationAmount(rTotal)}</span> \u00b7 <span class="amount-secondary">D: ${formatDonationAmount(dTotal)}</span>${oSuffix}`;
     } else {
       totalSince2016.innerHTML =
-        `Total since 2016: <span class="amount-primary">D: ${formatDonationAmount(dTotal)}</span> \u00b7 <span class="amount-secondary">R: ${formatDonationAmount(rTotal)}</span>`;
+        `Total since 2016: <span class="amount-primary">D: ${formatDonationAmount(dTotal)}</span> \u00b7 <span class="amount-secondary">R: ${formatDonationAmount(rTotal)}</span>${oSuffix}`;
     }
     totalSince2016.hidden = false;
 

@@ -44,28 +44,32 @@ function formatRecentLine(rAmt: number, dAmt: number, cycle: string): string {
 export function DataZone({ donationSummary, committeeName, fecUrl, onDetailPress, associatedPeople }: DataZoneProps) {
   const pacR = donationSummary?.totalRepubs ?? 0;
   const pacD = donationSummary?.totalDems ?? 0;
+  const pacO = donationSummary?.totalO ?? 0;
   const recentPacR = donationSummary?.recentRepubs ?? 0;
   const recentPacD = donationSummary?.recentDems ?? 0;
 
   // Sum individual donations from associated people
   let personR = 0;
   let personD = 0;
+  let personO = 0;
   let recentPersonR = 0;
   let recentPersonD = 0;
   for (const p of associatedPeople ?? []) {
     if (!p.donationSummary) continue;
     personR += p.donationSummary.totalR;
     personD += p.donationSummary.totalD;
+    personO += p.donationSummary.totalO ?? 0;
     recentPersonR += p.donationSummary.recentCycleR;
     recentPersonD += p.donationSummary.recentCycleD;
   }
 
   const totalR = pacR + personR;
   const totalD = pacD + personD;
+  const totalO = pacO + personO;
   const recentR = recentPacR + recentPersonR;
   const recentD = recentPacD + recentPersonD;
 
-  const hasRealDonations = totalR !== 0 || totalD !== 0 || recentR !== 0 || recentD !== 0;
+  const hasRealDonations = totalR !== 0 || totalD !== 0 || totalO !== 0 || recentR !== 0 || recentD !== 0;
   const pacName = donationSummary?.committeeName ?? committeeName;
   const people = (associatedPeople ?? []).filter((p) => p.donationSummary != null);
   const rIsLarger = totalR >= totalD;
@@ -99,6 +103,12 @@ export function DataZone({ donationSummary, committeeName, fecUrl, onDetailPress
               </>
             )}
           </View>
+
+          {totalO > 0 && (
+            <Text style={styles.otherLine} allowFontScaling>
+              {sharedCopy.partyO} {formatDonationAmount(totalO)}
+            </Text>
+          )}
 
           {/* Secondary: recent cycle — larger party first */}
           {donationSummary && (
@@ -185,17 +195,18 @@ const styles = StyleSheet.create({
     gap: theme.space.lg,
     alignItems: 'baseline',
   },
-  totalPrimary: {
-    ...theme.type.displayM,
-  },
-  totalSecondary: {
-    ...theme.type.displayS,
-  },
+  totalPrimary: { ...theme.type.displayM },
+  totalSecondary: { ...theme.type.displayS },
   colorR: {
     color: theme.colors.dangerRed,
   },
   colorD: {
     color: theme.colors.highlightBlue,
+  },
+  otherLine: {
+    ...theme.type.bodyS,
+    color: theme.colors.textSecondary,
+    marginTop: theme.space.xs,
   },
   recentLine: {
     ...theme.type.bodyS,

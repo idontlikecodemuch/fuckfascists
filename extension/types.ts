@@ -69,6 +69,7 @@ export interface TabFlag {
   recentDems: number;
   totalRepubs: number;
   totalDems: number;
+  totalO: number;
   activeCycles: number[];
   fecCommitteeUrl: string | null;
   confidence: number; // 0–1 score; compare against CONFIDENCE_THRESHOLD_HIGH/MEDIUM for display
