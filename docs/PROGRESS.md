@@ -12,16 +12,33 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
-### Session: April 7, 2026 ET — P2 Track screen fixes + map auto-scan
-**Focus:** Track screen UX polish batch (day circles, arena, child rows, star background) and map proximity auto-scan.
+### Session: April 7, 2026 ET — P2 Track polish, StarFieldBg, beta testing fixes, map auto-scan
+**Focus:** Track screen UX polish batch, replace GIF star background with StarFieldBg parallax system, beta testing fixes (scan copy, tab label, nudge layout, ghost markers), map proximity auto-scan.
 
 **What changed:**
-1. **P2-TRACK-A: Saturday week start + current day highlight** — `getLocalWeekStart()` now returns the previous Saturday (was Monday). Day labels reordered to S S M T W T F. Current day column gets a shaded background (`focusTint`). Fixed latent bug: `isToday` was using UTC date instead of local date.
-2. **P2-TRACK-B: Arena background randomizes per platform** — Each figure gets a unique arena background assigned on first focus, cached for the session. Different platforms show different arenas; same platform keeps the same arena.
-3. **P2-TRACK-C: Past day avoid triggers defeated sprite** — Tapping a past day circle to log an avoid now flashes the arena sprite to defeated state and triggers the celebration FX. Uses a `recentlyDefeated` Set that clears after `ARENA_HIT_FX_MS` (800ms).
-4. **P2-TRACK-D: Remove branch symbol, tighten child row padding** — Removed the `childGuide` L-shape from child platform rows. Reduced child row vertical padding to 4px (parent is 8px). Indent alone communicates hierarchy.
-5. **P2-TRACK-E: Wire StarField into TrackScreen** — `StarField` (animated bg_stars.gif background) now renders behind the Track screen content.
-6. **P2-MAP: Auto-scan on map open** — When the map opens and location resolves, a POI search is automatically triggered at the user's coordinates. If matches are found, the business card (single) or match chooser (multiple) appears. Session-only, no new storage. **Copy update needed:** Info/FAQ should disclose auto-scan behavior.
+
+**P2 Track screen polish:**
+1. **Saturday week start + current day highlight** — `getLocalWeekStart()` returns Saturday (was Monday). Day labels S S M T W T F. Current day column shaded background. Fixed latent UTC date bug in `isToday`.
+2. **Arena background randomizes per platform** — Per-figure arena background cached for the session. Arena helpers extracted to `arenaHelpers.ts`.
+3. **Past day avoid triggers defeated sprite** — `recentlyDefeated` Set in TrackContext flashes defeated state for `ARENA_HIT_FX_MS` on any avoid.
+4. **Remove branch symbol, tighten child row padding** — Removed `childGuide` L-shape. Child row padding 4px (parent 8px).
+
+**StarFieldBg parallax system (replaces bg_stars.gif):**
+5. **`core/starbg/`** — 6 files: `StarFieldBg.tsx` (4-layer parallax: base texture, milky way, galaxies/rocks, twinkle stars), `useStarLayout.ts` (seeded PRNG), `useParallax.ts` (tilt + scroll), `starbgAssets.ts`, `starbgConstants.ts`, `index.ts`.
+6. **`assets/pixel/starbg/`** — 23 assets (5 galaxies, 5 rocks, 6 milky ways, 1 base texture).
+7. **InfoDecorations** re-exports `StarFieldBg as StarField`. Old GIF-based `StarField` deleted.
+8. **OnboardingSlide** uses `StarFieldBg` directly with per-step seed. Hardcoded STARS array removed.
+9. All consumers get unique seeds: `"info"`, `"track"`, `"platform-setup"`, `"onboard-{N}"`.
+10. `STARBG_PARALLAX_ENABLED` added to `config/constants.ts`.
+
+**Beta testing fixes:**
+11. **Scan error copy — Clark voice pass** — Each error state (not in database, no entity match, network failure, unreadable barcode) now has distinct, actionable messaging per the Voice Framework.
+12. **Tab label** — `"SCAN BETA"` → `"SCAN"` with `"(BETA)"` qualifier beneath.
+13. **Nudge banner z-order** — Now position absolute + zIndex 10 + safe area inset, overlays map content instead of displacing viewport.
+14. **No-match ghost marker** — Removed 2.5s fade-out. Grey marker persists until tab switch / unmount. Not tappable. Component state only — no coordinate storage.
+
+**Map:**
+15. **Auto-scan on map open** — POI search at user's coordinates when location resolves. Session-only. **Copy update needed:** Info/FAQ should disclose auto-scan behavior.
 
 **Tests:** All 347 tests pass (30 suites).
 
