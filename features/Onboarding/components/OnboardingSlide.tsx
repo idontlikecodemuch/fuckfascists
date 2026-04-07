@@ -6,6 +6,7 @@ import { onboardCopy } from '../../../copy/onboard';
 import { theme } from '../../../design/tokens';
 import { bevelAmberRaised } from '../../../design/bevel';
 import { SparkleDecoration } from '../../../core/fx';
+import { StarField } from '../../Info/components/InfoDecorations';
 
 interface OnboardingSlideProps {
   stepIndex: number;
@@ -16,22 +17,6 @@ interface OnboardingSlideProps {
   onSkip?: () => void;
   skipLabel?: string;
 }
-
-/** Sparse star field dots — absolute-positioned white specks. */
-const STARS = [
-  { top: 28, left: 12, size: 1, opacity: 0.3 },
-  { top: 60, left: 280, size: 2, opacity: 0.25 },
-  { top: 110, left: 45, size: 1, opacity: 0.45 },
-  { top: 180, left: 310, size: 2, opacity: 0.2 },
-  { top: 250, left: 90, size: 1, opacity: 0.35 },
-  { top: 320, left: 250, size: 2, opacity: 0.4 },
-  { top: 400, left: 170, size: 1, opacity: 0.3 },
-  { top: 480, left: 30, size: 2, opacity: 0.25 },
-  { top: 520, left: 330, size: 1, opacity: 0.5 },
-  { top: 600, left: 120, size: 2, opacity: 0.2 },
-  { top: 660, left: 290, size: 1, opacity: 0.35 },
-  { top: 720, left: 60, size: 2, opacity: 0.4 },
-] as const;
 
 /**
  * Shared layout for all onboarding screens.
@@ -49,24 +34,7 @@ export function OnboardingSlide({
 }: OnboardingSlideProps) {
   return (
     <SafeAreaView style={styles.container}>
-      {/* Star field */}
-      {STARS.map((star, i) => (
-        <View
-          key={i}
-          style={[
-            styles.star,
-            {
-              top: star.top,
-              left: star.left,
-              width: star.size,
-              height: star.size,
-              opacity: star.opacity,
-            },
-          ]}
-          accessibilityElementsHidden
-          importantForAccessibility="no-hide-descendants"
-        />
-      ))}
+      <StarField />
 
       {/* Header */}
       <View style={styles.header}>
@@ -120,12 +88,6 @@ export function OnboardingSlide({
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: theme.colors.bgVoid },
-  star: {
-    position: 'absolute',
-    backgroundColor: '#FFFFFF',
-    borderRadius: 1,
-    pointerEvents: 'none',
-  },
   header: {
     backgroundColor: theme.colors.bgNav,
     padding: theme.space.lg,
