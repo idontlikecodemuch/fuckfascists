@@ -12,6 +12,21 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 7, 2026 ET — P2 Track screen fixes + map auto-scan
+**Focus:** Track screen UX polish batch (day circles, arena, child rows, star background) and map proximity auto-scan.
+
+**What changed:**
+1. **P2-TRACK-A: Saturday week start + current day highlight** — `getLocalWeekStart()` now returns the previous Saturday (was Monday). Day labels reordered to S S M T W T F. Current day column gets a shaded background (`focusTint`). Fixed latent bug: `isToday` was using UTC date instead of local date.
+2. **P2-TRACK-B: Arena background randomizes per platform** — Each figure gets a unique arena background assigned on first focus, cached for the session. Different platforms show different arenas; same platform keeps the same arena.
+3. **P2-TRACK-C: Past day avoid triggers defeated sprite** — Tapping a past day circle to log an avoid now flashes the arena sprite to defeated state and triggers the celebration FX. Uses a `recentlyDefeated` Set that clears after `ARENA_HIT_FX_MS` (800ms).
+4. **P2-TRACK-D: Remove branch symbol, tighten child row padding** — Removed the `childGuide` L-shape from child platform rows. Reduced child row vertical padding to 4px (parent is 8px). Indent alone communicates hierarchy.
+5. **P2-TRACK-E: Wire StarField into TrackScreen** — `StarField` (animated bg_stars.gif background) now renders behind the Track screen content.
+6. **P2-MAP: Auto-scan on map open** — When the map opens and location resolves, a POI search is automatically triggered at the user's coordinates. If matches are found, the business card (single) or match chooser (multiple) appears. Session-only, no new storage. **Copy update needed:** Info/FAQ should disclose auto-scan behavior.
+
+**Tests:** All 347 tests pass (30 suites).
+
+---
+
 ### Session: April 6, 2026 ET (inherently partisan staging pass integrated; reports stamped 2026-04-07 UTC)
 **Focus:** Finish the staging-only inherently partisan pass, keep the implementation bulk-first and compact, fold the new rows into the people/entities preview outputs, and hydrate the reviewed live files only after the final pass cleared review.
 

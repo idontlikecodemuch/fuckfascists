@@ -8,7 +8,7 @@ import {
   View,
   useWindowDimensions,
 } from 'react-native';
-import { nameToSpriteId, hasSprite } from '../../../core/sprites/spriteLoader';
+import { hasSprite } from '../../../core/sprites/spriteLoader';
 import { arenaAssets } from '../../../core/arena/arenaAssets';
 import { FXLayer, useFX } from '../../../core/fx';
 import { platformsCopy } from '../../../copy/platforms';
@@ -27,31 +27,14 @@ import {
   TRACK_ARENA_SINGLE_DISPLAY_RATIO,
   TRACK_ARENA_SINGLE_LEFT_INSET,
 } from '../../../config/constants';
-import { TRACKED_PLATFORMS } from '../data/platformList';
-import { getDisplayFigure, useTrack } from '../context/TrackContext';
+import { useTrack } from '../context/TrackContext';
 import { arenaFXRegistry } from './ArenaFX';
 import { FigureBadge } from './FigureBadge';
+import { buildGridFigures, pickRandomArena, pickReaction } from '../utils/arenaHelpers';
 import { computeGridCellSize } from '../utils/platformHelpers';
 
-interface ArenaFigure {
-  figureName: string;
-  spriteId: string;
-}
-
-const arenaKeys = Object.keys(arenaAssets);
-
-function pickRandomArena(): string | null {
-  if (arenaKeys.length === 0) return null;
-  return arenaKeys[Math.floor(Math.random() * arenaKeys.length)] ?? null;
-}
-
-function pickReaction(): string {
-  const reactions = platformsCopy.spriteReactions;
-  return reactions[Math.floor(Math.random() * reactions.length)] ?? reactions[0] ?? '!';
-}
-
 export function GameArena() {
-  const { arenaFocusKey, focusedFigureName, arenaHitRequest, todayActions } = useTrack();
+  const { arenaFocusKey, focusedFigureName, arenaHitRequest, isDefeated } = useTrack();
   const fx = useFX();
   const { width: screenWidth } = useWindowDimensions();
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -64,20 +47,7 @@ export function GameArena() {
     return () => { cancelled = true; };
   }, []);
 
-  const gridFigures = useMemo<ArenaFigure[]>(() => {
-    const seen = new Set<string>();
-    const figures: ArenaFigure[] = [];
-
-    for (const platform of TRACKED_PLATFORMS) {
-      const figureName = getDisplayFigure(platform);
-      if (seen.has(figureName)) continue;
-      seen.add(figureName);
-      if (!hasSprite(figureName)) continue;
-      figures.push({ figureName, spriteId: nameToSpriteId(figureName) });
-    }
-
-    return figures;
-  }, []);
+  const gridFigures = useMemo(() => buildGridFigures(), []);
 
   const gridCellSize = useMemo(
     () => computeGridCellSize(
@@ -92,7 +62,10 @@ export function GameArena() {
 
   const contentOpacity = useRef(new Animated.Value(1)).current;
   const pulseScale = useRef(new Animated.Value(1)).current;
-  const backgroundKeyRef = useRef<string | null>(pickRandomArena());
+  const [backgroundKey, setBackgroundKey] = useState<string | null>(pickRandomArena);
+  const backgroundKeyRef = useRef(backgroundKey);
+  backgroundKeyRef.current = backgroundKey;
+  const figureArenaMapRef = useRef<Map<string, string>>(new Map());
   const currentFocusFigureRef = useRef<string | null>(focusedFigureName);
   const previousFocusRef = useRef<{ figureName: string | null; focusId: string | null }>({
     figureName: focusedFigureName,
@@ -124,13 +97,25 @@ export function GameArena() {
           useNativeDriver: true,
         }),
       ]).start();
-    } else if (previous.figureName !== focusedFigureName && !reducedMotion) {
-      contentOpacity.setValue(0);
-      Animated.timing(contentOpacity, {
-        toValue: 1,
-        duration: ARENA_TRANSITION_MS,
-        useNativeDriver: true,
-      }).start();
+    } else if (previous.figureName !== focusedFigureName) {
+      // Pick a per-figure arena background (cached for the session)
+      if (focusedFigureName) {
+        const map = figureArenaMapRef.current;
+        if (!map.has(focusedFigureName)) {
+          map.set(focusedFigureName, pickRandomArena(backgroundKeyRef.current) ?? '');
+        }
+        const key = map.get(focusedFigureName) ?? null;
+        setBackgroundKey(key);
+      }
+
+      if (!reducedMotion) {
+        contentOpacity.setValue(0);
+        Animated.timing(contentOpacity, {
+          toValue: 1,
+          duration: ARENA_TRANSITION_MS,
+          useNativeDriver: true,
+        }).start();
+      }
     }
 
     previousFocusRef.current = {
@@ -164,7 +149,7 @@ export function GameArena() {
     fireHitFX(0.5, 0.18);
   }, [fireHitFX]);
 
-  const backgroundSource = backgroundKeyRef.current ? arenaAssets[backgroundKeyRef.current] : null;
+  const backgroundSource = backgroundKey ? arenaAssets[backgroundKey] : null;
   const singleSpriteSize = Math.round(ARENA_HEIGHT * TRACK_ARENA_SINGLE_DISPLAY_RATIO);
 
   return (
@@ -195,7 +180,7 @@ export function GameArena() {
             >
               <FigureBadge
                 figureName={focusedFigureName}
-                state={todayActions.has(focusedFigureName) ? 'defeated' : 'neutral'}
+                state={isDefeated(focusedFigureName) ? 'defeated' : 'neutral'}
                 size={singleSpriteSize}
                 cropRatio={TRACK_ARENA_SINGLE_CROP_RATIO}
                 cropOffsetX={TRACK_ARENA_SINGLE_CROP_OFFSET_X}
@@ -242,53 +227,13 @@ export function GameArena() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    height: ARENA_HEIGHT,
-    overflow: 'hidden',
-    backgroundColor: theme.colors.surface1,
-    borderBottomWidth: theme.borders.hero.width,
-    borderBottomColor: theme.colors.frameBlue,
-  },
-  background: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: theme.colors.bgVoid,
-  },
-  backgroundImage: {
-    opacity: 0.32,
-  },
-  backgroundOverlay: {
-    flex: 1,
-    backgroundColor: theme.colors.bgVoid,
-    opacity: 0.28,
-  },
-  content: {
-    flex: 1,
-  },
-  grid: {
-    flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    alignContent: 'center',
-    gap: theme.space.xs,
-    padding: theme.space.sm,
-  },
-  gridCell: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: theme.borders.standard.width,
-    borderColor: theme.colors.rewardYellow,
-    backgroundColor: theme.colors.surface2,
-    overflow: 'hidden',
-  },
-  singleCharacter: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'flex-start',
-    paddingLeft: TRACK_ARENA_SINGLE_LEFT_INSET,
-    paddingBottom: TRACK_ARENA_SINGLE_BOTTOM_INSET,
-  },
-  fxLayer: {
-    ...StyleSheet.absoluteFillObject,
-  },
+  container: { height: ARENA_HEIGHT, overflow: 'hidden', backgroundColor: theme.colors.surface1, borderBottomWidth: theme.borders.hero.width, borderBottomColor: theme.colors.frameBlue },
+  background: { ...StyleSheet.absoluteFillObject, backgroundColor: theme.colors.bgVoid },
+  backgroundImage: { opacity: 0.32 },
+  backgroundOverlay: { flex: 1, backgroundColor: theme.colors.bgVoid, opacity: 0.28 },
+  content: { flex: 1 },
+  grid: { flex: 1, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', alignContent: 'center', gap: theme.space.xs, padding: theme.space.sm },
+  gridCell: { alignItems: 'center', justifyContent: 'center', borderWidth: theme.borders.standard.width, borderColor: theme.colors.rewardYellow, backgroundColor: theme.colors.surface2, overflow: 'hidden' },
+  singleCharacter: { flex: 1, justifyContent: 'flex-end', alignItems: 'flex-start', paddingLeft: TRACK_ARENA_SINGLE_LEFT_INSET, paddingBottom: TRACK_ARENA_SINGLE_BOTTOM_INSET },
+  fxLayer: { ...StyleSheet.absoluteFillObject },
 });

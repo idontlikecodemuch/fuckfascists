@@ -122,6 +122,16 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
     handleMapPress, handlePoiClick, resetTapPins, clearLatestTapBatch, markTapPinAvoided,
   } = useTapSearch(deps, location.areaHash ?? '', regionRef, avoidedTodayRef);
 
+  // Auto-scan: when the map opens and location resolves, run a POI search at
+  // the user's coordinates. Same flow as a manual tap — session-only, no storage.
+  const hasAutoScannedRef = useRef(false);
+  useEffect(() => {
+    if (hasAutoScannedRef.current || !location.coords) return;
+    hasAutoScannedRef.current = true;
+    // Simulate a map press at the user's location to trigger POI search
+    handleMapPress({ nativeEvent: { coordinate: location.coords } });
+  }, [location.coords, handleMapPress]);
+
   const hints = useMapHints();
   const fx = useFX();
   const [avoidedResult, setAvoidedResult] = useState<ScanResult | null>(null);

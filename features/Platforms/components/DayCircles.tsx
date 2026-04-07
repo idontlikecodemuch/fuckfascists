@@ -3,12 +3,14 @@ import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { platformsCopy } from '../../../copy/platforms';
 import { sharedCopy } from '../../../copy/shared';
 import { getWeekDates, isFutureDate } from '../utils/weekDates';
+import { getLocalDateString } from '../../../core/utils/localDate';
 import { theme } from '../../../design/tokens';
 import { bevelInset, bevelGreenInset } from '../../../design/bevel';
 import {
   TRACK_CHILD_INDENT,
   TRACK_DAY_CIRCLE_SIZE,
   TRACK_DAY_CIRCLES_GAP,
+  TRACK_DAY_COLUMN_TODAY_BG,
   TRACK_ROW_FOCUS_BG_COLOR,
   TRACK_ROW_PADDING_HORIZONTAL,
 } from '../../../config/constants';
@@ -37,7 +39,7 @@ export function DayCircles({ weekOf, platformName, dayCounts, onAvoidDate, isChi
           const count = dayCounts.get(date) ?? 0;
           const checked = count > 0;
           const future = isFutureDate(date);
-          const isToday = date === new Date().toISOString().slice(0, 10);
+          const isToday = date === getLocalDateString();
 
           const a11yLabel = future
             ? platformsCopy.dayFutureLabel(dayLabel)
@@ -46,7 +48,7 @@ export function DayCircles({ weekOf, platformName, dayCounts, onAvoidDate, isChi
               : platformsCopy.dayUncheckedLabel(dayLabel, platformName);
 
           return (
-            <View key={date} style={styles.dayColumn}>
+            <View key={date} style={[styles.dayColumn, isToday && styles.dayColumnToday]}>
               <Text
                 style={[styles.dayLabel, isToday && styles.dayLabelToday]}
                 allowFontScaling
@@ -102,6 +104,12 @@ const styles = StyleSheet.create({
   dayColumn: {
     alignItems: 'center',
     gap: 2,
+    paddingHorizontal: 4,
+    paddingVertical: 2,
+    borderRadius: theme.radii.token,
+  },
+  dayColumnToday: {
+    backgroundColor: TRACK_DAY_COLUMN_TODAY_BG,
   },
   dayLabel: {
     ...theme.type.caption,

@@ -3,6 +3,7 @@ import { ActivityIndicator, SafeAreaView, StyleSheet, Text } from 'react-native'
 import type { StorageAdapter } from '../../core/data';
 import { platformsCopy } from '../../copy/platforms';
 import { theme } from '../../design/tokens';
+import { StarField } from '../Info/components/InfoDecorations';
 import { TrackProvider } from './context/TrackContext';
 import { TRACKED_PLATFORMS } from './data/platformList';
 import { GameArena } from './components/GameArena';
@@ -55,6 +56,7 @@ export function TrackScreen({ adapter }: TrackScreenProps) {
   return (
     <TrackProvider adapter={adapter} platforms={activePlatforms}>
       <SafeAreaView style={styles.root}>
+        <StarField />
         <TrackHeader onEdit={() => setEditing(true)} />
         <GameArena />
         <TrackList />

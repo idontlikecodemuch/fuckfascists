@@ -12,7 +12,7 @@ import {
   TRACK_CHILD_INDENT,
   TRACK_CHILD_FONT_SIZE_COUNT,
   TRACK_CHILD_FONT_SIZE_NAME,
-  TRACK_CHILD_GUIDE_COLOR,
+  TRACK_CHILD_ROW_PADDING_VERTICAL,
   TRACK_EXPAND_INDICATOR_SIZE,
   TRACK_ROW_DIMMED_OPACITY,
   TRACK_ROW_FOCUS_BG_COLOR,
@@ -69,8 +69,6 @@ export function PlatformRow({
           <Text style={styles.expandIndicator} allowFontScaling={false} accessible={false}>
             {expanded ? platformsCopy.collapseIndicator : platformsCopy.expandIndicator}
           </Text>
-
-          {isChild && <View style={styles.childGuide} />}
 
           {!isChild && (
             <FigureBadge
@@ -138,6 +136,7 @@ const styles = StyleSheet.create({
   },
   childRow: {
     paddingLeft: TRACK_CHILD_INDENT,
+    paddingVertical: TRACK_CHILD_ROW_PADDING_VERTICAL,
     backgroundColor: theme.colors.panelInner,
   },
   focusedRow: {
@@ -161,15 +160,6 @@ const styles = StyleSheet.create({
     fontFamily: theme.fonts.body,
     fontSize: TRACK_EXPAND_INDICATOR_SIZE,
     textAlign: 'center',
-  },
-  childGuide: {
-    width: 12,
-    height: 12,
-    marginRight: theme.space.xs,
-    borderLeftWidth: theme.borders.standard.width,
-    borderBottomWidth: theme.borders.standard.width,
-    borderColor: TRACK_CHILD_GUIDE_COLOR,
-    opacity: 0.85,
   },
   nameColumn: {
     flex: 1,

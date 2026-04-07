@@ -21,11 +21,11 @@ describe('getLocalWeekStart', () => {
     expect(getLocalWeekStart()).toMatch(/^\d{4}-\d{2}-\d{2}$/);
   });
 
-  it('always returns a Monday', () => {
+  it('always returns a Saturday', () => {
     const result = getLocalWeekStart();
     // Parsing as local midnight to check the weekday.
     const parsed = new Date(result + 'T00:00:00');
-    expect(parsed.getDay()).toBe(1); // 1 = Monday
+    expect(parsed.getDay()).toBe(6); // 6 = Saturday
   });
 
   it('returned date is within the last 6 days', () => {

@@ -19,17 +19,17 @@ export function getLocalDateString(): string {
 }
 
 /**
- * Returns the Monday of the current local week as YYYY-MM-DD.
- * ISO week semantics: week starts on Monday.
+ * Returns the Saturday that starts the current local week as YYYY-MM-DD.
+ * Week runs Saturday–Friday to align with the Friday scorecard drop window.
  */
 export function getLocalWeekStart(): string {
   const d = new Date();
   const day = d.getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
-  // Sunday (0) → go back 6 days; Mon (1) → 0; Tue (2) → -1; etc.
-  const diffToMonday = day === 0 ? -6 : 1 - day;
-  const monday = new Date(d.getFullYear(), d.getMonth(), d.getDate() + diffToMonday);
-  const year = monday.getFullYear();
-  const month = String(monday.getMonth() + 1).padStart(2, '0');
-  const mday = String(monday.getDate()).padStart(2, '0');
+  // Saturday (6) → 0; Sunday (0) → -1; Mon (1) → -2; ... Fri (5) → -6
+  const diffToSaturday = day === 6 ? 0 : -(day + 1);
+  const saturday = new Date(d.getFullYear(), d.getMonth(), d.getDate() + diffToSaturday);
+  const year = saturday.getFullYear();
+  const month = String(saturday.getMonth() + 1).padStart(2, '0');
+  const mday = String(saturday.getDate()).padStart(2, '0');
   return `${year}-${month}-${mday}`;
 }

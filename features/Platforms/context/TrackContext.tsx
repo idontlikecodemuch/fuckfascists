@@ -2,6 +2,7 @@ import React, {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useReducer,
   useRef,
@@ -14,6 +15,7 @@ import { usePlatformAvoidance } from '../hooks/usePlatformAvoidance';
 import { getLocalDateString } from '../../../core/utils/localDate';
 import type { ArenaHitRequest } from './trackHelpers';
 import { buildTodayActions } from './trackHelpers';
+import { ARENA_HIT_FX_MS } from '../../../config/constants';
 import { initialTrackUIState, trackUIReducer } from './trackUIState';
 
 // ── Public figure helpers ────────────────────────────────────────────────────
@@ -71,7 +73,15 @@ interface TrackProviderProps {
 export function TrackProvider({ adapter, platforms, children }: TrackProviderProps) {
   const [uiState, dispatch] = useReducer(trackUIReducer, initialTrackUIState);
   const [arenaHitRequest, setArenaHitRequest] = useState<ArenaHitRequest | null>(null);
+  const [recentlyDefeated, setRecentlyDefeated] = useState<Set<string>>(new Set());
+  const recentlyDefeatedTimersRef = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
   const avoidance = usePlatformAvoidance(adapter, platforms);
+
+  // Cleanup timers on unmount
+  useEffect(() => {
+    const timers = recentlyDefeatedTimersRef.current;
+    return () => { timers.forEach(clearTimeout); };
+  }, []);
 
   const getFigureName = useCallback((platformId: string) => {
     const platform = platforms.find((item) => item.id === platformId);
@@ -122,15 +132,43 @@ export function TrackProvider({ adapter, platforms, children }: TrackProviderPro
     return buildTodayActions(avoidance.items, today, getDisplayFigure);
   }, [avoidance.items]);
 
+  const flashDefeated = useCallback((figureName: string) => {
+    setRecentlyDefeated((prev) => {
+      const next = new Set(prev);
+      next.add(figureName);
+      return next;
+    });
+    // Clear any existing timer for this figure
+    const timers = recentlyDefeatedTimersRef.current;
+    const existing = timers.get(figureName);
+    if (existing) clearTimeout(existing);
+    timers.set(figureName, setTimeout(() => {
+      timers.delete(figureName);
+      setRecentlyDefeated((prev) => {
+        const next = new Set(prev);
+        next.delete(figureName);
+        return next;
+      });
+    }, ARENA_HIT_FX_MS));
+  }, []);
+
   const avoid = useCallback(async (platformId: string) => {
     const recorded = await avoidance.avoid(platformId);
+    if (recorded) {
+      const figureName = getFigureName(platformId);
+      if (figureName) flashDefeated(figureName);
+    }
     return recorded;
-  }, [avoidance]);
+  }, [avoidance, getFigureName, flashDefeated]);
 
   const avoidForDate = useCallback(async (platformId: string, date: string) => {
     const recorded = await avoidance.avoidForDate(platformId, date);
+    if (recorded) {
+      const figureName = getFigureName(platformId);
+      if (figureName) flashDefeated(figureName);
+    }
     return recorded;
-  }, [avoidance]);
+  }, [avoidance, getFigureName, flashDefeated]);
 
   const personWeeklyAvoids = useCallback((figureName: string): number => {
     return avoidance.items
@@ -139,8 +177,8 @@ export function TrackProvider({ adapter, platforms, children }: TrackProviderPro
   }, [avoidance.items]);
 
   const isDefeated = useCallback((figureName: string): boolean => {
-    return todayActions.has(figureName);
-  }, [todayActions]);
+    return todayActions.has(figureName) || recentlyDefeated.has(figureName);
+  }, [todayActions, recentlyDefeated]);
 
   const clearAll = useCallback(async () => {
     await avoidance.clearAll();

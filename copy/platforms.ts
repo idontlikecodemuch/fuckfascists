@@ -29,7 +29,7 @@ export const platformsCopy = {
   setupDone: "DONE",
 
   // Day circles
-  dayLabels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'] as readonly string[],
+  dayLabels: ['S', 'S', 'M', 'T', 'W', 'T', 'F'] as readonly string[],
   dayCheckedLabel: (day: string, name: string) => `${day}: ${name} avoided`,
   dayUncheckedLabel: (day: string, name: string) => `${day}: Tap to log ${name} avoidance`,
   dayFutureLabel: (day: string) => `${day}: Future`,

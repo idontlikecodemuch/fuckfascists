@@ -555,7 +555,7 @@ The entire app is styled as a **vintage 8-bit video game**. This is the foundati
 | SQLite adapter (`app/storage/SqliteAdapter.ts`) | ✅ Done |
 | Map scan, flag, business card, avoid tap | ✅ Done |
 | Platforms, Scorecard, Onboarding, Info screens | ✅ Done |
-| Track screen rebuild (context-driven, flat layout) | ✅ Done — TrackProvider context (todayActions-based defeated), TrackHeader + GameArena + FlatList with PlatformGroupHeader/PlatformRow/AvoidButton/DayCircles. ArenaFX extracted. All files ≤250 lines. |
+| Track screen rebuild (context-driven, flat layout) | ✅ Done — TrackProvider context (todayActions + recentlyDefeated), TrackHeader + GameArena + FlatList with PlatformGroupHeader/PlatformRow/AvoidButton/DayCircles. ArenaFX extracted. Sat–Fri week, per-figure arena backgrounds, past-day avoid triggers defeated sprite, StarField bg. All files ≤250 lines. |
 | Browser extension (MV3, Chrome + Firefox) | ✅ Done |
 | FEC entity verification run (`verify:entities`) | ✅ Done |
 | Donation data bundled into `entities.json` | ✅ Done |
@@ -846,6 +846,9 @@ Pre-App Store: consider renaming Xcode project from FckFascists to FCK. Internal
 
 ### V2: Extension copy — `dSep` naming cleanup (Priority: V2)
 `dSep` in `extension/copy.ts` does double duty: it's the mid-dot separator between R and D amounts AND the D: label (value: `" · D: "`). Asymmetric with `rPrefix`. Consider splitting into `dPrefix` + a shared `separator` constant, or renaming both to `rLabel`/`dLabel` for clarity. Low priority — cosmetic only, no functional impact.
+
+### Map auto-scan on open — copy update needed (Priority: V1 launch blocker)
+The map now auto-scans for nearby POIs when it opens and location resolves. This is session-only (coordinates never stored or transmitted), but the Info/FAQ copy does not yet disclose this behavior. The privacy principle section should be updated to note that the app queries nearby businesses on map open, not only on explicit tap/search.
 
 ### V2: Optional Server Schedule Override
 Drop time is computed on-device (see `core/dropSchedule/computeDropTime.ts`). V2 may add a lightweight server ping for: schedule overrides, entity list freshness checks, info content freshness checks. Constraints: minimal data (version hashes only, no payloads), no user-identifying or behavioral data, app functions identically if ping fails. The ping is a freshness hint, not a dependency. Do not build now.
