@@ -282,7 +282,7 @@ async function fetchCommitteeTotals(committeeId, apiKey, existingSummary = null)
 
   // Zero summary for dissolved / pre-activity committees.
   if (totalsResults.length === 0) {
-    return { ...baseResult, recentCycle: 0, recentRepubs: 0, recentDems: 0, totalRepubs: 0, totalDems: 0, activeCycles: [], raw: [] };
+    return { ...baseResult, recentCycle: 0, recentRepubs: 0, recentDems: 0, totalRepubs: 0, totalDems: 0, totalO: 0, recentO: 0, activeCycles: [], raw: [] };
   }
 
   const recentCycle  = totalsResults[0].cycle ?? 0;
@@ -301,6 +301,8 @@ async function fetchCommitteeTotals(committeeId, apiKey, existingSummary = null)
       recentDems:   existingSummary?.recentDems   ?? 0,
       totalRepubs:  existingSummary?.totalRepubs  ?? 0,
       totalDems:    existingSummary?.totalDems    ?? 0,
+      totalO:   existingSummary?.totalO   ?? 0,
+      recentO:  existingSummary?.recentO  ?? 0,
       raw:          existingSummary?.raw          ?? [],
     };
   }
@@ -332,7 +334,14 @@ async function fetchCommitteeTotals(committeeId, apiKey, existingSummary = null)
     }
   }
 
-  return { ...baseResult, recentCycle, recentRepubs, recentDems, totalRepubs, totalDems, activeCycles, raw: Array.from(rawMap.values()) };
+  const raw = Array.from(rawMap.values());
+  let totalO = 0, recentO = 0;
+  for (const item of raw) {
+    totalO += item.amount;
+    if (item.cycle === recentCycle) recentO += item.amount;
+  }
+
+  return { ...baseResult, recentCycle, recentRepubs, recentDems, totalRepubs, totalDems, totalO, recentO, activeCycles, raw };
 }
 
 // ── Persistence ───────────────────────────────────────────────────────────────

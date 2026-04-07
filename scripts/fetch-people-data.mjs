@@ -311,8 +311,10 @@ function normalizeDonationSummary(summary) {
   return {
     totalR: roundCurrency(summary.totalR ?? summary.totalGOP ?? 0),
     totalD: roundCurrency(summary.totalD ?? summary.totalDEM ?? 0),
+    totalO: roundCurrency(summary.totalO ?? 0),
     recentCycleR: roundCurrency(summary.recentCycleR ?? summary.recentCycleGOP ?? 0),
     recentCycleD: roundCurrency(summary.recentCycleD ?? summary.recentCycleDEM ?? 0),
+    recentCycleO: roundCurrency(summary.recentCycleO ?? 0),
     recentCycle: normalizeWhitespace(summary.recentCycle ?? ''),
     activeCycles: Array.isArray(summary.activeCycles)
       ? summary.activeCycles
@@ -914,8 +916,10 @@ async function fetchPersonDonationSummary(person, apiKey) {
 
   let totalR = 0;
   let totalD = 0;
+  let totalO = 0;
   let recentCycleR = 0;
   let recentCycleD = 0;
+  let recentCycleO = 0;
 
   for (const entry of raw) {
     if (entry.committeeParty === 'REP') {
@@ -924,6 +928,9 @@ async function fetchPersonDonationSummary(person, apiKey) {
     } else if (entry.committeeParty === 'DEM') {
       totalD += entry.amount;
       if (entry.cycle === recentCycle) recentCycleD += entry.amount;
+    } else {
+      totalO += entry.amount;
+      if (entry.cycle === recentCycle) recentCycleO += entry.amount;
     }
   }
 
@@ -935,8 +942,10 @@ async function fetchPersonDonationSummary(person, apiKey) {
     donationSummary: {
       totalR: roundCurrency(totalR),
       totalD: roundCurrency(totalD),
+      totalO: roundCurrency(totalO),
       recentCycleR: roundCurrency(recentCycleR),
       recentCycleD: roundCurrency(recentCycleD),
+      recentCycleO: roundCurrency(recentCycleO),
       recentCycle: cycleLabel(recentCycle),
       activeCycles,
       raw,

@@ -411,8 +411,10 @@ function finalizeAggregate(person, aggregate, committeeLookup) {
 
   let totalR = 0;
   let totalD = 0;
+  let totalO = 0;
   let recentCycleR = 0;
   let recentCycleD = 0;
+  let recentCycleO = 0;
 
   for (const entry of raw) {
     const bucket = classifyParty(entry.committeeParty);
@@ -422,6 +424,9 @@ function finalizeAggregate(person, aggregate, committeeLookup) {
     } else if (bucket === 'D') {
       totalD += entry.amount;
       if (entry.cycle === recentCycle) recentCycleD += entry.amount;
+    } else {
+      totalO += entry.amount;
+      if (entry.cycle === recentCycle) recentCycleO += entry.amount;
     }
   }
 
@@ -432,8 +437,10 @@ function finalizeAggregate(person, aggregate, committeeLookup) {
     donationSummary: {
       totalR: roundCurrency(totalR),
       totalD: roundCurrency(totalD),
+      totalO: roundCurrency(totalO),
       recentCycleR: roundCurrency(recentCycleR),
       recentCycleD: roundCurrency(recentCycleD),
+      recentCycleO: roundCurrency(recentCycleO),
       recentCycle: cycleLabel(recentCycle),
       activeCycles,
       raw,
