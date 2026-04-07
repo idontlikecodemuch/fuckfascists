@@ -448,6 +448,7 @@ These apply to every file, every PR, every AI-generated change.
 - **Prefer the simplest solution** — no over-engineering, no premature abstraction
 - **No duplication** — check the codebase before adding anything. The matching logic in `/core/matching/` is the one source of truth for both mobile and extension
 - **Files over 250 lines must be refactored** — split before continuing
+- **Scoped exception — maintainers-only bulk/report scripts** — files under `scripts/` and private helpers under `scripts/lib/data-classification/` may exceed 250 lines when they implement a single audited bulk-data transformation and further splitting would materially increase regression or review risk. In those cases, extract shared helpers/formatters first, keep runtime/app code under 250 lines, and document the exception in the relevant handoff/progress notes.
 - **No mock or stub data in dev or prod** — mocks live in tests only
 - **Never overwrite a key file without confirming** — explain why first
 - **Only make requested changes** — do not refactor unrelated code while fixing something else

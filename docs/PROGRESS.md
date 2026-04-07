@@ -12,6 +12,268 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 6, 2026 ET (inherently partisan staging pass integrated; reports stamped 2026-04-07 UTC)
+**Focus:** Finish the staging-only inherently partisan pass, keep the implementation bulk-first and compact, fold the new rows into the people/entities preview outputs, and hydrate the reviewed live files only after the final pass cleared review.
+
+**What changed:**
+1. **A dedicated inherently partisan staging helper/report landed** — added [`scripts/lib/inherentlyPartisanSources.mjs`](/Users/christophershannon/fuckfascists/scripts/lib/inherentlyPartisanSources.mjs) plus [`scripts/build-inherently-partisan-staging-report.mjs`](/Users/christophershannon/fuckfascists/scripts/build-inherently-partisan-staging-report.mjs). This is the shared staging source for:
+   - inaugural Form `F13` receipts
+   - entity-side national party special-account giving
+2. **The Form 13 pass now follows the bulk-light / API-fallback rule the user wanted** — inaugural discovery starts from `GET /filings?form_type=F13`, prefers filing CSVs when they exist, and only falls back to `schedule_a` API pagination for weird cases like the 2018 inaugural committee, whose current filings do not expose usable CSV coverage.
+3. **The national party-account rule was tightened around real bulk behavior** — after checking local `oth*.txt` shapes, the branch no longer assumes one clean transaction-code family for all special-account rows. The current staging rule is:
+   - use `MEMO_TEXT` and, when needed, the raw `NAME` field to detect `CONVENTION ACCOUNT`, `HEADQUARTERS ACCOUNT`, `RECOUNT ACCOUNT`, `BUILDING FUND`, and `HQ ACCOUNT`
+   - verify with recipient committee structure (`CMTE_ID` / `OTHER_ID`, `CMTE_TP=Y`, major-party affiliation from `cm*.txt`)
+   - only treat `30* / 31* / 32*` codes as a hard stop when they explicitly contradict the detected account type
+4. **False-positive party-account committees were eliminated** — candidate committees were being picked up early on because memo text alone was too loose. Requiring `CMTE_TP=Y` for discovered party-account recipients removed those false positives and left the national party committees only.
+5. **The inherently partisan staging report is now populated with real results** — generated:
+   - [`tools/fec-bulk/reports/inherently-partisan-staging-2026-04-07.json`](/Users/christophershannon/fuckfascists/tools/fec-bulk/reports/inherently-partisan-staging-2026-04-07.json)
+   - [`tools/fec-bulk/reports/inherently-partisan-staging-2026-04-07.md`](/Users/christophershannon/fuckfascists/tools/fec-bulk/reports/inherently-partisan-staging-2026-04-07.md)
+   - [`tools/fec-bulk/reports/inherently-partisan-staging-2026-04-07.people.rows.json`](/Users/christophershannon/fuckfascists/tools/fec-bulk/reports/inherently-partisan-staging-2026-04-07.people.rows.json)
+   - [`tools/fec-bulk/reports/inherently-partisan-staging-2026-04-07.entities.rows.json`](/Users/christophershannon/fuckfascists/tools/fec-bulk/reports/inherently-partisan-staging-2026-04-07.entities.rows.json)
+   with:
+   - inaugural people matched: `$25,109,995.20` across `89` rows / `88` people
+   - inaugural entities matched: `$71,618,222.54`
+   - entity-side party accounts matched: `$11,947,900`
+   - combined entity inherently partisan additions: `$83,566,122.54`
+   - party-account QA noise reduced from `329` mismatches down to `89`
+6. **People preview now consumes inherently partisan rows directly** — updated [`scripts/build-people-classification-preview.mjs`](/Users/christophershannon/fuckfascists/scripts/build-people-classification-preview.mjs) so it:
+   - still reclassifies `O -> R/D` committee-cycle rows from the beneficiary map
+   - also appends compact inherently partisan rows from the staged F13 report
+   - rebuilds donation summaries from raw rows so `recentCycle`, `activeCycles`, and ongoing-cycle totals stay correct when `2026` inaugural rows are introduced
+7. **People preview now reflects the inaugural add-on** — regenerated [`tools/fec-bulk/reports/people-classification-preview-2026-04-07.md`](/Users/christophershannon/fuckfascists/tools/fec-bulk/reports/people-classification-preview-2026-04-07.md) and companions with:
+   - reclassified move to `R`: `$285,334,834`
+   - reclassified move to `D`: `$300,853,668`
+   - inherently partisan add to `R`: `$18,775,000`
+   - inherently partisan add to `D`: `$6,334,995.20`
+   - preview `totalO`: `$243,407,302` (`4.19%`)
+   - current people summary-vs-raw drift now surfaced explicitly: `$2,160,071` across `328` people, with preview drift reduced to `0`
+   - fallback-only formal / candidate committee cycles observed in `people.json` are now seeded into the committee map, so zero-evidence fallback rows no longer disappear before hydration
+   - raw shape stays compact on the people side: `145,451 -> 145,540` rows, about `+40,858` compact/minified bytes
+   - donor spot-checks are now row-identity based, so added / reclassified spotlight rows no longer depend on raw-array sort order
+8. **Entities preview now consumes inherently partisan rows without bloating `raw[]`** — updated [`scripts/build-entities-classification-preview.mjs`](/Users/christophershannon/fuckfascists/scripts/build-entities-classification-preview.mjs) so the staged entity preview:
+   - still uses the compact line-`23` rehydration flow for PAC movement
+   - folds inherently partisan entity rows into `totalRepubs` / `totalDems`, `recentCycle`, `recentRepubs`, `recentDems`, and `activeCycles`
+   - deliberately keeps `raw[]` as unresolved / excluded remainder only
+9. **Entities preview now includes inaugural + party-account additions** — regenerated [`tools/fec-bulk/reports/entities-classification-preview-2026-04-07.md`](/Users/christophershannon/fuckfascists/tools/fec-bulk/reports/entities-classification-preview-2026-04-07.md) and companions with:
+   - preview `totalRepubs`: `$378,495,714.88`
+   - preview `totalDems`: `$245,517,046.96`
+   - preview `totalOther`: `$183,129,052.22`
+   - inherently partisan add to `R`: `$52,719,139.23`
+   - inherently partisan add to `D`: `$17,205,233.84`
+   - ongoing inherently partisan `2026` source: `$46,952,927.41`
+   - `71` entities affected by inherently partisan additions
+   - display totals now exclude PAC lines `21B` / `28A` while keeping those rows in `raw[]` for audit
+10. **Final review tightened entity inaugural name coverage without bloating shipped raw** — expanding the inherently partisan org-name normalizer to treat generic corporate tails like `SERVICES`, `PRODUCTS`, `FINANCIAL`, `MANAGEMENT`, and `COMPANIES` as strip-safe suffixes recovered another `$9.01M` of inaugural entity matches, including tracked rows for:
+   - `AT&T`
+   - `Chevron`
+   - `Anheuser-Busch InBev`
+   - `BlackRock`
+   while leaving the shipped entity `raw[]` plan unchanged: inherently partisan dollars still stay summary-first and unresolved PAC remainder still stays compact
+11. **Live data hydration completed from the reviewed staging previews** — rewrote:
+   - [`assets/data/people.json`](/Users/christophershannon/fuckfascists/assets/data/people.json)
+   - [`assets/data/entities.json`](/Users/christophershannon/fuckfascists/assets/data/entities.json)
+   - [`assets/data/people.bundle.json`](/Users/christophershannon/fuckfascists/assets/data/people.bundle.json)
+   using the reviewed `2026-04-07` preview artifacts, not the legacy live fetch scripts.
+   - hydrated people totals: `R $2,747,853,244`, `D $2,824,724,839.20`, `O $243,407,302`
+   - hydrated entity totals: `R $378,495,714.88`, `D $245,517,046.96`, `O $183,129,052.22`
+   - `people.bundle.json` was regenerated via [`scripts/strip-people-raw.mjs`](/Users/christophershannon/fuckfascists/scripts/strip-people-raw.mjs) in default `linked-only` mode after the live people rewrite
+   - live `people.json` / `entities.json` now match the reviewed preview files byte-for-byte at the JSON object level
+12. **Low-risk script refactor pass completed for handoff cleanliness** — extracted shared helper/report modules under [`scripts/lib/data-classification/`](/Users/christophershannon/fuckfascists/scripts/lib/data-classification/common.mjs), brought the simple top-level report entry scripts back under the 250-line rule, and documented a narrow [`CLAUDE.md`](/Users/christophershannon/fuckfascists/claude.md) exception for maintainers-only bulk/report scripts whose auditability would be hurt by forced fragmentation.
+
+**Verification:**
+- `node --check scripts/lib/inherentlyPartisanSources.mjs`
+- `node --check scripts/build-inherently-partisan-staging-report.mjs`
+- `node scripts/build-inherently-partisan-staging-report.mjs`
+- `node --check scripts/build-people-classification-preview.mjs`
+- `node scripts/build-people-classification-preview.mjs`
+- `node --check scripts/build-entities-classification-preview.mjs`
+- `node scripts/build-entities-classification-preview.mjs`
+
+**Next likely step:** treat the hydrated `2026-04-07` assets as the app/source-of-truth data for this methodology, harden the legacy fetch/hydration paths so they cannot silently overwrite these reviewed totals, and leave the remaining unmatched inaugural aliases (for example `PILGRIM'S PRIDE`, `RIPPLE LABS`, and `THE DOW CHEMICAL COMPANY`) as a later follow-up.
+
+### Session: April 6, 2026 (Form 13 inaugural donation research + branch docs update)
+**Focus:** Verify how inaugural-committee donations should enter the data pipeline, keep the approach repeatable without hardcoded inauguration names, and record the decision path in the staging docs before the full run.
+
+**What changed:**
+1. **Official FEC sources were checked for the right reporting surface** — confirmed via the [FEC Form 13 PDF](https://www.fec.gov/pdf/forms/fecfrm13.pdf) and [FEC inaugural-funding guidance](https://www.fec.gov/help-candidates-and-committees/presidential-transition-and-inauguration/funding-inaugural-committee-activities/) that inaugural committees file `F13`, and political-committee donations to them are disclosed on Schedule B line `29`.
+2. **Live API tests confirmed the minimal discovery path** — the reliable generic entry point is `GET /filings?form_type=F13`, which returns inaugural committee filings without knowing the committee names ahead of time. The user explicitly chose this simpler route instead of making `cycle` part of the required discovery query.
+3. **Recipient-side donation rows were verified** — `GET /schedules/schedule_a?committee_id=...` for an inaugural committee returns the actual incoming donation rows with `filing_form: F13`. That gives a repeatable source for donor-level inauguration receipts after committee discovery.
+4. **One tempting shortcut was ruled out** — a global `schedule_a?filing_form=F13` query was not reliable enough in testing, so the agreed shape is:
+   - discover inaugural committees from `filings?form_type=F13`
+   - then fetch `schedule_a` by those committee IDs
+5. **Party assignment needs a deliberate rule** — inaugural committees are inherently partisan, but FEC committee metadata often leaves their `party` blank. The branch docs now treat party assignment as an inaugural-cycle decision, not a committee-master-party decision.
+6. **Current pipeline gap is now documented** — [`scripts/fetch-donation-data.mjs`](/Users/christophershannon/fuckfascists/scripts/fetch-donation-data.mjs) currently filters PAC recipients to `H/S/P`, so it excludes inaugural committees entirely. [`scripts/fetch-people-data.mjs`](/Users/christophershannon/fuckfascists/scripts/fetch-people-data.mjs) may incidentally catch some inaugural donations by contributor-name search, but it does not run an explicit auditable `F13` pass today.
+7. **Compact shipped-data guidance was clarified** — discovery should stay minimal, but the final hydrated data should still preserve `cycle` for inaugural rows because the app is "since 2016" and the full run needs ongoing cycles kept distinct. The rule is: do not require `cycle` to discover `F13`, but do preserve `cycle` in the shipped compact raw shape when it is needed for attribution.
+8. **Branch docs were refreshed for handoff and parallel work** — updated [`docs/DATA_CLASSIFICATION_STAGING.md`](/Users/christophershannon/fuckfascists/docs/DATA_CLASSIFICATION_STAGING.md) and [`docs/HANDOFF_DATA_CLASSIFICATION_2026-04-06.md`](/Users/christophershannon/fuckfascists/docs/HANDOFF_DATA_CLASSIFICATION_2026-04-06.md) so another agent can pick this up without redoing the API research.
+
+**Verification:**
+- Official web verification:
+  - [FEC Form 13 PDF](https://www.fec.gov/pdf/forms/fecfrm13.pdf)
+  - [FEC inaugural committee funding guidance](https://www.fec.gov/help-candidates-and-committees/presidential-transition-and-inauguration/funding-inaugural-committee-activities/)
+  - [FEC receipts data overview](https://www.fec.gov/campaign-finance-data/about-campaign-finance-data/about-receipts-data/)
+- Live FEC API checks:
+  - `GET /filings?form_type=F13`
+  - `GET /filings?committee_id=<inaugural_committee_id>&form_type=F13`
+  - `GET /schedules/schedule_a?committee_id=<inaugural_committee_id>`
+
+**Next likely step:** implement a staging-only inaugural pass that:
+- discovers inaugural committees from `F13` filings
+- pulls donation receipts from `schedule_a` by committee ID
+- assigns partisan totals by inaugural cycle
+- keeps any shipped raw evidence compact and cycle-aware
+
+### Session: April 6, 2026 (staged preview passes for people + PAC entities)
+**Focus:** Turn the beneficiary map into reviewable staging previews for `people.json` and `entities.json`, tighten the QA reporting, and keep the PAC raw shape compact enough for eventual app bundling.
+
+**What changed:**
+1. **Committee QA output made materially more reviewable** — updated [`scripts/build-committee-beneficiary-map.mjs`](/Users/christophershannon/fuckfascists/scripts/build-committee-beneficiary-map.mjs) so it now:
+   - flags **all** April 3 manual recommendation mismatches, not only `leave unclassified -> R/D`
+   - carries `committeeName` through the finalized committee-cycle output
+   - prints names and mismatch types directly in the markdown QA sections
+2. **People rewrite preview added** — created [`scripts/build-people-classification-preview.mjs`](/Users/christophershannon/fuckfascists/scripts/build-people-classification-preview.mjs), which rewrites `people.json` into a staging-only preview under `tools/fec-bulk/reports/` without touching the live bundled file.
+3. **People preview matches the earlier projection** — generated:
+   - [`tools/fec-bulk/reports/people-classification-preview-2026-04-06.json`](/Users/christophershannon/fuckfascists/tools/fec-bulk/reports/people-classification-preview-2026-04-06.json)
+   - [`tools/fec-bulk/reports/people-classification-preview-2026-04-06.md`](/Users/christophershannon/fuckfascists/tools/fec-bulk/reports/people-classification-preview-2026-04-06.md)
+   - [`tools/fec-bulk/reports/people-classification-preview-2026-04-06.people.json`](/Users/christophershannon/fuckfascists/tools/fec-bulk/reports/people-classification-preview-2026-04-06.people.json)
+   with:
+   - move to `R`: `$285,278,285`
+   - move to `D`: `$300,786,005`
+   - preview `totalO`: `$245,691,585` (`4.24%`)
+   - Jeff Bezos still fully unresolved to `WITH HONOR FUND`
+4. **PAC line 23 rehydration preview added** — created [`scripts/build-pac-line23-rehydration-preview.mjs`](/Users/christophershannon/fuckfascists/scripts/build-pac-line23-rehydration-preview.mjs), which uses `oth*.txt` plus the committee-cycle map to recover recipient-level line `23` rows in a compact aggregated form.
+5. **PAC source picture is now quantified** — generated:
+   - [`tools/fec-bulk/reports/pac-line23-rehydration-preview-2026-04-06.json`](/Users/christophershannon/fuckfascists/tools/fec-bulk/reports/pac-line23-rehydration-preview-2026-04-06.json)
+   - [`tools/fec-bulk/reports/pac-line23-rehydration-preview-2026-04-06.md`](/Users/christophershannon/fuckfascists/tools/fec-bulk/reports/pac-line23-rehydration-preview-2026-04-06.md)
+   - [`tools/fec-bulk/reports/pac-line23-rehydration-preview-2026-04-06.rows.json`](/Users/christophershannon/fuckfascists/tools/fec-bulk/reports/pac-line23-rehydration-preview-2026-04-06.rows.json)
+   with:
+   - OTH `24K` total: `$632,270,581`
+   - raw-equivalent line `23`: `$170,833,963`
+   - projected move to `R`: `$90,209,827`
+   - projected move to `D`: `$67,421,956`
+   - projected stay `O`: `$13,202,180`
+6. **Compact staged entities rewrite preview added** — created [`scripts/build-entities-classification-preview.mjs`](/Users/christophershannon/fuckfascists/scripts/build-entities-classification-preview.mjs), which:
+   - moves reclassified line `23` dollars into `totalRepubs` / `totalDems`
+   - preserves `raw[]` as unresolved / excluded remainder only
+   - keeps `cycle` plus `recipientCommitteeId` on unresolved line `23` rows
+   - stores `totalOther` / `recentOther` directly in the preview summaries
+   - includes ongoing cycle `2026` source rows as staging additions instead of throwing them away
+7. **Entity preview stays reasonably compact** — generated:
+   - [`tools/fec-bulk/reports/entities-classification-preview-2026-04-06.json`](/Users/christophershannon/fuckfascists/tools/fec-bulk/reports/entities-classification-preview-2026-04-06.json)
+   - [`tools/fec-bulk/reports/entities-classification-preview-2026-04-06.md`](/Users/christophershannon/fuckfascists/tools/fec-bulk/reports/entities-classification-preview-2026-04-06.md)
+   - [`tools/fec-bulk/reports/entities-classification-preview-2026-04-06.entities.json`](/Users/christophershannon/fuckfascists/tools/fec-bulk/reports/entities-classification-preview-2026-04-06.entities.json)
+   showing:
+   - preview `totalRepubs`: `$325,776,575.65`
+   - preview `totalDems`: `$228,311,813.12`
+   - preview `totalOther`: `$187,756,224.63`
+   - ongoing-cycle `2026` line `23` added: `$20,765,335`
+   - `raw[]` rows: `1,897 -> 3,975`
+   - `entities.json` bytes: `732,800 -> 1,210,184`
+   - `134` entities now surface `recentCycle: 2026` in the preview
+8. **Important PAC caveat is now explicit** — the staged entity preview still needs to preserve about `$21.01M` in legacy unresolved line `23` rows because `oth*.txt` `24K` evidence does not yet fully backfill every historical bundled line `23` dollar. Another `$1.82M` of historic source rows lacks a matching current control row and is intentionally not forced into the preview.
+
+**Verification:**
+- `node --check scripts/build-committee-beneficiary-map.mjs`
+- `node scripts/build-committee-beneficiary-map.mjs`
+- `node --check scripts/build-people-classification-preview.mjs`
+- `node scripts/build-people-classification-preview.mjs`
+- `node --check scripts/build-pac-line23-rehydration-preview.mjs`
+- `node scripts/build-pac-line23-rehydration-preview.mjs`
+- `node --check scripts/build-entities-classification-preview.mjs`
+- `node scripts/build-entities-classification-preview.mjs`
+
+**Next likely step:** review the staged `people` and `entities` previews as the write gate, decide whether the remaining PAC legacy-residual line `23` bucket is acceptable for a first live rewrite, then only after that overwrite `assets/data/people.json`, `assets/data/entities.json`, and regenerate `assets/data/people.bundle.json`.
+
+### Session: April 6, 2026 (data-classification handoff prepared)
+**Focus:** Package the staging-branch setup, rules, and current findings into a clean handoff for a fresh instance without redoing the setup work.
+
+**What changed:**
+1. **Dedicated handoff doc added** — created [`docs/HANDOFF_DATA_CLASSIFICATION_2026-04-06.md`](/Users/christophershannon/fuckfascists/docs/HANDOFF_DATA_CLASSIFICATION_2026-04-06.md) with:
+   - the branch and guardrails
+   - the files and scripts that belong to this data-classification track
+   - the current verified baseline and beneficiary-projection numbers
+   - the no-floor classification rule and QA posture
+   - the next recommended steps for staged `people.json` preview and PAC `line 23` rehydration
+2. **Fresh-context pickup path clarified** — the handoff explicitly tells the next instance which docs and scripts to read first, and warns about the unrelated dirty worktree so the cleanup work stays scoped and non-destructive.
+
+**Verification:**
+- Handoff content was reconciled against:
+  - [`docs/DATA_CLASSIFICATION_STAGING.md`](/Users/christophershannon/fuckfascists/docs/DATA_CLASSIFICATION_STAGING.md)
+  - [`docs/BENEFICIARY_CLASSIFICATION_SPEC.md`](/Users/christophershannon/fuckfascists/docs/BENEFICIARY_CLASSIFICATION_SPEC.md)
+  - [`scripts/build-data-classification-staging-report.mjs`](/Users/christophershannon/fuckfascists/scripts/build-data-classification-staging-report.mjs)
+  - [`scripts/build-committee-beneficiary-map.mjs`](/Users/christophershannon/fuckfascists/scripts/build-committee-beneficiary-map.mjs)
+
+**Next likely step:** have the fresh instance read the new handoff doc, then build the staged `people.json` rewrite preview before touching any live bundled data files.
+
+### Session: April 6, 2026 (beneficiary classification spec + staged committee-cycle map)
+**Focus:** Turn the beneficiary-lens idea into a documented rule set and a staging-only committee-cycle classifier using the newly added FEC bulk files, without rewriting `people.json` or `entities.json`.
+
+**What changed:**
+1. **Beneficiary spec added** — created [`docs/BENEFICIARY_CLASSIFICATION_SPEC.md`](/Users/christophershannon/fuckfascists/docs/BENEFICIARY_CLASSIFICATION_SPEC.md) to define the active staging rules:
+   - classify by `committeeId + cycle`
+   - no minimum floor
+   - `>= 80%` beneficiary threshold
+   - formal FEC major-party codes and candidate-committee links remain fallback sources
+   - April 3, 2026 manual verification remains QA-only, not the decision engine
+2. **Staging workflow doc updated** — updated [`docs/DATA_CLASSIFICATION_STAGING.md`](/Users/christophershannon/fuckfascists/docs/DATA_CLASSIFICATION_STAGING.md) to reflect the beneficiary approach, the new federal input files, and the PAC rehydration plan via `oth*.txt`.
+3. **New bulk files integrated locally** — unpacked the downloaded `cn*.zip` candidate masters into `tools/fec-bulk/cn16/` through `cn26/` and unpacked `oth*.zip` into `tools/fec-bulk/oth16/` through `oth26/` for local staging use. These remain under the gitignored bulk-data tree.
+4. **Committee-cycle classifier added** — created [`scripts/build-committee-beneficiary-map.mjs`](/Users/christophershannon/fuckfascists/scripts/build-committee-beneficiary-map.mjs), which streams:
+   - `cn*/cn.txt`
+   - `ccl*.txt`
+   - `cm*.txt`
+   - `itpas2*.txt`
+   - `oth*/itoth.txt`
+   and builds committee-cycle classifications plus a projected `people.json` reclassification summary without mutating app data.
+5. **Beneficiary report generated** — wrote:
+   - [`tools/fec-bulk/reports/committee-beneficiary-classification-2026-04-06.json`](/Users/christophershannon/fuckfascists/tools/fec-bulk/reports/committee-beneficiary-classification-2026-04-06.json)
+   - [`tools/fec-bulk/reports/committee-beneficiary-classification-2026-04-06.md`](/Users/christophershannon/fuckfascists/tools/fec-bulk/reports/committee-beneficiary-classification-2026-04-06.md)
+6. **People-side projection now hits the target on paper** — the staged classifier projects:
+   - current `totalO`: `$831,755,875`
+   - projected move to `R`: `$285,278,285`
+   - projected move to `D`: `$300,786,005`
+   - projected `totalO`: `$245,691,585` (`4.24%`)
+7. **Jeff Bezos edge case still preserved** — the staged projection leaves Jeff Bezos’s `$10,129,170` to `WITH HONOR FUND, INC.` in `O`, matching the intended “classify correctly or leave `O`” rule.
+8. **New QA risk layer added** — the beneficiary report now includes:
+   - **QA conflicts** where the new system disagrees with prior “leave unclassified” calls
+   - **Thin evidence review** where a committee reclassifies large unresolved dollars from small scoreable federal evidence (for example `TEAM KENNEDY` and `MISSOURI STANDS UNITED`)
+9. **PAC input picture clarified** — the staged classifier sees:
+   - `$15.81B` PAS2 scoreable beneficiary evidence
+   - `$6.58B` OTH candidate-committee proxy evidence
+   - `$21.55B` OTH committee-to-committee edge dollars still unscored because the recipient is not a candidate committee
+   This confirms `OTH` is the right PAC rehydration source, but also that a large non-candidate committee graph remains outside the first-pass beneficiary scorer.
+
+**Verification:**
+- `node --check scripts/build-committee-beneficiary-map.mjs`
+- `node scripts/build-committee-beneficiary-map.mjs`
+
+**Next likely step:** use the generated committee-cycle map to build a staging-only rewrite preview for `people.json`, then design the PAC `line 23` rehydration pass from `oth*.txt`, while keeping thin-evidence committees and old manual conflicts in a mandatory review queue before any final overwrite.
+
+### Session: April 6, 2026 (data classification staging branch + non-destructive audit)
+**Focus:** Isolate the PAC/people classification cleanup on its own branch, document the verified constraints, and measure the current buckets without rewriting the live data files.
+
+**What changed:**
+1. **Dedicated staging branch created** — started `codex/data-classification-staging` so the cleanup work can stay isolated from unrelated feature work until the final verification pass is ready.
+2. **Workflow documented** — added [`docs/DATA_CLASSIFICATION_STAGING.md`](/Users/christophershannon/fuckfascists/docs/DATA_CLASSIFICATION_STAGING.md) with the branch guardrails, staged workflow, and the current verified constraints:
+   - people-side `committeeParty: null` rows are also blank in local `cm*.txt`, so committee-master lookup alone will not recover the remaining `$805.45M`
+   - PAC `raw[]` rows no longer retain recipient committee IDs, so line `23` cannot be reclassified in place from `entities.json`
+   - line `21B` and `28A` should be excluded from displayed political-donation totals
+3. **Staging-only audit script added** — created [`scripts/build-data-classification-staging-report.mjs`](/Users/christophershannon/fuckfascists/scripts/build-data-classification-staging-report.mjs), which reads the current bundled data plus local committee masters and the April 3 verification report, then writes markdown + JSON reports without mutating `assets/data/*.json`.
+4. **Baseline report generated** — wrote:
+   - [`tools/fec-bulk/reports/data-classification-staging-2026-04-06.md`](/Users/christophershannon/fuckfascists/tools/fec-bulk/reports/data-classification-staging-2026-04-06.md)
+   - [`tools/fec-bulk/reports/data-classification-staging-2026-04-06.json`](/Users/christophershannon/fuckfascists/tools/fec-bulk/reports/data-classification-staging-2026-04-06.json)
+5. **Verified current baseline** — the staging report confirms:
+   - `people.json` current `totalO`: `$831,755,875` (`14.36%`)
+   - people unresolved overlap already covered by the April 3 manual report is now concentrated in committees intentionally left unclassified
+   - `entities.json` PAC raw amount: `$322,623,757.63`
+   - PAC excluded non-donation lines `21B + 28A`: `$4,627,172.41`
+   - stored PAC `totalOther` count: `0 of 190` entities with donation summaries
+6. **Jeff Bezos spot-check preserved** — current staging report shows Jeff Bezos with `$10,129,170` unresolved to `WITH HONOR FUND, INC.`, which remains an intentional `O` candidate unless new evidence justifies a different classification.
+
+**Verification:**
+- `node --check scripts/build-data-classification-staging-report.mjs`
+- `node scripts/build-data-classification-staging-report.mjs`
+
+**Next likely step:** build staging-only committee override inputs for the still-unresolved people committees, then design the PAC rehydration path that preserves recipient committee IDs before any final rewrite of `entities.json` or `people.json`.
+
 ### Session: April 3, 2026 (P1 device testing fixes batch)
 **Focus:** Five device-testing bugs: Track screen CEO names, arena sprites, map avoid state, barcode scanner, entity alias gaps.
 
