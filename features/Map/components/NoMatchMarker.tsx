@@ -1,15 +1,19 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { Image, StyleSheet } from 'react-native';
 import { Marker } from 'react-native-maps';
 import { mapCopy } from '../../../copy/map';
 import { theme } from '../../../design/tokens';
+
+// Same flag asset as FlagMarker — rendered greyscale at 50% opacity.
+const MARKER_FLAG = require('../../../assets/pixel/marker_flag_default.png');
 
 interface NoMatchMarkerProps {
   coordinate: { latitude: number; longitude: number };
 }
 
 /**
- * Greyed-out ghost marker at a tap location when no entity match is found.
+ * Greyed-out ghost flag marker at a tap location when no entity match is found.
+ * Uses the same flag asset as FlagMarker but tinted grey at 50% opacity.
  * Persists until the user navigates away from the map tab (component unmount).
  * Not tappable — visual indicator only.
  */
@@ -17,23 +21,20 @@ export function NoMatchMarker({ coordinate }: NoMatchMarkerProps) {
   return (
     <Marker
       coordinate={coordinate}
-      anchor={{ x: 0.5, y: 0.5 }}
       tappable={false}
+      tracksViewChanges={false}
       accessibilityLabel={mapCopy.tapNoMatch}
     >
-      <View style={styles.ghost} />
+      <Image source={MARKER_FLAG} style={styles.ghostFlag} />
     </Marker>
   );
 }
 
 const styles = StyleSheet.create({
-  ghost: {
-    width: 16,
-    height: 16,
-    borderRadius: 8,
-    backgroundColor: theme.colors.textSecondary,
-    borderWidth: theme.borders.standard.width,
-    borderColor: theme.colors.panelBorder,
+  ghostFlag: {
+    width: 32,
+    height: 32,
     opacity: 0.5,
+    tintColor: theme.colors.textSecondary,
   },
 });

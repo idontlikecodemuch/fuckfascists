@@ -4,6 +4,7 @@ import { platformsCopy } from '../../../copy/platforms';
 import { theme } from '../../../design/tokens';
 import { bevelRaised, bevelFocusRaised } from '../../../design/bevel';
 import { SparkleDecoration } from '../../../core/fx';
+import { hasSprite } from '../../../core/sprites/spriteLoader';
 import { FigureBadge } from './FigureBadge';
 import {
   TRACK_ROW_FONT_SIZE_COUNT,
@@ -39,16 +40,18 @@ export function PlatformGroupHeader({
       accessibilityLabel={platformsCopy.groupHeaderA11y(shortName, totalAvoids)}
       accessibilityState={{ expanded: focused }}
     >
-      <View style={[styles.avatarFrame, focused && styles.avatarFrameFocused]}>
-        <FigureBadge
-          figureName={figureName}
-          state="neutral"
-          size={TRACK_ROW_SPRITE_SIZE}
-          cropRatio={TRACK_SPRITE_BUST_CROP_RATIO}
-          cropOffsetX={TRACK_SPRITE_BUST_CROP_OFFSET_X}
-          cropOffsetY={TRACK_SPRITE_BUST_CROP_OFFSET_Y}
-        />
-      </View>
+      {hasSprite(figureName) && (
+        <View style={[styles.avatarFrame, focused && styles.avatarFrameFocused]}>
+          <FigureBadge
+            figureName={figureName}
+            state="neutral"
+            size={TRACK_ROW_SPRITE_SIZE}
+            cropRatio={TRACK_SPRITE_BUST_CROP_RATIO}
+            cropOffsetX={TRACK_SPRITE_BUST_CROP_OFFSET_X}
+            cropOffsetY={TRACK_SPRITE_BUST_CROP_OFFSET_Y}
+          />
+        </View>
+      )}
       <View style={styles.labelColumn}>
         <Text style={[styles.name, focused && styles.nameFocused]} numberOfLines={1} allowFontScaling>
           {shortName}

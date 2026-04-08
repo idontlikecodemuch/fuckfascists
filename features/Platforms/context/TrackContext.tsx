@@ -177,8 +177,12 @@ export function TrackProvider({ adapter, platforms, children }: TrackProviderPro
   }, [avoidance.items]);
 
   const isDefeated = useCallback((figureName: string): boolean => {
-    return todayActions.has(figureName) || recentlyDefeated.has(figureName);
-  }, [todayActions, recentlyDefeated]);
+    if (todayActions.has(figureName) || recentlyDefeated.has(figureName)) return true;
+    // Stay defeated if any avoids exist in the current week for this figure
+    return avoidance.items
+      .filter((item) => getDisplayFigure(item.platform) === figureName)
+      .some((item) => item.weeklyCount > 0);
+  }, [todayActions, recentlyDefeated, avoidance.items]);
 
   const clearAll = useCallback(async () => {
     await avoidance.clearAll();

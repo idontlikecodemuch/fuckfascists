@@ -12,6 +12,37 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 8, 2026 ET — Beta testing fixes round 2
+**Focus:** 10 device testing issues: ghost markers, auto-scan noise, entity aliases, tap dedup, sprite state, orientation lock, and data pipeline audit.
+
+**What changed:**
+
+1. **Ghost flag markers** — `NoMatchMarker` now renders the red flag asset tinted grey (`tintColor: textSecondary`) at 50% opacity instead of a small grey dot. Multiple ghost flags accumulate per session (React state only — no coordinate storage). Added `tracksViewChanges={false}` for Fabric rendering.
+2. **Auto-scan suppression** — new `autoScan()` function in `useTapSearch` with `suppressNoMatch` flag. Ghost flags and "No match found" toast no longer appear on initial map open. Only explicit user taps trigger no-match UI.
+3. **Chase ATM alias** — added "Chase ATM" to jpmorgan-chase entity aliases.
+4. **Citibank/Citigroup dedup** — `processTapNames` now deduplicates results by entity ID. Multiple POI names resolving to the same entity (e.g. "Citibank" + "Citigroup") show one result, not a MatchChooser.
+5. **Hilton sub-brand aliases** — added "Hilton Garden Inn", "Hampton by Hilton", "DoubleTree by Hilton", "Homewood Suites", "Tru by Hilton".
+6. **UPS entity added** — new entity `ups` (United Parcel Service) with aliases: "UPS", "United Parcel Service", "UPS Store", "The UPS Store". `verificationStatus: "manual"` — needs `verify:entities` + `fetch:donations` runs.
+7. **Parent group header sprite** — `PlatformGroupHeader` now checks `hasSprite()` before rendering avatar frame. No empty sprite placeholder when sprite is unavailable.
+8. **Defeat state persistence** — `isDefeated()` in TrackContext now checks weekly avoid counts in addition to today's actions and recently-defeated flash. Sprites stay defeated for the entire week once any avoid is logged.
+9. **Portrait lock** — added `"orientation": "portrait"` to `app.json`. Prevents landscape rotation.
+
+**Already done (skipped):**
+- Item 7: Avoid state persists correctly on card reopen via `avoidedTodayRef` + `handleNewResult` check.
+- Item 11: Permissions auto-detection already checks `getForegroundPermissionsAsync` and `getPermissionsAsync` on mount.
+
+**Item 12 — Pipeline assessment:**
+- Hilton has full donation data in entities.json (R: $718K, D: $382K, 6 active cycles).
+- Inherently partisan donations (inaugural, etc.) exist in data classification scripts but are NOT wired into the UI — V2 feature.
+- DataZone correctly combines PAC + person-level contributions.
+- Entities with `fecCommitteeId: ""` (unverified) need `verify:entities` runs to populate.
+
+**Entities needing pipeline runs:** UPS (`verify:entities` + `fetch:donations`).
+
+**Tests:** All 353 tests pass (31 suites). `tsc --noEmit` clean (1 pre-existing unrelated warning in StarFieldBg).
+
+---
+
 ### Session: April 8, 2026 ET — First-use tooltip system (Map screen)
 **Focus:** Replace flat HintBanner with reusable Tooltip speech-bubble component for first-use map hints.
 

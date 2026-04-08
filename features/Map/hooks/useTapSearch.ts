@@ -89,8 +89,8 @@ export function useTapSearch(
   const [latestTapBatch, setLatestTapBatch] = useState<ScanResult[]>([]);
   /** True briefly after a tap search yields no matches — drives the no-match toast. */
   const [tapNoMatch, setTapNoMatch] = useState(false);
-  /** Most recent no-match tap coordinate — ghost marker persists until tab switch / unmount. */
-  const [tapNoMatchCoord, setTapNoMatchCoord] = useState<LatLng | null>(null);
+  /** No-match tap coordinates — ghost flags persist until tab switch / unmount. */
+  const [tapNoMatchCoords, setTapNoMatchCoords] = useState<LatLng[]>([]);
   const tapNoMatchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const cellCache = useRef<Map<string, CellCacheEntry>>(new Map());
   const lastTapAt = useRef<number>(0);
@@ -100,19 +100,24 @@ export function useTapSearch(
    * Uses Promise.allSettled so one failing name doesn't block the others.
    */
   const processTapNames = useCallback(
-    async (names: string[], coordinate: LatLng) => {
+    async (names: string[], coordinate: LatLng, suppressNoMatch = false) => {
       const results = await Promise.allSettled(
         names.map((name) => matchEntity(name, deps, areaHash))
       );
 
       const newPins: MapPin[] = [];
       const batchResults: ScanResult[] = [];
+      const seenIds = new Set<string>();
       for (const r of results) {
         if (r.status !== 'fulfilled' || !r.value.matched) continue;
         const scanResult = buildScanResult(r.value);
         const id = scanResult.entityId ?? scanResult.fecCommitteeId;
         // Guard: empty/falsy id causes a nil key on FlagMarker, crashing AIRMap.
         if (!id) continue;
+        // Deduplicate: multiple POI names (e.g. "Citibank" + "Citigroup") may
+        // resolve to the same entity — show only one result per entity.
+        if (seenIds.has(id)) continue;
+        seenIds.add(id);
         batchResults.push(scanResult);
         newPins.push({
           id,
@@ -127,14 +132,15 @@ export function useTapSearch(
 
       // Show a brief no-match toast when the tap found POI names but none matched.
       // Ghost marker persists until tab switch / unmount (component state only).
-      if (batchResults.length === 0 && names.length > 0) {
+      // Suppressed on auto-scan (initial map open) to avoid noisy first-load UI.
+      if (batchResults.length === 0 && names.length > 0 && !suppressNoMatch) {
         if (tapNoMatchTimer.current) clearTimeout(tapNoMatchTimer.current);
         setTapNoMatch(true);
-        setTapNoMatchCoord(coordinate);
+        setTapNoMatchCoords((prev) => [...prev, coordinate]);
         tapNoMatchTimer.current = setTimeout(() => {
           setTapNoMatch(false);
         }, TAP_NO_MATCH_DISPLAY_MS);
-      } else {
+      } else if (!suppressNoMatch) {
         setTapNoMatch(false);
       }
 
@@ -210,6 +216,38 @@ export function useTapSearch(
     [processTapNames]
   );
 
+  /**
+   * Auto-scan variant — same POI search as handleMapPress but suppresses
+   * the no-match ghost marker and toast. Used on initial map open.
+   */
+  const autoScan = useCallback(
+    async (coordinate: LatLng) => {
+      const now = Date.now();
+      lastTapAt.current = now;
+
+      try {
+        const radius = computeSearchRadius(regionRef?.current ?? null);
+        const cellKey = tapCellKey(coordinate.latitude, coordinate.longitude, radius);
+        const cached = cellCache.current.get(cellKey);
+
+        if (cached && cached.expiresAt > Date.now()) {
+          await processTapNames(cached.names, coordinate, true);
+          return;
+        }
+        const names = await MapKitSearch.searchNearby(
+          coordinate.latitude,
+          coordinate.longitude,
+          radius
+        );
+        cellCache.current.set(cellKey, { names, expiresAt: Date.now() + TAP_CACHE_TTL_MS });
+        await processTapNames(names, coordinate, true);
+      } catch {
+        // Fail silently — auto-scan errors are not user-actionable.
+      }
+    },
+    [processTapNames]
+  );
+
   const resetTapPins = useCallback(() => {
     setTapPins([]);
     setLatestTapBatch([]);
@@ -227,11 +265,12 @@ export function useTapSearch(
     tapPins,
     tapLoadingCoord,
     tapNoMatch,
-    tapNoMatchCoord,
+    tapNoMatchCoords,
     latestTapBatch,
     setLatestTapBatch,
     handleMapPress,
     handlePoiClick,
+    autoScan,
     resetTapPins,
     clearLatestTapBatch,
     markTapPinAvoided,
