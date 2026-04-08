@@ -4440,6 +4440,7 @@
         "JPMorgan",
         "Chase",
         "Chase Bank",
+        "Chase ATM",
         "J.P. Morgan"
       ],
       "domains": [
@@ -37461,7 +37462,12 @@
         "Curio Collection",
         "Tapestry Collection",
         "Home2 Suites",
-        "Garden Inn"
+        "Garden Inn",
+        "Hilton Garden Inn",
+        "Hampton by Hilton",
+        "DoubleTree by Hilton",
+        "Homewood Suites",
+        "Tru by Hilton"
       ],
       "domains": [
         "hilton.com",
@@ -45218,6 +45224,29 @@
       "associatedPersonIds": [
         "john-l-nau"
       ]
+    },
+    {
+      "id": "ups",
+      "canonicalName": "United Parcel Service Inc",
+      "aliases": [
+        "UPS",
+        "United Parcel Service",
+        "UPS Store",
+        "The UPS Store",
+        "UPS Supply Chain Solutions"
+      ],
+      "domains": [
+        "ups.com",
+        "theupsstore.com"
+      ],
+      "categoryTags": [
+        "logistics",
+        "shipping"
+      ],
+      "ceoName": "Carol Tomé",
+      "fecCommitteeId": "",
+      "verificationStatus": "manual",
+      "lastVerifiedDate": "2026-04-08"
     }
   ]
 }

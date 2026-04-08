@@ -124,19 +124,19 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
   } = useMapControls(location.coords, location.requestLocation);
 
   const {
-    tapPins, tapLoadingCoord, tapNoMatch, tapNoMatchCoord, latestTapBatch, setLatestTapBatch,
-    handleMapPress, handlePoiClick, resetTapPins, clearLatestTapBatch, markTapPinAvoided,
+    tapPins, tapLoadingCoord, tapNoMatch, tapNoMatchCoords, latestTapBatch, setLatestTapBatch,
+    handleMapPress, handlePoiClick, autoScan, resetTapPins, clearLatestTapBatch, markTapPinAvoided,
   } = useTapSearch(deps, location.areaHash ?? '', regionRef, avoidedTodayRef);
 
   // Auto-scan: when the map opens and location resolves, run a POI search at
-  // the user's coordinates. Same flow as a manual tap — session-only, no storage.
+  // the user's coordinates. Uses autoScan (not handleMapPress) to suppress
+  // ghost markers and "No match found" toast on the initial load.
   const hasAutoScannedRef = useRef(false);
   useEffect(() => {
     if (hasAutoScannedRef.current || !location.coords) return;
     hasAutoScannedRef.current = true;
-    // Simulate a map press at the user's location to trigger POI search
-    handleMapPress({ nativeEvent: { coordinate: location.coords } });
-  }, [location.coords, handleMapPress]);
+    autoScan(location.coords);
+  }, [location.coords, autoScan]);
 
   const hints = useMapHints();
   const fx = useFX();
@@ -254,7 +254,9 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
           );
         })}
         {tapLoadingCoord && <TapLoadingMarker coordinate={tapLoadingCoord} />}
-        {tapNoMatchCoord && <NoMatchMarker coordinate={tapNoMatchCoord} />}
+        {tapNoMatchCoords.map((coord, i) => (
+          <NoMatchMarker key={`ghost-${coord.latitude}-${coord.longitude}-${i}`} coordinate={coord} />
+        ))}
       </MapView>
 
       <View style={[styles.headerBar, { height: insets.top + headerBarHeight }]} pointerEvents="none">
