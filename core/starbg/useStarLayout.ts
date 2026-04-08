@@ -173,9 +173,24 @@ function generateLayout(
     const glyphRoll = prng();
     const glyph = glyphRoll < 0.18 ? '\u2726' : glyphRoll < 0.30 ? '\u2727' : null;
 
+    // ~40% of stars biased toward screen edges (where user will notice them)
+    let x: number;
+    let y: number;
+    if (i < STARBG_TWINKLE_STAR_COUNT * 0.4) {
+      // Edge-biased: pick a random edge then place near it
+      const edge = Math.floor(prng() * 4);
+      if (edge === 0) { x = prng() * screenWidth * 0.15; y = prng() * screenHeight; }          // left
+      else if (edge === 1) { x = screenWidth * 0.85 + prng() * screenWidth * 0.15; y = prng() * screenHeight; } // right
+      else if (edge === 2) { x = prng() * screenWidth; y = prng() * screenHeight * 0.15; }      // top
+      else { x = prng() * screenWidth; y = screenHeight * 0.85 + prng() * screenHeight * 0.15; } // bottom
+    } else {
+      x = prng() * screenWidth;
+      y = prng() * screenHeight;
+    }
+
     twinkleStars.push({
-      x: prng() * screenWidth,
-      y: prng() * screenHeight,
+      x,
+      y,
       size: glyph != null ? lerp(8, 14, prng()) : lerp(STARBG_TWINKLE_SIZE_MIN, STARBG_TWINKLE_SIZE_MAX, prng()),
       color: pickColor(prng),
       durationMs: lerp(STARBG_TWINKLE_DURATION_MIN_MS, STARBG_TWINKLE_DURATION_MAX_MS, prng()),

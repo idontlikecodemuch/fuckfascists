@@ -18,16 +18,17 @@ import type { SharedValue } from 'react-native-reanimated';
 import { useStarLayout } from './useStarLayout';
 import type { TwinkleStarData } from './useStarLayout';
 import { useParallax } from './useParallax';
+import { ShootingStreak } from './ShootingStreak';
 import { starbgBase } from './starbgAssets';
-import { STARBG_TWINKLE_OPACITY_MIN, STARBG_TWINKLE_OPACITY_MAX, STARBG_TWINKLE_STAR_COUNT } from './starbgConstants';
+import {
+  STARBG_TWINKLE_OPACITY_MIN, STARBG_TWINKLE_OPACITY_MAX,
+  STARBG_TWINKLE_STAR_COUNT, STARBG_STREAK_COUNT,
+} from './starbgConstants';
 import { STARBG_PARALLAX_ENABLED } from '../../config/constants';
 
-// Low-perf mode: @2x devices (iPhone SE, older Androids) get reduced load.
-// Halves twinkle count and disables tilt parallax.
-const IS_LOW_PERF_DEVICE = PixelRatio.get() <= 2;
-const EFFECTIVE_TWINKLE_COUNT = IS_LOW_PERF_DEVICE
-  ? Math.ceil(STARBG_TWINKLE_STAR_COUNT / 2)
-  : STARBG_TWINKLE_STAR_COUNT;
+// Low-perf: @2x devices get halved twinkle + no tilt parallax.
+const IS_LOW_PERF = PixelRatio.get() <= 2;
+const TWINKLE_N = IS_LOW_PERF ? Math.ceil(STARBG_TWINKLE_STAR_COUNT / 2) : STARBG_TWINKLE_STAR_COUNT;
 
 export interface StarFieldBgProps {
   seed?: string;
@@ -124,7 +125,7 @@ export function StarFieldBg({
   }, []);
 
   // Disable tilt parallax on low-perf devices; scroll parallax is still free.
-  const effectiveParallax = parallaxEnabled && !reducedMotion && !IS_LOW_PERF_DEVICE;
+  const effectiveParallax = parallaxEnabled && !reducedMotion && !IS_LOW_PERF;
   const { bgStyle, midStyle, fgStyle } = useParallax(effectiveParallax, scrollY);
 
   return (
@@ -149,7 +150,7 @@ export function StarFieldBg({
                 transform: [{ rotate: `${layout.milkyway.rotation}deg` }],
               },
             ]}
-            resizeMode="contain"
+            resizeMode="cover"
           />
         )}
       </Animated.View>
@@ -167,7 +168,7 @@ export function StarFieldBg({
                 top: `${(asset.y * 100).toFixed(1)}%` as unknown as number,
                 opacity: asset.opacity,
                 // @ts-expect-error — RN 0.76 experimental, not in stable types yet
-                ...(IS_LOW_PERF_DEVICE ? {} : { experimental_mixBlendMode: 'screen' }),
+                ...(IS_LOW_PERF ? {} : { experimental_mixBlendMode: 'screen' }),
                 transform: [
                   { scale: asset.scale },
                   { rotate: `${asset.rotation}deg` },
@@ -200,48 +201,32 @@ export function StarFieldBg({
         ))}
       </Animated.View>
 
-      {/* Layer 3: FG — twinkle stars */}
+      {/* Layer 3: FG — twinkle stars + shooting streaks */}
       <Animated.View style={[styles.layer, fgStyle]}>
-        {layout.twinkleStars.slice(0, EFFECTIVE_TWINKLE_COUNT).map((star, i) => (
+        {layout.twinkleStars.slice(0, TWINKLE_N).map((star, i) => (
           <TwinkleStar key={`tw-${i}`} star={star} reducedMotion={reducedMotion} />
+        ))}
+        {Array.from({ length: STARBG_STREAK_COUNT }, (_, i) => (
+          <ShootingStreak
+            key={`streak-${i}`}
+            screenWidth={width}
+            screenHeight={height}
+            reducedMotion={reducedMotion}
+            seed={seed.length * 7919 + i * 997}
+          />
         ))}
       </Animated.View>
     </View>
   );
 }
 
-// ── Styles ───────────────────────────────────────────────────────────────────
-
+const absFill = { ...StyleSheet.absoluteFillObject, width: undefined, height: undefined };
 const styles = StyleSheet.create({
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    overflow: 'hidden',
-  },
-  layer: {
-    ...StyleSheet.absoluteFillObject,
-  },
-  baseTexture: {
-    ...StyleSheet.absoluteFillObject,
-    width: undefined,
-    height: undefined,
-  },
-  milkyway: {
-    position: 'absolute',
-    width: '100%',
-    height: '60%',
-    top: '20%',
-  },
-  asset: {
-    position: 'absolute',
-    width: 200,
-    height: undefined,
-    aspectRatio: 1,
-  },
-  twinkleDot: {
-    position: 'absolute',
-  },
-  twinkleGlyph: {
-    position: 'absolute',
-    textAlign: 'center',
-  },
+  container: { ...StyleSheet.absoluteFillObject, overflow: 'hidden' },
+  layer: { ...StyleSheet.absoluteFillObject },
+  baseTexture: absFill,
+  milkyway: absFill,
+  asset: { position: 'absolute', width: 200, height: undefined, aspectRatio: 1 },
+  twinkleDot: { position: 'absolute' },
+  twinkleGlyph: { position: 'absolute', textAlign: 'center' },
 });

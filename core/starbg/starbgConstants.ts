@@ -8,7 +8,7 @@
  */
 
 // ── Layer content counts ─────────────────────────────────────────────────────
-export const STARBG_TWINKLE_STAR_COUNT = 28;
+export const STARBG_TWINKLE_STAR_COUNT = 36;
 export const STARBG_GALAXY_COUNT = 3;
 export const STARBG_ROCK_COUNT = 2;
 
@@ -33,17 +33,23 @@ export const STARBG_TWINKLE_OPACITY_MAX = 0.9;
 export const STARBG_TWINKLE_SIZE_MIN = 1;
 export const STARBG_TWINKLE_SIZE_MAX = 3;
 
+// ── Shooting streaks ─────────────────────────────────────────────────────────
+export const STARBG_STREAK_INTERVAL_MS = 6000;
+export const STARBG_STREAK_DURATION_MS = 1000;
+export const STARBG_STREAK_LENGTH = 70;
+export const STARBG_STREAK_COUNT = 2;    // number of independent streaks
+
 // ── Parallax depth rates ─────────────────────────────────────────────────────
 // Tilt: max pixel offset from device rotation
-export const STARBG_PARALLAX_TILT_MAX_OFFSET = 8;
-export const STARBG_TILT_DEAD_ZONE = 0.02;
+export const STARBG_PARALLAX_TILT_MAX_OFFSET = 16;
+export const STARBG_TILT_DEAD_ZONE = 0.015;
 
 // Scroll: translateY multiplier per layer (smaller = farther away)
-export const STARBG_PARALLAX_SCROLL_RATE_BG = 0.02;
-export const STARBG_PARALLAX_SCROLL_RATE_MID = 0.05;
-export const STARBG_PARALLAX_SCROLL_RATE_FG = 0.1;
+export const STARBG_PARALLAX_SCROLL_RATE_BG = 0.04;
+export const STARBG_PARALLAX_SCROLL_RATE_MID = 0.10;
+export const STARBG_PARALLAX_SCROLL_RATE_FG = 0.18;
 
 // Tilt: multiplier per layer (smaller = farther away)
-export const STARBG_PARALLAX_TILT_RATE_BG = 0.3;
-export const STARBG_PARALLAX_TILT_RATE_MID = 0.6;
-export const STARBG_PARALLAX_TILT_RATE_FG = 1.0;
+export const STARBG_PARALLAX_TILT_RATE_BG = 0.4;
+export const STARBG_PARALLAX_TILT_RATE_MID = 0.75;
+export const STARBG_PARALLAX_TILT_RATE_FG = 1.2;

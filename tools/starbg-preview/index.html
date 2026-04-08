@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StarFieldBg Preview</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #111; color: #dce7f6; font-family: 'IBM Plex Sans', system-ui, sans-serif; padding: 20px; }
+  h1 { font-family: monospace; font-size: 14px; color: #5faeff; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
+  h2 { font-family: monospace; font-size: 12px; color: #7af2ff; margin: 24px 0 12px; text-transform: uppercase; letter-spacing: 1px; }
+
+  .phone-grid { display: flex; flex-wrap: wrap; gap: 20px; }
+
+  .phone-frame {
+    width: 375px; height: 667px;
+    background: #070B12;
+    border: 2px solid #2f63ff;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .phone-frame img {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+  .phone-frame .label {
+    position: absolute;
+    bottom: 8px; left: 8px;
+    font-family: monospace;
+    font-size: 10px;
+    color: #5faeff;
+    background: rgba(7,11,18,0.85);
+    padding: 2px 6px;
+    border-radius: 2px;
+    z-index: 10;
+  }
+
+  /* Composited preview */
+  .phone-frame .layer {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+  }
+  .phone-frame .layer img {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+  .asset-thumb {
+    position: absolute;
+    object-fit: contain !important;
+    width: auto !important;
+    height: auto !important;
+  }
+
+  /* Asset grid */
+  .asset-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+  .asset-card {
+    background: #070B12;
+    border: 1px solid #2a2d30;
+    border-radius: 3px;
+    padding: 8px;
+    text-align: center;
+  }
+  .asset-card img { max-width: 180px; max-height: 140px; display: block; margin: 0 auto 6px; }
+  .asset-card .name { font-family: monospace; font-size: 10px; color: #a8b4c8; }
+
+  .controls { margin: 16px 0; display: flex; gap: 12px; align-items: center; }
+  .controls label { font-family: monospace; font-size: 11px; color: #a8b4c8; }
+  .controls input[type=range] { width: 120px; }
+  .controls .val { font-family: monospace; font-size: 11px; color: #ffc93c; min-width: 40px; }
+</style>
+</head>
+<body>
+
+<h1>StarFieldBg Asset Preview</h1>
+
+<h2>Individual Assets</h2>
+<div class="asset-grid" id="assetGrid"></div>
+
+<h2>Composited Phone Mockups (4 milky way variations)</h2>
+<div class="controls">
+  <label>Galaxy opacity:</label>
+  <input type="range" id="galOp" min="0" max="40" value="10">
+  <span class="val" id="galOpVal">10%</span>
+  <label>Milky way opacity:</label>
+  <input type="range" id="mwOp" min="0" max="50" value="18">
+  <span class="val" id="mwOpVal">18%</span>
+</div>
+<div class="phone-grid" id="phoneGrid"></div>
+
+<script>
+const BASE = '../../assets/pixel/starbg/';
+const galaxies = ['gal_01.png','gal_02.png','gal_03.png','gal_04.png','gal_05.png'];
+const rocks = ['rock_01.png','rock_02.png','rock_03.png','rock_04.png','rock_05.png'];
+const milkyways = ['milkyway_01.png','milkyway_02.png','milkyway_03.png','milkyway_04.png','milkyway_05.png','milkyway_06.png'];
+const base = 'star_field_base.png';
+
+// Asset grid
+const grid = document.getElementById('assetGrid');
+function addCard(name) {
+  const card = document.createElement('div');
+  card.className = 'asset-card';
+  card.innerHTML = `<img src="${BASE}${name}"><div class="name">${name}</div>`;
+  grid.appendChild(card);
+}
+addCard(base);
+milkyways.forEach(addCard);
+galaxies.forEach(addCard);
+rocks.forEach(addCard);
+
+// Phone mockups
+const phoneGrid = document.getElementById('phoneGrid');
+const galSlider = document.getElementById('galOp');
+const mwSlider = document.getElementById('mwOp');
+const galVal = document.getElementById('galOpVal');
+const mwVal = document.getElementById('mwOpVal');
+
+function buildPhones() {
+  phoneGrid.innerHTML = '';
+  const go = galSlider.value / 100;
+  const mo = mwSlider.value / 100;
+  galVal.textContent = galSlider.value + '%';
+  mwVal.textContent = mwSlider.value + '%';
+
+  milkyways.forEach((mw, i) => {
+    const frame = document.createElement('div');
+    frame.className = 'phone-frame';
+
+    // Base star texture
+    frame.innerHTML += `<div class="layer"><img src="${BASE}${base}" style="opacity:1"></div>`;
+
+    // Milky way
+    frame.innerHTML += `<div class="layer"><img src="${BASE}${mw}" style="opacity:${mo}"></div>`;
+
+    // 2 galaxies + 1 rock (pseudo-random per variation)
+    const g1 = galaxies[i % galaxies.length];
+    const g2 = galaxies[(i + 2) % galaxies.length];
+    const r1 = rocks[(i + 1) % rocks.length];
+
+    const positions = [
+      { left: '5%', top: '10%', width: '40%' },
+      { left: '55%', top: '50%', width: '35%' },
+      { left: '10%', top: '75%', width: '30%' },
+    ];
+
+    [g1, g2, r1].forEach((asset, j) => {
+      const p = positions[j];
+      frame.innerHTML += `<img class="asset-thumb" src="${BASE}${asset}" style="opacity:${go}; left:${p.left}; top:${p.top}; max-width:${p.width};">`;
+    });
+
+    frame.innerHTML += `<div class="label">Variation ${i+1}: ${mw}</div>`;
+    phoneGrid.appendChild(frame);
+  });
+}
+
+galSlider.addEventListener('input', buildPhones);
+mwSlider.addEventListener('input', buildPhones);
+buildPhones();
+</script>
+</body>
+</html>

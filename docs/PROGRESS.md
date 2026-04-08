@@ -12,6 +12,16 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 7-8, 2026 (Animated star field background — StarFieldBg polish)
+**Focus:** Shooting streaks, milky way full-width fix, more twinkle stars with edge bias, increased parallax effect.
+
+**What changed:**
+1. **ShootingStreak component** (`core/starbg/ShootingStreak.tsx`) — Electric-blue shooting stars, fully declarative reanimated (no setTimeout). 2 independent streaks per screen, ~6s interval.
+2. **Milky way full-width** — Changed from `resizeMode="contain"` + constrained height to `absoluteFill` + `resizeMode="cover"`. Now fills the entire screen.
+3. **More twinkle stars** — 36 (up from 28). 40% biased toward screen edges where user will notice them. Low-perf devices get 18.
+4. **Increased parallax** — Tilt max offset 8→16px, scroll rates doubled, tilt rates increased across all layers.
+5. **Milky way improvements** — Blue-tinted star colors, wider brightness variation, reduced band glow (stars build brightness, not glow). JPG format with baked bgVoid background (51% less GPU memory vs RGBA PNG).
+
 ### Session: April 7, 2026 ET — OFF data pipeline integration (products/barcode prefix matching)
 **Focus:** Port the Open Food Facts data pipeline from `codex/data-products-off-pipeline` branch and wire in the prefix-based barcode matching that was built but never connected.
 
