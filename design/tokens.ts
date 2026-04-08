@@ -37,6 +37,10 @@ export const theme = {
     amberAction: '#A07810',
     amberActionLight: '#D4A017',
     amberActionDark: '#7A5A08',
+
+    // Tooltip — clean speech bubble (intentionally non-game aesthetic)
+    tooltipFace: '#FFFFFF',
+    tooltipShadow: '#C8C4B8',
   },
 
   fonts: {
@@ -79,6 +83,7 @@ export const theme = {
     sharp: 2,
     button: 3,
     token: 8,
+    tooltip: 14,
   },
 
   effects: {
