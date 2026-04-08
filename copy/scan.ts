@@ -8,4 +8,5 @@ export const scanCopy = {
   busyAction: 'LOOKING UP...',
   busyActionLabel: 'Looking up scanned barcode',
   footnote: 'Works with UPC and EAN barcodes. Fill the frame and hold steady.',
+  prefixMatchSource: 'MATCHED BY UPC',
 } as const;

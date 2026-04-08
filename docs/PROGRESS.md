@@ -12,6 +12,27 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 7, 2026 ET — OFF data pipeline integration (products/barcode prefix matching)
+**Focus:** Port the Open Food Facts data pipeline from `codex/data-products-off-pipeline` branch and wire in the prefix-based barcode matching that was built but never connected.
+
+**What changed:**
+
+1. **`assets/data/products.json`** (243 KB) — Bundled producer-prefix index with 18 runtime producers (Pepsico, Coca-Cola, Starbucks, General Mills, Mars, Kraft Heinz, Tyson, etc.) derived from scanning 4.4M OFF products. All 18 entity IDs validated against current `entities.json`.
+2. **`features/Map/barcode/productIndex.ts`** — Prefix-based barcode → producer matching module. Parses bundled products.json, normalizes prefixes, matches against barcode candidates (UPC-A, GTIN-13, display code). Returns best match (longest prefix wins).
+3. **Wired prefix fast path into `useBarcodeSearch`** — NEW: After barcode normalization, checks bundled prefix index *before* cache or network. Instant match for 18 major CPG producers' products with zero async work. Unknown barcodes fall through to existing cache → OFF API → entity matching flow.
+4. **`ScanContext.source`** — Added `'bundled_prefix'` to source union in `features/Map/types.ts`.
+5. **`copy/scan.ts`** — Added `prefixMatchSource` label for bundled prefix matches.
+6. **`scripts/sync-products-from-off.py`** — Pipeline script (from OFF branch) that processes the OFF MongoDB bulk dump into products.json with resumable checkpoints.
+7. **`docs/PRODUCTS_DATA_PIPELINE.md`** — Full pipeline documentation (from OFF branch).
+8. **CLAUDE.md** — Updated: removed "on codex branch" notes, added pipeline script docs, updated repo structure, added sprint status entry.
+9. **Tests** — 6 new tests for `productIndex` (prefix matching, longest-prefix priority, orphan entity skip, GTIN-13 fallback). All 353 tests pass (31 suites).
+
+**Key architectural note:** The OFF branch had `productIndex.ts` built but never imported anywhere — the prefix lookup was not wired into `useBarcodeSearch`. This session completed that integration. The scan flow is now: normalize → prefix index (instant) → cache → OFF API → entity matching.
+
+**Tests:** All 353 tests pass (31 suites). `tsc --noEmit` clean (1 pre-existing unrelated warning in StarFieldBg).
+
+---
+
 ### Session: April 7, 2026 ET — P2 Track polish, StarFieldBg, beta testing fixes, map auto-scan
 **Focus:** Track screen UX polish batch, replace GIF star background with StarFieldBg parallax system, beta testing fixes (scan copy, tab label, nudge layout, ghost markers), map proximity auto-scan.
 

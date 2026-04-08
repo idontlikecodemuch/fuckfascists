@@ -4,6 +4,7 @@ import type { Entity } from '../../../core/models';
 import { getCachedBarcodeLookup, setCachedBarcodeLookup } from '../barcode/barcodeCacheStore';
 import { lookupBarcodeViaOpenFoodFacts } from '../barcode/openFoodFacts';
 import { normalizeBarcode } from '../barcode/normalizeBarcode';
+import { findProducerByBarcodePrefix } from '../barcode/productIndex';
 import type { ScanContext } from '../types';
 import { mapCopy } from '../../../copy/map';
 
@@ -20,9 +21,10 @@ export interface BarcodeSearchTarget {
 /**
  * Barcode flow:
  *   1. Normalize UPC/EAN into GTIN-13
- *   2. Check persistent on-device cache
- *   3. Resolve brand via Open Food Facts on cache miss
- *   4. Match that brand into the bundled entity alias graph
+ *   2. Check bundled producer-prefix index (instant, no network)
+ *   3. Check persistent on-device cache
+ *   4. Resolve brand via Open Food Facts on cache miss
+ *   5. Match that brand into the bundled entity alias graph
  */
 export function useBarcodeSearch(entities: Entity[]) {
   const [isResolving, setIsResolving] = useState(false);
@@ -45,6 +47,21 @@ export function useBarcodeSearch(entities: Entity[]) {
           label: scanResult.data.trim() || mapCopy.barcodeFallbackLabel,
         });
         return null;
+      }
+
+      // Fast path: bundled producer-prefix index (instant, no cache or network)
+      const prefixMatch = findProducerByBarcodePrefix(normalized, entitiesRef.current);
+      if (prefixMatch) {
+        return {
+          searchTerm: prefixMatch.searchTerm,
+          context: {
+            kind: 'barcode',
+            barcode: normalized.displayCode,
+            productName: null,
+            brandName: prefixMatch.entity.aliases[0] ?? prefixMatch.entity.canonicalName,
+            source: 'bundled_prefix',
+          },
+        };
       }
 
       setIsResolving(true);
