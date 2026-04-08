@@ -12,6 +12,23 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 8, 2026 ET — First-use tooltip system (Map screen)
+**Focus:** Replace flat HintBanner with reusable Tooltip speech-bubble component for first-use map hints.
+
+**What changed:**
+
+1. **`core/ui/Tooltip.tsx`** (NEW) — Reusable speech-bubble tooltip with Mario-cloud depth effect (warm grey shape offset behind white face), optional directional tail (up/down), and wiggle animation.
+2. **`core/ui/useWiggleAnimation.ts`** (NEW) — Extracted wiggle animation hook: gentle vertical drift (~2.5px), slight rotation (~0.4deg), scale pulse (~1.02). 2.4s loop cycle. Respects reduced motion via `AccessibilityInfo.isReduceMotionEnabled()`.
+3. **`design/tokens.ts`** — Added `tooltipFace` (#FFFFFF), `tooltipShadow` (#C8C4B8) colors and `radii.tooltip` (14).
+4. **`features/Map/MapScreen.tsx`** — Swapped HintBanner for Tooltip. Per-hint positioning: search (below search bar, tail up), tap (map area offset right, no tail), barcode (bottom right, tail down toward SCAN tab). Tap-anywhere dismiss overlay reuses existing backdrop pattern.
+5. **`features/Map/components/HintBanner.tsx`** (DELETED) — Replaced by Tooltip.
+
+**Hint sequence unchanged:** search → tap → barcode, one at a time, persisted via SecureStore. Hints wait for business card dismissal before appearing.
+
+**Tests:** All 353 tests pass (31 suites). `tsc --noEmit` clean (1 pre-existing unrelated warning in StarFieldBg).
+
+---
+
 ### Session: April 7-8, 2026 (Animated star field background — StarFieldBg polish)
 **Focus:** Shooting streaks, milky way full-width fix, more twinkle stars with edge bias, increased parallax effect.
 

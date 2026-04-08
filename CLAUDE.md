@@ -113,7 +113,7 @@ API keys and credentials must **only ever be read from environment variables**. 
 │   ├── sprites/                     ← spriteAssets.ts (require map), spriteLoader.tsx (SpriteView, nameToSpriteId)
 │   ├── arena/                       ← arenaAssets.ts (require map for arena backgrounds)
 │   ├── fx/                          ← shared FX system (FXLayer, useFX, effect registry, built-in effects)
-│   ├── ui/                          ← uiAssets.ts (require map for UI kit sliced elements + header bar)
+│   ├── ui/                          ← uiAssets.ts (require map for UI kit sliced elements + header bar), Tooltip.tsx, useWiggleAnimation.ts
 │   ├── utils/                       ← shared utilities (localDate.ts, etc.)
 │   └── models/                      ← shared TypeScript types
 ├── extension/
@@ -585,6 +585,7 @@ The entire app is styled as a **vintage 8-bit video game**. This is the foundati
 | Onboarding + MapSearchBar restyle | ✅ Done — Star field bg + neon bar + amber beveled CTAs w/ sparkles on all 3 onboarding screens. Beveled square progress dots. Welcome: centered + green checkmark features. Privacy: inset-bevel panels w/ blue accent bar. Permissions: raised-bevel cards w/ status dots, amber ALLOW, green granted badges. MapSearchBar: 3-state bevel (default/focused/scanning), drop shadow, SparkleDecoration. |
 | PlatformSetupScreen visual redesign | ✅ Done — 2-column grid, StarField bg, NeonRule, green bevelGreenRaised selected cells, amber bevelAmberRaised DONE button with SparkleDecoration. bevelGreenRaised added to design/bevel.ts. |
 | App tested on physical device | 🔄 Pending |
+| First-use tooltip system (Map screen) | ✅ Done — reusable `Tooltip` component (`core/ui/Tooltip.tsx`) with Mario-cloud depth, wiggle animation, directional tails. Replaces `HintBanner`. Three sequential hints: search bar, map tap, barcode scan. `useWiggleAnimation` hook extracted. |
 | Extension tested in Chrome | ✅ Done |
 
 ---

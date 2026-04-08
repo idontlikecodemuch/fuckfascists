@@ -26,7 +26,7 @@ import { TapLoadingMarker } from './components/TapLoadingMarker';
 import { MatchChooser } from './components/MatchChooser';
 import { NoMatchToast } from './components/NoMatchToast';
 import { NoMatchMarker } from './components/NoMatchMarker';
-import { HintBanner } from './components/HintBanner';
+import { Tooltip } from '../../core/ui/Tooltip';
 import type { MapPin, ScanResult } from './types';
 import { MapControls } from './components/MapControls';
 import { useMapHints } from './hooks/useMapHints';
@@ -63,6 +63,12 @@ const HINT_COPY: Record<HintId, string> = {
   search: mapCopy.hintSearch,
   tap: mapCopy.hintTap,
   barcode: mapCopy.hintBarcode,
+};
+
+const HINT_TAIL: Record<HintId, { tailDirection: 'up' | 'down' | null; tailOffset?: number }> = {
+  search: { tailDirection: 'up', tailOffset: theme.space.xl },
+  tap: { tailDirection: null },
+  barcode: { tailDirection: 'down', tailOffset: theme.space.xl },
 };
 
 export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummary }: MapScreenProps) {
@@ -261,9 +267,26 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
 
       <MapSearchBar value={searchText} onChangeText={setSearchText} onSubmit={handleSearch} isScanning={status === 'scanning'} topOffset={SEARCH_TOP} />
       {hints.activeHint && !activeResult && (
-        <View style={[styles.hintContainer, { top: SEARCH_TOP + theme.a11y.minTapTarget + theme.space.xs }]}>
-          <HintBanner message={HINT_COPY[hints.activeHint]} onDismiss={() => hints.dismiss(hints.activeHint!)} />
-        </View>
+        <>
+          <Pressable
+            style={styles.backdrop}
+            onPress={() => hints.dismiss(hints.activeHint!)}
+            accessibilityRole="button"
+            accessibilityLabel={mapCopy.hintDismissLabel}
+          />
+          <Tooltip
+            message={HINT_COPY[hints.activeHint]}
+            tailDirection={HINT_TAIL[hints.activeHint].tailDirection}
+            tailOffset={HINT_TAIL[hints.activeHint].tailOffset}
+            style={
+              hints.activeHint === 'search'
+                ? { position: 'absolute', top: SEARCH_TOP + theme.a11y.minTapTarget + theme.space.sm, left: theme.space.lg, right: theme.space.lg, zIndex: 3 }
+                : hints.activeHint === 'tap'
+                  ? { position: 'absolute', top: SEARCH_TOP + theme.a11y.minTapTarget + 80, right: theme.space.xl, maxWidth: 220, zIndex: 3 }
+                  : { position: 'absolute', bottom: theme.space.sm, right: theme.space.lg, maxWidth: 220, zIndex: 3 }
+            }
+          />
+        </>
       )}
       <MapControls onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} onLocation={handleLocationPress} locationLoading={location.loading} />
 
@@ -305,6 +328,5 @@ const styles = StyleSheet.create({
   headerLogo:     { height: 42, aspectRatio: 1536 / 322, zIndex: 3 },
   backdrop:       { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
   cardContainer:  { position: 'absolute', bottom: 0, left: 0, right: 0, overflow: 'visible' as const, maxHeight: '65%' },
-  hintContainer:  { position: 'absolute', left: theme.space.lg, right: theme.space.lg, zIndex: 1 },
   bannerContainer:{ position: 'absolute', bottom: 80, left: 0, right: 0 },
 });
