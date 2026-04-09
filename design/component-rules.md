@@ -29,7 +29,7 @@ All components reference tokens from `design/tokens.ts`. Never hardcode hex valu
 | Folder tab background | `colors.folderTabBg` |
 | Folder tab label | `fonts.headline` / `colors.documentText` |
 | Folder tab corners | `radii.folderTab` (top only) |
-| Red seal (decorative) | `colors.sealRed`, 64px circle, 0.25 opacity |
+| Red seal (decorative) | `seal_eagle.png` 80pt, `tintColor: colors.sealRed`, 0.3 opacity |
 | Sprite size | `CARD_SPRITE_SIZE` (168px) |
 
 **Document panel** (DataZone.tsx — cream document table):
@@ -41,7 +41,7 @@ All components reference tokens from `design/tokens.ts`. Never hardcode hex valu
 | Row separators | 1px `colors.documentBorder` |
 | Row labels (On file, Total) | `type.caption` / `colors.documentLabel`, 56px width |
 | Entity name | `fonts.headline` 18px / `colors.documentText` |
-| Header seal | 14px circle, `colors.documentText`, 0.6 opacity |
+| Header seal | `seal_eagle_sm.png` 14pt, `tintColor: colors.documentText`, 0.6 opacity |
 | Header text | `fonts.bodyMedium` 10px / `colors.documentText`, letterSpacing 2 |
 | GOP amounts | `colors.dangerRed` |
 | DEM amounts | `colors.highlightBlue` |

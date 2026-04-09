@@ -17,7 +17,7 @@ This document is updated continuously. New instances should read this first — 
 
 **What changed:**
 
-1. **Manila folder wrapper** — BusinessCard now renders inside a full-width manila folder (`folderBg` #AF7E5A). Folder tab ("REPORT ×") in top-right corner is the primary dismiss target (≥44pt, a11y labeled). Red seal placeholder (64px coded circle, low opacity) sits on folder surface.
+1. **Manila folder wrapper** — BusinessCard now renders inside a full-width manila folder (`folderBg` #AF7E5A). Folder tab ("REPORT ×") in top-right corner is the primary dismiss target (≥44pt, a11y labeled). Pixel art eagle seal (`seal_eagle.png`, 48px BOX-downsampled, red tinted, low opacity) sits on folder surface. Small version (`seal_eagle_sm.png`) on document header.
 2. **Document table layout** — DataZone rewritten as a cream (`documentBg`) document panel with table rows: "On file" | entity name + confidence badge, "Total" | R/D/O donation amounts, recent cycle, footnotes, and single-line "PAC: CommitteeName ↗" source link.
 3. **Sprite perch** — Sprite enlarged 20% (168px), positioned with ~80% above document and ~20% overlapping. Perches on document top edge.
 4. **Swipe-down dismiss** — PanResponder tracks vertical drag, card follows finger, springs offscreen on release (dy>80 or vy>0.5). Three dismiss methods: tab tap, backdrop, swipe.
