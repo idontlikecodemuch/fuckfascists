@@ -124,9 +124,7 @@ export function BusinessCard({
       </Pressable>
 
       {/* Red seal — decorative, partially behind document */}
-      <View style={styles.sealWrap} pointerEvents="none" accessibilityElementsHidden>
-        <Image source={sealEagle} style={styles.seal} />
-      </View>
+      <Image source={sealEagle} style={styles.seal} accessibilityElementsHidden />
 
       {/* Sprite — perching on document */}
       {spriteId && (
@@ -198,17 +196,15 @@ const styles = StyleSheet.create({
     color: theme.colors.documentText,
     opacity: 0.6,
   },
-  sealWrap: {
+  seal: {
     position: 'absolute',
     right: theme.space.xl,
     top: theme.space['2xl'],
-    zIndex: 1,
-  },
-  seal: {
     width: 80,
     height: 80,
     tintColor: theme.colors.sealRed,
     opacity: 0.3,
+    zIndex: 1,
   },
   spritePerch: {
     position: 'absolute',
