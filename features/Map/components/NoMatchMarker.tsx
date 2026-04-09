@@ -22,7 +22,6 @@ export function NoMatchMarker({ coordinate }: NoMatchMarkerProps) {
     <Marker
       coordinate={coordinate}
       tappable={false}
-      tracksViewChanges={false}
       accessibilityLabel={mapCopy.tapNoMatch}
     >
       <Image source={MARKER_FLAG} style={styles.ghostFlag} />
@@ -34,7 +33,7 @@ const styles = StyleSheet.create({
   ghostFlag: {
     width: 32,
     height: 32,
-    opacity: 0.5,
+    opacity: 0.8,
     tintColor: theme.colors.textSecondary,
   },
 });

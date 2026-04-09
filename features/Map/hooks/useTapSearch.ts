@@ -65,6 +65,15 @@ function computeSearchRadius(region: Region | null): number {
   return Math.max(POI_SEARCH_RADIUS_MIN_METERS, Math.min(POI_SEARCH_RADIUS_MAX_METERS, radius));
 }
 
+/** Coordinate key for deduplicating ghost markers (~11m grid). */
+function ghostKey(coord: LatLng): string {
+  const r = (n: number) => Math.round(n * 10000) / 10000;
+  return `${r(coord.latitude)},${r(coord.longitude)}`;
+}
+
+/** Maximum accumulated ghost markers before oldest are pruned. */
+const MAX_GHOST_MARKERS = 20;
+
 /**
  * Handles iOS (onPress → MKLocalPointsOfInterestRequest) and Android
  * (onPoiClick → nativeEvent.name) tap-to-match flows.
@@ -74,6 +83,12 @@ function computeSearchRadius(region: Region | null): number {
  *     cache key. They are never written to disk, never transmitted.
  *   - Cache key is a rounded string, not precise coordinates.
  *   - MapKitSearch does not access device GPS. Coordinate comes from the tap event.
+ *
+ * Crash prevention:
+ *   - processTapNames is serialized via inFlightRef — only one runs at a time.
+ *   - Ghost markers are capped at MAX_GHOST_MARKERS and deduplicated.
+ *   - This prevents rapid marker add/remove cycles that trigger the
+ *     AIRMap insertReactSubview nil crash on Fabric (react-native-maps #5345).
  */
 const TAP_NO_MATCH_DISPLAY_MS = 2000;
 
@@ -94,62 +109,85 @@ export function useTapSearch(
   const tapNoMatchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const cellCache = useRef<Map<string, CellCacheEntry>>(new Map());
   const lastTapAt = useRef<number>(0);
+  /** Serialization guard — prevents concurrent processTapNames execution. */
+  const inFlightRef = useRef(false);
+  /** Track ghost marker keys to deduplicate same-location taps. */
+  const ghostKeysRef = useRef(new Set<string>());
 
   /**
    * Runs each POI name through matchEntity and adds matched pins at coordinate.
    * Uses Promise.allSettled so one failing name doesn't block the others.
+   * Serialized — if a previous call is in-flight, this one is dropped.
    */
   const processTapNames = useCallback(
     async (names: string[], coordinate: LatLng, suppressNoMatch = false) => {
-      const results = await Promise.allSettled(
-        names.map((name) => matchEntity(name, deps, areaHash))
-      );
+      if (inFlightRef.current) return;
+      inFlightRef.current = true;
 
-      const newPins: MapPin[] = [];
-      const batchResults: ScanResult[] = [];
-      const seenIds = new Set<string>();
-      for (const r of results) {
-        if (r.status !== 'fulfilled' || !r.value.matched) continue;
-        const scanResult = buildScanResult(r.value);
-        const id = scanResult.entityId ?? scanResult.fecCommitteeId;
-        // Guard: empty/falsy id causes a nil key on FlagMarker, crashing AIRMap.
-        if (!id) continue;
-        // Deduplicate: multiple POI names (e.g. "Citibank" + "Citigroup") may
-        // resolve to the same entity — show only one result per entity.
-        if (seenIds.has(id)) continue;
-        seenIds.add(id);
-        batchResults.push(scanResult);
-        newPins.push({
-          id,
-          name: scanResult.matchedAlias || scanResult.canonicalName,
-          coords: coordinate,
-          result: scanResult,
-          avoided: avoidedTodayRef?.current?.has(id) ?? false,
-        });
-      }
+      try {
+        const results = await Promise.allSettled(
+          names.map((name) => matchEntity(name, deps, areaHash))
+        );
 
-      setLatestTapBatch(batchResults);
+        const newPins: MapPin[] = [];
+        const batchResults: ScanResult[] = [];
+        const seenIds = new Set<string>();
+        for (const r of results) {
+          if (r.status !== 'fulfilled' || !r.value.matched) continue;
+          const scanResult = buildScanResult(r.value);
+          const id = scanResult.entityId ?? scanResult.fecCommitteeId;
+          if (!id) continue;
+          if (seenIds.has(id)) continue;
+          seenIds.add(id);
+          batchResults.push(scanResult);
+          newPins.push({
+            id,
+            name: scanResult.matchedAlias || scanResult.canonicalName,
+            coords: coordinate,
+            result: scanResult,
+            avoided: avoidedTodayRef?.current?.has(id) ?? false,
+          });
+        }
 
-      // Show a brief no-match toast when the tap found POI names but none matched.
-      // Ghost marker persists until tab switch / unmount (component state only).
-      // Suppressed on auto-scan (initial map open) to avoid noisy first-load UI.
-      if (batchResults.length === 0 && names.length > 0 && !suppressNoMatch) {
-        if (tapNoMatchTimer.current) clearTimeout(tapNoMatchTimer.current);
-        setTapNoMatch(true);
-        setTapNoMatchCoords((prev) => [...prev, coordinate]);
-        tapNoMatchTimer.current = setTimeout(() => {
+        setLatestTapBatch(batchResults);
+
+        // Ghost marker: show when tap found POI names but none matched.
+        // Deduplicate by rounded coordinate key. Cap at MAX_GHOST_MARKERS.
+        // Suppressed on auto-scan to avoid noisy first-load UI.
+        if (batchResults.length === 0 && names.length > 0 && !suppressNoMatch) {
+          if (tapNoMatchTimer.current) clearTimeout(tapNoMatchTimer.current);
+          setTapNoMatch(true);
+
+          const key = ghostKey(coordinate);
+          if (!ghostKeysRef.current.has(key)) {
+            ghostKeysRef.current.add(key);
+            setTapNoMatchCoords((prev) => {
+              const next = [...prev, coordinate];
+              if (next.length > MAX_GHOST_MARKERS) {
+                // Remove oldest and its key
+                const removed = next.shift()!;
+                ghostKeysRef.current.delete(ghostKey(removed));
+              }
+              return next;
+            });
+          }
+
+          tapNoMatchTimer.current = setTimeout(() => {
+            setTapNoMatch(false);
+          }, TAP_NO_MATCH_DISPLAY_MS);
+        } else if (!suppressNoMatch) {
           setTapNoMatch(false);
-        }, TAP_NO_MATCH_DISPLAY_MS);
-      } else if (!suppressNoMatch) {
-        setTapNoMatch(false);
-      }
+        }
 
-      if (newPins.length > 0) {
-        setTapPins((prev) => {
-          const existingIds = new Set(prev.map((p) => p.id));
-          const deduped = newPins.filter((p) => !existingIds.has(p.id));
-          return [...prev, ...deduped];
-        });
+        if (newPins.length > 0) {
+          setTapPins((prev) => {
+            const existingIds = new Set(prev.map((p) => p.id));
+            const deduped = newPins.filter((p) => !existingIds.has(p.id));
+            return [...prev, ...deduped];
+          });
+        }
+      } finally {
+        inFlightRef.current = false;
       }
     },
     [deps, areaHash]
@@ -165,6 +203,9 @@ export function useTapSearch(
       const now = Date.now();
       if (now - lastTapAt.current < TAP_DEBOUNCE_MS) return;
       lastTapAt.current = now;
+
+      // Drop tap if a previous search is still in-flight.
+      if (inFlightRef.current) return;
 
       const { coordinate } = e.nativeEvent;
       setTapLoadingCoord(coordinate);
@@ -203,6 +244,7 @@ export function useTapSearch(
    */
   const handlePoiClick = useCallback(
     async (e: PoiClickEvent) => {
+      if (inFlightRef.current) return;
       const { name, coordinate } = e.nativeEvent;
       setTapLoadingCoord(coordinate);
       try {

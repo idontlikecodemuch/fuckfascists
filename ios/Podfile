@@ -62,5 +62,39 @@ target 'FckFascists' do
         end
       end
     end
+
+    # ── AIRMap nil guard patch ──────────────────────────────────────────
+    # Prevents NSInvalidArgumentException crash when Fabric reconciler
+    # passes nil subviews to the native map during rapid marker add/remove.
+    # See react-native-maps#5345, #5217. Idempotent — safe to re-run.
+    airmap_path = File.join(installer.sandbox.pod_dir('react-native-maps'), 'ios', 'AirMaps', 'AIRMap.m')
+    if File.exist?(airmap_path)
+      content = File.read(airmap_path)
+      unless content.include?('// FCK nil-guard patch')
+        patched = content
+          .gsub(
+            /(-\s*\(void\)insertReactSubview:\(id<RCTComponent>\)subview atIndex:\(NSInteger\)atIndex\s*\{)/,
+            "\\1\n  // FCK nil-guard patch — prevents nil subview crash on Fabric\n  if (subview == nil) return;"
+          )
+          .gsub(
+            /(-\s*\(void\)removeReactSubview:\(id<RCTComponent>\)subview\s*\{)/,
+            "\\1\n  // FCK nil-guard patch\n  if (subview == nil) return;"
+          )
+          .gsub(
+            /(-\s*\(void\)addSubview:\(UIView\s*\*\)view\s*\{)/,
+            "\\1\n  // FCK nil-guard patch\n  if (view == nil) return;"
+          )
+        if patched != content
+          File.write(airmap_path, patched)
+          Pod::UI.puts "✅ AIRMap.m patched with nil guards"
+        else
+          Pod::UI.puts "⚠️  AIRMap.m patch patterns not found — check react-native-maps version"
+        end
+      else
+        Pod::UI.puts "✅ AIRMap.m nil guards already present"
+      end
+    else
+      Pod::UI.puts "⚠️  AIRMap.m not found at #{airmap_path} — skipping nil guard patch"
+    end
   end
 end

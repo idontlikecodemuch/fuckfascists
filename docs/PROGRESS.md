@@ -12,6 +12,20 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 8, 2026 ET — Map tap crash fix (AIRMap nil subview)
+**Focus:** Fix crashes when tapping multiple map locations rapidly. Root cause: concurrent `processTapNames` calls + unbounded ghost marker accumulation triggering the react-native-maps `insertReactSubview` nil crash on Fabric ([#5345](https://github.com/react-native-maps/react-native-maps/issues/5345), [#5217](https://github.com/react-native-maps/react-native-maps/issues/5217)).
+
+**What changed:**
+
+1. **Serialized `processTapNames`** — `inFlightRef` guard prevents concurrent execution. If a tap search is in-flight, subsequent taps are dropped at both the `handleMapPress` and `processTapNames` level. Eliminates the race condition where two async calls interleave state updates to `tapPins`, `latestTapBatch`, and `tapNoMatchCoords`.
+2. **Ghost marker cap + dedup** — `tapNoMatchCoords` capped at 20 entries (oldest pruned). Same-location taps deduplicated via rounded coordinate key (`ghostKeysRef`). Prevents unbounded marker accumulation that overwhelms the native map bridge.
+3. **Removed `tracksViewChanges={false}`** from `NoMatchMarker` — known incompatibility with custom Image children on Fabric. The tinted flag Image needs an initial render pass.
+4. **Added Podfile AIRMap nil guard patch** — `post_install` hook patches `AIRMap.m` with nil checks on `insertReactSubview:`, `removeReactSubview:`, and `addSubview:`. Idempotent, re-applies on every `pod install`. This is the native-level defense-in-depth for the Fabric nil subview crash.
+
+**Tests:** All 353 tests pass (31 suites). `tsc --noEmit` clean.
+
+---
+
 ### Session: April 8, 2026 ET — Beta testing fixes round 2
 **Focus:** 10 device testing issues: ghost markers, auto-scan noise, entity aliases, tap dedup, sprite state, orientation lock, and data pipeline audit.
 
