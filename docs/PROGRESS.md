@@ -12,6 +12,39 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 8, 2026 ET — Sprite normalization pipeline, Gemini vs GPT comparison, batch sprite generation
+**Focus:** Build sprite analysis/normalization tooling, compare Gemini vs GPT for sprite generation, batch-generate 20 new CEO sprites (batch 1 of 4), fix charlie-scharf Facebook logo bug.
+
+**What changed:**
+
+**Sprite normalization pipeline (new tooling):**
+1. **`analyze_sprites.py`** — Analyzes body placement/scale across all sprite sheets. Reads neutral frame, computes body bounds, writes JSON + markdown reports with aggregate stats and outlier detection (>2σ).
+2. **`normalize_sprites.py`** — Normalizes body height, foot position, and horizontal centering. Backs up originals to `assets/pixel/sprites/originals/` before modifying. Targets derived from analysis median (618px body height, 679px feet Y).
+3. **107 existing sprites normalized** — height stddev reduced from 1.01% to 0.03%. 105 adjusted, 2 already within tolerance.
+
+**Gemini vs GPT sprite generation comparison:**
+4. **`generate_comparison.py`** — Head-to-head comparison script. Tests same 5 characters with both Gemini (`gemini-3.1-flash-image-preview`) and GPT (`gpt-image-1.5`). GPT uses native transparency; Gemini uses magenta bg + keying.
+5. **Result: Gemini wins** — consistent style, correct proportions, better pixel art quality. GPT produced inconsistent styles and hit moderation blocks. Gemini is the production pipeline.
+
+**Batch sprite generation (batch 1 of 4):**
+6. **72 new characters added to `characters.json`** — from GPT-generated descriptions (likeness, outfit) based on missing CEO list.
+7. **Reference image fix** — `config.json` now points to `reference/ref1.png`. Without it, Gemini produced inconsistent styles and portrait orientation. With it: consistent style, correct 1456×720/1456×1440 landscape layout.
+8. **Batch 1: 20 new sprites generated, keyed, deployed, normalized** — abigail-johnson, adam-aron, albert-bourla, alex-karp, andy-jassy, anthony-noto, aravind-srinivas, arvind-krishna, barry-diller, bob-iger, brian-armstrong, brian-niccol, brian-roberts, carl-eschenbach, chris-best, chuck-robbins, cristiano-amon, dan-clancy, dara-khosrowshahi, dario-amodei.
+9. **bill-gates wine sweater restored** — Keying stripped the burgundy sweater (hue overlap with magenta). Fixed by restoring non-bright-magenta pixels from raw (S>0.95 AND V>0.9 threshold).
+10. **charlie-scharf regenerated** — varB had Facebook "f" logo instead of Wells Fargo. Updated outfit description to explicitly reference Wells Fargo stagecoach logo. Regenerated with reference image.
+11. **`spriteAssets.ts` regenerated** — 127 sprites (107 original + 20 new).
+
+**Remaining batches (60 more sprites):**
+- Batch 2: 20 characters (david-baszucki through jim-farley)
+- Batch 3: 20 characters (katherine-maher through niraj-shah)
+- Batch 4: 20 characters (omar-abbosh through vlad-tenev)
+- Pipeline: generate → compose → remove_magenta (--defringe) → deploy → normalize
+- 341 additional CEOs in entities.json have no characters.json entry yet (skipped — insufficient data for descriptions)
+
+**Tests:** All 347 tests pass (30 suites).
+
+---
+
 ### Session: April 8, 2026 ET — StarFieldBg visual fixes (Info screen)
 **Focus:** Fix three visual issues with the animated star field on the Info screen: stretched milky way, disconnected scroll parallax, and overstyled shooting star.
 
