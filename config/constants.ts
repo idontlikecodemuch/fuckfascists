@@ -65,6 +65,16 @@ export const FX_AVOID_DURATION_MS = 3000;
 // Fade-out portion at the end of the avoid celebration (ms).
 export const FX_AVOID_FADE_MS = 400;
 
+// ── Folder card post-avoid animation ─────────────────────────────────────────
+export const FOLDER_AUTO_DISMISS_MS = 1200;
+export const STAMP_SLAM_MS = 200;
+export const STAMP_OVERSHOOT = 1.5;
+export const PARTICLE_COUNT = 10;
+export const PARTICLE_DURATION_MS = 800;
+export const AMBER_PULSE_MS = 400;
+export const SCREEN_SHAKE_MS = 60;
+export const CARD_SPRITE_SIZE = 168;
+
 // Launch screen art bounds
 export const LAUNCH_HERO_LOGO_MAX_WIDTH = 220;
 export const LAUNCH_HERO_LOGO_MAX_HEIGHT = 140;

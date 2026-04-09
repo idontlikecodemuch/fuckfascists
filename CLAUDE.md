@@ -586,6 +586,7 @@ The entire app is styled as a **vintage 8-bit video game**. This is the foundati
 | PlatformSetupScreen visual redesign | ✅ Done — 2-column grid, StarField bg, NeonRule, green bevelGreenRaised selected cells, amber bevelAmberRaised DONE button with SparkleDecoration. bevelGreenRaised added to design/bevel.ts. |
 | App tested on physical device | 🔄 Pending |
 | First-use tooltip system (Map screen) | ✅ Done — reusable `Tooltip` component (`core/ui/Tooltip.tsx`) with Mario-cloud depth, wiggle animation, directional tails. Replaces `HintBanner`. Three sequential hints: search bar, map tap, barcode scan. `useWiggleAnimation` hook extracted. |
+| BusinessCard manila folder reskin | ✅ Done — manila folder wrapper, cream document table layout, folder tab dismiss, sprite perch (168px, 80/20 split), swipe-down dismiss, post-avoid stamp + particles + shake + amber pulse, AvoidButton hydration fix, AvoidCelebration removed. |
 | Extension tested in Chrome | ✅ Done |
 
 ---

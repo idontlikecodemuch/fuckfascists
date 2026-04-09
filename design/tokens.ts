@@ -41,6 +41,17 @@ export const theme = {
     // Tooltip — clean speech bubble (intentionally non-game aesthetic)
     tooltipFace: '#FFFFFF',
     tooltipShadow: '#C8C4B8',
+
+    // Folder / document system — manila folder reskin for business card
+    folderBg: '#AF7E5A',
+    folderTabBg: '#C4956A',
+    documentBg: '#F5F0E8',
+    documentText: '#2A2420',
+    documentBorder: '#D4C8B8',
+    documentLabel: '#8A7E72',
+    sealRed: '#8B3A3A',
+    stampRed: '#CC2222',
+    amberPulse: 'rgba(255,180,40,0.25)',
   },
 
   fonts: {
@@ -82,6 +93,7 @@ export const theme = {
   radii: {
     sharp: 2,
     button: 3,
+    folderTab: 8,
     token: 8,
     tooltip: 14,
   },

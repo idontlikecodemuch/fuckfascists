@@ -12,6 +12,30 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 9, 2026 ET — BusinessCard manila folder reskin
+**Focus:** Reskin business card as a physical document inside a manila folder. Same data flow, new visual treatment. Fix avoid button hydration bug. Replace full-screen checkmark celebration with card-local stamp + particles + shake.
+
+**What changed:**
+
+1. **Manila folder wrapper** — BusinessCard now renders inside a full-width manila folder (`folderBg` #AF7E5A). Folder tab ("REPORT ×") in top-right corner is the primary dismiss target (≥44pt, a11y labeled). Red seal placeholder (64px coded circle, low opacity) sits on folder surface.
+2. **Document table layout** — DataZone rewritten as a cream (`documentBg`) document panel with table rows: "On file" | entity name + confidence badge, "Total" | R/D/O donation amounts, recent cycle, footnotes, and single-line "PAC: CommitteeName ↗" source link.
+3. **Sprite perch** — Sprite enlarged 20% (168px), positioned with ~80% above document and ~20% overlapping. Perches on document top edge.
+4. **Swipe-down dismiss** — PanResponder tracks vertical drag, card follows finger, springs offscreen on release (dy>80 or vy>0.5). Three dismiss methods: tab tap, backdrop, swipe.
+5. **Post-avoid animation** — StampOverlay: "AVOIDED" stamp slams onto document (1.5× → 1× spring with 8° rotation). MoneyParticles: 10 colored rectangles burst from sprite area with gravity arc. Screen shake (±2px) on stamp land. Amber pulse overlay on map behind card (400ms fade). Card auto-dismisses after 1.2s.
+6. **AvoidButton hydration bug fixed** — Added `initialConfirmed` prop. Card now hydrates from today's avoid events on open — already-avoided entities show ✓ AVOIDED immediately with defeated sprite.
+7. **AvoidCelebration removed** — Old full-screen checkmark effect deleted. FX registry cleared (system still used by GameArena).
+8. **New tokens** — `folderBg`, `folderTabBg`, `documentBg`, `documentText`, `documentBorder`, `documentLabel`, `sealRed`, `stampRed`, `amberPulse` in `design/tokens.ts`. `folderTab` radius added.
+9. **New copy** — `reportTabLabel`, `closeReportA11y`, `documentHeader`, `onFileLabel`, `totalRowLabel`, `sourcePrefix`, `avoidedStamp` in `copy/map.ts`.
+10. **New constants** — `FOLDER_AUTO_DISMISS_MS`, `STAMP_SLAM_MS`, `STAMP_OVERSHOOT`, `PARTICLE_COUNT`, `PARTICLE_DURATION_MS`, `AMBER_PULSE_MS`, `SCREEN_SHAKE_MS`, `CARD_SPRITE_SIZE` in `config/constants.ts`.
+
+**Files changed:** `design/tokens.ts`, `copy/map.ts`, `config/constants.ts`, `features/Map/components/BusinessCard.tsx`, `features/Map/components/DataZone.tsx`, `features/Map/components/AvoidButton.tsx`, `features/Map/MapScreen.tsx`, `core/fx/registry.ts`
+**Files created:** `features/Map/components/StampOverlay.tsx`, `features/Map/components/MoneyParticles.tsx`
+**Files deleted:** `core/fx/effects/AvoidCelebration.tsx`
+
+**Tests:** All 353 tests pass (31 suites). `tsc --noEmit` clean (1 pre-existing unrelated warning in StarFieldBg).
+
+---
+
 ### Session: April 8, 2026 ET — StarFieldBg visual fixes (Info screen)
 **Focus:** Fix three visual issues with the animated star field on the Info screen: stretched milky way, disconnected scroll parallax, and overstyled shooting star.
 
