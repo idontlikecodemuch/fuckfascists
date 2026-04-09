@@ -42,9 +42,9 @@ export const ShootingStreak = React.memo(function ShootingStreak({
   const progress = useSharedValue(0);
   const opacity = useSharedValue(0);
 
-  // Deterministic start position from seed
+  // Deterministic start position from seed — angle always slightly downward-right
   const startY = useRef(50 + (seed % 500) / 500 * (screenHeight * 0.6)).current;
-  const angle = useRef(-10 + (seed % 30)).current;
+  const angle = useRef(-15 + (seed % 11)).current; // -15 to -5 degrees
 
   useEffect(() => {
     // Full cycle: wait → fade in + translate → fade out → reset
@@ -84,7 +84,6 @@ export const ShootingStreak = React.memo(function ShootingStreak({
   return (
     <Animated.View style={[styles.streak, { top: startY }, style]}>
       <Animated.View style={styles.streakCore} />
-      <Animated.View style={styles.streakGlow} />
     </Animated.View>
   );
 });
@@ -97,19 +96,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   streakCore: {
-    width: 50,
-    height: 1.5,
-    borderRadius: 1,
+    width: 70,
+    height: 1,
+    borderRadius: 0.5,
     backgroundColor: theme.colors.highlightBlue,
-  },
-  streakGlow: {
-    position: 'absolute',
-    left: -4,
-    top: -2,
-    width: 58,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: theme.colors.glowCyan,
-    opacity: 0.3,
   },
 });

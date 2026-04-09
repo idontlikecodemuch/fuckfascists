@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ScrollView, View, Text, Pressable, StyleSheet, SafeAreaView, Linking } from 'react-native';
+import { View, Text, Pressable, StyleSheet, SafeAreaView, Linking } from 'react-native';
+import Animated, { useSharedValue, useAnimatedScrollHandler } from 'react-native-reanimated';
 import { useInfoContent } from './hooks/useInfoContent';
 import { InfoSection } from './components/InfoSection';
 import { FaqItem } from './components/FaqItem';
@@ -19,11 +20,15 @@ export function InfoScreen({ onVersionTap }: InfoScreenProps) {
   const content = useInfoContent();
   const { about, transparency, faq, links } = content;
   const [showTransparency, setShowTransparency] = useState(false);
+  const scrollY = useSharedValue(0);
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (event) => { scrollY.value = event.contentOffset.y; },
+  });
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scroll}>
-        <StarField seed="info" />
+      <Animated.ScrollView contentContainerStyle={styles.scroll} onScroll={scrollHandler} scrollEventThrottle={16}>
+        <StarField seed="info" scrollY={scrollY} />
 
         {/* ── Page header (placeholder for future asset) ── */}
         <View style={styles.pageHeader}>
@@ -111,7 +116,7 @@ export function InfoScreen({ onVersionTap }: InfoScreenProps) {
           </Pressable>
         </View>
 
-      </ScrollView>
+      </Animated.ScrollView>
     </SafeAreaView>
   );
 }

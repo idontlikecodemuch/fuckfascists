@@ -12,6 +12,21 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 8, 2026 ET — StarFieldBg visual fixes (Info screen)
+**Focus:** Fix three visual issues with the animated star field on the Info screen: stretched milky way, disconnected scroll parallax, and overstyled shooting star.
+
+**What changed:**
+
+1. **Milky way band restored** — reverted milky way from `absoluteFill` + `resizeMode="cover"` (which stretched the 640x960 image to fill the entire screen) back to a constrained band: `width: 100%, height: 60%, top: 20%` with `resizeMode="contain"`. Now renders as a natural band across the middle of the sky.
+2. **Scroll parallax wired into Info screen** — replaced `ScrollView` with `Animated.ScrollView`, created a `scrollY` shared value via `useAnimatedScrollHandler`, and passed it to `<StarField scrollY={scrollY} />`. Star field layers now shift at different rates as the user scrolls, creating depth.
+3. **Shooting streak simplified** — removed the 6px cyan glow halo (looked like a capsule, not a streak). Made the core a clean 70x1px blue line. Constrained angle to -15 to -5 degrees (always slightly downward-right, like a natural meteor).
+
+**Files changed:** `core/starbg/StarFieldBg.tsx`, `core/starbg/ShootingStreak.tsx`, `features/Info/InfoScreen.tsx`
+
+**Tests:** All 353 tests pass (31 suites). `tsc --noEmit` clean (1 pre-existing unrelated warning in StarFieldBg).
+
+---
+
 ### Session: April 8, 2026 ET — Map tap crash fix (AIRMap nil subview)
 **Focus:** Fix crashes when tapping multiple map locations rapidly. Root cause: concurrent `processTapNames` calls + unbounded ghost marker accumulation triggering the react-native-maps `insertReactSubview` nil crash on Fabric ([#5345](https://github.com/react-native-maps/react-native-maps/issues/5345), [#5217](https://github.com/react-native-maps/react-native-maps/issues/5217)).
 

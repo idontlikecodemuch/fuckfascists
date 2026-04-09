@@ -150,7 +150,7 @@ export function StarFieldBg({
                 transform: [{ rotate: `${layout.milkyway.rotation}deg` }],
               },
             ]}
-            resizeMode="cover"
+            resizeMode="contain"
           />
         )}
       </Animated.View>
@@ -225,7 +225,12 @@ const styles = StyleSheet.create({
   container: { ...StyleSheet.absoluteFillObject, overflow: 'hidden' },
   layer: { ...StyleSheet.absoluteFillObject },
   baseTexture: absFill,
-  milkyway: absFill,
+  milkyway: {
+    position: 'absolute' as const,
+    width: '100%' as unknown as number,
+    height: '60%' as unknown as number,
+    top: '20%' as unknown as number,
+  },
   asset: { position: 'absolute', width: 200, height: undefined, aspectRatio: 1 },
   twinkleDot: { position: 'absolute' },
   twinkleGlyph: { position: 'absolute', textAlign: 'center' },
