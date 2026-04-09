@@ -93,7 +93,6 @@ API keys and credentials must **only ever be read from environment variables**. 
 ├── app/                             ← React Native app root
 │   ├── gates/                       ← OnboardingGate, LaunchGate, AppShell (app lifecycle gates)
 │   ├── navigation/                  ← tab/stack navigation
-│   ├── providers/                   ← context, theme, config
 │   └── storage/                     ← SqliteAdapter.ts (expo-sqlite SDK 52, mobile only)
 ├── features/
 │   ├── Map/                         ← geolocation scan, map display, flagging
@@ -113,6 +112,7 @@ API keys and credentials must **only ever be read from environment variables**. 
 │   ├── sprites/                     ← spriteAssets.ts (require map), spriteLoader.tsx (SpriteView, nameToSpriteId)
 │   ├── arena/                       ← arenaAssets.ts (require map for arena backgrounds)
 │   ├── fx/                          ← shared FX system (FXLayer, useFX, effect registry, built-in effects)
+│   ├── starbg/                      ← parallax star field background (StarFieldBg, ShootingStreak, useParallax, useStarLayout)
 │   ├── ui/                          ← uiAssets.ts (require map for UI kit sliced elements + header bar), Tooltip.tsx, useWiggleAnimation.ts
 │   ├── utils/                       ← shared utilities (localDate.ts, etc.)
 │   └── models/                      ← shared TypeScript types
@@ -120,7 +120,10 @@ API keys and credentials must **only ever be read from environment variables**. 
 │   ├── manifest.json
 │   ├── background/                  ← service worker, session tracking
 │   ├── content/                     ← domain detection on page load
-│   └── popup/                       ← pixel art UI
+│   ├── popup/                       ← pixel art UI
+│   ├── storage/                     ← ChromeStorageAdapter.ts (chrome.storage.local wrapper)
+│   ├── copy.ts                      ← extension-specific copy (vanilla JS, separate from RN copy/)
+│   └── types.ts                     ← extension TypeScript types
 ├── copy/
 │   ├── shared.ts                    ← strings used across features
 │   ├── map.ts                       ← Map feature copy
@@ -131,7 +134,8 @@ API keys and credentials must **only ever be read from environment variables**. 
 │   ├── infoContent.ts               ← Info editorial content (bundled default for fetch-and-fallback)
 │   ├── beta.ts                      ← Beta mode copy (indicator, alerts, screenshot feedback)
 │   ├── launch.ts                    ← Daily launch screen copy (rotating messages, tap label)
-│   └── scan.ts                      ← Scan tab copy (CTA, status, barcode result labels)
+│   ├── scan.ts                      ← Scan tab copy (CTA, status, barcode result labels)
+│   └── harness.ts                   ← Screenshot harness copy (dev only)
 ├── design/
 │   ├── tokens.ts                    ← theme object: colors, type, spacing, borders, a11y
 │   ├── component-rules.md           ← per-component token usage spec
@@ -140,15 +144,41 @@ API keys and credentials must **only ever be read from environment variables**. 
 │   └── constants.ts                 ← all configurable variables (see below)
 ├── scripts/
 │   ├── fetch-donation-data.mjs      ← pre-fetches FEC donation data into entities.json
+│   ├── fetch-people-data.mjs        ← fetches people FEC data
 │   ├── verify-entities.mjs          ← verifies fecCommitteeId for each entity via FEC API
 │   ├── verify-data-integrity.mjs    ← audits duplicate IDs, forward refs, reverse-link gaps, role mismatches
 │   ├── reconcile-v1-entities.mjs    ← reconciles entities.json ↔ people.json (V1/V2 split)
 │   ├── sync-products-from-off.py    ← scans OFF bulk data into products.json with resumable checkpoints
-│   └── generate-arena-assets.mjs    ← scans assets/pixel/arena/ → regenerates core/arena/arenaAssets.ts
+│   ├── sync-people-from-bulk-top.mjs ← syncs top donor people from FEC bulk data
+│   ├── hydrate-people-from-bulk.mjs ← hydrates people.json from FEC bulk individual contribution files
+│   ├── strip-people-raw.mjs         ← strips raw[] from people.json → people.bundle.json for app bundle
+│   ├── build-people-entity-review-queue.mjs ← generates person↔entity manual review queue
+│   ├── compare-people-bulk.mjs      ← compares people bulk data sources
+│   ├── build-bulk-top-donors.mjs    ← builds top donor list from FEC bulk data
+│   ├── build-committee-beneficiary-map.mjs ← maps committees to beneficiary candidates
+│   ├── build-data-classification-staging-report.mjs ← staging report for data classification
+│   ├── build-entities-classification-preview.mjs ← entity classification preview
+│   ├── build-people-classification-preview.mjs ← people classification preview
+│   ├── build-inherently-partisan-staging-report.mjs ← inherently partisan committee report
+│   ├── build-pac-line23-rehydration-preview.mjs ← PAC line 23 rehydration preview
+│   ├── audit-committee-ids.mjs      ← audits committee ID consistency
+│   ├── audit-copy.sh                ← audits copy files for hardcoded strings in components
+│   ├── add-v2-backed-entities.mjs   ← adds V2-backed entities to entities.json
+│   ├── build-extension.mjs          ← builds browser extension bundle
+│   ├── generate-arena-assets.mjs    ← scans assets/pixel/arena/ → regenerates core/arena/arenaAssets.ts
+│   ├── generate-starbg-assets.mjs   ← scans assets/pixel/starbg/ → regenerates core/starbg/starbgAssets.ts
+│   ├── generate-milkyway.py         ← generates milky way background asset
+│   ├── slice-starbg-sources.py      ← slices star background source images
+│   ├── lib/                         ← shared script helpers (data-classification/, etc.)
+│   └── data/                        ← script data files (people-entity-overrides.json, etc.)
 ├── ios/                             ← generated by expo prebuild; committed to repo
 ├── modules/
 │   └── mapkit-search/               ← local Expo native module (iOS MKLocalPointsOfInterestRequest bridge)
 ├── tools/
+│   ├── copy-preview/                ← interactive HTML copy review tool (copy-all.json + copy-all.js)
+│   ├── fec-bulk/                    ← FEC bulk data workspace (91GB+, gitignored) + reports/
+│   ├── screenshots/                 ← screenshot harness output
+│   ├── starbg-preview/              ← star field background preview tool
 │   └── img-gen/                     ← pixel art asset generation pipeline (Gemini + GPT)
 │       ├── scripts/generate.py      ← character sprite generation (Gemini API)
 │       ├── scripts/generate_assets.py ← UI ornament generation (Gemini API)
@@ -159,6 +189,9 @@ API keys and credentials must **only ever be read from environment variables**. 
 │       ├── scripts/manifest.py      ← generate sprite sheet metadata JSON
 │       ├── scripts/gpt_image.py     ← GPT image pipeline (gpt-image-1.5): generate + batch process
 │       ├── scripts/slice_ui_kit.py  ← auto-detect + slice UI kit sprite sheet into individual elements
+│       ├── scripts/analyze_sprites.py ← analyzes body placement/scale across sprite sheets for normalization
+│       ├── scripts/normalize_sprites.py ← normalizes body height, foot position, centering across sprites
+│       ├── scripts/generate_comparison.py ← Gemini vs GPT head-to-head sprite generation comparison
 │       ├── USAGE.md                 ← full documentation for all pipeline scripts
 │       └── asset-prompts.json       ← asset definitions + processing configs
 └── assets/
@@ -166,8 +199,10 @@ API keys and credentials must **only ever be read from environment variables**. 
     └── pixel/                       ← all pixel art assets by type
         ├── brand/                   ← FF_logo.png (stacked), FF_logo_horizontal.png
         ├── arena/                   ← 4 scene backgrounds (sf, nyc street, nyc penthouse, dc)
+        ├── bg/                      ← background textures (dark stone tile, etc.)
+        ├── starbg/                  ← star field parallax layers (milky way, twinkle stars)
         ├── ui/                      ← UI kit sliced elements (frames, buttons, bars, badges) + header_bar.png
-        └── sprites/                 ← 107 CEO sprite sheets + manifest.json
+        └── sprites/                 ← 127 CEO sprite sheets + manifest.json
 ```
 
 ---
@@ -239,9 +274,26 @@ export const NUDGE_HOUR = 19;  // 7pm local time
 export const FX_AVOID_DURATION_MS = 3000;
 export const FX_AVOID_FADE_MS = 400;
 
+// BusinessCard manila folder — post-avoid animation timing
+export const FOLDER_AUTO_DISMISS_MS = 1200;
+export const STAMP_SLAM_MS = 300;
+export const STAMP_OVERSHOOT = 1.5;
+export const PARTICLE_COUNT = 10;
+export const PARTICLE_DURATION_MS = 800;
+export const AMBER_PULSE_MS = 400;
+export const SCREEN_SHAKE_MS = 60;
+export const CARD_SPRITE_SIZE = 168;
+
 // Launch screen art bounds
 export const LAUNCH_HERO_LOGO_MAX_WIDTH = 220;
 export const LAUNCH_HERO_LOGO_MAX_HEIGHT = 140;
+
+// Beta overlay controls
+export const BETA_FLOATING_BUTTON_SIZE = theme.a11y.minTapTarget;
+export const BETA_FLOATING_BUTTON_BOTTOM = 100;
+export const BETA_RESET_BUTTON_WIDTH = theme.a11y.minTapTarget + theme.space.md;
+export const BETA_RESET_BUTTON_HEIGHT = theme.a11y.minTapTarget - theme.space.sm;
+export const BETA_RESET_BUTTON_GAP = theme.space.sm;
 
 // Track screen animation timing
 export const ARENA_TRANSITION_MS = 500;
@@ -251,6 +303,9 @@ export const ARENA_HEIGHT = 200;
 export const DAY_CIRCLES_AUTO_COLLAPSE_DELAY_MS = 2000;
 export const DAY_CIRCLES_COLLAPSE_STAGGER_MS = 80;
 export const DAY_CIRCLES_ANIMATE_MS = 300;
+
+// StarFieldBg parallax — master toggle for tilt-based parallax on star backgrounds.
+export const STARBG_PARALLAX_ENABLED = true;
 
 // Track screen layout tuning — 30+ TRACK_* constants for row/arena/sprite sizing.
 // See config/constants.ts for full list. All visual sizing for the platform list
@@ -350,6 +405,9 @@ Processes the Open Food Facts MongoDB bulk dump into `assets/data/products.json`
 
 ### `node scripts/generate-arena-assets.mjs`
 Scans `assets/pixel/arena/` for PNG files and regenerates `core/arena/arenaAssets.ts` — a static `require()` map used by `GameArena`. Run this after adding or removing arena background images. The generated file should be committed to the repo (Metro bundler requires the static `require()` strings at build time).
+
+### `node scripts/generate-starbg-assets.mjs`
+Scans `assets/pixel/starbg/` for PNG files and regenerates `core/starbg/starbgAssets.ts` — a static `require()` map used by `StarFieldBg`. Run this after adding or removing star field background images. Same pattern as `generate-arena-assets.mjs`.
 
 ### `node scripts/verify-data-integrity.mjs`
 Audits data integrity across `entities.json` and `people.json`. Checks: duplicate IDs, forward refs (entity → person), reverse-link gaps (bidirectional integrity), role mismatches in `rolesByEntity`, GPT pass integrity, and stale documentation. Run after any entity/person data changes. Does not make API calls — safe to run anytime.
@@ -564,7 +622,7 @@ The entire app is styled as a **vintage 8-bit video game**. This is the foundati
 | Donation data bundled into `entities.json` | ✅ Done |
 | Anonymous FEC API mode (no key required in app) | ✅ Done |
 | Design system: tokens + 26 components migrated | ✅ Done — `design/tokens.ts` + all components use theme tokens |
-| Pixel art assets: pipeline + deploy + wired | ✅ Done — 35 assets in `assets/pixel/`, FlagMarker + BusinessCard wired. 107 CEO sprites in `assets/pixel/sprites/`, wired into BusinessCard, PlatformRow, ScorecardView. 4-step keying pipeline with 1px alpha erosion. Brand logos wired (map header, launch, onboarding, icon, splash). 4 arena backgrounds wired into GameArena. UI kit sliced (30 elements): frames wired into BusinessCard + ScorecardView, buttons into AvoidButton + MapControls, input field into MapSearchBar, bar into TabBar, header bar into MapScreen. Eagle seal (`seal_eagle.png` + `seal_eagle_sm.png`) wired into manila folder card. |
+| Pixel art assets: pipeline + deploy + wired | ✅ Done — 35 assets in `assets/pixel/`, FlagMarker + BusinessCard wired. 127 CEO sprites in `assets/pixel/sprites/`, wired into BusinessCard, PlatformRow, ScorecardView. 4-step keying pipeline with 1px alpha erosion. Brand logos wired (map header, launch, onboarding, icon, splash). 4 arena backgrounds wired into GameArena. UI kit sliced (30 elements): frames wired into BusinessCard + ScorecardView, buttons into AvoidButton + MapControls, input field into MapSearchBar, bar into TabBar, header bar into MapScreen. Eagle seal (`seal_eagle.png` + `seal_eagle_sm.png`) wired into manila folder card. |
 | Design refinement: 8-bit game energy | ✅ Done — Map header bar, search bar depth, tab bar texture, BusinessCard sprite-left layout + donation hierarchy flip + reward overlay + sprite perch ON card, MatchChooser visual upgrade, GameArena tiled bg texture + rewardYellow cell borders, PlatformGroup parent company grouping + short names + hideSprite/compact child rows, InfoScreen collapsible transparency + section ornamentation, tap-to-dismiss backdrop, AvoidButton depth borders, global highlight lines reduced to 2px |
 | Onboarding tightened (5→3 screens) | ✅ Done — Welcome, Privacy (WHAT WE DON'T DO), Permissions (BEFORE WE START). Privacy promise before permission request. |
 | Beta testing mode | ✅ Done — triple-tap toggle, BetaOverlay, screenshot tool |
@@ -587,6 +645,8 @@ The entire app is styled as a **vintage 8-bit video game**. This is the foundati
 | App tested on physical device | 🔄 Pending |
 | First-use tooltip system (Map screen) | ✅ Done — reusable `Tooltip` component (`core/ui/Tooltip.tsx`) with Mario-cloud depth, wiggle animation, directional tails. Replaces `HintBanner`. Three sequential hints: search bar, map tap, barcode scan. `useWiggleAnimation` hook extracted. |
 | BusinessCard manila folder reskin | ✅ Done — manila folder wrapper, cream document table layout, folder tab dismiss, sprite perch (168px, 80/20 split), swipe-down dismiss, post-avoid stamp + particles + shake + amber pulse, AvoidButton hydration fix, AvoidCelebration removed. Pixel art eagle seal wired (48px BOX-downsampled, red-tinted folder + dark doc header). |
+| Sprite normalization pipeline + batch generation | ✅ Done — `analyze_sprites.py` + `normalize_sprites.py` + `generate_comparison.py`. 127 sprites normalized (height stddev 1.01%→0.03%). Gemini confirmed as production pipeline (beats GPT on consistency). Batch 1: 20 new CEO sprites generated + deployed. 3 batches remaining (60 sprites). |
+| StarFieldBg parallax system | ✅ Done — `core/starbg/` module: `StarFieldBg.tsx`, `ShootingStreak.tsx`, `useParallax.ts`, `useStarLayout.ts`. Tilt-based parallax (`STARBG_PARALLAX_ENABLED`), scroll parallax via shared value, edge-biased twinkle, shooting streaks. Used on Info, Onboarding, PlatformSetup screens. |
 | Extension tested in Chrome | ✅ Done |
 
 ---
