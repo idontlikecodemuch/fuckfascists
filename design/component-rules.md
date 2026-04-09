@@ -17,40 +17,39 @@ All components reference tokens from `design/tokens.ts`. Never hardcode hex valu
 
 ---
 
-## 1. Business Card (3 files: BusinessCard.tsx, BusinessBanner.tsx, DataZone.tsx)
+## 1. Business Card — Manila Folder (5 files: BusinessCard.tsx, BusinessBanner.tsx, DataZone.tsx, StampOverlay.tsx, MoneyParticles.tsx)
 
-**Purpose:** Entity detail sheet shown after map tap match or search match. Three composable files:
-- `BusinessCard.tsx` — full card layout (sprite + name + data + avoid)
-- `BusinessBanner.tsx` — lightweight banner for non-card states + `resolveCardMode()` routing
-- `DataZone.tsx` — self-contained donation data display
+**Purpose:** Entity detail sheet shown after map tap match or search match. Styled as a physical document inside a manila folder — Clark pulling a file.
 
-**Card mode** (BusinessCard.tsx):
+**Folder wrapper** (BusinessCard.tsx):
 
 | Property | Token |
 |---|---|
-| Background (body) | `colors.surface1` |
-| Border | `borders.hero` in `colors.frameBlue` |
-| Top highlight | `colors.highlightBlue` (borderTopColor) |
-| Bottom edge | `colors.bgVoid` (borderBottomColor) |
-| Brand name | `type.displayM` / `colors.textPrimary` |
-| Parent attribution | `type.bodyS` / `colors.textSecondary` |
-| Confidence badge | `colors.rewardYellow` bg + `colors.bgVoid` text |
-| Disclaimer | `type.caption` / `colors.rewardYellow` |
-| Dismiss label | `type.bodyS` / `colors.textSecondary` |
+| Folder background | `colors.folderBg` |
+| Folder tab background | `colors.folderTabBg` |
+| Folder tab label | `fonts.headline` / `colors.documentText` |
+| Folder tab corners | `radii.folderTab` (top only) |
+| Red seal (decorative) | `colors.sealRed`, 64px circle, 0.25 opacity |
+| Sprite size | `CARD_SPRITE_SIZE` (168px) |
 
-**DataZone tokens** (DataZone.tsx):
+**Document panel** (DataZone.tsx — cream document table):
 
 | Property | Token |
 |---|---|
-| Section divider | 1px `colors.surface2` (borderTop) |
-| Total label | `type.caption` / `colors.textSecondary`, letterSpacing 2 |
-| GOP total | `type.displayS` / `colors.dangerRed` |
-| DEM total | `type.displayS` / `colors.highlightBlue` |
-| Recent/cycles lines | `type.bodyS` / `colors.textSecondary` |
-| PAC data line | `type.caption` / `colors.textSecondary` |
-| FEC link | `type.bodyS` / `colors.highlightBlue`, underlined |
+| Document background | `colors.documentBg` |
+| Document text | `colors.documentText` |
+| Row separators | 1px `colors.documentBorder` |
+| Row labels (On file, Total) | `type.caption` / `colors.documentLabel`, 56px width |
+| Entity name | `fonts.headline` 18px / `colors.documentText` |
+| Header seal | 14px circle, `colors.documentText`, 0.6 opacity |
+| Header text | `fonts.bodyMedium` 10px / `colors.documentText`, letterSpacing 2 |
+| GOP amounts | `colors.dangerRed` |
+| DEM amounts | `colors.highlightBlue` |
+| Other amounts | `colors.documentLabel`, 12px |
+| Confidence badge | `colors.amberActionLight` border + text on `colors.documentBg` |
+| Source link | `type.caption` / `colors.highlightBlue` |
 
-**Banner mode** (BusinessBanner.tsx):
+**Banner mode** (BusinessBanner.tsx — unchanged):
 
 | Property | Token |
 |---|---|
@@ -59,21 +58,27 @@ All components reference tokens from `design/tokens.ts`. Never hardcode hex valu
 | Message text | `type.bodyS` / `colors.textSecondary` |
 | Dismiss text | `type.bodyS` / `colors.highlightBlue` |
 
-**Spacing:** `space.lg` padding body, `space.sm` between name and data sections, `space.md` action section.
-
 **Card/banner routing:** `resolveCardMode(result)` returns `'card'` or `{ banner: BannerVariant }`. Card when entity has donation data or known PAC. Banner variants: `no_match`, `lookup_failed`, `no_pac`, `dissolved`.
 
 **States:**
 - **Neutral:** default sprite, avoid button enabled.
-- **Confirmed (avoided):** defeated sprite, celebration overlay at screen level (CelebrationOverlay.tsx in MapScreen).
-- **Medium confidence:** `colors.rewardYellow` left border accent + disclaimer text + confidence badge.
+- **Confirmed (avoided):** defeated sprite, card-local celebration (stamp + particles + shake + amber pulse in MapScreen). Button shows ✓ AVOIDED via `initialConfirmed` prop.
+- **Medium confidence:** ⚠ MATCHED badge inline after entity name in "On file" row.
 - **High confidence:** no badge shown (silence = confidence).
 
-**Layout:** Card wrapper uses `overflow: 'visible'`. Sprite perch: 140pt, centered, `marginBottom: -40`, `zIndex: 20` — renders ABOVE card edge. Card container: `maxHeight: '65%'`, positioned at bottom.
+**Layout:** Folder wrapper `overflow: 'visible'`, full-width (no marginHorizontal). Sprite perch: `CARD_SPRITE_SIZE` (168px), ~80% above document top edge, ~20% overlapping, `zIndex: 4`. Document panel: `marginHorizontal: space.lg`, cream background. Card container: `maxHeight: '65%'`, positioned at bottom.
 
-**Celebration:** Celebration effects live in MapScreen (CelebrationOverlay.tsx), NOT in the card. Card shows `pointerEvents='none'` during celebration. Duration: 3000ms. Respects reduced motion.
+**Dismiss:** Three methods: folder tab tap (Pressable, ≥44pt, a11yLabel "Close report"), backdrop tap, swipe down (PanResponder, follow-finger spring). No DISMISS text button.
 
-**Accessibility:** `accessibilityViewIsModal` on card wrapper. Post-avoid announcement via `AccessibilityInfo.announceForAccessibility`. FEC link is a separate focusable element with `accessibilityRole="link"`.
+**Post-avoid celebration:** Card-local animations, not FXLayer:
+- `StampOverlay.tsx` — "AVOIDED" stamp slams onto document (spring 1.5× → 1×, 8° rotation, `colors.stampRed`)
+- `MoneyParticles.tsx` — 10 colored rectangles burst from sprite area with gravity arc (800ms)
+- Screen shake (±2px, 60ms) triggered on stamp land
+- Amber pulse overlay in MapScreen (`colors.amberPulse`, 400ms fade)
+- Auto-dismiss slide down after `FOLDER_AUTO_DISMISS_MS` (1200ms)
+- All respect reduced-motion (static stamp, no particles/shake)
+
+**Accessibility:** `accessibilityViewIsModal` on folder wrapper. Folder tab: `accessibilityLabel="Close report"`, `accessibilityRole="button"`. Post-avoid announcement via `AccessibilityInfo.announceForAccessibility`. FEC source link: `accessibilityRole="link"`.
 
 ---
 

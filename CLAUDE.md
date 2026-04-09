@@ -569,7 +569,7 @@ The entire app is styled as a **vintage 8-bit video game**. This is the foundati
 | Onboarding tightened (5→3 screens) | ✅ Done — Welcome, Privacy (WHAT WE DON'T DO), Permissions (BEFORE WE START). Privacy promise before permission request. |
 | Beta testing mode | ✅ Done — triple-tap toggle, BetaOverlay, screenshot tool |
 | Daily launch screen | ✅ Done — once per calendar day, rotating messages, 5s auto-dismiss, breathing logo animation |
-| Avoid celebration animation + haptics | ✅ Done — shared FX system (`core/fx/`) with FXLayer + useFX + effect registry; AvoidCelebration effect (scale + fade) |
+| Avoid celebration animation + haptics | ✅ Done — card-local StampOverlay + MoneyParticles + screen shake + amber pulse (replaced former full-screen AvoidCelebration checkmark). FX system (`core/fx/`) still used by GameArena. |
 | App built and running on iOS simulator | ✅ Done — `FckFascists.app` installed on iPhone 16 Pro simulator |
 | Device visual refinement pass | ✅ Done — launch screen 5s + breathing logo, map header spacing, BusinessCard corners/z-index/sprite 150pt, SpriteView headOnly, GameArena full bleed + all-platforms roster, PlatformRow row-tap + auto-expand, TabBar texture 2x |
 | BusinessCard rebuild + component extraction | ✅ Done — BusinessCard (168 lines), BusinessBanner + resolveCardMode (114), DataZone (161), DetailSheet (placeholder), useMapControls hook (73). Card/banner routing, FXLayer in MapScreen, all files under 250 lines. |
