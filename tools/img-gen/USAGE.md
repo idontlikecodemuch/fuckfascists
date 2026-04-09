@@ -20,11 +20,13 @@ pip3 install -r requirements.txt
 ### Gemini sprite generation flow
 
 ```
-1. generate.py          Generate raw sprite variant pairs (neutral + defeated) via Gemini
-2. compose.py           Stack variant rows into final sprite sheets
-3. remove_magenta.py    Chroma-key magenta background → transparent PNG
-4. manifest.py          Generate sprite sheet metadata JSON (frame coordinates)
-5. deploy_assets.py     (for UI assets only) Copy processed assets → assets/pixel/
+1. generate.py            Generate raw sprite variant pairs (neutral + defeated) via Gemini
+2. compose.py             Stack variant rows into final sprite sheets
+3. remove_magenta.py      Chroma-key magenta background → transparent PNG
+4. analyze_sprites.py     Analyze body placement + scale (run once to compute targets)
+5. normalize_sprites.py   Normalize body height, foot position, centering across all sprites
+6. manifest.py            Generate sprite sheet metadata JSON (frame coordinates)
+7. deploy_assets.py       (for UI assets only) Copy processed assets → assets/pixel/
 ```
 
 ### Gemini UI asset generation flow
@@ -289,6 +291,65 @@ python3 scripts/gpt_image.py --process \
   --input "output/processed/*.png" \
   --instruction "Sharpen pixel edges and increase contrast" \
   --output-dir output/gpt_cleaned/
+```
+
+---
+
+### analyze_sprites.py
+
+Analyze body placement and scale across all deployed CEO sprite sheets. Reads sprites from `assets/pixel/sprites/` and `characters.json`, computes per-sprite body bounds from the neutral frame (col 0, row 0), and writes analysis reports with aggregate stats and outlier detection.
+
+No API keys required.
+
+| Flag | Description |
+|---|---|
+| *(none)* | Analyzes all sprites in `assets/pixel/sprites/` |
+
+**Output:**
+- `reports/sprite-analysis.json` — per-sprite metrics + aggregate stats (min/max/median/stddev)
+- `reports/sprite-analysis.md` — readable summary table, outliers flagged (>2σ from median height)
+
+**Examples:**
+```bash
+# Analyze all sprites
+python3 scripts/analyze_sprites.py
+```
+
+---
+
+### normalize_sprites.py
+
+Normalize body placement and scale across CEO sprite sheets. Computes body bounds from the neutral frame, then applies uniform scaling + translation to place all sprites at consistent height, foot position, and horizontal center. The same transform is applied to every frame in the sheet (defeated variants stay in registration with neutral).
+
+Backs up originals to `assets/pixel/sprites/originals/` before modifying. Requires `analyze_sprites.py` to have been run first (reads targets from `reports/sprite-analysis.json`), or accepts manual target overrides.
+
+No API keys required.
+
+| Flag | Description |
+|---|---|
+| `--all` | Normalize all sprites in `assets/pixel/sprites/` |
+| `--character <id>` | Normalize one sprite by kebab-case ID |
+| `--validate` | Dry run — report what would change without modifying files |
+| `--target-height-pct <float>` | Override target body height as % of cell height |
+| `--target-bottom-margin-pct <float>` | Override target bottom margin as % of cell height |
+
+**Input:** `assets/pixel/sprites/*.png`
+**Backup:** `assets/pixel/sprites/originals/` (gitignored)
+**Output:** Modified sprites in-place
+
+**Examples:**
+```bash
+# Dry run — see what would change
+python3 scripts/normalize_sprites.py --all --validate
+
+# Normalize all sprites (backs up originals first)
+python3 scripts/normalize_sprites.py --all
+
+# Normalize a single sprite
+python3 scripts/normalize_sprites.py --character elon-musk
+
+# Override targets manually
+python3 scripts/normalize_sprites.py --all --target-height-pct 86.0 --target-bottom-margin-pct 5.0
 ```
 
 ---

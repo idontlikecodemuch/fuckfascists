@@ -31,6 +31,15 @@ tools/off-bulk/
 # Reference files (old assets, renamed sprites — local only)
 tools/reference/
 
+# Sprite normalization backups (originals before normalize_sprites.py)
+assets/pixel/sprites/originals/
+
+# Generated sprite analysis reports
+tools/img-gen/reports/
+
+# Sprite generation pipeline output (raw, processed, comparison)
+tools/img-gen/output/
+
 # Scratch / working files
 entities_GPTpass.json
 
