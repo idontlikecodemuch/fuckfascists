@@ -855,6 +855,13 @@ Pre-App Store: consider renaming Xcode project from FckFascists to FCK. Internal
 ### Map auto-scan on open — copy update needed (Priority: V1 launch blocker)
 The map now auto-scans for nearby POIs when it opens and location resolves. This is session-only (coordinates never stored or transmitted), but the Info/FAQ copy does not yet disclose this behavior. The privacy principle section should be updated to note that the app queries nearby businesses on map open, not only on explicit tap/search.
 
+### react-native-maps — `AIRMap insertReactSubview:` nil crash (Priority: resolved)
+Rapid marker add/remove cycles cause the Fabric reconciler to pass nil subviews to `AIRMap.m`, crashing with `NSInvalidArgumentException: insertObject:atIndex: object cannot be nil` (react-native-maps [#5345](https://github.com/react-native-maps/react-native-maps/issues/5345), [#5217](https://github.com/react-native-maps/react-native-maps/issues/5217)). **Three layers of defense:**
+- **JS serialization (primary):** `useTapSearch.ts` uses `inFlightRef` to prevent concurrent `processTapNames` execution. If a tap search is in-flight, new taps are dropped.
+- **Ghost marker cap:** `tapNoMatchCoords` capped at 20 entries with coordinate deduplication. Prevents unbounded marker accumulation.
+- **Native nil guard (defense-in-depth):** Podfile `post_install` hook patches `AIRMap.m` with nil checks on `insertReactSubview:`, `removeReactSubview:`, and `addSubview:`. Idempotent — re-applies on every `pod install`. **Run `pod install` after checkout to apply the patch.**
+- **Do not use `tracksViewChanges={false}`** with custom Image children on Fabric — causes stale render state that triggers the nil crash.
+
 ### V2: Optional Server Schedule Override
 Drop time is computed on-device (see `core/dropSchedule/computeDropTime.ts`). V2 may add a lightweight server ping for: schedule overrides, entity list freshness checks, info content freshness checks. Constraints: minimal data (version hashes only, no payloads), no user-identifying or behavioral data, app functions identically if ping fails. The ping is a freshness hint, not a dependency. Do not build now.
 
