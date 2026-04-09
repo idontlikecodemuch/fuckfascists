@@ -1,5 +1,5 @@
 import React, { useRef, useMemo, useEffect, useState } from 'react';
-import { Alert, View, Text, Pressable, Animated, PanResponder, StyleSheet, AccessibilityInfo } from 'react-native';
+import { Alert, View, Text, Image, Pressable, Animated, PanResponder, StyleSheet, AccessibilityInfo } from 'react-native';
 import type { ScanResult } from '../types';
 import type { Entity, PoliticalPerson } from '../../../core/models';
 import { getDisplayFigure, getParentEntity, getAssociatedPeople } from '../../../core/models';
@@ -7,6 +7,7 @@ import { CONFIDENCE_THRESHOLD_HIGH, CONFIDENCE_THRESHOLD_MEDIUM, CARD_SPRITE_SIZ
 import { sharedCopy } from '../../../copy/shared';
 import { mapCopy } from '../../../copy/map';
 import { theme } from '../../../design/tokens';
+import { sealEagle } from '../../../core/ui/uiAssets';
 import { SpriteView, nameToSpriteId } from '../../../core/sprites/spriteLoader';
 import { AvoidButton } from './AvoidButton';
 import { DataZone } from './DataZone';
@@ -123,7 +124,7 @@ export function BusinessCard({
       </Pressable>
 
       {/* Red seal — decorative, partially behind document */}
-      <View style={styles.seal} pointerEvents="none" accessibilityElementsHidden />
+      <Image source={sealEagle} style={styles.seal} accessibilityElementsHidden />
 
       {/* Sprite — perching on document */}
       {spriteId && (
@@ -199,11 +200,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: theme.space.xl,
     top: theme.space['2xl'],
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: theme.colors.sealRed,
-    opacity: 0.25,
+    width: 80,
+    height: 80,
+    tintColor: theme.colors.sealRed,
+    opacity: 0.3,
     zIndex: 1,
   },
   spritePerch: {

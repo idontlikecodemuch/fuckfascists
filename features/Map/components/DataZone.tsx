@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, Text, Pressable, Linking, StyleSheet } from 'react-native';
+import { View, Text, Image, Pressable, Linking, StyleSheet } from 'react-native';
 import type { DonationSummary, PoliticalPerson } from '../../../core/models';
 import { formatDonationAmount, formatCycleLabel, formatActiveCycles, getPersonDisplayName, makeFecIndividualUrl } from '../../../core/models';
 import { sharedCopy } from '../../../copy/shared';
 import { mapCopy } from '../../../copy/map';
 import { theme } from '../../../design/tokens';
+import { sealEagleSmall } from '../../../core/ui/uiAssets';
 
 interface DataZoneProps {
   donationSummary: DonationSummary | null;
@@ -69,7 +70,7 @@ export function DataZone({ donationSummary, committeeName, fecUrl, onDetailPress
     <View style={styles.document}>
       {/* Decorative header */}
       <View style={styles.docHeader}>
-        <View style={styles.headerSeal} />
+        <Image source={sealEagleSmall} style={styles.headerSeal} />
         <Text style={styles.headerText} allowFontScaling>{mapCopy.documentHeader}</Text>
       </View>
 
@@ -195,7 +196,7 @@ const c = theme.colors;
 const styles = StyleSheet.create({
   document: { backgroundColor: c.documentBg, paddingVertical: theme.space.sm, paddingHorizontal: theme.space.md },
   docHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: theme.space.xs },
-  headerSeal: { width: 14, height: 14, borderRadius: 7, backgroundColor: c.documentText, opacity: 0.6, marginRight: theme.space.sm },
+  headerSeal: { width: 14, height: 14, tintColor: c.documentText, opacity: 0.6, marginRight: theme.space.sm },
   headerText: { fontFamily: theme.fonts.bodyMedium, fontSize: 10, letterSpacing: 2, color: c.documentText, textTransform: 'uppercase' },
   separator: { height: 1, backgroundColor: c.documentBorder },
   tableRow: { flexDirection: 'row', alignItems: 'flex-start', paddingVertical: theme.space.sm },
