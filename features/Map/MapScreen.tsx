@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
-import { View, Image, Pressable, StyleSheet, SafeAreaView, Linking, Platform, useWindowDimensions } from 'react-native';
+import { View, Image, Pressable, Animated, StyleSheet, SafeAreaView, Linking, Platform, useWindowDimensions } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import type { Entity, PoliticalPerson } from '../../core/models';
 import type { MatchingDeps } from '../../core/matching';
@@ -17,8 +17,7 @@ import { useEntityScan } from './hooks/useEntityScan';
 import { useTapSearch } from './hooks/useTapSearch';
 import { useMapControls } from './hooks/useMapControls';
 import { BusinessCard, BusinessBanner, resolveCardMode } from './components/BusinessCard';
-import { FXLayer, useFX, defaultFXRegistry } from '../../core/fx';
-import { FX_AVOID_DURATION_MS } from '../../config/constants';
+import { FOLDER_AUTO_DISMISS_MS, AMBER_PULSE_MS } from '../../config/constants';
 import { FlagMarker } from './components/MapMarker';
 import { MapSearchBar } from './components/MapSearchBar';
 import { UnmatchedBanner } from './components/UnmatchedBanner';
@@ -139,8 +138,9 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
   }, [location.coords, autoScan]);
 
   const hints = useMapHints();
-  const fx = useFX();
   const [avoidedResult, setAvoidedResult] = useState<ScanResult | null>(null);
+  const [avoidAnimating, setAvoidAnimating] = useState(false);
+  const amberPulseOpacity = useRef(new Animated.Value(0)).current;
   const avoidDismissTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => { if (status === 'matched' && result) setActiveResult(result); }, [status, result]);
@@ -188,15 +188,24 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
     setPins((prev) => prev.map((p) => (p.id === entityId ? { ...p, avoided: true } : p)));
     markTapPinAvoided(entityId);
     setAvoidedResult(activeResult);
-    fx.fire('avoid', 'full');
-    avoidDismissTimer.current = setTimeout(finishDismiss, FX_AVOID_DURATION_MS);
-  }, [activeResult, adapter, markTapPinAvoided, finishDismiss]);
+    setAvoidAnimating(true);
+    // Amber pulse on map behind card
+    Animated.sequence([
+      Animated.timing(amberPulseOpacity, { toValue: 1, duration: AMBER_PULSE_MS / 2, useNativeDriver: true }),
+      Animated.timing(amberPulseOpacity, { toValue: 0, duration: AMBER_PULSE_MS / 2, useNativeDriver: true }),
+    ]).start();
+    avoidDismissTimer.current = setTimeout(() => {
+      setAvoidAnimating(false);
+      finishDismiss();
+    }, FOLDER_AUTO_DISMISS_MS);
+  }, [activeResult, adapter, markTapPinAvoided, finishDismiss, amberPulseOpacity]);
 
   useEffect(() => () => { if (avoidDismissTimer.current) clearTimeout(avoidDismissTimer.current); }, []);
 
   const handleDismiss = useCallback(() => {
     if (avoidDismissTimer.current) clearTimeout(avoidDismissTimer.current);
     isTextSearch.current = false;
+    setAvoidAnimating(false);
     setActiveResult(null); setAvoidedResult(null); clearLatestTapBatch(); reset();
   }, [reset, clearLatestTapBatch]);
 
@@ -230,7 +239,7 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
   const cardMode = activeResult ? resolveCardMode(activeResult) : null;
   const showFullCard = cardMode === 'card';
   const bannerVariant = cardMode && typeof cardMode === 'object' ? cardMode.banner : null;
-  const isCelebrating = fx.active;
+  const isCelebrating = avoidAnimating;
   const headerBarHeight = Math.round(screenWidth / HEADER_BAR_ASPECT);
   const SEARCH_TOP = insets.top + headerBarHeight + theme.space.md;
 
@@ -297,8 +306,10 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
       {activeResult && showFullCard && (
         <>
           <Pressable style={styles.backdrop} onPress={isCelebrating ? undefined : handleDismiss} accessibilityRole="button" accessibilityLabel={sharedCopy.dismissLabel} disabled={isCelebrating} />
+          {/* Amber pulse overlay behind card */}
+          <Animated.View style={[styles.amberPulse, { opacity: amberPulseOpacity }]} pointerEvents="none" />
           <View style={styles.cardContainer} pointerEvents={isCelebrating ? 'none' : 'auto'}>
-            <BusinessCard result={activeResult} onAvoid={handleAvoid} avoidDisabled={!activeResult.entity} avoided={avoidedResult === activeResult || avoidedTodayRef.current.has(activeResult.entityId ?? activeResult.fecCommitteeId)} onDismiss={handleDismiss} allEntities={entities} people={people} />
+            <BusinessCard result={activeResult} onAvoid={handleAvoid} avoidDisabled={!activeResult.entity} avoided={avoidedResult === activeResult || avoidedTodayRef.current.has(activeResult.entityId ?? activeResult.fecCommitteeId)} onDismiss={handleDismiss} allEntities={entities} people={people} avoidAnimating={avoidAnimating} />
           </View>
         </>
       )}
@@ -311,8 +322,6 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
           </View>
         </>
       )}
-
-      <FXLayer entries={fx.entries} registry={defaultFXRegistry} reducedMotion={fx.reducedMotion} onComplete={fx.remove} />
 
       {(status === 'unmatched' || status === 'lookup_unavailable') && <UnmatchedBanner searchText={searchText} onOpenSearch={handleOpenSearch} variant={status === 'lookup_unavailable' ? 'lookup_unavailable' : 'no_match'} />}
       {tapNoMatch && !activeResult && <NoMatchToast />}
@@ -331,4 +340,5 @@ const styles = StyleSheet.create({
   backdrop:       { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
   cardContainer:  { position: 'absolute', bottom: 0, left: 0, right: 0, overflow: 'visible' as const, maxHeight: '65%' },
   bannerContainer:{ position: 'absolute', bottom: 80, left: 0, right: 0 },
+  amberPulse:     { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: theme.colors.amberPulse },
 });

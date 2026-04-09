@@ -8,6 +8,8 @@ import { bevelAmberRaised, bevelGreenInset } from '../../../design/bevel';
 interface AvoidButtonProps {
   onPress: () => Promise<void>;
   disabled?: boolean;
+  /** When true, button renders in confirmed (✓ AVOIDED) state immediately. */
+  initialConfirmed?: boolean;
 }
 
 /**
@@ -23,8 +25,8 @@ interface AvoidButtonProps {
  * Reduced-motion: animation + haptics disabled — state change is immediate.
  * Minimum tap target: 44×44pt (Apple HIG / WCAG 2.5.5).
  */
-export function AvoidButton({ onPress, disabled = false }: AvoidButtonProps) {
-  const [confirmed, setConfirmed] = useState(false);
+export function AvoidButton({ onPress, disabled = false, initialConfirmed = false }: AvoidButtonProps) {
+  const [confirmed, setConfirmed] = useState(initialConfirmed);
   const [error, setError] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
 

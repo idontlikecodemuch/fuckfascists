@@ -83,4 +83,13 @@ export const mapCopy = {
   hintTap: "Tap any business on the map to pull up its record.",
   hintBarcode: "Use the UPC button to scan a product barcode.",
   hintDismissLabel: "Dismiss hint",
+  // Folder card
+  reportTabLabel: "REPORT",
+  reportTabClose: "\u00d7",
+  closeReportA11y: "Close report",
+  documentHeader: "CAMPAIGN FINANCE RECORD",
+  onFileLabel: "On file",
+  totalRowLabel: "Total",
+  sourcePrefix: "PAC:",
+  avoidedStamp: "AVOIDED",
 } as const;

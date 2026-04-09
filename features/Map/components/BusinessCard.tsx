@@ -1,24 +1,17 @@
-import React from 'react';
-import { Alert, View, Text, Pressable, StyleSheet, AccessibilityInfo } from 'react-native';
+import React, { useRef, useMemo, useEffect, useState } from 'react';
+import { Alert, View, Text, Pressable, Animated, PanResponder, StyleSheet, AccessibilityInfo } from 'react-native';
 import type { ScanResult } from '../types';
 import type { Entity, PoliticalPerson } from '../../../core/models';
 import { getDisplayFigure, getParentEntity, getAssociatedPeople } from '../../../core/models';
-import { CONFIDENCE_THRESHOLD_HIGH, CONFIDENCE_THRESHOLD_MEDIUM } from '../../../config/constants';
+import { CONFIDENCE_THRESHOLD_HIGH, CONFIDENCE_THRESHOLD_MEDIUM, CARD_SPRITE_SIZE, SCREEN_SHAKE_MS } from '../../../config/constants';
 import { sharedCopy } from '../../../copy/shared';
 import { mapCopy } from '../../../copy/map';
 import { theme } from '../../../design/tokens';
-import { bevelFocusRaised } from '../../../design/bevel';
 import { SpriteView, nameToSpriteId } from '../../../core/sprites/spriteLoader';
-import { SparkleDecoration } from '../../../core/fx';
 import { AvoidButton } from './AvoidButton';
 import { DataZone } from './DataZone';
-
-const DISMISS_HIT_SLOP = {
-  top: theme.space.sm,
-  bottom: theme.space.sm,
-  left: theme.space.sm,
-  right: theme.space.sm,
-} as const;
+import { StampOverlay } from './StampOverlay';
+import { MoneyParticles } from './MoneyParticles';
 
 // Re-export banner + resolve for consumers that import from BusinessCard
 export { BusinessBanner, resolveCardMode } from './BusinessBanner';
@@ -27,62 +20,34 @@ export type { BannerVariant, BusinessBannerProps } from './BusinessBanner';
 export interface BusinessCardProps {
   result: ScanResult;
   onAvoid: () => Promise<void>;
-  /** When true, the avoid button is disabled (e.g. entity not in curated list). */
   avoidDisabled?: boolean;
-  /** Whether the user has already tapped AVOIDED — controls sprite defeated state. */
   avoided?: boolean;
   onDismiss: () => void;
-  /** Full entity list — enables parent attribution via getDisplayFigure/getParentEntity. */
   allEntities?: Entity[];
-  /** People list — enables associated person donation data in DataZone. */
   people?: PoliticalPerson[];
   modal?: boolean;
+  /** Set to true when the post-avoid animation is playing. */
+  avoidAnimating?: boolean;
 }
 
-/** Short display name for parent attribution — strips Inc/Corp/Platforms/.com. */
+/** Strip Inc/Corp/Platforms/.com for parent name display. */
 function shortParentName(name: string): string {
-  return name
-    .replace(/\s*(Inc|Corp|Platforms|\.com)\s*/gi, '')
-    .trim();
-}
-
-function ConfidenceBadge({ confidence }: { confidence: number }) {
-  if (confidence >= CONFIDENCE_THRESHOLD_HIGH) return null;
-  if (confidence < CONFIDENCE_THRESHOLD_MEDIUM) return null;
-  return (
-    <Pressable
-      onPress={() =>
-        Alert.alert(mapCopy.confidenceAlertTitle, mapCopy.confidenceAlertBody)
-      }
-      style={styles.badge}
-      accessibilityRole="button"
-      accessibilityLabel={sharedCopy.confidenceA11y(sharedCopy.confidenceMedium)}
-      accessibilityHint={mapCopy.confidenceBadgeHint}
-    >
-      <Text style={styles.badgeText}>{sharedCopy.confidenceMedium}</Text>
-    </Pressable>
-  );
+  return name.replace(/\s*(Inc|Corp|Platforms|\.com)\s*/gi, '').trim();
 }
 
 /**
- * Business card — three-section layout:
- *   1. Header: sprite left + brand name / parent attribution right
- *   2. DataZone (self-contained donation data display)
- *   3. Avoid button + dismiss
+ * Manila folder business card — Clark pulling a file.
  *
- * Sprite sits inside the card on the left side — no frame, no centered perch.
- * Blue chrome bevel (focusBevelLight/focusBevelDark) — card is always in the active state.
- * SparkleDecoration (large) renders when avoided.
+ * Layout:
+ *   Folder (full-width manila) → folder tab (REPORT ×) top-right
+ *   → red seal (decorative) → cream document panel → DataZone table
+ *   → AvoidButton → sprite perching on document top edge.
+ *
+ * Dismiss: folder tab tap, backdrop tap (in MapScreen), swipe down.
  */
 export function BusinessCard({
-  result,
-  onAvoid,
-  avoidDisabled = false,
-  avoided = false,
-  onDismiss,
-  allEntities,
-  people,
-  modal = true,
+  result, onAvoid, avoidDisabled = false, avoided = false,
+  onDismiss, allEntities, people, modal = true, avoidAnimating = false,
 }: BusinessCardProps) {
   const { canonicalName, matchedAlias, committeeName, confidence, donationSummary, entity, fecFilingUrl } = result;
 
@@ -93,146 +58,171 @@ export function BusinessCard({
   const parent = entity && allEntities ? getParentEntity(entity, allEntities) : undefined;
   const parentName = parent ? shortParentName(parent.canonicalName) : null;
   const showParent = parentName && parentName.toUpperCase() !== displayName.toUpperCase();
+  // When brand ≈ parent, show only brand name (no parent inline)
+  const effectiveDisplayName = showParent ? displayName : displayName;
 
   const figureName = entity ? getDisplayFigure(entity, allEntities) : null;
   const spriteId = figureName ? nameToSpriteId(figureName) : null;
   const associatedPeople = entity && people ? getAssociatedPeople(entity, people, allEntities) : [];
-  const barcodeContext = result.context?.kind === 'barcode' ? result.context : null;
-  const barcodeLabel = barcodeContext?.productName ?? barcodeContext?.brandName ?? barcodeContext?.barcode ?? null;
 
-  const handleDetailPress = () => {
-    // V1: no-op — DataZone's link opens FEC directly
-  };
+  const handleDetailPress = () => {};
 
   const handleAvoid = async () => {
     await onAvoid();
-    AccessibilityInfo.announceForAccessibility(
-      mapCopy.cardAvoidedAnnouncement,
-    );
+    AccessibilityInfo.announceForAccessibility(mapCopy.cardAvoidedAnnouncement);
   };
 
+  // ── Screen shake ───────────────────────────────────────────────────────────
+  const shakeX = useRef(new Animated.Value(0)).current;
+  const shakeY = useRef(new Animated.Value(0)).current;
+
+  const triggerShake = () => {
+    const seq = [1, -1, 1, -1, 0].map((dir) =>
+      Animated.timing(shakeX, { toValue: dir * 2, duration: SCREEN_SHAKE_MS / 5, useNativeDriver: true }),
+    );
+    Animated.parallel([
+      Animated.sequence(seq),
+      Animated.sequence([1, -1, 0].map((dir) =>
+        Animated.timing(shakeY, { toValue: dir * 1, duration: SCREEN_SHAKE_MS / 3, useNativeDriver: true }),
+      )),
+    ]).start();
+  };
+
+  // ── Swipe-down dismiss (follow finger) ─────────────────────────────────────
+  const translateY = useRef(new Animated.Value(0)).current;
+
+  const panResponder = useMemo(() => PanResponder.create({
+    onStartShouldSetPanResponder: () => false,
+    onMoveShouldSetPanResponder: (_, g) => g.dy > 10 && g.dy > Math.abs(g.dx),
+    onPanResponderMove: (_, g) => { if (g.dy > 0) translateY.setValue(g.dy); },
+    onPanResponderRelease: (_, g) => {
+      if (g.dy > 80 || g.vy > 0.5) {
+        Animated.spring(translateY, { toValue: 600, useNativeDriver: true, friction: 8 }).start(onDismiss);
+      } else {
+        Animated.spring(translateY, { toValue: 0, useNativeDriver: true }).start();
+      }
+    },
+  }), [onDismiss, translateY]);
+
   return (
-    <View
-      style={styles.cardWrapper}
+    <Animated.View
+      style={[styles.folder, { transform: [{ translateX: shakeX }, { translateY: Animated.add(translateY, shakeY) }] }]}
       accessibilityViewIsModal={modal}
       accessibilityLabel={mapCopy.cardModalLabel}
+      {...panResponder.panHandlers}
     >
-      <View style={styles.card}>
-        {/* Header: sprite left, name right */}
-        <View style={styles.headerRow}>
-          {spriteId && (
-            <View style={styles.spriteSide} pointerEvents="none" accessibilityElementsHidden>
-              <SpriteView spriteId={spriteId} state={avoided ? 'defeated' : 'neutral'} size={140} />
-            </View>
-          )}
+      {/* Folder tab — dismiss target */}
+      <Pressable
+        onPress={onDismiss}
+        style={styles.folderTab}
+        accessibilityRole="button"
+        accessibilityLabel={mapCopy.closeReportA11y}
+      >
+        <Text style={styles.tabLabel} allowFontScaling>{mapCopy.reportTabLabel}</Text>
+        <Text style={styles.tabClose} allowFontScaling>{mapCopy.reportTabClose}</Text>
+      </Pressable>
 
-          <View style={[styles.nameSide, !spriteId && styles.nameSideNoSprite]}>
-            {barcodeContext && barcodeLabel && (
-              <View style={styles.contextBlock}>
-                <Text style={styles.contextEyebrow} allowFontScaling>
-                  {mapCopy.barcodeContextEyebrow}
-                </Text>
-                <Text style={styles.contextLine} allowFontScaling numberOfLines={2}>
-                  {mapCopy.barcodeContextLine(barcodeLabel, barcodeContext.barcode)}
-                </Text>
-              </View>
-            )}
+      {/* Red seal — decorative, partially behind document */}
+      <View style={styles.seal} pointerEvents="none" accessibilityElementsHidden />
 
-            <View style={styles.titleRow}>
-              <Text style={styles.name} numberOfLines={2} accessibilityRole="header" allowFontScaling>
-                {displayName}
-              </Text>
-              <ConfidenceBadge confidence={confidence} />
-            </View>
-
-            {showParent && (
-              <Text style={styles.parentAttribution} numberOfLines={1} allowFontScaling>
-                {mapCopy.parentAttribution(parentName!)}
-              </Text>
-            )}
-          </View>
+      {/* Sprite — perching on document */}
+      {spriteId && (
+        <View style={styles.spritePerch} pointerEvents="none" accessibilityElementsHidden>
+          <SpriteView spriteId={spriteId} state={avoided ? 'defeated' : 'neutral'} size={CARD_SPRITE_SIZE} />
         </View>
+      )}
 
+      {/* Document panel */}
+      <View style={styles.documentPanel}>
         <DataZone
           donationSummary={donationSummary}
           committeeName={committeeName}
           fecUrl={fecUrl}
           onDetailPress={handleDetailPress}
           associatedPeople={associatedPeople}
+          displayName={effectiveDisplayName}
+          isMediumConfidence={isMedium}
         />
 
-        <View style={styles.actSection}>
-          <AvoidButton onPress={handleAvoid} disabled={avoidDisabled} />
-
-          <Pressable
-            onPress={onDismiss}
-            style={styles.dismissButton}
-            accessibilityRole="button"
-            accessibilityLabel={sharedCopy.dismissLabel}
-            hitSlop={DISMISS_HIT_SLOP}
-          >
-            <Text style={styles.dismissLabel} allowFontScaling>{sharedCopy.dismiss}</Text>
-          </Pressable>
+        <View style={styles.buttonPad}>
+          <AvoidButton onPress={handleAvoid} disabled={avoidDisabled} initialConfirmed={avoided} />
         </View>
 
-        {avoided && <SparkleDecoration variant="large" />}
+        {/* Post-avoid stamp overlay */}
+        {avoidAnimating && <StampOverlay onLand={triggerShake} />}
       </View>
-    </View>
+
+      {/* Post-avoid money particles */}
+      {avoidAnimating && <MoneyParticles originY={-CARD_SPRITE_SIZE * 0.5} />}
+    </Animated.View>
   );
 }
 
+const SPRITE_OVERLAP = Math.round(CARD_SPRITE_SIZE * 0.2);
+const SPRITE_ABOVE = CARD_SPRITE_SIZE - SPRITE_OVERLAP;
+
 const styles = StyleSheet.create({
-  cardWrapper: { overflow: 'visible' as const },
-  card: {
-    ...bevelFocusRaised,
-    backgroundColor: theme.colors.panelInner,
-    borderRadius: theme.radii.sharp,
-    marginHorizontal: theme.space.sm,
+  folder: {
+    backgroundColor: theme.colors.folderBg,
     overflow: 'visible' as const,
+    paddingBottom: theme.space.lg,
   },
-  headerRow: {
+  folderTab: {
+    position: 'absolute',
+    top: -36,
+    right: theme.space.lg,
     flexDirection: 'row',
-    alignItems: 'flex-start',
-  },
-  spriteSide: {
-    paddingLeft: theme.space.sm,
-    marginTop: -40,
-  },
-  nameSide: {
-    flex: 1,
-    paddingLeft: theme.space.sm,
-    paddingRight: theme.space.lg,
-    paddingTop: theme.space.lg,
-    paddingBottom: theme.space.sm,
-  },
-  nameSideNoSprite: {
-    paddingLeft: theme.space.lg,
-  },
-  contextBlock: { marginBottom: theme.space.sm },
-  contextEyebrow: { ...theme.type.caption, color: theme.colors.glowCyan, letterSpacing: 1 },
-  contextLine: { ...theme.type.bodyS, color: theme.colors.textSecondary, marginTop: theme.space.xs },
-  titleRow: { flexDirection: 'row', alignItems: 'center', marginBottom: theme.space.xs },
-  name: { flex: 1, ...theme.type.displayM, color: theme.colors.textPrimary, marginRight: theme.space.sm },
-  parentAttribution: { ...theme.type.bodyS, color: theme.colors.textSecondary, marginTop: 1 },
-  badge: {
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderWidth: theme.borders.standard.width,
-    borderColor: theme.colors.amberActionLight,
-    backgroundColor: theme.colors.panelInner,
-    borderRadius: theme.radii.sharp,
-  },
-  badgeText: { ...theme.type.caption, fontSize: 10, color: theme.colors.amberActionLight, fontWeight: 'bold' },
-  actSection: {
-    paddingHorizontal: theme.space.lg,
-    paddingBottom: theme.space.md,
-  },
-  dismissButton: {
     alignItems: 'center',
+    backgroundColor: theme.colors.folderTabBg,
+    borderTopLeftRadius: theme.radii.folderTab,
+    borderTopRightRadius: theme.radii.folderTab,
+    paddingHorizontal: theme.space.md,
     paddingVertical: theme.space.sm,
-    marginTop: theme.space.sm,
-    borderTopWidth: 1,
-    borderTopColor: theme.colors.focusBevelDark,
+    minWidth: theme.a11y.minTapTarget,
+    minHeight: theme.a11y.minTapTarget,
+    zIndex: 5,
   },
-  dismissLabel: { ...theme.type.bodyS, color: theme.colors.textSecondary },
+  tabLabel: {
+    fontFamily: theme.fonts.headline,
+    fontSize: 12,
+    color: theme.colors.documentText,
+    letterSpacing: 1,
+    marginRight: theme.space.sm,
+  },
+  tabClose: {
+    fontFamily: theme.fonts.headline,
+    fontSize: 16,
+    color: theme.colors.documentText,
+    opacity: 0.6,
+  },
+  seal: {
+    position: 'absolute',
+    right: theme.space.xl,
+    top: theme.space['2xl'],
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: theme.colors.sealRed,
+    opacity: 0.25,
+    zIndex: 1,
+  },
+  spritePerch: {
+    position: 'absolute',
+    left: theme.space.lg,
+    top: -(SPRITE_ABOVE),
+    zIndex: 4,
+  },
+  documentPanel: {
+    marginHorizontal: theme.space.lg,
+    marginTop: theme.space.sm,
+    borderRadius: theme.radii.sharp,
+    overflow: 'hidden',
+    backgroundColor: theme.colors.documentBg,
+    zIndex: 2,
+  },
+  buttonPad: {
+    paddingHorizontal: theme.space.md,
+    paddingVertical: theme.space.sm,
+    backgroundColor: theme.colors.documentBg,
+  },
 });
