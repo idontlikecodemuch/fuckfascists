@@ -9,7 +9,7 @@ import type { DonationSummary, Entity } from '../../core/models';
 import type { PlatformItem, Platform } from '../Platforms/types';
 import type { ScorecardViewData } from '../Scorecard/types';
 import type { TrackContextValue } from '../Platforms/context/TrackContext';
-import type { AboutContent, TransparencyPoint, FaqEntry, LinkEntry } from '../Info/types';
+import type { AboutContent, ReferenceEntry, LinkEntry } from '../Info/types';
 import type { BarcodeNotice } from '../Map/hooks/useBarcodeSearch';
 
 // ── Donation summaries ──────────────────────────────────────────────────────
@@ -244,6 +244,5 @@ export const harnessScorecardEmpty: ScorecardViewData = { weekOf: today, persons
 // ── Info ────────────────────────────────────────────────────────────────────
 
 export const harnessAbout: AboutContent = { tagline: 'Your money is a vote. Make it count.', description: 'F*ck Fascists helps you identify and avoid businesses that donate to Republican campaigns.', organization: 'F*ck Fascists Project \u00b7 501(c)(4) nonprofit', ethosTitle: 'WHAT WE BELIEVE', ethos: 'Every dollar is a vote.', sourceCodeUrl: 'https://github.com/fuckfascists' };
-export const harnessTransparency: TransparencyPoint[] = [{ id: 't1', title: 'DATA SOURCE', body: 'All donation data comes from the Federal Election Commission.' }, { id: 't2', title: 'MATCHING', body: 'Business names are matched using Jaro-Winkler similarity scoring.' }];
-export const harnessFaqs: FaqEntry[] = [{ id: 'f1', q: 'Where does the donation data come from?', a: 'All data is sourced from the FEC API.' }, { id: 'f2', q: 'Is my location tracked?', a: 'No. GPS coordinates are session-only and never stored.' }];
+export const harnessReference: ReferenceEntry[] = [{ id: 't1', q: 'DATA SOURCE', a: 'All donation data comes from the Federal Election Commission.', category: 'data' }, { id: 't2', q: 'MATCHING', a: 'Business names are matched using Jaro-Winkler similarity scoring.', category: 'data' }, { id: 'f1', q: 'Where does the donation data come from?', a: 'All data is sourced from the FEC API.', category: 'data' }, { id: 'f2', q: 'Is my location tracked?', a: 'No. GPS coordinates are session-only and never stored.', category: 'privacy' }];
 export const harnessLinks: LinkEntry[] = [{ id: 'l1', label: 'Source Code (GitHub)', url: 'https://github.com/fuckfascists', category: 'source' }, { id: 'l2', label: 'FEC.gov', url: 'https://www.fec.gov', category: 'source' }];

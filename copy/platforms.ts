@@ -19,7 +19,9 @@ export const platformsCopy = {
   countLabel: (n: number) => `${n}\u00d7`,
   countDash: "\u2014",
   countA11y: (n: number, name: string) => `Avoided ${name} ${n} time${n === 1 ? '' : 's'} this week`,
+  /** @deprecated — use theme.accordion.collapsedIndicator / expandedIndicator */
   expandIndicator: "+",
+  /** @deprecated — use theme.accordion.collapsedIndicator / expandedIndicator */
   collapseIndicator: "\u2212",
   rowSubtitle: (company: string, ceo: string) => `${company} \u00b7 CEO: ${ceo}`,
 

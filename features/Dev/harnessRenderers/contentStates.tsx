@@ -19,8 +19,7 @@ import {
   harnessScorecardPopulated,
   harnessScorecardEmpty,
   harnessAbout,
-  harnessTransparency,
-  harnessFaqs,
+  harnessReference,
   harnessLinks,
   harnessBarcodeScanResult,
   harnessHighConfResult,
@@ -92,15 +91,15 @@ function AboutSection() {
 }
 
 export function renderInfoDefault(): React.ReactElement {
-  return (<InfoShell><AboutSection /><InfoSection title={infoCopy.data}><View style={s.collapseToggle}><Text style={s.collapseText}>+</Text></View></InfoSection><InfoSection title={infoCopy.faq}>{harnessFaqs.map((e) => <FaqItem key={e.id} entry={e} />)}</InfoSection><InfoSection title={infoCopy.links}>{harnessLinks.map((e) => <LinkRow key={e.id} entry={e} />)}</InfoSection></InfoShell>);
+  return (<InfoShell><AboutSection />{harnessReference.map((e) => <FaqItem key={e.id} entry={e} />)}<InfoSection title={infoCopy.links}>{harnessLinks.map((e) => <LinkRow key={e.id} entry={e} />)}</InfoSection></InfoShell>);
 }
 
 export function renderInfoTransparency(): React.ReactElement {
-  return (<InfoShell><AboutSection /><InfoSection title={infoCopy.data}><View style={s.collapseToggle}><Text style={s.collapseText}>{'\u2212'}</Text></View>{harnessTransparency.map((p) => (<View key={p.id} style={s.tPoint}><Text style={s.tTitle} allowFontScaling>{p.title}</Text><Text style={s.tBody} allowFontScaling>{p.body}</Text></View>))}</InfoSection></InfoShell>);
+  return (<InfoShell><AboutSection />{harnessReference.filter((e) => e.category === 'data').map((e) => <FaqItem key={e.id} entry={e} defaultOpen />)}</InfoShell>);
 }
 
 export function renderInfoFaq(): React.ReactElement {
-  return (<InfoShell><InfoSection title={infoCopy.faq}>{harnessFaqs.map((e) => <FaqItem key={e.id} entry={e} />)}</InfoSection></InfoShell>);
+  return (<InfoShell>{harnessReference.map((e) => <FaqItem key={e.id} entry={e} />)}</InfoShell>);
 }
 
 // ── Scan ────────────────────────────────────────────────────────────────────
