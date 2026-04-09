@@ -7,7 +7,7 @@ import type { ScanResult } from '../Map/types';
 import type { DonationSummary, Entity } from '../../core/models';
 import type { PlatformItem, Platform } from '../Platforms/types';
 import type { ScorecardViewData } from '../Scorecard/types';
-import type { FaqEntry, LinkEntry, TransparencyPoint, AboutContent } from '../Info/types';
+import type { ReferenceEntry, LinkEntry, AboutContent } from '../Info/types';
 
 // ── Donation summaries ──────────────────────────────────────────────────────
 
@@ -252,14 +252,11 @@ export const mockAbout: AboutContent = {
   sourceCodeUrl: 'https://github.com/fuckfascists',
 };
 
-export const mockTransparency: TransparencyPoint[] = [
-  { id: 't1', title: 'DATA SOURCE', body: 'All donation data comes from the Federal Election Commission.' },
-  { id: 't2', title: 'MATCHING', body: 'Business names are matched using Jaro-Winkler similarity scoring.' },
-];
-
-export const mockFaqs: FaqEntry[] = [
-  { id: 'f1', q: 'Where does the donation data come from?', a: 'All data is sourced from the FEC API — the same data available on fec.gov.' },
-  { id: 'f2', q: 'Is my location tracked?', a: 'No. GPS coordinates are session-only and never stored.' },
+export const mockReference: ReferenceEntry[] = [
+  { id: 't1', q: 'DATA SOURCE', a: 'All donation data comes from the Federal Election Commission.', category: 'data' },
+  { id: 't2', q: 'MATCHING', a: 'Business names are matched using Jaro-Winkler similarity scoring.', category: 'data' },
+  { id: 'f1', q: 'Where does the donation data come from?', a: 'All data is sourced from the FEC API — the same data available on fec.gov.', category: 'data' },
+  { id: 'f2', q: 'Is my location tracked?', a: 'No. GPS coordinates are session-only and never stored.', category: 'privacy' },
 ];
 
 export const mockLinks: LinkEntry[] = [

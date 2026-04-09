@@ -7,8 +7,12 @@ export interface InfoContent {
   /** Increment when breaking changes are made to the schema. */
   version: string;
   about: AboutContent;
-  transparency: TransparencyPoint[];
-  faq: FaqEntry[];
+  /** Unified reference accordion — merged from transparency + faq. */
+  reference: ReferenceEntry[];
+  /** @deprecated — kept for CDN backward compat. Screen reads from reference. */
+  transparency?: TransparencyPoint[];
+  /** @deprecated — kept for CDN backward compat. Screen reads from reference. */
+  faq?: FaqEntry[];
   links: LinkEntry[];
 }
 
@@ -21,12 +25,23 @@ export interface AboutContent {
   sourceCodeUrl: string;
 }
 
+export type ReferenceCategory = 'data' | 'privacy' | 'app';
+
+export interface ReferenceEntry {
+  id: string;
+  q: string;
+  a: string;
+  category: ReferenceCategory;
+}
+
+/** @deprecated — use ReferenceEntry. Kept for CDN backward compat. */
 export interface TransparencyPoint {
   id: string;
   title: string;
   body: string;
 }
 
+/** @deprecated — use ReferenceEntry. Kept for CDN backward compat. */
 export interface FaqEntry {
   id: string;
   q: string;

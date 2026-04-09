@@ -67,7 +67,7 @@ export function PlatformRow({
         accessibilityState={{ expanded }}
       >
           <Text style={styles.expandIndicator} allowFontScaling={false} accessible={false}>
-            {expanded ? platformsCopy.collapseIndicator : platformsCopy.expandIndicator}
+            {expanded ? theme.accordion.expandedIndicator : theme.accordion.collapsedIndicator}
           </Text>
 
           {!isChild && (

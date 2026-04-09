@@ -1,22 +1,23 @@
 import React, { useState } from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
-import type { FaqEntry } from '../types';
+import type { ReferenceEntry } from '../types';
 import { infoCopy } from '../../../copy/info';
 import { theme } from '../../../design/tokens';
 import { bevelRaised } from '../../../design/bevel';
 import { SparkleDecoration } from '../../../core/fx/SparkleDecoration';
 
 interface FaqItemProps {
-  entry: FaqEntry;
+  entry: ReferenceEntry;
+  defaultOpen?: boolean;
 }
 
 /**
- * Expandable FAQ row with beveled panel.
- * Collapsed: grey bevel, chevron ▼. Expanded: blue focus tint, left accent bar,
- * chevron ▲, sparkles top-right.
+ * Expandable accordion row with beveled panel.
+ * Collapsed: grey bevel, + indicator. Expanded: blue focus tint, left accent bar,
+ * − indicator, sparkles top-right.
  */
-export function FaqItem({ entry }: FaqItemProps) {
-  const [open, setOpen] = useState(false);
+export function FaqItem({ entry, defaultOpen = false }: FaqItemProps) {
+  const [open, setOpen] = useState(defaultOpen);
 
   return (
     <View style={[styles.wrapper, open ? styles.wrapperOpen : null]}>
@@ -36,10 +37,10 @@ export function FaqItem({ entry }: FaqItemProps) {
           {entry.q}
         </Text>
         <Text
-          style={[styles.chevron, open ? styles.chevronOpen : null]}
+          style={[styles.indicator, open ? styles.indicatorOpen : null]}
           accessible={false}
         >
-          {open ? infoCopy.chevronOpen : infoCopy.chevronClosed}
+          {open ? theme.accordion.expandedIndicator : theme.accordion.collapsedIndicator}
         </Text>
       </Pressable>
 
@@ -94,12 +95,12 @@ const styles = StyleSheet.create({
   questionTextOpen: {
     color: theme.colors.focusText,
   },
-  chevron: {
+  indicator: {
     ...theme.type.caption,
     color: theme.colors.textSecondary,
     marginLeft: theme.space.sm,
   },
-  chevronOpen: {
+  indicatorOpen: {
     color: theme.colors.highlightBlue,
   },
   answer: {

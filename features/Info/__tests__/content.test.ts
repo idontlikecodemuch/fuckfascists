@@ -15,42 +15,33 @@ describe('BUNDLED_CONTENT structure', () => {
     expect(about.description.length).toBeGreaterThan(0);
   });
 
-  it('has at least three transparency points', () => {
-    expect(BUNDLED_CONTENT.transparency.length).toBeGreaterThanOrEqual(3);
+  it('has at least ten reference entries', () => {
+    expect(BUNDLED_CONTENT.reference.length).toBeGreaterThanOrEqual(10);
   });
 
-  it('every transparency point has id, title, and body', () => {
-    BUNDLED_CONTENT.transparency.forEach((p) => {
-      expect(typeof p.id).toBe('string');
-      expect(p.id.length).toBeGreaterThan(0);
-      expect(typeof p.title).toBe('string');
-      expect(typeof p.body).toBe('string');
+  it('every reference entry has id, q, a, and a valid category', () => {
+    const validCategories = new Set(['data', 'privacy', 'app']);
+    BUNDLED_CONTENT.reference.forEach((r) => {
+      expect(typeof r.id).toBe('string');
+      expect(r.id.length).toBeGreaterThan(0);
+      expect(typeof r.q).toBe('string');
+      expect(r.q.length).toBeGreaterThan(0);
+      expect(typeof r.a).toBe('string');
+      expect(r.a.length).toBeGreaterThan(0);
+      expect(validCategories.has(r.category)).toBe(true);
     });
   });
 
-  it('transparency point ids are unique', () => {
-    const ids = BUNDLED_CONTENT.transparency.map((p) => p.id);
+  it('reference entry ids are unique', () => {
+    const ids = BUNDLED_CONTENT.reference.map((r) => r.id);
     expect(new Set(ids).size).toBe(ids.length);
   });
 
-  it('has at least five FAQ entries', () => {
-    expect(BUNDLED_CONTENT.faq.length).toBeGreaterThanOrEqual(5);
-  });
-
-  it('every FAQ entry has id, q, and a', () => {
-    BUNDLED_CONTENT.faq.forEach((f) => {
-      expect(typeof f.id).toBe('string');
-      expect(f.id.length).toBeGreaterThan(0);
-      expect(typeof f.q).toBe('string');
-      expect(f.q.length).toBeGreaterThan(0);
-      expect(typeof f.a).toBe('string');
-      expect(f.a.length).toBeGreaterThan(0);
-    });
-  });
-
-  it('FAQ ids are unique', () => {
-    const ids = BUNDLED_CONTENT.faq.map((f) => f.id);
-    expect(new Set(ids).size).toBe(ids.length);
+  it('has entries in all three categories', () => {
+    const categories = new Set(BUNDLED_CONTENT.reference.map((r) => r.category));
+    expect(categories.has('data')).toBe(true);
+    expect(categories.has('privacy')).toBe(true);
+    expect(categories.has('app')).toBe(true);
   });
 
   it('has at least one link', () => {
@@ -73,14 +64,17 @@ describe('BUNDLED_CONTENT structure', () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
-  it('includes a mention of FEC in transparency', () => {
-    const text = BUNDLED_CONTENT.transparency.map((p) => p.body).join(' ');
-    expect(text.toLowerCase()).toContain('fec');
+  it('includes a mention of FEC in data category entries', () => {
+    const dataText = BUNDLED_CONTENT.reference
+      .filter((r) => r.category === 'data')
+      .map((r) => r.a)
+      .join(' ');
+    expect(dataText.toLowerCase()).toContain('fec');
   });
 
-  it('includes a tracking FAQ entry', () => {
-    const trackingEntry = BUNDLED_CONTENT.faq.find((f) =>
-      f.q.toLowerCase().includes('track')
+  it('includes a tracking reference entry', () => {
+    const trackingEntry = BUNDLED_CONTENT.reference.find((r) =>
+      r.q.toLowerCase().includes('track')
     );
     expect(trackingEntry).toBeDefined();
   });

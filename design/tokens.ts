@@ -95,6 +95,11 @@ export const theme = {
     minTapTarget: 44,
     focusRing: { width: 2, color: '#7AF2FF', offset: 2 },
   },
+
+  accordion: {
+    expandedIndicator: '\u2212',   // − (U+2212 MINUS SIGN)
+    collapsedIndicator: '+',
+  },
 } as const;
 
 export type Theme = typeof theme;

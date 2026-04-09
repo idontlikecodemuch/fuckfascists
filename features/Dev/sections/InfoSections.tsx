@@ -1,14 +1,14 @@
 /**
  * Info component catalog sections. DEV ONLY.
  */
-import React, { forwardRef, useState } from 'react';
-import { View, ScrollView, Text, StyleSheet } from 'react-native';
+import React, { forwardRef } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import { CatalogSection } from '../CatalogSection';
 import { InfoSection } from '../../Info/components/InfoSection';
 import { FaqItem } from '../../Info/components/FaqItem';
 import { LinkRow } from '../../Info/components/LinkRow';
 import { infoCopy } from '../../../copy/info';
-import { mockAbout, mockTransparency, mockFaqs, mockLinks } from '../catalogMocks';
+import { mockAbout, mockReference, mockLinks } from '../catalogMocks';
 
 const MONO = 'monospace' as const;
 
@@ -30,20 +30,11 @@ export const InfoFullScreen = forwardRef<View>((_, ref) => (
         </View>
       </InfoSection>
 
-      <InfoSection title={infoCopy.data}>
-        {mockTransparency.map((point) => (
-          <View key={point.id} style={styles.tPoint}>
-            <Text style={styles.tTitle}>{point.title}</Text>
-            <Text style={styles.tBody}>{point.body}</Text>
-          </View>
-        ))}
-      </InfoSection>
-
-      <InfoSection title={infoCopy.faq}>
-        {mockFaqs.map((entry) => (
+      <View style={styles.pad}>
+        {mockReference.map((entry) => (
           <FaqItem key={entry.id} entry={entry} />
         ))}
-      </InfoSection>
+      </View>
 
       <InfoSection title={infoCopy.links}>
         {mockLinks.map((entry) => (
@@ -59,14 +50,14 @@ InfoFullScreen.displayName = 'InfoFullScreen';
 
 export const FaqCollapsed = forwardRef<View>((_, ref) => (
   <CatalogSection ref={ref} label="FaqItem — Collapsed">
-    <FaqItem entry={mockFaqs[0]} />
+    <FaqItem entry={mockReference[0]} />
   </CatalogSection>
 ));
 FaqCollapsed.displayName = 'FaqCollapsed';
 
 export const FaqExpanded = forwardRef<View>((_, ref) => (
   <CatalogSection ref={ref} label="FaqItem — Expanded (tap to see)">
-    <FaqItem entry={mockFaqs[0]} />
+    <FaqItem entry={mockReference[0]} />
   </CatalogSection>
 ));
 FaqExpanded.displayName = 'FaqExpanded';

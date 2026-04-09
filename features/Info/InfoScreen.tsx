@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ScrollView, View, Text, Pressable, StyleSheet, SafeAreaView, Linking } from 'react-native';
 import { useInfoContent } from './hooks/useInfoContent';
 import { InfoSection } from './components/InfoSection';
@@ -10,6 +10,13 @@ import { sharedCopy } from '../../copy/shared';
 import { theme } from '../../design/tokens';
 import { bevelAmberPlaque, bevelInset } from '../../design/bevel';
 import { SparkleDecoration } from '../../core/fx/SparkleDecoration';
+import type { ReferenceCategory } from './types';
+
+const CATEGORY_LABELS: Record<ReferenceCategory, string> = {
+  data: infoCopy.categoryData,
+  privacy: infoCopy.categoryPrivacy,
+  app: infoCopy.categoryApp,
+};
 
 interface InfoScreenProps {
   onVersionTap?: () => void;
@@ -17,15 +24,17 @@ interface InfoScreenProps {
 
 export function InfoScreen({ onVersionTap }: InfoScreenProps) {
   const content = useInfoContent();
-  const { about, transparency, faq, links } = content;
-  const [showTransparency, setShowTransparency] = useState(false);
+  const { about, reference, links } = content;
+
+  // Track which categories we've already rendered a label for
+  let lastCategory: ReferenceCategory | null = null;
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scroll}>
         <StarField seed="info" />
 
-        {/* ── Page header (placeholder for future asset) ── */}
+        {/* ── Page header ── */}
         <View style={styles.pageHeader}>
           <Text style={styles.pageTitle} accessibilityRole="header" allowFontScaling>
             {infoCopy.title}
@@ -63,34 +72,23 @@ export function InfoScreen({ onVersionTap }: InfoScreenProps) {
           </View>
         ) : null}
 
-        {/* ── THE DATA (transparency accordion) ── */}
-        <InfoSection title={infoCopy.data}>
-          <Pressable
-            onPress={() => setShowTransparency((v) => !v)}
-            style={styles.collapseToggle}
-            accessibilityRole="button"
-            accessibilityLabel={infoCopy.transparencyToggleLabel}
-            accessibilityState={{ expanded: showTransparency }}
-            accessibilityHint={showTransparency ? infoCopy.faqCollapse : infoCopy.faqExpand}
-          >
-            <Text style={styles.collapseText} allowFontScaling>
-              {showTransparency ? infoCopy.chevronOpen : infoCopy.chevronClosed}
-            </Text>
-          </Pressable>
-          {showTransparency && transparency.map((point) => (
-            <View key={point.id} style={styles.tPoint}>
-              <Text style={styles.tTitle} allowFontScaling>{point.title}</Text>
-              <Text style={styles.tBody} allowFontScaling>{point.body}</Text>
-            </View>
-          ))}
-        </InfoSection>
-
-        {/* ── FAQ ── */}
-        <InfoSection title={infoCopy.faq}>
-          {faq.map((entry) => (
-            <FaqItem key={entry.id} entry={entry} />
-          ))}
-        </InfoSection>
+        {/* ── Reference accordion (merged THE DATA + PRIVACY + THE APP) ── */}
+        <View style={styles.referenceSection}>
+          {reference.map((entry) => {
+            const showLabel = entry.category !== lastCategory;
+            lastCategory = entry.category;
+            return (
+              <React.Fragment key={entry.id}>
+                {showLabel && (
+                  <Text style={styles.categoryLabel} accessibilityRole="header" allowFontScaling>
+                    {CATEGORY_LABELS[entry.category]}
+                  </Text>
+                )}
+                <FaqItem entry={entry} defaultOpen={entry.id === 'data-source'} />
+              </React.Fragment>
+            );
+          })}
+        </View>
 
         {/* ── Links & Source ── */}
         <InfoSection title={infoCopy.links}>
@@ -120,15 +118,6 @@ export function InfoScreen({ onVersionTap }: InfoScreenProps) {
 
 const ABOUT_BG = '#050810';
 const ETHOS_BG = '#080a0e';
-
-const bevelRaisedPanel = {
-  borderWidth: theme.borders.bevel.width,
-  borderTopColor: theme.colors.bevelLight,
-  borderLeftColor: theme.colors.bevelLight,
-  borderBottomColor: theme.colors.bevelDark,
-  borderRightColor: theme.colors.bevelDark,
-  borderRadius: theme.radii.sharp,
-};
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: theme.colors.bgVoid },
@@ -204,31 +193,19 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
-  collapseToggle: {
-    minHeight: theme.a11y.minTapTarget,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: theme.colors.panelInner,
-    ...bevelRaisedPanel,
-    marginHorizontal: theme.space.sm,
-    marginBottom: theme.space.xs,
+  referenceSection: {
+    marginHorizontal: theme.space.lg,
+    marginTop: theme.space.lg,
   },
-  collapseText: { ...theme.type.caption, color: theme.colors.textSecondary },
-  tPoint: {
-    marginHorizontal: theme.space.sm,
-    marginBottom: theme.space.xs,
-    ...bevelRaisedPanel,
-    backgroundColor: theme.colors.panelInner,
-    padding: theme.space.lg,
+  categoryLabel: {
+    fontFamily: theme.fonts.headline,
+    fontSize: theme.type.caption.fontSize,
+    lineHeight: theme.type.caption.lineHeight,
+    color: theme.colors.textSecondary,
+    letterSpacing: 2,
+    marginTop: theme.space.lg,
+    marginBottom: theme.space.sm,
   },
-  tTitle: {
-    ...theme.type.bodyS,
-    fontWeight: 'bold',
-    color: theme.colors.textPrimary,
-    marginBottom: theme.space.xs,
-    letterSpacing: 1,
-  },
-  tBody: { ...theme.type.bodyS, color: theme.colors.textSecondary, lineHeight: 20 },
 
   versionRow: { alignItems: 'center', marginTop: theme.space.xl },
   versionText: { ...theme.type.caption, color: theme.colors.textSecondary },

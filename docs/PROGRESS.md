@@ -12,6 +12,24 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 8, 2026 ET — Info screen restructure + accordion token
+**Focus:** Merge THE DATA and FAQ into unified reference accordion; add accordion indicator design token.
+
+**What changed:**
+
+1. **Unified reference accordion** — THE DATA (broken wrapper accordion) and FAQ (separate section) merged into a single `reference[]` array with inline category labels (THE DATA, PRIVACY, THE APP). Each item is an individual expandable `FaqItem` row. No more wrapper accordion that dumps all items.
+2. **Accordion indicator token** — `theme.accordion.expandedIndicator` (`−` U+2212) and `theme.accordion.collapsedIndicator` (`+`) added to `design/tokens.ts`. Wired into FaqItem (Info screen) and PlatformRow (Track screen). No hardcoded indicator characters remain.
+3. **Default-open first item** — "Where does the data come from?" renders expanded on first visit.
+4. **Multi-active accordions** — multiple items can be open simultaneously (each manages own state).
+5. **CDN backward compat** — `fetchContent.ts` accepts old `transparency`+`faq` payloads and auto-transforms to `reference[]`. `isValidInfoContent` validates either schema.
+6. **Data model** — `ReferenceEntry` type added with `category: 'data' | 'privacy' | 'app'`. Old `TransparencyPoint` and `FaqEntry` types deprecated but kept for CDN compat.
+
+**Files changed:** `design/tokens.ts`, `copy/info.ts`, `copy/infoContent.ts`, `copy/platforms.ts`, `features/Info/types.ts`, `features/Info/InfoScreen.tsx`, `features/Info/components/FaqItem.tsx`, `features/Info/data/fetchContent.ts`, `features/Platforms/components/PlatformRow.tsx`, `features/Info/__tests__/content.test.ts`, `features/Info/__tests__/fetchContent.test.ts`, `features/Dev/` (catalog mocks + harness fixtures updated).
+
+**Tests:** All 356 tests pass (31 suites). `tsc --noEmit` clean.
+
+---
+
 ### Session: April 8, 2026 ET — Map tap crash fix (AIRMap nil subview)
 **Focus:** Fix crashes when tapping multiple map locations rapidly. Root cause: concurrent `processTapNames` calls + unbounded ghost marker accumulation triggering the react-native-maps `insertReactSubview` nil crash on Fabric ([#5345](https://github.com/react-native-maps/react-native-maps/issues/5345), [#5217](https://github.com/react-native-maps/react-native-maps/issues/5217)).
 
