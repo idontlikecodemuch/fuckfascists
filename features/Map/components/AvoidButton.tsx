@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Animated, Pressable, Text, StyleSheet, AccessibilityInfo } from 'react-native';
+import { Animated, Pressable, Text, View, StyleSheet, AccessibilityInfo } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { mapCopy } from '../../../copy/map';
 import { theme } from '../../../design/tokens';
-import { bevelAmberRaised, bevelGreenInset } from '../../../design/bevel';
+import { bevelFocusRaised, bevelGreenInset } from '../../../design/bevel';
+import { SparkleDecoration } from '../../../core/fx';
 
 interface AvoidButtonProps {
   onPress: () => Promise<void>;
@@ -13,22 +14,18 @@ interface AvoidButtonProps {
 }
 
 /**
- * Full-width AVOID button — the primary action on the business card.
+ * Full-width AVOID button — cyan cockpit instrument overlaying the manila folder.
  *
- * Celebration sequence on confirm:
- *  1. Text flips to "AVOIDED" with checkmark
- *  2. Scale punch (1 → 1.08 → 1) over ~200ms
- *  3. Brief opacity pulse (flash)
- *  4. Haptic impact (medium)
- *  5. Settles to green confirmed state after ~1.5s
- *
- * Reduced-motion: animation + haptics disabled — state change is immediate.
- * Minimum tap target: 44×44pt (Apple HIG / WCAG 2.5.5).
+ * Uses focusAccent/focusBevel system (blue). SparkleDecoration pre-avoid.
+ * Post-avoid: green inset ✓ AVOIDED (unchanged).
  */
 export function AvoidButton({ onPress, disabled = false, initialConfirmed = false }: AvoidButtonProps) {
   const [confirmed, setConfirmed] = useState(initialConfirmed);
   const [error, setError] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
+
+  // Sync confirmed state when initialConfirmed changes (hydration on card reopen)
+  useEffect(() => { if (initialConfirmed) setConfirmed(true); }, [initialConfirmed]);
 
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const flashAnim = useRef(new Animated.Value(1)).current;
@@ -49,7 +46,6 @@ export function AvoidButton({ onPress, disabled = false, initialConfirmed = fals
     if (!reducedMotion) {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
 
-      // Scale punch + flash pulse
       Animated.parallel([
         Animated.sequence([
           Animated.timing(scaleAnim, { toValue: 1.08, duration: 100, useNativeDriver: true }),
@@ -76,7 +72,7 @@ export function AvoidButton({ onPress, disabled = false, initialConfirmed = fals
   const accessLabel = error ? mapCopy.avoidRetryLabel : confirmed ? mapCopy.avoidDoneLabel : mapCopy.avoidMarkLabel;
 
   return (
-    <Animated.View style={{ transform: [{ scale: scaleAnim }], opacity: flashAnim }}>
+    <Animated.View style={[styles.wrapper, { transform: [{ scale: scaleAnim }], opacity: flashAnim }]}>
       <Pressable
         onPress={handlePress}
         disabled={confirmed || disabled}
@@ -89,14 +85,16 @@ export function AvoidButton({ onPress, disabled = false, initialConfirmed = fals
           {label}
         </Text>
       </Pressable>
+      {!confirmed && !error && <SparkleDecoration variant="default" />}
     </Animated.View>
   );
 }
 
 const styles = StyleSheet.create({
+  wrapper: { overflow: 'visible' as const },
   button: {
-    ...bevelAmberRaised,
-    backgroundColor: theme.colors.amberAction,
+    ...bevelFocusRaised,
+    backgroundColor: theme.colors.focusAccent,
     borderRadius: theme.radii.button,
     minHeight: 56,
     paddingVertical: theme.space.md,
