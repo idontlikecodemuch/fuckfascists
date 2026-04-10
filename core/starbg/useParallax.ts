@@ -21,6 +21,7 @@ import type { SharedValue } from 'react-native-reanimated';
 import {
   STARBG_PARALLAX_TILT_MAX_OFFSET,
   STARBG_TILT_DEAD_ZONE,
+  STARBG_PITCH_BOOST,
   STARBG_PARALLAX_SCROLL_RATE_BG,
   STARBG_PARALLAX_SCROLL_RATE_MID,
   STARBG_PARALLAX_SCROLL_RATE_FG,
@@ -60,7 +61,7 @@ export function useParallax(
       SPRING_CONFIG,
     );
     tiltY.value = withSpring(
-      Math.max(-maxOff, Math.min(maxOff, filteredPitch * maxOff * 2)),
+      Math.max(-maxOff, Math.min(maxOff, filteredPitch * maxOff * 2 * STARBG_PITCH_BOOST)),
       SPRING_CONFIG,
     );
   }, [enabled]);

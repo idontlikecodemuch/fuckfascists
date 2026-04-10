@@ -43,6 +43,15 @@ export const STARBG_STREAK_COUNT = 2;    // number of independent streaks
 // Tilt: max pixel offset from device rotation
 export const STARBG_PARALLAX_TILT_MAX_OFFSET = 16;
 export const STARBG_TILT_DEAD_ZONE = 0.015;
+// Pitch (forward/back tilt) has a smaller natural range than roll (side-to-side),
+// so we boost it to feel equally responsive.
+export const STARBG_PITCH_BOOST = 2.5;
+
+// ── Subtle streak variant ───────────────────────────────────────────────────
+export const STARBG_SUBTLE_STREAK_COUNT = 3;     // more frequent, less prominent
+export const STARBG_SUBTLE_STREAK_INTERVAL_MS = 4000;
+export const STARBG_SUBTLE_STREAK_DURATION_MS = 800;
+export const STARBG_SUBTLE_STREAK_LENGTH = 50;
 
 // Scroll: translateY multiplier per layer (smaller = farther away)
 export const STARBG_PARALLAX_SCROLL_RATE_BG = 0.04;
