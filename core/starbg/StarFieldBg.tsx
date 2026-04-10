@@ -18,11 +18,11 @@ import type { SharedValue } from 'react-native-reanimated';
 import { useStarLayout } from './useStarLayout';
 import type { TwinkleStarData } from './useStarLayout';
 import { useParallax } from './useParallax';
-import { ShootingStreak } from './ShootingStreak';
+import { ShootingStreak, SubtleStreak } from './ShootingStreak';
 import { starbgBase } from './starbgAssets';
 import {
   STARBG_TWINKLE_OPACITY_MIN, STARBG_TWINKLE_OPACITY_MAX,
-  STARBG_TWINKLE_STAR_COUNT, STARBG_STREAK_COUNT,
+  STARBG_TWINKLE_STAR_COUNT, STARBG_STREAK_COUNT, STARBG_SUBTLE_STREAK_COUNT,
 } from './starbgConstants';
 import { STARBG_PARALLAX_ENABLED } from '../../config/constants';
 
@@ -213,6 +213,15 @@ export function StarFieldBg({
             screenHeight={height}
             reducedMotion={reducedMotion}
             seed={seed.length * 7919 + i * 997}
+          />
+        ))}
+        {!IS_LOW_PERF && Array.from({ length: STARBG_SUBTLE_STREAK_COUNT }, (_, i) => (
+          <SubtleStreak
+            key={`subtle-${i}`}
+            screenWidth={width}
+            screenHeight={height}
+            reducedMotion={reducedMotion}
+            seed={seed.length * 6151 + i * 1301}
           />
         ))}
       </Animated.View>
