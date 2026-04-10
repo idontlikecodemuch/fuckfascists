@@ -231,7 +231,10 @@ export function useTapSearch(
         // Fail silently — no user-visible error for tap search failures.
         console.error('[useTapSearch] handleMapPress error:', err);
       } finally {
-        setTapLoadingCoord(null);
+        // Defer loading-marker removal to next frame so it doesn't batch
+        // with the FlagMarker addition from processTapNames. Simultaneous
+        // add+remove triggers the AIRMap nil crash on Fabric.
+        requestAnimationFrame(() => setTapLoadingCoord(null));
       }
     },
     [processTapNames]
@@ -252,7 +255,7 @@ export function useTapSearch(
       } catch (err) {
         console.error('[useTapSearch] handlePoiClick error:', err);
       } finally {
-        setTapLoadingCoord(null);
+        requestAnimationFrame(() => setTapLoadingCoord(null));
       }
     },
     [processTapNames]
