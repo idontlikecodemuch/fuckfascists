@@ -21,7 +21,6 @@ import { FOLDER_AUTO_DISMISS_MS, AMBER_PULSE_MS } from '../../config/constants';
 import { FlagMarker } from './components/MapMarker';
 import { MapSearchBar } from './components/MapSearchBar';
 import { UnmatchedBanner } from './components/UnmatchedBanner';
-import { TapLoadingMarker } from './components/TapLoadingMarker';
 import { MatchChooser } from './components/MatchChooser';
 import { NoMatchToast } from './components/NoMatchToast';
 import { NoMatchMarker } from './components/NoMatchMarker';
@@ -123,7 +122,7 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
   } = useMapControls(location.coords, location.requestLocation);
 
   const {
-    tapPins, tapLoadingCoord, tapNoMatch, tapNoMatchCoords, latestTapBatch, setLatestTapBatch,
+    tapPins, tapNoMatch, tapNoMatchCoords, latestTapBatch, setLatestTapBatch,
     handleMapPress, handlePoiClick, autoScan, resetTapPins, clearLatestTapBatch, markTapPinAvoided,
   } = useTapSearch(deps, location.areaHash ?? '', regionRef, avoidedTodayRef);
 
@@ -262,7 +261,6 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
               } : undefined} />
           );
         })}
-        {tapLoadingCoord && <TapLoadingMarker coordinate={tapLoadingCoord} />}
         {tapNoMatchCoords.map((coord, i) => (
           <NoMatchMarker key={`ghost-${coord.latitude}-${coord.longitude}-${i}`} coordinate={coord} />
         ))}

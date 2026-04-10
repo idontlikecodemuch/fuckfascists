@@ -59,10 +59,14 @@ function tapCellKey(lat: number, lng: number, radius: number): string {
 function computeSearchRadius(region: Region | null): number {
   if (!region) return POI_SEARCH_RADIUS_METERS;
   const latMeters = region.latitudeDelta * 111_320;
-  const lngMeters = region.longitudeDelta * 111_320 * Math.cos((region.latitude * Math.PI) / 180);
+  const lngMeters =
+    region.longitudeDelta * 111_320 * Math.cos((region.latitude * Math.PI) / 180);
   const shorterSpan = Math.min(latMeters, lngMeters);
   const radius = shorterSpan * 0.02;
-  return Math.max(POI_SEARCH_RADIUS_MIN_METERS, Math.min(POI_SEARCH_RADIUS_MAX_METERS, radius));
+  return Math.max(
+    POI_SEARCH_RADIUS_MIN_METERS,
+    Math.min(POI_SEARCH_RADIUS_MAX_METERS, radius),
+  );
 }
 
 /** Coordinate key for deduplicating ghost markers (~11m grid). */
@@ -71,8 +75,15 @@ function ghostKey(coord: LatLng): string {
   return `${r(coord.latitude)},${r(coord.longitude)}`;
 }
 
-/** Maximum accumulated ghost markers before oldest are pruned. */
-const MAX_GHOST_MARKERS = 20;
+/**
+ * Maximum ghost markers before we stop adding new ones.
+ * Ghost markers are append-only — never removed during the session.
+ * This prevents the AIRMap insertReactSubview nil crash on Fabric
+ * that occurs when Markers are added and removed in the same render.
+ */
+const MAX_GHOST_MARKERS = 30;
+
+const TAP_NO_MATCH_DISPLAY_MS = 2000;
 
 /**
  * Handles iOS (onPress → MKLocalPointsOfInterestRequest) and Android
@@ -84,14 +95,18 @@ const MAX_GHOST_MARKERS = 20;
  *   - Cache key is a rounded string, not precise coordinates.
  *   - MapKitSearch does not access device GPS. Coordinate comes from the tap event.
  *
- * Crash prevention:
- *   - processTapNames is serialized via inFlightRef — only one runs at a time.
- *   - Ghost markers are capped at MAX_GHOST_MARKERS and deduplicated.
- *   - This prevents rapid marker add/remove cycles that trigger the
- *     AIRMap insertReactSubview nil crash on Fabric (react-native-maps #5345).
+ * Crash prevention — append-only Markers:
+ *   All map Markers managed by this hook are append-only during the session.
+ *   No Marker is ever removed from the MapView until the component unmounts.
+ *   This eliminates the AIRMap insertReactSubview nil crash on Fabric
+ *   (react-native-maps #5345, #5217) caused by simultaneous add+remove
+ *   in the same React render cycle.
+ *
+ *   - FlagMarkers (tapPins): only added, never removed.
+ *   - Ghost markers (tapNoMatchCoords): only added, capped without rotation.
+ *   - Loading indicator: NOT a Marker — no native map subview involved.
+ *   - processTapNames serialized via inFlightRef (one at a time).
  */
-const TAP_NO_MATCH_DISPLAY_MS = 2000;
-
 export function useTapSearch(
   deps: MatchingDeps,
   areaHash: string,
@@ -99,13 +114,14 @@ export function useTapSearch(
   avoidedTodayRef?: React.RefObject<Set<string>>,
 ) {
   const [tapPins, setTapPins] = useState<MapPin[]>([]);
-  const [tapLoadingCoord, setTapLoadingCoord] = useState<LatLng | null>(null);
   /** Scan results from the most recent tap — drives the MatchChooser when length ≥ 2. */
   const [latestTapBatch, setLatestTapBatch] = useState<ScanResult[]>([]);
   /** True briefly after a tap search yields no matches — drives the no-match toast. */
   const [tapNoMatch, setTapNoMatch] = useState(false);
   /** No-match tap coordinates — ghost flags persist until tab switch / unmount. */
   const [tapNoMatchCoords, setTapNoMatchCoords] = useState<LatLng[]>([]);
+  /** True while a POI search is in-flight — drives non-Marker loading UI. */
+  const [tapSearching, setTapSearching] = useState(false);
   const tapNoMatchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const cellCache = useRef<Map<string, CellCacheEntry>>(new Map());
   const lastTapAt = useRef<number>(0);
@@ -126,7 +142,7 @@ export function useTapSearch(
 
       try {
         const results = await Promise.allSettled(
-          names.map((name) => matchEntity(name, deps, areaHash))
+          names.map((name) => matchEntity(name, deps, areaHash)),
         );
 
         const newPins: MapPin[] = [];
@@ -152,7 +168,8 @@ export function useTapSearch(
         setLatestTapBatch(batchResults);
 
         // Ghost marker: show when tap found POI names but none matched.
-        // Deduplicate by rounded coordinate key. Cap at MAX_GHOST_MARKERS.
+        // Append-only — once cap is reached, no new ghosts are added.
+        // Deduplicate by rounded coordinate key.
         // Suppressed on auto-scan to avoid noisy first-load UI.
         if (batchResults.length === 0 && names.length > 0 && !suppressNoMatch) {
           if (tapNoMatchTimer.current) clearTimeout(tapNoMatchTimer.current);
@@ -162,13 +179,9 @@ export function useTapSearch(
           if (!ghostKeysRef.current.has(key)) {
             ghostKeysRef.current.add(key);
             setTapNoMatchCoords((prev) => {
-              const next = [...prev, coordinate];
-              if (next.length > MAX_GHOST_MARKERS) {
-                // Remove oldest and its key
-                const removed = next.shift()!;
-                ghostKeysRef.current.delete(ghostKey(removed));
-              }
-              return next;
+              // Cap reached — stop adding, never remove.
+              if (prev.length >= MAX_GHOST_MARKERS) return prev;
+              return [...prev, coordinate];
             });
           }
 
@@ -188,9 +201,10 @@ export function useTapSearch(
         }
       } finally {
         inFlightRef.current = false;
+        setTapSearching(false);
       }
     },
-    [deps, areaHash]
+    [deps, areaHash],
   );
 
   /**
@@ -207,12 +221,17 @@ export function useTapSearch(
       // Drop tap if a previous search is still in-flight.
       if (inFlightRef.current) return;
 
+      setTapSearching(true);
+
       const { coordinate } = e.nativeEvent;
-      setTapLoadingCoord(coordinate);
 
       try {
         const radius = computeSearchRadius(regionRef?.current ?? null);
-        const cellKey = tapCellKey(coordinate.latitude, coordinate.longitude, radius);
+        const cellKey = tapCellKey(
+          coordinate.latitude,
+          coordinate.longitude,
+          radius,
+        );
         const cached = cellCache.current.get(cellKey);
 
         if (cached && cached.expiresAt > Date.now()) {
@@ -222,22 +241,21 @@ export function useTapSearch(
         const names = await MapKitSearch.searchNearby(
           coordinate.latitude,
           coordinate.longitude,
-          radius
+          radius,
         );
 
-        cellCache.current.set(cellKey, { names, expiresAt: Date.now() + TAP_CACHE_TTL_MS });
+        cellCache.current.set(cellKey, {
+          names,
+          expiresAt: Date.now() + TAP_CACHE_TTL_MS,
+        });
         await processTapNames(names, coordinate);
       } catch (err) {
         // Fail silently — no user-visible error for tap search failures.
         console.error('[useTapSearch] handleMapPress error:', err);
-      } finally {
-        // Defer loading-marker removal to next frame so it doesn't batch
-        // with the FlagMarker addition from processTapNames. Simultaneous
-        // add+remove triggers the AIRMap nil crash on Fabric.
-        requestAnimationFrame(() => setTapLoadingCoord(null));
+        setTapSearching(false);
       }
     },
-    [processTapNames]
+    [processTapNames],
   );
 
   /**
@@ -249,16 +267,15 @@ export function useTapSearch(
     async (e: PoiClickEvent) => {
       if (inFlightRef.current) return;
       const { name, coordinate } = e.nativeEvent;
-      setTapLoadingCoord(coordinate);
+      setTapSearching(true);
       try {
         await processTapNames([name], coordinate);
       } catch (err) {
         console.error('[useTapSearch] handlePoiClick error:', err);
-      } finally {
-        requestAnimationFrame(() => setTapLoadingCoord(null));
+        setTapSearching(false);
       }
     },
-    [processTapNames]
+    [processTapNames],
   );
 
   /**
@@ -272,7 +289,11 @@ export function useTapSearch(
 
       try {
         const radius = computeSearchRadius(regionRef?.current ?? null);
-        const cellKey = tapCellKey(coordinate.latitude, coordinate.longitude, radius);
+        const cellKey = tapCellKey(
+          coordinate.latitude,
+          coordinate.longitude,
+          radius,
+        );
         const cached = cellCache.current.get(cellKey);
 
         if (cached && cached.expiresAt > Date.now()) {
@@ -282,15 +303,18 @@ export function useTapSearch(
         const names = await MapKitSearch.searchNearby(
           coordinate.latitude,
           coordinate.longitude,
-          radius
+          radius,
         );
-        cellCache.current.set(cellKey, { names, expiresAt: Date.now() + TAP_CACHE_TTL_MS });
+        cellCache.current.set(cellKey, {
+          names,
+          expiresAt: Date.now() + TAP_CACHE_TTL_MS,
+        });
         await processTapNames(names, coordinate, true);
       } catch {
         // Fail silently — auto-scan errors are not user-actionable.
       }
     },
-    [processTapNames]
+    [processTapNames],
   );
 
   const resetTapPins = useCallback(() => {
@@ -302,13 +326,13 @@ export function useTapSearch(
 
   const markTapPinAvoided = useCallback((entityId: string) => {
     setTapPins((prev) =>
-      prev.map((p) => (p.id === entityId ? { ...p, avoided: true } : p))
+      prev.map((p) => (p.id === entityId ? { ...p, avoided: true } : p)),
     );
   }, []);
 
   return {
     tapPins,
-    tapLoadingCoord,
+    tapSearching,
     tapNoMatch,
     tapNoMatchCoords,
     latestTapBatch,
