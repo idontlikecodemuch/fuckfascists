@@ -198,13 +198,13 @@ const styles = StyleSheet.create({
   },
   seal: {
     position: 'absolute',
-    right: theme.space.xl,
-    top: theme.space['2xl'],
+    right: -4,
+    top: theme.space.lg,
     width: 80,
     height: 80,
     tintColor: theme.colors.sealRed,
     opacity: 0.3,
-    zIndex: 1,
+    zIndex: 3,
   },
   spritePerch: {
     position: 'absolute',
