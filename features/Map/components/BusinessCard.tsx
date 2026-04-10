@@ -1,10 +1,9 @@
-import React, { useRef, useMemo, useEffect, useState } from 'react';
-import { Alert, View, Text, Image, Pressable, Animated, PanResponder, StyleSheet, AccessibilityInfo } from 'react-native';
+import React, { useRef, useMemo } from 'react';
+import { View, Text, Image, Pressable, Animated, PanResponder, StyleSheet, AccessibilityInfo } from 'react-native';
 import type { ScanResult } from '../types';
 import type { Entity, PoliticalPerson } from '../../../core/models';
-import { getDisplayFigure, getParentEntity, getAssociatedPeople } from '../../../core/models';
+import { getDisplayFigure, getAssociatedPeople } from '../../../core/models';
 import { CONFIDENCE_THRESHOLD_HIGH, CONFIDENCE_THRESHOLD_MEDIUM, CARD_SPRITE_SIZE, SCREEN_SHAKE_MS } from '../../../config/constants';
-import { sharedCopy } from '../../../copy/shared';
 import { mapCopy } from '../../../copy/map';
 import { theme } from '../../../design/tokens';
 import { sealEagle } from '../../../core/ui/uiAssets';
@@ -27,24 +26,15 @@ export interface BusinessCardProps {
   allEntities?: Entity[];
   people?: PoliticalPerson[];
   modal?: boolean;
-  /** Set to true when the post-avoid animation is playing. */
   avoidAnimating?: boolean;
-}
-
-/** Strip Inc/Corp/Platforms/.com for parent name display. */
-function shortParentName(name: string): string {
-  return name.replace(/\s*(Inc|Corp|Platforms|\.com)\s*/gi, '').trim();
 }
 
 /**
  * Manila folder business card — Clark pulling a file.
  *
- * Layout:
- *   Folder (full-width manila) → folder tab (REPORT ×) top-right
- *   → red seal (decorative) → cream document panel → DataZone table
- *   → AvoidButton → sprite perching on document top edge.
- *
- * Dismiss: folder tab tap, backdrop tap (in MapScreen), swipe down.
+ * Folder (gradient manila) → folder tab (REPORT ×) → red seal (decorative)
+ * → cream document panel (with drop shadow) → DataZone table → AvoidButton
+ * → sprite perching on document top edge.
  */
 export function BusinessCard({
   result, onAvoid, avoidDisabled = false, avoided = false,
@@ -55,12 +45,6 @@ export function BusinessCard({
   const fecUrl = donationSummary?.fecCommitteeUrl ?? fecFilingUrl;
   const displayName = matchedAlias || canonicalName;
   const isMedium = confidence >= CONFIDENCE_THRESHOLD_MEDIUM && confidence < CONFIDENCE_THRESHOLD_HIGH;
-
-  const parent = entity && allEntities ? getParentEntity(entity, allEntities) : undefined;
-  const parentName = parent ? shortParentName(parent.canonicalName) : null;
-  const showParent = parentName && parentName.toUpperCase() !== displayName.toUpperCase();
-  // When brand ≈ parent, show only brand name (no parent inline)
-  const effectiveDisplayName = showParent ? displayName : displayName;
 
   const figureName = entity ? getDisplayFigure(entity, allEntities) : null;
   const spriteId = figureName ? nameToSpriteId(figureName) : null;
@@ -112,6 +96,10 @@ export function BusinessCard({
       accessibilityLabel={mapCopy.cardModalLabel}
       {...panResponder.panHandlers}
     >
+      {/* Folder gradient layers */}
+      <View style={styles.folderGradTop} />
+      <View style={styles.folderGradBot} />
+
       {/* Folder tab — dismiss target */}
       <Pressable
         onPress={onDismiss}
@@ -123,7 +111,7 @@ export function BusinessCard({
         <Text style={styles.tabClose} allowFontScaling>{mapCopy.reportTabClose}</Text>
       </Pressable>
 
-      {/* Red seal — decorative, partially behind document */}
+      {/* Red seal — decorative */}
       <Image source={sealEagle} style={styles.seal} accessibilityElementsHidden />
 
       {/* Sprite — perching on document */}
@@ -133,24 +121,27 @@ export function BusinessCard({
         </View>
       )}
 
-      {/* Document panel */}
-      <View style={styles.documentPanel}>
-        <DataZone
-          donationSummary={donationSummary}
-          committeeName={committeeName}
-          fecUrl={fecUrl}
-          onDetailPress={handleDetailPress}
-          associatedPeople={associatedPeople}
-          displayName={effectiveDisplayName}
-          isMediumConfidence={isMedium}
-        />
+      {/* Document panel with drop shadow */}
+      <View style={styles.documentShadow}>
+        <View style={styles.documentPanel}>
+          <DataZone
+            donationSummary={donationSummary}
+            committeeName={committeeName}
+            fecUrl={fecUrl}
+            onDetailPress={handleDetailPress}
+            associatedPeople={associatedPeople}
+            displayName={displayName}
+            isMediumConfidence={isMedium}
+            entityName={entity?.canonicalName}
+          />
 
-        <View style={styles.buttonPad}>
-          <AvoidButton onPress={handleAvoid} disabled={avoidDisabled} initialConfirmed={avoided} />
+          <View style={styles.buttonPad}>
+            <AvoidButton onPress={handleAvoid} disabled={avoidDisabled} initialConfirmed={avoided} />
+          </View>
+
+          {/* Post-avoid stamp overlay */}
+          {avoidAnimating && <StampOverlay onLand={triggerShake} />}
         </View>
-
-        {/* Post-avoid stamp overlay */}
-        {avoidAnimating && <StampOverlay onLand={triggerShake} />}
       </View>
 
       {/* Post-avoid money particles */}
@@ -167,6 +158,25 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.folderBg,
     overflow: 'visible' as const,
     paddingBottom: theme.space.lg,
+    paddingTop: theme.space.sm,
+  },
+  folderGradTop: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: '30%',
+    backgroundColor: theme.colors.folderBgLight,
+    opacity: 0.5,
+  },
+  folderGradBot: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: '30%',
+    backgroundColor: theme.colors.folderBgDark,
+    opacity: 0.4,
   },
   folderTab: {
     position: 'absolute',
@@ -174,7 +184,7 @@ const styles = StyleSheet.create({
     right: theme.space.lg,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: theme.colors.folderTabBg,
+    backgroundColor: theme.colors.folderBg,
     borderTopLeftRadius: theme.radii.folderTab,
     borderTopRightRadius: theme.radii.folderTab,
     paddingHorizontal: theme.space.md,
@@ -212,17 +222,24 @@ const styles = StyleSheet.create({
     top: -(SPRITE_ABOVE),
     zIndex: 4,
   },
-  documentPanel: {
+  documentShadow: {
     marginHorizontal: theme.space.lg,
     marginTop: theme.space.sm,
+    shadowColor: theme.colors.documentShadow,
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 1,
+    shadowRadius: 6,
+    elevation: 4,
+    zIndex: 2,
+  },
+  documentPanel: {
     borderRadius: theme.radii.sharp,
     overflow: 'hidden',
     backgroundColor: theme.colors.documentBg,
-    zIndex: 2,
   },
   buttonPad: {
     paddingHorizontal: theme.space.md,
     paddingVertical: theme.space.sm,
-    backgroundColor: theme.colors.documentBg,
+    backgroundColor: 'transparent',
   },
 });

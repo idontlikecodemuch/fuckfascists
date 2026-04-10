@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     borderRadius: theme.radii.button,
     paddingHorizontal: theme.space.lg,
     paddingVertical: theme.space.sm,
-    backgroundColor: 'rgba(255,255,255,0.85)',
+    backgroundColor: 'transparent',
     zIndex: 10,
   },
   stampText: {

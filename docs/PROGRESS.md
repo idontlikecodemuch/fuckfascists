@@ -12,7 +12,33 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
-<<<<<<< HEAD
+### Session: April 10, 2026 ET — Business card polish pass (on-device testing fixes)
+**Focus:** Bug fixes and visual refinements from on-device testing of the manila folder card reskin.
+
+**Bugs fixed:**
+1. **AvoidButton hydration** — `useEffect` syncs `confirmed` state when `initialConfirmed` prop changes after mount. Previously only captured initial value.
+2. **AVOIDED stamp white box** — Changed stamp container from `rgba(255,255,255,0.85)` to `transparent`. Stamp is now red text + border on clear background.
+3. **Donation amount ordering** — Total and recent cycle rows now lead with whichever party amount is larger (was always R first).
+4. **PAC source link** — Derives short name from entity `canonicalName` stripped of Inc/Corp/LLC suffixes. Full committee name reserved for FEC.gov tap-through.
+
+**Visual refinements:**
+5. **Cyan AVOID button** — Changed from amber to `focusAccent` (#2878C8) with blue focus bevel system. White text. SparkleDecoration pre-avoid. Green confirmed state unchanged.
+6. **Removed dot separators** — R/D/O amounts use 10px horizontal gap instead of middle dots.
+7. **Folder depth** — Subtle gradient: lighter top, base `folderBg` middle, darker bottom via overlay Views.
+8. **Folder tab color** — Changed from `folderTabBg` to `folderBg` so tab matches folder surface exactly.
+9. **Document drop shadow** — `shadowOffset: {2,2}`, `shadowRadius: 6`, dark low-opacity. Lifts paper off folder.
+10. **Header seal** — Increased from 14px to 18px, opacity 0.6→0.7.
+11. **Sprite breathing room** — Added `paddingTop: 3xl` (32px) to card container.
+12. **Separator consistency** — All separator lines now have matching `marginHorizontal` inset, same color throughout.
+
+**New tokens:** `folderBgLight`, `folderBgDark`, `documentShadow`. Removed `folderTabBg` (tab now uses `folderBg`).
+
+**Files changed:** `design/tokens.ts`, `features/Map/components/BusinessCard.tsx`, `features/Map/components/DataZone.tsx`, `features/Map/components/AvoidButton.tsx`, `features/Map/components/StampOverlay.tsx`, `features/Map/MapScreen.tsx`
+
+**Tests:** All 353 tests pass (31 suites). `tsc --noEmit` clean.
+
+---
+
 ### Session: April 9, 2026 ET — BusinessCard manila folder reskin
 **Focus:** Reskin business card as a physical document inside a manila folder. Same data flow, new visual treatment. Fix avoid button hydration bug. Replace full-screen checkmark celebration with card-local stamp + particles + shake.
 

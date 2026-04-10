@@ -336,7 +336,7 @@ const styles = StyleSheet.create({
   headerBarImg:   { position: 'absolute', left: 0 },
   headerLogo:     { height: 42, aspectRatio: 1536 / 322, zIndex: 3 },
   backdrop:       { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
-  cardContainer:  { position: 'absolute', bottom: 0, left: 0, right: 0, overflow: 'visible' as const, maxHeight: '65%' },
+  cardContainer:  { position: 'absolute', bottom: 0, left: 0, right: 0, overflow: 'visible' as const, maxHeight: '65%', paddingTop: theme.space['3xl'] },
   bannerContainer:{ position: 'absolute', bottom: 80, left: 0, right: 0 },
   amberPulse:     { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: theme.colors.amberPulse },
 });
