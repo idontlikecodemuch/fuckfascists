@@ -4,10 +4,14 @@ import { CameraView, useCameraPermissions } from 'expo-camera';
 import type { BarcodeScanningResult } from 'expo-camera';
 import { sharedCopy } from '../../../copy/shared';
 import { mapCopy } from '../../../copy/map';
+import { scanCopy } from '../../../copy/scan';
 import { theme } from '../../../design/tokens';
+import { bevelFocusRaised } from '../../../design/bevel';
+import { CornerReticle, SweepLine } from '../../../features/Scan/ScanDecorations';
 import {
   BARCODE_SCAN_GUIDE_HEIGHT,
   BARCODE_SCAN_GUIDE_SIDE_INSET_PERCENT,
+  SCAN_CAMERA_MARGIN,
 } from '../../../config/constants';
 
 interface BarcodeScannerSheetProps {
@@ -97,19 +101,22 @@ export function BarcodeScannerSheet({
 
     return (
       <View style={styles.cameraShell}>
-        <CameraView
-          style={styles.camera}
-          facing="back"
-          autofocus="on"
-          onBarcodeScanned={busy ? undefined : handleBarcodeScanned}
-          onMountError={() => setMountError(true)}
-          barcodeScannerSettings={{ barcodeTypes: [...PRODUCT_BARCODE_TYPES] }}
-          accessibilityLabel={mapCopy.barcodeCameraLabel}
-        />
-        <View style={styles.scanGuide} pointerEvents="none" accessible={false} />
-        <Text style={styles.helpText}>
-          {busy ? mapCopy.barcodeResolving : mapCopy.barcodeGuide}
-        </Text>
+        <View style={styles.cameraFrame}>
+          <CameraView
+            style={styles.camera}
+            facing="back"
+            autofocus="on"
+            onBarcodeScanned={busy ? undefined : handleBarcodeScanned}
+            onMountError={() => setMountError(true)}
+            barcodeScannerSettings={{ barcodeTypes: [...PRODUCT_BARCODE_TYPES] }}
+            accessibilityLabel={mapCopy.barcodeCameraLabel}
+          />
+          <View style={styles.scanGuide} pointerEvents="none" accessible={false}>
+            <CornerReticle />
+            <SweepLine />
+          </View>
+        </View>
+        <Text style={styles.helpText}>{scanCopy.scanHelper}</Text>
       </View>
     );
   };
@@ -119,7 +126,7 @@ export function BarcodeScannerSheet({
   return (
     <View style={styles.root} accessibilityViewIsModal>
       <View style={styles.header}>
-        <Text style={styles.title} accessibilityRole="header">{mapCopy.barcodeScannerTitle}</Text>
+        <Text style={styles.title} accessibilityRole="header">{scanCopy.scanTitle}</Text>
         <Pressable
           onPress={onClose}
           accessibilityRole="button"
@@ -151,8 +158,8 @@ const styles = StyleSheet.create({
     marginBottom: theme.space.lg,
   },
   title: {
-    ...theme.type.displayM,
-    color: theme.colors.textPrimary,
+    ...theme.type.displayS,
+    color: theme.colors.focusText,
     flex: 1,
     marginRight: theme.space.md,
   },
@@ -164,55 +171,62 @@ const styles = StyleSheet.create({
   },
   closeText: {
     ...theme.type.bodyS,
-    color: theme.colors.highlightBlue,
+    color: theme.colors.focusAccent,
+    fontWeight: 'bold',
   },
   cameraShell: {
     flex: 1,
     justifyContent: 'center',
   },
+  cameraFrame: {
+    flex: 1,
+    marginHorizontal: SCAN_CAMERA_MARGIN,
+    ...bevelFocusRaised,
+    overflow: 'hidden' as const,
+    shadowColor: theme.colors.focusAccent,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.12,
+    shadowRadius: 16,
+    elevation: 8,
+  },
   camera: {
     flex: 1,
-    borderWidth: theme.borders.standard.width,
-    borderColor: theme.colors.highlightBlue,
-    overflow: 'hidden' as const,
   },
   scanGuide: {
     position: 'absolute',
     left: `${BARCODE_SCAN_GUIDE_SIDE_INSET_PERCENT}%`,
     right: `${BARCODE_SCAN_GUIDE_SIDE_INSET_PERCENT}%`,
     height: BARCODE_SCAN_GUIDE_HEIGHT,
-    borderWidth: theme.borders.hero.width,
-    borderColor: theme.colors.rewardYellow,
     alignSelf: 'center',
   },
   permissionCard: {
-    borderWidth: theme.borders.standard.width,
-    borderColor: theme.colors.highlightBlue,
-    backgroundColor: theme.colors.surface1,
+    ...bevelFocusRaised,
+    backgroundColor: theme.colors.panelInner,
     padding: theme.space.lg,
   },
   permissionTitle: {
     ...theme.type.displayS,
-    color: theme.colors.textPrimary,
+    color: theme.colors.focusText,
     marginBottom: theme.space.sm,
   },
   helpText: {
     ...theme.type.bodyS,
     color: theme.colors.textSecondary,
     marginTop: theme.space.md,
+    textAlign: 'center',
   },
   primaryButton: {
     marginTop: theme.space.lg,
     minHeight: theme.a11y.minTapTarget,
-    borderWidth: theme.borders.standard.width,
-    borderColor: theme.colors.frameBlue,
+    backgroundColor: theme.colors.focusAccent,
+    ...bevelFocusRaised,
+    borderRadius: theme.radii.button,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: theme.colors.bgNav,
   },
   primaryButtonText: {
     ...theme.type.bodyS,
-    color: theme.colors.glowCyan,
+    color: theme.colors.textPrimary,
     fontWeight: 'bold',
   },
 });

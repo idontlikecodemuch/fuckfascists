@@ -12,6 +12,41 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 10, 2026 ET — Scan screen visual redesign
+**Focus:** Visual redesign of both pre-scan standby and active scan states to match the cockpit/instrument design language. Same functionality, new look.
+
+**Pre-scan standby state:**
+1. **StarField background** — reuses existing StarFieldBg component
+2. **Cyan-framed panel** — bevelFocusRaised frame floating in starfield, centered vertically. panelInner bg, inner glow strips (8px focusAccent @ 0.10) at top/bottom edges. Drop shadow (focusAccent @ 0.15).
+3. **Color wash** — circular focusAccent glow (300px, 0.08 opacity) behind panel, separating it from stars
+4. **Panel content** — barcode-outline icon at 40px, "SCAN A PRODUCT" heading (focusText, Bungee), description (two-line, muted), cyan OPEN SCANNER CTA (focusAccent + bevelFocusRaised), footnote
+5. **Pulse rings** — two concentric animated border rings on CTA (2.4s cycle, 0.5s delay on outer). PulseRing extracted to ScanDecorations.tsx.
+6. **Sparkles** — SparkleDecoration variant="info" on panel edges + default sparkle on CTA button
+7. **Faint scan lines** — two atmospheric horizontal lines (focusAccent @ 0.06) inside panel
+
+**Active scan state:**
+8. **Header** — "SCAN BARCODE" left (Bungee, focusText), "DISMISS" right (focusAccent, tappable)
+9. **Camera frame** — cyan bevelFocusRaised frame with margins, drop shadow. Camera feed fills interior.
+10. **Cyan reticle** — four corner brackets (3px, 20px arms) in focusAccent replacing old yellow scan guide
+11. **Sweep line** — horizontal focusAccent line (0.6 opacity) oscillating within target zone (2s ease-in-out)
+12. **Helper text** — "Center a UPC or EAN code inside the frame." centered below camera
+
+**Code organization:**
+- `ScanScreen.tsx` (172 lines) — orchestrator only, delegates panel rendering
+- `ScanDecorations.tsx` (237 lines) — PulseRing, ScanStandbyPanel, SweepLine, CornerReticle
+- `BarcodeScannerSheet.tsx` (232 lines) — imports CornerReticle + SweepLine from ScanDecorations
+
+**New copy:** `bodyLine1`, `bodyLine2`, `footnoteLine1`, `footnoteLine2`, `scanTitle`, `scanHelper` in `copy/scan.ts`. Old `body`/`footnote` keys replaced (harness updated).
+
+**New constants:** `SCAN_PANEL_*`, `SCAN_PULSE_*`, `SCAN_CAMERA_MARGIN`, `SCAN_RETICLE_*`, `SCAN_SWEEP_*`, `SCAN_ICON_SIZE`.
+
+**Files changed:** `copy/scan.ts`, `config/constants.ts`, `features/Scan/ScanScreen.tsx`, `features/Map/components/BarcodeScannerSheet.tsx`, `features/Dev/harnessRenderers/contentStates.tsx`
+**Files created:** `features/Scan/ScanDecorations.tsx`
+
+**Tests:** All 4227 tests pass (369 suites). `tsc --noEmit` clean (pre-existing StarFieldBg TS2578 only).
+
+---
+
 ### Session: April 10, 2026 ET — Track screen visual polish pass
 **Focus:** Visual-only polish for the Track screen. No structural, state management, or data flow changes.
 

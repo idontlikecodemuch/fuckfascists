@@ -44,6 +44,33 @@ export const POI_SEARCH_RADIUS_MAX_METERS = 200;
 export const BARCODE_LOOKUP_CACHE_TTL_DAYS = 30;
 export const BARCODE_SCAN_GUIDE_HEIGHT = 128;
 export const BARCODE_SCAN_GUIDE_SIDE_INSET_PERCENT = 14;
+
+// ── Scan screen visual tuning ───────────────────────────────────────────────
+// Pre-scan standby panel
+export const SCAN_PANEL_HORIZONTAL_MARGIN = 20;
+export const SCAN_PANEL_INNER_GLOW_HEIGHT = 8;
+export const SCAN_PANEL_INNER_GLOW_OPACITY = 0.10;
+export const SCAN_PANEL_WASH_OPACITY = 0.08;
+export const SCAN_PANEL_WASH_SIZE = 300;
+export const SCAN_PANEL_SCAN_LINE_OPACITY = 0.06;
+export const SCAN_PANEL_SHADOW_RADIUS = 30;
+export const SCAN_PANEL_SHADOW_OPACITY = 0.15;
+export const SCAN_ICON_SIZE = 40;
+// Pulse ring animation
+export const SCAN_PULSE_CYCLE_MS = 2400;
+export const SCAN_PULSE_INNER_INSET = 5;
+export const SCAN_PULSE_OUTER_INSET = 10;
+export const SCAN_PULSE_INNER_BORDER = 1.5;
+export const SCAN_PULSE_OUTER_BORDER = 1;
+export const SCAN_PULSE_INNER_OPACITY = 0.4;
+export const SCAN_PULSE_OUTER_OPACITY = 0.25;
+export const SCAN_PULSE_OUTER_DELAY_MS = 500;
+// Active scan state
+export const SCAN_CAMERA_MARGIN = 10;
+export const SCAN_RETICLE_ARM_LENGTH = 20;
+export const SCAN_RETICLE_THICKNESS = 3;
+export const SCAN_SWEEP_DURATION_MS = 2000;
+export const SCAN_SWEEP_OPACITY = 0.6;
 // How long a tap cell's POI name list is cached in-memory before re-querying.
 // Short TTL — only prevents duplicate API calls from accidental double-taps,
 // not meant to persist results across active map exploration.

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { SafeAreaView, ScrollView, View, Text, Pressable, StyleSheet } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import type { Entity, PoliticalPerson } from '../../core/models';
 import type { MatchingDeps } from '../../core/matching';
 import type { StorageAdapter } from '../../core/data';
@@ -9,9 +9,10 @@ import { useBarcodeSearch } from '../Map/hooks/useBarcodeSearch';
 import { BusinessCard, BusinessBanner, resolveCardMode } from '../Map/components/BusinessCard';
 import { BarcodeScannerSheet } from '../Map/components/BarcodeScannerSheet';
 import { BarcodeLookupBanner } from '../Map/components/BarcodeLookupBanner';
+import { StarField } from '../Info/components/InfoDecorations';
 import type { ScanResult } from '../Map/types';
-import { scanCopy } from '../../copy/scan';
 import { theme } from '../../design/tokens';
+import { ScanStandbyPanel } from './ScanDecorations';
 
 interface ScanScreenProps {
   entities: Entity[];
@@ -99,43 +100,28 @@ export function ScanScreen({ entities, people, adapter, fetchOrgs, fetchOrgSumma
   const bannerVariant = cardMode && typeof cardMode === 'object' ? cardMode.banner : null;
   const activeEntityId = activeResult ? activeResult.entityId ?? activeResult.fecCommitteeId : null;
   const isAvoided = !!activeEntityId && avoidedIds.includes(activeEntityId);
+  const isBusy = isResolving || status === 'scanning';
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.content}>
-        <View style={styles.hero}>
-          <Text style={styles.heading} accessibilityRole="header" allowFontScaling>{scanCopy.heading}</Text>
-          <Text style={styles.body}>{scanCopy.body}</Text>
-          <Pressable
-            onPress={handleOpenScanner}
-            disabled={isResolving || status === 'scanning'}
-            style={[styles.cta, (isResolving || status === 'scanning') && styles.ctaBusy]}
-            accessibilityRole="button"
-            accessibilityLabel={
-              isResolving || status === 'scanning'
-                ? scanCopy.busyActionLabel
-                : scanCopy.primaryActionLabel
-            }
-            accessibilityState={{ disabled: isResolving || status === 'scanning' }}
-          >
-            <Text style={styles.ctaLabel}>
-              {isResolving || status === 'scanning' ? scanCopy.busyAction : scanCopy.primaryAction}
-            </Text>
-          </Pressable>
-          <Text style={styles.footnote}>{scanCopy.footnote}</Text>
-        </View>
+      <StarField seed="scan" />
+
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <ScanStandbyPanel busy={isBusy} onOpenScanner={handleOpenScanner} />
 
         {activeResult && cardMode === 'card' && (
-          <BusinessCard
-            result={activeResult}
-            onAvoid={handleAvoid}
-            avoidDisabled={!activeResult.entity}
-            avoided={isAvoided}
-            onDismiss={handleDismiss}
-            allEntities={entities}
-            people={people}
-            modal={false}
-          />
+          <View style={styles.resultWrap}>
+            <BusinessCard
+              result={activeResult}
+              onAvoid={handleAvoid}
+              avoidDisabled={!activeResult.entity}
+              avoided={isAvoided}
+              onDismiss={handleDismiss}
+              allEntities={entities}
+              people={people}
+              modal={false}
+            />
+          </View>
         )}
 
         {activeResult && bannerVariant && (
@@ -156,7 +142,7 @@ export function ScanScreen({ entities, people, adapter, fetchOrgs, fetchOrgSumma
       {scannerOpen && (
         <BarcodeScannerSheet
           visible={scannerOpen}
-          busy={isResolving || status === 'scanning'}
+          busy={isBusy}
           onClose={() => setScannerOpen(false)}
           onScanned={handleBarcodeScanned}
         />
@@ -170,49 +156,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.bgVoid,
   },
-  content: {
-    paddingHorizontal: theme.space.lg,
-    paddingBottom: theme.space['4xl'] * 3,
-  },
-  hero: {
-    marginTop: theme.space['3xl'],
-    marginBottom: theme.space.xl,
-    padding: theme.space.lg,
-    borderWidth: theme.borders.standard.width,
-    borderColor: theme.colors.frameBlue,
-    backgroundColor: theme.colors.surface1,
-  },
-  heading: {
-    ...theme.type.displayL,
-    color: theme.colors.textPrimary,
-    marginBottom: theme.space.sm,
-  },
-  body: {
-    ...theme.type.bodyM,
-    color: theme.colors.textSecondary,
-  },
-  cta: {
-    marginTop: theme.space.xl,
-    minHeight: theme.a11y.minTapTarget,
-    alignItems: 'center',
+  scrollContent: {
+    flexGrow: 1,
     justifyContent: 'center',
-    borderWidth: theme.borders.hero.width,
-    borderColor: theme.colors.frameBlue,
-    backgroundColor: theme.colors.bgNav,
+    paddingBottom: theme.space['4xl'] * 2,
   },
-  ctaBusy: {
-    backgroundColor: theme.colors.surface2,
-  },
-  ctaLabel: {
-    ...theme.type.displayS,
-    color: theme.colors.rewardYellow,
-  },
-  footnote: {
-    ...theme.type.bodyS,
-    color: theme.colors.textSecondary,
-    marginTop: theme.space.md,
+  resultWrap: {
+    marginTop: theme.space.xl,
+    paddingHorizontal: theme.space.lg,
   },
   bannerWrap: {
     marginTop: theme.space.lg,
+    paddingHorizontal: theme.space.lg,
   },
 });

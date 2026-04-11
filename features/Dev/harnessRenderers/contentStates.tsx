@@ -110,11 +110,11 @@ function ScanHero({ children }: { children?: React.ReactNode }) {
       <ScrollView contentContainerStyle={s.scanContent}>
         <View style={s.scanHero}>
           <Text style={s.scanHeading} allowFontScaling>{scanCopy.heading}</Text>
-          <Text style={s.scanBody}>{scanCopy.body}</Text>
+          <Text style={s.scanBody}>{scanCopy.bodyLine1}{'\n'}{scanCopy.bodyLine2}</Text>
           <Pressable style={s.scanCta} accessibilityRole="button">
             <Text style={s.scanCtaLabel}>{scanCopy.primaryAction}</Text>
           </Pressable>
-          <Text style={s.scanFootnote}>{scanCopy.footnote}</Text>
+          <Text style={s.scanFootnote}>{scanCopy.footnoteLine1}{'\n'}{scanCopy.footnoteLine2}</Text>
         </View>
         {children}
       </ScrollView>
