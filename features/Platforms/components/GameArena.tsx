@@ -8,6 +8,7 @@ import {
   View,
   useWindowDimensions,
 } from 'react-native';
+import type { LayoutChangeEvent } from 'react-native';
 import { hasSprite } from '../../../core/sprites/spriteLoader';
 import { arenaAssets } from '../../../core/arena/arenaAssets';
 import { FXLayer, useFX } from '../../../core/fx';
@@ -20,12 +21,16 @@ import {
   TRACK_ARENA_GRID_CROP_RATIO,
   TRACK_ARENA_GRID_CROP_OFFSET_X,
   TRACK_ARENA_GRID_CROP_OFFSET_Y,
+  TRACK_ARENA_INNER_GLOW_HEIGHT,
+  TRACK_ARENA_INNER_GLOW_OPACITY,
   TRACK_ARENA_SINGLE_BOTTOM_INSET,
   TRACK_ARENA_SINGLE_CROP_RATIO,
   TRACK_ARENA_SINGLE_CROP_OFFSET_X,
   TRACK_ARENA_SINGLE_CROP_OFFSET_Y,
   TRACK_ARENA_SINGLE_DISPLAY_RATIO,
   TRACK_ARENA_SINGLE_LEFT_INSET,
+  TRACK_GRID_CELL_VIGNETTE_INSET,
+  TRACK_GRID_CELL_VIGNETTE_OPACITY,
 } from '../../../config/constants';
 import { useTrack } from '../context/TrackContext';
 import { arenaFXRegistry } from './ArenaFX';
@@ -38,6 +43,7 @@ export function GameArena() {
   const fx = useFX();
   const { width: screenWidth } = useWindowDimensions();
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [measuredHeight, setMeasuredHeight] = useState(ARENA_HEIGHT);
 
   useEffect(() => {
     let cancelled = false;
@@ -47,17 +53,22 @@ export function GameArena() {
     return () => { cancelled = true; };
   }, []);
 
+  const handleLayout = useCallback((e: LayoutChangeEvent) => {
+    const h = e.nativeEvent.layout.height;
+    if (h > 0) setMeasuredHeight(h);
+  }, []);
+
   const gridFigures = useMemo(() => buildGridFigures(), []);
 
   const gridCellSize = useMemo(
     () => computeGridCellSize(
       gridFigures.length,
       screenWidth,
-      ARENA_HEIGHT,
+      measuredHeight,
       theme.space.xs,
       theme.space.sm,
     ),
-    [gridFigures.length, screenWidth],
+    [gridFigures.length, screenWidth, measuredHeight],
   );
 
   const contentOpacity = useRef(new Animated.Value(1)).current;
@@ -98,7 +109,6 @@ export function GameArena() {
         }),
       ]).start();
     } else if (previous.figureName !== focusedFigureName) {
-      // Pick a per-figure arena background (cached for the session)
       if (focusedFigureName) {
         const map = figureArenaMapRef.current;
         if (!map.has(focusedFigureName)) {
@@ -150,10 +160,10 @@ export function GameArena() {
   }, [fireHitFX]);
 
   const backgroundSource = backgroundKey ? arenaAssets[backgroundKey] : null;
-  const singleSpriteSize = Math.round(ARENA_HEIGHT * TRACK_ARENA_SINGLE_DISPLAY_RATIO);
+  const singleSpriteSize = Math.round(measuredHeight * TRACK_ARENA_SINGLE_DISPLAY_RATIO);
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} onLayout={handleLayout}>
       {backgroundSource && (
         <ImageBackground
           source={backgroundSource}
@@ -166,6 +176,10 @@ export function GameArena() {
           <View style={styles.backgroundOverlay} />
         </ImageBackground>
       )}
+
+      {/* Inner glow — top and bottom edges */}
+      <View style={styles.innerGlowTop} pointerEvents="none" />
+      <View style={styles.innerGlowBottom} pointerEvents="none" />
 
       <Animated.View
         style={[styles.content, { opacity: contentOpacity, transform: [{ scale: pulseScale }] }]}
@@ -191,25 +205,35 @@ export function GameArena() {
           ) : null
         ) : (
           <View style={styles.grid}>
-            {gridFigures.map((figure) => (
-              <Pressable
-                key={figure.spriteId}
-                onPress={handleGridTap}
-                style={[styles.gridCell, { width: gridCellSize, height: gridCellSize }]}
-                accessibilityRole="button"
-                accessibilityLabel={platformsCopy.arenaTapA11y(figure.figureName)}
-              >
-                <FigureBadge
-                  figureName={figure.figureName}
-                  state="neutral"
-                  size={gridCellSize}
-                  cropRatio={TRACK_ARENA_GRID_CROP_RATIO}
-                  cropOffsetX={TRACK_ARENA_GRID_CROP_OFFSET_X}
-                  cropOffsetY={TRACK_ARENA_GRID_CROP_OFFSET_Y}
-                  fallbackVariant="arena"
-                />
-              </Pressable>
-            ))}
+            {gridFigures.map((figure) => {
+              const defeated = isDefeated(figure.figureName);
+              return (
+                <Pressable
+                  key={figure.spriteId}
+                  onPress={handleGridTap}
+                  style={[styles.gridCell, { width: gridCellSize, height: gridCellSize }]}
+                  accessibilityRole="button"
+                  accessibilityLabel={platformsCopy.arenaTapA11y(figure.figureName)}
+                >
+                  <View
+                    style={[
+                      styles.gridCellVignette,
+                      defeated && styles.gridCellVignetteDefeated,
+                    ]}
+                    pointerEvents="none"
+                  />
+                  <FigureBadge
+                    figureName={figure.figureName}
+                    state={defeated ? 'defeated' : 'neutral'}
+                    size={gridCellSize}
+                    cropRatio={TRACK_ARENA_GRID_CROP_RATIO}
+                    cropOffsetX={TRACK_ARENA_GRID_CROP_OFFSET_X}
+                    cropOffsetY={TRACK_ARENA_GRID_CROP_OFFSET_Y}
+                    fallbackVariant="arena"
+                  />
+                </Pressable>
+              );
+            })}
           </View>
         )}
       </Animated.View>
@@ -227,13 +251,76 @@ export function GameArena() {
 }
 
 const styles = StyleSheet.create({
-  container: { height: ARENA_HEIGHT, overflow: 'hidden', backgroundColor: theme.colors.surface1, borderBottomWidth: theme.borders.hero.width, borderBottomColor: theme.colors.frameBlue },
-  background: { ...StyleSheet.absoluteFillObject, backgroundColor: theme.colors.bgVoid },
+  container: {
+    flex: 1,
+    overflow: 'hidden',
+    backgroundColor: theme.colors.surface1,
+  },
+  background: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: theme.colors.bgVoid,
+  },
   backgroundImage: { opacity: 0.32 },
-  backgroundOverlay: { flex: 1, backgroundColor: theme.colors.bgVoid, opacity: 0.28 },
+  backgroundOverlay: {
+    flex: 1,
+    backgroundColor: theme.colors.bgVoid,
+    opacity: 0.28,
+  },
+  innerGlowTop: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: TRACK_ARENA_INNER_GLOW_HEIGHT,
+    backgroundColor: theme.colors.focusAccent,
+    opacity: TRACK_ARENA_INNER_GLOW_OPACITY,
+    zIndex: 1,
+  },
+  innerGlowBottom: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: TRACK_ARENA_INNER_GLOW_HEIGHT,
+    backgroundColor: theme.colors.focusAccent,
+    opacity: TRACK_ARENA_INNER_GLOW_OPACITY,
+    zIndex: 1,
+  },
   content: { flex: 1 },
-  grid: { flex: 1, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', alignContent: 'center', gap: theme.space.xs, padding: theme.space.sm },
-  gridCell: { alignItems: 'center', justifyContent: 'center', borderWidth: theme.borders.standard.width, borderColor: theme.colors.rewardYellow, backgroundColor: theme.colors.surface2, overflow: 'hidden' },
-  singleCharacter: { flex: 1, justifyContent: 'flex-end', alignItems: 'flex-start', paddingLeft: TRACK_ARENA_SINGLE_LEFT_INSET, paddingBottom: TRACK_ARENA_SINGLE_BOTTOM_INSET },
+  grid: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignContent: 'center',
+    gap: theme.space.xs,
+    padding: theme.space.sm,
+  },
+  gridCell: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: theme.borders.standard.width,
+    borderColor: theme.colors.rewardYellow,
+    backgroundColor: theme.colors.surface2,
+    overflow: 'hidden',
+  },
+  gridCellVignette: {
+    ...StyleSheet.absoluteFillObject,
+    margin: TRACK_GRID_CELL_VIGNETTE_INSET,
+    backgroundColor: theme.colors.focusAccent,
+    opacity: TRACK_GRID_CELL_VIGNETTE_OPACITY,
+    borderRadius: 2,
+    zIndex: 0,
+  },
+  gridCellVignetteDefeated: {
+    backgroundColor: theme.colors.successGreen,
+  },
+  singleCharacter: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'flex-start',
+    paddingLeft: TRACK_ARENA_SINGLE_LEFT_INSET,
+    paddingBottom: TRACK_ARENA_SINGLE_BOTTOM_INSET,
+  },
   fxLayer: { ...StyleSheet.absoluteFillObject },
 });

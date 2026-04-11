@@ -2,7 +2,7 @@ import React from 'react';
 import { Pressable, Text, StyleSheet } from 'react-native';
 import { platformsCopy } from '../../../copy/platforms';
 import { theme } from '../../../design/tokens';
-import { bevelAmberRaised, bevelGreenInset } from '../../../design/bevel';
+import { bevelFocusRaised, bevelGreenInset } from '../../../design/bevel';
 import { TRACK_BUTTON_WIDTH, TRACK_BUTTON_HEIGHT } from '../../../config/constants';
 
 interface AvoidButtonProps {
@@ -53,8 +53,8 @@ const styles = StyleSheet.create({
     borderRadius: theme.radii.button,
   },
   buttonActive: {
-    backgroundColor: theme.colors.amberAction,
-    ...bevelAmberRaised,
+    backgroundColor: theme.colors.focusAccent,
+    ...bevelFocusRaised,
   },
   buttonDone: {
     backgroundColor: theme.colors.successGreenDeep,

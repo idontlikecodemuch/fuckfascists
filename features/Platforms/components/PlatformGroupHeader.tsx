@@ -60,9 +60,11 @@ export function PlatformGroupHeader({
           {figureName}
         </Text>
       </View>
-      <Text style={[styles.count, focused && styles.countFocused]} allowFontScaling>
-        {totalAvoids > 0 ? platformsCopy.countLabel(totalAvoids) : platformsCopy.countDash}
-      </Text>
+      {totalAvoids > 0 && (
+        <Text style={[styles.count, focused && styles.countFocused]} allowFontScaling>
+          {platformsCopy.countLabel(totalAvoids)}
+        </Text>
+      )}
       {focused && <SparkleDecoration />}
     </Pressable>
   );

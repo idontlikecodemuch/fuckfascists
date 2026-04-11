@@ -12,6 +12,29 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 10, 2026 ET — Track screen visual polish pass
+**Focus:** Visual-only polish for the Track screen. No structural, state management, or data flow changes.
+
+**Changes:**
+1. **Cyan arena frame** — Arena + score bar wrapped in a `bevelFocusRaised` border (focusBevelLight/focusBevelDark). Flex-based sizing: ~38% of available height, min 180px, max 360px. Inner glow: 8px focusAccent gradient at top/bottom edges.
+2. **Arena/list separator** — 4px shelf-edge separator between arena frame and platform list. panelOuter bg with 1px focusAccent top border.
+3. **Score bar inside arena frame** — TrackHeader restyled as a single-line HUD bar: avoid count left (dangerRed with red text-shadow glow), "Week of · Edit" right in muted caption. Empty state: "NOTHING AVOIDED YET" in amber. Rendered inside the cyan frame above the arena.
+4. **Tighter row padding** — ~30% reduction. Group headers/singletons: 8→6px, child rows: 4→5px, day circles: split to 4px top / 6px bottom.
+5. **Remove dash counts** — Zero-avoid platforms show nothing next to the AVOID button instead of "—".
+6. **Remove expand/collapse indicators** — No +/− on platform rows. Daily open animation teaches expandability. Info screen accordions unaffected.
+7. **Cyan AVOID buttons** — Active state: focusAccent bg with blue focus bevel, white text. Confirmed (✓) stays green. Matches business card AVOID button treatment.
+8. **Today highlight band** — Hard-edge vertical band behind today's day column. No border radius. focusAccent @ 0.12 opacity with 1px focusAccent borders top/bottom.
+9. **Grid cell vignettes** — Centered overlay View (focusAccent @ 0.08) creating spotlight effect per portrait. Defeated sprites get green tint.
+10. **Face centering** — Grid crop offset Y adjusted from -0.03 to -0.08 for better head/face centering in grid cells.
+
+**New constants:** `TRACK_ARENA_MIN_HEIGHT`, `TRACK_ARENA_MAX_HEIGHT`, `TRACK_ARENA_FLEX`, `TRACK_ARENA_SEPARATOR_HEIGHT`, `TRACK_ARENA_INNER_GLOW_HEIGHT`, `TRACK_ARENA_INNER_GLOW_OPACITY`, `TRACK_GRID_CELL_VIGNETTE_INSET`, `TRACK_GRID_CELL_VIGNETTE_OPACITY`, `TRACK_TODAY_BAND_OPACITY`, `TRACK_DAY_CIRCLES_PADDING_TOP`, `TRACK_DAY_CIRCLES_PADDING_BOTTOM`.
+
+**Files changed:** `config/constants.ts`, `features/Platforms/TrackScreen.tsx`, `features/Platforms/components/TrackHeader.tsx`, `features/Platforms/components/GameArena.tsx`, `features/Platforms/components/PlatformRow.tsx`, `features/Platforms/components/PlatformGroupHeader.tsx`, `features/Platforms/components/AvoidButton.tsx`, `features/Platforms/components/DayCircles.tsx`
+
+**Tests:** All 4227 tests pass (369 suites). `tsc --noEmit` clean (pre-existing StarFieldBg TS2578 only).
+
+---
+
 ### Session: April 10, 2026 ET — Business card polish pass (on-device testing fixes)
 **Focus:** Bug fixes and visual refinements from on-device testing of the manila folder card reskin.
 

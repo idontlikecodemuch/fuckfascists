@@ -108,7 +108,7 @@ export const STARBG_PARALLAX_ENABLED = true;
 // ── Track screen layout tuning ───────────────────────────────────────────────
 // All visual sizing for the Track platform list. Adjust these to tune the
 // entire list appearance without opening component files.
-export const TRACK_ROW_PADDING_VERTICAL = 8;
+export const TRACK_ROW_PADDING_VERTICAL = 6;
 export const TRACK_ROW_PADDING_HORIZONTAL = 12;
 export const TRACK_CHILD_INDENT = 56;
 export const TRACK_ROW_SPRITE_SIZE = 32;
@@ -120,7 +120,7 @@ export const TRACK_ROW_FOCUS_BG_COLOR = theme.colors.focusTint;
 export const TRACK_ROW_DIMMED_OPACITY = 0.45;
 export const TRACK_CHILD_ROW_BG_COLOR = 'rgba(95, 174, 255, 0.06)';
 export const TRACK_CHILD_GUIDE_COLOR = 'rgba(95, 174, 255, 0.55)';
-export const TRACK_CHILD_ROW_PADDING_VERTICAL = 4;
+export const TRACK_CHILD_ROW_PADDING_VERTICAL = 5;
 export const TRACK_DAY_COLUMN_TODAY_BG = 'rgba(40, 120, 200, 0.18)';
 export const TRACK_CHILD_FONT_SIZE_NAME = 13;
 export const TRACK_CHILD_FONT_SIZE_COUNT = 13;
@@ -139,13 +139,29 @@ export const TRACK_FIGURE_FALLBACK_TEXT_COLOR = theme.colors.rewardYellow;
 export const TRACK_ARENA_GRID_CELL_SIZE = 84;
 export const TRACK_ARENA_GRID_CROP_RATIO = 0.48;
 export const TRACK_ARENA_GRID_CROP_OFFSET_X = -0.06;
-export const TRACK_ARENA_GRID_CROP_OFFSET_Y = -0.03;
+export const TRACK_ARENA_GRID_CROP_OFFSET_Y = -0.08;
 export const TRACK_ARENA_SINGLE_CROP_RATIO = 0.72;
 export const TRACK_ARENA_SINGLE_CROP_OFFSET_X = -0.03;
 export const TRACK_ARENA_SINGLE_CROP_OFFSET_Y = -0.02;
 export const TRACK_ARENA_SINGLE_DISPLAY_RATIO = 0.9;
 export const TRACK_ARENA_SINGLE_LEFT_INSET = 16;
 export const TRACK_ARENA_SINGLE_BOTTOM_INSET = 0;
+
+// Arena frame sizing — percentage-based with pixel guardrails
+export const TRACK_ARENA_MIN_HEIGHT = 180;
+export const TRACK_ARENA_MAX_HEIGHT = 360;
+export const TRACK_ARENA_FLEX = 0.38;
+export const TRACK_ARENA_SEPARATOR_HEIGHT = 4;
+export const TRACK_ARENA_INNER_GLOW_HEIGHT = 8;
+export const TRACK_ARENA_INNER_GLOW_OPACITY = 0.15;
+// Grid cell vignette — subtle tint overlay for spotlight effect
+export const TRACK_GRID_CELL_VIGNETTE_INSET = 4;
+export const TRACK_GRID_CELL_VIGNETTE_OPACITY = 0.08;
+// Today highlight band
+export const TRACK_TODAY_BAND_OPACITY = 0.12;
+// Day circles row padding (top/bottom split)
+export const TRACK_DAY_CIRCLES_PADDING_TOP = 4;
+export const TRACK_DAY_CIRCLES_PADDING_BOTTOM = 6;
 
 // ── Parent company short names (Track screen group headers) ──────────────────
 // Data mapping for display — not user-facing copy.

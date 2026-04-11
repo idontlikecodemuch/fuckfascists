@@ -10,9 +10,11 @@ import {
   TRACK_CHILD_INDENT,
   TRACK_DAY_CIRCLE_SIZE,
   TRACK_DAY_CIRCLES_GAP,
-  TRACK_DAY_COLUMN_TODAY_BG,
+  TRACK_DAY_CIRCLES_PADDING_BOTTOM,
+  TRACK_DAY_CIRCLES_PADDING_TOP,
   TRACK_ROW_FOCUS_BG_COLOR,
   TRACK_ROW_PADDING_HORIZONTAL,
+  TRACK_TODAY_BAND_OPACITY,
 } from '../../../config/constants';
 
 interface DayCirclesProps {
@@ -96,7 +98,8 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    paddingVertical: theme.space.xs,
+    paddingTop: TRACK_DAY_CIRCLES_PADDING_TOP,
+    paddingBottom: TRACK_DAY_CIRCLES_PADDING_BOTTOM,
     paddingHorizontal: TRACK_ROW_PADDING_HORIZONTAL,
     alignItems: 'center',
     gap: TRACK_DAY_CIRCLES_GAP,
@@ -109,7 +112,12 @@ const styles = StyleSheet.create({
     borderRadius: theme.radii.token,
   },
   dayColumnToday: {
-    backgroundColor: TRACK_DAY_COLUMN_TODAY_BG,
+    backgroundColor: `rgba(40, 120, 200, ${TRACK_TODAY_BAND_OPACITY})`,
+    borderRadius: 0,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderTopColor: theme.colors.focusAccent,
+    borderBottomColor: theme.colors.focusAccent,
   },
   dayLabel: {
     ...theme.type.caption,

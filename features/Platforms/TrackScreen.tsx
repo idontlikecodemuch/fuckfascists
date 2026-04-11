@@ -1,8 +1,15 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { ActivityIndicator, SafeAreaView, StyleSheet, Text } from 'react-native';
+import { ActivityIndicator, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import type { StorageAdapter } from '../../core/data';
 import { platformsCopy } from '../../copy/platforms';
 import { theme } from '../../design/tokens';
+import { bevelFocusRaised } from '../../design/bevel';
+import {
+  TRACK_ARENA_FLEX,
+  TRACK_ARENA_MAX_HEIGHT,
+  TRACK_ARENA_MIN_HEIGHT,
+  TRACK_ARENA_SEPARATOR_HEIGHT,
+} from '../../config/constants';
 import { StarField } from '../Info/components/InfoDecorations';
 import { TrackProvider } from './context/TrackContext';
 import { TRACKED_PLATFORMS } from './data/platformList';
@@ -57,8 +64,11 @@ export function TrackScreen({ adapter }: TrackScreenProps) {
     <TrackProvider adapter={adapter} platforms={activePlatforms}>
       <SafeAreaView style={styles.root}>
         <StarField seed="track" />
-        <TrackHeader onEdit={() => setEditing(true)} />
-        <GameArena />
+        <View style={styles.arenaFrame}>
+          <TrackHeader onEdit={() => setEditing(true)} />
+          <GameArena />
+        </View>
+        <View style={styles.separator} />
         <TrackList />
       </SafeAreaView>
     </TrackProvider>
@@ -69,6 +79,20 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     backgroundColor: theme.colors.bgVoid,
+  },
+  arenaFrame: {
+    flex: TRACK_ARENA_FLEX,
+    minHeight: TRACK_ARENA_MIN_HEIGHT,
+    maxHeight: TRACK_ARENA_MAX_HEIGHT,
+    overflow: 'hidden',
+    backgroundColor: theme.colors.panelOuter,
+    ...bevelFocusRaised,
+  },
+  separator: {
+    height: TRACK_ARENA_SEPARATOR_HEIGHT,
+    backgroundColor: theme.colors.panelOuter,
+    borderTopWidth: 1,
+    borderTopColor: theme.colors.focusAccent,
   },
   loadingScreen: {
     flex: 1,

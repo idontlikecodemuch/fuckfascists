@@ -13,7 +13,6 @@ import {
   TRACK_CHILD_FONT_SIZE_COUNT,
   TRACK_CHILD_FONT_SIZE_NAME,
   TRACK_CHILD_ROW_PADDING_VERTICAL,
-  TRACK_EXPAND_INDICATOR_SIZE,
   TRACK_ROW_DIMMED_OPACITY,
   TRACK_ROW_FOCUS_BG_COLOR,
   TRACK_ROW_FOCUS_BORDER_COLOR,
@@ -51,7 +50,7 @@ export function PlatformRow({
   const todayAvoided = (item.dayCounts.get(getLocalDateString()) ?? 0) > 0;
   const countLabel = item.weeklyCount > 0
     ? platformsCopy.countLabel(item.weeklyCount)
-    : platformsCopy.countDash;
+    : '';
 
   return (
     <View style={[styles.row, isChild && styles.childRow, focused && styles.focusedRow]}>
@@ -66,10 +65,6 @@ export function PlatformRow({
         }
         accessibilityState={{ expanded }}
       >
-          <Text style={styles.expandIndicator} allowFontScaling={false} accessible={false}>
-            {expanded ? theme.accordion.expandedIndicator : theme.accordion.collapsedIndicator}
-          </Text>
-
           {!isChild && (
             <FigureBadge
               figureName={figureName}
@@ -101,13 +96,15 @@ export function PlatformRow({
           )}
         </View>
 
-        <Text
-          style={[styles.count, isChild && styles.childCount, item.weeklyCount > 0 && styles.countActive]}
-          allowFontScaling
-          accessibilityLabel={platformsCopy.countA11y(item.weeklyCount, item.platform.name)}
-        >
-          {countLabel}
-        </Text>
+        {countLabel !== '' && (
+          <Text
+            style={[styles.count, isChild && styles.childCount, styles.countActive]}
+            allowFontScaling
+            accessibilityLabel={platformsCopy.countA11y(item.weeklyCount, item.platform.name)}
+          >
+            {countLabel}
+          </Text>
+        )}
       </Pressable>
 
       <AvoidButton
@@ -153,13 +150,6 @@ const styles = StyleSheet.create({
   },
   dimmedBody: {
     opacity: TRACK_ROW_DIMMED_OPACITY,
-  },
-  expandIndicator: {
-    width: TRACK_EXPAND_INDICATOR_SIZE,
-    color: theme.colors.textSecondary,
-    fontFamily: theme.fonts.body,
-    fontSize: TRACK_EXPAND_INDICATOR_SIZE,
-    textAlign: 'center',
   },
   nameColumn: {
     flex: 1,
