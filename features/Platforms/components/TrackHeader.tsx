@@ -2,6 +2,7 @@ import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { platformsCopy } from '../../../copy/platforms';
 import { theme } from '../../../design/tokens';
+import { TRACK_SCORE_COUNT_FONT_SIZE } from '../../../config/constants';
 import { useTrack } from '../context/TrackContext';
 import { formatWeekOf } from '../utils/platformHelpers';
 
@@ -56,9 +57,8 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   count: {
-    fontFamily: theme.fonts.bodySemiBold,
-    fontSize: 13,
-    fontWeight: 'bold',
+    fontFamily: theme.fonts.headline,
+    fontSize: TRACK_SCORE_COUNT_FONT_SIZE,
     letterSpacing: 0.5,
   },
   countActive: {
@@ -69,6 +69,8 @@ const styles = StyleSheet.create({
   },
   countEmpty: {
     color: theme.colors.amberAction,
+    fontSize: 13,
+    fontFamily: theme.fonts.bodySemiBold,
   },
   right: {
     flexDirection: 'row',

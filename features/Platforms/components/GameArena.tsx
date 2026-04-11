@@ -21,16 +21,13 @@ import {
   TRACK_ARENA_GRID_CROP_RATIO,
   TRACK_ARENA_GRID_CROP_OFFSET_X,
   TRACK_ARENA_GRID_CROP_OFFSET_Y,
-  TRACK_ARENA_INNER_GLOW_HEIGHT,
-  TRACK_ARENA_INNER_GLOW_OPACITY,
   TRACK_ARENA_SINGLE_BOTTOM_INSET,
   TRACK_ARENA_SINGLE_CROP_RATIO,
   TRACK_ARENA_SINGLE_CROP_OFFSET_X,
   TRACK_ARENA_SINGLE_CROP_OFFSET_Y,
   TRACK_ARENA_SINGLE_DISPLAY_RATIO,
   TRACK_ARENA_SINGLE_LEFT_INSET,
-  TRACK_GRID_CELL_VIGNETTE_INSET,
-  TRACK_GRID_CELL_VIGNETTE_OPACITY,
+  TRACK_GRID_SPRITE_SCALE,
 } from '../../../config/constants';
 import { useTrack } from '../context/TrackContext';
 import { arenaFXRegistry } from './ArenaFX';
@@ -70,6 +67,8 @@ export function GameArena() {
     ),
     [gridFigures.length, screenWidth, measuredHeight],
   );
+
+  const gridSpriteSize = Math.round(gridCellSize * TRACK_GRID_SPRITE_SCALE);
 
   const contentOpacity = useRef(new Animated.Value(1)).current;
   const pulseScale = useRef(new Animated.Value(1)).current;
@@ -177,10 +176,6 @@ export function GameArena() {
         </ImageBackground>
       )}
 
-      {/* Inner glow — top and bottom edges */}
-      <View style={styles.innerGlowTop} pointerEvents="none" />
-      <View style={styles.innerGlowBottom} pointerEvents="none" />
-
       <Animated.View
         style={[styles.content, { opacity: contentOpacity, transform: [{ scale: pulseScale }] }]}
       >
@@ -211,21 +206,19 @@ export function GameArena() {
                 <Pressable
                   key={figure.spriteId}
                   onPress={handleGridTap}
-                  style={[styles.gridCell, { width: gridCellSize, height: gridCellSize }]}
+                  // @ts-expect-error — boxShadow inset: RN 0.76 Fabric, not in stable types
+                  style={[
+                    styles.gridCell,
+                    { width: gridCellSize, height: gridCellSize },
+                    defeated && styles.gridCellDefeated,
+                  ]}
                   accessibilityRole="button"
                   accessibilityLabel={platformsCopy.arenaTapA11y(figure.figureName)}
                 >
-                  <View
-                    style={[
-                      styles.gridCellVignette,
-                      defeated && styles.gridCellVignetteDefeated,
-                    ]}
-                    pointerEvents="none"
-                  />
                   <FigureBadge
                     figureName={figure.figureName}
                     state={defeated ? 'defeated' : 'neutral'}
-                    size={gridCellSize}
+                    size={gridSpriteSize}
                     cropRatio={TRACK_ARENA_GRID_CROP_RATIO}
                     cropOffsetX={TRACK_ARENA_GRID_CROP_OFFSET_X}
                     cropOffsetY={TRACK_ARENA_GRID_CROP_OFFSET_Y}
@@ -255,6 +248,11 @@ const styles = StyleSheet.create({
     flex: 1,
     overflow: 'hidden',
     backgroundColor: theme.colors.surface1,
+    // @ts-expect-error — boxShadow inset: RN 0.76 Fabric, not in stable types
+    boxShadow: [
+      { offsetX: 0, offsetY: 6, blurRadius: 8, spreadDistance: -2, inset: true, color: 'rgba(40, 120, 200, 0.15)' },
+      { offsetX: 0, offsetY: -6, blurRadius: 8, spreadDistance: -2, inset: true, color: 'rgba(40, 120, 200, 0.15)' },
+    ],
   },
   background: {
     ...StyleSheet.absoluteFillObject,
@@ -265,26 +263,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.bgVoid,
     opacity: 0.28,
-  },
-  innerGlowTop: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: TRACK_ARENA_INNER_GLOW_HEIGHT,
-    backgroundColor: theme.colors.focusAccent,
-    opacity: TRACK_ARENA_INNER_GLOW_OPACITY,
-    zIndex: 1,
-  },
-  innerGlowBottom: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: TRACK_ARENA_INNER_GLOW_HEIGHT,
-    backgroundColor: theme.colors.focusAccent,
-    opacity: TRACK_ARENA_INNER_GLOW_OPACITY,
-    zIndex: 1,
   },
   content: { flex: 1 },
   grid: {
@@ -301,19 +279,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: theme.borders.standard.width,
     borderColor: theme.colors.rewardYellow,
-    backgroundColor: theme.colors.surface2,
+    backgroundColor: theme.colors.panelOuter,
     overflow: 'hidden',
+    // @ts-expect-error — boxShadow inset: RN 0.76 Fabric, not in stable types
+    boxShadow: [
+      { offsetX: 0, offsetY: 0, blurRadius: 14, spreadDistance: -4, inset: true, color: 'rgba(40, 120, 200, 0.12)' },
+    ],
   },
-  gridCellVignette: {
-    ...StyleSheet.absoluteFillObject,
-    margin: TRACK_GRID_CELL_VIGNETTE_INSET,
-    backgroundColor: theme.colors.focusAccent,
-    opacity: TRACK_GRID_CELL_VIGNETTE_OPACITY,
-    borderRadius: 2,
-    zIndex: 0,
-  },
-  gridCellVignetteDefeated: {
-    backgroundColor: theme.colors.successGreen,
+  gridCellDefeated: {
+    // @ts-expect-error — boxShadow inset: RN 0.76 Fabric, not in stable types
+    boxShadow: [
+      { offsetX: 0, offsetY: 0, blurRadius: 14, spreadDistance: -4, inset: true, color: 'rgba(44, 203, 99, 0.15)' },
+    ],
   },
   singleCharacter: {
     flex: 1,

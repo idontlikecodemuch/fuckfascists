@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, Text, Pressable, FlatList, StyleSheet, SafeAreaView } from 'react-native';
 import type { Platform } from '../types';
 import { platformsCopy } from '../../../copy/platforms';
@@ -49,22 +49,6 @@ export function PlatformSetupScreen({ platforms, initialSelection, onDone }: Pla
     await onDone([...selected]);
   }, [onDone, selected]);
 
-  // Sort: selected first (by sortOrder), then unselected (by sortOrder)
-  const sortedPlatforms = useMemo(() => {
-    const sel: Platform[] = [];
-    const unsel: Platform[] = [];
-    for (const p of platforms) {
-      if (selected.has(p.id)) {
-        sel.push(p);
-      } else {
-        unsel.push(p);
-      }
-    }
-    sel.sort((a, b) => a.sortOrder - b.sortOrder);
-    unsel.sort((a, b) => a.sortOrder - b.sortOrder);
-    return [...sel, ...unsel];
-  }, [platforms, selected]);
-
   const renderItem = useCallback(({ item }: { item: Platform }) => {
     const isSelected = selected.has(item.id);
     return (
@@ -109,7 +93,7 @@ export function PlatformSetupScreen({ platforms, initialSelection, onDone }: Pla
       <NeonRule />
 
       <FlatList<Platform>
-        data={sortedPlatforms}
+        data={platforms}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         numColumns={2}

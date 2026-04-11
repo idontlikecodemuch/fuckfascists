@@ -135,7 +135,8 @@ export const STARBG_PARALLAX_ENABLED = true;
 // ── Track screen layout tuning ───────────────────────────────────────────────
 // All visual sizing for the Track platform list. Adjust these to tune the
 // entire list appearance without opening component files.
-export const TRACK_ROW_PADDING_VERTICAL = 6;
+export const TRACK_ROW_PADDING_VERTICAL = 5;
+export const TRACK_GROUP_HEADER_PADDING_VERTICAL = 5;
 export const TRACK_ROW_PADDING_HORIZONTAL = 12;
 export const TRACK_CHILD_INDENT = 56;
 export const TRACK_ROW_SPRITE_SIZE = 32;
@@ -147,7 +148,7 @@ export const TRACK_ROW_FOCUS_BG_COLOR = theme.colors.focusTint;
 export const TRACK_ROW_DIMMED_OPACITY = 0.45;
 export const TRACK_CHILD_ROW_BG_COLOR = 'rgba(95, 174, 255, 0.06)';
 export const TRACK_CHILD_GUIDE_COLOR = 'rgba(95, 174, 255, 0.55)';
-export const TRACK_CHILD_ROW_PADDING_VERTICAL = 5;
+export const TRACK_CHILD_ROW_PADDING_VERTICAL = 4;
 export const TRACK_DAY_COLUMN_TODAY_BG = 'rgba(40, 120, 200, 0.18)';
 export const TRACK_CHILD_FONT_SIZE_NAME = 13;
 export const TRACK_CHILD_FONT_SIZE_COUNT = 13;
@@ -181,14 +182,15 @@ export const TRACK_ARENA_FLEX = 0.38;
 export const TRACK_ARENA_SEPARATOR_HEIGHT = 4;
 export const TRACK_ARENA_INNER_GLOW_HEIGHT = 8;
 export const TRACK_ARENA_INNER_GLOW_OPACITY = 0.15;
-// Grid cell vignette — subtle tint overlay for spotlight effect
-export const TRACK_GRID_CELL_VIGNETTE_INSET = 4;
-export const TRACK_GRID_CELL_VIGNETTE_OPACITY = 0.08;
+// Grid cell — sprite sizing scale (0-1, fraction of cell size for breathing room)
+export const TRACK_GRID_SPRITE_SCALE = 0.82;
+// Score bar count font size
+export const TRACK_SCORE_COUNT_FONT_SIZE = 20;
 // Today highlight band
 export const TRACK_TODAY_BAND_OPACITY = 0.12;
 // Day circles row padding (top/bottom split)
-export const TRACK_DAY_CIRCLES_PADDING_TOP = 4;
-export const TRACK_DAY_CIRCLES_PADDING_BOTTOM = 6;
+export const TRACK_DAY_CIRCLES_PADDING_TOP = 3;
+export const TRACK_DAY_CIRCLES_PADDING_BOTTOM = 5;
 
 // ── Parent company short names (Track screen group headers) ──────────────────
 // Data mapping for display — not user-facing copy.

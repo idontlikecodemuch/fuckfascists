@@ -12,8 +12,6 @@ import { bevelFocusRaised } from '../../design/bevel';
 import {
   SCAN_ICON_SIZE,
   SCAN_PANEL_HORIZONTAL_MARGIN,
-  SCAN_PANEL_INNER_GLOW_HEIGHT,
-  SCAN_PANEL_INNER_GLOW_OPACITY,
   SCAN_PANEL_SCAN_LINE_OPACITY,
   SCAN_PANEL_SHADOW_OPACITY,
   SCAN_PANEL_SHADOW_RADIUS,
@@ -88,8 +86,6 @@ export function ScanStandbyPanel({ busy, onOpenScanner }: ScanStandbyPanelProps)
 
       <View style={styles.panelOuter}>
         <View style={styles.panel}>
-          <View style={styles.innerGlowTop} pointerEvents="none" />
-          <View style={styles.innerGlowBottom} pointerEvents="none" />
           <View style={styles.scanLine1} pointerEvents="none" />
           <View style={styles.scanLine2} pointerEvents="none" />
 
@@ -140,14 +136,13 @@ const styles = StyleSheet.create({
     shadowColor: theme.colors.focusAccent, shadowOffset: { width: 0, height: 0 },
     shadowOpacity: SCAN_PANEL_SHADOW_OPACITY, shadowRadius: SCAN_PANEL_SHADOW_RADIUS, elevation: 12,
   },
-  panel: { ...bevelFocusRaised, backgroundColor: theme.colors.panelInner, overflow: 'visible' },
-  innerGlowTop: {
-    position: 'absolute', top: 0, left: 0, right: 0, height: SCAN_PANEL_INNER_GLOW_HEIGHT,
-    backgroundColor: theme.colors.focusAccent, opacity: SCAN_PANEL_INNER_GLOW_OPACITY, zIndex: 1,
-  },
-  innerGlowBottom: {
-    position: 'absolute', bottom: 0, left: 0, right: 0, height: SCAN_PANEL_INNER_GLOW_HEIGHT,
-    backgroundColor: theme.colors.focusAccent, opacity: SCAN_PANEL_INNER_GLOW_OPACITY, zIndex: 1,
+  panel: {
+    ...bevelFocusRaised, backgroundColor: theme.colors.panelInner, overflow: 'visible',
+    // @ts-expect-error — boxShadow inset: RN 0.76 Fabric, not in stable types
+    boxShadow: [
+      { offsetX: 0, offsetY: 6, blurRadius: 8, spreadDistance: -2, inset: true, color: 'rgba(40, 120, 200, 0.10)' },
+      { offsetX: 0, offsetY: -6, blurRadius: 8, spreadDistance: -2, inset: true, color: 'rgba(40, 120, 200, 0.10)' },
+    ],
   },
   scanLine1: {
     position: 'absolute', top: '40%' as unknown as number, left: theme.space.lg, right: theme.space.lg,

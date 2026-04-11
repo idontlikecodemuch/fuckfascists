@@ -9,8 +9,8 @@ import { FigureBadge } from './FigureBadge';
 import {
   TRACK_ROW_FONT_SIZE_COUNT,
   TRACK_ROW_FONT_SIZE_SUBTITLE,
+  TRACK_GROUP_HEADER_PADDING_VERTICAL,
   TRACK_ROW_PADDING_HORIZONTAL,
-  TRACK_ROW_PADDING_VERTICAL,
   TRACK_ROW_SPRITE_SIZE,
   TRACK_SPRITE_BUST_CROP_OFFSET_X,
   TRACK_SPRITE_BUST_CROP_OFFSET_Y,
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     gap: theme.space.sm,
     minHeight: theme.a11y.minTapTarget,
     paddingHorizontal: TRACK_ROW_PADDING_HORIZONTAL,
-    paddingVertical: TRACK_ROW_PADDING_VERTICAL,
+    paddingVertical: TRACK_GROUP_HEADER_PADDING_VERTICAL,
     borderBottomWidth: 1,
     borderBottomColor: theme.colors.panelBorder,
     backgroundColor: theme.colors.panelInner,

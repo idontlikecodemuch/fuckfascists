@@ -12,6 +12,28 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 11, 2026 ET — Beta testing visual fixes
+**Focus:** Fixes from beta testing feedback. Visual + one behavioral fix (setup list order). No structural changes.
+
+**Changes:**
+1. **Grid cell vignette** — Replaced overlay View approach with `boxShadow` inset (RN 0.76 Fabric). Cyan inset glow at 0.12 opacity, green shift for defeated cells. Cells now use `panelOuter` dark bg so the glow is visible.
+2. **Grid sprite centering** — Sprites scaled down to 82% of cell size (`TRACK_GRID_SPRITE_SCALE`). Cell `alignItems/justifyContent: center` now has visible breathing room on all sides.
+3. **Arena single sprite** — Restored left-of-center positioning (`alignItems: flex-start`, `paddingLeft` inset). Character stands in the scene, not centered like a passport photo.
+4. **Arena inner glow** — Replaced solid-band overlay Views with `boxShadow` inset on the container. True gradient fade from edges.
+5. **Scan panel inner glow** — Same boxShadow conversion for consistency.
+6. **Row padding tighter** — Group headers: 5px, child rows: 4px, singletons: 5px, day circles: 3px/5px.
+7. **Score bar bigger count** — Count uses Bungee headline font at 20px (was 13px bodySemiBold). Empty state stays small. Count is now the dominant visual element.
+8. **Platform setup fixed order** — Removed sort-on-select. List stays in original `sortOrder` regardless of selection state. Selection communicated through green visual treatment only.
+
+**New constants:** `TRACK_GROUP_HEADER_PADDING_VERTICAL`, `TRACK_GRID_SPRITE_SCALE`, `TRACK_SCORE_COUNT_FONT_SIZE`.
+**Dead constants (unused):** `TRACK_GRID_CELL_VIGNETTE_INSET`, `TRACK_GRID_CELL_VIGNETTE_OPACITY`, `TRACK_ARENA_INNER_GLOW_HEIGHT`, `TRACK_ARENA_INNER_GLOW_OPACITY`, `SCAN_PANEL_INNER_GLOW_HEIGHT`, `SCAN_PANEL_INNER_GLOW_OPACITY` — from the overlay approach, replaced by boxShadow.
+
+**Files changed:** `config/constants.ts`, `features/Platforms/components/GameArena.tsx`, `features/Platforms/components/TrackHeader.tsx`, `features/Platforms/components/PlatformGroupHeader.tsx`, `features/Platforms/components/PlatformSetupScreen.tsx`, `features/Scan/ScanDecorations.tsx`
+
+**Tests:** All 4227 tests pass (369 suites). `tsc --noEmit` clean (pre-existing StarFieldBg TS2578 only).
+
+---
+
 ### Session: April 10, 2026 ET — Scan screen visual redesign
 **Focus:** Visual redesign of both pre-scan standby and active scan states to match the cockpit/instrument design language. Same functionality, new look.
 
