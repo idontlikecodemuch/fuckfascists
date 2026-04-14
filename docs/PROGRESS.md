@@ -12,6 +12,30 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 14, 2026 ET — Scorecard image composite pipeline + rendering spec
+**Focus:** Built a Python test image pipeline for the shareable scorecard card, iterated the design through ~18 visual passes, and documented the rendering spec for translation to React Native.
+
+**What was built:**
+1. **`tools/img-gen/scripts/composite_scorecard.py`** — Extracts power bar assets from `Powerbars.png`, loads CEO sprites (handles 2×2 and 2×1 sheet layouts), and composites a full 1080×1920 scorecard test image. Sentence structure: "I FCKd [grid] 15× this week" with bookend text framing a count grid panel zone.
+2. **`docs/SCORECARD_IMAGE.md`** — Full rendering spec covering canvas dimensions (1080×1920, 9:16 story ratio), layout structure, panel zone styling (matches GameArena: `panelOuter` bg, `focusAccent` inset glow), typography table, color palette mapped to `design/tokens.ts`, effects (light beams, text glow, sparkles, vignette, scanlines), sprite extraction logic, and translation guide for React Native (view-shot, share flow, what carries over vs image-only flair).
+3. **Extracted power bar assets** — `idle.png`, `hot.png`, `fck.png`, `legendary.png` saved to `tools/img-gen/output/scorecard/`.
+
+**Design iteration highlights:**
+- Power bar: explored blue recolor (full brightness mapping through token blue spectrum), settled on original amber/gold with subtle glow — blue washed out the starfield
+- Per-person counts: changed from red to gold (achievements, not warnings)
+- Panel zone: cyan wash + inset blue glow matching GameArena panels
+- Light beams: gradient-tapered beams as decorative rules (white-hot core → cyan → blue, 25% horizontal taper)
+- "I FCKd" lowercase "d": Bungee is all-caps, so "d" uses IBM Plex SemiBold for actual lowercase rendering
+- Footer CTA "FCKFASCISTS.ORG" sized up to 44px Bungee with double-layer glowCyan neon glow
+
+**Files changed:** `tools/img-gen/scripts/composite_scorecard.py` (new), `docs/SCORECARD_IMAGE.md` (new), `tools/img-gen/USAGE.md` (added script entry), `CLAUDE.md` (doc table + repo structure)
+
+**Tests:** 356/356 passing. No app code changed — this is tooling + docs only.
+
+**Open decisions (documented in SCORECARD_IMAGE.md):** Image share UX (replace text share vs second button), scanlines/vignette in app vs image-only, power bar tier thresholds, retina scaling strategy.
+
+---
+
 ### Session: April 11, 2026 ET — Beta testing visual fixes
 **Focus:** Fixes from beta testing feedback. Visual + one behavioral fix (setup list order). No structural changes.
 

@@ -30,6 +30,7 @@ These documents are the authoritative reference for the project. New instances s
 | README | /README.md | Plain-English public overview — keep current with major feature changes |
 | Spec vs. Current State | /docs/SPEC_VS_CURRENT.md | Living document tracking alignment, deviations, and open decisions |
 | Voice & Ethos Framework | /docs/FCK_VOICE_FRAMEWORK.md | Canonical voice guide — two voices (Clark the Clerk + The Sh*tposter), tone rules, copy patterns |
+| Scorecard Image Spec | /docs/SCORECARD_IMAGE.md | Rendering spec for shareable scorecard image — test pipeline, layout, colors, fonts, translation to React Native |
 | CLAUDE.md | /CLAUDE.md | Technical reference for AI agents — update continuously |
 
 **Update cadence:** PROGRESS.md after every session. CLAUDE.md continuously. README.md and SPEC_VS_CURRENT.md when features ship or decisions resolve. Never modify the original spec. When PROGRESS.md exceeds ~10K tokens, move sessions older than one week to PROGRESS_ARCHIVE.md.
@@ -159,6 +160,7 @@ API keys and credentials must **only ever be read from environment variables**. 
 │       ├── scripts/manifest.py      ← generate sprite sheet metadata JSON
 │       ├── scripts/gpt_image.py     ← GPT image pipeline (gpt-image-1.5): generate + batch process
 │       ├── scripts/slice_ui_kit.py  ← auto-detect + slice UI kit sprite sheet into individual elements
+│       ├── scripts/composite_scorecard.py ← scorecard test image compositor (see docs/SCORECARD_IMAGE.md)
 │       ├── USAGE.md                 ← full documentation for all pipeline scripts
 │       └── asset-prompts.json       ← asset definitions + processing configs
 └── assets/
