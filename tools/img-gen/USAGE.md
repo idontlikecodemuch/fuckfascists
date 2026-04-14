@@ -383,3 +383,20 @@ python3 scripts/slice_ui_kit.py --input ../../assets/pixel/ui/ui_kit.png --outpu
 # Slice with larger minimum size to skip small artifacts
 python3 scripts/slice_ui_kit.py --input ../../assets/pixel/ui/ui_kit.png --output-dir output/ui_sliced --min-size 30
 ```
+
+---
+
+### composite_scorecard.py
+
+Generate a 1080×1920 test composite of the shareable scorecard image. Extracts power bar assets from `Powerbars.png`, loads CEO sprites, and composites the full card layout with text, effects, and frame overlay. Used for design iteration — the visual reference target for the app-side `ScorecardView` image capture.
+
+**Requires:** No API keys. Needs Pillow + NumPy, fonts from `assets/fonts/`, sprites from `assets/pixel/sprites/`, reference assets from `tools/img-gen/reference/`.
+
+**Output:** `output/scorecard/scorecard_test.jpg` + `.png`, plus extracted power bars (`idle.png`, `hot.png`, `fck.png`, `legendary.png`).
+
+See `docs/SCORECARD_IMAGE.md` for the full rendering spec.
+
+**Examples:**
+```bash
+python3 scripts/composite_scorecard.py
+```
