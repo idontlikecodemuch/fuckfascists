@@ -12,6 +12,34 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 14, 2026 ET — Scorecard feature rebuild (4-state tab, rendered card, archive)
+**Focus:** Complete scorecard rebuild per updated design spec. Replaced the basic proof-of-concept with a 4-state tab: live preview, rendered 1080×1920 PNG card, full-screen takeover reveal, and card archive.
+
+**What was built:**
+1. **4-state ScorecardScreen** — State machine orchestrator: `preview | loading | presentation | empty | archive`. Replaces the old single-view ScrollView.
+2. **LivePreview** — Scrollable interactive weekly breakdown with hero count, expandable person rows (CollapsibleRow + reanimated), surface icons (map pin/barcode/checkmark), "DROPS THIS FRIDAY" subtext. Not shareable — the drop is the reward.
+3. **ScorecardImage** — Fixed 1080×1920 React Native view for view-shot capture. Sentence structure: "I FCKd [grid] N× this week". `collapsable={false}` + `allowFontScaling={false}` throughout. PixelRatio handling for consistent output.
+4. **CardPresentation** — Full-screen takeover with PNG display, SHARE button (native share sheet with image URI), swipe-down + X dismiss, money particle celebrations + screen shake on reveal.
+5. **CardArchive** — "Past scorecards" thumbnail gallery, reverse chronological, tap for full-screen + SHARE. expo-file-system storage, 104-card ceiling.
+6. **Surface tracking** — Numeric `surface` column on `EntityAvoidEvent` (1=map, 2=scan, 3=track). SQLite schema v4 migration (backward compatible nullable). Map and Scan callers pass surface at write time.
+7. **Aggregation updates** — `ScorecardPerson` now includes `surfaces: Set<number>` and `children: ScorecardChildEntity[]` for expandable rows. Power tier computation via `POWER_METER_TIERS` constants.
+8. **Shared CollapsibleRow** (`core/ui/CollapsibleRow.tsx`) — Reusable expand/collapse component with render props, styleable via props. Used by Scorecard preview; available for Track adoption.
+9. **Dev testing pipeline** — `__DEV__`-only "Generate Card Now" + "Reset Card" panel. Bypasses drop schedule for rapid iteration.
+10. **Copy rewrite** — New keys per spec (`framingOpen`, `framingClose`, `dropsLabel`, `heroLabel`, `loaderText`, `pastCardsLabel`, `emptyState`). Removed dead keys (`deltaUp/Down/Flat`, `dropTime`, `previewBtn`). Title stays "SCORECARD".
+11. **Constants** — Drop window Fri 6pm–Sat 4pm ET, `MIN_AVOIDS_FOR_DROP`, `SCORECARD_IMAGE_WIDTH/HEIGHT`, `SCORECARD_CONTENT_ZONE`, `SCORECARD_ARCHIVE_MAX`, `POWER_METER_TIERS`, `SURFACE_MAP/SCAN/TRACK`.
+
+**Files changed:** 36 files, +1,850 / -492 lines. Old `ScorecardView.tsx` (395 lines, over limit) deleted and replaced by 8 focused sub-components all under 250 lines.
+
+**New files (16):** `core/ui/CollapsibleRow.tsx`, `features/Scorecard/components/{LivePreview,PreviewPersonRow,SurfaceIcon,ScorecardImage,CardPresentation,ScorecardLoader,EmptyWeek,CardArchive}.tsx`, `features/Scorecard/data/{computePowerTier,cardArchive}.ts`, `features/Scorecard/hooks/{useCardCapture,useCardArchive}.ts`, `features/Scorecard/dev/ScorecardDevTools.tsx`
+
+**TypeScript:** Compiles clean (only pre-existing `@ts-expect-error` warnings).
+
+**Status:** Merged to main, pushed. Ready for build and device testing.
+
+**Next:** Build + test on device. Visual refinement of rendered card (frame assets, power meter PNGs need deploying to `assets/pixel/scorecard/`). Run `composite_scorecard.py` to generate power bar assets. Archive gallery UX polish.
+
+---
+
 ### Session: April 14, 2026 ET — Scorecard image composite pipeline + rendering spec
 **Focus:** Built a Python test image pipeline for the shareable scorecard card, iterated the design through ~18 visual passes, and documented the rendering spec for translation to React Native.
 

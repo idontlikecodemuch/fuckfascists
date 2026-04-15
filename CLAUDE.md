@@ -590,6 +590,7 @@ The entire app is styled as a **vintage 8-bit video game**. This is the foundati
 | First-use tooltip system (Map screen) | ✅ Done — reusable `Tooltip` component (`core/ui/Tooltip.tsx`) with Mario-cloud depth, wiggle animation, directional tails. Replaces `HintBanner`. Three sequential hints: search bar, map tap, barcode scan. `useWiggleAnimation` hook extracted. |
 | BusinessCard manila folder reskin | ✅ Done — manila folder wrapper, cream document table layout, folder tab dismiss, sprite perch (168px, 80/20 split), swipe-down dismiss, post-avoid stamp + particles + shake + amber pulse, AvoidButton hydration fix, AvoidCelebration removed. Pixel art eagle seal wired (48px BOX-downsampled, red-tinted folder + dark doc header). |
 | Extension tested in Chrome | ✅ Done |
+| Scorecard rebuild (4-state tab, rendered card, archive) | ✅ Done — 4-state screen (preview/loading/presentation/empty/archive), ScorecardImage 1080×1920 PNG capture, CardPresentation full-screen takeover + celebrations, surface tracking (numeric column), shared CollapsibleRow, card archive, dev tools. Drop window Fri 6pm–Sat 4pm ET. |
 
 ---
 
