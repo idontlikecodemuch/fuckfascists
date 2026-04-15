@@ -121,4 +121,6 @@ export class ChromeStorageAdapter implements StorageAdapter {
     return all.filter((e) => e.date === date);
   }
   async clearOldAvoidPins(_beforeDate: string): Promise<void> { /* no-op */ }
+  async clearOldEntityAvoids(_beforeDate: string): Promise<void> { /* no-op — extension is session-only */ }
+  async clearOldPlatformAvoids(_beforeDate: string): Promise<void> { /* no-op — extension is session-only */ }
 }

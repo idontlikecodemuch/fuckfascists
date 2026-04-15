@@ -237,4 +237,18 @@ export class SqliteAdapter implements StorageAdapter {
       [beforeDate],
     );
   }
+
+  async clearOldEntityAvoids(beforeDate: string): Promise<void> {
+    await this.db.runAsync(
+      `DELETE FROM ${TABLE_ENTITY_AVOIDS} WHERE date < ?`,
+      [beforeDate],
+    );
+  }
+
+  async clearOldPlatformAvoids(beforeDate: string): Promise<void> {
+    await this.db.runAsync(
+      `DELETE FROM ${TABLE_PLATFORM_AVOIDS} WHERE date < ?`,
+      [beforeDate],
+    );
+  }
 }

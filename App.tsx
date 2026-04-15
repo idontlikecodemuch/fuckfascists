@@ -15,7 +15,7 @@ import { LaunchGate } from './app/gates/LaunchGate';
 import { AppShell } from './app/gates/AppShell';
 import { sharedCopy } from './copy/shared';
 import { SqliteAdapter } from './app/storage/SqliteAdapter';
-import { fetchEntityList, parseEntityList, fetchPeopleList, parsePeopleList } from './core/data';
+import { fetchEntityList, parseEntityList, fetchPeopleList, parsePeopleList, purgeOldAvoidEvents } from './core/data';
 import type { StorageAdapter } from './core/data';
 import type { Entity, PoliticalPerson } from './core/models';
 import bundledEntitiesRaw from './assets/data/entities.json';
@@ -45,30 +45,46 @@ export default function App() {
     parsePeopleList(bundledPeopleRaw)
   );
 
-  // Open SQLite and run migrations once on mount.
+  // Open SQLite, run migrations, and purge old avoid events (privacy stance).
   useEffect(() => {
     let cancelled = false;
-    SqliteAdapter.open()
-      .then((a) => { if (!cancelled) setAdapter(a); })
-      .catch((err) => console.error('[App] Failed to open SQLite:', err));
+    (async () => {
+      try {
+        const a = await SqliteAdapter.open();
+        await purgeOldAvoidEvents(a);
+        if (!cancelled) setAdapter(a);
+      } catch (err) {
+        console.error('[App] Failed to open SQLite:', err);
+      }
+    })();
     return () => { cancelled = true; };
   }, []);
 
   // Attempt to refresh entity list from CDN; falls back to bundled on failure.
   useEffect(() => {
     let cancelled = false;
-    fetchEntityList(parseEntityList(bundledEntitiesRaw))
-      .then((list) => { if (!cancelled) setEntities(list); })
-      .catch(() => { /* bundled list already set as initial state */ });
+    (async () => {
+      try {
+        const list = await fetchEntityList(parseEntityList(bundledEntitiesRaw));
+        if (!cancelled) setEntities(list);
+      } catch {
+        /* bundled list already set as initial state */
+      }
+    })();
     return () => { cancelled = true; };
   }, []);
 
   // Attempt to refresh people list from CDN; falls back to bundled on failure.
   useEffect(() => {
     let cancelled = false;
-    fetchPeopleList(parsePeopleList(bundledPeopleRaw))
-      .then((list) => { if (!cancelled) setPeople(list); })
-      .catch(() => { /* bundled list already set as initial state */ });
+    (async () => {
+      try {
+        const list = await fetchPeopleList(parsePeopleList(bundledPeopleRaw));
+        if (!cancelled) setPeople(list);
+      } catch {
+        /* bundled list already set as initial state */
+      }
+    })();
     return () => { cancelled = true; };
   }, []);
 

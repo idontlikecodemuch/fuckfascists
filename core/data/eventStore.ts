@@ -63,6 +63,21 @@ export async function purgeOldAvoidPins(
   await adapter.clearOldAvoidPins(getLocalDateString());
 }
 
+/**
+ * Purges entity and platform avoid events older than the current week.
+ * Call on app launch. Only the current Sat–Fri week's data is retained —
+ * previous weeks' avoidance data is not kept (privacy stance).
+ */
+export async function purgeOldAvoidEvents(
+  adapter: StorageAdapter
+): Promise<void> {
+  const weekStart = getLocalWeekStart();
+  await Promise.all([
+    adapter.clearOldEntityAvoids(weekStart),
+    adapter.clearOldPlatformAvoids(weekStart),
+  ]);
+}
+
 // ── Platform avoid events ──────────────────────────────────────────────────────
 
 /**

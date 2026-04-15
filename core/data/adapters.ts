@@ -62,4 +62,14 @@ export interface StorageAdapter {
 
   /** Deletes avoid pins older than the given date. */
   clearOldAvoidPins(beforeDate: string): Promise<void>;
+
+  // ── Privacy purge (weekly) ──────────────────────────────────────────────
+  // Avoid events older than the current week are purged on launch.
+  // Only the current Sat–Fri week's data is retained.
+
+  /** Deletes entity avoid events with date before the given date. */
+  clearOldEntityAvoids(beforeDate: string): Promise<void>;
+
+  /** Deletes platform avoid events with date before the given date. */
+  clearOldPlatformAvoids(beforeDate: string): Promise<void>;
 }

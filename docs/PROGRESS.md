@@ -12,6 +12,42 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 14, 2026 ET — Weekly avoid event purge + missed-week guard + App.tsx async cleanup
+**Focus:** Privacy enforcement — avoid events from previous weeks are now purged on app launch. Also converted App.tsx useEffect chains from `.then()` to `async`/`await` per code standards, and resolved the Track → CollapsibleRow refactor item.
+
+**What changed:**
+
+1. **Weekly avoid event purge** — `purgeOldAvoidEvents(adapter)` deletes entity + platform avoid events with dates before the current Sat–Fri week start. Called on every app launch in `App.tsx`, right after SQLite opens. Enforces the privacy stance: only the current week's avoidance data is retained on-device.
+   - `core/data/adapters.ts` — added `clearOldEntityAvoids` + `clearOldPlatformAvoids` to `StorageAdapter` interface
+   - `app/storage/SqliteAdapter.ts` — implemented both (DELETE WHERE date < ?)
+   - `extension/storage/ChromeStorageAdapter.ts` — no-op stubs (extension is session-only)
+   - `core/data/eventStore.ts` — added `purgeOldAvoidEvents()` that calls both in parallel
+   - `core/data/index.ts` — re-exported `purgeOldAvoidEvents`
+   - `App.tsx` — wired into SQLite open effect
+
+2. **Missed-week guard** — resolved as "not applicable." Since avoid events are now purged weekly, there is no previous week data to render. The scorecard always shows the current week. If the drop has passed and the current week is empty, the empty state renders cleanly. No lookback logic needed.
+
+3. **App.tsx async cleanup** — converted all three `useEffect` chains (SQLite open, entity list fetch, people list fetch) from `.then()`/`.catch()` to `async`/`await` IIFE pattern per CLAUDE.md code standards.
+
+4. **Track → CollapsibleRow** — resolved as "not applicable." Track uses FlatList item insertion for expand/collapse (items injected via `buildListData()` + `LinearTransition`), while `CollapsibleRow` co-locates header + expanded content. Swapping would require restructuring the list data model and would lose per-item layout animation. The two patterns serve different use cases. Track works correctly as-is.
+
+5. **Test mocks updated** — added `clearOldEntityAvoids` + `clearOldPlatformAvoids` stubs to all mock adapters (3 test files).
+
+**Files changed (8 modified):**
+- `App.tsx` — purge call + async/await cleanup
+- `core/data/adapters.ts` — 2 new interface methods
+- `core/data/eventStore.ts` — `purgeOldAvoidEvents()`
+- `core/data/index.ts` — re-export
+- `app/storage/SqliteAdapter.ts` — 2 new SQL methods
+- `extension/storage/ChromeStorageAdapter.ts` — 2 no-op stubs
+- `core/data/__tests__/cacheStore.test.ts` — mock stubs
+- `core/data/__tests__/eventStore.test.ts` — mock stubs
+- `features/Scorecard/data/__tests__/aggregateScorecard.test.ts` — mock stubs
+
+**TypeScript:** Zero errors. **Tests:** 400 suites, 4581 tests, all pass.
+
+---
+
 ### Session: April 14, 2026 ET — Scorecard gap fixes (assets, power meter, spec constants)
 **Focus:** Closed gaps from the scorecard rebuild: deployed pixel art assets, built missing components, added spec constants, wired notification suppression.
 
