@@ -1,11 +1,12 @@
 import React, { forwardRef } from 'react';
 import { Image, PixelRatio, StyleSheet, Text, View } from 'react-native';
 import type { ScorecardViewData } from '../types';
-import type { ScorecardPerson } from '../data/aggregateScorecard';
 import { scorecardCopy } from '../../../copy/scorecard';
 import { theme } from '../../../design/tokens';
 import { formatWeekRange } from '../utils/formatters';
-import { SpriteView, nameToSpriteId } from '../../../core/sprites/spriteLoader';
+import { scorecardBg, scorecardFrame } from '../../../core/scorecard/scorecardAssets';
+import { CardPersonRow } from './CardPersonRow';
+import { PowerMeter } from './PowerMeter';
 import {
   SCORECARD_IMAGE_WIDTH,
   SCORECARD_IMAGE_HEIGHT,
@@ -13,12 +14,12 @@ import {
 } from '../../../config/constants';
 
 const TOP_N = 3;
-const SPRITE_SIZE = 120;
 const pr = PixelRatio.get();
-
-// The RN view is sized in points — view-shot captures at native resolution.
+const scale = (px: number) => px / pr;
 const VIEW_WIDTH = SCORECARD_IMAGE_WIDTH / pr;
 const VIEW_HEIGHT = SCORECARD_IMAGE_HEIGHT / pr;
+const SPARKLE = '\u2726'; // ✦
+const SPARKLE_SM = '\u2727'; // ✧
 
 interface ScorecardImageProps {
   data: ScorecardViewData;
@@ -27,32 +28,39 @@ interface ScorecardImageProps {
 /**
  * The rendered shareable card — 1080×1920 fixed layout.
  *
- * This component is designed for react-native-view-shot capture ONLY.
- * It is NOT interactive, NOT scrollable, NOT user-facing during rendering.
- * collapsable={false} on all Views to prevent Android from collapsing empty parents.
- * allowFontScaling={false} throughout for bitmap fidelity.
+ * Designed for react-native-view-shot capture ONLY.
+ * collapsable={false} on all Views for Android capture.
+ * allowFontScaling={false} for bitmap fidelity.
  */
 export const ScorecardImage = forwardRef<View, ScorecardImageProps>(
   ({ data }, ref) => {
-    const { weekOf, persons, grandTotal } = data;
+    const { weekOf, persons, grandTotal, powerTier } = data;
     const visiblePersons = persons.slice(0, TOP_N);
     const overflowCount = Math.max(0, persons.length - TOP_N);
     const dateRange = formatWeekRange(weekOf);
 
     return (
       <View ref={ref} style={styles.canvas} collapsable={false}>
-        {/* Layer 1: Background */}
-        <View style={styles.bgLayer} collapsable={false}>
-          <View style={styles.bgFill} collapsable={false} />
-        </View>
+        {/* Layer 1: Starfield background */}
+        <Image source={scorecardBg} style={styles.bgImage} resizeMode="cover" />
 
-        {/* Layer 2: Content */}
+        {/* Layer 2: Gold frame overlay */}
+        <Image source={scorecardFrame} style={styles.frameImage} resizeMode="stretch" />
+
+        {/* Layer 3: Power meter (left edge) */}
+        {powerTier && (
+          <PowerMeter tier={powerTier} height={VIEW_HEIGHT - scale(80)} />
+        )}
+
+        {/* Layer 4+: Content */}
         <View style={styles.content} collapsable={false}>
-          {/* Header */}
+          {/* Header with logo */}
           <View style={styles.header} collapsable={false}>
-            <Text style={styles.brandTitle} allowFontScaling={false}>
-              FCK FASCISTS
-            </Text>
+            <Image
+              source={require('../../../assets/pixel/brand/FF_logo.png')}
+              style={styles.logo}
+              resizeMode="contain"
+            />
             <Text style={styles.subtitle} allowFontScaling={false}>
               {scorecardCopy.title}
             </Text>
@@ -77,7 +85,6 @@ export const ScorecardImage = forwardRef<View, ScorecardImageProps>(
               <CardPersonRow
                 key={person.figureName}
                 person={person}
-                isFirst={i === 0}
                 isLast={i === visiblePersons.length - 1 && overflowCount === 0}
               />
             ))}
@@ -111,6 +118,13 @@ export const ScorecardImage = forwardRef<View, ScorecardImageProps>(
             </Text>
           </View>
         </View>
+
+        {/* Sparkle decorations */}
+        <Text style={[styles.sparkle, styles.sparkle1]}>{SPARKLE}</Text>
+        <Text style={[styles.sparkle, styles.sparkle2]}>{SPARKLE_SM}</Text>
+        <Text style={[styles.sparkle, styles.sparkle3]}>{SPARKLE}</Text>
+        <Text style={[styles.sparkle, styles.sparkle4]}>{SPARKLE_SM}</Text>
+        <Text style={[styles.sparkle, styles.sparkle5]}>{SPARKLE}</Text>
       </View>
     );
   },
@@ -118,44 +132,7 @@ export const ScorecardImage = forwardRef<View, ScorecardImageProps>(
 
 ScorecardImage.displayName = 'ScorecardImage';
 
-// ── Person row for rendered card ──────────────────────────────────────────────
-
-function CardPersonRow({ person, isFirst, isLast }: {
-  person: ScorecardPerson; isFirst: boolean; isLast: boolean;
-}) {
-  const lastName = extractLastName(person.figureName);
-  const spriteId = nameToSpriteId(person.figureName);
-  const detail = scorecardCopy.platformList(person.sources.map((s) => s.name));
-
-  return (
-    <View
-      style={[styles.personRow, !isLast && styles.personDivider]}
-      collapsable={false}
-    >
-      <SpriteView spriteId={spriteId} state="defeated" size={SPRITE_SIZE} />
-      <View style={styles.personText} collapsable={false}>
-        <Text style={styles.personName} numberOfLines={1} allowFontScaling={false}>
-          {lastName.toUpperCase()}
-        </Text>
-        <Text style={styles.personDetail} numberOfLines={1} allowFontScaling={false}>
-          {detail}
-        </Text>
-      </View>
-      <Text style={styles.personCount} allowFontScaling={false}>
-        {scorecardCopy.personCount(person.totalCount)}
-      </Text>
-    </View>
-  );
-}
-
-function extractLastName(fullName: string): string {
-  const parts = fullName.trim().split(/\s+/);
-  return parts[parts.length - 1];
-}
-
 // ── Styles ────────────────────────────────────────────────────────────────────
-
-const scale = (px: number) => px / pr;
 
 const styles = StyleSheet.create({
   canvas: {
@@ -164,12 +141,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#0A0B0C',
     overflow: 'hidden',
   },
-  bgLayer: {
+  bgImage: {
     ...StyleSheet.absoluteFillObject,
+    width: VIEW_WIDTH,
+    height: VIEW_HEIGHT,
   },
-  bgFill: {
-    flex: 1,
-    backgroundColor: '#0A101C',
+  frameImage: {
+    ...StyleSheet.absoluteFillObject,
+    width: VIEW_WIDTH,
+    height: VIEW_HEIGHT,
   },
   content: {
     flex: 1,
@@ -179,17 +159,8 @@ const styles = StyleSheet.create({
     paddingBottom: scale(SCORECARD_CONTENT_ZONE.bottom),
     justifyContent: 'space-between',
   },
-  // Header
-  header: {
-    alignItems: 'center',
-    gap: scale(8),
-  },
-  brandTitle: {
-    fontFamily: theme.fonts.headline,
-    fontSize: scale(60),
-    color: theme.colors.rewardYellow,
-    letterSpacing: scale(4),
-  },
+  header: { alignItems: 'center', gap: scale(8) },
+  logo: { width: scale(180), height: scale(100) },
   subtitle: {
     fontFamily: theme.fonts.bodySemiBold,
     fontSize: scale(26),
@@ -202,23 +173,9 @@ const styles = StyleSheet.create({
     color: '#667788',
     letterSpacing: scale(2),
   },
-  // Bookend: "I FCKd"
-  bookendRow: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
-    marginTop: scale(20),
-  },
-  bookendBungee: {
-    fontFamily: theme.fonts.headline,
-    fontSize: scale(56),
-    color: '#E8E0D0',
-  },
-  bookendPlex: {
-    fontFamily: theme.fonts.bodySemiBold,
-    fontSize: scale(56),
-    color: '#E8E0D0',
-  },
-  // Count grid zone
+  bookendRow: { flexDirection: 'row', alignItems: 'baseline', marginTop: scale(20) },
+  bookendBungee: { fontFamily: theme.fonts.headline, fontSize: scale(56), color: '#E8E0D0' },
+  bookendPlex: { fontFamily: theme.fonts.bodySemiBold, fontSize: scale(56), color: '#E8E0D0' },
   gridZone: {
     backgroundColor: 'rgba(10, 16, 28, 0.5)',
     borderWidth: 2,
@@ -226,79 +183,42 @@ const styles = StyleSheet.create({
     paddingVertical: scale(12),
     paddingHorizontal: scale(16),
   },
-  personRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: scale(12),
-    paddingVertical: scale(8),
-  },
-  personDivider: {
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255,255,255,0.06)',
-  },
-  personText: {
-    flex: 1,
-    gap: scale(4),
-  },
-  personName: {
-    fontFamily: theme.fonts.bodySemiBold,
-    fontSize: scale(40),
-    color: theme.colors.textPrimary,
-  },
-  personDetail: {
-    fontFamily: theme.fonts.bodyMedium,
-    fontSize: scale(24),
-    color: theme.colors.textSecondary,
-  },
-  personCount: {
-    fontFamily: theme.fonts.headline,
-    fontSize: scale(80),
-    color: theme.colors.rewardYellow,
-  },
   overflow: {
     fontFamily: theme.fonts.headline,
     fontSize: scale(32),
     color: theme.colors.textSecondary,
     paddingTop: scale(8),
   },
-  // Closing bookend: "15× this week"
   closingRow: {
     flexDirection: 'row',
     alignItems: 'baseline',
     justifyContent: 'flex-end',
     marginTop: scale(16),
   },
-  closingCount: {
-    fontFamily: theme.fonts.headline,
-    fontSize: scale(56),
-    color: theme.colors.rewardYellow,
-  },
-  closingText: {
-    fontFamily: theme.fonts.headline,
-    fontSize: scale(56),
-    color: '#E8E0D0',
-  },
-  // Footer
-  footer: {
-    alignItems: 'center',
-    gap: scale(8),
-  },
+  closingCount: { fontFamily: theme.fonts.headline, fontSize: scale(56), color: theme.colors.rewardYellow },
+  closingText: { fontFamily: theme.fonts.headline, fontSize: scale(56), color: '#E8E0D0' },
+  footer: { alignItems: 'center', gap: scale(8) },
   tagline: {
-    fontFamily: theme.fonts.bodySemiBold,
-    fontSize: scale(28),
-    color: theme.colors.textSecondary,
-    textAlign: 'center',
+    fontFamily: theme.fonts.bodySemiBold, fontSize: scale(28),
+    color: theme.colors.textSecondary, textAlign: 'center',
   },
   cta: {
-    fontFamily: theme.fonts.headline,
-    fontSize: scale(44),
-    color: theme.colors.glowCyan,
-    letterSpacing: scale(2),
+    fontFamily: theme.fonts.headline, fontSize: scale(44),
+    color: theme.colors.glowCyan, letterSpacing: scale(2),
   },
   attribution: {
-    fontFamily: theme.fonts.bodySemiBold,
-    fontSize: scale(20),
-    color: '#667788',
-    letterSpacing: scale(2),
+    fontFamily: theme.fonts.bodySemiBold, fontSize: scale(20),
+    color: '#667788', letterSpacing: scale(2),
   },
+  // Sparkles
+  sparkle: {
+    position: 'absolute',
+    fontSize: scale(18),
+    color: theme.colors.rewardYellow,
+  },
+  sparkle1: { top: scale(160), right: scale(80) },
+  sparkle2: { top: scale(400), left: scale(70) },
+  sparkle3: { bottom: scale(300), right: scale(60) },
+  sparkle4: { bottom: scale(180), left: scale(90) },
+  sparkle5: { top: scale(600), right: scale(45) },
 });

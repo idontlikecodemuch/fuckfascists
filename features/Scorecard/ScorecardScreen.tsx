@@ -1,6 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import * as FileSystem from 'expo-file-system';
+import * as Notifications from 'expo-notifications';
 import type { Entity } from '../../core/models';
 import type { StorageAdapter } from '../../core/data';
 import type { Platform } from '../Platforms/types';
@@ -54,6 +55,8 @@ export function ScorecardScreen({ adapter, entities, platforms, onSwitchTab }: S
     if (!hasDropped || !data) return;
     if (data.grandTotal < MIN_AVOIDS_FOR_DROP) {
       setScreenState('empty');
+      // Suppress notification — spec: "no notification fired" for empty weeks
+      Notifications.cancelAllScheduledNotificationsAsync().catch(() => {});
       return;
     }
 

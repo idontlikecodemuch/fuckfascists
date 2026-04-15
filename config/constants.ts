@@ -1,9 +1,19 @@
 import { theme } from '../design/tokens';
 
+// Scorecard week boundary
+export const WEEK_START_DAY = 6;               // Saturday (0 = Sunday)
+export const WEEK_START_HOUR = 0;              // 12:00am local time
+
 // Scorecard drop window (times in ET)
-export const SCORECARD_WINDOW_START_HOUR = 18; // 6pm ET Friday
-export const SCORECARD_WINDOW_END_HOUR = 16;   // 4pm ET Saturday
-export const SCORECARD_WINDOW_DAY = 5;         // Friday (0 = Sunday)
+export const DROP_WINDOW_START_DAY = 5;        // Friday (0 = Sunday)
+export const DROP_WINDOW_START_HOUR = 18;      // 6pm ET
+export const DROP_WINDOW_END_DAY = 6;          // Saturday (0 = Sunday)
+export const DROP_WINDOW_END_HOUR = 16;        // 4pm ET
+
+// Legacy aliases — computeDropTime.ts reads these. Keep until migrated.
+export const SCORECARD_WINDOW_START_HOUR = DROP_WINDOW_START_HOUR;
+export const SCORECARD_WINDOW_END_HOUR = DROP_WINDOW_END_HOUR;
+export const SCORECARD_WINDOW_DAY = DROP_WINDOW_START_DAY;
 
 // Scorecard — suppress card + notification below this avoid count
 export const MIN_AVOIDS_FOR_DROP = 1;
