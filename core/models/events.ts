@@ -2,9 +2,10 @@
 // There is no "support" event type — by design.
 
 export interface EntityAvoidEvent {
-  entityId: string; // references canonical entity list
-  date: string;     // YYYY-MM-DD only — no time, no location
-  count: number;    // accumulated avoid count — set by DB on read, not by callers on write
+  entityId: string;    // references canonical entity list
+  date: string;        // YYYY-MM-DD only — no time, no location
+  count: number;       // accumulated avoid count — set by DB on read, not by callers on write
+  surface?: number;    // numeric surface indicator (1=map, 2=scan) — privacy-safe, encrypted at rest
 }
 
 export interface PlatformAvoidEvent {

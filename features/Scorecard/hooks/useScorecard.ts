@@ -4,6 +4,7 @@ import type { StorageAdapter } from '../../../core/data';
 import type { Platform } from '../../Platforms/types';
 import type { ScorecardViewData } from '../types';
 import { aggregateScorecard } from '../data/aggregateScorecard';
+import { computePowerTier } from '../data/computePowerTier';
 
 /**
  * Aggregates the week's avoidance events into person-grouped scorecard data.
@@ -40,7 +41,8 @@ export function useScorecard(
         const persons = await aggregateScorecard(adapter, entitiesRef.current, platformsRef.current, weekOf);
         if (cancelled) return;
         const grandTotal = persons.reduce((sum, p) => sum + p.totalCount, 0);
-        setData({ weekOf, persons, grandTotal, isPreview });
+        const powerTier = computePowerTier(grandTotal);
+        setData({ weekOf, persons, grandTotal, powerTier, isPreview });
         setLoading(false);
       } catch (err) {
         if (cancelled) return;

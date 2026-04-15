@@ -1,22 +1,33 @@
-import type { Entity, EntityAvoidEvent, PlatformAvoidEvent } from '../../../core/models';
+import type { Entity } from '../../../core/models';
 import { getDisplayFigure } from '../../../core/models';
 import type { StorageAdapter } from '../../../core/data';
 import { getAllEntityAvoids, getPlatformAvoidsForWeek } from '../../../core/data';
+import { SURFACE_TRACK } from '../../../config/constants';
 import type { Platform } from '../../Platforms/types';
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
-export type ScorecardSource = {
-  name: string;    // entity alias or platform name
+export interface ScorecardSource {
+  name: string;       // entity alias or platform name
   count: number;
-  verb: string;    // "stayed off" | "skipped" | "walked past" | "avoided"
-};
+  verb: string;       // "stayed off" | "skipped" | "walked past" | "avoided"
+  surface?: number;   // 1=map, 2=scan, 3=track (numeric for privacy)
+}
 
-export type ScorecardPerson = {
-  figureName: string;    // publicFigureName (ceoName fallback)
-  totalCount: number;    // sum across all sources
+/** A child entity that contributed avoids under a parent CEO figure. */
+export interface ScorecardChildEntity {
+  name: string;
+  count: number;
+  surfaces: Set<number>;
+}
+
+export interface ScorecardPerson {
+  figureName: string;                // publicFigureName (ceoName fallback)
+  totalCount: number;                // sum across all sources
   sources: ScorecardSource[];
-};
+  surfaces: Set<number>;             // union of all source surfaces
+  children: ScorecardChildEntity[];  // child entities for expandable rows
+}
 
 // ── Verb mapping ───────────────────────────────────────────────────────────────
 
@@ -49,48 +60,56 @@ export async function aggregateScorecard(
   platforms: Platform[],
   weekOf: string,
 ): Promise<ScorecardPerson[]> {
-  const weekEnd = nextMonday(weekOf);
+  const weekEndDate = weekEnd(weekOf);
   const entityIndex = new Map(entities.map((e) => [e.id, e]));
   const platformIndex = new Map(platforms.map((p) => [p.id, p]));
 
-  // Mutable accumulator: figureName → { sources map, running total }
-  const personMap = new Map<string, { sources: Map<string, ScorecardSource>; totalCount: number }>();
+  const personMap = new Map<string, PersonAccum>();
 
   // ── Entity avoids ──────────────────────────────────────────────────────────
   const allEntityAvoids = await getAllEntityAvoids(adapter);
   const weekEntityAvoids = allEntityAvoids.filter(
-    (e) => e.date >= weekOf && e.date < weekEnd,
+    (e) => e.date >= weekOf && e.date < weekEndDate,
   );
 
-  // Sum counts per entityId
-  const entityCounts = new Map<string, number>();
+  // Sum counts + collect surfaces per entityId
+  const entityAgg = new Map<string, { count: number; surfaces: Set<number> }>();
   for (const e of weekEntityAvoids) {
-    entityCounts.set(e.entityId, (entityCounts.get(e.entityId) ?? 0) + e.count);
+    const existing = entityAgg.get(e.entityId);
+    if (existing) {
+      existing.count += e.count;
+      if (e.surface != null) existing.surfaces.add(e.surface);
+    } else {
+      const surfaces = new Set<number>();
+      if (e.surface != null) surfaces.add(e.surface);
+      entityAgg.set(e.entityId, { count: e.count, surfaces });
+    }
   }
 
-  for (const [entityId, count] of entityCounts) {
+  for (const [entityId, { count, surfaces }] of entityAgg) {
     const entity = entityIndex.get(entityId);
     const figureName = entity ? getDisplayFigure(entity, entities) : entityId;
     const displayName = entity?.aliases[0] ?? entity?.canonicalName ?? entityId;
     const verb = entity ? verbForCategory(entity.categoryTags) : 'avoided';
-    addSource(personMap, figureName, displayName, count, verb);
+    const surface = surfaces.size === 1 ? [...surfaces][0] : undefined;
+    addSource(personMap, figureName, displayName, count, verb, surface, surfaces);
   }
 
   // ── Platform avoids ────────────────────────────────────────────────────────
   const platformEvents = await getPlatformAvoidsForWeek(adapter, weekOf);
 
-  // Sum counts per platformId
   const platformCounts = new Map<string, number>();
   for (const e of platformEvents) {
     platformCounts.set(e.platformId, (platformCounts.get(e.platformId) ?? 0) + e.count);
   }
 
+  const trackSurfaces = new Set([SURFACE_TRACK]);
   for (const [platformId, count] of platformCounts) {
     const platform = platformIndex.get(platformId);
     const figureName = platform?.publicFigureName ?? platform?.ceoName ?? platformId;
     const displayName = platform?.name ?? platformId;
     const verb = platform ? verbForCategory(platform.categoryTags) : 'avoided';
-    addSource(personMap, figureName, displayName, count, verb);
+    addSource(personMap, figureName, displayName, count, verb, SURFACE_TRACK, trackSurfaces);
   }
 
   // ── Build result ───────────────────────────────────────────────────────────
@@ -100,6 +119,8 @@ export async function aggregateScorecard(
       figureName,
       totalCount: data.totalCount,
       sources: Array.from(data.sources.values()),
+      surfaces: data.surfaces,
+      children: Array.from(data.children.values()),
     });
   }
 
@@ -107,33 +128,52 @@ export async function aggregateScorecard(
   return result;
 }
 
+// ── Internal types ────────────────────────────────────────────────────────────
+
+type PersonAccum = {
+  sources: Map<string, ScorecardSource>;
+  totalCount: number;
+  surfaces: Set<number>;
+  children: Map<string, ScorecardChildEntity>;
+};
+
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
-/** Adds a source to the person accumulator, merging by figureName. */
 function addSource(
-  personMap: Map<string, { sources: Map<string, ScorecardSource>; totalCount: number }>,
+  personMap: Map<string, PersonAccum>,
   figureName: string,
   sourceName: string,
   count: number,
   verb: string,
+  surface: number | undefined,
+  sourceSurfaces: Set<number>,
 ): void {
   let entry = personMap.get(figureName);
   if (!entry) {
-    entry = { sources: new Map(), totalCount: 0 };
+    entry = { sources: new Map(), totalCount: 0, surfaces: new Set(), children: new Map() };
     personMap.set(figureName, entry);
   }
   entry.totalCount += count;
+  for (const s of sourceSurfaces) entry.surfaces.add(s);
 
   const existing = entry.sources.get(sourceName);
   if (existing) {
     existing.count += count;
   } else {
-    entry.sources.set(sourceName, { name: sourceName, count, verb });
+    entry.sources.set(sourceName, { name: sourceName, count, verb, surface });
+  }
+
+  const child = entry.children.get(sourceName);
+  if (child) {
+    child.count += count;
+    for (const s of sourceSurfaces) child.surfaces.add(s);
+  } else {
+    entry.children.set(sourceName, { name: sourceName, count, surfaces: new Set(sourceSurfaces) });
   }
 }
 
-/** Returns the Monday immediately following the given weekOf date string. */
-function nextMonday(weekOf: string): string {
+/** Returns the date string 7 days after the given weekOf. */
+function weekEnd(weekOf: string): string {
   const d = new Date(`${weekOf}T00:00:00Z`);
   d.setUTCDate(d.getUTCDate() + 7);
   return d.toISOString().slice(0, 10);

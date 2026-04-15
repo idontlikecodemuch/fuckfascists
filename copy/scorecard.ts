@@ -1,26 +1,47 @@
 import { sharedCopy } from './shared';
 
 export const scorecardCopy = {
+  // Tab + header
   tabLabel: "SCORECARD",
   title: "SCORECARD",
-  dateRange: (range: string) => range,
-  totalCount: (n: number) => `${n}\u00d7`,
-  framingLine: "I f*cked...",
+  dropsLabel: "DROPS THIS FRIDAY",
+  previewStamp: "PREVIEW",
+  previewA11y: "Preview \u2014 this is not the official weekly drop",
+
+  // Date range
+  dateRange: (start: string, end: string) => `${start} \u2014 ${end}`,
+
+  // Hero count (preview)
+  heroLabel: "avoids",
+  heroWeek: "THIS WEEK",
+
+  // Sentence bookends (rendered card + preview)
+  framingOpen: "I FCKd",
+  framingClose: (n: number) => `${n}\u00d7 this week`,
+
+  // Person rows
   personCount: (n: number) => `${n}\u00d7`,
-  sourceLine: (name: string, count: number) => `f*cked ${name} ${count}\u00d7`,
-  othersLine: (n: number) => `+ ${n} others`,
-  dropTime: (time: string) => `READY ${time}`,
-  shareHeader: "FCK FASCISTS",
+  platformList: (platforms: string[]) => platforms.join(' \u00b7 '),
+  othersLine: (n: number) => `+ ${n} more`,
+
+  // Share
   shareBtn: "SHARE",
   shareLabel: "Share your scorecard",
-  previewBtn: "PREVIEW",
-  previewLabel: "Preview your scorecard early",
-  previewStamp: "PREVIEW",
-  previewA11y: "Preview \u2014 this is not the weekly scorecard",
-  emptyTitle: "NO ONE. YET.",
-  emptyBody: "Hit the {map}. Hit {track}.\nGive us something to work with.",
-  tagline: "The fascists won\u2019t f*ck themselves. \uD83E\uDD18\uD83C\uDFFD",
+
+  // Card presentation
+  dismissLabel: "Done",
+
+  // Loader
+  loaderText: "Creating your scorecard...",
+
+  // Archive
+  pastCardsLabel: "Past scorecards",
+
+  // Empty state
+  emptyState: "Hit the Map. Hit Track.\nMake them feel it.",
+
+  // Footer (rendered card)
+  tagline: "The fascists won\u2019t f*ck themselves.",
   cta: sharedCopy.siteUrl,
   dataAttribution: "DATA: FEC.GOV",
-  loadingLabel: "Loading scorecard",
 } as const;

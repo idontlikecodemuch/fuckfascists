@@ -8,28 +8,17 @@ export function formatCount(n: number): string {
 
 /**
  * Formats a weekOf date into a human-readable range.
- * e.g. "2024-03-11" → "Mar 11 – Mar 17, 2024"
+ * e.g. "2024-03-09" → "MAR 9 — MAR 15"
+ * Uses uppercase for the rendered card and preview header.
  */
 export function formatWeekRange(weekOf: string): string {
   const start = new Date(`${weekOf}T00:00:00Z`);
   const end   = new Date(`${weekOf}T00:00:00Z`);
-  end.setUTCDate(end.getUTCDate() + 6); // Sunday
+  end.setUTCDate(end.getUTCDate() + 6);
 
   const opts: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric', timeZone: 'UTC' };
-  const startStr = start.toLocaleString('en-US', opts);
-  const endStr   = end.toLocaleString('en-US', { ...opts, year: 'numeric' });
+  const startStr = start.toLocaleString('en-US', opts).toUpperCase();
+  const endStr   = end.toLocaleString('en-US', opts).toUpperCase();
 
-  return `${startStr} \u2013 ${endStr}`; // en dash
-}
-
-/**
- * Formats a Unix timestamp (ms) as a local day + time string.
- * e.g. 1710277200000 → "Friday, Mar 15 at 4:00 PM"
- */
-export function formatDropTime(dropAt: number): string {
-  const date = new Date(dropAt);
-  const day  = date.toLocaleString('en-US', { weekday: 'long' });
-  const mon  = date.toLocaleString('en-US', { month: 'short', day: 'numeric' });
-  const time = date.toLocaleString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-  return `${day}, ${mon} at ${time}`;
+  return `${startStr} \u2014 ${endStr}`; // em dash
 }

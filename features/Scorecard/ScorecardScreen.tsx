@@ -1,14 +1,24 @@
-import React, { useRef, useCallback, useState } from 'react';
-import { View, Text, Pressable, ScrollView, StyleSheet, SafeAreaView, Share, ActivityIndicator } from 'react-native';
+import React, { useCallback, useRef, useState } from 'react';
+import { Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import * as FileSystem from 'expo-file-system';
 import type { Entity } from '../../core/models';
 import type { StorageAdapter } from '../../core/data';
 import type { Platform } from '../Platforms/types';
 import { useDropSchedule } from './hooks/useDropSchedule';
 import { useScorecard } from './hooks/useScorecard';
-import { ScorecardView } from './components/ScorecardView';
-import { formatDropTime, formatWeekRange } from './utils/formatters';
+import { useCardCapture } from './hooks/useCardCapture';
+import { LivePreview } from './components/LivePreview';
+import { ScorecardLoader } from './components/ScorecardLoader';
+import { CardPresentation } from './components/CardPresentation';
+import { EmptyWeek } from './components/EmptyWeek';
+import { ScorecardImage } from './components/ScorecardImage';
+import { CardArchive } from './components/CardArchive';
+import { StarField } from '../Info/components/InfoDecorations';
 import { scorecardCopy } from '../../copy/scorecard';
+import { MIN_AVOIDS_FOR_DROP } from '../../config/constants';
 import { theme } from '../../design/tokens';
+
+type ScreenState = 'preview' | 'loading' | 'presentation' | 'empty' | 'archive';
 
 interface ScorecardScreenProps {
   adapter: StorageAdapter;
@@ -20,121 +30,149 @@ interface ScorecardScreenProps {
 /**
  * Scorecard screen — the weekly synchronized reveal.
  *
- * States:
- *  1. Loading drop schedule → spinner
- *  2. Drop has happened → show official card (no preview stamp)
- *  3. Drop is pending → show countdown + PREVIEW button
- *  4. User tapped PREVIEW → show card with PREVIEW stamp
+ * Four states:
+ *  1. preview — scrollable interactive breakdown (Sat → Fri drop)
+ *  2. loading — brief transition while PNG captures
+ *  3. presentation — full-screen card takeover + SHARE
+ *  4. empty — zero avoids, motivational copy
  */
 export function ScorecardScreen({ adapter, entities, platforms, onSwitchTab }: ScorecardScreenProps) {
-  const cardRef = useRef<View>(null);
-  const [showPreview, setShowPreview] = useState(false);
+  const imageRef = useRef<View>(null);
+  const [screenState, setScreenState] = useState<ScreenState>('preview');
+  const [cardUri, setCardUri] = useState<string | null>(null);
 
-  // Drop time is computed locally — always available, no loading state.
   const { schedule, hasDropped } = useDropSchedule();
-  const isPreview = !hasDropped || showPreview;
+  const isPreview = !hasDropped;
 
-  const { data, loading: cardLoading } = useScorecard(
-    adapter,
-    entities,
-    platforms,
-    schedule.weekOf,
-    isPreview
+  const { data, loading: dataLoading } = useScorecard(
+    adapter, entities, platforms, schedule.weekOf, isPreview,
   );
+  const { captureCard, capturing } = useCardCapture();
 
-  const handleShare = useCallback(async () => {
-    if (!data || data.persons.length === 0) return;
+  // Check for existing cached card after drop
+  React.useEffect(() => {
+    if (!hasDropped || !data) return;
+    if (data.grandTotal < MIN_AVOIDS_FOR_DROP) {
+      setScreenState('empty');
+      return;
+    }
 
-    // "I f*cked {Name} {N}× · {Name} {N}×"
-    const personLines = data.persons
-      .map((p) => `${p.figureName} ${scorecardCopy.personCount(p.totalCount)}`)
-      .join(' \u00b7 ');
+    let cancelled = false;
+    const path = `${FileSystem.documentDirectory}scorecards/${schedule.weekOf}.png`;
 
-    const lines = [
-      scorecardCopy.shareHeader,
-      formatWeekRange(data.weekOf),
-      '',
-      personLines,
-      '',
-      scorecardCopy.tagline,
-      scorecardCopy.cta,
-    ];
+    FileSystem.getInfoAsync(path).then((info) => {
+      if (cancelled) return;
+      if (info.exists) {
+        setCardUri(path);
+        setScreenState('presentation');
+      }
+    });
 
-    await Share.share({ message: lines.join('\n') });
-  }, [data]);
+    return () => { cancelled = true; };
+  }, [hasDropped, data, schedule.weekOf]);
+
+  // Generate card on demand (dev tools or post-drop trigger)
+  const handleGenerateCard = useCallback(async () => {
+    if (!data || data.grandTotal < MIN_AVOIDS_FOR_DROP) return;
+    setScreenState('loading');
+
+    // Allow one frame for ScorecardImage to mount off-screen
+    requestAnimationFrame(async () => {
+      const result = await captureCard(imageRef, schedule.weekOf);
+      if (result) {
+        setCardUri(result.uri);
+        setScreenState('presentation');
+      } else {
+        setScreenState('preview');
+      }
+    });
+  }, [data, captureCard, schedule.weekOf]);
+
+  const handleDismiss = useCallback(() => {
+    setScreenState('preview');
+  }, []);
+
+  const handleResetCard = useCallback(() => {
+    setCardUri(null);
+    setScreenState('preview');
+  }, []);
+
+  const effectiveState: ScreenState =
+    dataLoading ? 'loading' :
+    screenState === 'loading' || capturing ? 'loading' :
+    screenState;
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scroll}>
-        {/* ── Header bar ── */}
-        <View style={styles.topBar}>
-          <Text style={styles.topBarTitle} accessibilityRole="header" allowFontScaling>
-            {scorecardCopy.title}
-          </Text>
-          {!hasDropped && (
-            <Text style={styles.dropTime} allowFontScaling>
-              {scorecardCopy.dropTime(formatDropTime(schedule.dropAt).toUpperCase())}
-            </Text>
-          )}
+      <StarField seed="scorecard" />
+
+      {/* Off-screen capture target — always mounted when data exists */}
+      {data && (
+        <View style={styles.offscreen} pointerEvents="none">
+          <ScorecardImage ref={imageRef} data={data} />
         </View>
+      )}
 
-        {/* ── Card ── */}
-        {cardLoading ? (
-          <ActivityIndicator
-            style={styles.cardLoader}
-            color={theme.colors.dangerRed}
-            accessibilityLabel={scorecardCopy.loadingLabel}
-          />
-        ) : data ? (
-          <View style={styles.cardWrapper}>
-            <ScorecardView ref={cardRef} data={data} onSwitchTab={onSwitchTab} />
-          </View>
-        ) : null}
+      {effectiveState === 'loading' && <ScorecardLoader />}
+      {effectiveState === 'empty' && <EmptyWeek onSwitchTab={onSwitchTab} />}
+      {effectiveState === 'preview' && data && (
+        <>
+          <LivePreview data={data} onSwitchTab={onSwitchTab} />
+          <Pressable
+            style={styles.archiveLink}
+            onPress={() => setScreenState('archive')}
+            accessibilityRole="link"
+          >
+            <Text style={styles.archiveLinkText}>{scorecardCopy.pastCardsLabel}</Text>
+          </Pressable>
+        </>
+      )}
+      {effectiveState === 'presentation' && cardUri && (
+        <CardPresentation pngUri={cardUri} onDismiss={handleDismiss} />
+      )}
+      {effectiveState === 'archive' && (
+        <CardArchive onDismiss={() => setScreenState('preview')} />
+      )}
 
-        {/* ── Actions ── */}
-        <View style={styles.actions}>
-          {data && data.persons.length > 0 && (
-            <Pressable
-              style={styles.button}
-              onPress={handleShare}
-              accessibilityRole="button"
-              accessibilityLabel={scorecardCopy.shareLabel}
-            >
-              <Text style={styles.buttonText} allowFontScaling>{scorecardCopy.shareBtn}</Text>
-            </Pressable>
-          )}
-
-          {!hasDropped && !showPreview && (
-            <Pressable
-              style={[styles.button, styles.buttonSecondary]}
-              onPress={() => setShowPreview(true)}
-              accessibilityRole="button"
-              accessibilityLabel={scorecardCopy.previewLabel}
-            >
-              <Text style={[styles.buttonText, styles.buttonTextSecondary]} allowFontScaling>
-                {scorecardCopy.previewBtn}
-              </Text>
-            </Pressable>
-          )}
-        </View>
-      </ScrollView>
+      {/* Dev tools — __DEV__ only, preview state only */}
+      {__DEV__ && data && effectiveState === 'preview' && (
+        <DevToolsPanel
+          onGenerateNow={handleGenerateCard}
+          onResetCard={handleResetCard}
+          weekOf={schedule.weekOf}
+        />
+      )}
     </SafeAreaView>
   );
 }
 
-// ── Styles ────────────────────────────────────────────────────────────────────
+// Lazy-load dev tools to keep them out of production
+function DevToolsPanel(props: { onGenerateNow: () => void; onResetCard: () => void; weekOf: string }) {
+  const { ScorecardDevTools } = require('./dev/ScorecardDevTools');
+  return <ScorecardDevTools {...props} />;
+}
 
 const styles = StyleSheet.create({
-  container:         { flex: 1, backgroundColor: theme.colors.bgVoid },
-  scroll:            { paddingBottom: theme.space['4xl'] },
-  topBar:            { backgroundColor: theme.colors.bgNav, padding: theme.space.lg, borderBottomWidth: theme.borders.hero.width, borderColor: theme.colors.frameBlue },
-  topBarTitle:       { ...theme.type.displayM, color: theme.colors.textPrimary, letterSpacing: 3 },
-  dropTime:          { ...theme.type.caption, color: theme.colors.textSecondary, marginTop: theme.space.xs },
-  cardWrapper:       { margin: theme.space.lg },
-  cardLoader:        { marginTop: theme.space['4xl'] },
-  actions:           { flexDirection: 'row', gap: theme.space.md, paddingHorizontal: theme.space.lg, marginTop: theme.space.sm },
-  button:            { flex: 1, minHeight: theme.a11y.minTapTarget, backgroundColor: theme.colors.dangerRed, borderWidth: theme.borders.standard.width, borderColor: theme.colors.frameBlue, alignItems: 'center', justifyContent: 'center', paddingVertical: 10 },
-  buttonSecondary:   { backgroundColor: theme.colors.bgVoid, borderColor: theme.colors.frameBlue },
-  buttonText:        { ...theme.type.uiLabel, fontSize: 15, color: theme.colors.textPrimary, letterSpacing: 2 },
-  buttonTextSecondary: { color: theme.colors.textPrimary },
+  container: {
+    flex: 1,
+    backgroundColor: theme.colors.bgVoid,
+  },
+  offscreen: {
+    position: 'absolute',
+    left: -9999,
+    top: -9999,
+    opacity: 0,
+  },
+  archiveLink: {
+    alignSelf: 'center',
+    paddingVertical: theme.space.md,
+    paddingHorizontal: theme.space.lg,
+  },
+  archiveLinkText: {
+    fontFamily: theme.fonts.bodySemiBold,
+    fontSize: 12,
+    color: theme.colors.textSecondary,
+    letterSpacing: 1,
+    textDecorationLine: 'underline',
+  },
 });
