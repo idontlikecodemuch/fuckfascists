@@ -10,6 +10,14 @@ This document is updated continuously. New instances should read this first — 
 
 ---
 
+## Blockers
+
+### ❌ EAS Build: Apple Developer contract not accepted
+**Error:** `You do not have required contracts to perform an operation. (ID: 973e9bf1-c101-4ab5-9277-92dde0ce778e)`
+**Fix:** Log into [Apple Developer portal](https://developer.apple.com/account/) → accept any pending agreements/contracts (likely updated Apple Developer Program License Agreement). Then retry the build. This is an account issue, not a code issue.
+
+---
+
 ## Recent Sessions (most recent first)
 
 ### Session: April 14, 2026 ET — Weekly avoid event purge + missed-week guard + App.tsx async cleanup
