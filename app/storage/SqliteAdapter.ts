@@ -7,6 +7,7 @@ import {
   TABLE_CACHE,
   TABLE_AVOID_PINS,
   ALL_DDL,
+  MIGRATE_ADD_SURFACE_COLUMN,
 } from '../../core/data';
 
 // ── Row shapes ────────────────────────────────────────────────────────────────
@@ -23,6 +24,7 @@ interface EntityAvoidRow {
   entity_id: string;
   date: string;
   count: number;
+  surface: number | null;
 }
 
 interface PlatformAvoidRow {
@@ -54,7 +56,7 @@ export class SqliteAdapter implements StorageAdapter {
   private constructor(private readonly db: SQLite.SQLiteDatabase) {}
 
   /** Current schema version — increment whenever DDL changes. */
-  private static readonly SCHEMA_VERSION = 3;
+  private static readonly SCHEMA_VERSION = 4;
 
   /** Opens the database and runs schema migrations. */
   static async open(name = 'fuckfascists.db'): Promise<SqliteAdapter> {
@@ -74,12 +76,22 @@ export class SqliteAdapter implements StorageAdapter {
     const row = await db.getFirstAsync<{ user_version: number }>('PRAGMA user_version');
     const installedVersion = row?.user_version ?? 0;
 
-    if (installedVersion < SqliteAdapter.SCHEMA_VERSION) {
+    if (installedVersion < 3) {
       // Drop tables whose schema changed so CREATE TABLE IF NOT EXISTS rebuilds them.
       await db.execAsync(`DROP TABLE IF EXISTS ${TABLE_CACHE}`);
       await db.execAsync(`DROP TABLE IF EXISTS ${TABLE_PLATFORM_AVOIDS}`);
-      await db.execAsync(`PRAGMA user_version = ${SqliteAdapter.SCHEMA_VERSION}`);
     }
+
+    // v4: Add surface column to entity_avoid_events (nullable — existing rows get null).
+    if (installedVersion >= 1 && installedVersion < 4) {
+      try {
+        await db.execAsync(MIGRATE_ADD_SURFACE_COLUMN);
+      } catch {
+        // Column already exists — safe to ignore (e.g. fresh install already has it via DDL).
+      }
+    }
+
+    await db.execAsync(`PRAGMA user_version = ${SqliteAdapter.SCHEMA_VERSION}`);
 
     for (const ddl of ALL_DDL) {
       await db.execAsync(ddl);
@@ -123,10 +135,10 @@ export class SqliteAdapter implements StorageAdapter {
   // count is managed atomically by the DB — caller does not control increment
   async upsertEntityAvoid(event: EntityAvoidEvent): Promise<void> {
     await this.db.runAsync(
-      `INSERT INTO ${TABLE_ENTITY_AVOIDS} (entity_id, date, count)
-       VALUES (?, ?, 1)
+      `INSERT INTO ${TABLE_ENTITY_AVOIDS} (entity_id, date, count, surface)
+       VALUES (?, ?, 1, ?)
        ON CONFLICT (entity_id, date) DO UPDATE SET count = count + 1`,
-      [event.entityId, event.date],
+      [event.entityId, event.date, event.surface ?? null],
     );
   }
 
@@ -140,7 +152,10 @@ export class SqliteAdapter implements StorageAdapter {
           `SELECT * FROM ${TABLE_ENTITY_AVOIDS}`,
         );
 
-    return rows.map((r) => ({ entityId: r.entity_id, date: r.date, count: r.count }));
+    return rows.map((r) => ({
+      entityId: r.entity_id, date: r.date, count: r.count,
+      ...(r.surface != null ? { surface: r.surface } : {}),
+    }));
   }
 
   // ── Platform avoid events ──────────────────────────────────────────────────
@@ -210,7 +225,10 @@ export class SqliteAdapter implements StorageAdapter {
       `SELECT * FROM ${TABLE_ENTITY_AVOIDS} WHERE date = ?`,
       [date],
     );
-    return rows.map((r) => ({ entityId: r.entity_id, date: r.date, count: r.count }));
+    return rows.map((r) => ({
+      entityId: r.entity_id, date: r.date, count: r.count,
+      ...(r.surface != null ? { surface: r.surface } : {}),
+    }));
   }
 
   async clearOldAvoidPins(beforeDate: string): Promise<void> {

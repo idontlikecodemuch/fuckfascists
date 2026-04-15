@@ -204,6 +204,11 @@ export const scorecardWithData: ScorecardViewData = {
         { name: 'Walmart', count: 3, verb: 'walked past' },
         { name: "Sam's Club", count: 2, verb: 'walked past' },
       ],
+      surfaces: new Set([1]),
+      children: [
+        { name: 'Walmart', count: 3, surfaces: new Set([1]) },
+        { name: "Sam's Club", count: 2, surfaces: new Set([1]) },
+      ],
     },
     {
       figureName: 'Mark Zuckerberg',
@@ -213,6 +218,12 @@ export const scorecardWithData: ScorecardViewData = {
         { name: 'Facebook', count: 2, verb: 'stayed off' },
         { name: 'WhatsApp', count: 2, verb: 'stayed off' },
       ],
+      surfaces: new Set([3]),
+      children: [
+        { name: 'Instagram', count: 4, surfaces: new Set([3]) },
+        { name: 'Facebook', count: 2, surfaces: new Set([3]) },
+        { name: 'WhatsApp', count: 2, surfaces: new Set([3]) },
+      ],
     },
     {
       figureName: 'Andy Jassy',
@@ -221,14 +232,22 @@ export const scorecardWithData: ScorecardViewData = {
         { name: 'Amazon', count: 2, verb: 'skipped' },
         { name: 'Whole Foods', count: 1, verb: 'walked past' },
       ],
+      surfaces: new Set([1, 3]),
+      children: [
+        { name: 'Amazon', count: 2, surfaces: new Set([3]) },
+        { name: 'Whole Foods', count: 1, surfaces: new Set([1]) },
+      ],
     },
     {
       figureName: 'Ted Decker',
       totalCount: 1,
       sources: [{ name: 'Home Depot', count: 1, verb: 'walked past' }],
+      surfaces: new Set([1]),
+      children: [{ name: 'Home Depot', count: 1, surfaces: new Set([1]) }],
     },
   ],
   grandTotal: 17,
+  powerTier: { fill: 0.80, label: 'charged', index: 2 },
   isPreview: false,
 };
 
@@ -236,6 +255,7 @@ export const scorecardEmpty: ScorecardViewData = {
   weekOf: '2026-03-09',
   persons: [],
   grandTotal: 0,
+  powerTier: null,
   isPreview: false,
 };
 

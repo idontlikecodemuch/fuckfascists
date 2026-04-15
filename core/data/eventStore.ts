@@ -13,11 +13,12 @@ import { getLocalDateString, getLocalWeekStart } from '../utils/localDate';
  */
 export async function recordEntityAvoid(
   adapter: StorageAdapter,
-  entityId: string
+  entityId: string,
+  surface?: number
 ): Promise<void> {
   const date = getLocalDateString();
   // count: 1 is a placeholder — the DB owns the increment atomically (ON CONFLICT DO UPDATE SET count = count + 1).
-  await adapter.upsertEntityAvoid({ entityId, date, count: 1 });
+  await adapter.upsertEntityAvoid({ entityId, date, count: 1, surface });
 }
 
 /** Returns all stored entity avoid events — used for scorecard generation. */

@@ -17,7 +17,7 @@ import { useEntityScan } from './hooks/useEntityScan';
 import { useTapSearch } from './hooks/useTapSearch';
 import { useMapControls } from './hooks/useMapControls';
 import { BusinessCard, BusinessBanner, resolveCardMode } from './components/BusinessCard';
-import { FOLDER_AUTO_DISMISS_MS, AMBER_PULSE_MS } from '../../config/constants';
+import { FOLDER_AUTO_DISMISS_MS, AMBER_PULSE_MS, SURFACE_MAP } from '../../config/constants';
 import { FlagMarker } from './components/MapMarker';
 import { MapSearchBar } from './components/MapSearchBar';
 import { UnmatchedBanner } from './components/UnmatchedBanner';
@@ -172,7 +172,7 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
     if (!activeResult?.entity) return;
     const entityId = activeResult.entityId ?? activeResult.fecCommitteeId;
     if (avoidedTodayRef.current.has(entityId)) return;
-    await recordEntityAvoid(adapter, entityId);
+    await recordEntityAvoid(adapter, entityId, SURFACE_MAP);
     avoidedTodayRef.current.add(entityId);
     // Persist pin coordinates for map hydration on next launch
     const pin = allPinsRef.current.find((p) => p.id === entityId);

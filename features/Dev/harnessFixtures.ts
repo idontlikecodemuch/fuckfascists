@@ -8,6 +8,7 @@ import type { ScanResult, ScanContext } from '../Map/types';
 import type { DonationSummary, Entity } from '../../core/models';
 import type { PlatformItem, Platform } from '../Platforms/types';
 import type { ScorecardViewData } from '../Scorecard/types';
+import type { ScorecardPerson } from '../Scorecard/data/aggregateScorecard';
 import type { TrackContextValue } from '../Platforms/context/TrackContext';
 import type { AboutContent, ReferenceEntry, LinkEntry } from '../Info/types';
 import type { BarcodeNotice } from '../Map/hooks/useBarcodeSearch';
@@ -229,17 +230,17 @@ export function buildMockTrackContext(
 
 // ── Scorecard ───────────────────────────────────────────────────────────────
 
-const scorecardPersons = [
-  { figureName: 'Elon Musk', totalCount: 5, sources: [{ name: 'X / Twitter', count: 5, verb: 'stayed off' }] },
-  { figureName: 'Mark Zuckerberg', totalCount: 5, sources: [{ name: 'Instagram', count: 3, verb: 'stayed off' }, { name: 'Facebook', count: 2, verb: 'stayed off' }] },
-  { figureName: 'Jeff Bezos', totalCount: 1, sources: [{ name: 'Amazon', count: 1, verb: 'skipped' }] },
+const scorecardPersons: ScorecardPerson[] = [
+  { figureName: 'Elon Musk', totalCount: 5, sources: [{ name: 'X / Twitter', count: 5, verb: 'stayed off' }], surfaces: new Set([3]), children: [{ name: 'X / Twitter', count: 5, surfaces: new Set([3]) }] },
+  { figureName: 'Mark Zuckerberg', totalCount: 5, sources: [{ name: 'Instagram', count: 3, verb: 'stayed off' }, { name: 'Facebook', count: 2, verb: 'stayed off' }], surfaces: new Set([3]), children: [{ name: 'Instagram', count: 3, surfaces: new Set([3]) }, { name: 'Facebook', count: 2, surfaces: new Set([3]) }] },
+  { figureName: 'Jeff Bezos', totalCount: 1, sources: [{ name: 'Amazon', count: 1, verb: 'skipped' }], surfaces: new Set([1]), children: [{ name: 'Amazon', count: 1, surfaces: new Set([1]) }] },
 ];
 
 export const harnessScorecardPopulated: ScorecardViewData = {
-  weekOf: today, persons: scorecardPersons, grandTotal: 11, isPreview: false,
+  weekOf: today, persons: scorecardPersons, grandTotal: 11, powerTier: { fill: 0.55, label: 'powered', index: 1 }, isPreview: false,
 };
 
-export const harnessScorecardEmpty: ScorecardViewData = { weekOf: today, persons: [], grandTotal: 0, isPreview: false };
+export const harnessScorecardEmpty: ScorecardViewData = { weekOf: today, persons: [], grandTotal: 0, powerTier: null, isPreview: false };
 
 // ── Info ────────────────────────────────────────────────────────────────────
 

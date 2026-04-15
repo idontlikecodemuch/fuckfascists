@@ -54,6 +54,7 @@ export class ChromeStorageAdapter implements StorageAdapter {
       entityId: event.entityId,
       date: event.date,
       count: (prev?.count ?? 0) + event.count,
+      ...(event.surface != null ? { surface: event.surface } : {}),
     };
     await chrome.storage.local.set({ [storageKey]: updated });
   }

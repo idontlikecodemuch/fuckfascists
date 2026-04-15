@@ -22,8 +22,14 @@ export const DDL_ENTITY_AVOIDS = `
     entity_id TEXT    NOT NULL,
     date      TEXT    NOT NULL,
     count     INTEGER NOT NULL DEFAULT 1,
+    surface   INTEGER,
     PRIMARY KEY (entity_id, date)
   );
+`;
+
+/** Migration: add surface column to existing entity_avoid_events tables. */
+export const MIGRATE_ADD_SURFACE_COLUMN = `
+  ALTER TABLE ${TABLE_ENTITY_AVOIDS} ADD COLUMN surface INTEGER;
 `;
 
 /**

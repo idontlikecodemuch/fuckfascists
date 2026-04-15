@@ -4,7 +4,7 @@
  */
 import React from 'react';
 import { View, Text, Pressable, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
-import { ScorecardView } from '../../Scorecard/components/ScorecardView';
+import { LivePreview } from '../../Scorecard/components/LivePreview';
 import { InfoSection } from '../../Info/components/InfoSection';
 import { FaqItem } from '../../Info/components/FaqItem';
 import { LinkRow } from '../../Info/components/LinkRow';
@@ -42,7 +42,7 @@ export function renderScorecardPopulated(): React.ReactElement {
           </Text>
         </View>
         <View style={s.cardWrapper}>
-          <ScorecardView data={harnessScorecardPopulated} />
+          <LivePreview data={harnessScorecardPopulated} />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -59,7 +59,7 @@ export function renderScorecardEmpty(): React.ReactElement {
           </Text>
         </View>
         <View style={s.cardWrapper}>
-          <ScorecardView data={harnessScorecardEmpty} />
+          <LivePreview data={harnessScorecardEmpty} />
         </View>
       </ScrollView>
     </SafeAreaView>

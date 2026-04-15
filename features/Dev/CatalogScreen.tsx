@@ -28,7 +28,7 @@ import {
 
 // Scorecard sections
 import {
-  ScorecardWithData, ScorecardEmptyState, ScorecardWithPreview, ScorecardDropCountdown,
+  ScorecardWithData, ScorecardEmptyState, ScorecardWithPreview, ScorecardRenderedCard,
 } from './sections/ScorecardSections';
 
 // Onboarding sections
@@ -74,7 +74,7 @@ const SECTIONS: SectionDef[] = [
   { slug: '17-scorecard-with-data', Component: ScorecardWithData },
   { slug: '18-scorecard-empty', Component: ScorecardEmptyState },
   { slug: '19-scorecard-preview', Component: ScorecardWithPreview },
-  { slug: '20-scorecard-countdown', Component: ScorecardDropCountdown },
+  { slug: '20-scorecard-rendered', Component: ScorecardRenderedCard },
   // Onboarding
   { slug: '21-onboard-welcome', Component: OnboardWelcome },
   { slug: '22-onboard-permissions', Component: OnboardPermissions },

@@ -1,9 +1,40 @@
 import { theme } from '../design/tokens';
 
 // Scorecard drop window (times in ET)
-export const SCORECARD_WINDOW_START_HOUR = 16; // 4pm ET Friday
-export const SCORECARD_WINDOW_END_HOUR = 15;   // 3pm ET Saturday
+export const SCORECARD_WINDOW_START_HOUR = 18; // 6pm ET Friday
+export const SCORECARD_WINDOW_END_HOUR = 16;   // 4pm ET Saturday
 export const SCORECARD_WINDOW_DAY = 5;         // Friday (0 = Sunday)
+
+// Scorecard — suppress card + notification below this avoid count
+export const MIN_AVOIDS_FOR_DROP = 1;
+
+// Scorecard — rendered card dimensions (9:16, Instagram/TikTok story native)
+export const SCORECARD_IMAGE_WIDTH = 1080;
+export const SCORECARD_IMAGE_HEIGHT = 1920;
+
+// Scorecard — content zone inside the frame (px offsets from frame edges)
+export const SCORECARD_CONTENT_ZONE = {
+  top: 40,
+  left: 56,   // accounts for power meter width
+  right: 40,
+  bottom: 40,
+} as const;
+
+// Scorecard — card archive ceiling (oldest dropped when exceeded)
+export const SCORECARD_ARCHIVE_MAX = 104; // 2 years of weekly cards
+
+// Scorecard — power meter tiers (configurable for tuning based on real usage data)
+export const POWER_METER_TIERS = [
+  { min: 1,  fill: 0.25, label: 'warming-up' },
+  { min: 6,  fill: 0.55, label: 'powered' },
+  { min: 16, fill: 0.80, label: 'charged' },
+  { min: 31, fill: 1.00, label: 'overflowing' },
+] as const;
+
+// Scorecard — avoid surface indicators (numeric for privacy, stored encrypted)
+export const SURFACE_MAP = 1;
+export const SURFACE_SCAN = 2;
+export const SURFACE_TRACK = 3;
 
 // Extension flagging frequency
 // Options: 'session' | 'daily' | 'weekly'

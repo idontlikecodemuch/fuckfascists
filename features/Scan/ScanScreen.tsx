@@ -4,6 +4,7 @@ import type { Entity, PoliticalPerson } from '../../core/models';
 import type { MatchingDeps } from '../../core/matching';
 import type { StorageAdapter } from '../../core/data';
 import { makeCacheDeps, recordEntityAvoid } from '../../core/data';
+import { SURFACE_SCAN } from '../../config/constants';
 import { useEntityScan } from '../Map/hooks/useEntityScan';
 import { useBarcodeSearch } from '../Map/hooks/useBarcodeSearch';
 import { BusinessCard, BusinessBanner, resolveCardMode } from '../Map/components/BusinessCard';
@@ -68,7 +69,7 @@ export function ScanScreen({ entities, people, adapter, fetchOrgs, fetchOrgSumma
   const handleAvoid = useCallback(async () => {
     if (!activeResult?.entity) return;
     const entityId = activeResult.entityId ?? activeResult.fecCommitteeId;
-    await recordEntityAvoid(adapter, entityId);
+    await recordEntityAvoid(adapter, entityId, SURFACE_SCAN);
     setAvoidedIds((prev) => (prev.includes(entityId) ? prev : [...prev, entityId]));
   }, [activeResult, adapter]);
 

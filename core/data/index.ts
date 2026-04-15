@@ -10,6 +10,7 @@ export {
   DDL_CACHE,
   DDL_AVOID_PINS,
   ALL_DDL,
+  MIGRATE_ADD_SURFACE_COLUMN,
 } from './schema';
 
 export { fetchEntityList, parseEntityList } from './entityList';
