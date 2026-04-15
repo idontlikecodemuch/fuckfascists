@@ -12,6 +12,25 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 14, 2026 ET — Scorecard gap fixes (assets, power meter, spec constants)
+**Focus:** Closed gaps from the scorecard rebuild: deployed pixel art assets, built missing components, added spec constants, wired notification suppression.
+
+**What was built:**
+1. **Asset pipeline executed** — ran `composite_scorecard.py`, deployed 4 power bar tier PNGs + frame + starfield JPEG (3MB→377KB) to `assets/pixel/scorecard/`. Created `core/scorecard/scorecardAssets.ts` require map.
+2. **PowerMeter.tsx** — left-edge vertical bar, selects tier variant image, reduced opacity on lower tiers.
+3. **CardPersonRow.tsx** — extracted from ScorecardImage (was inlined, file was 305 lines → now 224).
+4. **ScorecardImage wired** — starfield bg, gold frame overlay, FF_logo.png pixel art, power meter, ✦✧ sparkle decorations.
+5. **Notification suppression** — cancels scheduled notification when avoid count < MIN_AVOIDS_FOR_DROP (spec: "no notification fired" for empty weeks).
+6. **Spec constants added** — `WEEK_START_DAY`, `WEEK_START_HOUR`, `DROP_WINDOW_START_DAY/HOUR`, `DROP_WINDOW_END_DAY/HOUR`. Legacy `SCORECARD_WINDOW_*` aliased for backward compat.
+
+**Remaining gaps (minor):**
+- Track screen not yet refactored to use shared `CollapsibleRow` (Track works fine with its current inline logic — cosmetic dedup only)
+- Missed-week guard (only render most recent completed week if user absent for multiple weeks) — not yet implemented in useDropSchedule
+
+**Files changed:** 12 files, +235 / -149 lines. All under 250-line limit. TypeScript clean.
+
+---
+
 ### Session: April 14, 2026 ET — Bug fixes + beta scorecard timing override
 **Focus:** Five targeted fixes from device testing, plus a modular beta scorecard timing override.
 
