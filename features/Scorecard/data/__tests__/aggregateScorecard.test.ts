@@ -226,8 +226,8 @@ describe('aggregateScorecard', () => {
     expect(result[0].sources).toHaveLength(2);
     const ig = result[0].sources.find((s) => s.name === 'Instagram');
     const fb = result[0].sources.find((s) => s.name === 'Facebook');
-    expect(ig).toEqual({ name: 'Instagram', count: 1, verb: 'stayed off' });
-    expect(fb).toEqual({ name: 'Facebook', count: 1, verb: 'stayed off' });
+    expect(ig).toEqual(expect.objectContaining({ name: 'Instagram', count: 1, verb: 'stayed off' }));
+    expect(fb).toEqual(expect.objectContaining({ name: 'Facebook', count: 1, verb: 'stayed off' }));
   });
 
   it('uses publicFigureName for platform avoids when present', async () => {

@@ -1,5 +1,6 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { View, Alert, StyleSheet, type ViewStyle } from 'react-native';
+import * as Notifications from 'expo-notifications';
 import { MapScreen } from '../../features/Map/MapScreen';
 import { ScanScreen } from '../../features/Scan/ScanScreen';
 import { TrackScreen } from '../../features/Platforms/TrackScreen';
@@ -44,6 +45,21 @@ export function AppShell({ adapter, entities, people }: AppShellProps) {
   const { betaEnabled, registerTap } = useBetaMode();
   const [activeTab, setActiveTab] = useState<Tab>('map');
   const [harnessOpen, setHarnessOpen] = useState(false);
+  // Incrementing key forces screen remount after beta reset, clearing all
+  // in-memory state (map pins, tap results, etc.).
+  const [resetKey, setResetKey] = useState(0);
+
+  // Navigate to Scorecard tab when the user taps the drop notification.
+  // The scheduled notification has title "Your Scorecard Is Ready" — we match
+  // on that to avoid routing non-scorecard notifications.
+  const lastNotificationResponse = Notifications.useLastNotificationResponse();
+  useEffect(() => {
+    if (!lastNotificationResponse) return;
+    const title = lastNotificationResponse.notification.request.content.title;
+    if (title === 'Your Scorecard Is Ready') {
+      setActiveTab('report');
+    }
+  }, [lastNotificationResponse]);
 
   const handleVersionTap = useCallback(async () => {
     const toggled = await registerTap();
@@ -116,6 +132,10 @@ export function AppShell({ adapter, entities, people }: AppShellProps) {
     setHarnessOpen(false);
   }, []);
 
+  const handleBetaReset = useCallback(() => {
+    setResetKey((k) => k + 1);
+  }, []);
+
   // Screenshot harness takes over the full screen when open (beta mode only)
   if (betaEnabled && harnessOpen) {
     const Harness = getScreenshotHarness();
@@ -124,13 +144,14 @@ export function AppShell({ adapter, entities, people }: AppShellProps) {
 
   return (
     <View style={styles.root}>
-      <View style={styles.content}>{renderScreen()}</View>
+      <View key={resetKey} style={styles.content}>{renderScreen()}</View>
       <NudgeBanner onPress={handleNudgePress} />
       <TabBar activeTab={activeTab} onSelect={setActiveTab} />
       {betaEnabled && (
         <BetaOverlay
           activeTab={activeTab}
           onOpenHarness={handleOpenHarness}
+          onReset={handleBetaReset}
         />
       )}
     </View>

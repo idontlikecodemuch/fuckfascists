@@ -3,6 +3,11 @@ import * as Notifications from 'expo-notifications';
 import type { DropSchedule } from '../types';
 import { getCurrentDropTime } from '../../../core/dropSchedule/computeDropTime';
 import { getLocalWeekStart } from '../../../core/utils/localDate';
+import {
+  isBetaScheduleActive,
+  getBetaDropTime,
+  getNextBetaDropTime,
+} from '../../../core/dropSchedule/betaDropSchedule';
 
 export interface DropScheduleState {
   schedule: DropSchedule;
@@ -16,22 +21,36 @@ export interface DropScheduleState {
  * Computes the weekly drop schedule on-device (deterministic PRNG — no network).
  * Schedules a local push notification for the exact drop moment.
  *
- * The drop time is available synchronously on first render. No loading state,
- * no network dependency.
+ * When BETA_SCORECARD_INTERVAL_HOURS > 0 (dev builds), uses a shorter cycle
+ * instead of the weekly schedule. See core/dropSchedule/betaDropSchedule.ts.
  */
 export function useDropSchedule(): DropScheduleState {
-  const dropAt = getCurrentDropTime().getTime();
+  // weekOf is always the current Sat–Fri week regardless of beta override.
+  // Only the drop timing changes — aggregation window stays the same.
   const weekOf = getLocalWeekStart();
+
+  let dropAt: number;
+  if (isBetaScheduleActive()) {
+    const betaDrop = getBetaDropTime();
+    dropAt = betaDrop.getTime();
+  } else {
+    dropAt = getCurrentDropTime().getTime();
+  }
+
   const schedule: DropSchedule = { dropAt, weekOf };
   const hasDropped = Date.now() >= dropAt;
 
   useEffect(() => {
-    if (dropAt > Date.now()) {
-      scheduleDropNotification(dropAt).catch(() => {
+    const targetMs = isBetaScheduleActive() && hasDropped
+      ? getNextBetaDropTime().getTime()  // current period dropped — schedule next
+      : dropAt;
+
+    if (targetMs > Date.now()) {
+      scheduleDropNotification(targetMs).catch(() => {
         // Notification permission may be denied — silently skip
       });
     }
-  }, [dropAt]);
+  }, [dropAt, hasDropped]);
 
   return { schedule, loading: false, hasDropped };
 }

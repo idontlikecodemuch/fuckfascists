@@ -25,6 +25,8 @@ interface BetaOverlayProps {
   activeTab: Tab;
   /** Open the screenshot harness modal. Only provided in __DEV__. */
   onOpenHarness?: () => void;
+  /** Called after a successful reset — parent should remount screens to clear in-memory state. */
+  onReset?: () => void;
 }
 
 /**
@@ -34,7 +36,7 @@ interface BetaOverlayProps {
  * - "RESET" button — clears app state
  * - "BUG" button — captures single screenshot
  */
-export function BetaOverlay({ activeTab, onOpenHarness }: BetaOverlayProps) {
+export function BetaOverlay({ activeTab, onOpenHarness, onReset }: BetaOverlayProps) {
   const capturing = useRef(false);
 
   const handleBugReport = useCallback(async () => {
@@ -62,6 +64,7 @@ export function BetaOverlay({ activeTab, onOpenHarness }: BetaOverlayProps) {
           onPress: async () => {
             try {
               await resetAppStateForFreshTest();
+              onReset?.();
               Alert.alert(betaCopy.resetDone);
             } catch {
               Alert.alert(betaCopy.resetFailed);

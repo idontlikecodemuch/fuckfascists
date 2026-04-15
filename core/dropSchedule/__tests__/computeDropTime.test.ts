@@ -3,8 +3,8 @@ import { computeDropTime, getISOWeek, getCurrentDropTime } from '../computeDropT
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 /**
- * Extracts the hour offset (0–22) from a drop Date by measuring how many hours
- * after Friday 21:00 UTC the drop falls.
+ * Extracts the hour offset (0–21) from a drop Date by measuring how many hours
+ * after Friday 23:00 UTC (6pm ET) the drop falls.
  */
 function getHourOffset(drop: Date): number {
   const dayOfWeek = drop.getUTCDay();
@@ -12,7 +12,7 @@ function getHourOffset(drop: Date): number {
   const daysFromFriday = dayOfWeek === 6 ? 1 : 0;
   const fridayWindowStart = new Date(drop);
   fridayWindowStart.setUTCDate(fridayWindowStart.getUTCDate() - daysFromFriday);
-  fridayWindowStart.setUTCHours(21, 0, 0, 0);
+  fridayWindowStart.setUTCHours(23, 0, 0, 0);
   return Math.round((drop.getTime() - fridayWindowStart.getTime()) / 3_600_000);
 }
 
@@ -25,7 +25,8 @@ describe('computeDropTime', () => {
     expect(computeDropTime(2024, 52).getTime()).toBe(computeDropTime(2024, 52).getTime());
   });
 
-  it('output falls within the Friday 4pm ET – Saturday 2pm ET window for all weeks in 2024', () => {
+  it('output falls within the Friday 6pm ET – Saturday 4pm ET window for all weeks in 2024', () => {
+    // Window: Fri 6pm ET (23 UTC) – Sat 4pm ET (21 UTC) = 22 hours
     for (let week = 1; week <= 52; week++) {
       const drop = computeDropTime(2024, week);
       const dayOfWeek = drop.getUTCDay(); // 5=Fri, 6=Sat
@@ -33,11 +34,11 @@ describe('computeDropTime', () => {
       expect([5, 6]).toContain(dayOfWeek);
 
       if (dayOfWeek === 5 /* Friday */) {
-        // Must be at or after 21:00 UTC (4pm ET)
-        expect(drop.getUTCHours()).toBeGreaterThanOrEqual(21);
+        // Must be at or after 23:00 UTC (6pm ET)
+        expect(drop.getUTCHours()).toBeGreaterThanOrEqual(23);
       } else {
-        // Saturday: must be before 20:00 UTC (3pm ET)
-        expect(drop.getUTCHours()).toBeLessThan(20);
+        // Saturday: must be before 21:00 UTC (4pm ET)
+        expect(drop.getUTCHours()).toBeLessThanOrEqual(21);
       }
     }
   });

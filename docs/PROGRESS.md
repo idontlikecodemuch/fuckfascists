@@ -12,6 +12,50 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 14, 2026 ET — Bug fixes + beta scorecard timing override
+**Focus:** Five targeted fixes from device testing, plus a modular beta scorecard timing override.
+
+**What changed:**
+
+1. **Apple MapKit POI matching** — Added prefix matching to `aliasMatch.ts` as a fallback after exact match. When the normalized input starts with a normalized alias followed by a space (e.g. "apple georgetown" → "apple "), the entity matches. Covers retail store naming patterns ("Apple Georgetown", "Walmart Neighborhood Market") without requiring per-location aliases. Pass 2 only runs if Pass 1 (exact) misses. No false positive risk — no aliases ≤5 chars exist in the current entity list.
+   - **Files:** `core/matching/aliasMatch.ts`
+
+2. **Tooltip reset on beta data clear** — Added `map_hints_dismissed` to `RESET_SECURE_STORE_KEYS` in `resetAppState.ts`. First-use map tooltips (search → tap → barcode) now replay after beta reset.
+   - **Files:** `features/Beta/resetAppState.ts`
+
+3. **Map pin persistence after beta clear** — Added `onReset` callback to `BetaOverlay` and `resetKey` counter in `AppShell`. Beta reset increments the key, forcing a full screen content remount that clears all in-memory map state (tap pins, no-match ghosts, latest batch). No coupling between resetAppState and map internals.
+   - **Files:** `features/Beta/BetaOverlay.tsx`, `app/gates/AppShell.tsx`
+
+4. **Scorecard notification routing** — Added `Notifications.useLastNotificationResponse()` listener in `AppShell`. When the user taps the "Your Scorecard Is Ready" notification, the app navigates to the `report` tab instead of defaulting to `map`. Matches on notification title string.
+   - **Files:** `app/gates/AppShell.tsx`
+
+5. **Beta scorecard timing override** — New modular system for testing scorecard drops on a shorter cycle (48 hours instead of weekly). Self-contained in one new file + one constant:
+   - `config/constants.ts` → `BETA_SCORECARD_INTERVAL_HOURS = 48` (set to 0 to disable)
+   - `core/dropSchedule/betaDropSchedule.ts` — epoch-anchored period division, djb2 hash for deterministic drop moment within each period, next-period scheduling when current period has dropped
+   - `features/Scorecard/hooks/useDropSchedule.ts` — conditional: if beta interval > 0, use beta schedule; otherwise fall through to weekly. Aggregation window (weekOf) unchanged — only drop cadence changes.
+   - **To remove:** delete `betaDropSchedule.ts`, remove the constant, remove the conditional in `useDropSchedule.ts`.
+
+6. **Test fixes** — Updated `computeDropTime.test.ts` window bounds to match current constants (Fri 6pm–Sat 4pm ET). Updated `aggregateScorecard.test.ts` source assertions to use `objectContaining` (accommodates the new `surface` field).
+
+**Files changed (8 modified, 1 new):**
+- `app/gates/AppShell.tsx` — notification listener, resetKey remount
+- `config/constants.ts` — BETA_SCORECARD_INTERVAL_HOURS
+- `core/dropSchedule/betaDropSchedule.ts` (**new**) — beta drop schedule module
+- `core/dropSchedule/__tests__/computeDropTime.test.ts` — window bound fix
+- `core/matching/aliasMatch.ts` — prefix matching fallback
+- `features/Beta/BetaOverlay.tsx` — onReset callback
+- `features/Beta/resetAppState.ts` — map_hints_dismissed key
+- `features/Scorecard/data/__tests__/aggregateScorecard.test.ts` — objectContaining
+- `features/Scorecard/hooks/useDropSchedule.ts` — beta schedule conditional
+
+**TypeScript:** Compiles clean (only pre-existing `@ts-expect-error` warnings in StarFieldBg, GameArena, ScanDecorations).
+
+**Tests:** All pass (excluding stale `stoic-elion` worktree copies).
+
+**Coordination note:** Another agent is working on the scorecard area (April 14 rebuild session below). This session's changes are independent — they touch the drop schedule hook and matching pipeline, not the scorecard UI components.
+
+---
+
 ### Session: April 14, 2026 ET — Scorecard feature rebuild (4-state tab, rendered card, archive)
 **Focus:** Complete scorecard rebuild per updated design spec. Replaced the basic proof-of-concept with a 4-state tab: live preview, rendered 1080×1920 PNG card, full-screen takeover reveal, and card archive.
 

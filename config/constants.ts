@@ -59,6 +59,14 @@ export const PEOPLE_LIST_UPDATE_URL = 'https://raw.githubusercontent.com/idontli
 // See core/dropSchedule/computeDropTime.ts.
 // V2: Optional server override for schedule changes — see CLAUDE.md "V2 Server Ping" section.
 
+// ── Beta scorecard override ─────────────────────────────────────────────────
+// Set to a positive number (hours) to override the weekly drop cycle with a
+// shorter interval for testing. 0 = disabled (use normal weekly schedule).
+// Flip to 0 before shipping to production.
+// To remove entirely: delete this constant, delete core/dropSchedule/betaDropSchedule.ts,
+// and remove the conditional in useDropSchedule.ts.
+export const BETA_SCORECARD_INTERVAL_HOURS = 48;
+
 // Info / FAQ / transparency content — editable in the data repo without an app release
 export const INFO_CONTENT_URL = 'https://raw.githubusercontent.com/idontlikecodemuch/fckfascists-data/main/info.json';
 

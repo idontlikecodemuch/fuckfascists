@@ -12,6 +12,7 @@ const RESET_SECURE_STORE_KEYS = [
   'ff_last_launch_date',
   'platform_roster',
   'track_daily_open_last_visit',
+  'map_hints_dismissed',
 ] as const;
 
 /**
