@@ -489,8 +489,9 @@ These rules prevent the branch sprawl, orphaned worktrees, and build-state drift
 
 ### Worktree hygiene
 - **Claude Code worktrees are ephemeral.** They exist for one session's work. When done, commit, push, and remove the worktree.
-- **Never leave more than 2 worktrees alive.** If you see stale worktrees (no unique commits), remove them.
+- **Limit active worktrees to 2** — one for the current session, plus optionally one for paused-but-active work (e.g. a data pipeline branch awaiting review). If you see stale worktrees with no unique unpushed commits, remove them.
 - **The main worktree must stay on `main`** unless you are actively working on a feature branch and will switch back when done. Never leave the main worktree parked on a stale feature branch.
+- **After pushing from a worktree, fast-forward local main** — run `git pull --ff-only origin main` in the main worktree so Xcode builds reflect the latest code.
 
 ### Before committing
 - **Stage specific files** — never `git add -A` or `git add .`. Review what you're committing.
