@@ -98,6 +98,17 @@ export const BUNDLED_INFO_CONTENT: InfoContent = {
       category: 'data',
     },
     {
+      id: 'matching-method',
+      q: 'How does the app identify a business on the map?',
+      a:
+        'On iOS, the app checks a business\u2019s registered website against our ' +
+        'entity list first \u2014 a verified match. When website data isn\u2019t available, ' +
+        'it matches by name. On Android, Google Maps provides business names only, so ' +
+        'matching is name-based. In both cases, every match links to its FEC filing ' +
+        'so you can verify.',
+      category: 'data',
+    },
+    {
       id: 'entity-list',
       q: 'What is the curated entity list?',
       a:

@@ -1,8 +1,10 @@
 import React, { useCallback, useRef, useState } from 'react';
 import type { MatchingDeps } from '../../../core/matching';
 import { matchEntity } from '../../../core/matching';
+import { normalizeHost } from '../../../core/matching';
 import { buildScanResult } from '../utils/buildScanResult';
 import { MapKitSearch } from '../nativeModules/MapKitSearch';
+import type { MapKitPOI } from '../nativeModules/MapKitSearch';
 import type { MapPin, ScanResult } from '../types';
 import {
   POI_SEARCH_RADIUS_METERS,
@@ -28,7 +30,7 @@ export interface PoiClickEvent {
 }
 
 interface CellCacheEntry {
-  names: string[];
+  pois: MapKitPOI[];
   expiresAt: number;
 }
 
@@ -105,7 +107,7 @@ const TAP_NO_MATCH_DISPLAY_MS = 2000;
  *   - FlagMarkers (tapPins): only added, never removed.
  *   - Ghost markers (tapNoMatchCoords): only added, capped without rotation.
  *   - Loading indicator: NOT a Marker — no native map subview involved.
- *   - processTapNames serialized via inFlightRef (one at a time).
+ *   - processTapResults serialized via inFlightRef (one at a time).
  */
 export function useTapSearch(
   deps: MatchingDeps,
@@ -125,24 +127,32 @@ export function useTapSearch(
   const tapNoMatchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const cellCache = useRef<Map<string, CellCacheEntry>>(new Map());
   const lastTapAt = useRef<number>(0);
-  /** Serialization guard — prevents concurrent processTapNames execution. */
+  /** Serialization guard — prevents concurrent processTapResults execution. */
   const inFlightRef = useRef(false);
   /** Track ghost marker keys to deduplicate same-location taps. */
   const ghostKeysRef = useRef(new Set<string>());
 
   /**
-   * Runs each POI name through matchEntity and adds matched pins at coordinate.
-   * Uses Promise.allSettled so one failing name doesn't block the others.
-   * Serialized — if a previous call is in-flight, this one is dropped.
+   * Runs each POI through matchEntity and adds matched pins at coordinate.
+   * When a POI has a url (iOS MapKit), passes it as a domain hint for
+   * definitive matching. Uses Promise.allSettled so one failing POI doesn't
+   * block the others. Serialized — if a previous call is in-flight, dropped.
    */
-  const processTapNames = useCallback(
-    async (names: string[], coordinate: LatLng, suppressNoMatch = false) => {
+  const processTapResults = useCallback(
+    async (pois: MapKitPOI[], coordinate: LatLng, suppressNoMatch = false) => {
       if (inFlightRef.current) return;
       inFlightRef.current = true;
 
       try {
         const results = await Promise.allSettled(
-          names.map((name) => matchEntity(name, deps, areaHash)),
+          pois.map((poi) =>
+            matchEntity(
+              poi.name,
+              deps,
+              areaHash,
+              poi.url ? normalizeHost(poi.url) : undefined,
+            ),
+          ),
         );
 
         const newPins: MapPin[] = [];
@@ -171,7 +181,7 @@ export function useTapSearch(
         // Append-only — once cap is reached, no new ghosts are added.
         // Deduplicate by rounded coordinate key.
         // Suppressed on auto-scan to avoid noisy first-load UI.
-        if (batchResults.length === 0 && names.length > 0 && !suppressNoMatch) {
+        if (batchResults.length === 0 && pois.length > 0 && !suppressNoMatch) {
           if (tapNoMatchTimer.current) clearTimeout(tapNoMatchTimer.current);
           setTapNoMatch(true);
 
@@ -235,32 +245,33 @@ export function useTapSearch(
         const cached = cellCache.current.get(cellKey);
 
         if (cached && cached.expiresAt > Date.now()) {
-          await processTapNames(cached.names, coordinate);
+          await processTapResults(cached.pois, coordinate);
           return;
         }
-        const names = await MapKitSearch.searchNearby(
+        const pois = await MapKitSearch.searchNearby(
           coordinate.latitude,
           coordinate.longitude,
           radius,
         );
 
         cellCache.current.set(cellKey, {
-          names,
+          pois,
           expiresAt: Date.now() + TAP_CACHE_TTL_MS,
         });
-        await processTapNames(names, coordinate);
+        await processTapResults(pois, coordinate);
       } catch (err) {
         // Fail silently — no user-visible error for tap search failures.
         console.error('[useTapSearch] handleMapPress error:', err);
         setTapSearching(false);
       }
     },
-    [processTapNames],
+    [processTapResults],
   );
 
   /**
    * Android onPoiClick handler.
    * Name comes directly from e.nativeEvent — no native search call needed.
+   * No domain/category data available from Google Maps onPoiClick.
    * Access via e.nativeEvent.name, NOT e.name (e returns undefined directly).
    */
   const handlePoiClick = useCallback(
@@ -269,13 +280,13 @@ export function useTapSearch(
       const { name, coordinate } = e.nativeEvent;
       setTapSearching(true);
       try {
-        await processTapNames([name], coordinate);
+        await processTapResults([{ name }], coordinate);
       } catch (err) {
         console.error('[useTapSearch] handlePoiClick error:', err);
         setTapSearching(false);
       }
     },
-    [processTapNames],
+    [processTapResults],
   );
 
   /**
@@ -297,24 +308,24 @@ export function useTapSearch(
         const cached = cellCache.current.get(cellKey);
 
         if (cached && cached.expiresAt > Date.now()) {
-          await processTapNames(cached.names, coordinate, true);
+          await processTapResults(cached.pois, coordinate, true);
           return;
         }
-        const names = await MapKitSearch.searchNearby(
+        const pois = await MapKitSearch.searchNearby(
           coordinate.latitude,
           coordinate.longitude,
           radius,
         );
         cellCache.current.set(cellKey, {
-          names,
+          pois,
           expiresAt: Date.now() + TAP_CACHE_TTL_MS,
         });
-        await processTapNames(names, coordinate, true);
+        await processTapResults(pois, coordinate, true);
       } catch {
         // Fail silently — auto-scan errors are not user-actionable.
       }
     },
-    [processTapNames],
+    [processTapResults],
   );
 
   const resetTapPins = useCallback(() => {

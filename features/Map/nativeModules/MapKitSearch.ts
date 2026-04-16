@@ -1,7 +1,19 @@
 import { Platform } from 'react-native';
 
+/**
+ * A single POI result from the enriched MapKit bridge.
+ * `url` is the hostname from MKMapItem.url (e.g. "www.apple.com") — used for
+ * definitive domain-based entity matching on iOS.
+ * `category` is the MKPointOfInterestCategory rawValue — reserved for future use.
+ */
+export interface MapKitPOI {
+  name: string;
+  url?: string;
+  category?: string;
+}
+
 interface MapKitSearchNativeModule {
-  searchNearby(lat: number, lng: number, radiusMeters: number): Promise<string[]>;
+  searchNearby(lat: number, lng: number, radiusMeters: number): Promise<MapKitPOI[]>;
 }
 
 /**
@@ -40,7 +52,9 @@ export const MapKitSearch = {
   isAvailable: _module !== null,
 
   /**
-   * Returns POI names within radiusMeters of the given coordinate.
+   * Returns POI objects within radiusMeters of the given coordinate.
+   * Each object contains name (always), url (hostname if available on iOS),
+   * and category (MKPointOfInterestCategory if available on iOS).
    *
    * Uses MKLocalPointsOfInterestRequest — NOT MKLocalSearch.Request, which
    * requires a naturalLanguageQuery and throws MKErrorDomain error 4 without one.
@@ -48,7 +62,7 @@ export const MapKitSearch = {
    * Does NOT access device GPS. The coordinate comes from a MapView tap event.
    * Returns [] immediately when the native module is not linked.
    */
-  searchNearby(lat: number, lng: number, radiusMeters: number): Promise<string[]> {
+  searchNearby(lat: number, lng: number, radiusMeters: number): Promise<MapKitPOI[]> {
     if (!_module) return Promise.resolve([]);
     return _module.searchNearby(lat, lng, radiusMeters);
   },

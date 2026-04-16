@@ -15,7 +15,9 @@ public class MapKitSearchModule: Module {
   public func definition() -> ModuleDefinition {
     Name("MapKitSearch")
 
-    // Returns an array of POI names within radiusMeters of the given coordinate.
+    // Returns an array of POI objects within radiusMeters of the given coordinate.
+    // Each object contains: name (always), url (hostname if available), category
+    // (MKPointOfInterestCategory rawValue if available).
     //
     // Uses MKLocalPointsOfInterestRequest, NOT MKLocalSearch.Request.
     // MKLocalSearch.Request without a naturalLanguageQuery throws MKErrorDomain
@@ -37,11 +39,21 @@ public class MapKitSearchModule: Module {
           if let error = error {
             // Fail silently from the user's perspective — log only.
             print("[MapKitSearch] MKLocalPointsOfInterestRequest error: \(error.localizedDescription)")
-            promise.resolve([String]())
+            promise.resolve([[String: Any]]())
             return
           }
-          let names = response?.mapItems.compactMap { $0.name } ?? []
-          promise.resolve(names)
+          let pois: [[String: Any]] = response?.mapItems.compactMap { item -> [String: Any]? in
+            guard let name = item.name else { return nil }
+            var poi: [String: Any] = ["name": name]
+            if let host = item.url?.host {
+              poi["url"] = host
+            }
+            if let cat = item.pointOfInterestCategory?.rawValue {
+              poi["category"] = cat
+            }
+            return poi
+          } ?? []
+          promise.resolve(pois)
         }
       }
     }

@@ -1,25 +1,10 @@
-import type { LocalCache, DonationSummary } from '../models';
+import type { Entity, LocalCache, DonationSummary } from '../models';
 import type { FECCommittee, MatchResult, MatchingDeps } from './types';
 import { normalize } from './normalize';
 import { findByAlias } from './aliasMatch';
+import { findByDomain } from './domainMatch';
 import { pickBestMatch } from './scorer';
-import {
-  CONFIDENCE_THRESHOLD_HIGH,
-  CONFIDENCE_THRESHOLD_MEDIUM,
-  ENTITY_CACHE_TTL_DAYS,
-} from '../../config/constants';
-
-/**
- * Maps an entity's optional matchScore to a numeric confidence value (0–1).
- * - undefined (not set) → 1.0: exact alias match with no override = full confidence
- * - score ≥ MEDIUM threshold → score passed through as-is
- * - score < MEDIUM threshold → null (entity should not be flagged)
- */
-function scoreToConfidence(matchScore: number | undefined): number | null {
-  if (matchScore === undefined) return 1.0;
-  if (matchScore >= CONFIDENCE_THRESHOLD_MEDIUM) return matchScore;
-  return null;
-}
+import { ENTITY_CACHE_TTL_DAYS } from '../../config/constants';
 
 function buildCacheKey(normalizedName: string, areaHash: string): string {
   return normalize(normalizedName + areaHash);
@@ -89,6 +74,7 @@ function shouldUseCachedSummary(cached: LocalCache): boolean {
  * Full entity matching pipeline. Steps:
  *  1. Normalize input
  *  2. Check LocalCache — return immediately on a valid hit
+ *  2.5. Domain match (when POI URL available) → definitive, confidence 1.0
  *  3. Exact alias match against canonical entity list → HIGH confidence
  *  4. FEC searchCommittees → Jaro-Winkler scoring → pick best match
  *  5. Cache result and return MatchSuccess | MatchFailure
@@ -96,11 +82,13 @@ function shouldUseCachedSummary(cached: LocalCache): boolean {
  * @param rawInput  Raw business or platform name from the user / extension
  * @param deps      Injected API + cache adapters (swap real impls for mocks in tests)
  * @param areaHash  Optional rough-area token used in cache key (never coordinates)
+ * @param domain    Optional POI hostname (iOS MapKit). Enables definitive domain matching.
  */
 export async function matchEntity(
   rawInput: string,
   deps: MatchingDeps,
-  areaHash = ''
+  areaHash = '',
+  domain?: string,
 ): Promise<MatchResult> {
   const normalizedInput = normalize(rawInput);
   const cacheKey = buildCacheKey(normalizedInput, areaHash);
@@ -124,61 +112,26 @@ export async function matchEntity(
     };
   }
 
-  // Step 2: Exact alias match
-  const aliasHit = findByAlias(normalizedInput, deps.entities);
-  if (aliasHit) {
-    const { entity: aliasEntity, matchedAlias } = aliasHit;
-    // Fix A: explicit check — empty string ("unverified") must not fall through to resolveOrgId
-    let orgId: string | null;
-    try {
-      orgId =
-        (aliasEntity.fecCommitteeId != null && aliasEntity.fecCommitteeId !== '')
-          ? aliasEntity.fecCommitteeId
-          : await resolveOrgId(aliasEntity.canonicalName, deps);
-    } catch {
-      return { matched: false, lookupStatus: 'lookup_unavailable', normalizedInput };
+  // Step 2: Domain match — definitive when POI hostname is available (iOS).
+  // Zero false positives: "apple.com" → Apple entity, regardless of POI name.
+  if (domain) {
+    const domainEntity = findByDomain(domain, deps.entities);
+    if (domainEntity) {
+      const result = await resolveEntityMatch(domainEntity, rawInput, cacheKey, deps, normalizedInput);
+      if (result) return result;
     }
-
-    if (!orgId) return { matched: false, lookupStatus: 'no_match', normalizedInput };
-
-    const confidence = 1.0; // alias matches are always exact — full confidence
-
-    // Use bundled donationSummary when present and fresh — skips live API call.
-    let donationSummary: DonationSummary | null = null;
-    if (shouldUseBundledSummary(aliasEntity.donationSummary, aliasEntity.lastVerifiedDate)) {
-      donationSummary = aliasEntity.donationSummary;
-    } else {
-      try {
-        donationSummary = await deps.fetchOrgSummary(orgId);
-      } catch {
-        // API unavailable — match still succeeds; card shows without donation data
-      }
-    }
-
-    if (donationSummary) {
-      await deps.setCache({
-        key: cacheKey,
-        fecCommitteeId: orgId,
-        donationSummary,
-        confidence,
-        fetchedAt: Date.now(),
-      });
-    }
-
-    return {
-      matched: true,
-      lookupStatus: 'matched',
-      entity: aliasEntity,
-      committeeName: aliasEntity.canonicalName,
-      matchedAlias,
-      confidence,
-      fecCommitteeId: orgId,
-      donationSummary,
-      fromCache: false,
-    };
   }
 
-  // Step 3: Fuzzy FEC committee search
+  // Step 3: Exact alias match
+  const aliasHit = findByAlias(normalizedInput, deps.entities);
+  if (aliasHit) {
+    const result = await resolveEntityMatch(
+      aliasHit.entity, aliasHit.matchedAlias, cacheKey, deps, normalizedInput,
+    );
+    if (result) return result;
+  }
+
+  // Step 4: Fuzzy FEC committee search
   // fetchOrgs can 403 in anonymous mode — treat as no candidates rather than a hard error.
   let candidates: FECCommittee[] = [];
   try {
@@ -223,6 +176,66 @@ export async function matchEntity(
     matchedAlias: rawInput,
     confidence: best.confidence,
     fecCommitteeId: best.org.orgid,
+    donationSummary,
+    fromCache: false,
+  };
+}
+
+/**
+ * Shared path for domain match and alias match: resolve orgId, fetch donation
+ * summary, cache, and return MatchSuccess. Returns null on no_match or
+ * lookup_unavailable so the caller can fall through to the next step.
+ */
+async function resolveEntityMatch(
+  entity: Entity,
+  matchedAlias: string,
+  cacheKey: string,
+  deps: MatchingDeps,
+  normalizedInput: string,
+): Promise<MatchResult | null> {
+  let orgId: string | null;
+  try {
+    orgId =
+      (entity.fecCommitteeId != null && entity.fecCommitteeId !== '')
+        ? entity.fecCommitteeId
+        : await resolveOrgId(entity.canonicalName, deps);
+  } catch {
+    return { matched: false, lookupStatus: 'lookup_unavailable', normalizedInput };
+  }
+
+  if (!orgId) return null;
+
+  const confidence = 1.0;
+
+  let donationSummary: DonationSummary | null = null;
+  if (shouldUseBundledSummary(entity.donationSummary, entity.lastVerifiedDate)) {
+    donationSummary = entity.donationSummary;
+  } else {
+    try {
+      donationSummary = await deps.fetchOrgSummary(orgId);
+    } catch {
+      // API unavailable — match still succeeds; card shows without donation data
+    }
+  }
+
+  if (donationSummary) {
+    await deps.setCache({
+      key: cacheKey,
+      fecCommitteeId: orgId,
+      donationSummary,
+      confidence,
+      fetchedAt: Date.now(),
+    });
+  }
+
+  return {
+    matched: true,
+    lookupStatus: 'matched',
+    entity,
+    committeeName: entity.canonicalName,
+    matchedAlias,
+    confidence,
+    fecCommitteeId: orgId,
     donationSummary,
     fromCache: false,
   };

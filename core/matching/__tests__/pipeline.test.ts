@@ -127,6 +127,73 @@ describe('cache hit', () => {
   });
 });
 
+// ─── Domain match ────────────────────────────────────────────────────────────
+
+describe('domain match', () => {
+  it('returns confidence 1.0 when domain matches an entity', async () => {
+    const deps = makeDeps();
+
+    const result = await matchEntity('Some Random POI Name', deps, '', 'walmart.com');
+
+    expect(result.matched).toBe(true);
+    if (result.matched) {
+      expect(result.confidence).toBe(1.0);
+      expect(result.entity).toBe(walmartEntity);
+      expect(result.fecCommitteeId).toBe('D000000074');
+      expect(result.fromCache).toBe(false);
+    }
+    // Domain match short-circuits — no fuzzy search needed
+    expect(deps.fetchOrgs).not.toHaveBeenCalled();
+  });
+
+  it('caches the result after a domain match', async () => {
+    const deps = makeDeps();
+
+    await matchEntity('Some POI', deps, '', 'walmart.com');
+
+    expect(deps.setCache).toHaveBeenCalledWith(
+      expect.objectContaining({
+        fecCommitteeId: 'D000000074',
+        confidence: 1.0,
+      }),
+    );
+  });
+
+  it('falls through to alias match when domain does not match any entity', async () => {
+    const deps = makeDeps();
+
+    const result = await matchEntity('Walmart', deps, '', 'unknown-domain.com');
+
+    // Should still match via alias match (Step 3)
+    expect(result.matched).toBe(true);
+    if (result.matched) {
+      expect(result.entity).toBe(walmartEntity);
+    }
+  });
+
+  it('falls through to alias match when domain is undefined', async () => {
+    const deps = makeDeps();
+
+    const result = await matchEntity('Walmart', deps, '', undefined);
+
+    expect(result.matched).toBe(true);
+    if (result.matched) {
+      expect(result.entity).toBe(walmartEntity);
+    }
+  });
+
+  it('uses matchedAlias = rawInput so UI shows the POI name, not the domain', async () => {
+    const deps = makeDeps();
+
+    const result = await matchEntity('Walmart Neighborhood Market', deps, '', 'walmart.com');
+
+    expect(result.matched).toBe(true);
+    if (result.matched) {
+      expect(result.matchedAlias).toBe('Walmart Neighborhood Market');
+    }
+  });
+});
+
 // ─── Alias match ──────────────────────────────────────────────────────────────
 
 describe('alias match', () => {

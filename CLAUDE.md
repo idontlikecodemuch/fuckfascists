@@ -832,6 +832,12 @@ High-confidence committee verification notes live in `tools/fec-bulk/reports/com
 
 ## Known Limitations / Technical Debt
 
+### MapKit domain matching — iOS only (Priority: informational)
+`matchEntity` accepts an optional `domain` parameter. On iOS, the enriched MapKit bridge (`MapKitSearchModule.swift`) returns business website hostnames alongside POI names, enabling definitive domain-based matching (confidence 1.0, zero false positives) before falling back to name matching. On Android, `onPoiClick` provides only a name string — matching uses alias + fuzzy search only. The `category` field (MKPointOfInterestCategory) is passed through from MapKit but not yet used for matching — available for future filtering. V2: investigate Google Places API for Android domain/category parity.
+
+### Prefix matching — multi-word aliases only (Priority: resolved)
+Single-word aliases (e.g. "Apple", "American", "Delta") cannot prefix-match in `findByAlias`. Only multi-word aliases (e.g. "Apple Store", "American Airlines") qualify for prefix matching with a max 2-word suffix. This prevents false positives like "American Association Teachers of German" matching American Airlines, or "Apple Federal Credit Union" matching Apple Inc. Exact matching (Pass 1) is unaffected — "Apple" still exact-matches the input "apple". On iOS, domain matching handles the "Apple Georgetown" case definitively; on Android, these fall through to fuzzy FEC search.
+
 ### platforms.json — match-group entity missing (Priority: next entities review)
 `assets/data/platforms.json` references `entityId: "match-group"` for the Match Group parent (Tinder, Hinge, OkCupid). No matching entity exists in `entities.json`. As a result, these three child platforms have `ceoName: ''`, no sprite, no FEC data, and `parentCompany` falls back to the raw string `'match-group'`. Add a `match-group` entity to `entities.json` during the next entities review. Run `verify-entities.mjs` to locate the correct FEC committee ID.
 
