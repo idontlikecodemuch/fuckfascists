@@ -63,10 +63,10 @@ const HINT_COPY: Record<HintId, string> = {
   barcode: mapCopy.hintBarcode,
 };
 
-const HINT_TAIL: Record<HintId, { tailDirection: 'up' | 'down' | null; tailOffset?: number }> = {
+const HINT_TAIL: Record<HintId, { tailDirection: 'up' | 'down' | null; tailOffset?: number; tailAlign?: 'left' | 'right' }> = {
   search: { tailDirection: 'up', tailOffset: theme.space.xl },
   tap: { tailDirection: null },
-  barcode: { tailDirection: 'down', tailOffset: theme.space.xl },
+  barcode: { tailDirection: 'down', tailOffset: theme.space.xl, tailAlign: 'right' },
 };
 
 export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummary }: MapScreenProps) {
@@ -287,12 +287,14 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
             message={HINT_COPY[hints.activeHint]}
             tailDirection={HINT_TAIL[hints.activeHint].tailDirection}
             tailOffset={HINT_TAIL[hints.activeHint].tailOffset}
+            tailAlign={HINT_TAIL[hints.activeHint].tailAlign}
+            progressLabel={mapCopy.hintProgress(hints.activeIndex + 1, hints.totalHints)}
             style={
               hints.activeHint === 'search'
                 ? { position: 'absolute', top: SEARCH_TOP + theme.a11y.minTapTarget + theme.space.sm, left: theme.space.lg, right: theme.space.lg, zIndex: 3 }
                 : hints.activeHint === 'tap'
-                  ? { position: 'absolute', top: SEARCH_TOP + theme.a11y.minTapTarget + 80, right: theme.space.xl, maxWidth: 220, zIndex: 3 }
-                  : { position: 'absolute', bottom: theme.space.sm, right: theme.space.lg, maxWidth: 220, zIndex: 3 }
+                  ? { position: 'absolute', top: SEARCH_TOP + theme.a11y.minTapTarget + 80, right: theme.space.xl, maxWidth: 180, zIndex: 3 }
+                  : { position: 'absolute', bottom: theme.space.sm, right: theme.space.lg, maxWidth: 180, zIndex: 3 }
             }
           />
         </>

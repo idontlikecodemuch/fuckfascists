@@ -83,6 +83,7 @@ export const mapCopy = {
   hintTap: "Tap any business on the map to pull up its record.",
   hintBarcode: "Use the UPC button to scan a product barcode.",
   hintDismissLabel: "Dismiss hint",
+  hintProgress: (n: number, total: number) => `${n}/${total}`,
   // Folder card
   reportTabLabel: "REPORT",
   reportTabClose: "\u00d7",

@@ -10,6 +10,10 @@ export type HintId = (typeof HINT_IDS)[number];
 interface MapHintsState {
   /** The currently active hint to display, or null if all dismissed. */
   activeHint: HintId | null;
+  /** Zero-based index of the active hint within the sequence, or -1 if none. */
+  activeIndex: number;
+  /** Total number of hints in the sequence. */
+  totalHints: number;
   /** Whether the hook is still loading from SecureStore. */
   loading: boolean;
   /** Dismiss the specified hint permanently. */
@@ -53,6 +57,7 @@ export function useMapHints(): MapHintsState {
   }, []);
 
   const activeHint = loading ? null : HINT_IDS.find((id) => !dismissed.has(id)) ?? null;
+  const activeIndex = activeHint ? HINT_IDS.indexOf(activeHint) : -1;
 
-  return { activeHint, loading, dismiss };
+  return { activeHint, activeIndex, totalHints: HINT_IDS.length, loading, dismiss };
 }

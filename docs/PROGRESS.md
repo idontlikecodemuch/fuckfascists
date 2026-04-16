@@ -20,6 +20,45 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 15, 2026 ET — Beta testing fixes + encryption audit
+**Focus:** Six items from beta testing — orientation lock, onboarding permission bypass, tooltip improvements, and local data encryption audit.
+
+**What changed:**
+
+1. **Portrait orientation lock** — `Info.plist` listed all 4 orientations (Portrait, PortraitUpsideDown, LandscapeLeft, LandscapeRight) despite `app.json` having `"orientation": "portrait"`. Prebuild ran before the constraint was set. Fixed: restricted both `UISupportedInterfaceOrientations` and `~ipad` to portrait only.
+   - **Files:** `ios/FckFascists/Info.plist`
+
+2. **Beta mode onboarding bypass** — The existing bypass skipped the initial permission check but ALLOW buttons still called OS APIs (returning `granted: true` instantly since permissions are already granted) and the auto-advance effect immediately advanced past the screen. Three fixes: (a) track `isBeta` state, (b) ALLOW buttons toggle visual state only in beta (no OS call), (c) auto-advance disabled in beta. QA can now see cards animate from OFFLINE → GRANTED and manually advance.
+   - **Files:** `features/Onboarding/screens/PermissionsScreen.tsx`
+
+3. **Tooltip bubble width** — Reduced `maxWidth` from 220 to 180 for tap and barcode hints. Copy now breaks into more balanced lines.
+   - **Files:** `features/Map/MapScreen.tsx`
+
+4. **Tooltip progress indicator** — Added "1/3", "2/3", "3/3" progress labels to first-use map tooltips. Extended `useMapHints` to expose `activeIndex` and `totalHints`. Added `progressLabel` prop to `Tooltip` component with `theme.type.caption` styling at 50% opacity.
+   - **Files:** `copy/map.ts`, `features/Map/hooks/useMapHints.ts`, `core/ui/Tooltip.tsx`, `features/Map/MapScreen.tsx`
+
+5. **UPC scan tooltip tail direction** — Barcode tooltip tail was pointing at the Scorecard tab (left-aligned tail on a right-positioned bubble). Added `tailAlign` prop to `Tooltip` component. Barcode hint now uses `tailAlign: 'right'` so the tail points at the Scan tab (rightmost tab).
+   - **Files:** `core/ui/Tooltip.tsx`, `features/Map/MapScreen.tsx`
+
+6. **Local data encryption audit** — Produced `docs/ENCRYPTION_AUDIT.md`. Key findings: SQLite relies on iOS Data Protection only (no app-level encryption), Android has no guaranteed encryption, extension storage is plaintext, and three copy strings inaccurately claim GPS coordinates are never saved (contradicted by `entity_avoid_pins`). Copy gap flagged as V1 launch blocker (already tracked in Known Limitations).
+   - **Files:** `docs/ENCRYPTION_AUDIT.md` (new)
+
+**Files changed (7 modified, 1 new):**
+- `ios/FckFascists/Info.plist` — portrait only
+- `features/Onboarding/screens/PermissionsScreen.tsx` — beta bypass (isBeta state, visual-only ALLOW, no auto-advance)
+- `copy/map.ts` — hintProgress copy function
+- `features/Map/hooks/useMapHints.ts` — activeIndex + totalHints
+- `core/ui/Tooltip.tsx` — tailAlign + progressLabel props
+- `features/Map/MapScreen.tsx` — maxWidth 180, tailAlign right, progress wiring
+- `docs/ENCRYPTION_AUDIT.md` (new) — encryption audit report
+- `docs/PROGRESS.md` — this entry
+
+**TypeScript:** Compiles clean (only pre-existing `@ts-expect-error` warnings).
+
+**Tests:** 31 suites, 354 tests, all pass.
+
+---
+
 ### Session: April 14, 2026 ET — Weekly avoid event purge + missed-week guard + App.tsx async cleanup
 **Focus:** Privacy enforcement — avoid events from previous weeks are now purged on app launch. Also converted App.tsx useEffect chains from `.then()` to `async`/`await` per code standards, and resolved the Track → CollapsibleRow refactor item.
 

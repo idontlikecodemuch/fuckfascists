@@ -26,12 +26,14 @@ export function PermissionsScreen({ stepIndex, onNext }: PermissionsScreenProps)
   const [locGranted, setLocGranted] = useState(false);
   const [notifGranted, setNotifGranted] = useState(false);
   const [requesting, setRequesting] = useState(false);
+  const [isBeta, setIsBeta] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
     async function checkExisting() {
       const beta = await SecureStore.getItemAsync(BETA_KEY);
-      if (beta === 'true' || cancelled) return;
+      if (cancelled) return;
+      if (beta === 'true') { setIsBeta(true); return; }
 
       const [loc, notif] = await Promise.all([
         Location.getForegroundPermissionsAsync(),
@@ -47,6 +49,7 @@ export function PermissionsScreen({ stepIndex, onNext }: PermissionsScreenProps)
 
   async function handleLocation() {
     if (requesting) return;
+    if (isBeta) { setLocGranted(true); return; }
     setRequesting(true);
     try {
       const { granted } = await Location.requestForegroundPermissionsAsync();
@@ -58,6 +61,7 @@ export function PermissionsScreen({ stepIndex, onNext }: PermissionsScreenProps)
 
   async function handleNotifications() {
     if (requesting) return;
+    if (isBeta) { setNotifGranted(true); return; }
     setRequesting(true);
     try {
       const { granted } = await Notifications.requestPermissionsAsync();
@@ -68,8 +72,9 @@ export function PermissionsScreen({ stepIndex, onNext }: PermissionsScreenProps)
   }
 
   useEffect(() => {
+    if (isBeta) return;
     if (locGranted && notifGranted) onNext();
-  }, [locGranted, notifGranted, onNext]);
+  }, [locGranted, notifGranted, onNext, isBeta]);
 
   const bothGranted = locGranted && notifGranted;
 

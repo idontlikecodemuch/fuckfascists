@@ -10,8 +10,12 @@ interface TooltipProps {
   message: string;
   /** Direction the tail triangle points. null = no tail. */
   tailDirection?: 'up' | 'down' | null;
-  /** Horizontal offset of the tail from the left edge, in px. */
+  /** Horizontal offset of the tail from the aligned edge, in px. */
   tailOffset?: number;
+  /** Horizontal alignment of the tail triangle. Default 'left'. */
+  tailAlign?: 'left' | 'right';
+  /** Optional progress label shown below the message (e.g. "1/3"). */
+  progressLabel?: string;
   /** Positioning style applied by the parent. */
   style?: ViewStyle;
 }
@@ -26,10 +30,13 @@ interface TooltipProps {
  *
  * This is a presentational component — the parent handles dismissal.
  */
-export function Tooltip({ message, tailDirection, tailOffset, style }: TooltipProps) {
+export function Tooltip({ message, tailDirection, tailOffset, tailAlign = 'left', progressLabel, style }: TooltipProps) {
   const { translateY, rotate, scale } = useWiggleAnimation();
 
-  const tailMarginLeft = tailOffset ?? TAIL_SIZE * 2;
+  const tailMarginValue = tailOffset ?? TAIL_SIZE * 2;
+  const tailStyle = tailAlign === 'right'
+    ? { alignSelf: 'flex-end' as const, marginRight: tailMarginValue }
+    : { marginLeft: tailMarginValue };
 
   return (
     <Animated.View
@@ -38,7 +45,7 @@ export function Tooltip({ message, tailDirection, tailOffset, style }: TooltipPr
       accessibilityRole="alert"
     >
       {tailDirection === 'up' && (
-        <View style={[styles.tailUp, { marginLeft: tailMarginLeft }]} />
+        <View style={[styles.tailUp, tailStyle]} />
       )}
 
       <View style={styles.body}>
@@ -47,11 +54,14 @@ export function Tooltip({ message, tailDirection, tailOffset, style }: TooltipPr
         {/* White face — on top */}
         <View style={styles.faceShape}>
           <Text style={styles.text} allowFontScaling>{message}</Text>
+          {progressLabel && (
+            <Text style={styles.progressText} allowFontScaling>{progressLabel}</Text>
+          )}
         </View>
       </View>
 
       {tailDirection === 'down' && (
-        <View style={[styles.tailDown, { marginLeft: tailMarginLeft }]} />
+        <View style={[styles.tailDown, tailStyle]} />
       )}
     </Animated.View>
   );
@@ -91,6 +101,12 @@ const styles = StyleSheet.create({
     ...theme.type.bodyS,
     color: theme.colors.bgVoid,
     lineHeight: 18,
+  },
+  progressText: {
+    ...theme.type.caption,
+    color: theme.colors.bgVoid,
+    opacity: 0.5,
+    marginTop: theme.space.xs,
   },
   tailUp: {
     width: 0,
