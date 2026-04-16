@@ -49,7 +49,9 @@ interface AvoidPinRow {
  * Uses expo-sqlite SDK 52 async-first API (openDatabaseAsync / runAsync / etc.).
  * Use SqliteAdapter.open() — never call the constructor directly.
  *
- * Privacy: no coordinates, no URLs, no personal identifiers are stored.
+ * Privacy: all data is encrypted at rest (iOS: NSFileProtectionComplete,
+ * Android: FBE). No URLs or personal identifiers are stored.
+ * Avoided-entity pin coordinates are the only location data (auto-purged daily).
  * Only affirmative avoidance events are written.
  */
 export class SqliteAdapter implements StorageAdapter {

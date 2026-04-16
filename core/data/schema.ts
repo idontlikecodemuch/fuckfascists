@@ -2,8 +2,10 @@
  * SQLite DDL for the local database.
  * Used by the mobile app's SqliteAdapter — not imported by the browser extension.
  *
- * Privacy note: coordinates are stored ONLY for avoided entities (entity_avoid_pins),
- * locally encrypted, and auto-purged daily. Browsing history is NEVER stored.
+ * Privacy note: all data in this database is encrypted at rest
+ * (iOS: NSFileProtectionComplete, Android: FBE via minSdkVersion 29).
+ * Coordinates are stored ONLY for avoided entities (entity_avoid_pins),
+ * auto-purged daily. Browsing history is NEVER stored.
  * Only affirmative avoidance actions are recorded — there is no "support" table.
  */
 
@@ -70,9 +72,9 @@ export const DDL_CACHE = `
  *
  * PRIVACY RELAXATION: This deliberately stores coordinates locally.
  * Coordinates are stored only for entities the user has actively avoided,
- * only on-device (iOS Data Protection encrypted at rest), and auto-purged daily.
- * This may be reverted to session-only storage if the team decides coordinates
- * should never be persisted. See Known Limitations in CLAUDE.md.
+ * only on-device, encrypted at rest (same as all other tables in fuckfascists.db),
+ * and auto-purged daily. This may be reverted to session-only storage if the team
+ * decides coordinates should never be persisted. See Known Limitations in CLAUDE.md.
  */
 export const DDL_AVOID_PINS = `
   CREATE TABLE IF NOT EXISTS ${TABLE_AVOID_PINS} (
