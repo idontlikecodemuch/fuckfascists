@@ -250,8 +250,8 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.surface1,
     // @ts-expect-error — boxShadow inset: RN 0.76 Fabric, not in stable types
     boxShadow: [
-      { offsetX: 0, offsetY: 6, blurRadius: 8, spreadDistance: -2, inset: true, color: 'rgba(40, 120, 200, 0.15)' },
-      { offsetX: 0, offsetY: -6, blurRadius: 8, spreadDistance: -2, inset: true, color: 'rgba(40, 120, 200, 0.15)' },
+      { offsetX: 0, offsetY: 6, blurRadius: theme.glow.blurRadius, spreadDistance: theme.glow.spreadDistance, inset: true, color: theme.glow.color },
+      { offsetX: 0, offsetY: -6, blurRadius: theme.glow.blurRadius, spreadDistance: theme.glow.spreadDistance, inset: true, color: theme.glow.color },
     ],
   },
   background: {
@@ -283,13 +283,13 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     // @ts-expect-error — boxShadow inset: RN 0.76 Fabric, not in stable types
     boxShadow: [
-      { offsetX: 0, offsetY: 0, blurRadius: 14, spreadDistance: -4, inset: true, color: 'rgba(40, 120, 200, 0.12)' },
+      { offsetX: 0, offsetY: 0, blurRadius: theme.glow.blurRadius, spreadDistance: theme.glow.spreadDistance, inset: true, color: theme.glow.color },
     ],
   },
   gridCellDefeated: {
     // @ts-expect-error — boxShadow inset: RN 0.76 Fabric, not in stable types
     boxShadow: [
-      { offsetX: 0, offsetY: 0, blurRadius: 14, spreadDistance: -4, inset: true, color: 'rgba(44, 203, 99, 0.15)' },
+      { offsetX: 0, offsetY: 0, blurRadius: theme.glow.blurRadius, spreadDistance: theme.glow.spreadDistance, inset: true, color: theme.glow.colorDefeated },
     ],
   },
   singleCharacter: {

@@ -140,8 +140,8 @@ const styles = StyleSheet.create({
     ...bevelFocusRaised, backgroundColor: theme.colors.panelInner, overflow: 'visible',
     // @ts-expect-error — boxShadow inset: RN 0.76 Fabric, not in stable types
     boxShadow: [
-      { offsetX: 0, offsetY: 6, blurRadius: 8, spreadDistance: -2, inset: true, color: 'rgba(40, 120, 200, 0.10)' },
-      { offsetX: 0, offsetY: -6, blurRadius: 8, spreadDistance: -2, inset: true, color: 'rgba(40, 120, 200, 0.10)' },
+      { offsetX: 0, offsetY: 6, blurRadius: theme.glow.blurRadius, spreadDistance: theme.glow.spreadDistance, inset: true, color: theme.glow.color },
+      { offsetX: 0, offsetY: -6, blurRadius: theme.glow.blurRadius, spreadDistance: theme.glow.spreadDistance, inset: true, color: theme.glow.color },
     ],
   },
   scanLine1: {

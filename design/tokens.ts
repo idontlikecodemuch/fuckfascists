@@ -105,6 +105,18 @@ export const theme = {
     highlightWidth: 2,
   },
 
+  /** Unified glow treatment — used for both box shadows and divider lines. */
+  glow: {
+    color: 'rgba(90, 180, 255, 0.35)',
+    colorDefeated: 'rgba(44, 203, 99, 0.30)',
+    blurRadius: 16,
+    spreadDistance: -2,
+    /** Divider line height + glow shadow radius. */
+    dividerHeight: 3,
+    dividerShadowRadius: 10,
+    dividerShadowOpacity: 0.6,
+  },
+
   a11y: {
     minTapTarget: 44,
     focusRing: { width: 2, color: '#7AF2FF', offset: 2 },

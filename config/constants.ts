@@ -103,7 +103,7 @@ export const SCAN_PANEL_WASH_OPACITY = 0.08;
 export const SCAN_PANEL_WASH_SIZE = 300;
 export const SCAN_PANEL_SCAN_LINE_OPACITY = 0.06;
 export const SCAN_PANEL_SHADOW_RADIUS = 30;
-export const SCAN_PANEL_SHADOW_OPACITY = 0.15;
+export const SCAN_PANEL_SHADOW_OPACITY = 0.35;
 export const SCAN_ICON_SIZE = 40;
 // Pulse ring animation
 export const SCAN_PULSE_CYCLE_MS = 2400;
@@ -214,9 +214,9 @@ export const TRACK_FIGURE_FALLBACK_BORDER_COLOR = theme.colors.highlightBlue;
 export const TRACK_FIGURE_FALLBACK_TEXT_COLOR = theme.colors.rewardYellow;
 // Arena tuning
 export const TRACK_ARENA_GRID_CELL_SIZE = 84;
-export const TRACK_ARENA_GRID_CROP_RATIO = 0.48;
-export const TRACK_ARENA_GRID_CROP_OFFSET_X = -0.06;
-export const TRACK_ARENA_GRID_CROP_OFFSET_Y = -0.08;
+export const TRACK_ARENA_GRID_CROP_RATIO = 0.65;
+export const TRACK_ARENA_GRID_CROP_OFFSET_X = 0;
+export const TRACK_ARENA_GRID_CROP_OFFSET_Y = 0.05;
 export const TRACK_ARENA_SINGLE_CROP_RATIO = 0.72;
 export const TRACK_ARENA_SINGLE_CROP_OFFSET_X = -0.03;
 export const TRACK_ARENA_SINGLE_CROP_OFFSET_Y = -0.02;
@@ -232,7 +232,7 @@ export const TRACK_ARENA_SEPARATOR_HEIGHT = 4;
 export const TRACK_ARENA_INNER_GLOW_HEIGHT = 8;
 export const TRACK_ARENA_INNER_GLOW_OPACITY = 0.15;
 // Grid cell — sprite sizing scale (0-1, fraction of cell size for breathing room)
-export const TRACK_GRID_SPRITE_SCALE = 0.82;
+export const TRACK_GRID_SPRITE_SCALE = 1.0;
 // Score bar count font size
 export const TRACK_SCORE_COUNT_FONT_SIZE = 20;
 // Today highlight band

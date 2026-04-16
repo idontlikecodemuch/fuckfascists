@@ -20,6 +20,36 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 16, 2026 ET — Design polish: glow, sprites, divider, scorecard accordion
+**Focus:** Four beta design items — unified glow token, arena sprite alignment, map divider, scorecard row expansion.
+
+**What changed:**
+
+1. **Unified glow token** — Added `theme.glow` section to `design/tokens.ts`. All box shadow glow surfaces (arena container, grid cells, scan panel) now use shared tokens. Opacity pumped from 0.10-0.15 → 0.35 for unmistakable glow at device size.
+   - **Files:** `design/tokens.ts`, `features/Platforms/components/GameArena.tsx`, `features/Scan/ScanDecorations.tsx`, `config/constants.ts`
+
+2. **Arena grid sprite alignment** — Fixed face alignment in grid cells. Root cause: negative crop offsets pushed faces to the bottom-right corner. Sprites were already normalized (confirmed — 127/127 within tolerance). Fix: `cropRatio: 0.48→0.65` (shows head through thighs), `offsetX: -0.06→0`, `offsetY: -0.08→0.05`, `scale: 0.82→1.0`. Money bleed resolved: defeated money piles at y=650+ are outside the 65% crop window.
+   - **Files:** `config/constants.ts`
+
+3. **Map header divider** — Added cyan glowing divider line at map header bottom, using `theme.glow` tokens and `theme.colors.glowCyan`. Matches the glow treatment used on other surfaces.
+   - **Files:** `features/Map/MapScreen.tsx`
+
+4. **Scorecard expandable row indicator + auto-collapse** — Added +/− indicator on expandable person rows using `theme.accordion` tokens (same pattern as Info FaqItem). Lifted expanded state from PreviewPersonRow to LivePreview for auto-collapse: expanding one row collapses others.
+   - **Files:** `features/Scorecard/components/PreviewPersonRow.tsx`, `features/Scorecard/components/LivePreview.tsx`
+
+**Files changed (7 modified):**
+- `design/tokens.ts` — glow token section
+- `config/constants.ts` — sprite crop params + scan shadow opacity
+- `features/Platforms/components/GameArena.tsx` — glow token refs
+- `features/Scan/ScanDecorations.tsx` — glow token refs
+- `features/Map/MapScreen.tsx` — header divider
+- `features/Scorecard/components/PreviewPersonRow.tsx` — indicator + controlled expand
+- `features/Scorecard/components/LivePreview.tsx` — auto-collapse state
+
+**TypeScript:** Compiles clean. **Tests:** 31 suites, 354 tests, all pass.
+
+---
+
 ### Session: April 16, 2026 ET — Data encryption hardening (iOS + Android parity)
 **Focus:** Harden local data encryption on both platforms using OS-native mechanisms. No SQLCipher — avoids Apple App Store export compliance questions.
 

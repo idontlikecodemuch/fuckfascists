@@ -272,6 +272,7 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
         </View>
         <Image source={HEADER_BAR_ASSET} style={[styles.headerBarImg, { top: insets.top, width: screenWidth, height: headerBarHeight }]} resizeMode="stretch" />
         <Image source={require('../../assets/pixel/brand/FF_logo_horizontal.png')} style={[styles.headerLogo, { marginTop: insets.top + Math.round(headerBarHeight * 0.15) }]} resizeMode="contain" accessibilityLabel={sharedCopy.appName} />
+        <View style={styles.headerDivider} />
       </View>
 
       <MapSearchBar value={searchText} onChangeText={setSearchText} onSubmit={handleSearch} isScanning={status === 'scanning'} topOffset={SEARCH_TOP} />
@@ -337,6 +338,7 @@ const styles = StyleSheet.create({
   headerBgTile:   { width: '100%', height: '100%', transform: [{ scale: 2.5 }] },
   headerBarImg:   { position: 'absolute', left: 0 },
   headerLogo:     { height: 42, aspectRatio: 1536 / 322, zIndex: 3 },
+  headerDivider:  { position: 'absolute', bottom: 0, left: 0, right: 0, height: theme.glow.dividerHeight, backgroundColor: theme.colors.glowCyan, shadowColor: theme.colors.glowCyan, shadowOffset: { width: 0, height: 0 }, shadowOpacity: theme.glow.dividerShadowOpacity, shadowRadius: theme.glow.dividerShadowRadius, elevation: 4 },
   backdrop:       { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
   cardContainer:  { position: 'absolute', bottom: 0, left: 0, right: 0, overflow: 'visible' as const, maxHeight: '65%', paddingTop: theme.space['3xl'] },
   bannerContainer:{ position: 'absolute', bottom: 80, left: 0, right: 0 },

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import Animated, { LinearTransition } from 'react-native-reanimated';
 import type { ScorecardViewData } from '../types';
@@ -23,6 +23,11 @@ interface LivePreviewProps {
 export function LivePreview({ data, onSwitchTab }: LivePreviewProps) {
   const { weekOf, persons, grandTotal } = data;
   const dateRange = formatWeekRange(weekOf);
+  const [expandedName, setExpandedName] = useState<string | null>(null);
+
+  const handleToggle = useCallback((figureName: string) => {
+    setExpandedName((prev) => (prev === figureName ? null : figureName));
+  }, []);
 
   return (
     <ScrollView contentContainerStyle={styles.scroll}>
@@ -66,7 +71,13 @@ export function LivePreview({ data, onSwitchTab }: LivePreviewProps) {
             itemLayoutAnimation={LinearTransition.duration(250)}
             data={persons}
             keyExtractor={(p) => p.figureName}
-            renderItem={({ item }) => <PreviewPersonRow person={item} />}
+            renderItem={({ item }) => (
+              <PreviewPersonRow
+                person={item}
+                expanded={expandedName === item.figureName}
+                onToggle={() => handleToggle(item.figureName)}
+              />
+            )}
             scrollEnabled={false}
           />
         ) : (

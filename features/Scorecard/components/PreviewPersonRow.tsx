@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import type { ScorecardPerson } from '../data/aggregateScorecard';
 import { scorecardCopy } from '../../../copy/scorecard';
@@ -11,16 +11,15 @@ const SPRITE_SIZE = 44;
 
 interface PreviewPersonRowProps {
   person: ScorecardPerson;
+  expanded: boolean;
+  onToggle: () => void;
 }
 
-export function PreviewPersonRow({ person }: PreviewPersonRowProps) {
-  const [expanded, setExpanded] = useState(false);
+export function PreviewPersonRow({ person, expanded, onToggle }: PreviewPersonRowProps) {
   const expandable = person.children.length > 1;
   const lastName = extractLastName(person.figureName);
   const spriteId = nameToSpriteId(person.figureName);
   const parentName = person.sources[0]?.name ?? '';
-
-  const toggle = useCallback(() => setExpanded((p) => !p), []);
 
   const renderHeader = useCallback(() => (
     <View style={styles.header}>
@@ -39,8 +38,13 @@ export function PreviewPersonRow({ person }: PreviewPersonRowProps) {
       <Text style={styles.count} allowFontScaling={false}>
         {scorecardCopy.personCount(person.totalCount)}
       </Text>
+      {expandable && (
+        <Text style={[styles.indicator, expanded && styles.indicatorOpen]}>
+          {expanded ? theme.accordion.expandedIndicator : theme.accordion.collapsedIndicator}
+        </Text>
+      )}
     </View>
-  ), [spriteId, lastName, parentName, person.surfaces, person.totalCount]);
+  ), [spriteId, lastName, parentName, person.surfaces, person.totalCount, expandable, expanded]);
 
   const renderExpanded = useCallback(() => (
     <View style={styles.childList}>
@@ -62,7 +66,7 @@ export function PreviewPersonRow({ person }: PreviewPersonRowProps) {
   return (
     <CollapsibleRow
       expanded={expanded}
-      onToggle={toggle}
+      onToggle={onToggle}
       renderHeader={renderHeader}
       renderExpanded={renderExpanded}
       expandable={expandable}
@@ -120,6 +124,16 @@ const styles = StyleSheet.create({
     color: theme.colors.rewardYellow,
     minWidth: 36,
     textAlign: 'right',
+  },
+  indicator: {
+    fontFamily: theme.fonts.bodySemiBold,
+    fontSize: 16,
+    color: theme.colors.textSecondary,
+    width: 20,
+    textAlign: 'center',
+  },
+  indicatorOpen: {
+    color: theme.colors.highlightBlue,
   },
   // Expanded children
   childList: {
