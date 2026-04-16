@@ -64,6 +64,17 @@ API keys and credentials must **only ever be read from environment variables**. 
 - **`OPENAI_API_KEY` is required for `gpt_image.py`** — the GPT image pipeline reads from `.env` via python-dotenv. Exits with a clear error if missing. Not used by any app or extension runtime code.
 - **`GEMINI_API_KEY` is required for Gemini generation scripts** — `generate.py` and `generate_assets.py` read from `.env`. Not used by any app or extension runtime code.
 
+### Data Encryption at Rest
+
+All locally stored user data is encrypted at rest using OS-native mechanisms. No app-level encryption library (SQLCipher) is used — this avoids Apple App Store export compliance questions.
+
+- **iOS:** `NSFileProtectionComplete` entitlement (`ios/FckFascists/FckFascists.entitlements`). Strongest level — all app files are encrypted and completely inaccessible when the device is locked. Hardware-backed AES-256.
+- **Android:** `minSdkVersion: 29` in `app.json`. Android 10+ mandates File-Based Encryption (FBE) — all files in the app's private directory are encrypted at rest with 256-bit AES. Credential Encrypted (CE) storage tier — available after first unlock per boot.
+- **SecureStore:** iOS Keychain / Android Keystore — hardware-backed, always encrypted.
+- **Extension:** `chrome.storage.local` is plaintext (V2: migrate snooze records to `chrome.storage.session`).
+
+All tables in `fuckfascists.db` share the same database file and receive identical OS-level encryption. There is no per-table encryption difference. See `docs/ENCRYPTION_AUDIT.md` for the full audit.
+
 ---
 
 ## Tech Stack
@@ -303,7 +314,7 @@ LocalCache {
 - Any personal identifier (name, email, device ID)
 
 ### Privacy relaxation: avoided-entity pin coordinates
-**Added 2026-04-03.** Map pin coordinates for avoided entities are stored locally in SQLite (`entity_avoid_pins` table), encrypted at rest by iOS Data Protection. Only coordinates for entities the user has actively avoided are stored — not scanned or tapped entities. Rows are auto-purged daily. This enables the map to show today's avoided markers on app relaunch. **This is a candidate for rewrite** — the team may decide to revert to session-only pin storage if any coordinate persistence is unacceptable. See Known Limitations.
+**Added 2026-04-03.** Map pin coordinates for avoided entities are stored locally in SQLite (`entity_avoid_pins` table), encrypted at rest (iOS: `NSFileProtectionComplete`, Android: FBE). Only coordinates for entities the user has actively avoided are stored — not scanned or tapped entities. Rows are auto-purged daily. This enables the map to show today's avoided markers on app relaunch. Copy updated 2026-04-16 to disclose this behavior. **This is a candidate for rewrite** — the team may decide to revert to session-only pin storage if any coordinate persistence is unacceptable. See Known Limitations.
 
 ---
 

@@ -41,7 +41,8 @@
       }
     },
     "android": {
-      "package": "com.fckapp.fck"
+      "package": "com.fckapp.fck",
+      "minSdkVersion": 29
     }
   }
 }

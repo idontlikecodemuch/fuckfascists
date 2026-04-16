@@ -1,14 +1,62 @@
 # Local Data Encryption Audit
 
-**Date:** 2026-04-15
+**Date:** 2026-04-15 (updated 2026-04-16)
 **Scope:** All local data storage in the mobile app and browser extension.
-**Action:** Audit report only. No storage layers modified.
+**Status:** iOS and Android encryption hardened. No app-level encryption library needed.
 
 ---
 
 ## Executive Summary
 
-The app relies on platform-level encryption (iOS Data Protection, iOS Keychain / Android Keystore) rather than application-level encryption. Adequate for iOS MVP. Android has no guaranteed app-level protection for SQLite data. The browser extension stores data in plaintext `chrome.storage.local`. Three copy strings inaccurately claim GPS coordinates are never saved.
+All local data is now encrypted at rest on both iOS and Android using OS-native mechanisms. No app-level encryption (SQLCipher) is used — this avoids Apple App Store export compliance questions.
+
+- **iOS:** `NSFileProtectionComplete` entitlement — strongest level, data inaccessible when device is locked
+- **Android:** `minSdkVersion: 29` (Android 10+) — File-Based Encryption (FBE) is mandatory, all app-private files encrypted at rest
+- **SecureStore:** iOS Keychain / Android Keystore (hardware-backed) — already encrypted
+- **Extension:** `chrome.storage.local` remains plaintext (V2 item)
+
+All tables in `fuckfascists.db` (entity avoids, platform avoids, cache, avoid pins, barcode cache) share the same database file and receive identical OS-level encryption. There is no per-table encryption difference.
+
+---
+
+## Encryption Mechanisms
+
+### iOS — NSFileProtectionComplete
+
+Set via `ios/FckFascists/FckFascists.entitlements`:
+```xml
+<key>com.apple.developer.default-data-protection</key>
+<string>NSFileProtectionComplete</string>
+```
+
+- **Level:** Strongest. Files are encrypted with a key derived from the user's passcode and device hardware.
+- **Accessibility:** Data is ONLY available when the device is unlocked and the app is in the foreground. When the device locks, all app files become inaccessible.
+- **Scope:** Applies to ALL app files — SQLite database, scorecard PNGs, any temp files.
+- **No export compliance impact:** This is Apple's own Data Protection framework, not app-level encryption. Apple does not consider it "non-exempt encryption" for App Store submission.
+
+### Android — File-Based Encryption (FBE)
+
+Enforced via `app.json`:
+```json
+"android": { "minSdkVersion": 29 }
+```
+
+- **Level:** OS-enforced. Android 10+ mandates FBE — all files in the app's private directory (`/data/data/com.fckapp.fck/`) are encrypted with 256-bit AES at the filesystem level.
+- **Storage tier:** Credential Encrypted (CE) — data is available after the user unlocks the device for the first time after boot.
+- **Scope:** Covers SQLite database and all app-private files.
+- **Trade-off:** Excludes Android 9 and below (~5% of Android users). Acceptable for a privacy-first app.
+- **No export compliance impact:** FBE is the OS doing the encryption, not the app.
+
+### Platform Parity
+
+| Property | iOS | Android 10+ |
+|---|---|---|
+| Encryption algorithm | AES-256 (hardware-backed) | AES-256 (dm-crypt / FBE) |
+| When data is accessible | Device unlocked, app in foreground | After first unlock per boot |
+| When data is encrypted | Device locked | Device locked / at rest |
+| Scope | All app files | All app-private files |
+| App-level code needed | None (entitlement only) | None (minSdkVersion only) |
+| Export compliance impact | None | None |
 
 ---
 
@@ -16,21 +64,19 @@ The app relies on platform-level encryption (iOS Data Protection, iOS Keychain /
 
 ### Mobile App — SQLite (`fuckfascists.db`)
 
-Opened via `expo-sqlite` `openDatabaseAsync()` with no encryption options. No SQLCipher or app-level encryption. Relies on iOS Data Protection (file-level, hardware-backed when device is locked).
+All tables in the same database file — all receive identical OS-level encryption.
 
-| Table | Data | Privacy Impact |
-|---|---|---|
-| `entity_avoid_events` | entity_id, date, count, surface | Medium — reveals which corporations the user avoids, by date |
-| `platform_avoid_events` | platform_id, date, count | Medium — reveals which platforms the user avoids |
-| `cache` | key (brandName+areaHash), fec_committee_id, donation_summary_json, confidence, fetched_at | Low — areaHash is a ~1km grid token, not raw coordinates |
-| `entity_avoid_pins` | entity_id, date, **latitude, longitude**, name | **High** — raw GPS coordinates for avoided businesses |
-| `barcode_lookup_cache` | barcode, search_term, product_name, brand_name, source, status, fetched_at (30-day TTL) | Medium — reveals CPG brand scanning patterns |
-
-**Schema source:** `core/data/schema.ts` (main tables), `features/Map/barcode/barcodeCacheStore.ts` (barcode cache).
+| Table | Data | Privacy Impact | Encryption |
+|---|---|---|---|
+| `entity_avoid_events` | entity_id, date, count, surface | Medium | OS-native (iOS DP / Android FBE) |
+| `platform_avoid_events` | platform_id, date, count | Medium | OS-native |
+| `cache` | key (brandName+areaHash), fec_committee_id, donation_summary_json, confidence, fetched_at | Low | OS-native |
+| `entity_avoid_pins` | entity_id, date, latitude, longitude, name | High | OS-native |
+| `barcode_lookup_cache` | barcode, search_term, product_name, brand_name, source, status, fetched_at | Medium | OS-native |
 
 ### Mobile App — SecureStore (`expo-secure-store`)
 
-Uses iOS Keychain (hardware-backed) / Android Keystore. Encrypted by default. Low-sensitivity data only.
+Hardware-backed encryption (iOS Keychain / Android Keystore). Low-sensitivity data only.
 
 | Key | Data | Used By |
 |---|---|---|
@@ -45,7 +91,7 @@ Uses iOS Keychain (hardware-backed) / Android Keystore. Encrypted by default. Lo
 
 | Path | Data | Encryption |
 |---|---|---|
-| `{documentDirectory}/scorecards/*.png` | Rendered scorecard images (weekly summaries) | iOS Data Protection |
+| `{documentDirectory}/scorecards/*.png` | Rendered scorecard images | OS-native (same as SQLite) |
 
 ### Browser Extension — `chrome.storage.local`
 
@@ -53,84 +99,30 @@ Uses iOS Keychain (hardware-backed) / Android Keystore. Encrypted by default. Lo
 
 | Key Pattern | Data |
 |---|---|
-| `avoid:entity:{id}:{date}` | Entity avoid events (entityId, date, count) |
+| `avoid:entity:{id}:{date}` | Entity avoid events |
 | `avoid:platform:{id}:{date}` | Platform avoid events |
 | `cache:{key}` | FEC API result cache |
 | `ext:{entityId}` | Extension-local FEC data cache |
-| Snooze records | Hostnames of flagged domains the user snoozed (7-day TTL) |
-
-### Browser Extension — In-Memory Only
-
-| Store | Data | Persisted? |
-|---|---|---|
-| `sessionStore.ts` TabFlag map | Tab flags, domain-last-flagged timestamps | No (RAM only, cleared on SW restart) |
+| Snooze records | Hostnames of flagged domains user snoozed (7-day TTL) |
 
 ---
 
-## Encryption Status by Platform
+## Resolved Gaps
 
-| Platform | SQLite DB | SecureStore | File System |
-|---|---|---|---|
-| **iOS** | iOS Data Protection (encrypted at rest when locked) | iOS Keychain (hardware-backed) | iOS Data Protection |
-| **Android** | **None guaranteed** — depends on device full-disk encryption | Android Keystore (encrypted) | **None guaranteed** |
+### Gap 1: GPS Coordinate Storage — RESOLVED (copy updated)
 
----
+Copy lead updated the three strings that inaccurately claimed GPS is never saved. The copy now discloses that avoided-entity pin coordinates are stored locally, encrypted, and auto-purged daily.
 
-## Gaps Between Copy and Reality
+### Gap 2: Android Encryption — RESOLVED
 
-### Gap 1: GPS Coordinate Storage (CRITICAL)
-
-Three copy strings claim GPS is never saved:
-
-1. **`copy/onboard.ts:19`** — `"GPS is used once to center your map. Coordinates are never saved."`
-2. **`copy/infoContent.ts:107-108`** — `"GPS is accessed only when you use the map and is never saved."`
-3. **`copy/infoContent.ts:97-100`** — `"No times, no locations, no identifiers."`
-
-**Reality:** `entity_avoid_pins` stores raw latitude/longitude for avoided entities. Stored locally, encrypted via iOS Data Protection, auto-purged daily. Documented in CLAUDE.md as a "privacy relaxation" and candidate for rewrite.
-
-**Severity:** V1 launch blocker. Users are not giving informed consent to coordinate storage.
-
-**Already tracked:** CLAUDE.md Known Limitations ("Map auto-scan on open" and "Avoided-entity pin coordinate storage").
-
-### Gap 2: Android Encryption (HIGH)
-
-No explicit claim of encryption in copy, but users may reasonably assume privacy when told "data is local only." Android SQLite has no app-level encryption unless the device has full-disk encryption enabled (user setting, not guaranteed).
-
-**Severity:** High for Android users without device encryption. Not a V1 launch blocker (iOS-only beta), but should be addressed before Android launch.
-
-### Gap 3: Extension Storage Plaintext (MEDIUM)
-
-Extension avoid events and snooze records are stored in plaintext. Snooze records reveal which flagged domains the user visited (even though browsing history is not stored).
-
-**Severity:** Medium. The extension correctly avoids storing browsing history, but snooze records are a partial leak. Consider migrating to `chrome.storage.session` (MV3, cleared on browser close) in V2.
-
-### Gap 4: Barcode Cache Not Disclosed (LOW)
-
-`barcode_lookup_cache` stores scanned brand names for 30 days. Not mentioned in Info copy.
-
-**Severity:** Low. The cache contains product metadata, not personal data. But it does reveal CPG scanning patterns.
+`minSdkVersion: 29` guarantees File-Based Encryption on all supported Android devices. All app-private files (including SQLite) are encrypted at rest. Parity with iOS.
 
 ---
 
-## What's Working Correctly
-
-- SecureStore usage is appropriate — low-sensitivity flags in iOS Keychain
-- No personal identifiers stored anywhere
-- No browsing history persisted (extension is in-memory only)
-- No "support" events — only avoidance is recorded
-- FEC cache keys use areaHash, not raw coordinates
-- Avoid pin auto-purge runs daily
-- No outbound user data — only FEC.gov, GitHub, and Open Food Facts queries
-
----
-
-## Recommendations
+## Remaining Items
 
 | # | Finding | Priority | Action |
 |---|---|---|---|
-| 1 | Copy says "GPS never saved" — entity_avoid_pins stores coords | **V1 launch blocker** | Update 3 copy strings |
-| 2 | Android SQLite has no app-level encryption | V1.5 | Evaluate SQLCipher or remove GPS pin storage on Android |
-| 3 | Extension snooze records persist flagged hostnames | V2 | Migrate to `chrome.storage.session` |
-| 4 | Barcode cache not mentioned in Info copy | V1.5 | Add disclosure or reduce TTL |
-| 5 | iOS Data Protection is platform-adequate for MVP | Informational | No action |
-| 6 | SecureStore usage is correct | Informational | No action |
+| 1 | Extension snooze records persist flagged hostnames in plaintext | V2 | Migrate to `chrome.storage.session` |
+| 2 | Barcode cache not mentioned in Info copy | V1.5 | Add disclosure or reduce TTL |
+| 3 | SecureStore and OS-native encryption are correct | Informational | No action |

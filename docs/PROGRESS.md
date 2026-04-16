@@ -20,6 +20,38 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 16, 2026 ET — Data encryption hardening (iOS + Android parity)
+**Focus:** Harden local data encryption on both platforms using OS-native mechanisms. No SQLCipher — avoids Apple App Store export compliance questions.
+
+**What changed:**
+
+1. **iOS: NSFileProtectionComplete** — Set `com.apple.developer.default-data-protection = NSFileProtectionComplete` in `ios/FckFascists/FckFascists.entitlements`. This is the strongest iOS Data Protection level: all app files (SQLite, scorecards, temp) are encrypted and completely inaccessible when the device is locked. Hardware-backed AES-256.
+   - **Files:** `ios/FckFascists/FckFascists.entitlements`
+
+2. **Android: File-Based Encryption via minSdkVersion 29** — Set `"minSdkVersion": 29` in `app.json`. Android 10+ mandates FBE — all app-private files are encrypted at rest with 256-bit AES. Credential Encrypted storage tier. Drops ~5% of users on Android 9 and below.
+   - **Files:** `app.json`
+
+3. **Encryption audit report updated** — Corrected the misleading characterization that `entity_avoid_pins` had different encryption than other tables. All tables share the same `fuckfascists.db` file and receive identical OS-level encryption. Resolved Gap 1 (copy updated by copy lead) and Gap 2 (Android now has parity). Remaining: extension plaintext (V2), barcode cache disclosure (V1.5).
+   - **Files:** `docs/ENCRYPTION_AUDIT.md`
+
+4. **CLAUDE.md updated** — Added "Data Encryption at Rest" section to Security, updated privacy relaxation note with encryption details and copy update date.
+   - **Files:** `CLAUDE.md`
+
+**Key architectural decision:** OS-native encryption (NSFileProtectionComplete + FBE) over app-level encryption (SQLCipher). SQLCipher would trigger Apple's "Does your app use encryption?" question during App Store submission, requiring export compliance paperwork (annual BIS self-classification report). OS-native encryption provides equivalent protection without any export compliance overhead.
+
+**Files changed (4 modified):**
+- `ios/FckFascists/FckFascists.entitlements` — NSFileProtectionComplete
+- `app.json` — minSdkVersion 29
+- `docs/ENCRYPTION_AUDIT.md` — updated audit report
+- `CLAUDE.md` — encryption docs
+- `docs/PROGRESS.md` — this entry
+
+**TypeScript:** Compiles clean. **Tests:** All pass.
+
+**Rebuild required:** Both the iOS and Android binaries need to be rebuilt to pick up the entitlements and minSdkVersion changes.
+
+---
+
 ### Session: April 15, 2026 ET — Beta testing fixes + encryption audit
 **Focus:** Six items from beta testing — orientation lock, onboarding permission bypass, tooltip improvements, and local data encryption audit.
 
