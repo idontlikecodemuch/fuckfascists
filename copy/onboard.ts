@@ -1,40 +1,29 @@
 export const onboardCopy = {
-  // Screen 1: Welcome
-  welcomeTitle: "WELCOME",
-  letsGo: "LET\u2019S GO",
+  // Screen 1: Welcome (Sh*tposter)
   appDisplay: "FCK\nFASCISTS",
   tagline: "The fascists won\u2019t\nf*ck themselves. \uD83E\uDD18\uD83C\uDFFD",
-  body: "Map, Track, and Scan to see who businesses fund. Political contribution data. In your hands.",
-  featureMap: "MAP \u2014 Tap a business. See who it funds.",
-  featureTrack: "TRACK \u2014 Log what you avoid. See it on your scorecard.",
-  featureScan: "SCAN \u2014 Scan a product. See who\u2019s behind it and where their money goes.",
-  featureScorecard: "SCORECARD \u2014 Share what you did every week.",
+  body: "See how businesses fund politics.\nDecide what to do about it. Share.",
+  letsGo: "PRESS START",
 
-  // Screen 2: Privacy (WHAT WE DON'T DO)
+  // Screen 2: Privacy — WHAT WE DON'T DO (Clark)
   privacyTitle: "WHAT WE DON\u2019T DO",
-  privacySubhead: "Most apps collect everything. Here\u2019s what this one doesn\u2019t.",
-  noSignIn: "NO SIGN-IN",
-  noSignInDesc: "No accounts, no email, no user ID. Nothing to create, nothing to leak.",
-  noLocation: "NO LOCATION STORAGE",
-  noLocationDesc: "GPS is used once to center your map. Coordinates are never saved.",
-  noVisitHistory: "NO VISIT HISTORY",
-  noVisitHistoryDesc: "All your data \u2014 dates and counts \u2014 is stored on this device only. Never transmitted.",
-  noServers: "NO SERVERS",
-  noServersDesc: "Everything stays on this device. We only read public data.",
-  openSource: "OPEN SOURCE",
-  openSourceDesc: "Every line of code is public. ",
-  openSourceLink: "Check it yourself.",
+  privacyBody:
+    "No accounts. No tracking. No servers.\n" +
+    "Everything is encrypted on your phone\n" +
+    "and cleared daily or weekly.",
+  openSourceLink: "Public, reviewable code. Take a look \u2192",
 
-  // Screen 3: Permissions (BEFORE WE START)
+  // Screen 3: Permissions — BEFORE WE START (Clark)
   permissionsTitle: "BEFORE WE START",
   locTitle: "LOCATION",
-  locWhy: "Centers the map on businesses near you.",
-  locPromise: "Used once per session. Never stored.",
+  locWhy: "Show businesses near you on the map.",
+  locPromise: "Never sent anywhere.",
   locBtn: "ALLOW LOCATION",
   notifTitle: "NOTIFICATIONS",
-  notifWhy: "Alerts for scorecard drops, reminders, and the things that matter.",
-  notifPromise: "Only the important stuff. Never spam.",
+  notifWhy: "Know when your weekly scorecard is ready.",
+  notifPromise: "Local only \u2014 nothing leaves your phone.",
   notifBtn: "ALLOW NOTIFICATIONS",
+  done: "LET\u2019S GO",
 
   // Shared
   requesting: "...",

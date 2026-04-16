@@ -82,7 +82,7 @@ export function PermissionsScreen({ stepIndex, onNext }: PermissionsScreenProps)
     <OnboardingSlide
       stepIndex={stepIndex}
       title={onboardCopy.permissionsTitle}
-      nextLabel={onboardCopy.next}
+      nextLabel={onboardCopy.done}
       onNext={onNext}
       onSkip={onNext}
     >

@@ -11,63 +11,39 @@ interface PrivacyScreenProps {
   onNext: () => void;
 }
 
-const POINTS = [
-  { label: onboardCopy.noSignIn,       detail: onboardCopy.noSignInDesc },
-  { label: onboardCopy.noLocation,     detail: onboardCopy.noLocationDesc },
-  { label: onboardCopy.noVisitHistory, detail: onboardCopy.noVisitHistoryDesc },
-  { label: onboardCopy.noServers,      detail: onboardCopy.noServersDesc },
-] as const;
-
+/**
+ * Screen 2 — Privacy (Clark voice).
+ * Single consolidated privacy statement + open-source link.
+ */
 export function PrivacyScreen({ stepIndex, onNext }: PrivacyScreenProps) {
   return (
     <OnboardingSlide stepIndex={stepIndex} title={onboardCopy.privacyTitle} onNext={onNext}>
       <View style={styles.container}>
-        <Text style={styles.subhead} allowFontScaling>
-          {onboardCopy.privacySubhead}
-        </Text>
-        <View style={styles.list}>
-          {POINTS.map((p) => (
-            <View key={p.label} style={styles.panel}>
-              <View style={styles.accentBar} accessible={false} />
-              <View style={styles.textBlock}>
-                <Text style={styles.label} allowFontScaling>{p.label}</Text>
-                <Text style={styles.detail} allowFontScaling>{p.detail}</Text>
-              </View>
-            </View>
-          ))}
-          {/* Open source — with tappable link to repo */}
-          <View style={styles.panel}>
-            <View style={styles.accentBar} accessible={false} />
-            <View style={styles.textBlock}>
-              <Text style={styles.label} allowFontScaling>{onboardCopy.openSource}</Text>
-              <Text style={styles.detail} allowFontScaling>
-                {onboardCopy.openSourceDesc}
-                <Text
-                  style={styles.link}
-                  onPress={() => Linking.openURL(sharedCopy.repoUrl)}
-                  accessibilityRole="link"
-                  accessibilityLabel={onboardCopy.openSourceLink}
-                >
-                  {onboardCopy.openSourceLink}
-                </Text>
-              </Text>
-            </View>
+        <View style={styles.panel}>
+          <View style={styles.accentBar} accessible={false} />
+          <View style={styles.textBlock}>
+            <Text style={styles.body} allowFontScaling>
+              {onboardCopy.privacyBody}
+            </Text>
           </View>
         </View>
+
+        <Text
+          style={styles.link}
+          onPress={() => Linking.openURL(sharedCopy.repoUrl)}
+          accessibilityRole="link"
+          accessibilityLabel={onboardCopy.openSourceLink}
+          allowFontScaling
+        >
+          {onboardCopy.openSourceLink}
+        </Text>
       </View>
     </OnboardingSlide>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center' },
-  subhead: {
-    ...theme.type.bodyS,
-    color: theme.colors.textSecondary,
-    lineHeight: 20,
-    marginBottom: theme.space.xl,
-  },
-  list: { gap: theme.space.md },
+  container: { flex: 1, justifyContent: 'center', gap: theme.space.xl },
   panel: {
     ...bevelInset,
     backgroundColor: theme.colors.panelInner,
@@ -80,16 +56,17 @@ const styles = StyleSheet.create({
   },
   textBlock: {
     flex: 1,
-    paddingVertical: theme.space.md,
-    paddingHorizontal: theme.space.md,
+    paddingVertical: theme.space.lg,
+    paddingHorizontal: theme.space.lg,
   },
-  label: {
-    fontFamily: theme.fonts.headline,
-    fontSize: 11,
+  body: {
+    ...theme.type.bodyM,
+    color: theme.colors.textSecondary,
+    lineHeight: 24,
+  },
+  link: {
+    ...theme.type.bodyS,
     color: theme.colors.highlightBlue,
-    letterSpacing: 2,
-    marginBottom: theme.space.xs,
+    textAlign: 'center',
   },
-  detail: { ...theme.type.bodyS, color: theme.colors.textSecondary, lineHeight: 18 },
-  link: { color: theme.colors.highlightBlue, textDecorationLine: 'underline' as const },
 });
