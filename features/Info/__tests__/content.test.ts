@@ -72,10 +72,10 @@ describe('BUNDLED_CONTENT structure', () => {
     expect(dataText.toLowerCase()).toContain('fec');
   });
 
-  it('includes a tracking reference entry', () => {
-    const trackingEntry = BUNDLED_CONTENT.reference.find((r) =>
-      r.q.toLowerCase().includes('track')
+  it('includes a privacy reference entry about saved data', () => {
+    const privacyEntry = BUNDLED_CONTENT.reference.find((r) =>
+      r.q.toLowerCase().includes('save') || r.q.toLowerCase().includes('transmitted')
     );
-    expect(trackingEntry).toBeDefined();
+    expect(privacyEntry).toBeDefined();
   });
 });

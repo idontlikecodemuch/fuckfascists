@@ -14,7 +14,7 @@ import type { InfoContent } from '../features/Info/types';
 import { sharedCopy } from './shared';
 
 export const BUNDLED_INFO_CONTENT: InfoContent = {
-  version: '1.1.0',
+  version: '1.2.0',
 
   about: {
     tagline: 'The fascists won\u2019t f*ck themselves. \uD83E\uDD18\uD83C\uDFFD',
@@ -39,27 +39,71 @@ export const BUNDLED_INFO_CONTENT: InfoContent = {
       id: 'data-source',
       q: 'Where does the data come from?',
       a:
-        'Every figure comes from FEC.gov \u2014 the official U.S. government record of ' +
-        'campaign finance. Every dollar amount in the app links to its original FEC ' +
-        'filing. We don\u2019t editorialize. We show what\u2019s on file.',
+        'Every contribution figure comes from FEC.gov \u2014 the official U.S. government ' +
+        'record of campaign finance. Every dollar amount in the app links to its original ' +
+        'FEC filing. We don\u2019t editorialize. We show what\u2019s on file.',
       category: 'data',
     },
     {
       id: 'fec-filings',
-      q: 'Can I verify the numbers?',
+      q: 'Can I verify the numbers myself?',
       a:
-        'Yes. Tap \u2018See full FEC record\u2019 on any business card. It opens the ' +
-        'committee\u2019s page on FEC.gov. Verify any number yourself.',
+        'Yes. Every figure links to its FEC filing at fec.gov. Tap \u201CSee full FEC ' +
+        'record\u201D on any business card and check it yourself.',
       category: 'data',
     },
     {
       id: 'confidence',
-      q: 'How does matching work?',
+      q: 'What does the MATCHED badge mean?',
       a:
         'Most businesses match to our bundled list automatically \u2014 high confidence, ' +
         'no badge. When a match comes from searching the FEC database, we show a ' +
         'MATCHED badge and a disclaimer. Tap the FEC link to verify. We never claim ' +
         'more certainty than the data supports.',
+      category: 'data',
+    },
+    {
+      id: 'methodology-sort',
+      q: 'How does the app sort contributions into R: and D:?',
+      a:
+        'Every dollar is classified by where it went, not where it came from.\n\n' +
+        'Businesses: Each payment from the company\u2019s PAC to a candidate is sorted ' +
+        'by the candidate\u2019s party.\n' +
+        'Individuals: Each personal contribution to a committee is sorted by the ' +
+        'receiving committee\u2019s party \u2014 matched using FEC records and public ' +
+        'legislator databases.\n' +
+        'Committees: If 80%+ of a committee\u2019s giving goes to one party, it\u2019s ' +
+        'classified as that party. Below 80%, it stays unclassified.\n\n' +
+        'If a dollar can\u2019t be confidently classified, it stays unlabeled.',
+      category: 'data',
+    },
+    {
+      id: 'methodology-match',
+      q: 'How does the app match a business to its political record?',
+      a:
+        'Each business is matched to its registered PAC in the FEC database \u2014 ' +
+        'public record. When the match is strong, you see the data. When it\u2019s less ' +
+        'certain, a MATCHED badge appears with a link to verify on FEC.gov yourself.',
+      category: 'data',
+    },
+    {
+      id: 'methodology-linked',
+      q: 'Who gets linked to a business?',
+      a:
+        'People who directly benefit financially \u2014 owners, founders with a stake, ' +
+        'executives, controlling shareholders. Someone with an ordinary board seat or a ' +
+        'former job doesn\u2019t qualify. Every link is based on public evidence like ' +
+        'company filings and investor disclosures. If the evidence isn\u2019t there, the ' +
+        'link isn\u2019t made.',
+      category: 'data',
+    },
+    {
+      id: 'entity-list',
+      q: 'What is the curated entity list?',
+      a:
+        'A community-maintained list covering top R-donating and D-donating companies, ' +
+        'retailers, and platforms. It ships with the app for offline use and updates ' +
+        'from GitHub. Anyone can submit corrections via a pull request.',
       category: 'data',
     },
     {
@@ -80,33 +124,27 @@ export const BUNDLED_INFO_CONTENT: InfoContent = {
         'for future versions. State-level campaign finance data is not included.',
       category: 'data',
     },
-    {
-      id: 'trust',
-      q: 'Why should I trust this data?',
-      a:
-        'Every figure comes directly from FEC.gov. Uncertain matches are labeled. ' +
-        'Every number links to its source. We never show data we can\u2019t cite.',
-      category: 'data',
-    },
 
     // ── PRIVACY ───────────────────────────────────────────────────────────────
     {
-      id: 'storage',
-      q: 'What\u2019s stored on my device?',
+      id: 'what-saved',
+      q: 'What does the app save?',
       a:
-        'Only your avoidance actions: business IDs and dates you tapped Avoid, and ' +
-        'platform avoids you logged. No times, no locations, no identifiers. The only ' +
-        'outbound calls are to FEC.gov and GitHub \u2014 public data, one direction. ' +
-        'Nothing about you is sent out.',
+        'The app saves your location when you open and engage with the map \u2014 daily ' +
+        'session only data, encrypted on your phone, so you can see where you\u2019ve ' +
+        'checked. That data is erased the next day. It also saves your avoids for the ' +
+        'week \u2014 also locally and encrypted \u2014 so it can build you a scorecard. ' +
+        'That data is cleared every week. Only the scorecard image is kept.',
       category: 'privacy',
     },
     {
-      id: 'tracking',
-      q: 'Does the app track me?',
+      id: 'data-transmitted',
+      q: 'Is my data transmitted?',
       a:
-        'No. No accounts, no user IDs, no analytics. GPS is accessed only when you ' +
-        'use the map and is never saved. The browser extension never stores which ' +
-        'sites you visit.',
+        'No. Your avoids, your scorecard, your location \u2014 none of it leaves your ' +
+        'phone. The app does make a few outbound calls: to FEC.gov for contribution ' +
+        'lookups, to a public product database for barcode scans, and to GitHub for ' +
+        'data updates. No personal data is included in any of those calls.',
       category: 'privacy',
     },
 
@@ -115,10 +153,15 @@ export const BUNDLED_INFO_CONTENT: InfoContent = {
       id: 'partisan',
       q: 'Is the app partisan?',
       a:
-        'This is a project about the outsized impact money has on politics. The app ' +
-        'shows both R: and D: contributions for every entity. All data comes from ' +
-        'FEC.gov. You see what\u2019s on file \u2014 you draw your own conclusions. We ' +
-        'trust the data and we trust you.',
+        'The app shows R: and D: contributions for every business and individual. ' +
+        'Federal, state, and local. The data comes from FEC filings and public records. ' +
+        'You see all of it and make your own call.',
+      category: 'app',
+    },
+    {
+      id: 'free',
+      q: 'Is this free?',
+      a: 'Yes, always. No subscriptions, no ads, no in-app purchases.',
       category: 'app',
     },
     {
@@ -147,7 +190,7 @@ export const BUNDLED_INFO_CONTENT: InfoContent = {
     },
     {
       id: 'report-error',
-      q: 'How do I report an error or add a business?',
+      q: 'Can I add a business or correct an entry?',
       a:
         `See something wrong? Email ${sharedCopy.contactEmail} or open an issue on ` +
         'GitHub. The entity list is open source \u2014 anyone can submit a correction.',
