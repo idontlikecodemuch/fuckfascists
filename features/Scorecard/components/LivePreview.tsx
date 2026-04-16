@@ -1,6 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import Animated, { LinearTransition } from 'react-native-reanimated';
+import {
+  DAY_CIRCLES_AUTO_COLLAPSE_DELAY_MS,
+  DAY_CIRCLES_COLLAPSE_STAGGER_MS,
+} from '../../../config/constants';
 import type { ScorecardViewData } from '../types';
 import { scorecardCopy } from '../../../copy/scorecard';
 import { theme } from '../../../design/tokens';
@@ -23,10 +27,39 @@ interface LivePreviewProps {
 export function LivePreview({ data, onSwitchTab }: LivePreviewProps) {
   const { weekOf, persons, grandTotal } = data;
   const dateRange = formatWeekRange(weekOf);
-  const [expandedName, setExpandedName] = useState<string | null>(null);
+
+  // Start with all expandable rows open, then gracefully collapse with stagger.
+  const expandableNames = persons.filter((p) => p.children.length > 1).map((p) => p.figureName);
+  const [expanded, setExpanded] = useState<Set<string>>(() => new Set(expandableNames));
+  const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  useEffect(() => {
+    if (expandableNames.length === 0) return;
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    expandableNames.forEach((name, i) => {
+      const delay = DAY_CIRCLES_AUTO_COLLAPSE_DELAY_MS + i * DAY_CIRCLES_COLLAPSE_STAGGER_MS;
+      timers.push(setTimeout(() => {
+        setExpanded((prev) => {
+          const next = new Set(prev);
+          next.delete(name);
+          return next;
+        });
+      }, delay));
+    });
+    timersRef.current = timers;
+    return () => timers.forEach(clearTimeout);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps — run once on mount
 
   const handleToggle = useCallback((figureName: string) => {
-    setExpandedName((prev) => (prev === figureName ? null : figureName));
+    // Manual toggle cancels any pending auto-collapse timers.
+    timersRef.current.forEach(clearTimeout);
+    timersRef.current = [];
+    setExpanded((prev) => {
+      const next = new Set(prev);
+      if (next.has(figureName)) next.delete(figureName);
+      else next.add(figureName);
+      return next;
+    });
   }, []);
 
   return (
@@ -74,7 +107,7 @@ export function LivePreview({ data, onSwitchTab }: LivePreviewProps) {
             renderItem={({ item }) => (
               <PreviewPersonRow
                 person={item}
-                expanded={expandedName === item.figureName}
+                expanded={expanded.has(item.figureName)}
                 onToggle={() => handleToggle(item.figureName)}
               />
             )}
