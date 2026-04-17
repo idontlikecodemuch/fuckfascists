@@ -5313,6 +5313,7 @@
         "food"
       ],
       "ceoName": "Chris Kempczinski",
+      "associatedPersonIds": ["chris-kempczinski"],
       "lastVerifiedDate": "2026-03-11",
       "fecCommitteeId": "C00063164",
       "donationSummary": {
@@ -20220,26 +20221,10 @@
         "tech"
       ],
       "ceoName": "Tim Cook",
+      "associatedPersonIds": ["tim-cook"],
       "fecCommitteeId": null,
-      "lastVerifiedDate": "2026-03-09",
-      "notes": "APPLEJAM INC is unrelated to Apple Inc",
-      "donationSummary": {
-        "committeeId": "C00349928",
-        "committeeName": "APPLEJAM INC GOOD GOVERNMENT POLITICAL ACTION COMMITTEE INC",
-        "recentCycle": 2022,
-        "recentRepubs": 0,
-        "recentDems": 43200,
-        "totalRepubs": 0,
-        "totalDems": 43200,
-        "activeCycles": [
-          2022
-        ],
-        "lastUpdated": "2026-04-07",
-        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00349928/",
-        "raw": [],
-        "totalO": 0,
-        "recentO": 0
-      },
+      "lastVerifiedDate": "2026-04-16",
+      "notes": "Confirmed no corporate PAC. APPLEJAM INC PAC (C00349928) is unrelated — removed.",
       "verificationStatus": "manual"
     },
     {
