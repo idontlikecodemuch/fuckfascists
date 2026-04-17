@@ -196,6 +196,48 @@ describe('domain match', () => {
 
 // ─── Alias match ──────────────────────────────────────────────────────────────
 
+describe('confirmed no-PAC entity (fecCommitteeId: null)', () => {
+  const noPacEntity: Entity = {
+    id: 'apple',
+    canonicalName: 'Apple Inc',
+    aliases: ['Apple', 'Apple Store'],
+    domains: ['apple.com'],
+    categoryTags: ['tech'],
+    ceoName: 'Tim Cook',
+    fecCommitteeId: null,
+    verificationStatus: 'manual',
+    lastVerifiedDate: '2024-01-01',
+  };
+
+  it('returns matched with null donationSummary and does not call FEC API', async () => {
+    const deps = makeDeps({ entities: [noPacEntity] });
+
+    const result = await matchEntity('Apple', deps);
+
+    expect(result.matched).toBe(true);
+    if (result.matched) {
+      expect(result.entity).toBe(noPacEntity);
+      expect(result.confidence).toBe(1.0);
+      expect(result.donationSummary).toBeNull();
+      expect(result.fecCommitteeId).toBe('');
+    }
+    expect(deps.fetchOrgs).not.toHaveBeenCalled();
+    expect(deps.fetchOrgSummary).not.toHaveBeenCalled();
+  });
+
+  it('matches via domain even when fecCommitteeId is null', async () => {
+    const deps = makeDeps({ entities: [noPacEntity] });
+
+    const result = await matchEntity('Apple Georgetown', deps, '', 'apple.com');
+
+    expect(result.matched).toBe(true);
+    if (result.matched) {
+      expect(result.entity).toBe(noPacEntity);
+      expect(result.donationSummary).toBeNull();
+    }
+  });
+});
+
 describe('alias match', () => {
   it('returns HIGH confidence for an exact alias match', async () => {
     const deps = makeDeps();

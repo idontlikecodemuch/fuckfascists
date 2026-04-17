@@ -193,6 +193,23 @@ async function resolveEntityMatch(
   deps: MatchingDeps,
   normalizedInput: string,
 ): Promise<MatchResult | null> {
+  // fecCommitteeId === null means "confirmed no PAC" — match succeeds with
+  // no donation data. Do not fall through to resolveOrgId (which would fuzzy-
+  // search and potentially match an unrelated committee like APPLEJAM → Apple).
+  if (entity.fecCommitteeId === null) {
+    return {
+      matched: true,
+      lookupStatus: 'matched',
+      entity,
+      committeeName: entity.canonicalName,
+      matchedAlias,
+      confidence: 1.0,
+      fecCommitteeId: '',
+      donationSummary: null,
+      fromCache: false,
+    };
+  }
+
   let orgId: string | null;
   try {
     orgId =
