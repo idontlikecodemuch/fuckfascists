@@ -4,7 +4,7 @@ import { ProgressDots } from './ProgressDots';
 import { TOTAL_STEPS } from '../types';
 import { onboardCopy } from '../../../copy/onboard';
 import { theme } from '../../../design/tokens';
-import { bevelAmberRaised } from '../../../design/bevel';
+import { bevelAmberRaised, glowDividerLine } from '../../../design/bevel';
 import { SparkleDecoration } from '../../../core/fx';
 import { StarFieldBg } from '../../../core/starbg';
 
@@ -44,12 +44,8 @@ export function OnboardingSlide({
         <ProgressDots total={TOTAL_STEPS} current={stepIndex} />
       </View>
 
-      {/* Neon bar under header — 3-segment fade approximation */}
-      <View style={styles.neonBarRow} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-        <View style={styles.neonEdge} />
-        <View style={styles.neonCenter} />
-        <View style={styles.neonEdge} />
-      </View>
+      {/* Glow divider under header */}
+      <View style={styles.glowDivider} />
 
       {/* Scrollable body */}
       <ScrollView contentContainerStyle={styles.body}>
@@ -57,6 +53,7 @@ export function OnboardingSlide({
       </ScrollView>
 
       {/* Actions */}
+      <View style={styles.glowDivider} />
       <View style={styles.actions}>
         <View style={styles.ctaWrap}>
           <Pressable
@@ -94,8 +91,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderBottomWidth: theme.borders.hero.width,
-    borderColor: theme.colors.frameBlue,
   },
   title: {
     ...theme.type.displayS,
@@ -104,15 +99,11 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: theme.space.md,
   },
-  neonBarRow: { flexDirection: 'row', height: 2 },
-  neonEdge: { flex: 1, backgroundColor: theme.colors.focusAccent, opacity: 0.3 },
-  neonCenter: { flex: 2, backgroundColor: theme.colors.highlightBlue },
-  body: { flexGrow: 1, padding: theme.space['2xl'] },
+  glowDivider: { ...glowDividerLine },
+  body: { flexGrow: 1, padding: theme.space['2xl'], justifyContent: 'center' },
   actions: {
     padding: theme.space.lg,
     gap: 10,
-    borderTopWidth: theme.borders.standard.width,
-    borderColor: theme.colors.frameBlue,
   },
   ctaWrap: { overflow: 'visible' },
   nextButton: {

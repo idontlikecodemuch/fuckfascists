@@ -1,11 +1,11 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { View, Text, Pressable, FlatList, StyleSheet, SafeAreaView } from 'react-native';
 import type { Platform } from '../types';
 import { platformsCopy } from '../../../copy/platforms';
 import { sharedCopy } from '../../../copy/shared';
 import { getDefaultSelectedIds } from '../hooks/usePlatformRoster';
 import { theme } from '../../../design/tokens';
-import { bevelRaised, bevelInset, bevelGreenRaised, bevelGreenInset, bevelAmberRaised } from '../../../design/bevel';
+import { bevelRaised, bevelInset, bevelGreenRaised, bevelGreenInset, bevelAmberRaised, glowDividerLine } from '../../../design/bevel';
 import { StarField, NeonRule } from '../../Info/components/InfoDecorations';
 import { SparkleDecoration } from '../../../core/fx';
 
@@ -48,6 +48,23 @@ export function PlatformSetupScreen({ platforms, initialSelection, onDone }: Pla
   const handleDone = useCallback(async () => {
     await onDone([...selected]);
   }, [onDone, selected]);
+
+  // Sort preselected platforms to top on initial render only.
+  // Uses the initial selection set (stable), not the live `selected` state,
+  // so the grid doesn't reorder as the user taps.
+  const initialSet = useMemo(
+    () => new Set(initialSelection ?? getDefaultSelectedIds()),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
+  const sortedPlatforms = useMemo(
+    () => [...platforms].sort((a, b) => {
+      const aTop = initialSet.has(a.id) ? 0 : 1;
+      const bTop = initialSet.has(b.id) ? 0 : 1;
+      return aTop - bTop;
+    }),
+    [platforms, initialSet],
+  );
 
   const renderItem = useCallback(({ item }: { item: Platform }) => {
     const isSelected = selected.has(item.id);
@@ -93,7 +110,7 @@ export function PlatformSetupScreen({ platforms, initialSelection, onDone }: Pla
       <NeonRule />
 
       <FlatList<Platform>
-        data={platforms}
+        data={sortedPlatforms}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         numColumns={2}
@@ -101,6 +118,7 @@ export function PlatformSetupScreen({ platforms, initialSelection, onDone }: Pla
         contentContainerStyle={styles.list}
       />
 
+      <View style={styles.footerDivider} />
       <View style={styles.footer}>
         <View style={{ overflow: 'visible' }}>
           <Pressable
@@ -196,9 +214,10 @@ const styles = StyleSheet.create({
   // ── Footer + DONE button ──────────────────────────────────────────────────
   footer: {
     padding: theme.space.lg,
-    borderTopWidth: theme.borders.standard.width,
-    borderColor: theme.colors.panelBorder,
     backgroundColor: theme.colors.bgVoid,
+  },
+  footerDivider: {
+    ...glowDividerLine,
   },
   doneBtn: {
     ...bevelAmberRaised,

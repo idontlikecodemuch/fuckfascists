@@ -276,10 +276,11 @@ const styles = StyleSheet.create({
   },
   gridCell: {
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
+    paddingBottom: 2,
     borderWidth: theme.borders.standard.width,
     borderColor: theme.colors.rewardYellow,
-    backgroundColor: theme.colors.panelOuter,
+    backgroundColor: 'rgba(10, 11, 12, 0.65)',
     overflow: 'hidden',
     // @ts-expect-error — boxShadow inset: RN 0.76 Fabric, not in stable types
     boxShadow: [

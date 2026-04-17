@@ -3,7 +3,7 @@ import { ActivityIndicator, SafeAreaView, StyleSheet, Text, View } from 'react-n
 import type { StorageAdapter } from '../../core/data';
 import { platformsCopy } from '../../copy/platforms';
 import { theme } from '../../design/tokens';
-import { bevelFocusRaised } from '../../design/bevel';
+import { bevelFocusRaised, glowDividerLine } from '../../design/bevel';
 import {
   TRACK_ARENA_FLEX,
   TRACK_ARENA_MAX_HEIGHT,
@@ -89,10 +89,8 @@ const styles = StyleSheet.create({
     ...bevelFocusRaised,
   },
   separator: {
+    ...glowDividerLine,
     height: TRACK_ARENA_SEPARATOR_HEIGHT,
-    backgroundColor: theme.colors.panelOuter,
-    borderTopWidth: 1,
-    borderTopColor: theme.colors.focusAccent,
   },
   loadingScreen: {
     flex: 1,

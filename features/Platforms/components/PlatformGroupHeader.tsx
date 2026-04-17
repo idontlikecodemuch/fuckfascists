@@ -2,7 +2,7 @@ import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { platformsCopy } from '../../../copy/platforms';
 import { theme } from '../../../design/tokens';
-import { bevelRaised, bevelFocusRaised } from '../../../design/bevel';
+import { bevelRaised, bevelFocusRaised, glowDividerLine } from '../../../design/bevel';
 import { SparkleDecoration } from '../../../core/fx';
 import { hasSprite } from '../../../core/sprites/spriteLoader';
 import { FigureBadge } from './FigureBadge';
@@ -78,14 +78,17 @@ const styles = StyleSheet.create({
     minHeight: theme.a11y.minTapTarget,
     paddingHorizontal: TRACK_ROW_PADDING_HORIZONTAL,
     paddingVertical: TRACK_GROUP_HEADER_PADDING_VERTICAL,
-    borderBottomWidth: 1,
-    borderBottomColor: theme.colors.panelBorder,
+    borderBottomWidth: glowDividerLine.height as number,
+    borderBottomColor: glowDividerLine.backgroundColor as string,
     backgroundColor: theme.colors.panelInner,
     overflow: 'visible',
   },
   focused: {
-    borderBottomWidth: 2,
-    borderBottomColor: theme.colors.focusAccent,
+    shadowColor: theme.glow.color,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: theme.glow.dividerShadowOpacity,
+    shadowRadius: theme.glow.dividerShadowRadius,
+    elevation: 4,
   },
   avatarFrame: {
     ...bevelRaised,

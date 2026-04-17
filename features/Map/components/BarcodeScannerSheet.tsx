@@ -8,6 +8,7 @@ import { scanCopy } from '../../../copy/scan';
 import { theme } from '../../../design/tokens';
 import { bevelFocusRaised } from '../../../design/bevel';
 import { CornerReticle, SweepLine } from '../../../features/Scan/ScanDecorations';
+import { StarField } from '../../../features/Info/components/InfoDecorations';
 import {
   BARCODE_SCAN_GUIDE_HEIGHT,
   BARCODE_SCAN_GUIDE_SIDE_INSET_PERCENT,
@@ -125,6 +126,7 @@ export function BarcodeScannerSheet({
 
   return (
     <View style={styles.root} accessibilityViewIsModal>
+      <StarField seed="barcode-scanner" />
       <View style={styles.header}>
         <Text style={styles.title} accessibilityRole="header">{scanCopy.scanTitle}</Text>
         <Pressable
@@ -180,6 +182,7 @@ const styles = StyleSheet.create({
   },
   cameraFrame: {
     flex: 1,
+    maxHeight: 280,
     marginHorizontal: SCAN_CAMERA_MARGIN,
     ...bevelFocusRaised,
     overflow: 'hidden' as const,

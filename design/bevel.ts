@@ -71,6 +71,18 @@ export const bevelAmberRaised: ViewStyle = {
 
 // ── Amber plaque bevel (Info about section — thick 3px frame) ───────────────
 
+// ── Glow divider line (unified horizontal separator) ───────────────────────
+
+export const glowDividerLine: ViewStyle = {
+  height: theme.glow.dividerHeight,
+  backgroundColor: theme.glow.color,
+  shadowColor: theme.glow.color,
+  shadowOffset: { width: 0, height: 0 },
+  shadowOpacity: theme.glow.dividerShadowOpacity,
+  shadowRadius: theme.glow.dividerShadowRadius,
+  elevation: 4,
+};
+
 export const bevelAmberPlaque: ViewStyle = {
   borderWidth: 3,
   borderTopColor: theme.colors.amberActionLight,

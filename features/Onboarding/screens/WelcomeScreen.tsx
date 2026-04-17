@@ -4,6 +4,7 @@ import { OnboardingSlide } from '../components/OnboardingSlide';
 import { onboardCopy } from '../../../copy/onboard';
 import { sharedCopy } from '../../../copy/shared';
 import { theme } from '../../../design/tokens';
+import { glowDividerLine } from '../../../design/bevel';
 
 interface WelcomeScreenProps {
   stepIndex: number;
@@ -58,9 +59,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   divider: {
+    ...glowDividerLine,
     width: 48,
-    height: 4,
-    backgroundColor: theme.colors.dangerRed,
     marginBottom: theme.space['2xl'],
   },
   body: {

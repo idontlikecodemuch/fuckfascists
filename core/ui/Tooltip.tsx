@@ -53,10 +53,10 @@ export function Tooltip({ message, tailDirection, tailOffset, tailAlign = 'left'
         <View style={styles.depthShape} />
         {/* White face — on top */}
         <View style={styles.faceShape}>
-          <Text style={styles.text} allowFontScaling>{message}</Text>
           {progressLabel && (
             <Text style={styles.progressText} allowFontScaling>{progressLabel}</Text>
           )}
+          <Text style={styles.text} allowFontScaling>{message}</Text>
         </View>
       </View>
 
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     ...theme.type.caption,
     color: theme.colors.bgVoid,
     opacity: 0.5,
-    marginTop: theme.space.xs,
+    marginBottom: theme.space.xs,
   },
   tailUp: {
     width: 0,

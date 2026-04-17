@@ -3,6 +3,7 @@ import { View, Text, Pressable, ImageBackground, StyleSheet, type ViewStyle, typ
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { theme } from '../../design/tokens';
+import { glowDividerLine } from '../../design/bevel';
 import { mapCopy } from '../../copy/map';
 import { platformsCopy } from '../../copy/platforms';
 import { scorecardCopy } from '../../copy/scorecard';
@@ -35,6 +36,7 @@ export function TabBar({ activeTab, onSelect }: { activeTab: Tab; onSelect: (t: 
   const insets = useSafeAreaInsets();
   return (
     <ImageBackground source={BG_TEXTURE} resizeMode="repeat" style={[styles.tabBar, { paddingBottom: Math.max(insets.bottom, 8) }]} imageStyle={styles.bgTexture}>
+      <View style={styles.topGlow} />
       {TABS.map(({ id, label }) => {
         const active = id === activeTab;
         return (
@@ -80,11 +82,17 @@ const styles = StyleSheet.create<{
 }>({
   tabBar: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     backgroundColor: theme.colors.bgNav,
-    borderTopWidth: theme.borders.standard.width,
-    borderTopColor: theme.colors.frameBlue,
     paddingTop: theme.space.xs,
-    overflow: 'hidden',
+    overflow: 'visible',
+  },
+  topGlow: {
+    ...glowDividerLine,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
   },
   bgTexture: {
     opacity: 0.3,

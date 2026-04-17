@@ -6,7 +6,7 @@ import * as SecureStore from 'expo-secure-store';
 import { OnboardingSlide } from '../components/OnboardingSlide';
 import { onboardCopy } from '../../../copy/onboard';
 import { theme } from '../../../design/tokens';
-import { bevelRaised, bevelAmberRaised, bevelGreenInset } from '../../../design/bevel';
+import { bevelFocusRaised, bevelAmberRaised, bevelGreenInset } from '../../../design/bevel';
 import { SparkleDecoration } from '../../../core/fx';
 
 const BETA_KEY = 'ff_beta_mode';
@@ -190,10 +190,14 @@ export function PermissionsScreen({ stepIndex, onNext }: PermissionsScreenProps)
 const styles = StyleSheet.create({
   cards: { gap: theme.space.xl },
   card: {
-    ...bevelRaised,
+    ...bevelFocusRaised,
     backgroundColor: theme.colors.panelInner,
     flexDirection: 'row',
     overflow: 'visible',
+    // @ts-expect-error — boxShadow inset: RN 0.76 Fabric, not in stable types
+    boxShadow: [
+      { offsetX: 0, offsetY: 0, blurRadius: theme.glow.blurRadius, spreadDistance: theme.glow.spreadDistance, inset: true, color: theme.glow.color },
+    ],
   },
   cardGranted: {
     borderLeftColor: theme.colors.successGreenText,

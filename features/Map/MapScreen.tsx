@@ -292,7 +292,7 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
             progressLabel={mapCopy.hintProgress(hints.activeIndex + 1, hints.totalHints)}
             style={
               hints.activeHint === 'search'
-                ? { position: 'absolute', top: SEARCH_TOP + theme.a11y.minTapTarget + theme.space.sm, left: theme.space.lg, right: theme.space.lg, zIndex: 3 }
+                ? { position: 'absolute', top: SEARCH_TOP + theme.a11y.minTapTarget + theme.space.sm, left: theme.space.lg, maxWidth: 200, zIndex: 3 }
                 : hints.activeHint === 'tap'
                   ? { position: 'absolute', top: SEARCH_TOP + theme.a11y.minTapTarget + 80, right: theme.space.xl, maxWidth: 180, zIndex: 3 }
                   : { position: 'absolute', bottom: theme.space.sm, right: theme.space.lg, maxWidth: 180, zIndex: 3 }
