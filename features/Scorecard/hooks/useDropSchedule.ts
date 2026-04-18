@@ -17,6 +17,13 @@ import {
  */
 export const SCORECARD_DROP_NOTIFICATION_ID = 'scorecard-drop';
 
+/**
+ * Routing key carried in the notification's content.data. AppShell matches on
+ * this — not on the human-readable title — so copy edits can't silently
+ * break cold-start and warm-start routing to the Scorecard tab.
+ */
+export const SCORECARD_DROP_NOTIFICATION_TYPE = 'scorecard-drop';
+
 export interface DropScheduleState {
   schedule: DropSchedule;
   /** Always false — drop time is computed locally with no async work. */
@@ -81,6 +88,9 @@ async function scheduleDropNotification(dropAt: number): Promise<void> {
       title: 'Your Scorecard Is Ready',
       body: 'Tap to see how you did this week.',
       sound: true,
+      // Routing key — AppShell reads data.type to route to Scorecard,
+      // independent of the human-readable title.
+      data: { type: SCORECARD_DROP_NOTIFICATION_TYPE },
     },
     trigger: { type: 'date', date: new Date(dropAt) } as Notifications.DateTriggerInput,
   });

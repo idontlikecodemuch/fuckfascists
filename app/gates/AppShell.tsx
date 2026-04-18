@@ -6,6 +6,7 @@ import { ScanScreen } from '../../features/Scan/ScanScreen';
 import { TrackScreen } from '../../features/Platforms/TrackScreen';
 import { NudgeBanner } from '../../features/Platforms/components/NudgeBanner';
 import { ScorecardScreen } from '../../features/Scorecard/ScorecardScreen';
+import { SCORECARD_DROP_NOTIFICATION_TYPE } from '../../features/Scorecard/hooks/useDropSchedule';
 import { InfoScreen } from '../../features/Info/InfoScreen';
 import { TRACKED_PLATFORMS } from '../../features/Platforms/data/platformList';
 import { useBetaMode } from '../../features/Beta/useBetaMode';
@@ -38,6 +39,23 @@ interface AppShellProps {
 }
 
 /**
+ * Routes a notification to the Scorecard tab iff its data.type matches
+ * SCORECARD_DROP_NOTIFICATION_TYPE. Falls back to title-string matching
+ * for any legacy drop notifications scheduled before the data-type
+ * routing shipped (one-week grace period).
+ */
+function isScorecardDrop(
+  resp: Notifications.NotificationResponse | null | undefined,
+): boolean {
+  if (!resp) return false;
+  const content = resp.notification.request.content;
+  const data = content.data as { type?: string } | undefined;
+  if (data?.type === SCORECARD_DROP_NOTIFICATION_TYPE) return true;
+  // Legacy fallback — remove after one release cycle.
+  return content.title === 'Your Scorecard Is Ready';
+}
+
+/**
  * Main app shell — tab navigation, screen rendering, beta overlay.
  * Rendered only after onboarding and launch gates have passed.
  */
@@ -55,13 +73,14 @@ export function AppShell({ adapter, entities, people }: AppShellProps) {
 
   // Cold-start routing: if the app was launched from the scorecard drop
   // notification, skip Map entirely and mount Scorecard directly.
+  // Matches on content.data.type (stable routing key) rather than title
+  // (human-readable copy that may change).
   useEffect(() => {
     let cancelled = false;
     Notifications.getLastNotificationResponseAsync()
       .then((resp) => {
         if (cancelled) return;
-        const title = resp?.notification?.request?.content?.title;
-        setActiveTab(title === 'Your Scorecard Is Ready' ? 'report' : 'map');
+        setActiveTab(isScorecardDrop(resp) ? 'report' : 'map');
       })
       .catch(() => {
         if (!cancelled) setActiveTab('map');
@@ -74,8 +93,7 @@ export function AppShell({ adapter, entities, people }: AppShellProps) {
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
   useEffect(() => {
     if (!lastNotificationResponse) return;
-    const title = lastNotificationResponse.notification.request.content.title;
-    if (title === 'Your Scorecard Is Ready') {
+    if (isScorecardDrop(lastNotificationResponse)) {
       setActiveTab('report');
     }
   }, [lastNotificationResponse]);
