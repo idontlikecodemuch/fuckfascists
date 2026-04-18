@@ -440,7 +440,8 @@ This is the full lifecycle and it ties directly to Principle #9:
 - **On-demand (dev tools, early generation):** `isPreview=true`. `ScorecardImage` overlays `PreviewStamp` on the captured bitmap, so both the share PNG and the archive thumbnail bear the stamp. Spec: "the weekly drop retains its specialness."
 
 ### Capture-failure / offline behavior
-- If `captureCard` returns `null` (view-shot error, disk full, etc.), the effect sets state back to `'preview'` and the raw events are **retained**. The next Scorecard tab visit retries. Under no circumstance is purge reached when capture failed.
+- If `captureCard` returns `null` (view-shot error, disk full, timeout), the effect sets state back to `'preview'` and the raw events are **retained**. The next Scorecard tab visit retries. Under no circumstance is purge reached when capture failed.
+- **Capture timeout:** `useCardCapture` races `captureRef` against `SCORECARD_CAPTURE_TIMEOUT_MS` (10s) via a `withTimeout` helper. A hung view-shot call rejects after the timeout and falls through to the retain-on-failure path — the loader can't freeze the user indefinitely on "Shredding the data."
 - Launch-resilient: the post-drop effect runs on every Scorecard mount, not just on drop-fire, so a user who missed the drop moment triggers the same flow on their first visit after.
 
 ### Extension data

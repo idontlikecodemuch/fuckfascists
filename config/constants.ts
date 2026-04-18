@@ -39,6 +39,12 @@ export const SCORECARD_ARCHIVE_MAX = 104; // 2 years of weekly cards
 // new week. Computed from the drop moment (not wall-clock Saturday).
 export const SCORECARD_PRESENTATION_WINDOW_MS = 48 * 60 * 60 * 1000; // 48 hours
 
+// Scorecard — capture timeout. react-native-view-shot typically completes
+// in under 1s on modern devices; 10s is a generous ceiling that prevents
+// the loader from freezing the UI if the capture hangs. Timeout → null
+// result → retain-on-failure path → raw events preserved for retry.
+export const SCORECARD_CAPTURE_TIMEOUT_MS = 10 * 1000;
+
 // Scorecard — power meter tiers (configurable for tuning based on real usage data)
 export const POWER_METER_TIERS = [
   { min: 1,  fill: 0.25, label: 'warming-up' },

@@ -68,7 +68,7 @@ This document is updated continuously. New instances should read this first — 
 - CLAUDE.md top-of-file `Configurable Variables` code sample had a Fri 4pm drift (spec said 4pm, code said 6pm). Resolved in the doc update.
 - Tests for new formatter helpers.
 
-**Open risk:** the loader fires during capture-then-purge transition. If `captureRef` hangs on a specific device, the user sees the loader indefinitely and the raw data stays — by design (we'd rather retain than silently delete). But the UX is a freeze. Consider a capture timeout in a follow-up.
+**Resolved same session (commit after the initial 9):** capture timeout added — `SCORECARD_CAPTURE_TIMEOUT_MS = 10_000` in `config/constants.ts`. `useCardCapture` races `captureRef` against a timeout via a `withTimeout` helper. On hang, the timeout rejects → existing retain-on-failure path kicks in (null result → `setScreenState('preview')`, raw events preserved, next visit retries). No change to the happy path; zero blast radius.
 
 ---
 
