@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { AlertBanner } from '../../../core/ui/AlertBanner';
 import { platformsCopy } from '../../../copy/platforms';
 import { theme } from '../../../design/tokens';
 import { NUDGE_DAY } from '../../../config/constants';
@@ -13,10 +14,11 @@ interface NudgeBannerProps {
 /**
  * App-wide dismissible nudge banner.
  * Shows on Thursday (NUDGE_DAY) with pump-up copy.
- * Tapping the body opens the Track tab. Tapping DISMISS hides it for the session.
+ * Tapping the body opens the Track tab. Tapping × hides it for the session.
  *
  * Renders nothing when not Thursday or when dismissed.
- * Reusable for future nudge types via props.
+ * Visual surface is handled by AlertBanner — this file owns the trigger +
+ * dismiss state + safe-area positioning only.
  */
 export function NudgeBanner({ onPress }: NudgeBannerProps) {
   const [dismissed, setDismissed] = useState(false);
@@ -32,65 +34,22 @@ export function NudgeBanner({ onPress }: NudgeBannerProps) {
   if (!isNudgeDay || dismissed) return null;
 
   return (
-    <View style={[styles.container, { top: insets.top }]} accessibilityRole="alert">
-      <Pressable
-        onPress={onPress}
-        style={styles.body}
-        accessibilityRole="button"
-        accessibilityLabel={platformsCopy.nudgeBanner}
-      >
-        <Text style={styles.text} numberOfLines={1} allowFontScaling>
-          {platformsCopy.nudgeBanner}
-        </Text>
-      </Pressable>
-      <Pressable
-        onPress={handleDismiss}
-        style={styles.dismissBtn}
-        accessibilityRole="button"
-        accessibilityLabel={platformsCopy.nudgeDismissA11y}
-        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-      >
-        <Text style={styles.dismissText} allowFontScaling={false}>
-          {platformsCopy.nudgeDismiss}
-        </Text>
-      </Pressable>
-    </View>
+    <AlertBanner
+      title={platformsCopy.nudgeBannerTitle}
+      body={platformsCopy.nudgeBody}
+      onPress={onPress}
+      onDismiss={handleDismiss}
+      dismissA11yLabel={platformsCopy.nudgeDismissA11y}
+      style={[styles.position, { top: insets.top }]}
+    />
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  position: {
     position: 'absolute',
-    left: 0,
-    right: 0,
+    left: theme.space.sm,
+    right: theme.space.sm,
     zIndex: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: theme.colors.rewardYellow,
-    paddingHorizontal: theme.space.lg,
-    paddingVertical: theme.space.sm,
-    minHeight: theme.a11y.minTapTarget,
-  },
-  body: {
-    flex: 1,
-    justifyContent: 'center',
-    minHeight: theme.a11y.minTapTarget,
-  },
-  text: {
-    ...theme.type.uiLabel,
-    color: theme.colors.bgVoid,
-  },
-  dismissBtn: {
-    minWidth: theme.a11y.minTapTarget,
-    minHeight: theme.a11y.minTapTarget,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: theme.space.sm,
-  },
-  dismissText: {
-    ...theme.type.caption,
-    color: theme.colors.bgVoid,
-    fontWeight: 'bold',
-    letterSpacing: 1,
   },
 });

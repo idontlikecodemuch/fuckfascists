@@ -50,11 +50,12 @@ export const platformsCopy = {
   clearDataA11y: "Clear all platform avoid data",
   clearDataConfirm: "All avoid data cleared.",
 
-  // Nudge banner (app-wide, Thursday)
-  nudgeTitle: "Your scorecard is almost ready.",
-  nudgeBody: "Any avoids left to log?",
-  nudgeBanner: "Scorecard is almost ready \u2014 any avoids left to log?",
-  nudgeDismiss: "DISMISS",
+  // Nudge banner (app-wide, Thursday) + push notification
+  // Push notification uses nudgeTitle/nudgeBody; in-app banner uses
+  // nudgeBannerTitle (Bungee uppercase) + nudgeBody.
+  nudgeTitle: "Scorecard incoming",
+  nudgeBody: "Any avoids on file?",
+  nudgeBannerTitle: "SCORECARD INCOMING",
   nudgeDismissA11y: "Dismiss nudge banner",
 
   // Perfect week

@@ -10,6 +10,7 @@ import { FaqItem } from '../../Info/components/FaqItem';
 import { LinkRow } from '../../Info/components/LinkRow';
 import { BusinessCard } from '../../Map/components/BusinessCard';
 import { BarcodeLookupBanner } from '../../Map/components/BarcodeLookupBanner';
+import { AlertBanner } from '../../../core/ui/AlertBanner';
 import { platformsCopy } from '../../../copy/platforms';
 import { infoCopy } from '../../../copy/info';
 import { scanCopy } from '../../../copy/scan';
@@ -185,16 +186,14 @@ export function renderNotificationThursday(): React.ReactElement {
   return (
     <SafeAreaView style={s.container}>
       {/* Forced nudge banner — always visible */}
-      <View style={s.nudgeBanner}>
-        <View style={s.nudgeBody}>
-          <Text style={s.nudgeText} numberOfLines={1} allowFontScaling>
-            {platformsCopy.nudgeBanner}
-          </Text>
-        </View>
-        <View style={s.nudgeDismissBtn}>
-          <Text style={s.nudgeDismissText}>{platformsCopy.nudgeDismiss}</Text>
-        </View>
-      </View>
+      <AlertBanner
+        title={platformsCopy.nudgeBannerTitle}
+        body={platformsCopy.nudgeBody}
+        onPress={noop}
+        onDismiss={noop}
+        dismissA11yLabel={platformsCopy.nudgeDismissA11y}
+        style={s.nudgeBannerPos}
+      />
       {/* Map placeholder below the banner */}
       <View style={s.notifMapPlaceholder} />
     </SafeAreaView>
@@ -229,10 +228,6 @@ const s = StyleSheet.create({
   scanFootnote: { ...theme.type.bodyS, color: theme.colors.textSecondary, marginTop: md },
   scannerPlaceholder: { marginTop: lg, height: 200, backgroundColor: theme.colors.surface1, borderWidth: 2, borderColor: fb, alignItems: 'center', justifyContent: 'center' },
   scannerText: { ...theme.type.displayS, color: theme.colors.textSecondary, letterSpacing: 3 },
-  nudgeBanner: { flexDirection: 'row', alignItems: 'center', backgroundColor: theme.colors.rewardYellow, paddingHorizontal: lg, paddingVertical: sm, minHeight: 44 },
-  nudgeBody: { flex: 1, justifyContent: 'center', minHeight: 44 },
-  nudgeText: { ...theme.type.uiLabel, color: theme.colors.bgVoid },
-  nudgeDismissBtn: { minWidth: 44, minHeight: 44, alignItems: 'center', justifyContent: 'center', marginLeft: sm },
-  nudgeDismissText: { ...theme.type.caption, color: theme.colors.bgVoid, fontWeight: 'bold', letterSpacing: 1 },
+  nudgeBannerPos: { marginHorizontal: sm, marginTop: sm },
   notifMapPlaceholder: { flex: 1, backgroundColor: '#1a2744' },
 });
