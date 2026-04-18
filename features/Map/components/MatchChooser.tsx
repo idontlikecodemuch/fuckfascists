@@ -1,9 +1,8 @@
 import React from 'react';
 import { View, Text, FlatList, Pressable, StyleSheet } from 'react-native';
 import type { ScanResult } from '../types';
-import { CONFIDENCE_THRESHOLD_HIGH } from '../../../config/constants';
-import { sharedCopy } from '../../../copy/shared';
 import { mapCopy } from '../../../copy/map';
+import { bevelFocusRaised } from '../../../design/bevel';
 import { theme } from '../../../design/tokens';
 
 interface MatchChooserProps {
@@ -12,22 +11,15 @@ interface MatchChooserProps {
   onDismiss: () => void;
 }
 
-function ConfidenceTag({ level }: { level: number }) {
-  const isVerified = level === 1.0;
-  const label = isVerified ? sharedCopy.verified : sharedCopy.matched;
-  return (
-    <View
-      style={[styles.tag, isVerified ? styles.tagVerified : styles.tagMatched]}
-      accessibilityLabel={sharedCopy.confidenceA11y(label)}
-    >
-      <Text style={styles.tagText}>{label}</Text>
-    </View>
-  );
-}
+const TAB_HEIGHT = 14;
+const TAB_WIDTH = 44;
+const TAB_RIGHT = 28;
+const ROW_GAP = 10;
+const LIST_MAX_HEIGHT = 320;
 
 /**
  * Bottom-anchored overlay shown when a single map tap returns 2+ matched
- * entities. Lets the user pick which business to inspect.
+ * entities. Cockpit cyan sheet with a stack of manila-folder rows.
  *
  * All matched entities also appear as map markers for visual context —
  * the chooser is the primary interaction path for multi-match taps.
@@ -35,61 +27,89 @@ function ConfidenceTag({ level }: { level: number }) {
 export function MatchChooser({ results, onSelect, onDismiss }: MatchChooserProps) {
   return (
     <View style={styles.overlay}>
-      <View style={styles.card} accessibilityViewIsModal accessibilityLabel={mapCopy.chooserModalLabel}>
-        <Text
-          style={styles.heading}
-          accessibilityRole="header"
-          allowFontScaling
+      <View style={styles.outer}>
+        <View
+          style={styles.sheet}
+          accessibilityViewIsModal
+          accessibilityLabel={mapCopy.chooserModalLabel}
         >
-          {mapCopy.chooserHeading(results.length)}
-        </Text>
+          <View style={styles.header}>
+            <View style={styles.headerText}>
+              <Text style={styles.heading} accessibilityRole="header" allowFontScaling>
+                {mapCopy.chooserHeading}
+              </Text>
+              <Text style={styles.subhead} allowFontScaling>
+                {mapCopy.chooserSubhead}
+              </Text>
+            </View>
+            <Pressable
+              onPress={onDismiss}
+              style={styles.dismiss}
+              accessibilityRole="button"
+              accessibilityLabel={mapCopy.chooserDismiss}
+              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            >
+              <Text style={styles.dismissIcon} allowFontScaling={false}>
+                {'\u00d7'}
+              </Text>
+            </Pressable>
+          </View>
 
-        <FlatList
-          data={results}
-          keyExtractor={(item) => item.entityId ?? item.fecCommitteeId}
-          style={styles.list}
-          renderItem={({ item }) => {
-            const rowName = item.matchedAlias || item.canonicalName;
-            return (
-              <Pressable
-                onPress={() => onSelect(item)}
-                style={styles.row}
-                accessibilityRole="button"
-                accessibilityLabel={mapCopy.chooserRow(rowName)}
-              >
-                <Text
-                  style={styles.rowName}
-                  numberOfLines={1}
-                  allowFontScaling
-                >
-                  {rowName}
-                </Text>
-                {item.confidence < CONFIDENCE_THRESHOLD_HIGH && (
-                  <ConfidenceTag level={item.confidence} />
-                )}
-                {item.confidence < CONFIDENCE_THRESHOLD_HIGH && (
-                  <Text style={styles.rowWarning} allowFontScaling>{sharedCopy.warningIcon}</Text>
-                )}
-              </Pressable>
-            );
-          }}
-        />
+          <View style={styles.divider} />
 
-        <Pressable
-          onPress={onDismiss}
-          style={styles.dismissButton}
-          accessibilityRole="button"
-          accessibilityLabel={mapCopy.chooserDismiss}
-          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-        >
-          <Text style={styles.dismissLabel} allowFontScaling>{sharedCopy.dismiss}</Text>
-        </Pressable>
+          <FlatList
+            data={results}
+            keyExtractor={(item) => item.entityId ?? item.fecCommitteeId}
+            style={styles.list}
+            contentContainerStyle={styles.listContent}
+            ItemSeparatorComponent={ItemSeparator}
+            renderItem={({ item }) => (
+              <FolderRow result={item} onSelect={onSelect} />
+            )}
+          />
+        </View>
       </View>
     </View>
   );
 }
 
-// ── Styles ────────────────────────────────────────────────────────────────────
+function ItemSeparator() {
+  return <View style={styles.separator} />;
+}
+
+function FolderRow({
+  result,
+  onSelect,
+}: {
+  result: ScanResult;
+  onSelect: (r: ScanResult) => void;
+}) {
+  const name = result.matchedAlias || result.canonicalName;
+  return (
+    <View style={styles.row}>
+      <View style={styles.tab} pointerEvents="none" />
+      <Pressable
+        onPress={() => onSelect(result)}
+        style={styles.folder}
+        accessibilityRole="button"
+        accessibilityLabel={mapCopy.chooserRow(name)}
+      >
+        <View style={styles.paperBorder} />
+        <View style={styles.paperShadow} />
+        <View style={styles.folderGradTop} />
+        <View style={styles.folderGradBot} />
+        <View style={styles.folderContent}>
+          <Text style={styles.rowName} numberOfLines={1} allowFontScaling>
+            {name}
+          </Text>
+          <Text style={styles.chevron} allowFontScaling={false}>
+            {'\u203A'}
+          </Text>
+        </View>
+      </Pressable>
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
   overlay: {
@@ -98,80 +118,162 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
   },
-  card: {
-    backgroundColor: theme.colors.surface1,
-    borderColor: theme.colors.frameBlue,
-    borderWidth: theme.borders.hero.width,
-    borderTopColor: theme.colors.highlightBlue,
-    borderBottomColor: theme.colors.bgVoid,
-    padding: theme.space.lg,
+  outer: {
     margin: theme.space.sm,
-    maxHeight: 300,
+    shadowColor: theme.colors.focusAccent,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 16,
+    elevation: 12,
   },
+  sheet: {
+    ...bevelFocusRaised,
+    backgroundColor: theme.colors.panelInner,
+    paddingTop: theme.space.md,
+    paddingHorizontal: theme.space.md,
+    paddingBottom: theme.space.md,
+    boxShadow: [
+      {
+        offsetX: 0,
+        offsetY: 6,
+        blurRadius: theme.glow.blurRadius,
+        spreadDistance: theme.glow.spreadDistance,
+        inset: true,
+        color: theme.glow.color,
+      },
+      {
+        offsetX: 0,
+        offsetY: -6,
+        blurRadius: theme.glow.blurRadius,
+        spreadDistance: theme.glow.spreadDistance,
+        inset: true,
+        color: theme.glow.color,
+      },
+    ],
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    paddingHorizontal: theme.space.xs,
+    paddingBottom: theme.space.sm,
+  },
+  headerText: { flex: 1 },
   heading: {
     ...theme.type.displayS,
-    color: theme.colors.rewardYellow,
-    marginBottom: theme.space.sm,
+    color: theme.colors.focusAccent,
+    letterSpacing: 2,
+  },
+  subhead: {
+    ...theme.type.bodyS,
+    color: theme.colors.textSecondary,
+    marginTop: 2,
+  },
+  dismiss: {
+    minWidth: theme.a11y.minTapTarget,
+    minHeight: theme.a11y.minTapTarget,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  dismissIcon: {
+    fontFamily: theme.fonts.headline,
+    fontSize: 22,
+    lineHeight: 24,
+    color: theme.colors.textPrimary,
+  },
+  divider: {
+    height: 1,
+    backgroundColor: theme.colors.focusAccent,
+    opacity: 0.4,
+    marginBottom: theme.space.md,
   },
   list: {
-    flexGrow: 0,
+    maxHeight: LIST_MAX_HEIGHT,
+    overflow: 'visible',
   },
+  listContent: {
+    paddingTop: TAB_HEIGHT,
+    paddingBottom: theme.space.xs,
+  },
+  separator: { height: ROW_GAP },
   row: {
+    overflow: 'visible',
+    minHeight: theme.a11y.minTapTarget + TAB_HEIGHT,
+  },
+  tab: {
+    position: 'absolute',
+    top: -TAB_HEIGHT,
+    right: TAB_RIGHT,
+    width: TAB_WIDTH,
+    height: TAB_HEIGHT,
+    backgroundColor: theme.colors.folderBgDark,
+    borderTopLeftRadius: theme.radii.folderTab,
+    borderTopRightRadius: theme.radii.folderTab,
+    borderTopWidth: 1,
+    borderTopColor: theme.colors.documentText,
+    zIndex: 2,
+  },
+  folder: {
+    backgroundColor: theme.colors.folderBg,
+    minHeight: theme.a11y.minTapTarget,
+    overflow: 'hidden',
+  },
+  folderGradTop: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: '45%',
+    backgroundColor: theme.colors.folderBgLight,
+    opacity: 0.5,
+  },
+  folderGradBot: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: '35%',
+    backgroundColor: theme.colors.folderBgDark,
+    opacity: 0.35,
+  },
+  paperBorder: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 3,
+    backgroundColor: theme.colors.documentBg,
+    zIndex: 1,
+  },
+  paperShadow: {
+    position: 'absolute',
+    top: 3,
+    left: 0,
+    right: 0,
+    height: 1,
+    backgroundColor: theme.colors.documentShadow,
+    zIndex: 1,
+  },
+  folderContent: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 10,
-    paddingHorizontal: theme.space.sm,
-    borderBottomWidth: theme.borders.standard.width,
-    borderColor: theme.colors.frameBlue,
-    borderLeftWidth: theme.borders.hero.width,
-    borderLeftColor: theme.colors.highlightBlue,
-    backgroundColor: theme.colors.surface2,
-    minHeight: theme.a11y.minTapTarget,
+    paddingVertical: theme.space.sm,
+    paddingHorizontal: theme.space.md,
+    paddingTop: theme.space.sm + 4,
+    zIndex: 2,
   },
   rowName: {
     flex: 1,
-    ...theme.type.uiLabel,
-    color: theme.colors.textPrimary,
+    fontFamily: theme.fonts.headline,
+    fontSize: 15,
+    letterSpacing: 1,
+    color: theme.colors.documentText,
     marginRight: theme.space.sm,
   },
-  rowWarning: {
-    fontSize: 14,
-    marginLeft: theme.space.xs,
-  },
-  tag: {
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderWidth: theme.borders.standard.width,
-  },
-  tagVerified: {
-    backgroundColor: theme.colors.successGreen,
-    borderColor: theme.colors.successGreen,
-  },
-  tagMatched: {
-    backgroundColor: theme.colors.rewardYellow,
-    borderColor: theme.colors.rewardYellow,
-  },
-  tagText: {
-    ...theme.type.caption,
-    fontSize: 10,
-    color: theme.colors.bgVoid,
-    fontWeight: 'bold',
-  },
-  dismissButton: {
-    minHeight: theme.a11y.minTapTarget,
-    paddingVertical: 10,
-    paddingHorizontal: theme.space.lg,
-    borderWidth: theme.borders.standard.width,
-    borderColor: theme.colors.frameBlue,
-    backgroundColor: theme.colors.surface2,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: theme.space.sm,
-  },
-  dismissLabel: {
-    ...theme.type.bodyS,
-    fontSize: 13,
-    color: theme.colors.textPrimary,
-    fontWeight: 'bold',
+  chevron: {
+    fontFamily: theme.fonts.headline,
+    fontSize: 22,
+    color: theme.colors.documentText,
+    opacity: 0.55,
   },
 });

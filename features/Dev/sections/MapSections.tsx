@@ -9,8 +9,6 @@ import { UnmatchedBanner } from '../../Map/components/UnmatchedBanner';
 import { AvoidButton } from '../../Map/components/AvoidButton';
 import { MapSearchBar } from '../../Map/components/MapSearchBar';
 import { MapControls } from '../../Map/components/MapControls';
-import { CONFIDENCE_THRESHOLD_HIGH } from '../../../config/constants';
-import { sharedCopy } from '../../../copy/shared';
 import { mapCopy } from '../../../copy/map';
 import type { ScanResult } from '../../Map/types';
 import {
@@ -70,46 +68,92 @@ export const BannerDissolved = forwardRef<View>((_, ref) => (
 ));
 BannerDissolved.displayName = 'BannerDissolved';
 
-// ── MatchChooser — static mock (avoids FlatList nesting) ───────────────────
+// ── MatchChooser — static mock (avoids FlatList-in-ScrollView warning) ─────
+
+const TAB_HEIGHT = 14;
 
 function StaticMatchChooser({ results }: { results: ScanResult[] }) {
   return (
-    <View style={mc.card}>
-      <Text style={mc.heading}>{mapCopy.chooserHeading(results.length)}</Text>
-      {results.map((item) => {
-        const isVerified = item.confidence === 1.0;
-        const tagLabel = isVerified ? sharedCopy.verified : sharedCopy.matched;
-        return (
-          <View key={item.entityId ?? item.fecCommitteeId} style={mc.row}>
-            <Text style={mc.rowName} numberOfLines={1}>{item.canonicalName}</Text>
-            <View style={[mc.tag, isVerified ? mc.tagVerified : mc.tagMatched]}>
-              <Text style={mc.tagText}>{tagLabel}</Text>
-            </View>
-            {item.confidence < CONFIDENCE_THRESHOLD_HIGH && (
-              <Text style={mc.rowWarning}>{sharedCopy.warningIcon}</Text>
-            )}
+    <View style={mc.outer}>
+      <View style={mc.sheet}>
+        <View style={mc.header}>
+          <View style={mc.headerText}>
+            <Text style={mc.heading}>{mapCopy.chooserHeading}</Text>
+            <Text style={mc.subhead}>{mapCopy.chooserSubhead}</Text>
           </View>
-        );
-      })}
-      <View style={mc.dismissButton}>
-        <Text style={mc.dismissLabel}>{sharedCopy.dismiss}</Text>
+          <View style={mc.dismiss}>
+            <Text style={mc.dismissIcon}>{'\u00d7'}</Text>
+          </View>
+        </View>
+        <View style={mc.divider} />
+        <View style={mc.listContent}>
+          {results.map((item, i) => {
+            const name = item.matchedAlias || item.canonicalName;
+            return (
+              <View
+                key={item.entityId ?? item.fecCommitteeId}
+                style={[mc.row, i > 0 && mc.rowGap]}
+              >
+                <View style={mc.tab} />
+                <View style={mc.folder}>
+                  <View style={mc.paperBorder} />
+                  <View style={mc.paperShadow} />
+                  <View style={mc.folderGradTop} />
+                  <View style={mc.folderGradBot} />
+                  <View style={mc.folderContent}>
+                    <Text style={mc.rowName} numberOfLines={1}>{name}</Text>
+                    <Text style={mc.chevron}>{'\u203A'}</Text>
+                  </View>
+                </View>
+              </View>
+            );
+          })}
+        </View>
       </View>
     </View>
   );
 }
 
 const mc = StyleSheet.create({
-  card: { backgroundColor: '#F5F5F0', borderColor: '#1A1A1A', borderWidth: 4, padding: 16, margin: 8 },
-  heading: { fontFamily: 'monospace', fontSize: 14, fontWeight: 'bold', color: '#1A1A1A', marginBottom: 8 },
-  row: { flexDirection: 'row', alignItems: 'center', paddingVertical: 10, paddingHorizontal: 8, borderBottomWidth: 2, borderColor: '#1A1A1A', minHeight: 44 },
-  rowName: { flex: 1, fontFamily: 'monospace', fontSize: 15, fontWeight: 'bold', color: '#1A1A1A', marginRight: 8 },
-  rowWarning: { fontSize: 14, marginLeft: 4 },
-  tag: { paddingHorizontal: 6, paddingVertical: 2, borderWidth: 2 },
-  tagVerified: { backgroundColor: '#2E7D32', borderColor: '#1B5E20' },
-  tagMatched: { backgroundColor: '#CC7A00', borderColor: '#7A4800' },
-  tagText: { fontFamily: 'monospace', fontSize: 10, color: '#F5F5F0', fontWeight: 'bold' },
-  dismissButton: { minHeight: 44, paddingVertical: 10, paddingHorizontal: 16, borderWidth: 3, borderColor: '#1A1A1A', backgroundColor: '#F5F5F0', alignItems: 'center', justifyContent: 'center', marginTop: 8 },
-  dismissLabel: { fontFamily: 'monospace', fontSize: 13, color: '#1A1A1A', fontWeight: 'bold' },
+  outer: {
+    margin: 8,
+    shadowColor: '#2878C8',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 16,
+  },
+  sheet: {
+    borderWidth: 2,
+    borderTopColor: '#4A9AE8',
+    borderLeftColor: '#4A9AE8',
+    borderBottomColor: '#1A4A7A',
+    borderRightColor: '#1A4A7A',
+    backgroundColor: '#0E1012',
+    padding: 12,
+  },
+  header: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', paddingHorizontal: 4, paddingBottom: 8 },
+  headerText: { flex: 1 },
+  heading: { fontFamily: 'Bungee-Regular', fontSize: 18, letterSpacing: 2, color: '#2878C8' },
+  subhead: { fontFamily: 'IBMPlexSans-Regular', fontSize: 13, color: '#A8B4C8', marginTop: 2 },
+  dismiss: { minWidth: 44, minHeight: 44, alignItems: 'center', justifyContent: 'center' },
+  dismissIcon: { fontFamily: 'Bungee-Regular', fontSize: 22, color: '#DCE7F6' },
+  divider: { height: 1, backgroundColor: '#2878C8', opacity: 0.4, marginBottom: 12 },
+  listContent: { paddingTop: TAB_HEIGHT },
+  row: { overflow: 'visible', minHeight: 44 + TAB_HEIGHT },
+  rowGap: { marginTop: 10 },
+  tab: {
+    position: 'absolute', top: -TAB_HEIGHT, right: 28, width: 44, height: TAB_HEIGHT,
+    backgroundColor: '#8E6844', borderTopLeftRadius: 8, borderTopRightRadius: 8,
+    borderTopWidth: 1, borderTopColor: '#2A2420',
+  },
+  folder: { backgroundColor: '#AF7E5A', minHeight: 44, overflow: 'hidden' },
+  folderGradTop: { position: 'absolute', top: 0, left: 0, right: 0, height: '45%', backgroundColor: '#C09570', opacity: 0.5 },
+  folderGradBot: { position: 'absolute', bottom: 0, left: 0, right: 0, height: '35%', backgroundColor: '#8E6844', opacity: 0.35 },
+  paperBorder: { position: 'absolute', top: 0, left: 0, right: 0, height: 3, backgroundColor: '#F5F0E8' },
+  paperShadow: { position: 'absolute', top: 3, left: 0, right: 0, height: 1, backgroundColor: 'rgba(30,20,10,0.25)' },
+  folderContent: { flexDirection: 'row', alignItems: 'center', paddingVertical: 8, paddingHorizontal: 12, paddingTop: 12 },
+  rowName: { flex: 1, fontFamily: 'Bungee-Regular', fontSize: 15, letterSpacing: 1, color: '#2A2420', marginRight: 8 },
+  chevron: { fontFamily: 'Bungee-Regular', fontSize: 22, color: '#2A2420', opacity: 0.55 },
 });
 
 export const MatchChooser3 = forwardRef<View>((_, ref) => (
