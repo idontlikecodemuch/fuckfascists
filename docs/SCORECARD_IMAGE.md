@@ -225,11 +225,47 @@ The scorecard covers a **Saturday–Friday** week. `getLocalWeekStart()` in `cor
 
 ---
 
+## Runtime Flow (capture → purge → present)
+
+The app-side runtime flow for a real weekly drop is:
+
+1. **Drop fires** (or first app open after a missed drop). Effect in `features/Scorecard/ScorecardScreen.tsx` runs.
+2. **Aggregate** the scored week's events via `useScorecard` → `ScorecardViewData`.
+3. **Check for existing PNG** via `findLatestCard()` (`features/Scorecard/data/cardArchive.ts`) — lists the scorecards directory, sorts by mtime descending, returns the top. Robust to `weekOf` rollover at Saturday local midnight; does NOT reconstruct the filename from `weekOf`.
+4. **If no PNG:** show loader (`"Locking in my card.\nShredding the data."`), mount `ScorecardImage` off-screen, capture via `react-native-view-shot` → PNG saved as `Those-I-FCKd-{Month}-{DD}-{YY}.png`.
+5. **Purge scoped events** via `purgeScoredWeekAvoidEvents(adapter, weekOf)` (`core/data/eventStore.ts`). Scope is strictly `[weekOf, weekOf+7)` so the live week can never be touched. Runs ONLY if capture succeeded.
+6. **Present** if we're inside the 48h presentation window (`SCORECARD_PRESENTATION_WINDOW_MS` from drop moment). Past that, tab falls back to `LivePreview` for the new live week; PNG remains in archive.
+
+**Capture failure semantics:** if `captureCard` returns `null` (disk full, render error, app killed), the effect sets state back to `'preview'` and the raw events are retained. Purge never runs. Next Scorecard tab visit retries. Under no circumstance is purge reached when capture failed — the "delete the data" promise requires we also keep the "save the card" promise.
+
+See CLAUDE.md § "Scorecard capture-then-purge — privacy upgrade" and § "Scorecard — Drop Mechanics" for the full non-negotiables.
+
+---
+
+## Filename
+
+Captured PNGs are saved to `FileSystem.documentDirectory/scorecards/` as:
+
+```
+Those-I-FCKd-{Month}-{DD}-{YY}.png
+```
+
+e.g. `Those-I-FCKd-April-11-26.png`. Built by `buildCardFilename(weekOf)` in `features/Scorecard/utils/formatters.ts`. Voice: Sh*tposter (user voice, first-person), non-vulgar, FCK substitution. The prefix echoes the card's hero sentence and reads like an inscription when the share receiver sees it — riff on "To Those I Loved." Archive view renders a readable label via `formatCardLabel()` → `"April 11, 2026"`.
+
+---
+
+## PREVIEW Stamp Semantics
+
+- **Real Friday drop:** `isPreview=false` on `ScorecardViewData` (set by `useScorecard` from `hasDropped`). No stamp on the captured PNG — the drop retains its specialness.
+- **On-demand (dev tools "Generate Card Now", or any pre-drop capture):** `isPreview=true`. `ScorecardImage` overlays `PreviewStamp` on the captured bitmap, so both the share PNG and the archive thumbnail bear the stamp.
+
+---
+
 ## Open Decisions
 
 | Decision | Options | Status |
 |---|---|---|
-| Image share UX | Replace text share / Add second button / Long-press option | Undecided |
+| Image share UX | Replace text share / Add second button / Long-press option | ✅ Resolved — single SHARE button on presentation |
 | Scanlines/vignette in app | Replicate in RN / Image-only flair | Undecided |
 | Power bar tier thresholds | What avoid counts map to idle/hot/fck/legendary | Undecided |
 | Retina scaling | Capture at 1x / 2x / 3x | Undecided (view-shot handles natively) |

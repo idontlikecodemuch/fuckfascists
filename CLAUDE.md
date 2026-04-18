@@ -51,6 +51,7 @@ These are not preferences. They are constraints. Never violate them.
 6. **Transparency always** — Every confidence label is shown. Every data source links to FEC.gov. Nothing is claimed with more certainty than the data supports.
 7. **CEO name context split** — CEO names are intentional in the scorecard and avoid tap feedback — these are designed to be confrontational and shareable. CEO names are intentionally absent from the business card and extension popup — these are informational tools displaying public FEC data. Do not conflate these two design contexts.
 8. **Cross-surface data parity** — When a material data or transparency change is made to the app business card or the extension popup, carry the underlying data behavior to both surfaces unless there is an explicit documented V2 divergence decision. UI treatment may differ by surface; confidence labels, donation availability handling, FEC links, and core attribution rules must not silently drift.
+9. **Capture-then-purge for the scorecard drop** — When the weekly drop fires, the app aggregates the scored week's avoid events into a PNG, saves the PNG to disk, and then **purges the raw events that produced it** (scoped strictly to `[weekOf, weekOf+7)`). The rendered card survives; the source data does not. This upholds the "delete the data" promise while letting users celebrate + share. Capture failure retains the raw events for retry — purging is gated on successful capture. Never introduce a code path that deletes unscoped avoid data, and never capture without immediately purging. See "Scorecard — Drop Mechanics" for the full flow.
 
 ---
 
@@ -190,10 +191,27 @@ All tables in `fuckfascists.db` share the same database file and receive identic
 All of these live in `/config/constants.ts`. They can be adjusted post-launch without code changes. Never hardcode these values anywhere else.
 
 ```typescript
-// Scorecard drop window (times in ET)
-export const SCORECARD_WINDOW_START_HOUR = 16; // 4pm ET Friday
-export const SCORECARD_WINDOW_END_HOUR = 15;   // 3pm ET Saturday
-export const SCORECARD_WINDOW_DAY = 5;         // Friday (0 = Sunday)
+// Scorecard drop window (times in ET). Canonical names are DROP_WINDOW_*;
+// SCORECARD_WINDOW_* aliases are retained for backward compat with
+// computeDropTime.ts until the migration is done.
+export const DROP_WINDOW_START_DAY = 5;        // Friday
+export const DROP_WINDOW_START_HOUR = 18;      // 6pm ET
+export const DROP_WINDOW_END_DAY = 6;          // Saturday
+export const DROP_WINDOW_END_HOUR = 16;        // 4pm ET
+
+// Week boundary for event storage (scored week = Sat → Fri)
+export const WEEK_START_DAY = 6;               // Saturday
+export const WEEK_START_HOUR = 0;              // 12:00am local
+
+// Scorecard — suppress card + notification below this avoid count
+export const MIN_AVOIDS_FOR_DROP = 1;
+
+// Scorecard — presentation window (card takes over Scorecard tab for 48h
+// after drop, then falls back to LivePreview + archive)
+export const SCORECARD_PRESENTATION_WINDOW_MS = 48 * 60 * 60 * 1000;
+
+// Scorecard — archive ceiling (oldest dropped when exceeded)
+export const SCORECARD_ARCHIVE_MAX = 104; // 2 years of weekly cards
 
 // Extension flagging frequency
 // Options: 'session' | 'daily' | 'weekly'
@@ -312,9 +330,21 @@ LocalCache {
 - Any browsing history or visited URLs
 - Any record of visiting or using a flagged entity ("support" events)
 - Any personal identifier (name, email, device ID)
+- Any raw avoid event from a scored week after its scorecard PNG has been captured (see "Scorecard capture-then-purge" below)
 
 ### Privacy relaxation: avoided-entity pin coordinates
 **Added 2026-04-03.** Map pin coordinates for avoided entities are stored locally in SQLite (`entity_avoid_pins` table). All data in `fuckfascists.db` is encrypted at rest (iOS: `NSFileProtectionComplete`, Android: FBE) — see "Data Encryption at Rest" in the Security section. Only coordinates for entities the user has actively avoided are stored — not scanned or tapped entities. Rows are auto-purged daily. This enables the map to show today's avoided markers on app relaunch. Copy updated 2026-04-16 to disclose this behavior. **This is a candidate for rewrite** — the team may decide to revert to session-only pin storage if any coordinate persistence is unacceptable. See Known Limitations.
+
+### Scorecard capture-then-purge — privacy upgrade
+**Added 2026-04-18.** When the weekly drop fires, the app aggregates the scored week's events into a PNG and then deletes those raw events scoped to `[weekOf, weekOf+7)`. After the transition:
+
+- **What persists:** the rendered PNG (e.g. `Those-I-FCKd-April-11-26.png`) in `FileSystem.documentDirectory/scorecards/`. The PNG is a derivative — it shows aggregated per-CEO counts and a weekly total. It contains NO timestamps, NO surface indicators (map/scan/track), and NO per-day breakdown. The raw event log cannot be reconstructed from it.
+- **What's deleted:** all `EntityAvoidEvent` and `PlatformAvoidEvent` rows within `[weekOf, weekOf+7)`. Scoped purge only — the live week still in progress is never touched (`purgeScoredWeekAvoidEvents` in `core/data/eventStore.ts`).
+- **Gating:** purge runs ONLY after `captureCard` returns a successful result. If capture fails (disk full, render error, app killed), the raw events are retained and the next Scorecard tab visit retries. Never silently destroys data on failure.
+- **Empty weeks:** if `grandTotal < MIN_AVOIDS_FOR_DROP` at drop time, no PNG is captured, no purge runs, the drop notification is cancelled (`scorecard-drop` identifier only, Thursday nudge preserved), and the tab shows the empty state. Raw events for that empty week fall through to the normal `purgeOldAvoidEvents` weekly rollover (`App.tsx:54`).
+- **Launch-resilient:** if the user was offline when drop fired, the first app open after drop runs the same flow — aggregate → capture → purge → present.
+
+This is a privacy *upgrade* vs. the prior model, which kept raw events until the next Sat-midnight app launch. The PNG replaces a multi-row SQL table with a single bitmap that is structurally less invasive.
 
 ---
 
@@ -376,14 +406,45 @@ Reconciles `entities.json` against `people.json` for V1/V2 separation. Adds reve
 
 The weekly scorecard is a synchronized global event. Every user with the same app version receives it at the exact same moment — computed entirely on-device with no network dependency.
 
-- Drop time is computed deterministically via PRNG in `core/dropSchedule/computeDropTime.ts` — same ISO week year + week number always produces the same result on every install, forever
-- Seed: djb2 hash of `"ff-drop-{year}-W{week}"` mod 23, mapped to an hour offset within the Friday 4pm ET – Saturday 3pm ET window (23 hours, EST = UTC-5 hardcoded for MVP)
-- Collision rule: if this week's hour matches last week's, advance by 1 hour (wrapping within the window) — fully deterministic
-- No network fetch for the schedule — `useDropSchedule` calls `getCurrentDropTime()` synchronously, no loading state
-- Push notification is scheduled locally at the computed drop moment via Expo Notifications
-- If notifications are disabled, the card is waiting when the user opens the app
-- On-demand cards (generated anytime by the user) get a "PREVIEW" pixel art stamp — the weekly drop retains its specialness
-- Extension data is NOT included in the scorecard (V1) — extension has its own in-popup weekly summary
+### Drop timing
+- Drop time is computed deterministically via PRNG in `core/dropSchedule/computeDropTime.ts` — same ISO week year + week number always produces the same result on every install, forever.
+- Seed: djb2 hash of `"ff-drop-{year}-W{week}"` mod `WINDOW_HOURS` (22), mapped to an hour offset within the **Friday 6pm ET – Saturday 4pm ET window** (22 hours, EST = UTC-5 hardcoded for MVP). Window is controlled by `DROP_WINDOW_START_HOUR` / `DROP_WINDOW_END_HOUR` in `config/constants.ts` — `SCORECARD_WINDOW_*` aliases remain for backward compat with `computeDropTime.ts`.
+- Collision rule: if this week's hour matches last week's, advance by 1 hour (wrapping within the window) — fully deterministic.
+- No network fetch for the schedule — `useDropSchedule` calls `getCurrentDropTime()` synchronously, no loading state.
+- Push notification is scheduled locally at the computed drop moment via Expo Notifications. Identifier is `SCORECARD_DROP_NOTIFICATION_ID = 'scorecard-drop'` — scoped cancel-and-reschedule preserves the Thursday nudge (`platform-nudge-thursday`).
+- Notification carries `content.data = { type: 'scorecard-drop' }`. `AppShell` routes on `data.type`, not the human-readable title, so copy edits don't break cold-start or warm-start routing.
+
+### Post-drop flow (capture → purge → present)
+This is the full lifecycle and it ties directly to Principle #9:
+
+1. **Drop fires** (or first app open after a missed drop). `ScorecardScreen`'s post-drop effect runs.
+2. **Gate on avoid count**: if `grandTotal < MIN_AVOIDS_FOR_DROP`, show empty state, cancel the `scorecard-drop` notification only, and return. No capture, no purge.
+3. **Check for existing PNG** via `findLatestCard()` (listing + mtime sort, NOT a filename match — see "weekOf rollover" below). If present and we're still within the 48h presentation window, transition to presentation.
+4. **Otherwise, capture**: mount `ScorecardImage` off-screen, `captureRef` to a PNG, move to `scorecards/Those-I-FCKd-{Month}-{DD}-{YY}.png`. Loader shows `"Locking in my card. Shredding the data."` during this transition.
+5. **Purge scoped events** via `purgeScoredWeekAvoidEvents(adapter, weekOf)` — runs ONLY if capture succeeded. Scope is strictly `[weekOf, weekOf+7)` so the live week can never be touched. Failure is non-fatal (PNG is already saved); next weekly rollover handles leftovers.
+6. **Present** if we're within the 48h window (`SCORECARD_PRESENTATION_WINDOW_MS` from `schedule.dropAt`). Past that, fall through to `LivePreview` for the new live week. PNG remains reachable via "Past scorecards."
+
+### Presentation window
+- **48h from drop moment.** Controlled by `SCORECARD_PRESENTATION_WINDOW_MS` in `config/constants.ts`.
+- Inside the window: Scorecard tab is a full-screen takeover with SHARE button.
+- Outside the window: tab returns to `LivePreview`; PNG moves silently into the "Past scorecards" archive (sorted by file mtime, newest first).
+
+### weekOf rollover — why we look up the PNG by mtime, not filename
+`getLocalWeekStart()` returns the Saturday starting the current local week — it advances at Saturday midnight local. The drop typically fires Friday evening; if the user opens the app after Saturday midnight (even within the drop window on EST), `schedule.weekOf` has already rolled forward to the new Saturday. Deriving the PNG filename from `schedule.weekOf` would orphan the card you just created. Instead, presentation resolves via `findLatestCard()` — list `scorecards/`, sort by mtime descending, take the top. Filename format is human-facing; sort ordering does not depend on it.
+
+### Filename format
+`Those-I-FCKd-{Month}-{DD}-{YY}.png` — e.g. `Those-I-FCKd-April-11-26.png`. Built by `buildCardFilename(weekOf)` in `features/Scorecard/utils/formatters.ts`. The prefix echoes the card's hero sentence ("I FCKd [grid] N× this week"); reads like an inscription (riff on "To Those I Loved") when the share receiver sees it. Voice: Sh*tposter (user voice, first-person), non-vulgar, FCK substitution per the voice framework. Archive view renders a readable label via `formatCardLabel()` → `"April 11, 2026"`.
+
+### PREVIEW stamp semantics
+- **Real Friday drop:** `isPreview=false` on `ScorecardViewData` (set by `useScorecard` from `hasDropped`). No stamp on the captured PNG.
+- **On-demand (dev tools, early generation):** `isPreview=true`. `ScorecardImage` overlays `PreviewStamp` on the captured bitmap, so both the share PNG and the archive thumbnail bear the stamp. Spec: "the weekly drop retains its specialness."
+
+### Capture-failure / offline behavior
+- If `captureCard` returns `null` (view-shot error, disk full, etc.), the effect sets state back to `'preview'` and the raw events are **retained**. The next Scorecard tab visit retries. Under no circumstance is purge reached when capture failed.
+- Launch-resilient: the post-drop effect runs on every Scorecard mount, not just on drop-fire, so a user who missed the drop moment triggers the same flow on their first visit after.
+
+### Extension data
+Extension data is NOT included in the scorecard (V1) — extension has its own in-popup weekly summary. Structurally enforced: mobile SQLite and extension `chrome.storage.local` have no sync path.
 
 **V2:** An optional lightweight server ping may add schedule overrides — see "Known Limitations / Technical Debt → V2: Optional Server Schedule Override."
 
@@ -603,6 +664,11 @@ The entire app is styled as a **vintage 8-bit video game**. This is the foundati
 | BusinessCard manila folder reskin | ✅ Done — manila folder wrapper, cream document table layout, folder tab dismiss, sprite perch (168px, 80/20 split), swipe-down dismiss, post-avoid stamp + particles + shake + amber pulse, AvoidButton hydration fix, AvoidCelebration removed. Pixel art eagle seal wired (48px BOX-downsampled, red-tinted folder + dark doc header). |
 | Extension tested in Chrome | ✅ Done |
 | Scorecard rebuild (4-state tab, rendered card, archive) | ✅ Done — 4-state screen (preview/loading/presentation/empty/archive), ScorecardImage 1080×1920 PNG capture, CardPresentation full-screen takeover + celebrations, surface tracking (numeric column), shared CollapsibleRow, card archive, dev tools. Drop window Fri 6pm–Sat 4pm ET. |
+| Scorecard capture-then-purge privacy flow | ✅ Done (2026-04-18) — drop fires → aggregate scored week → capture PNG → purge scoped events `[weekOf, weekOf+7)`. `purgeScoredWeekAvoidEvents` in `core/data/eventStore.ts`. Purge is gated on capture success; failure retains raw events for retry on next visit. Launch-resilient — first open after a missed drop runs the same flow. Loader copy proves the promise: "Locking in my card. Shredding the data." |
+| Scorecard 48h presentation window + latest-by-mtime lookup | ✅ Done (2026-04-18) — `SCORECARD_PRESENTATION_WINDOW_MS = 48h`. Full-screen takeover only inside the window; after, tab returns to LivePreview and card moves to archive. Presentation resolves the PNG via `findLatestCard()` (mtime sort) not filename derivation, so `getLocalWeekStart()` rollover at Saturday midnight local can't orphan the card. |
+| Scorecard filename + archive labels — inscription format | ✅ Done (2026-04-18) — captured PNGs saved as `Those-I-FCKd-{Month}-{DD}-{YY}.png` via `buildCardFilename()`. Archive labels render readable `"April 11, 2026"` via `formatCardLabel()`. Sh*tposter voice, non-vulgar, first-person. |
+| Scorecard notification hygiene (scoped cancel, data.type routing) | ✅ Done (2026-04-18) — drop notification has identifier `'scorecard-drop'` + `data.type = 'scorecard-drop'`. Cancellation scoped by identifier so Thursday nudge (`platform-nudge-thursday`) survives. `AppShell` routes on `data.type` with one-release title-string fallback. |
+| Cold-start notification deep-link — no Map ghost | ✅ Done (2026-04-18) — `AppShell` resolves launch notification via `getLastNotificationResponseAsync()` before any screen mounts; holds blank on bgVoid (<50ms) until routing decides. `MapScreen` root has `overflow: 'hidden'` as defense-in-depth for the RN 0.76 Fabric native-view retention pattern. |
 
 ---
 
@@ -861,6 +927,21 @@ Schedule E (independent expenditures) is not tracked. IEs are spending by outsid
 
 ### AIRMap.m nil guard patch — ✅ Resolved
 `AIRMap.m` in the `react-native-maps` pod has nil guards on `insertReactSubview:atIndex:`, `removeReactSubview:`, and `addSubview:`. The Podfile `post_install` hook now re-applies this patch automatically after every `pod install`. The hook is idempotent — it detects existing guards and skips if already present. No manual intervention required.
+
+### Map-asset ghost on cold-start from scorecard notification — ✅ Resolved
+**Landed 2026-04-18.** Tapping the scorecard drop notification while the app was cold used to briefly mount `MapScreen` (default `activeTab = 'map'`) before the notification handler set it to `'report'`. On RN 0.76 + Fabric, Map's `position: 'absolute'` header subtree (stone-tile strip, horizontal logo, `header_bar.png`) left stale native-view paint that ghosted behind Scorecard. Resolved with three layers of defense: (1) `AppShell` resolves the launch notification via `Notifications.getLastNotificationResponseAsync()` before any screen mounts and routes directly to Scorecard; (2) `MapScreen`'s root `SafeAreaView` now has `overflow: 'hidden'` so the absolute header subtree is clipped to Map's frame; (3) notification routing now uses `content.data.type === 'scorecard-drop'` with a one-release-cycle title-string fallback, so copy edits don't break deep-linking.
+
+### BETA_SCORECARD_INTERVAL_HOURS pre-launch flip (Priority: V1 launch blocker)
+`BETA_SCORECARD_INTERVAL_HOURS = 48` in `config/constants.ts` overrides the weekly schedule for dev builds. Must be flipped to `0` before shipping to production. To remove the override entirely, delete the constant, delete `core/dropSchedule/betaDropSchedule.ts`, and remove the conditional in `useDropSchedule.ts`.
+
+### MIN_AVOIDS_FOR_DROP threshold tuning (Priority: V1.5)
+`MIN_AVOIDS_FOR_DROP = 1` in `config/constants.ts` means a single avoid generates a card + notification. Decide whether this is the right floor for "card-worthy" before V1 launch. Raising it (e.g. to 3) also implies updating the `EmptyWeek` copy and any marketing referencing "any avoid counts."
+
+### Thursday nudge silent wipe — ✅ Resolved
+**Landed 2026-04-18.** `useDropSchedule.ts` and `ScorecardScreen.tsx` previously both called `cancelAllScheduledNotificationsAsync()` when re-scheduling the drop or suppressing it on an empty week. That wiped every scheduled notification — including the Thursday platform nudge (`platform-nudge-thursday`). Users on a week with zero avoids lost their nudge silently. Drop notification now has a stable identifier (`scorecard-drop`); cancellation is scoped via `cancelScheduledNotificationAsync(id)` and the Thursday nudge is untouched.
+
+### Scorecard notification routing by data.type (Priority: resolved)
+Drop notification carries `content.data = { type: 'scorecard-drop' }`. `AppShell` matches on this via the `isScorecardDrop()` helper. Title-string matching (`'Your Scorecard Is Ready'`) is retained as a legacy fallback for one release cycle so any notification already scheduled at upgrade time still routes correctly. Remove the fallback after V1.1.
 
 ### Avoided-entity pin coordinate storage — privacy relaxation candidate (Priority: V1.5)
 `entity_avoid_pins` SQLite table stores coordinates for avoided entities locally (auto-purged daily). All data in `fuckfascists.db` is encrypted at rest — see "Data Encryption at Rest" in the Security section. This was added to enable map hydration on relaunch — showing today's avoided markers without re-tapping. The original privacy principle was "coordinates are never written to disk." This relaxation stores only avoided-entity coordinates, only locally, and only for the current day. **Candidate for rewrite** if the team decides any coordinate persistence is unacceptable. Revert path: remove the table, remove hydration logic in `MapScreen.tsx`, pins become session-only again.

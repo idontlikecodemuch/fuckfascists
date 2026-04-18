@@ -12,6 +12,66 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 18, 2026 ET — Scorecard capture-then-purge + ghost fix
+
+**Focus:** Three production-breaking scorecard bugs surfaced in beta. Rebuilt the drop flow around a capture-then-purge privacy model. Branch `claude/fix-scorecard-payout-iaXW9`, 9 commits, pushed.
+
+**What was broken:**
+
+1. **Map-asset ghost behind Scorecard** on cold-start from the drop notification. Stone-tile background, `FF_logo_horizontal`, and `header_bar.png` painted over Scorecard. Root cause: `AppShell` defaulted `activeTab='map'`, so Map mounted and got a frame before the notification handler redirected to `'report'`. On RN 0.76 + Fabric, Map's `position:'absolute'` header subtree left stale native-view paint.
+2. **Presentation mode never fired** post-drop. Nothing triggered `captureCard` when the drop moment passed — the post-drop effect only transitioned to presentation if a PNG already existed on disk. Users with notifications off (or beta builds without dev tools) stayed stuck in preview indefinitely.
+3. **`weekOf` rollover at Saturday midnight local** orphaned the drop. `ScorecardScreen` looked up the PNG at a path derived from `schedule.weekOf`, which advanced at local midnight. The drop PNG from the night before was still on disk but unreachable by the tab.
+
+**Design call:** instead of keeping last week's raw events alive to fix the rollover (conflicts with "delete the data"), capture the PNG at drop and then purge the raw events. The PNG is derivative — no timestamps, no surfaces, no per-day breakdown — so this is a privacy *upgrade* vs. the prior model.
+
+**Commits (oldest → newest on the branch):**
+
+1. `ea92506` — `AppShell` resolves launch notification synchronously via `getLastNotificationResponseAsync()` before any screen mounts. Routes directly to Scorecard when `data.type === 'scorecard-drop'`. Map never mounts on cold-start notification taps.
+2. `ef80b15` — `MapScreen` root `SafeAreaView` now has `overflow: 'hidden'`. Defense-in-depth clip for the absolute header subtree.
+3. `af9f8d2` — Core capture-then-purge drop flow. On drop, aggregate → capture PNG → purge events scoped to `[weekOf, weekOf+7)`. Purge gated on capture success. Launch-resilient — missed-drop retry on next visit. New inscription filename `Those-I-FCKd-April-11-26.png`. Adapter interface: `clearEntityAvoidsInRange` + `clearPlatformAvoidsInRange`.
+4. `cb4ec80` — Presentation gated on 48h window (`SCORECARD_PRESENTATION_WINDOW_MS`). Latest PNG resolved via `findLatestCard()` (mtime sort, not filename). Survives `weekOf` rollover.
+5. `7a82ea9` — `ScorecardImage` renders `PreviewStamp` when `isPreview` — on-demand captures bear the stamp, real drops don't.
+6. `f4cbfbe` — Loader copy `"Locking in my card.\nShredding the data."` Sh*tposter voice, second line is literally true during the transition.
+7. `7fa1dc8` — Archive labels: `"April 11, 2026"` readable format via `formatCardLabel()`. Archive sorts by mtime.
+8. `4d4390a` — Drop notification has stable identifier `'scorecard-drop'`. Cancellation scoped — Thursday platform nudge (`platform-nudge-thursday`) no longer silently wiped.
+9. `049ad15` — Notification routing by `content.data.type`. Legacy title-string match retained one release as fallback.
+
+**Files touched (app/runtime, non-doc):**
+
+- `app/gates/AppShell.tsx` — notification-aware initial tab + `isScorecardDrop()` router
+- `app/storage/SqliteAdapter.ts` — `clearEntityAvoidsInRange`, `clearPlatformAvoidsInRange`
+- `config/constants.ts` — `SCORECARD_PRESENTATION_WINDOW_MS`
+- `copy/scorecard.ts` — loader copy
+- `core/data/adapters.ts` — scoped-range clear signatures
+- `core/data/eventStore.ts` — `purgeScoredWeekAvoidEvents`
+- `core/data/index.ts` — export
+- `extension/storage/ChromeStorageAdapter.ts` — no-op stubs for interface completeness
+- `features/Map/MapScreen.tsx` — root `overflow: 'hidden'`
+- `features/Scorecard/ScorecardScreen.tsx` — rewritten post-drop effect
+- `features/Scorecard/components/CardArchive.tsx` — uses `filename` + `formatCardLabel`
+- `features/Scorecard/components/ScorecardImage.tsx` — `PreviewStamp` overlay on `isPreview`
+- `features/Scorecard/components/ScorecardLoader.tsx` — `textAlign`/`lineHeight` for 2-line copy
+- `features/Scorecard/data/cardArchive.ts` — `findLatestCard`, mtime sort
+- `features/Scorecard/dev/ScorecardDevTools.tsx` — uses `buildCardFilename`
+- `features/Scorecard/hooks/useCardCapture.ts` — writes via `buildCardFilename`
+- `features/Scorecard/hooks/useDropSchedule.ts` — scoped cancel, identifier, `data.type`
+- `features/Scorecard/utils/formatters.ts` — `formatFilenameDate`, `formatReadableDate`, `buildCardFilename`, `formatCardLabel`
+
+**Tests:** existing `features/Scorecard/__tests__/formatters.test.ts` still passes (no breaking changes to `formatCount` / `formatWeekRange`). New formatter helpers uncovered — TODO: add tests before V1 ship.
+
+**Docs updated same session:** `CLAUDE.md` (Principles #9, Data Model, Drop Mechanics, Known Limitations, Current Sprint Focus), `docs/SCORECARD_IMAGE.md` (Runtime Flow + Filename + PREVIEW stamp semantics), `docs/SPEC_VS_CURRENT.md` (Evolved rows + Scorecard sharing marked built).
+
+**Not addressed this session (explicit):**
+
+- `BETA_SCORECARD_INTERVAL_HOURS = 48` still on. Flip to `0` before prod.
+- `MIN_AVOIDS_FOR_DROP = 1` — tune before V1.
+- CLAUDE.md top-of-file `Configurable Variables` code sample had a Fri 4pm drift (spec said 4pm, code said 6pm). Resolved in the doc update.
+- Tests for new formatter helpers.
+
+**Open risk:** the loader fires during capture-then-purge transition. If `captureRef` hangs on a specific device, the user sees the loader indefinitely and the raw data stays — by design (we'd rather retain than silently delete). But the UX is a freeze. Consider a capture timeout in a follow-up.
+
+---
+
 ### Session: April 16, 2026 ET — Design polish: glow, sprites, divider, scorecard accordion
 **Focus:** Four beta design items — unified glow token, arena sprite alignment, map divider, scorecard row expansion.
 

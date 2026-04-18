@@ -35,7 +35,11 @@ This document tracks where the current implementation aligns with, deviates from
 |---|---|---|---|
 | Data source | OpenSecrets API | FEC.gov API directly | OpenSecrets rate limits too tight for bulk lookups; FEC is the primary source anyway and more transparent |
 | Confidence field | String labels ('HIGH', 'MEDIUM') | Numeric 0–1 confidence values with thresholds in `config/constants.ts` | More precise, pipeline-friendly, easier to tune thresholds while keeping display labels derived at render time |
-| Scorecard timing | Random drop Friday 12PM–Sunday 8PM (BeReal model) | Friday 4PM–Saturday 3PM ET window | Narrowed window for consistency; BeReal model preserved |
+| Scorecard timing | Random drop Friday 12PM–Sunday 8PM (BeReal model) | Friday 6PM–Saturday 4PM ET window (22 hours) | Narrowed window for consistency; BeReal model preserved. `DROP_WINDOW_START_HOUR/END_HOUR` in `config/constants.ts` |
+| Scorecard data lifecycle | Raw events persist until a week-rollover purge | **Capture-then-purge** — at drop, PNG is captured to disk and the scored week's raw events are purged immediately (scoped to `[weekOf, weekOf+7)`) | Net privacy upgrade: PNG is derivative (no timestamps/surfaces/per-day breakdown), raw event log cannot be reconstructed. Also fixes the "drop disappears at Saturday midnight" bug since presentation resolves the PNG by mtime, not by `weekOf` filename |
+| Scorecard presentation persistence | Drop shows indefinitely on tab | Drop takes over the Scorecard tab for 48h (`SCORECARD_PRESENTATION_WINDOW_MS`), then tab returns to LivePreview for the new week; card reachable via "Past scorecards" | Clear end to the celebration window; PNG archive preserves history |
+| Scorecard PNG filename | `{weekOf}.png` (ISO date) | `Those-I-FCKd-{Month}-{DD}-{YY}.png` — e.g. `Those-I-FCKd-April-11-26.png` | Sh*tposter voice on output surface; echoes card's hero sentence; reads like an inscription on share |
+| Scorecard drop notification routing | Title string match (`'Your Scorecard Is Ready'`) | `content.data.type === 'scorecard-drop'`; title retained as one-release legacy fallback | Decouples routing from user-visible copy |
 | Donation data attribution | `openSecretsOrgId` | `fecCommitteeId` | Migration to FEC-native identifiers after OpenSecrets pivot |
 | Partisan attribution method | Committee-level party data | Schedule B disbursements by `candidate_party_affiliation` | Corporate SSF PACs have no party affiliation at committee level; per-disbursement attribution is accurate |
 | Entity verification status | Not in original spec | `verificationStatus: 'manual' \| 'pipeline' \| 'unverified'` | Needed to distinguish human-verified vs. script-verified vs. unreviewed entities |
@@ -54,7 +58,7 @@ This document tracks where the current implementation aligns with, deviates from
 | Feature | Spec | Status |
 |---|---|---|
 | Map POI tap → entity matching | Tap a business on the map, get instant donation data | ✅ Built, linked, and running — Android ready (onPoiClick); iOS module linked via `file:./modules/mapkit-search`; app installed on iPhone 16 Pro simulator; iOS tap path pending interactive smoke test |
-| Scorecard sharing | Shareable card image, social-ready | Not yet implemented |
+| Scorecard sharing | Shareable card image, social-ready | ✅ Built — `ScorecardImage` renders to PNG via `react-native-view-shot`; `CardPresentation` shows full-screen + SHARE button routing to native Share sheet; filename format `Those-I-FCKd-April-11-26.png` for the share receiver |
 | Leaderboard / high scorers | Weekly top avoiders visible to community | Deferred — V2 |
 | People.json individual donor data | Executive/founder donation lookup (Musk, Bezos, Zuckerberg) | 🔄 In progress — `people.json` now contains 997 donor records with the current `PoliticalPerson` schema. The file remains V2-canonical, including declared forward refs for company IDs that are not live yet; `entities.json` is kept as the clean V1 source of truth, and the deferred forward-link set is mirrored in `tools/fec-bulk/reports/people-v2-deferred-entity-links.json`. Schedule A contributions are not yet surfaced in UI (V1.5/V2 target). |
 | Donation infrastructure | Phase 3 — ActBlue or equivalent, quarterly payouts | Not started — Phase 3 |
