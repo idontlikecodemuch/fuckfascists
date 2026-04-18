@@ -34,11 +34,11 @@ export function CardArchive({ onDismiss }: CardArchiveProps) {
       style={styles.thumb}
       onPress={() => setSelected(item)}
       accessibilityRole="button"
-      accessibilityLabel={`Scorecard for week of ${item.weekOf}`}
+      accessibilityLabel={`Scorecard: ${item.filename}`}
     >
       <Image source={{ uri: item.uri }} style={styles.thumbImage} resizeMode="cover" />
       <Text style={styles.thumbLabel} allowFontScaling={false}>
-        {item.weekOf}
+        {item.filename.replace('.png', '')}
       </Text>
     </Pressable>
   ), []);
@@ -73,7 +73,7 @@ export function CardArchive({ onDismiss }: CardArchiveProps) {
       ) : (
         <FlatList
           data={cards}
-          keyExtractor={(c) => c.weekOf}
+          keyExtractor={(c) => c.filename}
           renderItem={renderThumb}
           numColumns={THUMB_COLS}
           contentContainerStyle={styles.grid}

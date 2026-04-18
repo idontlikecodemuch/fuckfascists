@@ -1,6 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import * as FileSystem from 'expo-file-system';
 import * as Notifications from 'expo-notifications';
 import type { Entity } from '../../core/models';
 import type { StorageAdapter } from '../../core/data';
@@ -15,11 +14,14 @@ import { CardPresentation } from './components/CardPresentation';
 import { EmptyWeek } from './components/EmptyWeek';
 import { ScorecardImage } from './components/ScorecardImage';
 import { CardArchive } from './components/CardArchive';
+import { findLatestCard } from './data/cardArchive';
 import { StarField } from '../Info/components/InfoDecorations';
 import { scorecardCopy } from '../../copy/scorecard';
-import { MIN_AVOIDS_FOR_DROP } from '../../config/constants';
+import {
+  MIN_AVOIDS_FOR_DROP,
+  SCORECARD_PRESENTATION_WINDOW_MS,
+} from '../../config/constants';
 import { theme } from '../../design/tokens';
-import { buildCardFilename } from './utils/formatters';
 
 type ScreenState = 'preview' | 'loading' | 'presentation' | 'empty' | 'archive';
 
@@ -60,14 +62,27 @@ export function ScorecardScreen({ adapter, entities, platforms, onSwitchTab }: S
   const { schedule, hasDropped } = useDropSchedule();
   const isPreview = !hasDropped;
 
+  // The drop's "presentation window" — Scorecard tab takes over full-screen
+  // only while we're within this window of the drop moment. After, the card
+  // moves silently into "Past scorecards" and the tab returns to preview.
+  const inPresentationWindow =
+    hasDropped && Date.now() - schedule.dropAt < SCORECARD_PRESENTATION_WINDOW_MS;
+
   const { data, loading: dataLoading } = useScorecard(
     adapter, entities, platforms, schedule.weekOf, isPreview,
   );
   const { captureCard, capturing } = useCardCapture();
 
-  // Post-drop: aggregate → capture → purge → present.
+  // Post-drop: aggregate → capture → purge → (maybe) present.
+  //
   // Runs on mount, on drop-fire, and on every visit while the PNG is missing
   // (launch-resilient retry if a previous attempt failed).
+  //
+  // Presentation takeover is gated by SCORECARD_PRESENTATION_WINDOW_MS. Past
+  // that window, the effect still captures+purges if needed (so we keep the
+  // privacy promise) but doesn't switch into the full-screen state — the
+  // user sees the LivePreview for the new week, and the card is reachable
+  // via "Past scorecards."
   React.useEffect(() => {
     if (!hasDropped || !data) return;
 
@@ -79,22 +94,26 @@ export function ScorecardScreen({ adapter, entities, platforms, onSwitchTab }: S
     }
 
     let cancelled = false;
-    const dir = `${FileSystem.documentDirectory}scorecards/`;
-    const path = `${dir}${buildCardFilename(schedule.weekOf)}`;
 
     (async () => {
-      const info = await FileSystem.getInfoAsync(path);
+      // Look up the latest captured card by mtime — robust to the weekOf
+      // rollover that happens at Saturday local midnight.
+      const latest = await findLatestCard();
       if (cancelled) return;
 
-      // Already captured — present immediately, no re-capture, no re-purge.
-      if (info.exists) {
-        setCardUri(path);
-        setScreenState('presentation');
+      // A card already exists for this drop (captured earlier this session
+      // or a previous launch). Present if we're still inside the window.
+      if (latest) {
+        if (inPresentationWindow) {
+          setCardUri(latest.uri);
+          setScreenState('presentation');
+        }
+        // Outside the window: fall through to preview (set by default).
         return;
       }
 
-      // First open after drop: capture the PNG, then purge its source events.
-      // Hold 'loading' so the user sees the privacy-proving loader copy
+      // No PNG yet — first open since drop. Capture, then purge.
+      // Hold 'loading' so the user sees the privacy-proving copy
       // ("Locking in my card. Shredding the data.") during the transition.
       setScreenState('loading');
 
@@ -118,17 +137,21 @@ export function ScorecardScreen({ adapter, entities, platforms, onSwitchTab }: S
       try {
         await purgeScoredWeekAvoidEvents(adapter, schedule.weekOf);
       } catch {
-        // Purge failure is non-fatal — the PNG is already saved. Next launch
-        // will purge on its normal schedule once the week rolls over.
+        // Purge failure is non-fatal — the PNG is already saved. Next
+        // launch will purge on its normal schedule once the week rolls over.
       }
       if (cancelled) return;
 
-      setCardUri(result.uri);
-      setScreenState('presentation');
+      if (inPresentationWindow) {
+        setCardUri(result.uri);
+        setScreenState('presentation');
+      } else {
+        setScreenState('preview');
+      }
     })();
 
     return () => { cancelled = true; };
-  }, [hasDropped, data, schedule.weekOf, adapter, captureCard]);
+  }, [hasDropped, data, schedule.weekOf, adapter, captureCard, inPresentationWindow]);
 
   // Dev-tools: generate on-demand (pre-drop preview card). Does NOT purge —
   // the scored week hasn't ended yet.
