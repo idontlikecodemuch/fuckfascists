@@ -78,6 +78,28 @@ export async function purgeOldAvoidEvents(
   ]);
 }
 
+/**
+ * Purges the avoid events that produced a scored-week scorecard.
+ * Called by the capture-then-purge flow after the PNG is successfully
+ * written to disk: the rendered card survives, the raw events that
+ * produced it do not.
+ *
+ * Scoped strictly to [weekOf, weekOf+7) so the purge cannot touch events
+ * belonging to the live week still in progress.
+ */
+export async function purgeScoredWeekAvoidEvents(
+  adapter: StorageAdapter,
+  weekOf: string,
+): Promise<void> {
+  const d = new Date(`${weekOf}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + 7);
+  const weekEnd = d.toISOString().slice(0, 10);
+  await Promise.all([
+    adapter.clearEntityAvoidsInRange(weekOf, weekEnd),
+    adapter.clearPlatformAvoidsInRange(weekOf, weekEnd),
+  ]);
+}
+
 // ── Platform avoid events ──────────────────────────────────────────────────────
 
 /**

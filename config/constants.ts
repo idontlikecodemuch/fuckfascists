@@ -33,6 +33,12 @@ export const SCORECARD_CONTENT_ZONE = {
 // Scorecard — card archive ceiling (oldest dropped when exceeded)
 export const SCORECARD_ARCHIVE_MAX = 104; // 2 years of weekly cards
 
+// Scorecard — window during which the drop takes over the Scorecard tab
+// as a full-screen presentation. After this window the card moves silently
+// into "Past scorecards" and the tab returns to the live preview for the
+// new week. Computed from the drop moment (not wall-clock Saturday).
+export const SCORECARD_PRESENTATION_WINDOW_MS = 48 * 60 * 60 * 1000; // 48 hours
+
 // Scorecard — power meter tiers (configurable for tuning based on real usage data)
 export const POWER_METER_TIERS = [
   { min: 1,  fill: 0.25, label: 'warming-up' },

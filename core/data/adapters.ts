@@ -72,4 +72,16 @@ export interface StorageAdapter {
 
   /** Deletes platform avoid events with date before the given date. */
   clearOldPlatformAvoids(beforeDate: string): Promise<void>;
+
+  // ── Privacy purge (scoped) ──────────────────────────────────────────────
+  // Used by the scorecard capture-then-purge flow: once a drop's PNG is
+  // saved to disk, the raw events that produced it are deleted — only the
+  // rendered card survives. Scoped to the [start, end) window so the purge
+  // cannot touch events belonging to the live week still in progress.
+
+  /** Deletes entity avoid events whose date falls within [start, end). */
+  clearEntityAvoidsInRange(start: string, end: string): Promise<void>;
+
+  /** Deletes platform avoid events whose date falls within [start, end). */
+  clearPlatformAvoidsInRange(start: string, end: string): Promise<void>;
 }

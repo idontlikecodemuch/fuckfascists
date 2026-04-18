@@ -23,6 +23,7 @@ export {
   getTodayAvoidPins,
   purgeOldAvoidPins,
   purgeOldAvoidEvents,
+  purgeScoredWeekAvoidEvents,
   recordPlatformAvoid,
   recordPlatformAvoidForDate,
   getAllEntityAvoids,

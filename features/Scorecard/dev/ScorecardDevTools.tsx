@@ -2,6 +2,7 @@ import React from 'react';
 import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import { theme } from '../../../design/tokens';
+import { buildCardFilename } from '../utils/formatters';
 
 interface ScorecardDevToolsProps {
   onGenerateNow: () => void;
@@ -22,12 +23,13 @@ interface ScorecardDevToolsProps {
 export function ScorecardDevTools({ onGenerateNow, onResetCard, weekOf }: ScorecardDevToolsProps) {
   const handleReset = async () => {
     const dir = `${FileSystem.documentDirectory}scorecards/`;
-    const path = `${dir}${weekOf}.png`;
+    const filename = buildCardFilename(weekOf);
+    const path = `${dir}${filename}`;
     try {
       const info = await FileSystem.getInfoAsync(path);
       if (info.exists) {
         await FileSystem.deleteAsync(path);
-        Alert.alert('Card Reset', `Deleted ${weekOf}.png`);
+        Alert.alert('Card Reset', `Deleted ${filename}`);
       } else {
         Alert.alert('No Card', 'No cached card for this week.');
       }

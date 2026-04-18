@@ -1,9 +1,10 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { PixelRatio } from 'react-native';
 import type { View } from 'react-native';
 import { captureRef } from 'react-native-view-shot';
 import * as FileSystem from 'expo-file-system';
 import { SCORECARD_IMAGE_WIDTH, SCORECARD_IMAGE_HEIGHT } from '../../../config/constants';
+import { buildCardFilename } from '../utils/formatters';
 
 const pr = PixelRatio.get();
 
@@ -38,10 +39,12 @@ export function useCardCapture() {
           result: 'tmpfile',
         });
 
-        // Save to persistent scorecard directory
+        // Save to persistent scorecard directory.
+        // Filename is the inscription-style "Those-I-FCKd-April-11-26.png"
+        // — fun for the share receiver, archive-ordered by file mtime.
         const dir = `${FileSystem.documentDirectory}scorecards/`;
         await FileSystem.makeDirectoryAsync(dir, { intermediates: true });
-        const destUri = `${dir}${weekOf}.png`;
+        const destUri = `${dir}${buildCardFilename(weekOf)}`;
         await FileSystem.moveAsync({ from: uri, to: destUri });
 
         setCapturing(false);

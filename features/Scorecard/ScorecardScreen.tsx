@@ -4,6 +4,7 @@ import * as FileSystem from 'expo-file-system';
 import * as Notifications from 'expo-notifications';
 import type { Entity } from '../../core/models';
 import type { StorageAdapter } from '../../core/data';
+import { purgeScoredWeekAvoidEvents } from '../../core/data';
 import type { Platform } from '../Platforms/types';
 import { useDropSchedule } from './hooks/useDropSchedule';
 import { useScorecard } from './hooks/useScorecard';
@@ -18,6 +19,7 @@ import { StarField } from '../Info/components/InfoDecorations';
 import { scorecardCopy } from '../../copy/scorecard';
 import { MIN_AVOIDS_FOR_DROP } from '../../config/constants';
 import { theme } from '../../design/tokens';
+import { buildCardFilename } from './utils/formatters';
 
 type ScreenState = 'preview' | 'loading' | 'presentation' | 'empty' | 'archive';
 
@@ -31,11 +33,24 @@ interface ScorecardScreenProps {
 /**
  * Scorecard screen — the weekly synchronized reveal.
  *
- * Four states:
- *  1. preview — scrollable interactive breakdown (Sat → Fri drop)
- *  2. loading — brief transition while PNG captures
- *  3. presentation — full-screen card takeover + SHARE
- *  4. empty — zero avoids, motivational copy
+ * Lifecycle:
+ *   1. preview     — scrollable interactive breakdown (Sat → Fri drop)
+ *   2. loading     — brief transition while PNG captures
+ *   3. presentation — full-screen card takeover + SHARE
+ *   4. empty       — zero avoids, motivational copy
+ *   5. archive     — past scorecards thumbnail gallery
+ *
+ * Post-drop flow (aggregate → capture → purge → present):
+ *   When hasDropped fires, we aggregate the scored week's events into a PNG,
+ *   save it to disk, and then purge the raw events scoped to that exact
+ *   Sat–Fri window. The card persists; the source data does not. This is
+ *   how the app keeps its "delete the data" promise while still letting the
+ *   user celebrate + share the drop.
+ *
+ *   Launch-resilient: if the app was closed when the drop fired, the first
+ *   open after drop runs the same flow. If capture fails (disk full, render
+ *   error), raw events are RETAINED and the next visit retries — we never
+ *   silently destroy data on failure.
  */
 export function ScorecardScreen({ adapter, entities, platforms, onSwitchTab }: ScorecardScreenProps) {
   const imageRef = useRef<View>(null);
@@ -50,36 +65,77 @@ export function ScorecardScreen({ adapter, entities, platforms, onSwitchTab }: S
   );
   const { captureCard, capturing } = useCardCapture();
 
-  // Check for existing cached card after drop
+  // Post-drop: aggregate → capture → purge → present.
+  // Runs on mount, on drop-fire, and on every visit while the PNG is missing
+  // (launch-resilient retry if a previous attempt failed).
   React.useEffect(() => {
     if (!hasDropped || !data) return;
+
     if (data.grandTotal < MIN_AVOIDS_FOR_DROP) {
       setScreenState('empty');
-      // Suppress notification — spec: "no notification fired" for empty weeks
+      // Spec: no notification fires for empty weeks.
       Notifications.cancelAllScheduledNotificationsAsync().catch(() => {});
       return;
     }
 
     let cancelled = false;
-    const path = `${FileSystem.documentDirectory}scorecards/${schedule.weekOf}.png`;
+    const dir = `${FileSystem.documentDirectory}scorecards/`;
+    const path = `${dir}${buildCardFilename(schedule.weekOf)}`;
 
-    FileSystem.getInfoAsync(path).then((info) => {
+    (async () => {
+      const info = await FileSystem.getInfoAsync(path);
       if (cancelled) return;
+
+      // Already captured — present immediately, no re-capture, no re-purge.
       if (info.exists) {
         setCardUri(path);
         setScreenState('presentation');
+        return;
       }
-    });
+
+      // First open after drop: capture the PNG, then purge its source events.
+      // Hold 'loading' so the user sees the privacy-proving loader copy
+      // ("Locking in my card. Shredding the data.") during the transition.
+      setScreenState('loading');
+
+      // Allow one frame for the off-screen ScorecardImage to mount.
+      await new Promise<void>((resolve) =>
+        requestAnimationFrame(() => resolve()),
+      );
+      if (cancelled) return;
+
+      const result = await captureCard(imageRef, schedule.weekOf);
+      if (cancelled) return;
+
+      if (!result) {
+        // Capture failed — retain raw events and retry on next visit.
+        setScreenState('preview');
+        return;
+      }
+
+      // Capture succeeded → purge the scored week's events (scoped to
+      // [weekOf, weekOf+7) so the live week can't be touched).
+      try {
+        await purgeScoredWeekAvoidEvents(adapter, schedule.weekOf);
+      } catch {
+        // Purge failure is non-fatal — the PNG is already saved. Next launch
+        // will purge on its normal schedule once the week rolls over.
+      }
+      if (cancelled) return;
+
+      setCardUri(result.uri);
+      setScreenState('presentation');
+    })();
 
     return () => { cancelled = true; };
-  }, [hasDropped, data, schedule.weekOf]);
+  }, [hasDropped, data, schedule.weekOf, adapter, captureCard]);
 
-  // Generate card on demand (dev tools or post-drop trigger)
+  // Dev-tools: generate on-demand (pre-drop preview card). Does NOT purge —
+  // the scored week hasn't ended yet.
   const handleGenerateCard = useCallback(async () => {
     if (!data || data.grandTotal < MIN_AVOIDS_FOR_DROP) return;
     setScreenState('loading');
 
-    // Allow one frame for ScorecardImage to mount off-screen
     requestAnimationFrame(async () => {
       const result = await captureCard(imageRef, schedule.weekOf);
       if (result) {

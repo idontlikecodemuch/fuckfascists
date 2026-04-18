@@ -123,4 +123,6 @@ export class ChromeStorageAdapter implements StorageAdapter {
   async clearOldAvoidPins(_beforeDate: string): Promise<void> { /* no-op */ }
   async clearOldEntityAvoids(_beforeDate: string): Promise<void> { /* no-op — extension is session-only */ }
   async clearOldPlatformAvoids(_beforeDate: string): Promise<void> { /* no-op — extension is session-only */ }
+  async clearEntityAvoidsInRange(_start: string, _end: string): Promise<void> { /* no-op — extension is session-only */ }
+  async clearPlatformAvoidsInRange(_start: string, _end: string): Promise<void> { /* no-op — extension is session-only */ }
 }
