@@ -9,6 +9,14 @@ import {
   getNextBetaDropTime,
 } from '../../../core/dropSchedule/betaDropSchedule';
 
+/**
+ * Stable identifier for the scorecard drop notification. Scoping cancels +
+ * re-schedules to this identifier leaves other scheduled notifications
+ * (notably the Thursday platform nudge at 'platform-nudge-thursday')
+ * untouched.
+ */
+export const SCORECARD_DROP_NOTIFICATION_ID = 'scorecard-drop';
+
 export interface DropScheduleState {
   schedule: DropSchedule;
   /** Always false — drop time is computed locally with no async work. */
@@ -56,10 +64,19 @@ export function useDropSchedule(): DropScheduleState {
 }
 
 async function scheduleDropNotification(dropAt: number): Promise<void> {
-  // Cancel any previously scheduled drop notification before re-scheduling
-  await Notifications.cancelAllScheduledNotificationsAsync();
+  // Scoped cancel + schedule by identifier. Previously called
+  // cancelAllScheduledNotificationsAsync, which silently wiped the Thursday
+  // platform nudge ('platform-nudge-thursday') every time the drop was
+  // re-scheduled. Cancel only our own identifier here.
+  try {
+    await Notifications.cancelScheduledNotificationAsync(SCORECARD_DROP_NOTIFICATION_ID);
+  } catch {
+    // If no prior drop is scheduled, the cancel is a no-op in most builds
+    // but some runtimes throw — ignore.
+  }
 
   await Notifications.scheduleNotificationAsync({
+    identifier: SCORECARD_DROP_NOTIFICATION_ID,
     content: {
       title: 'Your Scorecard Is Ready',
       body: 'Tap to see how you did this week.',

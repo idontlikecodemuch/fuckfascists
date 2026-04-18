@@ -5,7 +5,7 @@ import type { Entity } from '../../core/models';
 import type { StorageAdapter } from '../../core/data';
 import { purgeScoredWeekAvoidEvents } from '../../core/data';
 import type { Platform } from '../Platforms/types';
-import { useDropSchedule } from './hooks/useDropSchedule';
+import { useDropSchedule, SCORECARD_DROP_NOTIFICATION_ID } from './hooks/useDropSchedule';
 import { useScorecard } from './hooks/useScorecard';
 import { useCardCapture } from './hooks/useCardCapture';
 import { LivePreview } from './components/LivePreview';
@@ -88,8 +88,9 @@ export function ScorecardScreen({ adapter, entities, platforms, onSwitchTab }: S
 
     if (data.grandTotal < MIN_AVOIDS_FOR_DROP) {
       setScreenState('empty');
-      // Spec: no notification fires for empty weeks.
-      Notifications.cancelAllScheduledNotificationsAsync().catch(() => {});
+      // Spec: no notification fires for empty weeks. Cancel the scorecard
+      // drop identifier only — leaves the Thursday platform nudge intact.
+      Notifications.cancelScheduledNotificationAsync(SCORECARD_DROP_NOTIFICATION_ID).catch(() => {});
       return;
     }
 
