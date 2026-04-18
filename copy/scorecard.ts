@@ -31,8 +31,11 @@ export const scorecardCopy = {
   // Card presentation
   dismissLabel: "Done",
 
-  // Loader
-  loaderText: "Creating your scorecard...",
+  // Loader — shown during the capture-then-purge transition. Two-line
+  // privacy-proving copy: the second line is literally true at the moment
+  // it's shown (raw events are being deleted as the PNG writes). Sh*tposter
+  // voice, first-person, non-vulgar.
+  loaderText: "Locking in my card.\nShredding the data.",
 
   // Archive
   pastCardsLabel: "Past scorecards",

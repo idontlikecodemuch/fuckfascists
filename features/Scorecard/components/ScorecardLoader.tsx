@@ -30,5 +30,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: theme.colors.textSecondary,
     letterSpacing: 1,
+    textAlign: 'center',
+    lineHeight: 22,
   },
 });
