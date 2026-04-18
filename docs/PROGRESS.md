@@ -12,6 +12,50 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 18, 2026 ET — Cockpit alert/toast/chooser restyle + folder tab seam fix
+
+**Focus:** Three UI beta fixes + one BusinessCard bug. Branch `claude/confident-jepsen-cbbe1c`. All visual-only — no trigger logic, no data path changes.
+
+**What shipped:**
+
+1. **Reusable `AlertBanner` in `core/ui/`** (~160 lines). Cockpit-cyan surface: `bevelFocusRaised` frame, `focusAccent` background, double inset `theme.glow` boxShadow, outer cyan shadow, `useWiggleAnimation` on mount (reduced-motion gated). Props: `title?`, `body`, `onPress?`, `onDismiss?`, `bodyA11yLabel?`, `dismissA11yLabel?`, `style?`. White text throughout — Bungee title, IBM Plex body, ≥44pt × dismiss. `NudgeBanner` rewritten as a thin wrapper (~56 lines): Thursday gate (`NUDGE_DAY`) + dismiss state + safe-area insets, delegates visuals to AlertBanner. Yellow banner variant removed. Harness renderer (`features/Dev/harnessRenderers/contentStates.tsx`) swapped from hand-rolled yellow replica to real AlertBanner so catalog shots stay accurate.
+
+2. **`NoMatchToast` restyle** — cockpit cyan HUD pill. `panelInner` bg, `bevelFocusRaised` frame, subtle outer cyan glow (0.3 opacity, radius 10, lower than banner). Ionicons `folder-outline` glyph in `focusAccent`. IBM Plex white body. No wiggle. Position + auto-dismiss timing unchanged. Copy: `"Not on file."` (was `"No match found"`), a11y `"Not on file"`.
+
+3. **`MatchChooser` redesign** — cockpit cyan sheet framing a stack of manila-folder rows. Sheet: `panelInner` + `bevelFocusRaised` + outer cyan glow + double inset glow. Header: `"SEVERAL ON FILE"` (Bungee focusAccent letterSpacing 2) + `"Which one?"` subhead (IBM Plex textSecondary) + thin cyan divider + × top-right. Folder rows: `folderBg` body + 45% gradient top overlay (`folderBgLight` @0.5) + 35% gradient bottom overlay (`folderBgDark` @0.35) + 3px cream paper border top + 1px documentShadow. Tabs: `folderBgDark`, 44×14, right-aligned, protrude 14px above each row via `top: -TAB_HEIGHT`, `borderTopColor: documentText` for dark edge seam. Row content: Bungee documentText name + `›` chevron documentText @0.55 opacity. Scrolls past ~5 rows (`LIST_MAX_HEIGHT: 320`) while tab protrusion still renders via `overflow: 'visible'`. Dev catalog `StaticMatchChooser` mirrors the new visual using hardcoded hex-equivalents to avoid FlatList-in-ScrollView warnings.
+
+4. **Bug fix — BusinessCard folder tab color seam** — folder body has `folderGradTop` overlay (`folderBgLight` @0.5 on top 30%) that lightens the body's top, but the tab was flat `folderBg` with no overlay. On device the seam at the tab/body join looked wrong. Fix: added `folderTabOverlay` as an absolute-fill inside the tab Pressable mirroring the exact same overlay (`folderBgLight` @0.5). Both surfaces now use the same base token + overlay, so future tuning stays in sync.
+
+**Copy changes (copy/map.ts, copy/platforms.ts):**
+
+- `mapCopy.tapNoMatch`: `"No match found"` → `"Not on file."`
+- `mapCopy.tapNoMatchA11y`: NEW → `"Not on file"`
+- `mapCopy.chooserHeading`: `(n) => "${n} MATCHES FOUND"` → plain string `"SEVERAL ON FILE"`
+- `mapCopy.chooserSubhead`: NEW → `"Which one?"`
+- `platformsCopy.nudgeTitle`: `"Your scorecard is almost ready."` → `"Scorecard incoming"` (push notification)
+- `platformsCopy.nudgeBody`: `"Any avoids left to log?"` → `"Any avoids on file?"` (push + banner)
+- `platformsCopy.nudgeBannerTitle`: NEW → `"SCORECARD INCOMING"` (in-app Bungee)
+- removed: `platformsCopy.nudgeBanner`, `platformsCopy.nudgeDismiss`
+
+**Files touched:**
+
+- `core/ui/AlertBanner.tsx` (NEW)
+- `features/Platforms/components/NudgeBanner.tsx` (rewritten as wrapper)
+- `features/Dev/harnessRenderers/contentStates.tsx` (harness uses real AlertBanner)
+- `features/Map/components/NoMatchToast.tsx` (rewritten)
+- `features/Map/components/MatchChooser.tsx` (rewritten)
+- `features/Map/components/BusinessCard.tsx` (tab overlay fix)
+- `features/Dev/sections/MapSections.tsx` (StaticMatchChooser synced to new visual)
+- `copy/map.ts`, `copy/platforms.ts`
+- `tools/copy-preview/copy-all.json`, `tools/copy-preview/copy-all.js`, `tools/copy-preview/index.html` (SURFACE_COPY_MAP synced)
+- `design/component-rules.md` (§1 folder tab, §2 Match Chooser rewrite, §19 AlertBanner, §20 NoMatchToast)
+
+**Verification:** `npx tsc --noEmit` → EXIT 0. `npx jest --silent` → 32 suites / 383 tests all green. `bash scripts/audit-copy.sh` → no new violations (only pre-existing Dev/Permissions/Scorecard hits).
+
+**No new tokens or constants.** Everything resolved via existing `design/tokens.ts` + `design/bevel.ts`.
+
+---
+
 ### Session: April 18, 2026 ET — Scorecard capture-then-purge + ghost fix
 
 **Focus:** Three production-breaking scorecard bugs surfaced in beta. Rebuilt the drop flow around a capture-then-purge privacy model. Branch `claude/fix-scorecard-payout-iaXW9`, 9 commits, pushed.

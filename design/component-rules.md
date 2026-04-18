@@ -26,7 +26,7 @@ All components reference tokens from `design/tokens.ts`. Never hardcode hex valu
 | Property | Token |
 |---|---|
 | Folder background | `colors.folderBg` |
-| Folder tab background | `colors.folderTabBg` |
+| Folder tab background | `colors.folderBg` + `colors.folderBgLight` @ 0.5 overlay (mirrors folderGradTop — keeps tab and body top seam visually identical) |
 | Folder tab label | `fonts.headline` / `colors.documentText` |
 | Folder tab corners | `radii.folderTab` (top only) |
 | Red seal (decorative) | `seal_eagle.png` 80pt, `tintColor: colors.sealRed`, 0.3 opacity |
@@ -84,25 +84,45 @@ All components reference tokens from `design/tokens.ts`. Never hardcode hex valu
 
 ## 2. Match Chooser
 
-**Purpose:** Bottom sheet shown when a single map tap returns 2+ matched entities.
+**Purpose:** Bottom sheet shown when a single map tap returns 2+ matched entities. Cockpit cyan sheet framing a stack of manila-folder rows — same folder metaphor as the BusinessCard, multiple tabs.
+
+**Sheet (cockpit surface):**
 
 | Property | Token |
 |---|---|
-| Sheet background | `colors.surface1` |
-| Row background | `colors.surface2` |
-| Sheet border | `borders.hero` in `colors.frameBlue` |
-| Title | `type.displayS` / `colors.rewardYellow` |
-| Row name | `type.uiLabel` / `colors.textPrimary` |
-| Row subtitle | `type.bodyS` / `colors.textSecondary` |
+| Sheet background | `colors.panelInner` |
+| Sheet bevel | `bevelFocusRaised` from `design/bevel.ts` |
+| Sheet outer glow | `colors.focusAccent` shadow (opacity 0.5, radius 16) |
+| Sheet inner glow | double inset `boxShadow` using `theme.glow` (top + bottom) |
+| Heading ("SEVERAL ON FILE") | `type.displayS` / `colors.focusAccent`, letterSpacing 2 |
+| Subhead ("Which one?") | `type.bodyS` / `colors.textSecondary` |
+| Divider | 1px `colors.focusAccent` @ 0.4 opacity |
+| Dismiss × | `fonts.headline` 22 / `colors.textPrimary`, ≥44pt tap target |
 
-**Spacing:** `space.lg` sheet padding, `space.sm` between rows, `space.md` row internal padding.
+**Folder row (per match):**
+
+| Property | Token |
+|---|---|
+| Folder background | `colors.folderBg` |
+| Folder gradient top overlay | `colors.folderBgLight` @ 0.5 opacity, 45% height |
+| Folder gradient bottom overlay | `colors.folderBgDark` @ 0.35 opacity, 35% height |
+| Paper border (top edge) | 3px `colors.documentBg` |
+| Paper shadow | 1px `colors.documentShadow` below paper border |
+| Tab background | `colors.folderBgDark` |
+| Tab corners | `radii.folderTab` (top only) |
+| Tab top edge | 1px `colors.documentText` |
+| Row name | `fonts.headline` 15 / `colors.documentText`, letterSpacing 1 |
+| Chevron (›) | `fonts.headline` 22 / `colors.documentText` @ 0.55 opacity |
+
+**Layout:** Sheet anchors to `position: 'absolute'` bottom of screen, margin `space.sm`. List `maxHeight: 320` with `overflow: 'visible'` so tabs can protrude above each row. Rows separated by `ItemSeparatorComponent` (10px gap). Tabs position `top: -14`, `right: 28`, width 44, height 14.
 
 **States:**
-- All rows get `colors.highlightBlue` left accent bar (`borders.hero` width).
+- **Rest:** manila body with cream paper border + dark tab.
+- **Pressed:** native Pressable feedback; no custom hover/press style.
 
-**Decoration:** Depth borders — `borderTopColor: highlightBlue`, `borderBottomColor: bgVoid` on sheet container.
+**Scrolling:** FlatList inside the sheet — scrolls when more than ~5 results fit. Tab protrusion renders correctly for visible items via `overflow: 'visible'` on the row wrapper.
 
-**Accessibility:** Each row is a focusable button. VoiceOver reads name + confidence level.
+**Accessibility:** `accessibilityViewIsModal` on sheet, `accessibilityLabel={mapCopy.chooserModalLabel}`. Heading has `accessibilityRole="header"`. Each folder row is a Pressable with `accessibilityLabel={mapCopy.chooserRow(name)}`. Dismiss × is a Pressable with `hitSlop` + label.
 
 ---
 
@@ -463,3 +483,58 @@ All exports are `ViewStyle` objects. Spread into component styles.
 **Reduced motion:** Static sparks at 0.6 opacity (mid-point), no animation.
 
 **Usage:** Ambient decoration, not part of the FX system. Persistent while parent is active. Render as `<SparkleDecoration />` inside focused rows, headers, and singleton panels.
+
+---
+
+## 19. AlertBanner (core/ui)
+
+**Purpose:** Reusable cockpit-cyan alert banner for app-wide notices (Thursday nudge, future alerts). Purely presentational — the parent owns positioning, trigger logic, and dismiss state.
+
+**Location:** `core/ui/AlertBanner.tsx`. First consumer: `features/Platforms/components/NudgeBanner.tsx`.
+
+| Property | Token |
+|---|---|
+| Panel background | `colors.focusAccent` |
+| Panel bevel | `bevelFocusRaised` from `design/bevel.ts` |
+| Panel inner glow | double inset `boxShadow` using `theme.glow` (top + bottom) |
+| Outer glow | `colors.focusAccent` shadow (opacity 0.5, radius 14) |
+| Title | `type.displayS` 14/16 / `colors.textPrimary`, letterSpacing 1 |
+| Body | `type.bodyS` / `colors.textPrimary` |
+| Dismiss × | `fonts.headline` 22 / `colors.textPrimary`, ≥44pt tap target |
+
+**Props:**
+- `title?: string` — optional Bungee short label (kicker). NudgeBanner uses `platformsCopy.nudgeBannerTitle`.
+- `body: string` — required IBM Plex body. NudgeBanner uses `platformsCopy.nudgeBody`.
+- `onPress?: () => void` — when present, body becomes a pressable with role="button".
+- `onDismiss?: () => void` — when present, × control renders on the right.
+- `bodyA11yLabel?: string` — overrides the auto-built a11y label (title + body).
+- `dismissA11yLabel?: string` — label for the × button. Defaults to "Dismiss".
+- `style?: StyleProp<ViewStyle>` — positioning/layout style applied by the parent.
+
+**Layout:** Row layout with flex body + fixed-width × dismiss. `paddingHorizontal: space.lg`, `paddingVertical: space.sm`, `minHeight: a11y.minTapTarget`.
+
+**Animation:** Wiggle via `useWiggleAnimation()` (`translateY` / `rotate` / `scale`). Reduced motion disables the animation via the hook.
+
+**Accessibility:** Container has `accessibilityRole="alert"`. Body press (when `onPress`) uses `accessibilityRole="button"` and auto-builds label from `title` + `body` unless `bodyA11yLabel` overrides. × dismiss has `hitSlop: 8` and a button role.
+
+---
+
+## 20. NoMatchToast
+
+**Purpose:** Brief toast shown when a map tap yields no entity matches. Cockpit cyan HUD pill — smaller and lower-key than AlertBanner. Auto-dismissed by the parent via `tapNoMatch` flag from `useTapSearch`.
+
+**Location:** `features/Map/components/NoMatchToast.tsx`.
+
+| Property | Token |
+|---|---|
+| Pill background | `colors.panelInner` |
+| Pill bevel | `bevelFocusRaised` from `design/bevel.ts` |
+| Outer glow | `colors.focusAccent` shadow (opacity 0.3, radius 10) |
+| Glyph | Ionicons `folder-outline` 14pt / `colors.focusAccent` |
+| Body | `type.bodyS` / `colors.textPrimary` |
+
+**Copy:** `mapCopy.tapNoMatch` → "Not on file." Screen-reader label via `mapCopy.tapNoMatchA11y` → "Not on file".
+
+**Layout:** Absolute `bottom: 80`, `alignSelf: 'center'`. `paddingVertical: space.xs`, `paddingHorizontal: space.md`. No wiggle animation.
+
+**Accessibility:** `accessibilityRole="alert"`, `accessibilityLabel={mapCopy.tapNoMatchA11y}`, `pointerEvents="none"` on outer container so it never blocks map interaction.
