@@ -64,3 +64,25 @@ export function formatReadableDate(weekOf: string): string {
 export function buildCardFilename(weekOf: string): string {
   return `Those-I-FCKd-${formatFilenameDate(weekOf)}.png`;
 }
+
+const MONTH_NAMES = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
+];
+
+/**
+ * Formats a filename (or stem) back to a human-readable archive label.
+ * e.g. "Those-I-FCKd-April-11-26.png" → "April 11, 2026"
+ *
+ * Returns the raw stem if the filename doesn't match the expected pattern —
+ * so a legacy or malformed filename never crashes the archive view.
+ */
+export function formatCardLabel(filename: string): string {
+  const stem = filename.replace(/\.png$/i, '');
+  const match = stem.match(/^Those-I-FCKd-([A-Za-z]+)-(\d{1,2})-(\d{2})$/);
+  if (!match) return stem;
+  const [, month, day, yy] = match;
+  if (!MONTH_NAMES.includes(month)) return stem;
+  const year = 2000 + Number(yy);
+  return `${month} ${Number(day)}, ${year}`;
+}

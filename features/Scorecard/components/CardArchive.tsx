@@ -13,6 +13,7 @@ import { theme } from '../../../design/tokens';
 import { useCardArchive } from '../hooks/useCardArchive';
 import { CardPresentation } from './CardPresentation';
 import type { ArchivedCard } from '../data/cardArchive';
+import { formatCardLabel } from '../utils/formatters';
 
 const THUMB_COLS = 2;
 const THUMB_ASPECT = 1920 / 1080;
@@ -29,19 +30,22 @@ export function CardArchive({ onDismiss }: CardArchiveProps) {
   const { cards, loading } = useCardArchive();
   const [selected, setSelected] = useState<ArchivedCard | null>(null);
 
-  const renderThumb = useCallback(({ item }: { item: ArchivedCard }) => (
-    <Pressable
-      style={styles.thumb}
-      onPress={() => setSelected(item)}
-      accessibilityRole="button"
-      accessibilityLabel={`Scorecard: ${item.filename}`}
-    >
-      <Image source={{ uri: item.uri }} style={styles.thumbImage} resizeMode="cover" />
-      <Text style={styles.thumbLabel} allowFontScaling={false}>
-        {item.filename.replace('.png', '')}
-      </Text>
-    </Pressable>
-  ), []);
+  const renderThumb = useCallback(({ item }: { item: ArchivedCard }) => {
+    const label = formatCardLabel(item.filename);
+    return (
+      <Pressable
+        style={styles.thumb}
+        onPress={() => setSelected(item)}
+        accessibilityRole="button"
+        accessibilityLabel={`Scorecard: ${label}`}
+      >
+        <Image source={{ uri: item.uri }} style={styles.thumbImage} resizeMode="cover" />
+        <Text style={styles.thumbLabel} allowFontScaling={false}>
+          {label}
+        </Text>
+      </Pressable>
+    );
+  }, []);
 
   if (selected) {
     return (
