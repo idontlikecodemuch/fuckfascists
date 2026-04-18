@@ -331,7 +331,11 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
 }
 
 const styles = StyleSheet.create({
-  container:      { flex: 1, backgroundColor: theme.colors.bgVoid },
+  // overflow:hidden clips Map's absolute-positioned header subtree to this
+  // root so it can't paint outside Map's frame during or after tab unmount.
+  // Guards against the RN 0.76 Fabric native-view retention pattern that
+  // ghosted Map's header into Scorecard on cold-start notification deep links.
+  container:      { flex: 1, backgroundColor: theme.colors.bgVoid, overflow: 'hidden' },
   map:            { flex: 1 },
   headerBar:      { position: 'absolute', top: 0, left: 0, right: 0, zIndex: 2, alignItems: 'center', overflow: 'visible' as const },
   headerBgStrip:  { position: 'absolute', top: 0, left: 0, width: '100%', overflow: 'hidden' },
