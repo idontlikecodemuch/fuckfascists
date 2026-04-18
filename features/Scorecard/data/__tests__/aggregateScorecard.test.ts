@@ -81,6 +81,8 @@ function makeAdapter(
     getPlatformAvoids:        jest.fn().mockResolvedValue(platformEvents),
     getPlatformAvoidsForWeek: jest.fn().mockResolvedValue(platformEvents),
     clearAllPlatformAvoids:   jest.fn().mockResolvedValue(undefined),
+    clearEntityAvoidsInRange:   jest.fn().mockResolvedValue(undefined),
+    clearPlatformAvoidsInRange: jest.fn().mockResolvedValue(undefined),
   } as jest.Mocked<StorageAdapter>;
 }
 

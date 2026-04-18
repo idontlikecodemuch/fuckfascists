@@ -206,7 +206,6 @@ export function GameArena() {
                 <Pressable
                   key={figure.spriteId}
                   onPress={handleGridTap}
-                  // @ts-expect-error — boxShadow inset: RN 0.76 Fabric, not in stable types
                   style={[
                     styles.gridCell,
                     { width: gridCellSize, height: gridCellSize },
@@ -248,7 +247,6 @@ const styles = StyleSheet.create({
     flex: 1,
     overflow: 'hidden',
     backgroundColor: theme.colors.surface1,
-    // @ts-expect-error — boxShadow inset: RN 0.76 Fabric, not in stable types
     boxShadow: [
       { offsetX: 0, offsetY: 6, blurRadius: theme.glow.blurRadius, spreadDistance: theme.glow.spreadDistance, inset: true, color: theme.glow.color },
       { offsetX: 0, offsetY: -6, blurRadius: theme.glow.blurRadius, spreadDistance: theme.glow.spreadDistance, inset: true, color: theme.glow.color },
@@ -282,13 +280,11 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.rewardYellow,
     backgroundColor: 'rgba(10, 11, 12, 0.65)',
     overflow: 'hidden',
-    // @ts-expect-error — boxShadow inset: RN 0.76 Fabric, not in stable types
     boxShadow: [
       { offsetX: 0, offsetY: 0, blurRadius: theme.glow.blurRadius, spreadDistance: theme.glow.spreadDistance, inset: true, color: theme.glow.color },
     ],
   },
   gridCellDefeated: {
-    // @ts-expect-error — boxShadow inset: RN 0.76 Fabric, not in stable types
     boxShadow: [
       { offsetX: 0, offsetY: 0, blurRadius: theme.glow.blurRadius, spreadDistance: theme.glow.spreadDistance, inset: true, color: theme.glow.colorDefeated },
     ],

@@ -194,7 +194,6 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.panelInner,
     flexDirection: 'row',
     overflow: 'visible',
-    // @ts-expect-error — boxShadow inset: RN 0.76 Fabric, not in stable types
     boxShadow: [
       { offsetX: 0, offsetY: 0, blurRadius: theme.glow.blurRadius, spreadDistance: theme.glow.spreadDistance, inset: true, color: theme.glow.color },
     ],

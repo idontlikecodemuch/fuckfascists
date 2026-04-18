@@ -167,7 +167,6 @@ export function StarFieldBg({
                 left: `${(asset.x * 100).toFixed(1)}%` as unknown as number,
                 top: `${(asset.y * 100).toFixed(1)}%` as unknown as number,
                 opacity: asset.opacity,
-                // @ts-expect-error — RN 0.76 experimental, not in stable types yet
                 ...(IS_LOW_PERF ? {} : { experimental_mixBlendMode: 'screen' }),
                 transform: [
                   { scale: asset.scale },

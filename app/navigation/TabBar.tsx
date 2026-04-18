@@ -72,6 +72,7 @@ export function TabBar({ activeTab, onSelect }: { activeTab: Tab; onSelect: (t: 
 const styles = StyleSheet.create<{
   tabBar:             ViewStyle;
   bgTexture:          ImageStyle;
+  topGlow:            ViewStyle;
   tabItem:            ViewStyle;
   tabItemActive:      ViewStyle;
   tabIconSpacing:     ViewStyle;
