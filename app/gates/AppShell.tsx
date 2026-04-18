@@ -43,15 +43,34 @@ interface AppShellProps {
  */
 export function AppShell({ adapter, entities, people }: AppShellProps) {
   const { betaEnabled, registerTap } = useBetaMode();
-  const [activeTab, setActiveTab] = useState<Tab>('map');
+  // Initial tab resolves from the cold-start notification response before any
+  // screen mounts. Starting at null holds the shell blank until we know where
+  // to route — prevents MapScreen from painting a frame that later leaves a
+  // stale native-view ghost behind Scorecard on RN 0.76 + Fabric.
+  const [activeTab, setActiveTab] = useState<Tab | null>(null);
   const [harnessOpen, setHarnessOpen] = useState(false);
   // Incrementing key forces screen remount after beta reset, clearing all
   // in-memory state (map pins, tap results, etc.).
   const [resetKey, setResetKey] = useState(0);
 
-  // Navigate to Scorecard tab when the user taps the drop notification.
-  // The scheduled notification has title "Your Scorecard Is Ready" — we match
-  // on that to avoid routing non-scorecard notifications.
+  // Cold-start routing: if the app was launched from the scorecard drop
+  // notification, skip Map entirely and mount Scorecard directly.
+  useEffect(() => {
+    let cancelled = false;
+    Notifications.getLastNotificationResponseAsync()
+      .then((resp) => {
+        if (cancelled) return;
+        const title = resp?.notification?.request?.content?.title;
+        setActiveTab(title === 'Your Scorecard Is Ready' ? 'report' : 'map');
+      })
+      .catch(() => {
+        if (!cancelled) setActiveTab('map');
+      });
+    return () => { cancelled = true; };
+  }, []);
+
+  // Warm-start routing: while the app is running, react to notification taps
+  // and route the user to Scorecard. Matches the cold-start rule above.
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
   useEffect(() => {
     if (!lastNotificationResponse) return;
@@ -82,6 +101,8 @@ export function AppShell({ adapter, entities, people }: AppShellProps) {
 
   const renderScreen = () => {
     switch (activeTab) {
+      case null:
+        return null;
       case 'scan':
         return (
           <ScanScreen
@@ -140,6 +161,13 @@ export function AppShell({ adapter, entities, people }: AppShellProps) {
   if (betaEnabled && harnessOpen) {
     const Harness = getScreenshotHarness();
     return <Harness onClose={handleCloseHarness} />;
+  }
+
+  // Hold blank on bgVoid while the initial-tab resolver runs. This is
+  // typically <50ms since the notification response is cached — the gap is
+  // not user-visible.
+  if (activeTab === null) {
+    return <View style={styles.root} />;
   }
 
   return (
