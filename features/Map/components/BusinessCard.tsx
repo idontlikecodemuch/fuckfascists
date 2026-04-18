@@ -100,13 +100,15 @@ export function BusinessCard({
       <View style={styles.folderGradTop} />
       <View style={styles.folderGradBot} />
 
-      {/* Folder tab — dismiss target */}
+      {/* Folder tab — dismiss target. Overlay mirrors folderGradTop so the
+           tab matches the lightened top of the folder body at the seam. */}
       <Pressable
         onPress={onDismiss}
         style={styles.folderTab}
         accessibilityRole="button"
         accessibilityLabel={mapCopy.closeReportA11y}
       >
+        <View style={styles.folderTabOverlay} pointerEvents="none" />
         <Text style={styles.tabLabel} allowFontScaling>{mapCopy.reportTabLabel}</Text>
         <Text style={styles.tabClose} allowFontScaling>{mapCopy.reportTabClose}</Text>
       </Pressable>
@@ -192,6 +194,12 @@ const styles = StyleSheet.create({
     minWidth: theme.a11y.minTapTarget,
     minHeight: theme.a11y.minTapTarget,
     zIndex: 5,
+    overflow: 'hidden',
+  },
+  folderTabOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: theme.colors.folderBgLight,
+    opacity: 0.5,
   },
   tabLabel: {
     fontFamily: theme.fonts.headline,
