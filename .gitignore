@@ -46,3 +46,6 @@ entities_GPTpass.json
 # Xcode workspace user/shared data
 ios/FckFascists.xcworkspace/xcshareddata/
 .claude/worktrees/
+
+# Full-res sprite source archive (optimized versions live in assets/pixel/sprites/)
+assets/pixel/sprites-hires/

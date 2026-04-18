@@ -1,13 +1,17 @@
 """
-manifest.py — Generate sprite sheet metadata JSON from processed output images.
+manifest.py — Generate sprite sheet metadata JSON from sprite PNGs.
 
-Reads output/processed/ and characters.json, then writes output/manifest.json
-with per-character grid layout and frame coordinate data for the app.
+Reads PNG dimensions from --source directory and characters.json, then writes
+manifest.json with per-character grid layout and frame coordinate data for the app.
 
 Usage:
-  python scripts/manifest.py
+  python scripts/manifest.py                          # Default: read output/processed/
+  python scripts/manifest.py --source deployed        # Read assets/pixel/sprites/ (optimized)
+  python scripts/manifest.py --source hires           # Read assets/pixel/sprites-hires/ (full-res)
+  python scripts/manifest.py --output path/to/manifest.json
 """
 
+import argparse
 import json
 import sys
 from pathlib import Path
@@ -16,8 +20,13 @@ from PIL import Image
 
 
 TOOL_DIR = Path(__file__).resolve().parent.parent
-PROCESSED_DIR = TOOL_DIR / "output" / "processed"
-MANIFEST_PATH = TOOL_DIR / "output" / "manifest.json"
+REPO_ROOT = TOOL_DIR.parent.parent
+
+SOURCES = {
+    "processed": TOOL_DIR / "output" / "processed",
+    "deployed":  REPO_ROOT / "assets" / "pixel" / "sprites",
+    "hires":     REPO_ROOT / "assets" / "pixel" / "sprites-hires",
+}
 
 
 def _load_json(path: Path) -> object:
@@ -50,17 +59,26 @@ def _frames_for_tier(tier: str) -> dict:
 
 
 def main() -> None:
-    if not PROCESSED_DIR.exists():
-        print(f"ERROR: processed directory not found: {PROCESSED_DIR}")
-        print("Run generate.py and remove_magenta.py first.")
+    parser = argparse.ArgumentParser(description="Generate sprite manifest JSON.")
+    parser.add_argument("--source", choices=list(SOURCES.keys()), default="processed",
+                        help="Which sprite directory to read from (default: processed)")
+    parser.add_argument("--output", type=Path, default=None,
+                        help="Output manifest path (default: output/manifest.json)")
+    args = parser.parse_args()
+
+    source_dir = SOURCES[args.source]
+    output_path = args.output or (TOOL_DIR / "output" / "manifest.json")
+
+    if not source_dir.exists():
+        print(f"ERROR: source directory not found: {source_dir}")
         sys.exit(1)
 
     characters_list = _load_json(TOOL_DIR / "characters.json")
     characters_by_id = {c["id"]: c for c in characters_list}
 
-    png_files = sorted(PROCESSED_DIR.glob("*.png"))
+    png_files = sorted(source_dir.glob("*.png"))
     if not png_files:
-        print(f"No PNG files found in {PROCESSED_DIR}")
+        print(f"No PNG files found in {source_dir}")
         sys.exit(0)
 
     sprites = {}
@@ -105,11 +123,11 @@ def main() -> None:
 
     manifest = {"sprites": sprites}
 
-    MANIFEST_PATH.parent.mkdir(parents=True, exist_ok=True)
-    with open(MANIFEST_PATH, "w", encoding="utf-8") as f:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(output_path, "w", encoding="utf-8") as f:
         json.dump(manifest, f, indent=2)
 
-    print(f"\nManifest written to output/manifest.json ({len(sprites)} sprite(s))")
+    print(f"\nManifest written to {output_path} ({len(sprites)} sprite(s))")
     if missing_in_json:
         print(f"Skipped (not in characters.json): {missing_in_json}")
 

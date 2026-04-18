@@ -35,19 +35,19 @@ FRAMES_DIR = TOOL_DIR / "output" / "raw" / "frames"
 
 
 def _load_env() -> None:
-    env_path = TOOL_DIR / ".env"
-    if not env_path.exists():
-        return
-    with open(env_path) as f:
-        for line in f:
-            line = line.strip()
-            if not line or line.startswith("#") or "=" not in line:
-                continue
-            key, _, value = line.partition("=")
-            key = key.strip()
-            value = value.strip().strip('"').strip("'")
-            if key and key not in os.environ:
-                os.environ[key] = value
+    for env_path in [TOOL_DIR / ".env", TOOL_DIR.parent.parent / ".env"]:
+        if not env_path.exists():
+            continue
+        with open(env_path) as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith("#") or "=" not in line:
+                    continue
+                key, _, value = line.partition("=")
+                key = key.strip()
+                value = value.strip().strip('"').strip("'")
+                if key and key not in os.environ:
+                    os.environ[key] = value
 
 
 def _load_json(path: Path) -> object:
@@ -257,24 +257,37 @@ def main() -> None:
     group.add_argument("--batch", action="store_true", help="Generate all pending variants with delay, then auto-compose")
     parser.add_argument("--dry-run", action="store_true", help="Print prompts without calling API")
     parser.add_argument("--force", action="store_true", help="Regenerate even if frames exist")
+    parser.add_argument("--ids", metavar="ID,ID,...", help="Comma-separated character IDs to filter (works with --batch and --all)")
     args = parser.parse_args()
 
     _load_env()
 
     if not args.dry_run:
-        api_key = os.environ.get("GEMINI_API_KEY")
+        api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("FFascistsimggen")
         if not api_key:
-            print("ERROR: GEMINI_API_KEY is not set. Add it to tools/img-gen/.env or your environment.")
+            print("ERROR: GEMINI_API_KEY (or FFascistsimggen) is not set. Add it to .env or your environment.")
             sys.exit(1)
+        os.environ["GEMINI_API_KEY"] = api_key
 
     config = _load_json(TOOL_DIR / "config.json")
     characters_list = _load_json(TOOL_DIR / "characters.json")
     templates = _load_json(TOOL_DIR / "templates" / "prompts.json")
     characters_by_id = {c["id"]: c for c in characters_list}
 
+    id_filter: set[str] | None = None
+    if args.ids:
+        id_filter = {x.strip() for x in args.ids.split(",")}
+        unknown = id_filter - set(characters_by_id.keys())
+        if unknown:
+            print(f"ERROR: unknown character IDs: {', '.join(sorted(unknown))}")
+            sys.exit(1)
+        print(f"Filtering to {len(id_filter)} character(s): {', '.join(sorted(id_filter))}")
+
     if args.redo:
         print("Scanning for *_redo.png files...")
         redo_pairs = _find_redo_targets(characters_by_id)
+        if id_filter:
+            redo_pairs = [(c, v) for c, v in redo_pairs if c["id"] in id_filter]
         if not redo_pairs:
             print("No _redo files found.")
             sys.exit(0)
@@ -337,9 +350,13 @@ def main() -> None:
         compose_character = _load_compose()
         delay = config.get("batch_delay_seconds", 5)
 
+        batch_chars = characters_list
+        if id_filter:
+            batch_chars = [c for c in characters_list if c["id"] in id_filter]
+
         # Build full work list: all characters × variants, skip existing unless --force
         work: list[tuple[dict, dict]] = []
-        for character in characters_list:
+        for character in batch_chars:
             for variant in _variants_for_character(character):
                 output_path = FRAMES_DIR / f"{character['id']}_{variant['key']}.png"
                 if not output_path.exists() or args.force:
@@ -402,6 +419,8 @@ def main() -> None:
 
     if args.all:
         targets = characters_list
+        if id_filter:
+            targets = [c for c in characters_list if c["id"] in id_filter]
     else:
         char_id = args.character
         if char_id not in characters_by_id:

@@ -1,14 +1,14 @@
 {
   "sprites": {
-    "anthony-hucker": {
-      "file": "anthony-hucker.png",
-      "tier": "standard",
+    "abigail-johnson": {
+      "file": "abigail-johnson.png",
+      "tier": "important",
       "grid": {
         "cols": 2,
-        "rows": 1
+        "rows": 2
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -17,6 +17,250 @@
         "varA_defeated": {
           "col": 1,
           "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "adam-aron": {
+      "file": "adam-aron.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "albert-bourla": {
+      "file": "albert-bourla.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "alex-chriss": {
+      "file": "alex-chriss.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "alex-karp": {
+      "file": "alex-karp.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "andy-jassy": {
+      "file": "andy-jassy.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "anthony-hucker": {
+      "file": "anthony-hucker.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "anthony-noto": {
+      "file": "anthony-noto.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "aravind-srinivas": {
+      "file": "aravind-srinivas.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "arvind-krishna": {
+      "file": "arvind-krishna.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
         }
       }
     },
@@ -27,8 +271,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -40,6 +284,34 @@
         }
       }
     },
+    "barry-diller": {
+      "file": "barry-diller.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
     "bernard-arnault": {
       "file": "bernard-arnault.png",
       "tier": "standard",
@@ -47,8 +319,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -67,8 +339,8 @@
         "cols": 2,
         "rows": 2
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -95,8 +367,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -108,6 +380,34 @@
         }
       }
     },
+    "bill-ready": {
+      "file": "bill-ready.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
     "billy-gifford": {
       "file": "billy-gifford.png",
       "tier": "standard",
@@ -115,8 +415,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -135,8 +435,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -155,8 +455,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -165,6 +465,34 @@
         "varA_defeated": {
           "col": 1,
           "row": 0
+        }
+      }
+    },
+    "bob-iger": {
+      "file": "bob-iger.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
         }
       }
     },
@@ -175,8 +503,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -188,6 +516,34 @@
         }
       }
     },
+    "brian-armstrong": {
+      "file": "brian-armstrong.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
     "brian-chesky": {
       "file": "brian-chesky.png",
       "tier": "important",
@@ -195,8 +551,8 @@
         "cols": 2,
         "rows": 2
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -223,8 +579,8 @@
         "cols": 2,
         "rows": 2
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -251,8 +607,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -264,6 +620,62 @@
         }
       }
     },
+    "brian-niccol": {
+      "file": "brian-niccol.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "brian-roberts": {
+      "file": "brian-roberts.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
     "bruce-thorn": {
       "file": "bruce-thorn.png",
       "tier": "standard",
@@ -271,8 +683,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -291,8 +703,28 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "carl-eschenbach": {
+      "file": "carl-eschenbach.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -311,8 +743,8 @@
         "cols": 2,
         "rows": 2
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -339,8 +771,8 @@
         "cols": 2,
         "rows": 2
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -360,6 +792,26 @@
         }
       }
     },
+    "chris-best": {
+      "file": "chris-best.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
     "chris-ditullio": {
       "file": "chris-ditullio.png",
       "tier": "standard",
@@ -367,8 +819,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -387,8 +839,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -407,8 +859,8 @@
         "cols": 2,
         "rows": 2
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -428,15 +880,15 @@
         }
       }
     },
-    "corie-barry": {
-      "file": "corie-barry.png",
+    "chuck-robbins": {
+      "file": "chuck-robbins.png",
       "tier": "standard",
       "grid": {
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -448,6 +900,74 @@
         }
       }
     },
+    "corie-barry": {
+      "file": "corie-barry.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "cristiano-amon": {
+      "file": "cristiano-amon.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "dan-clancy": {
+      "file": "dan-clancy.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
     "daniel-ek": {
       "file": "daniel-ek.png",
       "tier": "important",
@@ -455,8 +975,8 @@
         "cols": 2,
         "rows": 2
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -483,8 +1003,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -503,8 +1023,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -516,15 +1036,15 @@
         }
       }
     },
-    "darren-woods": {
-      "file": "darren-woods.png",
+    "dara-khosrowshahi": {
+      "file": "dara-khosrowshahi.png",
       "tier": "important",
       "grid": {
         "cols": 2,
         "rows": 2
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -544,6 +1064,110 @@
         }
       }
     },
+    "dario-amodei": {
+      "file": "dario-amodei.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "darren-woods": {
+      "file": "darren-woods.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "david-baszucki": {
+      "file": "david-baszucki.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "david-green": {
+      "file": "david-green.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
     "david-joyner": {
       "file": "david-joyner.png",
       "tier": "standard",
@@ -551,8 +1175,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -571,8 +1195,64 @@
         "cols": 2,
         "rows": 2
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "david-zaslav": {
+      "file": "david-zaslav.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "demis-hassabis": {
+      "file": "demis-hassabis.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -599,8 +1279,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -619,8 +1299,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -639,8 +1319,8 @@
         "cols": 2,
         "rows": 2
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -667,8 +1347,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -680,6 +1360,82 @@
         }
       }
     },
+    "drew-houston": {
+      "file": "drew-houston.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "dylan-field": {
+      "file": "dylan-field.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "ed-bastian": {
+      "file": "ed-bastian.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
     "elliott-hill": {
       "file": "elliott-hill.png",
       "tier": "standard",
@@ -687,8 +1443,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -707,8 +1463,8 @@
         "cols": 2,
         "rows": 2
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -735,8 +1491,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -748,6 +1504,34 @@
         }
       }
     },
+    "eric-yuan": {
+      "file": "eric-yuan.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
     "erik-nordstrom": {
       "file": "erik-nordstrom.png",
       "tier": "standard",
@@ -755,8 +1539,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -775,8 +1559,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -795,8 +1579,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -815,8 +1599,8 @@
         "cols": 2,
         "rows": 2
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -836,6 +1620,26 @@
         }
       }
     },
+    "fidji-simo": {
+      "file": "fidji-simo.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
     "fran-horowitz": {
       "file": "fran-horowitz.png",
       "tier": "standard",
@@ -843,8 +1647,48 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "gabriel-weinberg": {
+      "file": "gabriel-weinberg.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "gail-boudreaux": {
+      "file": "gail-boudreaux.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -863,8 +1707,8 @@
         "cols": 2,
         "rows": 2
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -884,6 +1728,46 @@
         }
       }
     },
+    "goli-sheikholeslami": {
+      "file": "goli-sheikholeslami.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "greg-peters": {
+      "file": "greg-peters.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
     "guillaume-motte": {
       "file": "guillaume-motte.png",
       "tier": "standard",
@@ -891,8 +1775,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -911,8 +1795,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -931,8 +1815,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -944,6 +1828,54 @@
         }
       }
     },
+    "hock-tan": {
+      "file": "hock-tan.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "jack-dorsey": {
+      "file": "jack-dorsey.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
     "james-daunt": {
       "file": "james-daunt.png",
       "tier": "standard",
@@ -951,8 +1883,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -971,8 +1903,8 @@
         "cols": 2,
         "rows": 2
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -999,8 +1931,56 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "jane-fraser": {
+      "file": "jane-fraser.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "jane-sun": {
+      "file": "jane-sun.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1019,8 +1999,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1032,6 +2012,34 @@
         }
       }
     },
+    "jason-citron": {
+      "file": "jason-citron.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
     "jason-hart": {
       "file": "jason-hart.png",
       "tier": "standard",
@@ -1039,8 +2047,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1059,8 +2067,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1079,8 +2087,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1099,8 +2107,8 @@
         "cols": 2,
         "rows": 2
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1127,8 +2135,28 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "jennifer-witz": {
+      "file": "jennifer-witz.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1147,8 +2175,8 @@
         "cols": 2,
         "rows": 2
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1175,8 +2203,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1188,6 +2216,34 @@
         }
       }
     },
+    "jim-farley": {
+      "file": "jim-farley.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
     "jim-taiclet": {
       "file": "jim-taiclet.png",
       "tier": "important",
@@ -1195,8 +2251,8 @@
         "cols": 2,
         "rows": 2
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1223,8 +2279,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1243,8 +2299,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1263,8 +2319,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1283,8 +2339,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1303,8 +2359,8 @@
         "cols": 2,
         "rows": 2
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1331,8 +2387,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1351,8 +2407,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1364,6 +2420,34 @@
         }
       }
     },
+    "katherine-maher": {
+      "file": "katherine-maher.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
     "kathryn-merrical": {
       "file": "kathryn-merrical.png",
       "tier": "standard",
@@ -1371,8 +2455,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1391,8 +2475,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1404,6 +2488,34 @@
         }
       }
     },
+    "ken-griffin": {
+      "file": "ken-griffin.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
     "kevin-murphy": {
       "file": "kevin-murphy.png",
       "tier": "standard",
@@ -1411,8 +2523,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1431,8 +2543,36 @@
         "cols": 2,
         "rows": 2
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "lachlan-murdoch": {
+      "file": "lachlan-murdoch.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1459,8 +2599,36 @@
         "cols": 2,
         "rows": 2
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "larry-fink": {
+      "file": "larry-fink.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1487,8 +2655,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1507,8 +2675,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1520,6 +2688,130 @@
         }
       }
     },
+    "lisa-su": {
+      "file": "lisa-su.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "liz-hamren": {
+      "file": "liz-hamren.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "luis-von-ahn": {
+      "file": "luis-von-ahn.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "lynsi-snyder": {
+      "file": "lynsi-snyder.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "marc-benioff": {
+      "file": "marc-benioff.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
     "marc-rosen": {
       "file": "marc-rosen.png",
       "tier": "standard",
@@ -1527,8 +2819,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1547,8 +2839,8 @@
         "cols": 2,
         "rows": 2
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1575,8 +2867,8 @@
         "cols": 2,
         "rows": 2
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1603,8 +2895,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1613,6 +2905,102 @@
         "varA_defeated": {
           "col": 1,
           "row": 0
+        }
+      }
+    },
+    "mary-barra": {
+      "file": "mary-barra.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "mary-dillon": {
+      "file": "mary-dillon.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "matt-mullenweg": {
+      "file": "matt-mullenweg.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "matthew-prince": {
+      "file": "matthew-prince.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
         }
       }
     },
@@ -1623,8 +3011,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1633,6 +3021,34 @@
         "varA_defeated": {
           "col": 1,
           "row": 0
+        }
+      }
+    },
+    "melanie-perkins": {
+      "file": "melanie-perkins.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
         }
       }
     },
@@ -1643,8 +3059,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1656,6 +3072,34 @@
         }
       }
     },
+    "meredith-kopit-levien": {
+      "file": "meredith-kopit-levien.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
     "michael-dell": {
       "file": "michael-dell.png",
       "tier": "standard",
@@ -1663,8 +3107,28 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "michael-miebach": {
+      "file": "michael-miebach.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1683,8 +3147,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1703,8 +3167,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1716,6 +3180,54 @@
         }
       }
     },
+    "mike-sievert": {
+      "file": "mike-sievert.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "mike-wirth": {
+      "file": "mike-wirth.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
     "mitch-fadel": {
       "file": "mitch-fadel.png",
       "tier": "standard",
@@ -1723,8 +3235,68 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "nicholas-thompson": {
+      "file": "nicholas-thompson.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "niraj-shah": {
+      "file": "niraj-shah.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "omar-abbosh": {
+      "file": "omar-abbosh.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1743,8 +3315,96 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "patrick-collison": {
+      "file": "patrick-collison.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "patrick-soon-shiong": {
+      "file": "patrick-soon-shiong.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "patti-poppe": {
+      "file": "patti-poppe.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "paula-kerger": {
+      "file": "paula-kerger.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1763,8 +3423,28 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "rahul-purini": {
+      "file": "rahul-purini.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1783,8 +3463,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1803,8 +3483,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1823,8 +3503,8 @@
         "cols": 2,
         "rows": 2
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1851,8 +3531,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1871,8 +3551,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1891,8 +3571,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1911,8 +3591,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1931,8 +3611,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1951,8 +3631,8 @@
         "cols": 2,
         "rows": 2
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -1979,8 +3659,84 @@
         "cols": 2,
         "rows": 2
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "ryan-roslansky": {
+      "file": "ryan-roslansky.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "safra-catz": {
+      "file": "safra-catz.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "sal-khan": {
+      "file": "sal-khan.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -2007,8 +3763,8 @@
         "cols": 2,
         "rows": 2
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -2035,8 +3791,36 @@
         "cols": 2,
         "rows": 2
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "scott-kirby": {
+      "file": "scott-kirby.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -2063,8 +3847,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -2076,6 +3860,62 @@
         }
       }
     },
+    "shantanu-narayen": {
+      "file": "shantanu-narayen.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "shou-zi-chew": {
+      "file": "shou-zi-chew.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
     "sky-xu": {
       "file": "sky-xu.png",
       "tier": "standard",
@@ -2083,8 +3923,28 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "sridhar-ramaswamy": {
+      "file": "sridhar-ramaswamy.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -2103,8 +3963,36 @@
         "cols": 2,
         "rows": 2
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "steve-huffman": {
+      "file": "steve-huffman.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -2131,8 +4019,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -2141,6 +4029,34 @@
         "varA_defeated": {
           "col": 1,
           "row": 0
+        }
+      }
+    },
+    "sundar-pichai": {
+      "file": "sundar-pichai.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
         }
       }
     },
@@ -2151,8 +4067,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -2164,6 +4080,54 @@
         }
       }
     },
+    "ted-pick": {
+      "file": "ted-pick.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "thomas-dohmke": {
+      "file": "thomas-dohmke.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
     "tim-boyle": {
       "file": "tim-boyle.png",
       "tier": "standard",
@@ -2171,8 +4135,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -2191,8 +4155,8 @@
         "cols": 2,
         "rows": 2
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -2219,8 +4183,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -2232,6 +4196,34 @@
         }
       }
     },
+    "tobi-ltke": {
+      "file": "tobi-ltke.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
     "todd-vasos": {
       "file": "todd-vasos.png",
       "tier": "standard",
@@ -2239,8 +4231,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -2259,8 +4251,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -2279,8 +4271,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -2299,8 +4291,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -2319,8 +4311,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -2329,6 +4321,34 @@
         "varA_defeated": {
           "col": 1,
           "row": 0
+        }
+      }
+    },
+    "tony-xu": {
+      "file": "tony-xu.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
         }
       }
     },
@@ -2339,8 +4359,8 @@
         "cols": 2,
         "rows": 1
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,
@@ -2352,6 +4372,34 @@
         }
       }
     },
+    "vlad-tenev": {
+      "file": "vlad-tenev.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
     "warren-buffett": {
       "file": "warren-buffett.png",
       "tier": "important",
@@ -2359,8 +4407,8 @@
         "cols": 2,
         "rows": 2
       },
-      "frameWidth": 728,
-      "frameHeight": 720,
+      "frameWidth": 364,
+      "frameHeight": 360,
       "frames": {
         "varA_neutral": {
           "col": 0,

@@ -42,6 +42,20 @@
     }
   },
   {
+    "id": "alex-chriss",
+    "name": "Alex Chriss",
+    "tier": "important",
+    "likeness": "Short dark-brown hair, olive-medium skin, stocky athletic build, square jaw, dark eyes, close-trimmed beard and mustache, broad shoulders",
+    "variants": {
+      "A": {
+        "outfit": "Dark navy suit, white shirt, no tie, black dress shoes, visible company logo on chest"
+      },
+      "B": {
+        "outfit": "Blue PayPal quarter-zip over dark t-shirt, dark jeans, white sneakers, visible company logo on chest"
+      }
+    }
+  },
+  {
     "id": "alex-karp",
     "name": "Alex Karp",
     "tier": "important",
@@ -152,6 +166,20 @@
     "variants": {
       "A": {
         "outfit": "Dark navy suit, white shirt, black tie, black dress shoes, tiny LVMH monogram pin"
+      }
+    }
+  },
+  {
+    "id": "bill-ready",
+    "name": "Bill Ready",
+    "tier": "important",
+    "likeness": "Short dark-brown hair neatly combed, light skin, tall medium build, long rectangular face, blue-grey eyes, clean-shaven, prominent chin",
+    "variants": {
+      "A": {
+        "outfit": "Dark blazer over crisp white shirt, dark pants, brown shoes, visible company logo on chest"
+      },
+      "B": {
+        "outfit": "Red Pinterest polo shirt, dark chinos, white sneakers, visible company logo on chest"
       }
     }
   },
@@ -944,10 +972,10 @@
     "likeness": "Dark hair, olive skin, slim build, sharp cheekbones, intense eyes, full dark beard",
     "variants": {
       "A": {
-        "outfit": "Black fitted t-shirt, dark jeans, black boots, visible company logo on chest"
+        "outfit": "Black fitted t-shirt with the Square Inc. logo on the chest (a 3x3 grid of 9 small white squares arranged like a tic-tac-toe pattern; NOT an X, NOT Twitter, NOT a single square, NOT any letter), dark jeans, black boots"
       },
       "B": {
-        "outfit": "Sleeveless black tank, dark drawstring pants, meditation beads, bare feet, wellness-guru billionaire aura, visible company logo on chest"
+        "outfit": "Sleeveless black tank with the Square Inc. logo on the chest (a 3x3 grid of 9 small white squares arranged like a tic-tac-toe pattern; NOT an X, NOT Twitter, NOT a single square, NOT any letter), dark drawstring pants, meditation beads, bare feet, wellness-guru billionaire aura"
       }
     }
   },
