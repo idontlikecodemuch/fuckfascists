@@ -68,22 +68,36 @@ Current state:
 - `206` `producerResearch` entries seeded from public producer/brand research
 - OFF bulk archive scanned locally and checkpointed
 - `4,403,001` OFF product documents processed with `0` parse errors
-- `18` entity-linked runtime producers exposed in `producers`
+- `1,000` exact barcode product rows exposed in `products`
+- `5,000` exact barcode product candidates retained in the local checkpoint
+- exact product rows cover all `87` current runtime producer entity IDs
+- `87` runtime producer rows exposed in `producers` after the April 2026 entity cross-hydration pass
+- `89` `producerResearch` rows currently mapped to live entity IDs; `117` still need entity coverage before they can become runtime producers
+- Philip Morris International and Altria now resolve to distinct runtime entity IDs
 - research entries now carry OFF-backed:
   - `dbObservedPrefixes`
   - `dbObservedBrands`
   - `dbConfirmedAliases`
   - `dbSuggestedAliases`
 
-The runtime `producers` layer is intentionally conservative:
+The runtime exact `products` layer is checked first:
+
+- only exact 12- or 13-digit barcode matches qualify
+- the OFF product row must resolve to exactly one producer seed
+- that producer seed must resolve to a current entity ID
+- duplicate runtime barcodes are not allowed
+
+The runtime `producers` layer is the conservative fallback:
 
 - only existing entity IDs are activated
 - prefixes must survive repeated-evidence thresholds
 - runtime `observedBrands` are cleaned to remove producer self-labels, legal-entity strings, obvious descriptor junk, and partner-company contamination
+- product-side `entityIdExists`, `entityId`, `entityMatchType`, and `missingEntityCandidate` fields are refreshed against current `entities.json` during checkpoint rebuilds
 
 Deep reference:
 
 - `docs/PRODUCTS_DATA_PIPELINE.md`
+- `docs/DATA_CLEANING_AUDIT_2026-04-20.md`
 
 ## Runtime flow
 
@@ -207,9 +221,10 @@ Notes:
 - Open Food Facts coverage is good for grocery scanning, but not universal.
 - Brand strings returned by a product database will never perfectly align with parent-company aliases without continued curation.
 - The local OFF-derived producer layer is much stronger now, but runtime quality still depends on the current entity coverage in `entities.json`. Many strong producer candidates are still held in `producerResearch` until a separate entity pass lands.
+- The current data set now has `1,000` exact product barcodes, but those rows are OFF-derived coverage, not a verified "most-shopped" ranking.
 - The current repo has an existing Expo dependency mismatch: `@expo/vector-icons@15.1.1` expects a newer `expo-font` than this SDK 52 app currently pins. `expo-camera` was installed with legacy peer resolution to avoid rewriting unrelated dependencies during this feature pass.
 - Full iOS simulator build verification is still partially environment-sensitive in this repo right now because the local Xcode/CoreSimulator/CocoaPods setup can fail before app code is fully evaluated. The scan flow itself is covered by TypeScript, focused Jest tests, plist validation, and the native permission fix.
 
 ## Recommended next step
 
-If scan coverage needs a real boost without bloating the app, the highest-value next step is a separate `entities.json` pass for producer candidates that already have strong OFF evidence in `producerResearch`, then a `--rebuild-from-checkpoint` products sync so those candidates can become runtime producers without rerunning the full archive scan.
+Choose between three scan-coverage paths: increase the exact product limit from the current 1,000-row runtime set, add the remaining high-evidence OFF producer candidates to `entities.json`, or expand `producerResearch` from another ranked CPG source. Any entity/alias path should finish with a `--rebuild-from-checkpoint --exact-product-limit 1000` products sync so newly covered candidates can become runtime producers without rerunning the full archive scan.

@@ -1,10 +1,10 @@
 # Products Data Pipeline
 
-Last updated: March 24, 2026
+Last updated: April 20, 2026
 
 ## Purpose
 
-This document explains how the barcode/products data layer works today, how `products.json` is generated, how the Open Food Facts bulk archive is used, what cleanup rules were added, and where the current gaps still are.
+This document explains how the barcode/products data layer works today, how `products.json` is generated, how the Open Food Facts bulk archive is used, how current `entities.json` coverage is cross-hydrated into product research, how exact barcode products are bundled, what cleanup rules were added, and where the current gaps still are.
 
 This is the canonical deep-dive for the products functionality. It is intentionally separate from:
 
@@ -17,7 +17,7 @@ This is the canonical deep-dive for the products functionality. It is intentiona
 The products pass was done under these constraints:
 
 1. Keep all producer/UPC work inside the products layer.
-2. Do not mutate `entities.json` or `people.json` as part of barcode/product expansion.
+2. Do not mutate `entities.json` or `people.json` as part of barcode/product expansion. Product rebuilds may read current `entities.json` to refresh product-side entity match fields, but entity edits happen in separate reviewed batches.
 3. Treat the local Open Food Facts bulk dump as the only reliable source for prefix discovery.
 4. Use public web research only to seed candidate producers and obvious flagship brands.
 5. Keep runtime lookup conservative; broader observations can live in research/reference fields.
@@ -25,6 +25,7 @@ The products pass was done under these constraints:
 ## Key Files
 
 - `assets/data/products.json`
+- `assets/data/entities.json` (read-only input during product rebuild)
 - `scripts/sync-products-from-off.py`
 - `tools/off-bulk/openfoodfacts-mongodbdump`
 - `tools/off-bulk/checkpoints/products-off-sync.checkpoint.json`
@@ -33,11 +34,35 @@ The products pass was done under these constraints:
 
 ## Current `products.json` Shape
 
-`products.json` has two layers:
+`products.json` has three layers:
 
-### 1. `producers`
+### 1. `products`
 
-This is the runtime lookup layer used by `features/Map/barcode/productIndex.ts`.
+This is the exact barcode runtime layer used first by `features/Map/barcode/productIndex.ts`.
+
+Each entry contains:
+
+- `barcode`
+- `displayBarcode`
+- `productName`
+- `brandName`
+- `canonicalProducerName`
+- `entityId`
+- `entityMatchType`
+- `matchedProducerProductCount`
+- `matchedTerm`
+- `source`
+
+This layer is intentionally small and conservative. It only includes product rows that:
+
+- have a valid 12- or 13-digit barcode
+- have a usable OFF product name
+- match exactly one producer seed from OFF brand/owner fields
+- resolve to a current live entity ID
+
+### 2. `producers`
+
+This is the producer-prefix runtime fallback layer used after exact products.
 
 Each entry contains:
 
@@ -56,7 +81,7 @@ This layer is intentionally conservative. It only includes producers that:
 - have repeated OFF evidence
 - retain at least one filtered prefix after thresholding
 
-### 2. `producerResearch`
+### 3. `producerResearch`
 
 This is the broader research/reference layer.
 
@@ -85,6 +110,8 @@ Each producer seed contributes:
   - `missingEntityCandidate`
 
 The seed list was built around UPC-heavy consumer product producers, not general retailers. The intent is shelf-product ownership: `Doritos -> Pepsico`, not store chains.
+
+During rebuild, those entity coverage signals are rechecked against the current `assets/data/entities.json`. This matters because product research may be older than the entity list. A new entity batch should become eligible for runtime barcode matching after a checkpoint rebuild, without hand-editing hundreds of stale `producerResearch` flags.
 
 ## OFF Bulk Archive
 
@@ -131,6 +158,48 @@ Rules:
 - producer matching is parent-company oriented, but seed brands can also trigger the match
 
 This lets things like `Doritos`, `Lay's`, and `Pepsi` all roll up into `Pepsico` if they were seeded there.
+
+## Entity Cross-Hydration
+
+Before building runtime producers, `scripts/sync-products-from-off.py` now creates a normalized lookup from current entities:
+
+- entity `canonicalName`
+- entity `aliases`
+- variants with common company suffixes stripped
+
+If the same normalized term maps to multiple entity IDs, that term is dropped from the lookup as ambiguous.
+
+Each `producerResearch` entry is then checked against:
+
+- `canonicalProducerName`
+- seeded `observedBrands`
+- `dbConfirmedAliases`
+
+When a current entity match is found, the product-side fields are refreshed:
+
+- `entityId`
+- `entityIdExists`
+- `entityMatchType`
+- `missingEntityCandidate`
+
+Rows are re-resolved every checkpoint rebuild even if they already contain an `entityId`. Product-side IDs are derived fields. This matters because alias cleanup must be able to remove stale mappings; the April 20 pass caught a Helen of Troy/OXO -> Premier Foods mistake this way.
+
+This is product-side rehydration only. It does not add aliases to `entities.json`, does not edit `people.json`, and does not claim that OFF alone proves legal ownership.
+
+## Exact Product Collection
+
+The fresh OFF scan also builds an exact-product candidate pool. This is separate from prefix aggregation.
+
+Exact product rows are accepted only when:
+
+- `code` normalizes to a 12- or 13-digit retail barcode
+- `product_name` passes basic quality checks
+- OFF `brand_owner`, `brand_owner_imported`, `brands`, or `brands_tags` matches exactly one producer seed
+- the producer seed resolves to a current entity ID
+
+Ambiguous rows that match multiple producer seeds are not added to the exact-product layer.
+
+The checkpoint keeps up to `5,000` exact-product candidates, capped per producer during collection so one large producer cannot consume the entire pool. The runtime `products` array ships a balanced subset, currently `1,000` rows across all `87` runtime producer entities. The app checks exact product barcodes before producer prefixes, so an exact product row wins over a broader prefix hit.
 
 ## Prefix Extraction
 
@@ -265,6 +334,12 @@ Checkpoint-only rebuild:
 python3 scripts/sync-products-from-off.py --rebuild-from-checkpoint
 ```
 
+Checkpoint-only rebuild with the current exact-product runtime target:
+
+```bash
+python3 scripts/sync-products-from-off.py --rebuild-from-checkpoint --exact-product-limit 1000
+```
+
 Limited dry run:
 
 ```bash
@@ -272,6 +347,14 @@ python3 scripts/sync-products-from-off.py --limit 100 --fresh --no-final-write
 ```
 
 ## Current Results
+
+### Exact product coverage
+
+- `5,000` exact-product candidates retained in the local checkpoint
+- `1,000` exact product barcode rows shipped in runtime `products`
+- `87` entity IDs represented by exact product rows
+- `0` duplicate exact product barcodes
+- runtime exact product file size remains small enough for bundling: `assets/data/products.json` is about `668 KB`
 
 ### Research coverage
 
@@ -283,92 +366,92 @@ python3 scripts/sync-products-from-off.py --limit 100 --fresh --no-final-write
 
 ### Entity coverage
 
-- `19` producerResearch entries currently map to existing entities
-- all `19` of those now have OFF-derived prefixes
-- `187` are still marked `missingEntityCandidate`
-- `155` missing-entity candidates already have OFF-derived prefixes
+- `89` producerResearch entries currently map to existing entities
+- `117` are still marked `missingEntityCandidate`
+- `85` missing-entity candidates already have OFF-derived prefixes
 
 ### Runtime producer coverage
 
-`18` producers currently land in runtime `producers`:
+`87` producers currently land in runtime `producers`.
 
-1. `Pepsico`
-2. `Coca-Cola`
-3. `Starbucks`
-4. `Conagra Brands`
-5. `General Mills`
-6. `Mondelez International`
-7. `Mars, Inc.`
-8. `Kellanova`
-9. `Hormel Foods`
-10. `Campbell's`
-11. `Kraft Heinz`
-12. `Tyson Foods`
-13. `Brown Forman`
-14. `Anheuser-Busch Inbev`
-15. `Constellation Brands`
-16. `Kenvue`
-17. `Philip Morris International`
-18. `Altria Group`
+The earlier Altria / Philip Morris International duplicate runtime-entity caveat is resolved. Philip Morris International now resolves to `entityId: "philip-morris-international"` and Altria Group resolves to `entityId: "altria"`.
 
 ### Top runtime producers by matched OFF products
 
+- `Nestle` — `16,767` matched products, `156` kept prefixes
 - `Pepsico` — `7,597` matched products, `121` kept prefixes
+- `Danone` — `7,105` matched products, `76` kept prefixes
+- `Chocoladefabriken Lindt & Sprungli` — `5,641` matched products, `22` kept prefixes
 - `Coca-Cola` — `5,404` matched products, `73` kept prefixes
+- `Unilever` — `4,102` matched products, `83` kept prefixes
 - `Starbucks` — `2,650` matched products, `38` kept prefixes
 - `Conagra Brands` — `2,615` matched products, `35` kept prefixes
 - `General Mills` — `2,436` matched products, `20` kept prefixes
 - `Mondelez International` — `2,373` matched products, `35` kept prefixes
+- `Fleury Michon` — `1,992` matched products, `7` kept prefixes
 - `Mars, Inc.` — `1,933` matched products, `32` kept prefixes
+- `Ferrero Group` — `1,848` matched products, `17` kept prefixes
+- `Bonduelle` — `1,830` matched products, `11` kept prefixes
 - `Kellanova` — `1,429` matched products, `14` kept prefixes
+- `Hormel Foods` — `1,392` matched products, `13` kept prefixes
+- `Grupo Bimbo` — `1,375` matched products, `24` kept prefixes
+- `Simply Good Foods` — `1,347` matched products, `15` kept prefixes
+- `Thai Union Group` — `1,312` matched products, `8` kept prefixes
 
 ### Highest-value missing-entity candidates
 
 These are not runtime-active yet because they do not currently resolve to existing entity IDs, but the OFF data is already strong:
 
-- `Nestlé` — `16,767` matched products, `156` prefixes
-- `Danone` — `7,105` matched products, `76` prefixes
-- `Chocoladefabriken Lindt & Sprüngli` — `5,641` matched products, `22` prefixes
-- `Unilever` — `4,102` matched products, `83` prefixes
-- `Ferrero Group` — `1,848` matched products, `17` prefixes
-- `Grupo Bimbo` — `1,375` matched products, `24` prefixes
-- `Simply Good Foods` — `1,347` matched products, `15` prefixes
-- `JDE Peet's` — `1,076` matched products, `17` prefixes
+- `Uni-President Enterprises` — `1,415` matched products, `36` prefixes
+- `ORION` — `402` matched products, `11` prefixes
+- `Valsoia S.p.A.` — `270` matched products, `4` prefixes
+- `Lifeway Foods` — `263` matched products, `1` prefix
+- `Cloetta` — `260` matched products, `8` prefixes
+- `Fever-Tree Drinks` — `255` matched products, `5` prefixes
+- `Mayora` — `242` matched products, `17` prefixes
+- `Thai Beverage` — `240` matched products, `15` prefixes
+- `Zevia` — `234` matched products, `3` prefixes
+- `AG Barr` — `216` matched products, `6` prefixes
+- `Royal Unibrew` — `205` matched products, `12` prefixes
+- `Seneca Foods` — `193` matched products, `6` prefixes
 
 ## Category Coverage
 
-- `consumer_goods` — `42` seeded, `38` matched, `32` with prefixes
-- `beverages` — `51` seeded, `43` matched, `42` with prefixes
-- `food` — `96` seeded, `87` matched, `86` with prefixes
-- `tobacco` — `12` seeded, `12` matched, `10` with prefixes
-- `manual_priority` — `5` seeded, `4` matched, `4` with prefixes
+- `consumer_goods` — `42` seeded, `38` matched, `32` with prefixes, `14` with current entity coverage
+- `beverages` — `51` seeded, `43` matched, `42` with prefixes, `20` with current entity coverage
+- `food` — `96` seeded, `87` matched, `86` with prefixes, `48` with current entity coverage
+- `tobacco` — `12` seeded, `12` matched, `10` with prefixes, `3` with current entity coverage
+- `manual_priority` — `5` seeded, `4` matched, `4` with prefixes, `3` with current entity coverage
 
 ## Verification
 
 After the products rebuild and cleanup passes:
 
 ```bash
-npm test -- --runTestsByPath features/Map/__tests__/barcodeHelpers.test.ts
+npm test -- --runTestsByPath features/Map/__tests__/productIndex.test.ts features/Map/__tests__/barcodeHelpers.test.ts
 ```
 
 Result:
 
-- `1` suite passed
-- `7` tests passed
+- `2` suites passed
+- `15` tests passed
 
 ## Known Caveats
 
 1. Prefixes are OFF-derived heuristics for runtime producer matching, not a global GS1-ownership truth table.
 2. OFF brand fields are useful but imperfect; even after cleanup, research-layer observations will remain broader than runtime brands.
 3. Some runtime brand lists still contain borderline labels if they behave like real shelf brands in OFF, for example `Conagra` or `Hormel`.
-4. Missing entity coverage, not OFF coverage, is now the largest structural limitation.
+4. Missing entity coverage, not OFF coverage, remains the largest structural limitation after the April entity batch.
+5. The current `1,000` exact products are a conservative OFF-derived barcode set, not a verified shopping-volume ranking.
 
 ## Recommended Next Pass
 
 If product scan coverage needs to improve further without touching unrelated systems:
 
-1. Add high-value missing entity candidates to `entities.json` in a separate data-quality pass.
-2. Re-run `scripts/sync-products-from-off.py --rebuild-from-checkpoint`.
-3. Review any newly activated runtime producers for alias cleanup.
+1. Decide whether to add more exact products, add the remaining high-value OFF-backed producers, or expand `producerResearch` with another ranked CPG source.
+2. Add new entities or seed rows in a separate data-quality pass.
+3. Re-run `scripts/sync-products-from-off.py --rebuild-from-checkpoint --exact-product-limit 1000`.
+4. Run `npm run audit:aliases`.
+5. Review any newly activated runtime producers for alias cleanup.
 
 This keeps product expansion incremental, reversible, and isolated from unrelated entity/people cleanup work.

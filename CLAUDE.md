@@ -24,6 +24,7 @@ These documents are the authoritative reference for the project. New instances s
 | Document | Location | Purpose |
 |---|---|---|
 | Progress & Current State | /docs/PROGRESS.md | Read this first — current sprint status, recent sessions, immediate next steps |
+| Data Cleaning Audit Handoff | /docs/DATA_CLEANING_AUDIT_2026-04-20.md | Current April 2026 data-cleaning audit packet — local data inputs, changed files, verification commands, metrics, and known review findings |
 | Progress Archive | /docs/PROGRESS_ARCHIVE.md | Older session logs (pre-March 12, 2026) — reference only, not required reading |
 | Products Data Pipeline | /docs/PRODUCTS_DATA_PIPELINE.md | Deep reference for `products.json`, the OFF bulk sync process, checkpoints, cleanup heuristics, and current coverage |
 | App Spec (original) | /docs/FuckFascists_AppSpec_ORIGINAL.docx | Canonical product vision as originally written — do not modify |
@@ -61,7 +62,7 @@ API keys and credentials must **only ever be read from environment variables**. 
 
 - **Never hardcode any key, token, or credential** in source files, config files, or comments. `.env` is gitignored; `.env.example` shows placeholders only. Hardcoded keys are bugs — remove immediately and rotate.
 - **`FECClient` supports anonymous mode** — runs without `FEC_API_KEY`, making requests with no `api_key` param (lower rate limits). `console.warn` in non-prod when key is absent.
-- **`FEC_API_KEY` is required for data pipeline scripts** — they make hundreds of requests and exit with an error when the key is missing.
+- **`FEC_API_KEY` is required only for FEC API pipeline scripts** — `verify:entities`, `fetch:donations`, and `fetch:people` make live FEC API requests and must be flagged before running. Bulk-first scripts such as `hydrate:entities:bulk`, `build:people:bulk-top`, and `hydrate:people:bulk` use local `tools/fec-bulk/` files and do not require an API key.
 - **`OPENAI_API_KEY` is required for `gpt_image.py`** — the GPT image pipeline reads from `.env` via python-dotenv. Exits with a clear error if missing. Not used by any app or extension runtime code.
 - **`GEMINI_API_KEY` is required for Gemini generation scripts** — `generate.py` and `generate_assets.py` read from `.env`. Not used by any app or extension runtime code.
 
@@ -370,26 +371,53 @@ This logic lives in `/core/matching/` and is shared between the mobile app and t
 
 ## Data Pipeline Scripts
 
-These scripts are run locally by maintainers — never in CI. Both require `FEC_API_KEY` in `.env`.
+These scripts are run locally by maintainers — never in CI. Prefer local bulk workflows when `tools/fec-bulk/` is staged. FEC API scripts still exist for discovery/fallback, but they hit external APIs and must be flagged before running.
 
 ### `npm run verify:entities`
 Verifies `fecCommitteeId` for each entity in `assets/data/entities.json` via the FEC API.
 Searches by canonical name, scores results with Jaro-Winkler, and populates `fecCommitteeId`
 when a confident match is found. Marks confirmed no-PAC entities with `fecCommitteeId: null`.
 
+Requires `FEC_API_KEY` for maintainers. Do not run without flagging the user first.
+
 ### `npm run fetch:donations`
 Pre-fetches FEC donation totals for all entities with a verified `fecCommitteeId` and writes `donationSummary` to `entities.json`. The matching pipeline uses bundled data directly when present and fresh, skipping live FEC calls.
 
 - Fresh entries (within `ENTITY_CACHE_TTL_DAYS` of `lastVerifiedDate`) are skipped. Use `--force` to re-fetch all.
+- Line 29 state/local disbursements are classified when direct FEC party fields are blank. Priority order: latest local beneficiary classification report (`tools/fec-bulk/reports/committee-beneficiary-classification-*.json`), committee master party (`tools/fec-bulk/cm*.txt`), curated committee overrides, then OpenStates legislator fuzzy match by name + state. Use `--no-classify` only when intentionally reproducing pre-classification behavior.
+- `--dry-run` exercises the fetch/classification path without writing `entities.json`; it still calls the FEC API and must be flagged first.
 - On failure, `lastVerifiedDate` is cleared so the entity retries on the next plain run.
 - Progress saves every 10 fetches — safe to interrupt and restart.
 - **Rate limiting** — sliding-window `RateLimiter` class: `COMMITTEE_RPM=30`, `SCHEDULE_B_RPM=8`. On 429: exponential backoff (60s→120s→240s, max 300s, 3 retries). Do NOT reintroduce fixed delays (`FETCH_DELAY_MS` etc.).
 - See script header comments in `fetch-donation-data.mjs` for Schedule B attribution details and known FEC API quirks.
 
-Run `fetch:donations` after `verify:entities` whenever the entity list is updated. Commit `entities.json` manually after review.
+Requires `FEC_API_KEY` for maintainers. Do not run without flagging the user first. When local bulk data is staged, prefer `npm run hydrate:entities:bulk` for broad hydration and reserve this script for targeted fallback or API comparison.
+
+### `npm run download:openstates`
+Downloads OpenStates current legislator CSVs into `data/openstates/all-legislators.csv` for the Line 29 classifier. This hits `data.openstates.org` but does not require an API key. The output is local/generated and gitignored. Run after major state-legislator turnover or before a donation refresh that relies on state/local classification.
+
+### `npm run audit:aliases`
+Audits entity aliases for exact duplicates, single-word substring collisions, parent/child alias overlap, and FEC canonical-name drift. It makes no API calls and does not modify data. Run after each entity batch before hydration or product rebuilds.
+
+### `npm run hydrate:entities:bulk`
+Hydrates corporate/entity PAC donation summaries from local FEC PAS2 and OTH bulk files. Uses cycles `2016, 2018, 2020, 2022, 2024, 2026`, the latest local Line 29 beneficiary classification report, local committee/candidate/linkage files, and Schedule-B-like OTH rows. This is the preferred broad entity hydration path when `tools/fec-bulk/` is staged. It makes no API calls, writes `assets/data/entities.json`, and creates `assets/data/entities.pre-bulk-hydration.json`.
+
+Run `npm run audit:aliases` and `node scripts/verify-data-integrity.mjs` after this script.
+
+### People bulk scripts
+`npm run build:people:bulk-top`, `npm run sync:people:bulk-top`, `npm run hydrate:people:bulk`, `npm run build:people:entity-review-queue`, and `npm run strip:people:raw` maintain `people.json` and `people.bundle.json` from local FEC individual-contribution bulk files. Cycles include `2026`. `sync:people:bulk-top` keeps extra pre-existing people by default; `--drop-extra` intentionally discards people outside the top-donor merge and should be treated as destructive.
+
+Preferred order:
+
+1. `npm run build:people:bulk-top`
+2. `npm run sync:people:bulk-top`
+3. `npm run hydrate:people:bulk`
+4. `npm run build:people:entity-review-queue`
+5. `node scripts/reconcile-v1-entities.mjs --write`
+6. `npm run strip:people:raw`
 
 ### `python3 scripts/sync-products-from-off.py`
-Processes the Open Food Facts MongoDB bulk dump into `assets/data/products.json`. Scans ~4.4M product documents, extracts UPC prefix evidence per producer, and outputs a two-layer index: conservative runtime `producers` (18 entries mapped to existing entity IDs) and broader `producerResearch` (206 entries for future expansion). Checkpoint-based resume (`tools/off-bulk/checkpoints/`). Requires the OFF bulk archive at `tools/off-bulk/openfoodfacts-mongodbdump` (not committed — 91GB+). Use `--rebuild-from-checkpoint` to regenerate `products.json` from saved aggregates without rescanning. See `docs/PRODUCTS_DATA_PIPELINE.md` for full details.
+Processes the Open Food Facts MongoDB bulk dump into `assets/data/products.json`. Scans ~4.4M product documents, extracts exact barcode product rows plus UPC prefix evidence per producer, and outputs a three-layer index: exact runtime `products` (1,000 rows in the April 2026 data-cleaning batch), conservative runtime `producers` (87 entries), and broader `producerResearch` (206 entries for future expansion). Rebuilds read current `entities.json` to refresh product-side entity match fields before runtime producers are built, including clearing stale product-side `entityId` values after alias cleanup. Checkpoint-based resume (`tools/off-bulk/checkpoints/`). Requires the OFF bulk archive at `tools/off-bulk/openfoodfacts-mongodbdump` (not committed — 91GB+). Use `--rebuild-from-checkpoint --exact-product-limit 1000` to regenerate `products.json` from saved aggregates and the 5,000-row exact-product candidate pool without rescanning. Philip Morris International and Altria currently resolve to distinct runtime entity IDs. See `docs/PRODUCTS_DATA_PIPELINE.md` and `docs/DATA_CLEANING_AUDIT_2026-04-20.md` for details and current audit caveats.
 
 ### `node scripts/generate-arena-assets.mjs`
 Scans `assets/pixel/arena/` for PNG files and regenerates `core/arena/arenaAssets.ts` — a static `require()` map used by `GameArena`. Run this after adding or removing arena background images. The generated file should be committed to the repo (Metro bundler requires the static `require()` strings at build time).
@@ -509,7 +537,7 @@ When a flagged domain is detected, `handleCheckDomain` resolves donation data in
 
 ```typescript
 // Environment config in .env files, never committed. See .env.example.
-// FEC_API_KEY optional for app (anonymous mode); required for data pipeline scripts.
+// FEC_API_KEY optional for app (anonymous mode); required only for FEC API pipeline scripts.
 
 DEV   — local build, verbose logging on, real API calls (FEC_API_KEY recommended in .env)
 TEST  — jest, mocked API responses only here
@@ -651,7 +679,7 @@ The entire app is styled as a **vintage 8-bit video game**. This is the foundati
 | BusinessCard rebuild + component extraction | ✅ Done — BusinessCard (168 lines), BusinessBanner + resolveCardMode (114), DataZone (161), DetailSheet (placeholder), useMapControls hook (73). Card/banner routing, FXLayer in MapScreen, all files under 250 lines. |
 | App.tsx extraction | ✅ Done — App.tsx (112 lines): fonts + data init + gate chain. OnboardingGate, LaunchGate, AppShell extracted to `app/gates/`. |
 | Barcode scanning v1 (Scan tab, UPC/EAN, Open Food Facts) | ✅ Done — dedicated Scan tab, expo-camera, GTIN-13 normalization, SQLite barcode cache, Open Food Facts API, reuses BusinessCard result flow with SCANNED PRODUCT context |
-| OFF data pipeline + bundled prefix matching | ✅ Done — `products.json` (18 producers, 243 KB), `productIndex.ts` prefix lookup as fast path in `useBarcodeSearch`, `sync-products-from-off.py` pipeline script. Instant local match for major CPG producers (Pepsico, Coca-Cola, General Mills, etc.) before cache/network fallback. |
+| OFF data pipeline + bundled product/prefix matching | ✅ Done — `products.json` (1,000 exact barcode product rows + 87 runtime producer rows in the April 2026 data batch; Philip Morris International and Altria resolve to distinct entity IDs), `productIndex.ts` exact lookup then prefix lookup as fast path in `useBarcodeSearch`, `sync-products-from-off.py` pipeline script. Instant local match for exact bundled products and major CPG producers (Nestle, Pepsico, Danone, Coca-Cola, Unilever, General Mills, etc.) before cache/network fallback. |
 | Accessibility audit + fix | ✅ Done — a11y labels/roles/states on all interactive elements, tap targets ≥44pt, modal focus trapping, reduced-motion gating, copy keys extracted, tab bar labels from copy |
 | Entity/person data reconciliation | ✅ Done — `verify-data-integrity.mjs` + `reconcile-v1-entities.mjs`, V1/V2 split, bidirectional ref integrity enforced |
 | Device testing fixes (10 issues) | ✅ Done — safe area constant, camera permission eager request, map header reduced, FigureBadge empty fallback, arena sprite flush, responsive logos, onboarding reorder, permissions confirmed state, privacy layout, CTA reconciled to PRESS START |
@@ -811,15 +839,16 @@ After writing any file, scan it once for deprecated APIs, `.then()` chains, `var
    - `confidence` applies to the relationship link itself, not the donor totals
 
 ### Data file separation
-- `entities.json` + `fecCommitteeId` → corporate PAC contributions via `/committees/{id}/totals/` and `/schedules/schedule_b/`
-- `people.json` + `fecContributorId` (or `fecSearchNames`) → individual Schedule A contributions via `/schedules/schedule_a/?contributor_name=`
-- Local bulk hydration for people lives in `scripts/hydrate-people-from-bulk.mjs` and uses downloaded FEC `indiv*/by_date/` files plus `cm*.txt` committee masters.
+- `entities.json` + `fecCommitteeId` -> corporate PAC contributions. Preferred broad hydration is local bulk via `scripts/hydrate-entities-from-bulk.mjs`; FEC API endpoints (`/committees/{id}/totals/` and `/schedules/schedule_b/`) are fallback/discovery paths.
+- `people.json` + `fecContributorId` (or `fecSearchNames`) -> individual Schedule A contributions. Preferred broad hydration is local bulk via `scripts/hydrate-people-from-bulk.mjs`.
+- Local bulk hydration for people uses downloaded FEC `indiv*/by_date/` files plus `cm*.txt` committee masters.
 - Do not conflate — different FEC endpoints, different data semantics, different query patterns.
 
 ### People ↔ entity maintenance workflow
 - Treat `assets/data/people.json` as a generated artifact, not the hand-edited source of truth for person↔entity relationship data.
 - Human-reviewed accepted links live in `scripts/data/people-entity-overrides.json`.
-- Regenerate the donor/person file with `npm run sync:people:bulk-top`.
+- Regenerate the donor/person file with `npm run sync:people:bulk-top`. This keeps pre-existing extra people by default; only use `--drop-extra` after an explicit destructive reset decision.
+- Hydrate people donation summaries with `npm run hydrate:people:bulk`.
 - Regenerate the manual triage list with `npm run build:people:entity-review-queue`.
 - Before shipping or wiring app-bundled people data, run `npm run strip:people:raw`. This preserves the full source-of-truth file at `assets/data/people.json` and writes the slim bundled copy to `assets/data/people.bundle.json`, keeping `donationSummary.raw` only for people linked to live `entities.json` records. Use `--mode=none` if the app later needs a fully raw-free bundle.
 - `tools/fec-bulk/reports/people-entity-review-queue.json` is only a review worksheet. Its candidate suggestions are heuristic leads, not accepted links.
@@ -828,9 +857,11 @@ After writing any file, scan it once for deprecated APIs, `.then()` chains, `var
 - Preferred maintenance order:
   1. Update `scripts/data/people-entity-overrides.json`
   2. Run `npm run sync:people:bulk-top`
-  3. Run `npm run build:people:entity-review-queue`
-  4. Run `npm run strip:people:raw`
-  5. Only then inspect `assets/data/people.json`, `assets/data/people.bundle.json`, and the review queue output
+  3. Run `npm run hydrate:people:bulk`
+  4. Run `npm run build:people:entity-review-queue`
+  5. Run `node scripts/reconcile-v1-entities.mjs --write`
+  6. Run `npm run strip:people:raw`
+  7. Only then inspect `assets/data/people.json`, `assets/data/people.bundle.json`, and the review queue output
 
 ### people.json schema — `PoliticalPerson`
 ```typescript
@@ -900,13 +931,13 @@ High-confidence committee verification notes live in `tools/fec-bulk/reports/com
 ## Known Limitations / Technical Debt
 
 ### MapKit domain matching — iOS only (Priority: informational)
-`matchEntity` accepts an optional `domain` parameter. On iOS, the enriched MapKit bridge (`MapKitSearchModule.swift`) returns business website hostnames alongside POI names, enabling definitive domain-based matching (confidence 1.0, zero false positives) before falling back to name matching. On Android, `onPoiClick` provides only a name string — matching uses alias + fuzzy search only. The `category` field (MKPointOfInterestCategory) is passed through from MapKit but not yet used for matching — available for future filtering. V2: investigate Google Places API for Android domain/category parity.
+`matchEntity` accepts an optional `domain` parameter. On iOS, the enriched MapKit bridge (`MapKitSearchModule.swift`) returns website hostnames alongside POI names. First-party domains are high-confidence, but third-party profile hosts (`facebook.com`, `instagram.com`, `linkedin.com`, `tiktok.com`, `twitter.com`, `x.com`, `youtube.com`) are not definitive corporate evidence unless the POI name itself also aliases to that entity. POI taps pass `{ allowFecFallback: false }` so random local organizations cannot drift into corporate PACs by fuzzy FEC similarity; manual search and barcode flows keep the default fallback. On Android, `onPoiClick` provides only a name string — matching uses alias search and the same POI fallback guard. The `category` field (MKPointOfInterestCategory) is passed through from MapKit but not yet used for matching — available for future filtering. V2: investigate Google Places API for Android domain/category parity.
 
 ### Prefix matching — multi-word aliases only (Priority: resolved)
 Single-word aliases (e.g. "Apple", "American", "Delta") cannot prefix-match in `findByAlias`. Only multi-word aliases (e.g. "Apple Store", "American Airlines") qualify for prefix matching with a max 2-word suffix. This prevents false positives like "American Association Teachers of German" matching American Airlines, or "Apple Federal Credit Union" matching Apple Inc. Exact matching (Pass 1) is unaffected — "Apple" still exact-matches the input "apple". On iOS, domain matching handles the "Apple Georgetown" case definitively; on Android, these fall through to fuzzy FEC search.
 
-### platforms.json — match-group entity missing (Priority: next entities review)
-`assets/data/platforms.json` references `entityId: "match-group"` for the Match Group parent (Tinder, Hinge, OkCupid). No matching entity exists in `entities.json`. As a result, these three child platforms have `ceoName: ''`, no sprite, no FEC data, and `parentCompany` falls back to the raw string `'match-group'`. Add a `match-group` entity to `entities.json` during the next entities review. Run `verify-entities.mjs` to locate the correct FEC committee ID.
+### platforms.json — match-group entity (Priority: resolved in local data batch)
+`assets/data/platforms.json` references `entityId: "match-group"` for the Match Group parent (Tinder, Hinge, OkCupid). The April 20 data-cleaning batch adds `match-group` to `entities.json`, and the current integrity gate reports no platform orphan entity IDs. Broad donation hydration should use local FEC bulk when staged; flag the user before any fallback FEC API discovery.
 
 ### service-worker.ts over 250 lines (Priority: V1 cleanup)
 `extension/background/service-worker.ts` is 389 lines — over the 250-line file limit. Pre-existing violation; was 361 lines before the API key removal session. Refactor plan: extract `handleCheckDomain`, `isBundledDataFresh`, and related data-fetch logic into `extension/background/domainCheck.ts`. The message router, tab lifecycle listeners, and alarm handler stay in `service-worker.ts`.

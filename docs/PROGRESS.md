@@ -12,6 +12,117 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 20, 2026 ET — Data cleaning finalization: bulk-first hydration and audit packet
+
+**Focus:** Finish the April 2026 data-cleaning pass with local raw bulk data as the primary source. This supersedes the earlier API-oriented hydration plan. No commit made.
+
+**What changed:**
+
+1. **Hydration moved to bulk-first:** added `scripts/hydrate-entities-from-bulk.mjs` and `npm run hydrate:entities:bulk`. Entity donation summaries now hydrate from local FEC PAS2/OTH bulk files across `2016, 2018, 2020, 2022, 2024, 2026` instead of broad FEC API calls. API scripts remain available only for flagged discovery/fallback work.
+
+2. **FEC 2026 local inputs are wired:** the local `indiv26.zip` matched the remote size check and was not redownloaded. `cm26.zip`, `cn26.zip`, and `ccl26.zip` were refreshed, extracted, and copied into the paths expected by existing scripts. `cm 6.txt` has `19,351` rows, `cn26/cn.txt` has `7,804`, and `ccl 6.txt` has `7,424`.
+
+3. **OpenStates was refreshed:** `npm run download:openstates` completed with `52` succeeded, `0` failed, and `7,447` legislators. `data/openstates/all-legislators.csv` now has `7,448` lines including the header.
+
+4. **State/local classification was rebuilt:** the latest local beneficiary report is `tools/fec-bulk/reports/committee-beneficiary-classification-2026-04-20.json` / `.md`, with `44,868` committee-cycle entries.
+
+5. **Entity donation data was cleaned and rehydrated:** 12 stale false-positive `donationSummary` blocks were removed. Six high-confidence FEC IDs were added for `philip-morris-international`, `heineken`, `suntory`, `diageo`, `flowers-foods`, and `sony-group`. `npm run hydrate:entities:bulk` selected `190` committees and produced `180` entities with non-empty `activeCycles`.
+
+6. **People hydration became non-lossy by default:** `npm run sync:people:bulk-top` now keeps extra pre-existing people unless explicitly run with `--drop-extra`. The final merge has `1046` people, `1027` with donation summaries, `91` linked people, and `46` kept extra records. Tim Cook is present in `people.bundle.json` with a donation summary and targeted FEC search names.
+
+7. **Product/scan fixes are now carried forward:** exact barcode matching still checks the `1000` bundled product rows before producer-prefix fallback. Philip Morris International and Altria now resolve to distinct entity IDs. The old Altria duplicate runtime caveat is resolved.
+
+8. **POI matching remains narrowed:** POI taps disable fuzzy FEC fallback and ignore third-party profile domains unless the POI name itself aliases to the same entity. Manual search and barcode/entity scan flows keep their broader fallback behavior.
+
+9. **Audit docs were rewritten:** `docs/DATA_CLEANING_AUDIT_2026-04-20.md` now documents the bulk-first rationale, local source freshness, pipeline commands, current measurements, and known audit findings. `CLAUDE.md`, `docs/PRODUCTS_DATA_PIPELINE.md`, and `docs/BARCODE_SCAN_V1.md` were updated to remove stale API/Altria assumptions.
+
+**Current measured state:**
+
+- Live entities: `557`
+- Entities with `fecCommitteeId`: `190`
+- Entities with `donationSummary`: `190`
+- Entities with non-empty `activeCycles`: `180`
+- Zero-cycle entity summaries retained for audit: `10`
+- Entities with `associatedPersonIds`: `72`
+- Live people: `1046`
+- People with `donationSummary`: `1027`
+- People linked to at least one entity: `91`
+- Bundled people: `1046`
+- Bundled people with `donationSummary`: `1027`
+- Runtime product producers: `87`
+- Exact runtime product rows: `1,000`
+- Product `producerResearch` entries: `206`
+- Product `producerResearch` entries mapped to live entities: `89`
+- Platform orphan entity IDs: none
+
+**Current gates:**
+
+- `node scripts/verify-data-integrity.mjs` -> exit 0. Duplicate IDs, reverse-link gaps, invalid role links: none. Declared forward refs remain for `baupost-group`, `bigelow-aerospace`, `jw-childs-associates`, `pritzker-group`.
+- `npm run audit:aliases` -> exit 0. Exact alias duplicates: `0`; parent/child overlap: `0`; single-word substring collision warnings: `60`; FEC canonical drift warnings: `6`.
+- `node --check scripts/sync-people-from-bulk-top.mjs`, `node --check scripts/hydrate-people-from-bulk.mjs`, and `node --check scripts/hydrate-entities-from-bulk.mjs` -> exit 0.
+- Final focused app gates: `npx tsc --noEmit` -> exit 0; focused barcode/matching Jest tests -> 5 suites / 69 tests passed; `python3 -m py_compile scripts/sync-products-from-off.py` -> exit 0.
+
+**Known audit findings before finalizing:**
+
+- Ten entity summaries have known committee IDs but no non-empty `activeCycles` in the current local bulk cycles.
+- `npm run audit:aliases` still reports 60 single-word substring warnings and 6 FEC canonical drift warnings. These are audit warnings, not runtime failures.
+- `tools/fec-bulk/reports/people-entity-review-queue.json` has 200 heuristic candidates. They are not accepted links until reviewed through overrides.
+- The `1000` product goal is met as OFF-derived exact barcode rows, not as a verified shopping-volume ranking.
+- The FEC/OpenStates data is current as staged locally on April 20, 2026, but must be rechecked before a release candidate.
+
+**Next recommended order:**
+
+1. Have the outside audit review `docs/DATA_CLEANING_AUDIT_2026-04-20.md`, the local diff, the zero-cycle entities, FEC drift warnings, and single-word alias warnings.
+2. Decide whether any people/entity review queue candidates should become accepted overrides.
+3. Rebuild products from checkpoint after any entity alias changes.
+4. Rerun `npm run audit:aliases`, `node scripts/verify-data-integrity.mjs`, TypeScript, focused barcode/matching Jest tests, and Python compile.
+5. Only run FEC API scripts after explicit user flagging; use local bulk scripts by default.
+
+---
+
+### Session: April 20, 2026 ET — Data cleaning continuation: scan coverage, hotel variants, POI matching
+
+**Status note:** superseded by the bulk-first finalization entry above. This earlier entry preserves the intermediate scan/product/POI work but contains stale pre-hydration metrics.
+
+**Focus:** Continue the April 2026 data-cleaning batch after the initial handoff: deepen scannable CPG coverage, add hotel sub-brand variants, harden POI/domain matching, add a 1000-row exact product layer from Open Food Facts, and update the audit docs. No commit made.
+
+**What changed:**
+
+1. **Entity coverage expanded:** `assets/data/entities.json` is now at `556` live entities. The pass includes the initial CPG/platform batch, deeper OFF-backed CPG producers, hotel parents plus sub-brand aliases, 7-Eleven/Speedway alias hygiene, and additional scan-gap entities such as P&G, Red Bull, and Florida's Natural.
+
+2. **Hotel variants are present:** Marriott, Hilton, Hyatt, Wyndham, IHG, Choice, Four Seasons, Accor, and Best Western now include practical sub-brand aliases. Examples include Courtyard by Marriott, Hampton Inn by Hilton, Hyatt Ziva/Zilara, La Quinta by Wyndham, Six Senses, Comfort Inn, Radisson Hotels Americas, Fairmont, ibis, and SureStay.
+
+3. **POI matching was narrowed where the recent domain pass was too trusting:** first-party domains still match strongly, but third-party profile hosts such as Facebook, Instagram, LinkedIn, TikTok, X/Twitter, and YouTube no longer act as definitive corporate domains unless the POI name itself also aliases to that entity. POI taps also pass `allowFecFallback: false`, while manual search and barcode flows keep the normal fallback.
+
+4. **Products rebuild landed the deeper entity batch:** `python3 scripts/sync-products-from-off.py --rebuild-from-checkpoint` rebuilt `assets/data/products.json` from saved OFF aggregates. Runtime producers increased from `35` to `87`; `producerResearch` remains `206` rows. Later bulk-first finalization measured `89` mapped live entity IDs.
+
+5. **Exact scannable products added:** `scripts/sync-products-from-off.py --fresh` rescanned the local OFF archive and collected `5,000` conservative exact-product candidates. `assets/data/products.json` now ships `1,000` exact barcode rows across all `87` runtime producer entities, with exact product matches used before producer-prefix fallback.
+
+6. **Product cross-hydration got safer:** `scripts/sync-products-from-off.py` no longer blindly trusts stale product-side `entityId` values. This caught and removed a bad Helen of Troy -> Premier Foods mapping caused by the ambiguous `Oxo` alias.
+
+7. **Docs were updated for audit:** `docs/DATA_CLEANING_AUDIT_2026-04-20.md`, `docs/PRODUCTS_DATA_PIPELINE.md`, `docs/BARCODE_SCAN_V1.md`, and `CLAUDE.md` now describe the current local state instead of the earlier 35-producer checkpoint.
+
+**Intermediate measured state:** superseded by the bulk-first finalization entry above. Do not use this older section for current counts.
+
+**Known audit findings before finalizing:**
+
+- Superseded/resolved: the earlier Altria / Philip Morris International duplicate runtime entity caveat was fixed in the finalization pass above.
+- Superseded: current FEC canonical drift warnings are listed in the finalization entry above and in `docs/DATA_CLEANING_AUDIT_2026-04-20.md`.
+- Superseded: broad donation hydration now uses local bulk. Do not use the earlier `189` donation-summary count.
+- The requested broad scan goal is now met as `1,000` exact product barcode rows plus `87` producer-prefix rows. It is not a verified "top 1000 most-shopped" ranking because OFF does not provide shopping volume in the local dump.
+
+**Next recommended order:**
+
+1. Have the outside audit review the current local diff and this audit packet.
+2. Superseded/resolved: the Altria / Philip Morris International duplicate product entity decision was handled in the finalization pass above.
+3. Decide whether the next scan-coverage pass should add more exact products, add the top remaining OFF-backed producers, or expand `producerResearch` with another public ranking source.
+4. Re-run `npm run audit:aliases` and `node scripts/verify-data-integrity.mjs` after any entity changes.
+5. Superseded: use local bulk hydration by default. Flag the user before any FEC API script, and reserve API calls for targeted discovery/fallback.
+6. Use local FEC bulk for targeted people hydration, especially Tim Cook.
+7. Rebuild products again from checkpoint after any entity alias changes.
+
+---
+
 ### Session: April 18, 2026 ET — Cockpit alert/toast/chooser restyle + folder tab seam fix
 
 **Focus:** Three UI beta fixes + one BusinessCard bug. Branch `claude/confident-jepsen-cbbe1c`. All visual-only — no trigger logic, no data path changes.
