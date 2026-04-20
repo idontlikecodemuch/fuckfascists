@@ -111,6 +111,9 @@ const ROLE_OVERRIDES = {
   'peter-thiel': {
     palantir: { role: 'Co-Founder & Chair', startYear: 2003, endYear: null },
   },
+  'alexander-c-karp': {
+    palantir: { role: 'Co-Founder, CEO & Director', startYear: 2003, endYear: null },
+  },
   'laurene-powell-jobs': {
     'the-atlantic': { role: 'Owner', startYear: 2017, endYear: null },
   },
@@ -279,6 +282,12 @@ const ROLE_OVERRIDES = {
   'm-jude-reyes': {
     'reyes-holdings': { role: 'Vice Chairman', startYear: null, endYear: null },
   },
+  'greg-brockman': {
+    openai: { role: 'Co-Founder & President', startYear: 2015, endYear: null },
+  },
+  'stewart-w-bainum': {
+    'choice-hotels': { role: 'Chairman of the Board', startYear: 1997, endYear: null },
+  },
   'evan-goldberg': {
     oracle: { role: 'NetSuite Founder & Executive Vice President', startYear: 1998, endYear: null },
   },
@@ -303,7 +312,7 @@ function parseArgs(argv) {
     summary: DEFAULT_SUMMARY_PATH,
     overrides: DEFAULT_PEOPLE_ENTITY_OVERRIDES_PATH,
     reviewQueue: DEFAULT_REVIEW_QUEUE_PATH,
-    keepExtra: false,
+    keepExtra: true,
   };
 
   for (const arg of argv) {
@@ -324,6 +333,8 @@ function parseArgs(argv) {
       if (value) args.reviewQueue = path.resolve(process.cwd(), value);
     } else if (arg === '--keep-extra') {
       args.keepExtra = true;
+    } else if (arg === '--drop-extra') {
+      args.keepExtra = false;
     }
   }
 
@@ -814,12 +825,12 @@ function buildMeta(existingMeta, bulkMeta, people, duplicateKeysCollapsed, dupli
     description: existingMeta?.description ?? 'High-profile individual donor records for personal FEC contribution tracking.',
     source:
       'FEC bulk individual contributions (by_date files) for donor ranking, with entity matching and any existing Schedule A API hydration preserved when available.',
-    cyclesScanned: Array.isArray(bulkMeta?.cycles) ? bulkMeta.cycles : existingMeta?.cyclesScanned ?? [2016, 2018, 2020, 2022, 2024],
+    cyclesScanned: Array.isArray(bulkMeta?.cycles) ? bulkMeta.cycles : existingMeta?.cyclesScanned ?? [2016, 2018, 2020, 2022, 2024, 2026],
     methodology:
       'Ranked from FEC bulk individual-contribution files by normalized donor key across selected cycles; people-first matching checks donor names, common names, and exact employer aliases before preserving any existing hydrated Schedule A summaries, aliases, and entity links. Curated person-to-entity overrides come from scripts/data/people-entity-overrides.json; unresolved high-priority cases belong in tools/fec-bulk/reports/people-entity-review-queue.json.',
     contributorIdCoverage,
-    summaryCycles: existingMeta?.summaryCycles ?? [2016, 2018, 2020, 2022, 2024],
-    discoveryCycles: Array.isArray(bulkMeta?.cycles) ? bulkMeta.cycles : existingMeta?.discoveryCycles ?? [2016, 2018, 2020, 2022, 2024],
+    summaryCycles: existingMeta?.summaryCycles ?? [2016, 2018, 2020, 2022, 2024, 2026],
+    discoveryCycles: Array.isArray(bulkMeta?.cycles) ? bulkMeta.cycles : existingMeta?.discoveryCycles ?? [2016, 2018, 2020, 2022, 2024, 2026],
     bulkTopCount: bulkMeta?.top ?? people.length,
     bulkDonorsAggregated: bulkMeta?.donorsAggregated ?? null,
     bulkValidation: hadExistingPeople ? bulkMeta?.validation ?? null : null,

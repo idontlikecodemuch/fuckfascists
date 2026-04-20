@@ -4,120 +4,17 @@ import readline from 'node:readline';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
+import { COMMITTEE_PARTY_OVERRIDES } from './lib/committeePartyOverrides.mjs';
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PEOPLE_PATH = path.join(__dirname, '../assets/data/people.json');
 const BULK_ROOT = path.join(__dirname, '../tools/fec-bulk');
-const DEFAULT_CYCLES = [2016, 2018, 2020, 2022, 2024];
+const DEFAULT_CYCLES = [2016, 2018, 2020, 2022, 2024, 2026];
 const PERSON_SCHEMA_VERSION = '1.3';
 const RG_PATTERN_CHUNK_SIZE = 100;
 const COMMITTEE_MASTER_PATTERN = /^cm(?: \d+)?\.txt$/i;
 const R_PARTIES = new Set(['REP']);
 const D_PARTIES = new Set(['DEM', 'DFL']);
-const COMMITTEE_PARTY_OVERRIDES = {
-  C00468314: 'DEM',
-  C00473918: 'DEM',
-  C00484642: 'DEM',
-  C00486845: 'DEM',
-  C00489799: 'DEM',
-  C00489856: 'REP',
-  C00492140: 'DEM',
-  C00492421: 'DEM',
-  C00495028: 'DEM',
-  C00495861: 'DEM',
-  C00418897: 'DEM',
-  C00487470: 'REP',
-  C00504530: 'REP',
-  C00528554: 'REP',
-  C00530766: 'REP',
-  C00541011: 'REP',
-  C00568162: 'REP',
-  C00571703: 'REP',
-  C00574533: 'REP',
-  C00575373: 'REP',
-  C00575431: 'REP',
-  C00575423: 'REP',
-  C00541292: 'REP',
-  C00544544: 'REP',
-  C00559906: 'REP',
-  C00576108: 'REP',
-  C00580092: 'REP',
-  C00581934: 'REP',
-  C00586537: 'DEM',
-  C00592808: 'DEM',
-  C00608489: 'REP',
-  C00612820: 'DEM',
-  C00619411: 'DEM',
-  C00618876: 'REP',
-  C00631549: 'DEM',
-  C00632133: 'DEM',
-  C00636027: 'DEM',
-  C00646877: 'DEM',
-  C00657866: 'REP',
-  C00658476: 'DEM',
-  C00669622: 'REP',
-  C00606962: 'DEM',
-  C00608943: 'REP',
-  C00693382: 'DEM',
-  C00693838: 'REP',
-  C00688655: 'DEM',
-  C00669259: 'DEM',
-  C00687103: 'REP',
-  C00618371: 'REP',
-  C00618389: 'REP',
-  C00637512: 'REP',
-  C00694323: 'REP',
-  C00695585: 'DEM',
-  C00728360: 'DEM',
-  C00739110: 'DEM',
-  C00745869: 'DEM',
-  C00746651: 'DEM',
-  C00750182: 'REP',
-  C00750323: 'REP',
-  C00752691: 'DEM',
-  C00754051: 'DEM',
-  C00756882: 'REP',
-  C00765982: 'REP',
-  C00766782: 'DEM',
-  C00769232: 'REP',
-  C00770495: 'REP',
-  C00768200: 'DEM',
-  C00777185: 'REP',
-  C00701888: 'DEM',
-  C00710848: 'DEM',
-  C00725820: 'DEM',
-  C00792333: 'DEM',
-  C00786624: 'DEM',
-  C00799031: 'DEM',
-  C00794396: 'REP',
-  C00804104: 'REP',
-  C00804773: 'REP',
-  C00804856: 'DEM',
-  C00805283: 'REP',
-  C00801514: 'DEM',
-  C00809020: 'REP',
-  C00811166: 'REP',
-  C00821439: 'REP',
-  C00831925: 'REP',
-  C00833749: 'REP',
-  C00819664: 'REP',
-  C00838912: 'DEM',
-  C00879510: 'REP',
-  C00825851: 'REP',
-  C00828608: 'REP',
-  C00832949: 'REP',
-  C00834077: 'REP',
-  C00837518: 'REP',
-  C00845685: 'REP',
-  C00846683: 'REP',
-  C00849489: 'REP',
-  C00744946: 'DEM',
-  C00867036: 'REP',
-  C00867937: 'REP',
-  C00878801: 'REP',
-  C00883520: 'REP',
-  C00858373: 'REP',
-  C00892471: 'REP',
-};
 
 const FIELD = {
   committeeId: 0,
@@ -727,7 +624,9 @@ async function main() {
   console.log(`people.json saved to ${args.output}`);
 }
 
-main().catch((error) => {
+try {
+  await main();
+} catch (error) {
   console.error(error instanceof Error ? error.message : error);
-  process.exit(1);
-});
+  process.exitCode = 1;
+}

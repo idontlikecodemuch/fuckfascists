@@ -28,6 +28,13 @@ tools/img-gen/cache_id.txt
 tools/fec-bulk/
 tools/off-bulk/
 
+# OpenStates legislator data (downloaded by scripts/download-openstates.mjs)
+data/openstates/
+
+# Pre-classification backup (created by fetch-donation-data.mjs)
+assets/data/entities.pre-line29.json
+assets/data/entities.pre-bulk-hydration.json
+
 # Reference files (old assets, renamed sprites — local only)
 tools/reference/
 

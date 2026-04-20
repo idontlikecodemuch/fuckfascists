@@ -28,8 +28,8 @@ export class FECParseError extends FECError {
   }
 }
 
-// Cycles to fetch — 2016 through 2024 (update when a new cycle begins).
-const CYCLES_SINCE_2016 = [2016, 2018, 2020, 2022, 2024] as const;
+// Cycles to fetch — 2016 through 2026 (update when a new cycle begins).
+const CYCLES_SINCE_2016 = [2016, 2018, 2020, 2022, 2024, 2026] as const;
 
 // ── FEC API response shapes ────────────────────────────────────────────────────
 

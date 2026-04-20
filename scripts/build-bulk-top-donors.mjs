@@ -10,7 +10,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PEOPLE_PATH = path.join(__dirname, '../assets/data/people.json');
 const BULK_ROOT = path.join(__dirname, '../tools/fec-bulk');
 const DEFAULT_OUTPUT = path.join(BULK_ROOT, 'reports/top-donors-bulk-1000.json');
-const DEFAULT_CYCLES = [2016, 2018, 2020, 2022, 2024];
+const DEFAULT_CYCLES = [2016, 2018, 2020, 2022, 2024, 2026];
 const DEFAULT_TOP = 1000;
 const DEFAULT_CONCURRENCY = 2;
 

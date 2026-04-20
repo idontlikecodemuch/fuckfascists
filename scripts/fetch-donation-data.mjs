@@ -17,17 +17,29 @@ import 'dotenv/config';
  * (1) candidate_party_affiliation on the disbursement record (sparse — often blank).
  * (2) recipient_committee.party on the nested recipient committee object (reliably
  *     populated for H/S/P type recipients).
+ * (3) Line 29 classification — when (1) and (2) yield no party, attempt classification
+ *     via multi-tier fallback: beneficiary classification report → cm.txt formal party
+ *     → hand-curated overrides → OpenStates legislator name fuzzy match. Classifier is
+ *     loaded from scripts/lib/line29Classifier.mjs. Disabled with --no-classify flag.
+ *
  * recipient_committee_type=H|S|P in the API call does nothing — the FEC API silently
  * ignores it. Party attribution works because recipient_committee_type is present on
  * each response record. Operating expense records (line 29) and non-federal contributions
  * have no recipient_committee object — party resolves to '' and lands in raw[]. Type Q
  * (leadership PAC) also lands in raw[]. Direct H/S/P contributions have
  * recipient_committee.party populated and are correctly attributed.
+ *
+ * Safety flags:
+ *   --dry-run       Log what would change but do NOT write entities.json
+ *   --no-classify   Skip Line 29 classification entirely (pre-change behavior)
+ *   --force         Re-fetch all entities regardless of freshness
  */
 
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { copyFile, readFile, writeFile, mkdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+
+import { loadLine29Classifier } from './lib/line29Classifier.mjs';
 
 const __dirname       = path.dirname(fileURLToPath(import.meta.url));
 const ENTITIES_PATH   = path.join(__dirname, '../assets/data/entities.json');
@@ -48,7 +60,7 @@ const BACKOFF_MAX_RETRIES = 3;
 // Write entities.json every N successful fetches to preserve progress on interruption.
 const WRITE_INTERVAL     = 10;
 
-const CYCLES_SINCE_2016 = [2016, 2018, 2020, 2022, 2024];
+const CYCLES_SINCE_2016 = [2016, 2018, 2020, 2022, 2024, 2026];
 
 /**
  * Entities whose stored fecCommitteeId is suspect (wrong type, no activity, etc.).
@@ -258,7 +270,7 @@ async function fetchScheduleBContributions(committeeId, apiKey) {
  *   2. /committee/{id}/totals/ → activeCycles, recentCycle
  *   3. /schedules/schedule_b/  → party-attributed totals (REP/DEM) + raw[] for others
  */
-async function fetchCommitteeTotals(committeeId, apiKey, existingSummary = null) {
+async function fetchCommitteeTotals(committeeId, apiKey, existingSummary = null, classifier = null) {
   const id          = encodeURIComponent(committeeId);
   const keyParam    = apiKey ? `&api_key=${encodeURIComponent(apiKey)}` : '';
   const cycleParams = CYCLES_SINCE_2016.map((c) => `cycle=${c}`).join('&');
@@ -314,8 +326,21 @@ async function fetchCommitteeTotals(committeeId, apiKey, existingSummary = null)
     const amount     = rec.disbursement_amount ?? 0;
     const cycle      = rec.two_year_transaction_period ?? 0;
     // candidate_party_affiliation is blank on many FEC records — fall back to recipient_committee.party.
-    const party      = (rec.candidate_party_affiliation || rec.recipient_committee?.party || '').toUpperCase();
+    let party        = (rec.candidate_party_affiliation || rec.recipient_committee?.party || '').toUpperCase();
     const lineNumber = rec.line_number ?? '';
+
+    // Line 29 classification: attempt to resolve party from external data sources
+    if (!party && classifier) {
+      const result = classifier.classify(
+        rec.recipient_committee_id ?? '',
+        rec.recipient_name ?? '',
+        rec.recipient_state ?? '',
+        cycle,
+      );
+      if (result.party) {
+        party = result.party;
+      }
+    }
 
     if (party === 'REP') {
       totalRepubs += amount;
@@ -362,13 +387,38 @@ async function main() {
     process.exit(1);
   }
 
-  const force = process.argv.includes('--force');
-  if (force) console.log('--force flag set: re-fetching all entities regardless of freshness.\n');
+  const force      = process.argv.includes('--force');
+  const dryRun     = process.argv.includes('--dry-run');
+  const noClassify = process.argv.includes('--no-classify');
+
+  if (force)  console.log('--force flag set: re-fetching all entities regardless of freshness.');
+  if (dryRun) console.log('--dry-run flag set: will log changes but NOT write entities.json.');
+  if (noClassify) console.log('--no-classify flag set: Line 29 classification disabled.');
+  if (force || dryRun || noClassify) console.log('');
+
+  // Load Line 29 classifier (unless disabled)
+  let line29Classifier = null;
+  if (!noClassify) {
+    try {
+      line29Classifier = await loadLine29Classifier();
+    } catch (err) {
+      console.warn(`⚠ Line 29 classifier failed to load: ${err.message}`);
+      console.warn('  Continuing without classification (pre-change behavior).\n');
+    }
+  }
 
   const raw      = await readFile(ENTITIES_PATH, 'utf8');
   const parsed   = JSON.parse(raw);
   const entities = Array.isArray(parsed) ? parsed : parsed.entities;
-  console.log(`Loaded ${entities.length} entities from entities.json.\n`);
+  console.log(`Loaded ${entities.length} entities from entities.json.`);
+
+  // Back up entities.json before any modifications
+  if (!dryRun) {
+    const backupPath = ENTITIES_PATH.replace('.json', '.pre-line29.json');
+    await copyFile(ENTITIES_PATH, backupPath);
+    console.log(`  Backup: ${path.basename(backupPath)}`);
+  }
+  console.log('');
 
   // ── Pre-pass: name-based ID refresh for known-suspect committee IDs ──────────
 
@@ -433,7 +483,7 @@ async function main() {
     console.log(`${tag} ${entity.id} (${committeeIdToFetch})...`);
 
     try {
-      const summary = await fetchCommitteeTotals(committeeIdToFetch, apiKey, entity.donationSummary ?? null);
+      const summary = await fetchCommitteeTotals(committeeIdToFetch, apiKey, entity.donationSummary ?? null, line29Classifier);
       entity.donationSummary  = summary;
       entity.lastVerifiedDate = today();
       fetched++;
@@ -450,7 +500,7 @@ async function main() {
       console.log(resultLine);
 
       // Incremental save every WRITE_INTERVAL successes — preserves progress on interruption.
-      if (fetched % WRITE_INTERVAL === 0) {
+      if (!dryRun && fetched % WRITE_INTERVAL === 0) {
         await writeEntities(parsed, entities);
         console.log(`  💾 saved (${fetched}/${candidates.length - skipped} fetched)\n`);
       }
@@ -476,23 +526,48 @@ async function main() {
     )
     .map((e) => ({ id: e.id, fecCommitteeId: e.fecCommitteeId }));
 
-  if (pacReview.length > 0) {
+  if (pacReview.length > 0 && !dryRun) {
     await mkdir(OUTPUT_DIR, { recursive: true });
     await writeFile(PAC_REVIEW_PATH, JSON.stringify(pacReview, null, 2) + '\n', 'utf8');
     console.log(`\n⚠ ${pacReview.length} entities have no recorded PAC activity → scripts/output/pac-review.json`);
   }
 
   // Final write.
-  await writeEntities(parsed, entities);
+  if (!dryRun) {
+    await writeEntities(parsed, entities);
+  }
 
   console.log('\n' + '─'.repeat(45));
   console.log(`Fetched: ${fetched} / Skipped (fresh): ${skipped} / Failed: ${failed}`);
   if (failedIds.length > 0) console.log(`Failed entities: [${failedIds.join(', ')}]`);
+
+  // Line 29 classification summary
+  if (line29Classifier) {
+    const { classifiedR, classifiedD, unclassified, byMethod } = line29Classifier.stats;
+    const total = classifiedR + classifiedD + unclassified;
+    console.log('');
+    console.log(`Line 29 classification: ${classifiedR + classifiedD} classified / ${unclassified} unclassified (${total} total)`);
+    console.log(`  R: ${classifiedR}  D: ${classifiedD}`);
+    if (byMethod.size > 0) {
+      console.log('  By method:');
+      for (const [method, count] of Array.from(byMethod.entries()).sort((a, b) => b[1] - a[1])) {
+        console.log(`    ${method}: ${count}`);
+      }
+    }
+  }
+
   console.log('─'.repeat(45));
-  console.log('entities.json updated. Commit manually when ready.');
+  if (dryRun) {
+    console.log('DRY RUN — entities.json was NOT modified.');
+  } else {
+    console.log('entities.json updated. Commit manually when ready.');
+    console.log('  Restore backup: cp assets/data/entities.pre-line29.json assets/data/entities.json');
+  }
 }
 
-main().catch((err) => {
+try {
+  await main();
+} catch (err) {
   console.error(err);
-  process.exit(1);
-});
+  process.exitCode = 1;
+}
