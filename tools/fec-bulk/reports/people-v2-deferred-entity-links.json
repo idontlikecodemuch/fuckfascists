@@ -1,23 +1,81 @@
 {
-  "generatedAt": "2026-03-23",
+  "generatedAt": "2026-04-20",
   "entityLinkMode": "v2-canonical",
   "liveEntityLinkMode": "v1-live-only",
-  "deferredEntityLinkCount": 0,
-  "deferredEntityIds": [],
-  "deferredLinks": [],
+  "deferredEntityLinkCount": 4,
+  "deferredEntityIds": [
+    "baupost-group",
+    "bigelow-aerospace",
+    "jw-childs-associates",
+    "pritzker-group"
+  ],
+  "deferredLinks": [
+    {
+      "personId": "robert-t-bigelow",
+      "personDisplayName": "Robert T Bigelow",
+      "entityId": "bigelow-aerospace",
+      "role": {
+        "role": "Founder & President",
+        "startYear": 1999,
+        "endYear": null,
+        "benefitBasis": "founder_stake",
+        "isCurrent": true,
+        "ownershipPct": null,
+        "confidence": "high",
+        "notes": "Bigelow Aerospace's official 'Who We Are' page identifies Robert T. Bigelow as the company's founder and president and dates the founding to 1999."
+      },
+      "reason": "Deferred because the entity is not in the live V1 entities file."
+    },
+    {
+      "personId": "jay-robert-pritzker",
+      "personDisplayName": "Jay Robert Pritzker",
+      "entityId": "pritzker-group",
+      "role": {
+        "role": "Managing Partner",
+        "startYear": 1996,
+        "endYear": null,
+        "benefitBasis": "executive",
+        "isCurrent": true,
+        "ownershipPct": null,
+        "confidence": "high",
+        "notes": "Official Pritzker Group materials describe J.B. Pritzker as Pritzker Group managing partner and say the firm has operated since 1996."
+      },
+      "reason": "Deferred because the entity is not in the live V1 entities file."
+    },
+    {
+      "personId": "john-w-childs",
+      "personDisplayName": "John W Childs",
+      "entityId": "jw-childs-associates",
+      "role": {
+        "role": "Founder & Chairman",
+        "startYear": 1995,
+        "endYear": null,
+        "benefitBasis": "founder_stake",
+        "isCurrent": true,
+        "ownershipPct": null,
+        "confidence": "high",
+        "notes": "The official J.W. Childs Associates team page says John W. Childs is Chairman of the firm he founded in 1995."
+      },
+      "reason": "Deferred because the entity is not in the live V1 entities file."
+    },
+    {
+      "personId": "seth-klarman",
+      "personDisplayName": "Seth Klarman",
+      "entityId": "baupost-group",
+      "role": {
+        "role": "CEO & Portfolio Manager",
+        "startYear": 1982,
+        "endYear": null,
+        "benefitBasis": "executive",
+        "isCurrent": true,
+        "ownershipPct": null,
+        "confidence": "high",
+        "notes": "Baupost's official About and Team pages identify Seth Klarman as CEO & Portfolio Manager and say he has overseen the firm's investments since its 1982 inception."
+      },
+      "reason": "Deferred because the entity is not in the live V1 entities file."
+    }
+  ],
   "manualPersonLinkRemovals": [],
   "childOverlapChanges": [],
-  "manualEntityChanges": [
-    {
-      "entityId": "charles-schwab",
-      "removedAliases": [
-        "TD Ameritrade"
-      ],
-      "removedDomains": [
-        "tdameritrade.com"
-      ],
-      "addedAliases": [],
-      "addedDomains": []
-    }
-  ]
+  "manualEntityChanges": []
 }
