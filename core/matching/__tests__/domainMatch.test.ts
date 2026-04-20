@@ -1,4 +1,4 @@
-import { normalizeHost, findByDomain } from '../domainMatch';
+import { findByDomain, isThirdPartyProfileHost, normalizeHost } from '../domainMatch';
 import type { Entity } from '../../models';
 
 const apple: Entity = {
@@ -55,6 +55,15 @@ describe('normalizeHost', () => {
 
   it('handles empty input', () => {
     expect(normalizeHost('')).toBe('');
+  });
+});
+
+describe('isThirdPartyProfileHost', () => {
+  it('detects social/profile hosts that are not reliable POI first-party domains', () => {
+    expect(isThirdPartyProfileHost('facebook.com')).toBe(true);
+    expect(isThirdPartyProfileHost('www.instagram.com')).toBe(true);
+    expect(isThirdPartyProfileHost('m.youtube.com')).toBe(true);
+    expect(isThirdPartyProfileHost('walmart.com')).toBe(false);
   });
 });
 

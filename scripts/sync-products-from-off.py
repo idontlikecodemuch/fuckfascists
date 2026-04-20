@@ -17,12 +17,16 @@ from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_PRODUCTS_PATH = REPO_ROOT / "assets/data/products.json"
+DEFAULT_ENTITIES_PATH = REPO_ROOT / "assets/data/entities.json"
 DEFAULT_ARCHIVE_PATH = REPO_ROOT / "tools/off-bulk/openfoodfacts-mongodbdump"
 DEFAULT_CHECKPOINT_DIR = REPO_ROOT / "tools/off-bulk/checkpoints"
 DEFAULT_CHECKPOINT_PATH = DEFAULT_CHECKPOINT_DIR / "products-off-sync.checkpoint.json"
 DEFAULT_SNAPSHOT_PATH = DEFAULT_CHECKPOINT_DIR / "products-off-sync.partial.json"
 DEFAULT_RESULTS_PATH = DEFAULT_CHECKPOINT_DIR / "products-off-sync.results.json"
 
+DEFAULT_EXACT_PRODUCT_LIMIT = 1000
+EXACT_PRODUCT_POOL_LIMIT = 5000
+EXACT_PRODUCTS_PER_PRODUCER = 60
 MAX_BSON_DOCUMENT_SIZE = 32 * 1024 * 1024
 COMPANY_SUFFIXES = {
     "co",
@@ -111,6 +115,22 @@ class ProducerAggregate:
     term_hits: Counter[str] = field(default_factory=Counter)
 
 
+@dataclass
+class EntityMatch:
+    entity_id: str
+    match_type: str
+
+
+@dataclass
+class ExactProductCandidate:
+    barcode: str
+    display_barcode: str
+    product_name: str
+    brand_name: str | None
+    canonical_producer_name: str
+    matched_term: str | None
+
+
 def utc_now() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
@@ -179,6 +199,50 @@ def producer_term_variants(raw: str | None, strip_suffixes: bool) -> set[str]:
     return {variant for variant in variants if variant}
 
 
+def load_entity_lookup(entities_path: Path = DEFAULT_ENTITIES_PATH) -> dict[str, EntityMatch]:
+    raw = json.loads(entities_path.read_text(encoding="utf-8"))
+    entities = raw.get("entities") if isinstance(raw, dict) else raw
+    if not isinstance(entities, list):
+        raise RuntimeError(f"{entities_path} does not contain an entity list")
+
+    lookup: dict[str, EntityMatch] = {}
+    ambiguous: set[str] = set()
+
+    def add_term(term: str, entity_id: str, match_type: str) -> None:
+        normalized = normalize_term(term)
+        if not normalized:
+            return
+        existing = lookup.get(normalized)
+        if existing and existing.entity_id != entity_id:
+            ambiguous.add(normalized)
+            return
+        lookup[normalized] = EntityMatch(entity_id=entity_id, match_type=match_type)
+
+    for entity in entities:
+        if not isinstance(entity, dict):
+            continue
+        entity_id = entity.get("id")
+        if not isinstance(entity_id, str) or not entity_id:
+            continue
+
+        canonical_name = entity.get("canonicalName")
+        if isinstance(canonical_name, str):
+            for variant in producer_term_variants(canonical_name, strip_suffixes=True):
+                add_term(variant, entity_id, "canonical")
+
+        aliases = entity.get("aliases")
+        if isinstance(aliases, list):
+            for alias in aliases:
+                if isinstance(alias, str):
+                    for variant in producer_term_variants(alias, strip_suffixes=True):
+                        add_term(variant, entity_id, "alias")
+
+    for term in ambiguous:
+        lookup.pop(term, None)
+
+    return lookup
+
+
 def prefix_from_code(code: Any) -> str | None:
     digits = re.sub(r"\D", "", str(code or ""))
     if len(digits) == 13 and digits.startswith("0"):
@@ -186,6 +250,16 @@ def prefix_from_code(code: Any) -> str | None:
     if len(digits) < 12:
         return None
     return digits[:6]
+
+
+def barcode_values_from_code(code: Any) -> tuple[str, str] | None:
+    digits = re.sub(r"\D", "", str(code or ""))
+    if len(digits) == 12:
+        return "0" + digits, digits
+    if len(digits) == 13:
+        display = digits[1:] if digits.startswith("0") else digits
+        return digits, display
+    return None
 
 
 def prefix_threshold(matched_product_count: int) -> int:
@@ -245,6 +319,20 @@ def looks_like_descriptor(normalized: str) -> bool:
     if len(tokens) == 2:
         return descriptor_hits == 2
     return descriptor_hits >= len(tokens) - 1
+
+
+def quality_product_name(raw: str | None) -> str | None:
+    label = clean_display_label(raw)
+    normalized = normalize_term(label)
+    if not label or not normalized:
+        return None
+    if len(label) < 3:
+        return None
+    if normalized in {"product", "unknown", "no name", "sans marque", "sin marca"}:
+        return None
+    if looks_like_descriptor(normalized):
+        return None
+    return label
 
 
 def read_cstring(buffer: bytes, position: int, end: int) -> tuple[str, int]:
@@ -413,11 +501,28 @@ def detect_first_bson_offset(archive_path: Path, probe_bytes: int = 512 * 1024) 
     raise RuntimeError(f"Could not locate the first BSON document in {archive_path}")
 
 
+def resolve_research_entity(entry: dict[str, Any], entity_lookup: dict[str, EntityMatch]) -> EntityMatch | None:
+    candidate_terms = [entry.get("canonicalProducerName")]
+    candidate_terms.extend(entry.get("observedBrands") or [])
+    candidate_terms.extend(entry.get("dbConfirmedAliases") or [])
+
+    for term in candidate_terms:
+        if not isinstance(term, str):
+            continue
+        for variant in producer_term_variants(term, strip_suffixes=True):
+            match = entity_lookup.get(variant)
+            if match:
+                return match
+
+    return None
+
+
 def build_seed_index(payload: dict[str, Any]) -> tuple[list[ProducerSeed], dict[str, int]]:
     producer_research = payload.get("producerResearch")
     if not isinstance(producer_research, list):
         raise RuntimeError("products.json is missing producerResearch")
 
+    entity_lookup = load_entity_lookup()
     seeds: list[ProducerSeed] = []
     term_to_index: dict[str, int] = {}
     ambiguous_terms: set[str] = set()
@@ -428,6 +533,19 @@ def build_seed_index(payload: dict[str, Any]) -> tuple[list[ProducerSeed], dict[
             continue
 
         seed_index = len(seeds)
+        entity_match = resolve_research_entity(entry, entity_lookup)
+        if entity_match:
+            entry["entityId"] = entity_match.entity_id
+            entry["entityIdExists"] = True
+            entry["entityMatchType"] = entity_match.match_type
+            entry["missingEntityCandidate"] = False
+        else:
+            entry["entityIdExists"] = False
+            if not isinstance(entry.get("entityId"), str):
+                entry["entityId"] = None
+            if not isinstance(entry.get("entityMatchType"), str):
+                entry["entityMatchType"] = None
+
         seed_brands = [brand.strip() for brand in entry.get("observedBrands") or [] if isinstance(brand, str) and brand.strip()]
         canonical_variants = producer_term_variants(canonical_name, strip_suffixes=True)
         seed_brand_norms = {
@@ -438,9 +556,9 @@ def build_seed_index(payload: dict[str, Any]) -> tuple[list[ProducerSeed], dict[
         seeds.append(
             ProducerSeed(
                 canonical_name=canonical_name,
-                entity_id=entry.get("entityId") if isinstance(entry.get("entityId"), str) else None,
-                entity_id_exists=bool(entry.get("entityIdExists")),
-                entity_match_type=entry.get("entityMatchType") if isinstance(entry.get("entityMatchType"), str) else None,
+                entity_id=entity_match.entity_id if entity_match else None,
+                entity_id_exists=bool(entity_match),
+                entity_match_type=entity_match.match_type if entity_match else None,
                 seed_brands=seed_brands,
                 seed_brand_norms=seed_brand_norms,
                 canonical_norm=normalize_term(canonical_name),
@@ -472,10 +590,10 @@ def init_aggregates(seeds: list[ProducerSeed]) -> dict[str, ProducerAggregate]:
 def hydrate_aggregates(
     checkpoint_payload: dict[str, Any] | None,
     seeds: list[ProducerSeed],
-) -> tuple[dict[str, ProducerAggregate], int, int, int]:
+) -> tuple[dict[str, ProducerAggregate], int, int, int, list[ExactProductCandidate]]:
     aggregates = init_aggregates(seeds)
     if not checkpoint_payload:
-        return aggregates, 0, 0, 0
+        return aggregates, 0, 0, 0, []
 
     stored_results = checkpoint_payload.get("results") or {}
     for seed in seeds:
@@ -489,11 +607,35 @@ def hydrate_aggregates(
         aggregate.db_brand_counts.update({str(k): int(v) for k, v in (stored.get("dbBrandCounts") or {}).items()})
         aggregate.term_hits.update({str(k): int(v) for k, v in (stored.get("termHits") or {}).items()})
 
+    exact_products: list[ExactProductCandidate] = []
+    for item in checkpoint_payload.get("exactProducts") or []:
+        if not isinstance(item, dict):
+            continue
+        barcode = str(item.get("barcode") or "").strip()
+        display_barcode = str(item.get("displayBarcode") or "").strip()
+        product_name = str(item.get("productName") or "").strip()
+        canonical_producer_name = str(item.get("canonicalProducerName") or "").strip()
+        if not barcode or not display_barcode or not product_name or not canonical_producer_name:
+            continue
+        brand_name = item.get("brandName")
+        matched_term = item.get("matchedTerm")
+        exact_products.append(
+            ExactProductCandidate(
+                barcode=barcode,
+                display_barcode=display_barcode,
+                product_name=product_name,
+                brand_name=brand_name if isinstance(brand_name, str) and brand_name.strip() else None,
+                canonical_producer_name=canonical_producer_name,
+                matched_term=matched_term if isinstance(matched_term, str) and matched_term.strip() else None,
+            )
+        )
+
     return (
         aggregates,
         int(checkpoint_payload.get("offset") or 0),
         int(checkpoint_payload.get("documentsScanned") or 0),
         int(checkpoint_payload.get("parseErrors") or 0),
+        exact_products,
     )
 
 
@@ -505,6 +647,7 @@ def checkpoint_payload(
     documents_scanned: int,
     parse_errors: int,
     aggregates: dict[str, ProducerAggregate],
+    exact_products: list[ExactProductCandidate],
     status: str,
 ) -> dict[str, Any]:
     return {
@@ -516,6 +659,17 @@ def checkpoint_payload(
         "offset": offset,
         "documentsScanned": documents_scanned,
         "parseErrors": parse_errors,
+        "exactProducts": [
+            {
+                "barcode": product.barcode,
+                "displayBarcode": product.display_barcode,
+                "productName": product.product_name,
+                "brandName": product.brand_name,
+                "canonicalProducerName": product.canonical_producer_name,
+                "matchedTerm": product.matched_term,
+            }
+            for product in exact_products
+        ],
         "results": {
             name: {
                 "matchedProductCount": aggregate.matched_product_count,
@@ -699,14 +853,141 @@ def runtime_brands(seed: ProducerSeed, aggregate: ProducerAggregate, seeds: list
     return ordered[:limit]
 
 
+def product_brand_label(parsed_doc: dict[str, Any], seed: ProducerSeed) -> str | None:
+    for raw_brand in db_brand_displays(parsed_doc):
+        label = clean_display_label(raw_brand)
+        normalized = normalize_term(label)
+        if label and normalized and not looks_like_descriptor(normalized):
+            return label
+
+    for seed_brand in seed.seed_brands:
+        label = clean_display_label(seed_brand)
+        if label:
+            return label
+
+    return clean_display_label(seed.canonical_name) or None
+
+
+def exact_product_candidate(
+    parsed_doc: dict[str, Any],
+    matched_indices: set[int],
+    matched_terms: set[str],
+    term_to_index: dict[str, int],
+    seeds: list[ProducerSeed],
+) -> ExactProductCandidate | None:
+    if len(matched_indices) != 1:
+        return None
+
+    matched_index = next(iter(matched_indices))
+    seed = seeds[matched_index]
+    if not seed.entity_id_exists or not seed.entity_id:
+        return None
+
+    barcode_values = barcode_values_from_code(parsed_doc.get("code"))
+    if not barcode_values:
+        return None
+
+    product_name = quality_product_name(parsed_doc.get("product_name"))
+    if not product_name:
+        return None
+
+    matched_term = next(
+        (
+            term
+            for term in sorted(matched_terms)
+            if term_to_index.get(term) == matched_index
+        ),
+        None,
+    )
+    barcode, display_barcode = barcode_values
+
+    return ExactProductCandidate(
+        barcode=barcode,
+        display_barcode=display_barcode,
+        product_name=product_name,
+        brand_name=product_brand_label(parsed_doc, seed),
+        canonical_producer_name=seed.canonical_name,
+        matched_term=matched_term,
+    )
+
+
+def build_runtime_products(
+    exact_products: list[ExactProductCandidate],
+    seeds: list[ProducerSeed],
+    aggregates: dict[str, ProducerAggregate],
+    *,
+    limit: int,
+) -> list[dict[str, Any]]:
+    seed_by_name = {seed.canonical_name: seed for seed in seeds}
+    grouped_rows: dict[str, list[dict[str, Any]]] = {}
+    producer_weights: dict[str, int] = {}
+    seen_barcodes: set[str] = set()
+
+    for product in exact_products:
+        if product.barcode in seen_barcodes:
+            continue
+        seed = seed_by_name.get(product.canonical_producer_name)
+        if not seed or not seed.entity_id_exists or not seed.entity_id:
+            continue
+        aggregate = aggregates.get(seed.canonical_name)
+        if not aggregate or aggregate.matched_product_count <= 0:
+            continue
+
+        seen_barcodes.add(product.barcode)
+        producer_weights[seed.canonical_name] = aggregate.matched_product_count
+        row: dict[str, Any] = {
+            "barcode": product.barcode,
+            "displayBarcode": product.display_barcode,
+            "productName": product.product_name,
+            "canonicalProducerName": seed.canonical_name,
+            "entityId": seed.entity_id,
+            "entityMatchType": seed.entity_match_type,
+            "matchedProducerProductCount": aggregate.matched_product_count,
+            "source": "off-bulk-exact",
+        }
+        if product.brand_name:
+            row["brandName"] = product.brand_name
+        if product.matched_term:
+            row["matchedTerm"] = product.matched_term
+        grouped_rows.setdefault(seed.canonical_name, []).append(row)
+
+    for rows in grouped_rows.values():
+        rows.sort(key=lambda item: (str(item["productName"]), str(item["barcode"])))
+
+    producer_order = sorted(
+        grouped_rows,
+        key=lambda name: (-producer_weights.get(name, 0), name),
+    )
+    selected: list[dict[str, Any]] = []
+    row_index = 0
+
+    while len(selected) < limit:
+        added_this_round = False
+        for producer_name in producer_order:
+            rows = grouped_rows[producer_name]
+            if row_index >= len(rows):
+                continue
+            selected.append(rows[row_index])
+            added_this_round = True
+            if len(selected) >= limit:
+                break
+        if not added_this_round:
+            break
+        row_index += 1
+
+    return selected
+
+
 def build_products_snapshot(
     payload: dict[str, Any],
     seeds: list[ProducerSeed],
     aggregates: dict[str, ProducerAggregate],
+    exact_products: list[ExactProductCandidate],
     *,
     scan_offset: int,
     documents_scanned: int,
     archive_path: Path,
+    exact_product_limit: int,
     partial: bool,
 ) -> dict[str, Any]:
     snapshot = deepcopy(payload)
@@ -742,11 +1023,19 @@ def build_products_snapshot(
 
     runtime_producers.sort(key=lambda item: (-int(item["matchedProductCount"]), item["canonicalProducerName"]))
     snapshot["producers"] = runtime_producers
+    snapshot["products"] = build_runtime_products(
+        exact_products,
+        seeds,
+        aggregates,
+        limit=exact_product_limit,
+    )
 
     meta = snapshot.setdefault("_meta", {})
     meta["producerCount"] = len(runtime_producers)
+    meta["productCount"] = len(snapshot["products"])
     meta["researchEntryCount"] = len(producer_research)
     meta["producerSource"] = "Runtime producers come from OFF bulk DB prefix aggregation filtered to repeated UPC evidence."
+    meta["productSource"] = "Runtime exact products come from OFF bulk DB product rows that match one existing producer seed and current entity ID."
     meta["lastUpdated"] = datetime.now().date().isoformat()
     meta["syncCheckpoint"] = {
         "partial": partial,
@@ -763,6 +1052,7 @@ def persist_progress(
     payload: dict[str, Any],
     seeds: list[ProducerSeed],
     aggregates: dict[str, ProducerAggregate],
+    exact_products: list[ExactProductCandidate],
     archive_path: Path,
     checkpoint_path: Path,
     snapshot_path: Path,
@@ -770,6 +1060,7 @@ def persist_progress(
     offset: int,
     documents_scanned: int,
     parse_errors: int,
+    exact_product_limit: int,
     status: str,
     partial: bool,
 ) -> None:
@@ -781,15 +1072,18 @@ def persist_progress(
         documents_scanned=documents_scanned,
         parse_errors=parse_errors,
         aggregates=aggregates,
+        exact_products=exact_products,
         status=status,
     )
     snapshot = build_products_snapshot(
         payload,
         seeds,
         aggregates,
+        exact_products,
         scan_offset=offset,
         documents_scanned=documents_scanned,
         archive_path=archive_path,
+        exact_product_limit=exact_product_limit,
         partial=partial,
     )
 
@@ -805,6 +1099,7 @@ def scan_archive(
     term_to_index: dict[str, int],
     seeds: list[ProducerSeed],
     aggregates: dict[str, ProducerAggregate],
+    exact_products: list[ExactProductCandidate],
     documents_scanned: int,
     checkpoint_every_docs: int,
     block_size_bytes: int,
@@ -815,6 +1110,8 @@ def scan_archive(
     parse_errors = 0
     documents_since_checkpoint = 0
     completed = False
+    exact_product_seen = {product.barcode for product in exact_products}
+    exact_products_by_producer = Counter(product.canonical_producer_name for product in exact_products)
 
     with archive_path.open("rb") as handle:
         handle.seek(start_offset)
@@ -851,7 +1148,7 @@ def scan_archive(
                 try:
                     parsed_doc = parse_document_fields(
                         document,
-                        {"code", "brands", "brands_tags", "brand_owner", "brand_owner_imported"},
+                        {"code", "product_name", "brands", "brands_tags", "brand_owner", "brand_owner_imported"},
                     )
                 except BsonParseError:
                     parse_errors += 1
@@ -873,6 +1170,17 @@ def scan_archive(
                         for term in matched_terms:
                             if term in seed.canonical_variants or term_to_index.get(term) == matched_index:
                                 aggregate.term_hits[term] += 1
+
+                    product = exact_product_candidate(parsed_doc, matched_indices, matched_terms, term_to_index, seeds)
+                    if (
+                        product
+                        and product.barcode not in exact_product_seen
+                        and exact_products_by_producer[product.canonical_producer_name] < EXACT_PRODUCTS_PER_PRODUCER
+                        and len(exact_products) < EXACT_PRODUCT_POOL_LIMIT
+                    ):
+                        exact_products.append(product)
+                        exact_product_seen.add(product.barcode)
+                        exact_products_by_producer[product.canonical_producer_name] += 1
 
                 if checkpoint_every_docs > 0 and documents_since_checkpoint >= checkpoint_every_docs:
                     checkpoint_callback(offset=offset, documents_scanned=documents_scanned, parse_errors=parse_errors)
@@ -905,6 +1213,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--checkpoint-every-docs", type=int, default=50000)
     parser.add_argument("--block-size-mb", type=int, default=8)
     parser.add_argument("--limit", type=int, default=None)
+    parser.add_argument(
+        "--exact-product-limit",
+        type=int,
+        default=DEFAULT_EXACT_PRODUCT_LIMIT,
+        help="Maximum exact barcode product rows to include in products.json.",
+    )
     parser.add_argument("--fresh", action="store_true", help="Ignore any saved checkpoint and start from the first OFF document.")
     parser.add_argument("--no-final-write", action="store_true", help="Do not overwrite products.json even if the scan completes.")
     parser.add_argument(
@@ -940,7 +1254,8 @@ def main() -> int:
     payload = load_products_payload(args.products_path)
     seeds, term_to_index = build_seed_index(payload)
     checkpoint = load_checkpoint_payload(args)
-    aggregates, checkpoint_offset, documents_scanned, resumed_parse_errors = hydrate_aggregates(checkpoint, seeds)
+    aggregates, checkpoint_offset, documents_scanned, resumed_parse_errors, exact_products = hydrate_aggregates(checkpoint, seeds)
+    exact_product_limit = max(0, args.exact_product_limit)
 
     if args.rebuild_from_checkpoint:
         if not checkpoint:
@@ -951,6 +1266,7 @@ def main() -> int:
             payload=payload,
             seeds=seeds,
             aggregates=aggregates,
+            exact_products=exact_products,
             archive_path=args.archive_path,
             checkpoint_path=args.checkpoint_path,
             snapshot_path=args.snapshot_path,
@@ -958,6 +1274,7 @@ def main() -> int:
             offset=checkpoint_offset,
             documents_scanned=documents_scanned,
             parse_errors=resumed_parse_errors,
+            exact_product_limit=exact_product_limit,
             status=status,
             partial=status != "complete",
         )
@@ -967,9 +1284,11 @@ def main() -> int:
                 payload,
                 seeds,
                 aggregates,
+                exact_products,
                 scan_offset=checkpoint_offset,
                 documents_scanned=documents_scanned,
                 archive_path=args.archive_path,
+                exact_product_limit=exact_product_limit,
                 partial=False,
             )
             atomic_write_json(args.products_path, final_payload)
@@ -984,6 +1303,8 @@ def main() -> int:
                     "parseErrors": resumed_parse_errors,
                     "checkpointPath": str(args.checkpoint_path),
                     "snapshotPath": str(args.snapshot_path),
+                    "exactProducts": len(exact_products),
+                    "runtimeExactProducts": min(len(exact_products), exact_product_limit),
                     "rebuildOnly": True,
                 },
                 indent=2,
@@ -1005,6 +1326,7 @@ def main() -> int:
             payload=payload,
             seeds=seeds,
             aggregates=aggregates,
+            exact_products=exact_products,
             archive_path=args.archive_path,
             checkpoint_path=args.checkpoint_path,
             snapshot_path=args.snapshot_path,
@@ -1012,6 +1334,7 @@ def main() -> int:
             offset=offset,
             documents_scanned=documents_scanned,
             parse_errors=total_parse_errors,
+            exact_product_limit=exact_product_limit,
             status=status,
             partial=True,
         )
@@ -1026,6 +1349,7 @@ def main() -> int:
         term_to_index=term_to_index,
         seeds=seeds,
         aggregates=aggregates,
+        exact_products=exact_products,
         documents_scanned=documents_scanned,
         checkpoint_every_docs=args.checkpoint_every_docs,
         block_size_bytes=max(1, args.block_size_mb) * 1024 * 1024,
@@ -1039,6 +1363,7 @@ def main() -> int:
         payload=payload,
         seeds=seeds,
         aggregates=aggregates,
+        exact_products=exact_products,
         archive_path=args.archive_path,
         checkpoint_path=args.checkpoint_path,
         snapshot_path=args.snapshot_path,
@@ -1046,6 +1371,7 @@ def main() -> int:
         offset=offset,
         documents_scanned=documents_scanned,
         parse_errors=parse_errors,
+        exact_product_limit=exact_product_limit,
         status=final_status,
         partial=not completed or bool(args.limit),
     )
@@ -1055,9 +1381,11 @@ def main() -> int:
             payload,
             seeds,
             aggregates,
+            exact_products,
             scan_offset=offset,
             documents_scanned=documents_scanned,
             archive_path=args.archive_path,
+            exact_product_limit=exact_product_limit,
             partial=False,
         )
         atomic_write_json(args.products_path, final_payload)
@@ -1077,6 +1405,8 @@ def main() -> int:
                 "parseErrors": parse_errors,
                 "checkpointPath": str(args.checkpoint_path),
                 "snapshotPath": str(args.snapshot_path),
+                "exactProducts": len(exact_products),
+                "runtimeExactProducts": min(len(exact_products), exact_product_limit),
             },
             indent=2,
         )

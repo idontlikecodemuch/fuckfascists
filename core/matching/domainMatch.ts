@@ -1,5 +1,15 @@
 import type { Entity } from '../models';
 
+const THIRD_PARTY_PROFILE_DOMAINS = [
+  'facebook.com',
+  'instagram.com',
+  'linkedin.com',
+  'tiktok.com',
+  'twitter.com',
+  'x.com',
+  'youtube.com',
+];
+
 /**
  * Normalizes a hostname for domain comparison.
  * Lowercases and strips the "www." prefix.
@@ -7,6 +17,18 @@ import type { Entity } from '../models';
 export function normalizeHost(host: string): string {
   const lower = host.toLowerCase().trim();
   return lower.startsWith('www.') ? lower.slice(4) : lower;
+}
+
+/**
+ * True when a host commonly points to a third-party profile/page rather than
+ * the POI's own first-party website. MapKit frequently returns these for local
+ * businesses, so the matching pipeline must not treat them as definitive.
+ */
+export function isThirdPartyProfileHost(host: string): boolean {
+  const normalized = normalizeHost(host);
+  return THIRD_PARTY_PROFILE_DOMAINS.some((domain) =>
+    normalized === domain || normalized.endsWith('.' + domain)
+  );
 }
 
 /**

@@ -135,8 +135,10 @@ export function useTapSearch(
   /**
    * Runs each POI through matchEntity and adds matched pins at coordinate.
    * When a POI has a url (iOS MapKit), passes it as a domain hint for
-   * definitive matching. Uses Promise.allSettled so one failing POI doesn't
-   * block the others. Serialized — if a previous call is in-flight, dropped.
+   * guarded first-party matching. FEC fuzzy fallback is disabled for POI taps:
+   * arbitrary street-level names have produced false-positive business cards.
+   * Uses Promise.allSettled so one failing POI doesn't block the others.
+   * Serialized — if a previous call is in-flight, dropped.
    */
   const processTapResults = useCallback(
     async (pois: MapKitPOI[], coordinate: LatLng, suppressNoMatch = false) => {
@@ -151,6 +153,7 @@ export function useTapSearch(
               deps,
               areaHash,
               poi.url ? normalizeHost(poi.url) : undefined,
+              { allowFecFallback: false },
             ),
           ),
         );

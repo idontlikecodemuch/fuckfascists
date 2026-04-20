@@ -6,7 +6,7 @@ export type ScanContext =
       barcode: string;
       productName: string | null;
       brandName: string | null;
-      source: 'cache' | 'open_food_facts' | 'bundled_prefix';
+      source: 'cache' | 'open_food_facts' | 'bundled_product' | 'bundled_prefix';
     };
 
 /**

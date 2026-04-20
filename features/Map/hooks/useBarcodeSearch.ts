@@ -4,7 +4,7 @@ import type { Entity } from '../../../core/models';
 import { getCachedBarcodeLookup, setCachedBarcodeLookup } from '../barcode/barcodeCacheStore';
 import { lookupBarcodeViaOpenFoodFacts } from '../barcode/openFoodFacts';
 import { normalizeBarcode } from '../barcode/normalizeBarcode';
-import { findProducerByBarcodePrefix } from '../barcode/productIndex';
+import { findBundledProductByBarcode } from '../barcode/productIndex';
 import type { ScanContext } from '../types';
 import { mapCopy } from '../../../copy/map';
 
@@ -21,7 +21,7 @@ export interface BarcodeSearchTarget {
 /**
  * Barcode flow:
  *   1. Normalize UPC/EAN into GTIN-13
- *   2. Check bundled producer-prefix index (instant, no network)
+ *   2. Check bundled exact-product and producer-prefix index (instant, no network)
  *   3. Check persistent on-device cache
  *   4. Resolve brand via Open Food Facts on cache miss
  *   5. Match that brand into the bundled entity alias graph
@@ -49,17 +49,20 @@ export function useBarcodeSearch(entities: Entity[]) {
         return null;
       }
 
-      // Fast path: bundled producer-prefix index (instant, no cache or network)
-      const prefixMatch = findProducerByBarcodePrefix(normalized, entitiesRef.current);
-      if (prefixMatch) {
+      // Fast path: bundled exact-product / producer-prefix index (instant, no cache or network)
+      const bundledMatch = findBundledProductByBarcode(normalized, entitiesRef.current);
+      if (bundledMatch) {
         return {
-          searchTerm: prefixMatch.searchTerm,
+          searchTerm: bundledMatch.searchTerm,
           context: {
             kind: 'barcode',
             barcode: normalized.displayCode,
-            productName: null,
-            brandName: prefixMatch.entity.aliases[0] ?? prefixMatch.entity.canonicalName,
-            source: 'bundled_prefix',
+            productName: bundledMatch.source === 'bundled_product' ? bundledMatch.productName : null,
+            brandName:
+              bundledMatch.source === 'bundled_product'
+                ? bundledMatch.brandName
+                : bundledMatch.entity.aliases[0] ?? bundledMatch.entity.canonicalName,
+            source: bundledMatch.source,
           },
         };
       }

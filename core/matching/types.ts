@@ -34,6 +34,15 @@ export interface MatchFailure {
   normalizedInput: string;    // caller uses this to build the FEC search link
 }
 
+export interface MatchEntityOptions {
+  /**
+   * Allows fallback to live FEC committee search after cache/domain/alias miss.
+   * Disable for POI taps, where arbitrary local business names have produced
+   * high-risk false positives.
+   */
+  allowFecFallback?: boolean;
+}
+
 export interface MatchingDeps {
   entities: Entity[];
   fetchOrgs: (normalizedName: string) => Promise<FECCommittee[]>;

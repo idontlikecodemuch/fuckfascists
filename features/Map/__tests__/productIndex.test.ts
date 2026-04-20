@@ -1,5 +1,9 @@
-import { findProducerByBarcodePrefixInProducts } from '../barcode/productIndex';
-import type { ProductProducerEntry } from '../barcode/productIndex';
+import {
+  findBundledProductByBarcodeInProducts,
+  findProducerByBarcodePrefixInProducts,
+  findProductByExactBarcodeInProducts,
+} from '../barcode/productIndex';
+import type { ProductEntry, ProductProducerEntry } from '../barcode/productIndex';
 import type { NormalizedBarcode } from '../barcode/normalizeBarcode';
 import type { Entity } from '../../../core/models';
 
@@ -22,6 +26,15 @@ const entities = [pepsico, cocaCola];
 const producers: ProductProducerEntry[] = [
   { entityId: 'pepsico', prefixes: ['028400', '012000'] },
   { entityId: 'coca-cola', prefixes: ['049000', '04900012'] },
+];
+const products: ProductEntry[] = [
+  {
+    barcode: '0049000123456',
+    displayBarcode: '049000123456',
+    productName: 'Coca-Cola Classic',
+    brandName: 'Coca-Cola',
+    entityId: 'coca-cola',
+  },
 ];
 
 function barcode(upcA: string): NormalizedBarcode {
@@ -103,5 +116,55 @@ describe('findProducerByBarcodePrefixInProducts', () => {
     );
     expect(result).not.toBeNull();
     expect(result!.prefix).toBe('301762');
+  });
+});
+
+describe('findProductByExactBarcodeInProducts', () => {
+  it('matches an exact bundled product barcode', () => {
+    const result = findProductByExactBarcodeInProducts(
+      barcode('049000123456'),
+      entities,
+      products,
+    );
+    expect(result).not.toBeNull();
+    expect(result!.entity.id).toBe('coca-cola');
+    expect(result!.productName).toBe('Coca-Cola Classic');
+    expect(result!.brandName).toBe('Coca-Cola');
+  });
+
+  it('skips exact product rows whose entityId is not in entities list', () => {
+    const result = findProductByExactBarcodeInProducts(
+      barcode('049000123456'),
+      entities,
+      [{ ...products[0], entityId: 'missing-entity' }],
+    );
+    expect(result).toBeNull();
+  });
+});
+
+describe('findBundledProductByBarcodeInProducts', () => {
+  it('prefers exact product rows over producer-prefix rows', () => {
+    const result = findBundledProductByBarcodeInProducts(
+      barcode('049000123456'),
+      entities,
+      products,
+      producers,
+    );
+    expect(result).not.toBeNull();
+    expect(result!.source).toBe('bundled_product');
+    if (result?.source === 'bundled_product') {
+      expect(result.productName).toBe('Coca-Cola Classic');
+    }
+  });
+
+  it('falls back to producer prefixes when no exact product matches', () => {
+    const result = findBundledProductByBarcodeInProducts(
+      barcode('028400123456'),
+      entities,
+      products,
+      producers,
+    );
+    expect(result).not.toBeNull();
+    expect(result!.source).toBe('bundled_prefix');
   });
 });

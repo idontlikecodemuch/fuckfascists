@@ -27,6 +27,18 @@ const entityWithoutOrgId: Entity = {
   lastVerifiedDate: '2024-01-01',
 };
 
+const metaEntity: Entity = {
+  id: 'meta',
+  canonicalName: 'Meta Platforms Inc',
+  aliases: ['Meta', 'Facebook', 'Instagram'],
+  domains: ['meta.com', 'facebook.com', 'instagram.com'],
+  categoryTags: ['tech', 'media'],
+  ceoName: 'Mark Zuckerberg',
+  fecCommitteeId: 'C00502906',
+  verificationStatus: 'pipeline',
+  lastVerifiedDate: '2024-01-01',
+};
+
 const mockDonationSummary: DonationSummary = {
   committeeId:     'D000000074',
   committeeName:   'Walmart Inc',
@@ -190,6 +202,27 @@ describe('domain match', () => {
     expect(result.matched).toBe(true);
     if (result.matched) {
       expect(result.matchedAlias).toBe('Walmart Neighborhood Market');
+    }
+  });
+
+  it('ignores third-party profile domains when the POI name is a different business', async () => {
+    const deps = makeDeps({ entities: [metaEntity] });
+
+    const result = await matchEntity('The Festival Center', deps, '', 'facebook.com');
+
+    expect(result.matched).toBe(false);
+    expect(deps.fetchOrgSummary).not.toHaveBeenCalled();
+  });
+
+  it('still matches third-party profile domains when the POI name matches the platform', async () => {
+    const deps = makeDeps({ entities: [metaEntity] });
+
+    const result = await matchEntity('Facebook', deps, '', 'facebook.com');
+
+    expect(result.matched).toBe(true);
+    if (result.matched) {
+      expect(result.entity).toBe(metaEntity);
+      expect(result.confidence).toBe(1.0);
     }
   });
 });
@@ -388,6 +421,22 @@ describe('fuzzy match', () => {
     if (!result.matched) {
       expect(result.lookupStatus).toBe('lookup_unavailable');
     }
+  });
+
+  it('can disable FEC fallback for POI taps to avoid fuzzy false positives', async () => {
+    const deps = makeDeps({
+      entities: [],
+      fetchOrgs: jest
+        .fn()
+        .mockResolvedValue([{ orgid: 'D000000074', orgname: 'Walmart Inc' }]),
+    });
+
+    const result = await matchEntity('some obscure shop', deps, '', undefined, {
+      allowFecFallback: false,
+    });
+
+    expect(result.matched).toBe(false);
+    expect(deps.fetchOrgs).not.toHaveBeenCalled();
   });
 
   it('caches a successful fuzzy match', async () => {

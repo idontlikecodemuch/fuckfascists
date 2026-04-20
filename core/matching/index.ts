@@ -4,7 +4,7 @@ export { normalize } from './normalize';
 export { jaro, jaroWinkler } from './jaroWinkler';
 export { findByAlias } from './aliasMatch';
 export type { AliasMatchResult } from './aliasMatch';
-export { findByDomain, normalizeHost } from './domainMatch';
+export { findByDomain, isThirdPartyProfileHost, normalizeHost } from './domainMatch';
 export { scoreAll, pickBestMatch } from './scorer';
 export type {
   FECCommittee,
@@ -12,6 +12,7 @@ export type {
   MatchResult,
   MatchSuccess,
   MatchFailure,
+  MatchEntityOptions,
   MatchingDeps,
 } from './types';
 export type { ScoredCandidate, BestMatch } from './scorer';

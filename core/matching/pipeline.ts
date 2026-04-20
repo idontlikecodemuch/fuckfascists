@@ -1,8 +1,8 @@
 import type { Entity, LocalCache, DonationSummary } from '../models';
-import type { FECCommittee, MatchResult, MatchingDeps } from './types';
+import type { FECCommittee, MatchEntityOptions, MatchResult, MatchingDeps } from './types';
 import { normalize } from './normalize';
 import { findByAlias } from './aliasMatch';
-import { findByDomain } from './domainMatch';
+import { findByDomain, isThirdPartyProfileHost } from './domainMatch';
 import { pickBestMatch } from './scorer';
 import { ENTITY_CACHE_TTL_DAYS } from '../../config/constants';
 
@@ -70,6 +70,13 @@ function shouldUseCachedSummary(cached: LocalCache): boolean {
   return !looksSuspiciouslyZeroed;
 }
 
+function shouldTrustDomainMatch(domain: string, entity: Entity, normalizedInput: string): boolean {
+  if (!isThirdPartyProfileHost(domain)) return true;
+
+  const aliasHit = findByAlias(normalizedInput, [entity]);
+  return aliasHit?.entity.id === entity.id;
+}
+
 /**
  * Full entity matching pipeline. Steps:
  *  1. Normalize input
@@ -89,7 +96,9 @@ export async function matchEntity(
   deps: MatchingDeps,
   areaHash = '',
   domain?: string,
+  options: MatchEntityOptions = {},
 ): Promise<MatchResult> {
+  const { allowFecFallback = true } = options;
   const normalizedInput = normalize(rawInput);
   const cacheKey = buildCacheKey(normalizedInput, areaHash);
 
@@ -112,11 +121,12 @@ export async function matchEntity(
     };
   }
 
-  // Step 2: Domain match — definitive when POI hostname is available (iOS).
-  // Zero false positives: "apple.com" → Apple entity, regardless of POI name.
+  // Step 2: Domain match — definitive when POI hostname is a first-party site.
+  // Third-party profile hosts (e.g. facebook.com/local-business) are only
+  // trusted when the POI name itself matches that platform/entity.
   if (domain) {
     const domainEntity = findByDomain(domain, deps.entities);
-    if (domainEntity) {
+    if (domainEntity && shouldTrustDomainMatch(domain, domainEntity, normalizedInput)) {
       const result = await resolveEntityMatch(domainEntity, rawInput, cacheKey, deps, normalizedInput);
       if (result) return result;
     }
@@ -132,6 +142,8 @@ export async function matchEntity(
   }
 
   // Step 4: Fuzzy FEC committee search
+  if (!allowFecFallback) return { matched: false, lookupStatus: 'no_match', normalizedInput };
+
   // fetchOrgs can 403 in anonymous mode — treat as no candidates rather than a hard error.
   let candidates: FECCommittee[] = [];
   try {
