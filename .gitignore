@@ -56,3 +56,6 @@ ios/FckFascists.xcworkspace/xcshareddata/
 
 # Full-res sprite source archive (optimized versions live in assets/pixel/sprites/)
 assets/pixel/sprites-hires/
+
+# Pre-optimization asset archive (originals before downsizing/format conversion)
+tools/asset-archive/

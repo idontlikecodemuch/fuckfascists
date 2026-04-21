@@ -1,5 +1,5 @@
 /**
- * Scans assets/pixel/arena/ for PNG files and regenerates
+ * Scans assets/pixel/arena/ for PNG/JPG files and regenerates
  * core/arena/arenaAssets.ts — a static require() map.
  *
  * Run:  node scripts/generate-arena-assets.mjs
@@ -17,19 +17,20 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
 const ARENA_DIR = resolve(ROOT, 'assets/pixel/arena');
 const OUTPUT_FILE = resolve(ROOT, 'core/arena/arenaAssets.ts');
+const ASSET_PATTERN = /\.(png|jpe?g)$/i;
 
-/** Convert a filename like arena_nyc_street.png → arena-nyc-street */
+/** Convert a filename like arena_nyc_street.jpg → arena-nyc-street */
 function filenameToId(filename) {
-  return basename(filename, '.png').replace(/_/g, '-');
+  return basename(filename).replace(ASSET_PATTERN, '').replace(/_/g, '-');
 }
 
 async function main() {
   const files = (await readdir(ARENA_DIR))
-    .filter((f) => f.endsWith('.png'))
+    .filter((f) => ASSET_PATTERN.test(f))
     .sort();
 
   if (files.length === 0) {
-    console.error('No PNG files found in assets/pixel/arena/');
+    console.error('No PNG/JPG files found in assets/pixel/arena/');
     process.exit(1);
   }
 
