@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react'
 import { View, Image, Pressable, Animated, StyleSheet, SafeAreaView, Linking, Platform, useWindowDimensions } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import type { Entity, PoliticalPerson } from '../../core/models';
+import { getAssociatedPeople } from '../../core/models';
 import type { MatchingDeps } from '../../core/matching';
 import type { StorageAdapter } from '../../core/data';
 import {
@@ -235,7 +236,10 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
     return merged;
   }, [pins, tapPins]);
 
-  const cardMode = activeResult ? resolveCardMode(activeResult) : null;
+  const activeAssociatedPeople = activeResult?.entity
+    ? getAssociatedPeople(activeResult.entity, people, entities)
+    : [];
+  const cardMode = activeResult ? resolveCardMode(activeResult, activeAssociatedPeople) : null;
   const showFullCard = cardMode === 'card';
   const bannerVariant = cardMode && typeof cardMode === 'object' ? cardMode.banner : null;
   const isCelebrating = avoidAnimating;

@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, Text, Image, Linking, StyleSheet } from 'react-native';
 import type { DonationSummary, PoliticalPerson } from '../../../core/models';
-import { formatDonationAmount, formatCycleLabel, formatActiveCycles, getPersonDisplayName, makeFecIndividualUrl } from '../../../core/models';
+import { formatDonationAmount, formatActiveCycles, getPersonDisplayName, makeFecIndividualUrl } from '../../../core/models';
 import { sharedCopy } from '../../../copy/shared';
 import { mapCopy } from '../../../copy/map';
 import { theme } from '../../../design/tokens';
 import { sealEagleSmall } from '../../../core/ui/uiAssets';
+import { deriveDonationSummary } from './dataZoneSummary';
 
 interface DataZoneProps {
   donationSummary: DonationSummary | null;
@@ -45,34 +46,20 @@ const AMOUNT_GAP = 10;
  * Larger party amount always leads. No dot separators — gap only.
  */
 export function DataZone({ donationSummary, committeeName, fecUrl, onDetailPress, associatedPeople, displayName, isMediumConfidence, entityName }: DataZoneProps) {
-  const pacR = donationSummary?.totalRepubs ?? 0;
-  const pacD = donationSummary?.totalDems ?? 0;
-  const pacO = donationSummary?.totalO ?? 0;
-  const recentPacR = donationSummary?.recentRepubs ?? 0;
-  const recentPacD = donationSummary?.recentDems ?? 0;
+  // All donation math — totals, recent-cycle alignment, activeCycles union,
+  // R>D ordering, and the hasRealDonations gate — is in deriveDonationSummary.
+  // Keeps this component focused on layout and copy.
+  const {
+    people,
+    totalR, totalD, totalO,
+    recentR, recentD,
+    recentCycleLabel,
+    activeCycles,
+    rIsLarger, recentRIsLarger,
+    hasRealDonations,
+  } = deriveDonationSummary(donationSummary, associatedPeople);
 
-  let personR = 0, personD = 0, personO = 0, recentPersonR = 0, recentPersonD = 0;
-  for (const p of associatedPeople ?? []) {
-    if (!p.donationSummary) continue;
-    personR += p.donationSummary.totalR;
-    personD += p.donationSummary.totalD;
-    personO += p.donationSummary.totalO ?? 0;
-    recentPersonR += p.donationSummary.recentCycleR;
-    recentPersonD += p.donationSummary.recentCycleD;
-  }
-
-  const totalR = pacR + personR;
-  const totalD = pacD + personD;
-  const totalO = pacO + personO;
-  const recentR = recentPacR + recentPersonR;
-  const recentD = recentPacD + recentPersonD;
-  const rIsLarger = totalR >= totalD;
-  const recentRIsLarger = recentR >= recentD;
-
-  const hasRealDonations = totalR !== 0 || totalD !== 0 || totalO !== 0 || recentR !== 0 || recentD !== 0;
   const pacFullName = donationSummary?.committeeName ?? committeeName;
-  const people = (associatedPeople ?? []).filter((p) => p.donationSummary != null);
-  const recentCycleLabel = donationSummary ? formatCycleLabel(Number(donationSummary.recentCycle) || 0) : null;
 
   return (
     <View style={styles.document}>
@@ -149,12 +136,12 @@ export function DataZone({ donationSummary, committeeName, fecUrl, onDetailPress
             </>
           )}
 
-          {/* Footnote: active cycles */}
-          {donationSummary && donationSummary.activeCycles.length > 0 && (
+          {/* Footnote: active cycles — union of PAC + people cycle history */}
+          {activeCycles.length > 0 && (
             <View style={styles.footnoteRow}>
               <View style={styles.labelSpacer} />
               <Text style={styles.footnote} allowFontScaling>
-                {sharedCopy.activeCycles(formatActiveCycles(donationSummary.activeCycles))}
+                {sharedCopy.activeCycles(formatActiveCycles(activeCycles))}
               </Text>
             </View>
           )}

@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import type { Entity, PoliticalPerson } from '../../core/models';
+import { getAssociatedPeople } from '../../core/models';
 import type { MatchingDeps } from '../../core/matching';
 import type { StorageAdapter } from '../../core/data';
 import { makeCacheDeps, recordEntityAvoid } from '../../core/data';
@@ -97,7 +98,10 @@ export function ScanScreen({ entities, people, adapter, fetchOrgs, fetchOrgSumma
     return null;
   }, [lastLookupLabel, notice, status]);
 
-  const cardMode = activeResult ? resolveCardMode(activeResult) : null;
+  const activeAssociatedPeople = activeResult?.entity
+    ? getAssociatedPeople(activeResult.entity, people, entities)
+    : [];
+  const cardMode = activeResult ? resolveCardMode(activeResult, activeAssociatedPeople) : null;
   const bannerVariant = cardMode && typeof cardMode === 'object' ? cardMode.banner : null;
   const activeEntityId = activeResult ? activeResult.entityId ?? activeResult.fecCommitteeId : null;
   const isAvoided = !!activeEntityId && avoidedIds.includes(activeEntityId);
