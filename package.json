@@ -16,6 +16,7 @@
     "fetch:people": "node scripts/fetch-people-data.mjs",
     "audit:aliases": "node scripts/audit-aliases.mjs",
     "download:openstates": "node scripts/download-openstates.mjs",
+    "verify:entities:bulk": "node scripts/verify-entities-from-bulk.mjs",
     "hydrate:entities:bulk": "node scripts/hydrate-entities-from-bulk.mjs",
     "hydrate:people:bulk": "node scripts/hydrate-people-from-bulk.mjs",
     "compare:people:bulk": "node scripts/compare-people-bulk.mjs",

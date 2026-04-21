@@ -260,6 +260,18 @@ export const SHORT_PARENT_NAMES: Record<string, string> = {
   'Amazon.com Inc': 'AMAZON',
   'Alphabet Inc': 'ALPHABET',
   'X Corp': 'X CORP',
+  'Academy Ltd': 'ACADEMY',
+  'Alaska Air Group Inc': 'ALASKA',
+  'Bass Pro Group LLC': 'BASS PRO',
+  'BMW Group': 'BMW',
+  'EssilorLuxottica SA': 'ESSILOR',
+  'Live Nation Entertainment Inc': 'LIVE NATION',
+  'Mercedes-Benz Group AG': 'MERCEDES',
+  'Six Flags Entertainment Corp': 'SIX FLAGS',
+  'Topgolf Callaway Brands Corp': 'TOPGOLF',
+  'Toyota Motor Corp': 'TOYOTA',
+  'United Parks & Resorts Inc': 'UNITED PARKS',
+  'Volkswagen Group': 'VW',
 };
 
 // ── Screenshot harness (dev only) ────────────────────────────────────────────

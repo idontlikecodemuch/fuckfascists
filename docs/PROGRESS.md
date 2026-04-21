@@ -12,6 +12,48 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 20, 2026 ET — Entity gap-fill expansion and bulk hydration checkpoint
+
+**Focus:** Expand "places people go daily" entity coverage, hydrate the new high-confidence PAC matches from local FEC bulk data, and stop before people hydration so the next pass can fill people-side gaps deliberately. No live FEC API calls were used.
+
+**What changed:**
+
+1. **Entity catalog expanded:** `assets/data/entities.json` now has `727` live entities, up from `557`. The pass filled major gaps across gas/convenience, restaurants, foreign automakers, insurance, regional banks, fitness, live entertainment/theme parks, airlines, regional grocery, specialty retail, firearms/outdoor, apparel, auto service, jewelry/optical, and additional consumer-facing scan/tap gaps.
+
+2. **Category tagging was normalized:** restaurant/QSR/casual chains now carry `restaurant`; the new insurance, fitness, automotive, grocery, convenience, fuel, apparel, retail, banking, entertainment, travel, outdoor, firearms, jewelry, and optical entities follow the existing tag style. Current spot counts: `restaurant` 45, `insurance` 18, `fitness` 12, `automotive` 30, `grocery` 40, `convenience` 29, `fuel` 12.
+
+3. **Bulk verification script added:** `scripts/verify-entities-from-bulk.mjs` and `npm run verify:entities:bulk` verify entity PAC IDs from local `tools/fec-bulk/cm*.txt` files without hitting the FEC API. It writes `tools/fec-bulk/reports/entity-bulk-verification-review.json`, auto-applies only conservative connected-org / committee-name evidence, and leaves fuzzy lookalikes in `nearMisses` for review.
+
+4. **High-confidence PAC matches were hydrated from bulk:** `48` newly verified entities were hydrated from local PAS2/OTH files. `entities.json` now has `238` entities with `donationSummary`. The broad auto batch produced `45` verified IDs; a focused manual review promoted `santander-bank`, `comerica`, and `edward-jones`. `comerica` is kept as a scan/tap entity with `parentEntityId: "fifth-third-bancorp"` because Fifth Third completed the Comerica merger in 2026, while Comerica still has useful historical PAC data.
+
+5. **Near-misses were intentionally not promoted:** `123` bulk verifier near-misses remain review leads only. Examples include `citgo` -> CIT Group, `progressive` -> a candidate PAC, apparel brands matching unrelated candidate/committee names, and automaker aliases matching generic financial-services committees. This is expected and is the reason the conservative guardrail exists.
+
+6. **Parent short names updated:** `config/constants.ts` now includes short display labels for long new parent names such as Academy, Alaska, Bass Pro, BMW, Essilor, Live Nation, Mercedes, Six Flags, Topgolf, Toyota, United Parks, and Volkswagen.
+
+**Current measured state:**
+
+- Live entities: `727`
+- Newly bulk-verified/hydrated entity IDs in this pass: `48`
+- Entities with `donationSummary`: `238`
+- People files intentionally unchanged in this checkpoint: `1046` people, `91` linked people from the prior pass
+- Bulk verification report: `tools/fec-bulk/reports/entity-bulk-verification-review.json` (local review artifact, not tracked)
+
+**Current gates:**
+
+- `npm run audit:aliases` -> exit 0. Exact alias duplicates: `0`; parent/child overlap: `0`; single-word substring warnings: `80`; FEC canonical drift warnings: `6`.
+- `node scripts/verify-data-integrity.mjs` -> exit 0. Duplicate IDs, reverse-link gaps, invalid role links: none. Declared forward refs remain for `baupost-group`, `bigelow-aerospace`, `jw-childs-associates`, `pritzker-group`.
+
+**Next recommended order:**
+
+1. Fill remaining people-side gaps before running people hydration.
+2. Run `node scripts/reconcile-v1-entities.mjs --write` after the people gap list is ready.
+3. Run `npm run hydrate:people:bulk`, `npm run build:people:entity-review-queue`, and `npm run strip:people:raw` from local bulk data.
+4. Rebuild products from checkpoint after the final entity aliases settle.
+5. Rerun `npm run audit:aliases`, `node scripts/verify-data-integrity.mjs`, TypeScript, focused barcode/matching Jest tests, and Python compile before audit handoff.
+6. Use live FEC API only for targeted fallback when local bulk cannot answer a specific case.
+
+---
+
 ### Session: April 20, 2026 ET — Data cleaning finalization: bulk-first hydration and audit packet
 
 **Focus:** Finish the April 2026 data-cleaning pass with local raw bulk data as the primary source. This supersedes the earlier API-oriented hydration plan. No commit made.

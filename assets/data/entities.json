@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "totalEntities": 557,
-    "updatedAt": "2026-04-20",
+    "totalEntities": 727,
+    "updatedAt": "2026-04-21",
     "formatVersion": "1.0",
     "entityDonationHydrationSource": "FEC bulk PAS2/OTH files",
     "entityDonationHydrationCycles": [
@@ -760,14 +760,18 @@
         "ATT",
         "AT&T Wireless",
         "AT&T Mobility",
-        "AT&T Internet"
+        "AT&T Internet",
+        "Cricket Wireless",
+        "Cricket"
       ],
       "domains": [
         "att.com",
-        "att.net"
+        "att.net",
+        "cricketwireless.com"
       ],
       "categoryTags": [
-        "telecom"
+        "telecom",
+        "wireless"
       ],
       "ceoName": "John Stankey",
       "lastVerifiedDate": "2026-04-20",
@@ -1630,7 +1634,8 @@
         "mcdonalds.com"
       ],
       "categoryTags": [
-        "food"
+        "food",
+        "restaurant"
       ],
       "ceoName": "Chris Kempczinski",
       "lastVerifiedDate": "2026-04-20",
@@ -8761,15 +8766,30 @@
       "aliases": [
         "Verizon",
         "Verizon Fios",
-        "Verizon Wireless"
+        "Verizon Wireless",
+        "Visible",
+        "Visible by Verizon",
+        "TracFone",
+        "Tracfone Wireless",
+        "Straight Talk",
+        "Total Wireless",
+        "Simple Mobile",
+        "Walmart Family Mobile"
       ],
       "domains": [
         "verizon.com",
-        "verizonwireless.com"
+        "verizonwireless.com",
+        "visible.com",
+        "tracfone.com",
+        "straighttalk.com",
+        "totalwireless.com",
+        "simplemobile.com",
+        "myfamilymobile.com"
       ],
       "categoryTags": [
         "telecom",
-        "media"
+        "media",
+        "wireless"
       ],
       "ceoName": "Hans Vestberg",
       "fecCommitteeId": "C00186288",
@@ -8881,15 +8901,20 @@
         "TMobile",
         "Sprint",
         "Metro by T-Mobile",
-        "MetroPCS"
+        "MetroPCS",
+        "Mint Mobile",
+        "Ultra Mobile"
       ],
       "domains": [
         "t-mobile.com",
         "sprint.com",
-        "metrobyt-mobile.com"
+        "metrobyt-mobile.com",
+        "mintmobile.com",
+        "ultramobile.com"
       ],
       "categoryTags": [
-        "telecom"
+        "telecom",
+        "wireless"
       ],
       "ceoName": "Mike Sievert",
       "fecCommitteeId": "C00361758",
@@ -9252,16 +9277,19 @@
         "DISH",
         "Dish TV",
         "Sling TV",
-        "Boost Mobile"
+        "Boost Mobile",
+        "Boost Infinite"
       ],
       "domains": [
         "dish.com",
         "sling.com",
-        "boostmobile.com"
+        "boostmobile.com",
+        "boostinfinite.com"
       ],
       "categoryTags": [
         "telecom",
-        "media"
+        "media",
+        "wireless"
       ],
       "ceoName": "Hamid Akhavan",
       "fecCommitteeId": "C00330647",
@@ -15598,7 +15626,8 @@
       ],
       "categoryTags": [
         "food",
-        "beverage"
+        "beverage",
+        "restaurant"
       ],
       "ceoName": "Brian Niccol",
       "fecCommitteeId": null,
@@ -15617,7 +15646,8 @@
         "chick-fil-a.com"
       ],
       "categoryTags": [
-        "food"
+        "food",
+        "restaurant"
       ],
       "ceoName": "Andrew Cathy",
       "publicFigureName": "S. Truett Cathy",
@@ -15651,7 +15681,8 @@
         "wafflehouse.com"
       ],
       "categoryTags": [
-        "food"
+        "food",
+        "restaurant"
       ],
       "ceoName": "Walt Ehmer",
       "fecCommitteeId": "C00326330",
@@ -15715,7 +15746,8 @@
         "pizzahut.com"
       ],
       "categoryTags": [
-        "food"
+        "food",
+        "restaurant"
       ],
       "ceoName": "David Gibbs",
       "fecCommitteeId": "C00329474",
@@ -15785,7 +15817,8 @@
         "firehousesubs.com"
       ],
       "categoryTags": [
-        "food"
+        "food",
+        "restaurant"
       ],
       "ceoName": "Josh Kobza",
       "fecCommitteeId": null,
@@ -15803,7 +15836,8 @@
         "wendys.com"
       ],
       "categoryTags": [
-        "food"
+        "food",
+        "restaurant"
       ],
       "ceoName": "Kirk Tanner",
       "fecCommitteeId": "C00369090",
@@ -15903,7 +15937,8 @@
         "longhornsteakhouse.com"
       ],
       "categoryTags": [
-        "food"
+        "food",
+        "restaurant"
       ],
       "ceoName": "Rick Cardenas",
       "fecCommitteeId": "C00108282",
@@ -15939,7 +15974,8 @@
         "crackerbarrel.com"
       ],
       "categoryTags": [
-        "food"
+        "food",
+        "restaurant"
       ],
       "ceoName": "Julie Masino",
       "fecCommitteeId": "C00252791",
@@ -17883,7 +17919,8 @@
       ],
       "categoryTags": [
         "food",
-        "beverage"
+        "beverage",
+        "restaurant"
       ],
       "ceoName": "Paul Brown",
       "fecCommitteeId": null,
@@ -17903,7 +17940,8 @@
         "deltaco.com"
       ],
       "categoryTags": [
-        "food"
+        "food",
+        "restaurant"
       ],
       "ceoName": "Darin Harris",
       "fecCommitteeId": null,
@@ -17942,7 +17980,8 @@
         "whataburger.com"
       ],
       "categoryTags": [
-        "food"
+        "food",
+        "restaurant"
       ],
       "ceoName": "Ed Nelson",
       "fecCommitteeId": null,
@@ -18001,7 +18040,8 @@
       ],
       "categoryTags": [
         "food",
-        "beverage"
+        "beverage",
+        "restaurant"
       ],
       "ceoName": "Jose Alberto Duenas",
       "fecCommitteeId": null,
@@ -18040,7 +18080,8 @@
         "chipotle.com"
       ],
       "categoryTags": [
-        "food"
+        "food",
+        "restaurant"
       ],
       "ceoName": "Scott Boatwright",
       "fecCommitteeId": null,
@@ -18060,7 +18101,8 @@
         "dominos.com"
       ],
       "categoryTags": [
-        "food"
+        "food",
+        "restaurant"
       ],
       "ceoName": "Russell Weiner",
       "fecCommitteeId": null,
@@ -18079,7 +18121,8 @@
         "papajohns.com"
       ],
       "categoryTags": [
-        "food"
+        "food",
+        "restaurant"
       ],
       "ceoName": "Todd Penegor",
       "fecCommitteeId": null,
@@ -18098,7 +18141,8 @@
         "littlecaesars.com"
       ],
       "categoryTags": [
-        "food"
+        "food",
+        "restaurant"
       ],
       "ceoName": "Dave Scrivano",
       "publicFigureName": "Mike Ilitch",
@@ -18118,7 +18162,8 @@
         "subway.com"
       ],
       "categoryTags": [
-        "food"
+        "food",
+        "restaurant"
       ],
       "ceoName": "John Chidsey",
       "fecCommitteeId": null,
@@ -18155,7 +18200,8 @@
         "wingstop.com"
       ],
       "categoryTags": [
-        "food"
+        "food",
+        "restaurant"
       ],
       "ceoName": "Michael Skipworth",
       "fecCommitteeId": null,
@@ -18273,7 +18319,8 @@
       ],
       "categoryTags": [
         "food",
-        "beverage"
+        "beverage",
+        "restaurant"
       ],
       "ceoName": "Jim Holthouser",
       "fecCommitteeId": null,
@@ -18310,7 +18357,8 @@
         "texasroadhouse.com"
       ],
       "categoryTags": [
-        "food"
+        "food",
+        "restaurant"
       ],
       "ceoName": "Jerry Morgan",
       "fecCommitteeId": null,
@@ -18328,7 +18376,8 @@
         "redrobin.com"
       ],
       "categoryTags": [
-        "food"
+        "food",
+        "restaurant"
       ],
       "ceoName": "G.J. Hart",
       "fecCommitteeId": null,
@@ -18347,7 +18396,8 @@
         "tgifridays.com"
       ],
       "categoryTags": [
-        "food"
+        "food",
+        "restaurant"
       ],
       "ceoName": "Ray Blanchette",
       "fecCommitteeId": null,
@@ -18362,7 +18412,10 @@
         "Chilis",
         "Chili's Grill & Bar",
         "Maggiano's Little Italy",
-        "Maggianos"
+        "Maggianos",
+        "Brinker International",
+        "Brinker",
+        "Brinker International Inc"
       ],
       "domains": [
         "chilis.com",
@@ -18370,7 +18423,8 @@
         "brinker.com"
       ],
       "categoryTags": [
-        "food"
+        "food",
+        "restaurant"
       ],
       "ceoName": "Kevin Hochman",
       "fecCommitteeId": null,
@@ -18387,7 +18441,8 @@
         "redlobster.com"
       ],
       "categoryTags": [
-        "food"
+        "food",
+        "restaurant"
       ],
       "ceoName": "Damola Adamolekun",
       "fecCommitteeId": null,
@@ -18403,7 +18458,10 @@
         "Carrabba's Italian Grill",
         "Carrabbas",
         "Bonefish Grill",
-        "Fleming's Prime Steakhouse"
+        "Fleming's Prime Steakhouse",
+        "Bloomin' Brands",
+        "Bloomin' Brands Inc",
+        "Bloomin Brands Inc"
       ],
       "domains": [
         "outback.com",
@@ -18413,7 +18471,8 @@
         "flemingssteakhouse.com"
       ],
       "categoryTags": [
-        "food"
+        "food",
+        "restaurant"
       ],
       "ceoName": "Michael Spanos",
       "fecCommitteeId": "C00253153",
@@ -18514,7 +18573,8 @@
         "perkinsrestaurants.com"
       ],
       "categoryTags": [
-        "food"
+        "food",
+        "restaurant"
       ],
       "ceoName": "Jonathan Wasvick",
       "fecCommitteeId": null,
@@ -18533,7 +18593,8 @@
         "noodles.com"
       ],
       "categoryTags": [
-        "food"
+        "food",
+        "restaurant"
       ],
       "ceoName": "Drew Madsen",
       "fecCommitteeId": null,
@@ -18569,7 +18630,8 @@
         "cornerbakerycafe.com"
       ],
       "categoryTags": [
-        "food"
+        "food",
+        "restaurant"
       ],
       "ceoName": "Jodi Boyce",
       "fecCommitteeId": null,
@@ -23488,6 +23550,6079 @@
       "fecCommitteeId": "",
       "verificationStatus": "manual",
       "lastVerifiedDate": "2026-04-08"
+    },
+    {
+      "id": "bp",
+      "canonicalName": "BP plc",
+      "aliases": [
+        "bp",
+        "ARCO",
+        "ampm",
+        "am pm",
+        "BP Gas",
+        "BP Gas Station",
+        "Amoco",
+        "ARCO Gas",
+        "ARCO Gas Station",
+        "am/pm",
+        "BP Corporation North America",
+        "BP North America"
+      ],
+      "domains": [
+        "bp.com",
+        "amoco.com",
+        "arco.com",
+        "ampm.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience",
+        "energy",
+        "fuel"
+      ],
+      "ceoName": "Murray Auchincloss",
+      "fecCommitteeId": "C00060103",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00060103",
+        "committeeName": "BP CORPORATION NORTH AMERICA INC. POLITICAL ACTION COMMITTEE (BP NORTH AMERICA EMPLOYEE PAC)",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00060103/",
+        "recentCycle": 2026,
+        "recentRepubs": 85000,
+        "recentDems": 35000,
+        "totalRepubs": 1045000,
+        "totalDems": 697500,
+        "totalO": 10000,
+        "recentO": 0,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: AMERICAN CLEAN POWER ASSOCIATION CLEANPOWER PAC",
+            "amount": 5000,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: AMERICAN CLEAN POWER ASSOCIATION CLEANPOWER PAC",
+            "amount": 5000,
+            "cycle": 2022,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "citgo",
+      "canonicalName": "Citgo Petroleum Corp",
+      "aliases": [
+        "CITGO",
+        "Citgo Gas",
+        "Citgo Gas Station"
+      ],
+      "domains": [
+        "citgo.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience",
+        "energy",
+        "fuel"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "racetrac",
+      "canonicalName": "RaceTrac Inc",
+      "aliases": [
+        "RaceTrac",
+        "RaceWay",
+        "RaceTrac Gas",
+        "RaceTrac Gas Station"
+      ],
+      "domains": [
+        "racetrac.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience",
+        "fuel"
+      ],
+      "ceoName": "Natalie Morhous",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "kwik-trip",
+      "canonicalName": "Kwik Trip Inc",
+      "aliases": [
+        "Kwik Trip",
+        "Kwik Star",
+        "Kwik Spirits",
+        "Stop-N-Go",
+        "Kwik Trip Store",
+        "Kwik Trip Gas",
+        "Kwik Star Store"
+      ],
+      "domains": [
+        "kwiktrip.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience",
+        "fuel",
+        "food"
+      ],
+      "ceoName": "Scott Zietlow",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "maverik",
+      "canonicalName": "Maverik Inc",
+      "aliases": [
+        "Maverik",
+        "Kum & Go",
+        "Kum and Go",
+        "Maverik Adventure's First Stop"
+      ],
+      "domains": [
+        "maverik.com",
+        "kumandgo.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience",
+        "fuel"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "eg-america",
+      "canonicalName": "EG America LLC",
+      "aliases": [
+        "EG America",
+        "Turkey Hill",
+        "Loaf 'N Jug",
+        "Loaf N Jug",
+        "Fastrac",
+        "Certified Oil",
+        "Kwik Shop",
+        "Minit Mart",
+        "Quik Stop"
+      ],
+      "domains": [
+        "eg-america.com",
+        "fastracmarkets.com",
+        "turkeyhillstores.com",
+        "loafnjug.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience",
+        "fuel"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "C00779934",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00779934",
+        "committeeName": "EG AMERICA, LLC POLITICAL ACTION COMMITTEE (EG AMERICA PAC)",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00779934/",
+        "recentCycle": 2024,
+        "recentRepubs": 5000,
+        "recentDems": 2500,
+        "totalRepubs": 5000,
+        "totalDems": 2500,
+        "totalO": 5010,
+        "recentO": 5010,
+        "activeCycles": [
+          2024
+        ],
+        "raw": [
+          {
+            "lineNumber": "24G",
+            "description": "Bulk OTH 24G: CUMBERLAND FARMS INC. POLITICAL ACTION COMMITTEE (CUMBERLAND FARMS PAC)",
+            "amount": 10,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: NATIONAL ASSOCIATION OF CONVENIENCE STORES POLITICAL ACTION COMMITTEE",
+            "amount": 5000,
+            "cycle": 2024,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "fifth-third-bancorp",
+      "canonicalName": "Fifth Third Bancorp",
+      "aliases": [
+        "Fifth Third Bank",
+        "Fifth Third",
+        "5/3 Bank",
+        "53 Bank"
+      ],
+      "domains": [
+        "53.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "ceoName": "Tim Spence",
+      "fecCommitteeId": "C00290502",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00290502",
+        "committeeName": "FIFTH THIRD BANCORP POLITICAL ACTION COMMITTEE",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00290502/",
+        "recentCycle": 2026,
+        "recentRepubs": 25000,
+        "recentDems": 22500,
+        "totalRepubs": 615350,
+        "totalDems": 217250,
+        "totalO": 60000,
+        "recentO": 0,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: DANNY DAVIS FOR CONGRESS",
+            "amount": 7000,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: THOMPAC",
+            "amount": 7500,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: CBA PAC",
+            "amount": 7500,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: EQUIPMENT LEASING AND FINANCE ASSN PAC (LEASEPAC)",
+            "amount": 12000,
+            "cycle": 2018,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: LEASEPAC",
+            "amount": 26000,
+            "cycle": 2016,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "huntington-bancshares",
+      "canonicalName": "Huntington Bancshares Inc",
+      "aliases": [
+        "Huntington Bank",
+        "The Huntington National Bank",
+        "Huntington"
+      ],
+      "domains": [
+        "huntington.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "ceoName": "Stephen D. Steinour",
+      "fecCommitteeId": "C00165589",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00165589",
+        "committeeName": "HUNTINGTON BANCSHARES INC. POLITICAL ACTION COMMITTEE (HBI-PAC)",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00165589/",
+        "recentCycle": 2026,
+        "recentRepubs": 240500,
+        "recentDems": 104000,
+        "totalRepubs": 1964700,
+        "totalDems": 867950,
+        "totalO": 225500,
+        "recentO": 12500,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: AMERICAN BANKERS ASSOCIATION PAC (BANKPAC)",
+            "amount": 12500,
+            "cycle": 2026,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: MORTGAGE BANKERS ASSOCIATION POLITICAL ACTION COMMITTEE (MORPAC)",
+            "amount": 42500,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: AMERICAN BANKERS ASSOCIATION PAC (BANKPAC)",
+            "amount": 37500,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: MORTGAGE BANKERS ASSOCIATION POLITICAL ACTION COMMITTEE (MORPAC)",
+            "amount": 50000,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: EQUIPMENT LEASING AND FINANCE ASSN PAC (LEASEPAC)",
+            "amount": 44000,
+            "cycle": 2018,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: MAIN STREET BANKING POLITICAL ACTION COMMITTEE",
+            "amount": 39000,
+            "cycle": 2016,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "citizens-financial-group",
+      "canonicalName": "Citizens Financial Group Inc",
+      "aliases": [
+        "Citizens Bank"
+      ],
+      "domains": [
+        "citizensbank.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "ceoName": "Bruce Van Saun",
+      "fecCommitteeId": "C00307249",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00307249",
+        "committeeName": "CITIZENS FINANCIAL GROUP, INC. POLITICAL ACTION COMMITTEE (CITIZENS PAC)",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00307249/",
+        "recentCycle": 2026,
+        "recentRepubs": 62000,
+        "recentDems": 54000,
+        "totalRepubs": 589000,
+        "totalDems": 496500,
+        "totalO": 120500,
+        "recentO": 12500,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: MORTGAGE BANKERS ASSOCIATION POLITICAL ACTION COMMITTEE (MORPAC)",
+            "amount": 12500,
+            "cycle": 2026,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: MORTGAGE BANKERS ASSOCIATION POLITICAL ACTION COMMITTEE (MORPAC)",
+            "amount": 13500,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: MORTGAGE BANKERS ASSOCIATION POLITICAL ACTION COMMITTEE (MORPAC)",
+            "amount": 26500,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: MORTGAGE BANKERS ASSOCIATION POLITICAL ACTION COMMITTEE (MORPAC)",
+            "amount": 29500,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: EQUIPMENT LEASING AND FINANCE ASSN PAC (LEASEPAC)",
+            "amount": 26500,
+            "cycle": 2018,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: CONSUMER BANKERS ASSOCIATION POLITICAL ACTION COMMITTEE, THE",
+            "amount": 12000,
+            "cycle": 2016,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "keycorp",
+      "canonicalName": "KeyCorp",
+      "aliases": [
+        "KeyBank",
+        "Key Bank",
+        "KeyCorp"
+      ],
+      "domains": [
+        "key.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "ceoName": "Christopher M. Gorman",
+      "fecCommitteeId": "C00073155",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00073155",
+        "committeeName": "KEYCORP ADVOCATES FUND",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00073155/",
+        "recentCycle": 2026,
+        "recentRepubs": 35000,
+        "recentDems": 1500,
+        "totalRepubs": 379311,
+        "totalDems": 110500,
+        "totalO": 85000,
+        "recentO": 1000,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: BUILDING A NATIONAL KNOWLEDGEABLE SECURITY PAC",
+            "amount": 1000,
+            "cycle": 2026,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: SECURITIES INDUSTRY AND FINANCIAL MARKETS ASSOCIATION POLITICAL ACTION COMMITTEE",
+            "amount": 2500,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: CONSUMER BANKERS ASSOCIATION POLITICAL ACTION COMMITTEE, THE",
+            "amount": 8000,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: BANK POLICY INSTITUTE PAC",
+            "amount": 18500,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: MORPAC",
+            "amount": 30000,
+            "cycle": 2018,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: OHIO REPUBLICAN PARTY",
+            "amount": 25000,
+            "cycle": 2016,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "santander-bank",
+      "canonicalName": "Santander Bank NA",
+      "aliases": [
+        "Santander Bank",
+        "Santander",
+        "Santander US"
+      ],
+      "domains": [
+        "santanderbank.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "C00327072",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00327072",
+        "committeeName": "SANTANDER HOLDINGS USA INC. PAC (SANTANDER US PAC)",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00327072/",
+        "recentCycle": 2026,
+        "recentRepubs": 52500,
+        "recentDems": 65726,
+        "totalRepubs": 308500,
+        "totalDems": 283999,
+        "totalO": 40000,
+        "recentO": 5000,
+        "activeCycles": [
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: AMERICAN FINANCIAL SERVICES ASSOCIATION PAC",
+            "amount": 5000,
+            "cycle": 2026,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: STRUCTURED FINANCE COALITION PAC",
+            "amount": 4500,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: CONSUMER BANKERS ASSOCIATION PAC (CBA PAC)",
+            "amount": 18000,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: THE CONSUMER BANKERS ASSN PAC",
+            "amount": 10000,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: CONSUMER BANKERS ASSOCIATION POLITICAL ACTION COMMITTEE, THE",
+            "amount": 2500,
+            "cycle": 2018,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "bmo-financial-group",
+      "canonicalName": "BMO Financial Group",
+      "aliases": [
+        "BMO Bank",
+        "BMO Harris",
+        "Bank of the West",
+        "BMO",
+        "BMO Harris Bank"
+      ],
+      "domains": [
+        "bmo.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "ceoName": "Darryl White",
+      "fecCommitteeId": "C00610154",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00610154",
+        "committeeName": "BMO FINANCIAL CORPORATION GOOD GOVERNANCE FUND: GENERAL",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00610154/",
+        "recentCycle": 0,
+        "recentRepubs": 0,
+        "recentDems": 0,
+        "totalRepubs": 0,
+        "totalDems": 0,
+        "totalO": 0,
+        "recentO": 0,
+        "activeCycles": [],
+        "raw": []
+      }
+    },
+    {
+      "id": "heb",
+      "canonicalName": "H-E-B, LP",
+      "aliases": [
+        "H-E-B",
+        "HEB",
+        "H E B",
+        "Central Market",
+        "Joe V's Smart Shop"
+      ],
+      "domains": [
+        "heb.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "ceoName": "Howard Butt III",
+      "publicFigureName": "Charles Butt",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "wegmans",
+      "canonicalName": "Wegmans Food Markets Inc",
+      "aliases": [
+        "Wegmans",
+        "Wegmans Food Markets"
+      ],
+      "domains": [
+        "wegmans.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "ceoName": "Colleen Wegman",
+      "publicFigureName": "Danny Wegman",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "giant-eagle",
+      "canonicalName": "Giant Eagle Inc",
+      "aliases": [
+        "Giant Eagle",
+        "Market District",
+        "GetGo",
+        "GetGo Cafe + Market",
+        "GetGo Cafe"
+      ],
+      "domains": [
+        "gianteagle.com",
+        "marketdistrict.com",
+        "getgocafe.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery",
+        "convenience"
+      ],
+      "ceoName": "Bill Artman",
+      "publicFigureName": "David Shapira",
+      "fecCommitteeId": "C00426072",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00426072",
+        "committeeName": "GIANT EAGLE, INC. PAC",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00426072/",
+        "recentCycle": 2018,
+        "recentRepubs": 8500,
+        "recentDems": 0,
+        "totalRepubs": 20700,
+        "totalDems": 1000,
+        "totalO": 0,
+        "recentO": 0,
+        "activeCycles": [
+          2016,
+          2018
+        ],
+        "raw": []
+      }
+    },
+    {
+      "id": "sprouts-farmers-market",
+      "canonicalName": "Sprouts Farmers Market Inc",
+      "aliases": [
+        "Sprouts",
+        "Sprouts Farmers Market"
+      ],
+      "domains": [
+        "sprouts.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "ceoName": "Jack Sinclair",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "fresh-market",
+      "canonicalName": "The Fresh Market Inc",
+      "aliases": [
+        "The Fresh Market",
+        "Fresh Market"
+      ],
+      "domains": [
+        "thefreshmarket.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "ceoName": "Brian Johnson",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "wakefern-food",
+      "canonicalName": "Wakefern Food Corp",
+      "aliases": [
+        "Wakefern",
+        "Wakefern Food Corp",
+        "ShopRite",
+        "Price Rite",
+        "Price Rite Marketplace",
+        "The Fresh Grocer",
+        "Fresh Grocer",
+        "Dearborn Market",
+        "Gourmet Garage"
+      ],
+      "domains": [
+        "shoprite.com",
+        "priceritemarketplace.com",
+        "thefreshgrocer.com",
+        "gourmetgarage.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "ceoName": "Mike Stigers",
+      "fecCommitteeId": "C00489005",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00489005",
+        "committeeName": "WAKEFERN FOOD CORP. POLITICAL ACTION COMMITTEE",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00489005/",
+        "recentCycle": 2026,
+        "recentRepubs": 10000,
+        "recentDems": 8500,
+        "totalRepubs": 553299,
+        "totalDems": 298900,
+        "totalO": 110000,
+        "recentO": 15000,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: FOOD MARKETPLACE INC. POLITICAL ACTION COMMITTEE FMI FOODPAC",
+            "amount": 15000,
+            "cycle": 2026,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: FOOD MARKETPLACE INC. POLITICAL ACTION COMMITTEE FMI FOODPAC",
+            "amount": 30000,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: NATIONAL ASSOCIATION OF CHAIN DRUG STORES, INC. POLITICAL ACTION COMMITTEE",
+            "amount": 15000,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: FOOD MARKETING INSTITUTE POLITICAL ACTION COMMITTEE FOODPAC",
+            "amount": 20000,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: FOOD MARKETING INSTITUTE POLITICAL ACTION COMMITTEE FOODPAC",
+            "amount": 25000,
+            "cycle": 2018,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: FOOD MARKETING INSTITUTE POLITICAL ACTION COMMITTEE FOODPAC",
+            "amount": 5000,
+            "cycle": 2016,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "winco-foods",
+      "canonicalName": "WinCo Foods LLC",
+      "aliases": [
+        "WinCo",
+        "WinCo Foods"
+      ],
+      "domains": [
+        "wincofoods.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "C00546903",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00546903",
+        "committeeName": "WINCO HOLDINGS, INC. PAC ('WINPAC')",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00546903/",
+        "recentCycle": 2026,
+        "recentRepubs": 0,
+        "recentDems": 0,
+        "totalRepubs": 14950,
+        "totalDems": 7000,
+        "totalO": 76300,
+        "recentO": 5000,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: EMPLOYEE--OWNED S CORPORATIONS OF AMERICA PAC (ESCA PAC)",
+            "amount": 5000,
+            "cycle": 2026,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: EMPLOYEE--OWNED S CORPORATIONS OF AMERICA PAC (ESCA PAC)",
+            "amount": 10000,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: ALTERMAN MANAGEMENT GROUP, INC. PAC",
+            "amount": 20000,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: EMPLOYEE--OWNED S CORPORATIONS OF AMERICA PAC (ESCA PAC)",
+            "amount": 40000,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: IDAHO CONSERVATIVE GROWTH FUND",
+            "amount": 1300,
+            "cycle": 2016,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "odp-corporation",
+      "canonicalName": "ODP Corp",
+      "aliases": [
+        "Office Depot",
+        "OfficeMax",
+        "ODP",
+        "Office Max",
+        "ODP Business Solutions"
+      ],
+      "domains": [
+        "officedepot.com",
+        "officemax.com",
+        "odpbusiness.com"
+      ],
+      "categoryTags": [
+        "retail"
+      ],
+      "ceoName": "Gerry Smith",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "staples",
+      "canonicalName": "Staples Inc",
+      "aliases": [
+        "Staples",
+        "Staples Office Supply"
+      ],
+      "domains": [
+        "staples.com"
+      ],
+      "categoryTags": [
+        "retail"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "container-store",
+      "canonicalName": "The Container Store Group Inc",
+      "aliases": [
+        "The Container Store",
+        "Container Store"
+      ],
+      "domains": [
+        "containerstore.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "home"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "harbor-freight",
+      "canonicalName": "Harbor Freight Tools USA Inc",
+      "aliases": [
+        "Harbor Freight",
+        "Harbor Freight Tools"
+      ],
+      "domains": [
+        "harborfreight.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "home-improvement"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "academy-sports-outdoors",
+      "canonicalName": "Academy Ltd",
+      "aliases": [
+        "Academy Sports + Outdoors",
+        "Academy Sports",
+        "Academy Sports and Outdoors"
+      ],
+      "domains": [
+        "academy.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "sporting",
+        "outdoor"
+      ],
+      "ceoName": "Steve P. Lawrence",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "signet-jewelers",
+      "canonicalName": "Signet Jewelers Ltd",
+      "aliases": [
+        "Signet Jewelers",
+        "Kay Jewelers",
+        "Zales",
+        "Jared",
+        "Jared The Galleria Of Jewelry",
+        "Kay",
+        "Banter",
+        "Diamonds Direct",
+        "Blue Nile",
+        "James Allen"
+      ],
+      "domains": [
+        "signetjewelers.com",
+        "kay.com",
+        "jared.com",
+        "zales.com",
+        "banter.com",
+        "diamondsdirect.com",
+        "bluenile.com",
+        "jamesallen.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "luxury"
+      ],
+      "ceoName": "J.K. Symancyk",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "lululemon",
+      "canonicalName": "Lululemon Athletica Inc",
+      "aliases": [
+        "Lululemon",
+        "lululemon athletica"
+      ],
+      "domains": [
+        "lululemon.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "ceoName": "Meghan Frank and Andre Maestrini",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "levi-strauss",
+      "canonicalName": "Levi Strauss & Co",
+      "aliases": [
+        "Levi Strauss",
+        "Levi Strauss & Co",
+        "Dockers",
+        "Levi's",
+        "Levis",
+        "Beyond Yoga"
+      ],
+      "domains": [
+        "levi.com",
+        "dockers.com",
+        "beyondyoga.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "ceoName": "Michelle Gass",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "save-a-lot",
+      "canonicalName": "Save A Lot Inc",
+      "aliases": [
+        "Save A Lot",
+        "Save-A-Lot"
+      ],
+      "domains": [
+        "savealot.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "ceoName": "Bill Mayo",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "stater-bros",
+      "canonicalName": "Stater Bros Holdings Inc",
+      "aliases": [
+        "Stater Bros",
+        "Stater Bros Markets"
+      ],
+      "domains": [
+        "staterbros.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "ceoName": "Pete Van Helden",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "schnucks",
+      "canonicalName": "Schnuck Markets Inc",
+      "aliases": [
+        "Schnucks",
+        "Schnucks Markets"
+      ],
+      "domains": [
+        "schnucks.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "ceoName": "Todd Schnuck",
+      "publicFigureName": "Todd Schnuck",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "weis-markets",
+      "canonicalName": "Weis Markets Inc",
+      "aliases": [
+        "Weis",
+        "Weis Markets"
+      ],
+      "domains": [
+        "weismarkets.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "ceoName": "Jonathan H. Weis",
+      "publicFigureName": "Jonathan H. Weis",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "ingles-markets",
+      "canonicalName": "Ingles Markets Inc",
+      "aliases": [
+        "Ingles",
+        "Ingles Markets"
+      ],
+      "domains": [
+        "ingles-markets.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "golub-corp",
+      "canonicalName": "Golub Corp",
+      "aliases": [
+        "Golub Corp",
+        "Price Chopper",
+        "Market 32"
+      ],
+      "domains": [
+        "pricechopper.com",
+        "market32.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "raleys",
+      "canonicalName": "Raley's Companies",
+      "aliases": [
+        "Raley's",
+        "Raleys",
+        "Bel Air",
+        "Nob Hill Foods",
+        "Raley's O-N-E Market"
+      ],
+      "domains": [
+        "raleys.com",
+        "belair.com",
+        "nobhill.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "brookshire-grocery",
+      "canonicalName": "Brookshire Grocery Co",
+      "aliases": [
+        "Brookshire Grocery Co"
+      ],
+      "domains": [
+        "brookshires.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "ceoName": "Jerry LeClair",
+      "fecCommitteeId": "C00449546",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00449546",
+        "committeeName": "BROOKSHIRE GROCERY COMPANY PAC",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00449546/",
+        "recentCycle": 2026,
+        "recentRepubs": 23600,
+        "recentDems": 0,
+        "totalRepubs": 70950,
+        "totalDems": 0,
+        "totalO": 21100,
+        "recentO": 5000,
+        "activeCycles": [
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: FOOD MARKETPLACE INC. POLITICAL ACTION COMMITTEE FMI FOODPAC",
+            "amount": 5000,
+            "cycle": 2026,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: FOOD MARKETPLACE INC. POLITICAL ACTION COMMITTEE FMI FOODPAC",
+            "amount": 10000,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: FOOD MARKETPLACE INC. POLITICAL ACTION COMMITTEE FMI FOODPAC",
+            "amount": 5000,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: TRAPAC",
+            "amount": 1100,
+            "cycle": 2018,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "lowes-foods",
+      "canonicalName": "Lowes Foods LLC",
+      "aliases": [
+        "Lowes Foods",
+        "Lowe's Foods"
+      ],
+      "domains": [
+        "lowesfoods.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "h-mart",
+      "canonicalName": "H Mart Inc",
+      "aliases": [
+        "H Mart",
+        "H-Mart"
+      ],
+      "domains": [
+        "hmart.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "patel-brothers",
+      "canonicalName": "Patel Brothers Inc",
+      "aliases": [
+        "Patel Brothers",
+        "Patel Bros"
+      ],
+      "domains": [
+        "patelbros.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "bashas",
+      "canonicalName": "Bashas' Inc",
+      "aliases": [
+        "Bashas'",
+        "Bashas",
+        "AJ's Fine Foods",
+        "AJs Fine Foods"
+      ],
+      "domains": [
+        "bashas.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "kvat-food-stores",
+      "canonicalName": "K-VA-T Food Stores Inc",
+      "aliases": [
+        "Food City",
+        "Food City Supermarket",
+        "Food City Pharmacy"
+      ],
+      "domains": [
+        "foodcity.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "C00337964",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00337964",
+        "committeeName": "K-VA-T FOOD STORES INC FOODPAC",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00337964/",
+        "recentCycle": 2020,
+        "recentRepubs": 16000,
+        "recentDems": 500,
+        "totalRepubs": 32700,
+        "totalDems": 500,
+        "totalO": 0,
+        "recentO": 0,
+        "activeCycles": [
+          2016,
+          2018,
+          2020
+        ],
+        "raw": []
+      }
+    },
+    {
+      "id": "fresh-thyme",
+      "canonicalName": "Fresh Thyme Market",
+      "aliases": [
+        "Fresh Thyme",
+        "Fresh Thyme Market"
+      ],
+      "domains": [
+        "freshthyme.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "gelsons",
+      "canonicalName": "Gelson's Markets",
+      "aliases": [
+        "Gelson's",
+        "Gelsons"
+      ],
+      "domains": [
+        "gelsons.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "market-basket",
+      "canonicalName": "Demoulas Super Markets Inc",
+      "aliases": [
+        "Market Basket",
+        "DeMoulas Market Basket"
+      ],
+      "domains": [
+        "shopmarketbasket.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "vallarta-supermarkets",
+      "canonicalName": "Vallarta Supermarkets Inc",
+      "aliases": [
+        "Vallarta",
+        "Vallarta Supermarkets"
+      ],
+      "domains": [
+        "vallartasupermarkets.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "northgate-gonzalez-market",
+      "canonicalName": "Northgate Gonzalez Market",
+      "aliases": [
+        "Northgate Market",
+        "Northgate Gonzalez Market"
+      ],
+      "domains": [
+        "northgatemarket.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "grocery"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "murphy-usa",
+      "canonicalName": "Murphy USA Inc",
+      "aliases": [
+        "Murphy USA",
+        "Murphy Express",
+        "QuickChek"
+      ],
+      "domains": [
+        "murphyusa.com",
+        "quickchek.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience",
+        "fuel"
+      ],
+      "ceoName": "Mindy West",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "royal-farms",
+      "canonicalName": "Royal Farms LLC",
+      "aliases": [
+        "Royal Farms"
+      ],
+      "domains": [
+        "royalfarms.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "rutters",
+      "canonicalName": "Rutter's Holdings Inc",
+      "aliases": [
+        "Rutter's",
+        "Rutters"
+      ],
+      "domains": [
+        "rutters.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "yesway",
+      "canonicalName": "Yesway LLC",
+      "aliases": [
+        "Yesway",
+        "Allsup's",
+        "Allsups"
+      ],
+      "domains": [
+        "yesway.com",
+        "allsups.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience",
+        "fuel"
+      ],
+      "ceoName": "Thomas N. Trkla",
+      "publicFigureName": "Thomas N. Trkla",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "parkers-kitchen",
+      "canonicalName": "Parker's Kitchen LLC",
+      "aliases": [
+        "Parker's Kitchen",
+        "Parkers Kitchen"
+      ],
+      "domains": [
+        "parkerskitchen.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "ceoName": "Brandon Hofmann",
+      "publicFigureName": "Greg Parker",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "mapco",
+      "canonicalName": "MAPCO Express Inc",
+      "aliases": [
+        "MAPCO"
+      ],
+      "domains": [
+        "mapcorewards.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "buc-ees",
+      "canonicalName": "Buc-ee's Ltd",
+      "aliases": [
+        "Buc-ee's",
+        "Buc-ees",
+        "Bucee's"
+      ],
+      "domains": [
+        "buc-ees.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "ceoName": "Arch Aplin III",
+      "publicFigureName": "Arch Aplin III",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "thorntons",
+      "canonicalName": "Thorntons LLC",
+      "aliases": [
+        "Thorntons"
+      ],
+      "domains": [
+        "mythorntons.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "stewarts-shops",
+      "canonicalName": "Stewart's Shops Corp",
+      "aliases": [
+        "Stewart's Shops",
+        "Stewarts Shops"
+      ],
+      "domains": [
+        "stewartsshops.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience"
+      ],
+      "ceoName": "Gary Dake",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "travelcenters-of-america",
+      "canonicalName": "TravelCenters of America Inc",
+      "aliases": [
+        "TravelCenters of America",
+        "TA Petro",
+        "Petro Stopping Center",
+        "TA",
+        "TA Travel Center",
+        "Petro Stopping Centers",
+        "Petro Travel Center"
+      ],
+      "domains": [
+        "ta-petro.com",
+        "travelcenters.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience",
+        "fuel"
+      ],
+      "ceoName": "Jason Nordin",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "mt-bank",
+      "canonicalName": "M&T Bank Corp",
+      "aliases": [
+        "M&T Bank",
+        "MT Bank",
+        "M and T Bank"
+      ],
+      "domains": [
+        "mtb.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "C00137273",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00137273",
+        "committeeName": "M&T BANK AND WILMINGTON TRUST POLITICAL ACTION COMMITTEE",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00137273/",
+        "recentCycle": 2026,
+        "recentRepubs": 28250,
+        "recentDems": 35500,
+        "totalRepubs": 116350,
+        "totalDems": 156150,
+        "totalO": 88500,
+        "recentO": 11500,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: MORTGAGE BANKERS ASSOCIATION POLITICAL ACTION COMMITTEE (MORPAC)",
+            "amount": 11500,
+            "cycle": 2026,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: MORTGAGE BANKERS ASSOCIATION PAC",
+            "amount": 13000,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: CONSUMER BANKERS ASSOCIATION POLITICAL ACTION COMM",
+            "amount": 12000,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: MAIN STREET BANKING POLITICAL ACTION COMMITTEE",
+            "amount": 16000,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: CONSUMER BANKERS ASSOCIATION POLITICAL ACTION COMM",
+            "amount": 15000,
+            "cycle": 2018,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: CONSUMER BANKERS ASSOCIATION POLITICAL ACTION COMM",
+            "amount": 21000,
+            "cycle": 2016,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "td-bank",
+      "canonicalName": "TD Bank NA",
+      "aliases": [
+        "TD Bank",
+        "TD Bank, America's Most Convenient Bank"
+      ],
+      "domains": [
+        "td.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "ceoName": "Leo Salom",
+      "fecCommitteeId": "C00501429",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00501429",
+        "committeeName": "TD BANK US HOLDING COMPANY POLITICAL ACTION COMMITTEE (TD BANK PAC)",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00501429/",
+        "recentCycle": 2026,
+        "recentRepubs": 205500,
+        "recentDems": 186500,
+        "totalRepubs": 900250,
+        "totalDems": 847700,
+        "totalO": 126500,
+        "recentO": 14500,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: COMMONSENSE CONSERVATIVE VALUES PAC",
+            "amount": 14500,
+            "cycle": 2026,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk PAS2 24K: ANGUS KING FOR US SENATE CAMPAIGN",
+            "amount": 7500,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: COMMONSENSE CONSERVATIVE VALUES PAC",
+            "amount": 31000,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk PAS2 24K: ANGUS KING FOR US SENATE CAMPAIGN",
+            "amount": 1000,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: BANK POLICY INSTITUTE PAC",
+            "amount": 20500,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: ZELDIN FOR CONGRESS",
+            "amount": 17500,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: ZELDIN FOR CONGRESS",
+            "amount": 17000,
+            "cycle": 2018,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: THE CONSUMER BANKERS ASSN PAC",
+            "amount": 17500,
+            "cycle": 2016,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "comerica",
+      "canonicalName": "Comerica Inc",
+      "aliases": [
+        "Comerica Bank",
+        "Comerica"
+      ],
+      "domains": [
+        "comerica.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "ceoName": "Curtis C. Farmer",
+      "parentEntityId": "fifth-third-bancorp",
+      "fecCommitteeId": "C00393173",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00393173",
+        "committeeName": "FIFTH THIRD BANCORP COMERICA INC. POLITICAL ACTION COMMITTEE",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00393173/",
+        "recentCycle": 2026,
+        "recentRepubs": 70500,
+        "recentDems": 10500,
+        "totalRepubs": 1127300,
+        "totalDems": 282500,
+        "totalO": 96000,
+        "recentO": 0,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: NORTH CAROLINA BANKERS ASSOCIATION POLITICAL ACTION COMMITTEE",
+            "amount": 15000,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: CBA PAC",
+            "amount": 10000,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: MAIN STREET BANKING PAC",
+            "amount": 25000,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: MAIN STREET BANKING PAC",
+            "amount": 20000,
+            "cycle": 2018,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: CONSUMER BANKERS ASSOCIATION (CBA) PAC",
+            "amount": 26000,
+            "cycle": 2016,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "old-national-bancorp",
+      "canonicalName": "Old National Bancorp",
+      "aliases": [
+        "Old National Bank",
+        "Old National"
+      ],
+      "domains": [
+        "oldnational.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "ceoName": "James C. Ryan III",
+      "fecCommitteeId": "C00165282",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00165282",
+        "committeeName": "OLD NATIONAL BANK PAC",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00165282/",
+        "recentCycle": 2026,
+        "recentRepubs": 5000,
+        "recentDems": 5000,
+        "totalRepubs": 329300,
+        "totalDems": 33000,
+        "totalO": 7500,
+        "recentO": 0,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: INDIANA BANKPAC",
+            "amount": 5000,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: BANKPAC AMERICAN BANKERS ASSOCIATION",
+            "amount": 1000,
+            "cycle": 2018,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: DONNELLY, JOE",
+            "amount": 1500,
+            "cycle": 2016,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "first-citizens-bancshares",
+      "canonicalName": "First Citizens BancShares Inc",
+      "aliases": [
+        "First Citizens Bank",
+        "First Citizens"
+      ],
+      "domains": [
+        "firstcitizens.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "ceoName": "Frank B. Holding Jr.",
+      "publicFigureName": "Frank B. Holding Jr.",
+      "fecCommitteeId": "C00334193",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00334193",
+        "committeeName": "FIRST CITIZENS BANCSHARES INC POLITICAL ACTION COMMITTEE (FIRST CITIZENS BANCSHARES PAC)",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00334193/",
+        "recentCycle": 2026,
+        "recentRepubs": 5000,
+        "recentDems": 10000,
+        "totalRepubs": 47750,
+        "totalDems": 18500,
+        "totalO": 35000,
+        "recentO": 5000,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: ABA BANKPAC",
+            "amount": 5000,
+            "cycle": 2026,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: VIRGINIA BANKERS PAC COMMITTEE",
+            "amount": 1000,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: GEORGIA BANKERS ASSOCIATION PAC",
+            "amount": 5000,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: MORTGAGE BANKERS ASSOCIATION OF AMERICA POLITICAL ACTION COMMITTEE",
+            "amount": 6500,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: MORTGAGE BANKERS ASSOCIATION OF AMERICA POLITICAL ACTION COMMITTEE",
+            "amount": 5000,
+            "cycle": 2018,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: ABA BANKPAC",
+            "amount": 12500,
+            "cycle": 2016,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "east-west-bancorp",
+      "canonicalName": "East West Bancorp Inc",
+      "aliases": [
+        "East West Bank",
+        "East West"
+      ],
+      "domains": [
+        "eastwestbank.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "ceoName": "Dominic Ng",
+      "publicFigureName": "Dominic Ng",
+      "fecCommitteeId": "C00725184",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00725184",
+        "committeeName": "EAST WEST BANCORP, INC POLITICAL ACTION COMMITTEE",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00725184/",
+        "recentCycle": 2026,
+        "recentRepubs": 7500,
+        "recentDems": 25500,
+        "totalRepubs": 21300,
+        "totalDems": 114100,
+        "totalO": 0,
+        "recentO": 0,
+        "activeCycles": [
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": []
+      }
+    },
+    {
+      "id": "first-horizon",
+      "canonicalName": "First Horizon Corp",
+      "aliases": [
+        "First Horizon Bank",
+        "First Horizon",
+        "First Tennessee"
+      ],
+      "domains": [
+        "firsthorizon.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "ceoName": "Bryan Jordan",
+      "fecCommitteeId": "C00008151",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00008151",
+        "committeeName": "FIRST HORIZON CORPORATION FEDERAL PAC",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00008151/",
+        "recentCycle": 2026,
+        "recentRepubs": 32000,
+        "recentDems": 0,
+        "totalRepubs": 97800,
+        "totalDems": 1500,
+        "totalO": 0,
+        "recentO": 0,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": []
+      }
+    },
+    {
+      "id": "cadence-bank",
+      "canonicalName": "Cadence Bank",
+      "aliases": [
+        "Cadence Bank",
+        "Cadence"
+      ],
+      "domains": [
+        "cadencebank.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "ceoName": "James D. Rollins III",
+      "fecCommitteeId": "C00183962",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00183962",
+        "committeeName": "CADENCE BANK PAC",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00183962/",
+        "recentCycle": 2026,
+        "recentRepubs": 149500,
+        "recentDems": 10000,
+        "totalRepubs": 487750,
+        "totalDems": 47500,
+        "totalO": 22500,
+        "recentO": 10000,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: TENNESSEE EAGLE PAC",
+            "amount": 10000,
+            "cycle": 2026,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: FRIENDS OF DELBERT HOSEMANN",
+            "amount": 10000,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: THE COUNCIL OF INSURANCE AGENTS & BROKERS POLITICAL ACTION COMMITTEE",
+            "amount": 2500,
+            "cycle": 2016,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "frost-bank",
+      "canonicalName": "Cullen/Frost Bankers Inc",
+      "aliases": [
+        "Frost Bank",
+        "Frost"
+      ],
+      "domains": [
+        "frostbank.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "ceoName": "Phillip D. Green",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "zions-bancorporation",
+      "canonicalName": "Zions Bancorporation",
+      "aliases": [
+        "Zions Bank"
+      ],
+      "domains": [
+        "zionsbank.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "ceoName": "Harris H. Simmons",
+      "publicFigureName": "Harris H. Simmons",
+      "fecCommitteeId": "C00275230",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00275230",
+        "committeeName": "ZIONS BANCORPORATION PAC",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00275230/",
+        "recentCycle": 2026,
+        "recentRepubs": 11500,
+        "recentDems": 2500,
+        "totalRepubs": 151850,
+        "totalDems": 41100,
+        "totalO": 17200,
+        "recentO": 0,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: IDABANK PAC",
+            "amount": 3000,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: NATIONAL REPUBLICAN CONGRESSIONAL COMMITTEE",
+            "amount": 2500,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: BELIEVE IN AMERICA PAC",
+            "amount": 5500,
+            "cycle": 2018,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: MIKE CRAPO FOR U.S. SENATE",
+            "amount": 6200,
+            "cycle": 2016,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "synovus-financial",
+      "canonicalName": "Synovus Financial Corp",
+      "aliases": [
+        "Synovus Bank",
+        "Synovus"
+      ],
+      "domains": [
+        "synovus.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "ceoName": "Kevin Blair",
+      "fecCommitteeId": "C00032607",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00032607",
+        "committeeName": "SYNOVUS FINANCIAL CORP. FUND FOR EFFECTIVE LEADERSHIP",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00032607/",
+        "recentCycle": 2024,
+        "recentRepubs": 17000,
+        "recentDems": 5000,
+        "totalRepubs": 156500,
+        "totalDems": 41000,
+        "totalO": 22298,
+        "recentO": 0,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: GBA FEDPAC",
+            "amount": 5000,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: ALABAMA BANKERS ASSOCIATION BANKPAC",
+            "amount": 4000,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24G",
+            "description": "Bulk OTH 24G: SYNOVUS FINANCIAL CORP. TENNESSEE FUND FOR EFFECTIVE LEADERSHIP",
+            "amount": 798,
+            "cycle": 2016,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: FINANCIAL SERVICES ROUNDTABLE",
+            "amount": 12500,
+            "cycle": 2016,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "webster-financial",
+      "canonicalName": "Webster Financial Corp",
+      "aliases": [
+        "Webster Bank",
+        "Webster"
+      ],
+      "domains": [
+        "websteronline.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "banking"
+      ],
+      "ceoName": "John R. Ciulla",
+      "fecCommitteeId": "C00321406",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00321406",
+        "committeeName": "WEBSTER BANK PAC - FEDERAL",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00321406/",
+        "recentCycle": 2026,
+        "recentRepubs": 0,
+        "recentDems": 0,
+        "totalRepubs": 11000,
+        "totalDems": 49175,
+        "totalO": 36250,
+        "recentO": 6000,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: CONNECTICUT BANKERS ASSOCIATION POLITICAL ACTION COMMITTEE (CBA FED PAC)",
+            "amount": 6000,
+            "cycle": 2026,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: NEW YORK BANKERS ASSOCIATION POLITICAL ACTION COMMITTEE",
+            "amount": 3000,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: CONNECTICUT BANKERS ASSOCIATION POLITICAL ACTION COMMITTEE (CBA FED PAC)",
+            "amount": 3500,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: CONNECTICUT BANKERS ASSOCIATION POLITICAL ACTION COMMITTEE (CBA FED PAC)",
+            "amount": 10250,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: CONSUMER BANKERS ASSOCIATION POLITICAL ACTION COMMITTEE, THE",
+            "amount": 5000,
+            "cycle": 2018,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk PAS2 24K: WEBSTER BANK PAC - FEDERAL",
+            "amount": 1000,
+            "cycle": 2016,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: WEBSTER BANK PAC - FEDERAL",
+            "amount": 7500,
+            "cycle": 2016,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "fast-retailing",
+      "canonicalName": "Fast Retailing Co Ltd",
+      "aliases": [
+        "Fast Retailing",
+        "Fast Retailing Co",
+        "UNIQLO",
+        "GU",
+        "PLST",
+        "Comptoir des Cotonniers",
+        "Princesse tam.tam"
+      ],
+      "domains": [
+        "fastretailing.com",
+        "uniqlo.com",
+        "gu-global.com",
+        "theory.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "ceoName": "Tadashi Yanai",
+      "publicFigureName": "Tadashi Yanai",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "jcrew-group",
+      "canonicalName": "J.Crew Group Inc",
+      "aliases": [
+        "J.Crew Group",
+        "J Crew Group",
+        "J.Crew",
+        "J Crew",
+        "Madewell"
+      ],
+      "domains": [
+        "jcrew.com",
+        "madewell.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "urban-outfitters",
+      "canonicalName": "Urban Outfitters Inc",
+      "aliases": [
+        "URBN",
+        "Anthropologie",
+        "Free People",
+        "Terrain",
+        "Urban Outfitters",
+        "FP Movement",
+        "Nuuly",
+        "BHLDN"
+      ],
+      "domains": [
+        "urbn.com",
+        "urbanoutfitters.com",
+        "anthropologie.com",
+        "freepeople.com",
+        "nuuly.com",
+        "shopterrain.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "pvh",
+      "canonicalName": "PVH Corp",
+      "aliases": [
+        "PVH",
+        "Calvin Klein",
+        "Tommy Hilfiger",
+        "PVH Corp"
+      ],
+      "domains": [
+        "pvh.com",
+        "calvinklein.us",
+        "tommy.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "ceoName": "Stefan Larsson",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "tapestry",
+      "canonicalName": "Tapestry Inc",
+      "aliases": [
+        "Coach",
+        "Kate Spade",
+        "Kate Spade New York",
+        "Stuart Weitzman"
+      ],
+      "domains": [
+        "tapestry.com",
+        "coach.com",
+        "katespade.com",
+        "stuartweitzman.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "ceoName": "Joanne Crevoiserat",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "capri-holdings",
+      "canonicalName": "Capri Holdings Ltd",
+      "aliases": [
+        "Capri Holdings",
+        "Michael Kors",
+        "Michael Kors Collection",
+        "Jimmy Choo",
+        "Versace"
+      ],
+      "domains": [
+        "capriholdings.com",
+        "michaelkors.com",
+        "jimmychoo.com",
+        "versace.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "ceoName": "John D. Idol",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "kering",
+      "canonicalName": "Kering SA",
+      "aliases": [
+        "Kering",
+        "Gucci",
+        "Saint Laurent",
+        "YSL",
+        "Balenciaga",
+        "Bottega Veneta",
+        "Alexander McQueen",
+        "McQueen",
+        "Yves Saint Laurent",
+        "Brioni"
+      ],
+      "domains": [
+        "kering.com",
+        "gucci.com",
+        "ysl.com",
+        "balenciaga.com",
+        "bottegaveneta.com",
+        "alexandermcqueen.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "ceoName": "Luca de Meo",
+      "publicFigureName": "Francois-Henri Pinault",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "amer-sports",
+      "canonicalName": "Amer Sports Inc",
+      "aliases": [
+        "Amer Sports",
+        "Arc'teryx",
+        "Arcteryx",
+        "Salomon",
+        "Wilson Sporting Goods",
+        "Atomic",
+        "Peak Performance"
+      ],
+      "domains": [
+        "amersports.com",
+        "arcteryx.com",
+        "salomon.com",
+        "wilson.com",
+        "atomic.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "outdoor",
+        "sporting"
+      ],
+      "ceoName": "James Zheng",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "canada-goose",
+      "canonicalName": "Canada Goose Holdings Inc",
+      "aliases": [
+        "Canada Goose"
+      ],
+      "domains": [
+        "canadagoose.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "ralph-lauren",
+      "canonicalName": "Ralph Lauren Corp",
+      "aliases": [
+        "Ralph Lauren",
+        "Polo Ralph Lauren"
+      ],
+      "domains": [
+        "ralphlauren.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "ceoName": "Patrice Louvet",
+      "publicFigureName": "Ralph Lauren",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "tory-burch",
+      "canonicalName": "Tory Burch LLC",
+      "aliases": [
+        "Tory Burch"
+      ],
+      "domains": [
+        "toryburch.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "ceoName": "Unknown CEO",
+      "publicFigureName": "Tory Burch",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "saks-global",
+      "canonicalName": "Saks Global",
+      "aliases": [
+        "Saks Global",
+        "Saks Fifth Avenue",
+        "Saks OFF 5TH",
+        "Neiman Marcus",
+        "Bergdorf Goodman",
+        "Saks Off Fifth"
+      ],
+      "domains": [
+        "saksglobal.com",
+        "saksfifthavenue.com",
+        "saksoff5th.com",
+        "neimanmarcus.com",
+        "bergdorfgoodman.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "ceoName": "Geoffroy van Raemdonck",
+      "publicFigureName": "Richard Baker",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "vf-corporation",
+      "canonicalName": "VF Corp",
+      "aliases": [
+        "VF Corporation",
+        "VF Corp",
+        "The North Face",
+        "Vans",
+        "Timberland",
+        "Dickies",
+        "JanSport",
+        "Eastpak",
+        "Smartwool",
+        "Altra"
+      ],
+      "domains": [
+        "vfc.com",
+        "thenorthface.com",
+        "vans.com",
+        "timberland.com",
+        "dickies.com",
+        "jansport.com",
+        "smartwool.com",
+        "altrarunning.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "outdoor"
+      ],
+      "ceoName": "Bracken Darrell",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "deckers-brands",
+      "canonicalName": "Deckers Outdoor Corp",
+      "aliases": [
+        "Deckers",
+        "Deckers Outdoor",
+        "UGG",
+        "HOKA",
+        "Teva",
+        "Sanuk",
+        "Ahnu",
+        "Koolaburra by UGG"
+      ],
+      "domains": [
+        "deckers.com",
+        "ugg.com",
+        "hoka.com",
+        "teva.com",
+        "sanuk.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "footwear"
+      ],
+      "ceoName": "Stefano Caroti",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "prada-group",
+      "canonicalName": "Prada SpA",
+      "aliases": [
+        "Prada Group",
+        "Prada",
+        "Miu Miu",
+        "Church's",
+        "Car Shoe"
+      ],
+      "domains": [
+        "pradagroup.com",
+        "prada.com",
+        "miumiu.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "ceoName": "Andrea Guerra",
+      "publicFigureName": "Miuccia Prada",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "burberry",
+      "canonicalName": "Burberry Group plc",
+      "aliases": [
+        "Burberry"
+      ],
+      "domains": [
+        "burberry.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "luxury"
+      ],
+      "ceoName": "Joshua Schulman",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "aritzia",
+      "canonicalName": "Aritzia Inc",
+      "aliases": [
+        "Aritzia",
+        "Babaton",
+        "Wilfred",
+        "TNA",
+        "Super Puff"
+      ],
+      "domains": [
+        "aritzia.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "ceoName": "Jennifer Wong",
+      "publicFigureName": "Brian Hill",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "dillards",
+      "canonicalName": "Dillard's Inc",
+      "aliases": [
+        "Dillard's",
+        "Dillards"
+      ],
+      "domains": [
+        "dillards.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "ceoName": "William T. Dillard II",
+      "publicFigureName": "William T. Dillard II",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "belk",
+      "canonicalName": "Belk Inc",
+      "aliases": [
+        "Belk"
+      ],
+      "domains": [
+        "belk.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "boscovs",
+      "canonicalName": "Boscov's Inc",
+      "aliases": [
+        "Boscov's",
+        "Boscovs"
+      ],
+      "domains": [
+        "boscovs.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "boot-barn",
+      "canonicalName": "Boot Barn Holdings Inc",
+      "aliases": [
+        "Boot Barn"
+      ],
+      "domains": [
+        "bootbarn.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "footwear"
+      ],
+      "ceoName": "John Hazen",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "llbean",
+      "canonicalName": "L.L.Bean Inc",
+      "aliases": [
+        "L.L.Bean",
+        "LLBean",
+        "L L Bean",
+        "LL Bean"
+      ],
+      "domains": [
+        "llbean.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "outdoor"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "puma",
+      "canonicalName": "PUMA SE",
+      "aliases": [
+        "PUMA"
+      ],
+      "domains": [
+        "puma.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "footwear"
+      ],
+      "ceoName": "Arthur Hoeld",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "asics",
+      "canonicalName": "ASICS America Corp",
+      "aliases": [
+        "ASICS"
+      ],
+      "domains": [
+        "asics.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "footwear"
+      ],
+      "ceoName": "Yasuhito Hirota",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "crocs",
+      "canonicalName": "Crocs Inc",
+      "aliases": [
+        "Crocs",
+        "Crocs Outlet"
+      ],
+      "domains": [
+        "crocs.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "footwear"
+      ],
+      "ceoName": "Andrew Rees",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "brooks-brothers",
+      "canonicalName": "Brooks Brothers Group Inc",
+      "aliases": [
+        "Brooks Brothers",
+        "Brooks Brothers Factory Store"
+      ],
+      "domains": [
+        "brooksbrothers.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "torrid",
+      "canonicalName": "Torrid Holdings Inc",
+      "aliases": [
+        "Torrid"
+      ],
+      "domains": [
+        "torrid.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "ceoName": "Lisa Harper",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "zumiez",
+      "canonicalName": "Zumiez Inc",
+      "aliases": [
+        "Zumiez"
+      ],
+      "domains": [
+        "zumiez.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "footwear"
+      ],
+      "ceoName": "Richard M. Brooks",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "tommy-bahama",
+      "canonicalName": "Tommy Bahama Group Inc",
+      "aliases": [
+        "Tommy Bahama",
+        "Tommy Bahama Outlet"
+      ],
+      "domains": [
+        "tommybahama.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel"
+      ],
+      "ceoName": "Unknown CEO",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "hess",
+      "canonicalName": "Hess Corp",
+      "aliases": [
+        "Hess",
+        "Hess Gas",
+        "Hess Gas Station"
+      ],
+      "domains": [
+        "hess.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience",
+        "energy",
+        "fuel"
+      ],
+      "ceoName": "John B. Hess",
+      "fecCommitteeId": "C00557322",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00557322",
+        "committeeName": "HESS CORPORATION POLITICAL ACTION COMMITTEE (HESS PAC)",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00557322/",
+        "recentCycle": 2026,
+        "recentRepubs": 43550,
+        "recentDems": 2000,
+        "totalRepubs": 583050,
+        "totalDems": 139500,
+        "totalO": 45000,
+        "recentO": 10000,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: US ENERGY PAC",
+            "amount": 10000,
+            "cycle": 2026,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: US ENERGY PAC",
+            "amount": 20000,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: US ENERGY PAC",
+            "amount": 5000,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: CRAMER FOR CONGRESS",
+            "amount": 10000,
+            "cycle": 2016,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "sinclair-oil",
+      "canonicalName": "Sinclair Oil LLC",
+      "aliases": [
+        "Sinclair Oil",
+        "Sinclair Gas",
+        "Sinclair Gas Station",
+        "Dino Mart"
+      ],
+      "domains": [
+        "sinclairoil.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience",
+        "energy",
+        "fuel"
+      ],
+      "ceoName": "Ross Matthews",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "culvers",
+      "canonicalName": "Culver Franchising System LLC",
+      "aliases": [
+        "Culver's",
+        "Culvers",
+        "Culver's ButterBurgers",
+        "Culver's Frozen Custard"
+      ],
+      "domains": [
+        "culvers.com"
+      ],
+      "categoryTags": [
+        "food",
+        "restaurant"
+      ],
+      "ceoName": "Enrique Silva",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "zaxbys",
+      "canonicalName": "Zaxby's Franchising LLC",
+      "aliases": [
+        "Zaxby's",
+        "Zaxbys",
+        "Zaxby's Chicken Fingers",
+        "Zaxby's Chicken Fingers & Buffalo Wings"
+      ],
+      "domains": [
+        "zaxbys.com"
+      ],
+      "categoryTags": [
+        "food",
+        "restaurant"
+      ],
+      "ceoName": "Bernard Acoca",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "bojangles",
+      "canonicalName": "Bojangles OpCo LLC",
+      "aliases": [
+        "Bojangles",
+        "Bojangles'",
+        "Bojangles Famous Chicken n Biscuits"
+      ],
+      "domains": [
+        "bojangles.com"
+      ],
+      "categoryTags": [
+        "food",
+        "restaurant"
+      ],
+      "ceoName": "Jose Armario",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "qdoba",
+      "canonicalName": "Qdoba Restaurant Corp",
+      "aliases": [
+        "Qdoba",
+        "Qdoba Mexican Eats"
+      ],
+      "domains": [
+        "qdoba.com"
+      ],
+      "categoryTags": [
+        "food",
+        "restaurant"
+      ],
+      "ceoName": "John Cywinski",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "el-pollo-loco",
+      "canonicalName": "El Pollo Loco Holdings Inc",
+      "aliases": [
+        "El Pollo Loco"
+      ],
+      "domains": [
+        "elpolloloco.com"
+      ],
+      "categoryTags": [
+        "food",
+        "restaurant"
+      ],
+      "ceoName": "Liz Williams",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "white-castle",
+      "canonicalName": "White Castle Management Co",
+      "aliases": [
+        "White Castle",
+        "White Castle Hamburgers"
+      ],
+      "domains": [
+        "whitecastle.com"
+      ],
+      "categoryTags": [
+        "food",
+        "restaurant"
+      ],
+      "ceoName": "Lisa Ingram",
+      "fecCommitteeId": "C00112623",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00112623",
+        "committeeName": "WHITE CASTLE SYSTEM, INC POLITICAL ACTION COMMITTEE",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00112623/",
+        "recentCycle": 2024,
+        "recentRepubs": 1250,
+        "recentDems": 0,
+        "totalRepubs": 142500,
+        "totalDems": 15500,
+        "totalO": 1000,
+        "recentO": 0,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: DEWINE, PAT",
+            "amount": 1000,
+            "cycle": 2022,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "papa-murphys",
+      "canonicalName": "Papa Murphy's Holdings Inc",
+      "aliases": [
+        "Papa Murphy's",
+        "Papa Murphys",
+        "Papa Murphy's Take N Bake Pizza",
+        "Papa Murphy Take N Bake"
+      ],
+      "domains": [
+        "papamurphys.com"
+      ],
+      "categoryTags": [
+        "food",
+        "restaurant"
+      ],
+      "ceoName": "Kim McBee",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "california-pizza-kitchen",
+      "canonicalName": "California Pizza Kitchen Inc",
+      "aliases": [
+        "California Pizza Kitchen",
+        "CPK"
+      ],
+      "domains": [
+        "cpk.com"
+      ],
+      "categoryTags": [
+        "food",
+        "restaurant"
+      ],
+      "ceoName": "Jeff Warne",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "blue-bottle-coffee",
+      "canonicalName": "Blue Bottle Coffee Inc",
+      "aliases": [
+        "Blue Bottle Coffee",
+        "Blue Bottle"
+      ],
+      "domains": [
+        "bluebottlecoffee.com"
+      ],
+      "categoryTags": [
+        "food",
+        "beverage",
+        "restaurant"
+      ],
+      "ceoName": "Karl Strovink",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified",
+      "parentEntityId": "nestle"
+    },
+    {
+      "id": "philz-coffee",
+      "canonicalName": "Philz Coffee Inc",
+      "aliases": [
+        "Philz Coffee",
+        "Philz"
+      ],
+      "domains": [
+        "philzcoffee.com"
+      ],
+      "categoryTags": [
+        "food",
+        "beverage",
+        "restaurant"
+      ],
+      "ceoName": "Mahesh Sadarangani",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "cheesecake-factory",
+      "canonicalName": "The Cheesecake Factory Inc",
+      "aliases": [
+        "The Cheesecake Factory",
+        "Cheesecake Factory",
+        "North Italia",
+        "Flower Child",
+        "Fox Restaurant Concepts"
+      ],
+      "domains": [
+        "thecheesecakefactory.com",
+        "northitalia.com",
+        "iamaflowerchild.com"
+      ],
+      "categoryTags": [
+        "food",
+        "restaurant"
+      ],
+      "ceoName": "David Overton",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "dave-busters",
+      "canonicalName": "Dave & Buster's Entertainment Inc",
+      "aliases": [
+        "Dave & Buster's",
+        "Dave and Busters",
+        "Dave & Busters",
+        "Main Event"
+      ],
+      "domains": [
+        "daveandbusters.com",
+        "mainevent.com"
+      ],
+      "categoryTags": [
+        "food",
+        "restaurant",
+        "entertainment"
+      ],
+      "ceoName": "Chris Morris",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "cec-entertainment",
+      "canonicalName": "CEC Entertainment LLC",
+      "aliases": [
+        "CEC Entertainment",
+        "Chuck E. Cheese",
+        "Chuck E Cheese",
+        "Peter Piper Pizza"
+      ],
+      "domains": [
+        "chuckecheese.com",
+        "peterpiperpizza.com"
+      ],
+      "categoryTags": [
+        "food",
+        "restaurant",
+        "entertainment"
+      ],
+      "ceoName": "David McKillips",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "topgolf-callaway",
+      "canonicalName": "Topgolf Callaway Brands Corp",
+      "aliases": [
+        "Topgolf Callaway",
+        "Topgolf",
+        "Callaway Golf",
+        "Callaway",
+        "Odyssey Golf",
+        "TravisMathew",
+        "Jack Wolfskin",
+        "Ogio"
+      ],
+      "domains": [
+        "topgolfcallawaybrands.com",
+        "topgolf.com",
+        "callawaygolf.com",
+        "travismathew.com",
+        "jack-wolfskin.com",
+        "ogio.com"
+      ],
+      "categoryTags": [
+        "entertainment",
+        "restaurant",
+        "retail",
+        "sporting"
+      ],
+      "ceoName": "Chip Brewer",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "potbelly",
+      "canonicalName": "Potbelly Corp",
+      "aliases": [
+        "Potbelly",
+        "Potbelly Sandwich Shop"
+      ],
+      "domains": [
+        "potbelly.com"
+      ],
+      "categoryTags": [
+        "food",
+        "restaurant"
+      ],
+      "ceoName": "Bob Wright",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "toyota",
+      "canonicalName": "Toyota Motor Corp",
+      "aliases": [
+        "Toyota",
+        "Toyota Motor",
+        "Toyota Motor North America",
+        "Lexus",
+        "Toyota Financial Services"
+      ],
+      "domains": [
+        "toyota.com",
+        "lexus.com",
+        "toyotafinancial.com"
+      ],
+      "categoryTags": [
+        "automotive"
+      ],
+      "ceoName": "Koji Sato",
+      "fecCommitteeId": "C00542365",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00542365",
+        "committeeName": "TOYOTA MOTOR NORTH AMERICA, INC POLITICAL ACTION COMMITTEE (TOYOTA/LEXUS PAC)",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00542365/",
+        "recentCycle": 2026,
+        "recentRepubs": 466000,
+        "recentDems": 386000,
+        "totalRepubs": 3781782,
+        "totalDems": 3475697,
+        "totalO": 115500,
+        "recentO": 24500,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: AMERICAN FINANCIAL SERVICES ASSOCIATION PAC",
+            "amount": 24500,
+            "cycle": 2026,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: CONSUMER TECHNOLOGY ASSOCIATION PAC",
+            "amount": 34000,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: INFORMATION TECHNOLOGY INDUSTRY COUNCIL POLITICAL ACTION COMMITTEE (ITI PAC)",
+            "amount": 20000,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: INFORMATION TECHNOLOGY INDUSTRY COUNCIL POLITICAL ACTION COMMITTEE (ITI PAC)",
+            "amount": 21000,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: CONSERVATIVES HARVESTING SUCCESS PAC",
+            "amount": 16000,
+            "cycle": 2018,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "honda",
+      "canonicalName": "Honda Motor Co Ltd",
+      "aliases": [
+        "Honda",
+        "Honda Motor",
+        "American Honda Motor Co",
+        "Acura",
+        "Honda Financial Services"
+      ],
+      "domains": [
+        "honda.com",
+        "acura.com",
+        "hondafinancialservices.com"
+      ],
+      "categoryTags": [
+        "automotive"
+      ],
+      "ceoName": "Toshihiro Mibe",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "nissan",
+      "canonicalName": "Nissan Motor Co Ltd",
+      "aliases": [
+        "Nissan",
+        "Nissan Motor",
+        "Nissan North America",
+        "Infiniti",
+        "Nissan Motor Acceptance Company"
+      ],
+      "domains": [
+        "nissanusa.com",
+        "nissan-global.com",
+        "infinitiusa.com"
+      ],
+      "categoryTags": [
+        "automotive"
+      ],
+      "ceoName": "Ivan Espinosa",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "hyundai",
+      "canonicalName": "Hyundai Motor Co",
+      "aliases": [
+        "Hyundai",
+        "Hyundai Motor",
+        "Hyundai Motor America",
+        "Genesis",
+        "Hyundai Capital America"
+      ],
+      "domains": [
+        "hyundaiusa.com",
+        "hyundai.com",
+        "genesis.com"
+      ],
+      "categoryTags": [
+        "automotive"
+      ],
+      "ceoName": "Jose Munoz",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "kia",
+      "canonicalName": "Kia Corp",
+      "aliases": [
+        "Kia",
+        "Kia America",
+        "Kia Motors",
+        "Kia Finance America"
+      ],
+      "domains": [
+        "kia.com",
+        "kiausa.com"
+      ],
+      "categoryTags": [
+        "automotive"
+      ],
+      "ceoName": "Ho Sung Song",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "subaru",
+      "canonicalName": "Subaru Corp",
+      "aliases": [
+        "Subaru",
+        "Subaru of America",
+        "Subaru Motors Finance"
+      ],
+      "domains": [
+        "subaru.com",
+        "subaru.co.jp"
+      ],
+      "categoryTags": [
+        "automotive"
+      ],
+      "ceoName": "Atsushi Osaki",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "volkswagen-group",
+      "canonicalName": "Volkswagen Group",
+      "aliases": [
+        "Volkswagen",
+        "VW",
+        "Volkswagen of America",
+        "Audi",
+        "Porsche",
+        "Bentley",
+        "Lamborghini",
+        "Ducati",
+        "Scout Motors"
+      ],
+      "domains": [
+        "vw.com",
+        "volkswagengroupofamerica.com",
+        "audiusa.com",
+        "porsche.com",
+        "bentleymotors.com",
+        "lamborghini.com",
+        "ducati.com",
+        "scoutmotors.com"
+      ],
+      "categoryTags": [
+        "automotive"
+      ],
+      "ceoName": "Oliver Blume",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "bmw-group",
+      "canonicalName": "BMW Group",
+      "aliases": [
+        "BMW",
+        "BMW of North America",
+        "Mini Cooper",
+        "BMW Financial Services"
+      ],
+      "domains": [
+        "bmwusa.com",
+        "bmwgroup.com",
+        "miniusa.com"
+      ],
+      "categoryTags": [
+        "automotive"
+      ],
+      "ceoName": "Oliver Zipse",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "mercedes-benz-group",
+      "canonicalName": "Mercedes-Benz Group AG",
+      "aliases": [
+        "Mercedes-Benz",
+        "Mercedes Benz",
+        "Mercedes",
+        "Mercedes-Benz USA",
+        "AMG",
+        "Maybach"
+      ],
+      "domains": [
+        "mercedes-benz.com",
+        "mbusa.com",
+        "smart.com"
+      ],
+      "categoryTags": [
+        "automotive"
+      ],
+      "ceoName": "Ola Kallenius",
+      "fecCommitteeId": "C00611897",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00611897",
+        "committeeName": "MERCEDES-BENZ NORTH AMERICA CORPORATION US EMPLOYEES PAC",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00611897/",
+        "recentCycle": 2026,
+        "recentRepubs": 2000,
+        "recentDems": 0,
+        "totalRepubs": 14500,
+        "totalDems": 4000,
+        "totalO": 1000,
+        "recentO": 1000,
+        "activeCycles": [
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: ALLIANCE FOR AUTOMOTIVE INNOVATION POLITICAL ACTION COMMITTEE (AUTO PAC)",
+            "amount": 1000,
+            "cycle": 2026,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "volvo-cars",
+      "canonicalName": "Volvo Car AB",
+      "aliases": [
+        "Volvo Cars",
+        "Volvo",
+        "Volvo Car USA"
+      ],
+      "domains": [
+        "volvocars.com"
+      ],
+      "categoryTags": [
+        "automotive"
+      ],
+      "ceoName": "Hakan Samuelsson",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "state-farm",
+      "canonicalName": "State Farm Mutual Automobile Insurance Co",
+      "aliases": [
+        "State Farm",
+        "State Farm Insurance"
+      ],
+      "domains": [
+        "statefarm.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "insurance"
+      ],
+      "ceoName": "Jon Farney",
+      "fecCommitteeId": "C00544817",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00544817",
+        "committeeName": "STATE FARM MUTUAL AUTOMOBILE INSURANCE COMPANY FEDERAL POLITICAL ACTION COMMITTEE (STATE FARM FEDERAL PAC)",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00544817/",
+        "recentCycle": 2026,
+        "recentRepubs": 164600,
+        "recentDems": 110500,
+        "totalRepubs": 1883250,
+        "totalDems": 1536990,
+        "totalO": 0,
+        "recentO": 0,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": []
+      }
+    },
+    {
+      "id": "allstate",
+      "canonicalName": "The Allstate Corp",
+      "aliases": [
+        "Allstate",
+        "Allstate Insurance",
+        "Esurance",
+        "National General Insurance"
+      ],
+      "domains": [
+        "allstate.com",
+        "esurance.com",
+        "nationalgeneral.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "insurance"
+      ],
+      "ceoName": "Tom Wilson",
+      "fecCommitteeId": "C00040253",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00040253",
+        "committeeName": "ALLSTATE INSURANCE COMPANY PAC",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00040253/",
+        "recentCycle": 2026,
+        "recentRepubs": 79000,
+        "recentDems": 105000,
+        "totalRepubs": 1506950,
+        "totalDems": 1065500,
+        "totalO": 95600,
+        "recentO": 5000,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: NATIONAL ASSOCIATION OF MUTUAL INSURANCE COMPANIES PAC",
+            "amount": 5000,
+            "cycle": 2026,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: NATIONAL ASSOCIATION OF MUTUAL INSURANCE COMPANIES PAC",
+            "amount": 15000,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: NATIONAL ASSOCIATION OF MUTUAL INSURANCE COMPANIES PAC",
+            "amount": 5000,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: US CHAMBER OF COMMERCE",
+            "amount": 20000,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: AMERICAN COUNCIL OF LIFE INSURERS POLITICAL ACTION COMMITTEE",
+            "amount": 15000,
+            "cycle": 2018,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: WOMEN2WOMEN PAC",
+            "amount": 35600,
+            "cycle": 2016,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "progressive",
+      "canonicalName": "The Progressive Corp",
+      "aliases": [
+        "Progressive",
+        "Progressive Insurance"
+      ],
+      "domains": [
+        "progressive.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "insurance"
+      ],
+      "ceoName": "Tricia Griffith",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "liberty-mutual",
+      "canonicalName": "Liberty Mutual Holding Co Inc",
+      "aliases": [
+        "Liberty Mutual",
+        "Liberty Mutual Insurance",
+        "Safeco",
+        "Safeco Insurance"
+      ],
+      "domains": [
+        "libertymutual.com",
+        "safeco.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "insurance"
+      ],
+      "ceoName": "Tim Sweeney",
+      "fecCommitteeId": "C00171843",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00171843",
+        "committeeName": "LIBERTY MUTUAL INSURANCE COMPANY - PAC",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00171843/",
+        "recentCycle": 2026,
+        "recentRepubs": 245000,
+        "recentDems": 169500,
+        "totalRepubs": 2853500,
+        "totalDems": 2255900,
+        "totalO": 122500,
+        "recentO": 10000,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: INSURING AMERICA POLITICAL ACTION COMMITTEE",
+            "amount": 10000,
+            "cycle": 2026,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: THE SURETY & FIDELITY ASSOCIATION OF AMERICA POLITICAL ACTION COMMITTEE",
+            "amount": 20000,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: NATIONAL ASSOCIATION OF MUTUAL INSURANCE COMPANIES PAC",
+            "amount": 22500,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: NATIONAL ASSOCIATION OF MUTUAL INSURANCE COMPANIES PAC",
+            "amount": 20000,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: NATIONAL ASSOCIATION OF MUTUAL INSURANCE COMPANIES PAC",
+            "amount": 10000,
+            "cycle": 2018,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: HELLER FOR CONGRESS",
+            "amount": 40000,
+            "cycle": 2016,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "farmers-group",
+      "canonicalName": "Farmers Group Inc",
+      "aliases": [
+        "Farmers Insurance",
+        "Farmers Group",
+        "Foremost Insurance",
+        "Bristol West Insurance"
+      ],
+      "domains": [
+        "farmers.com",
+        "foremost.com",
+        "bristolwest.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "insurance"
+      ],
+      "ceoName": "Raul Vargas",
+      "fecCommitteeId": "C00135681",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00135681",
+        "committeeName": "FARMERS GROUP, INC., FARMERS INSURANCE EXCHANGE, FIRE INSURANCE EXCHANGE AND TRUCK INSURANCE EXCHANGE POLITICAL ACTION COMMITTEE AKA FARMERS INSURANCE PAC",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00135681/",
+        "recentCycle": 2022,
+        "recentRepubs": 140500,
+        "recentDems": 156500,
+        "totalRepubs": 1068700,
+        "totalDems": 535622,
+        "totalO": 34000,
+        "recentO": 14000,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: NATIONAL ASSOCIATION OF MUTUAL INSURANCE COMPANIES PAC",
+            "amount": 14000,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: NATIONAL ASSOCIATION OF MUTUAL INSURANCE COMPANIES PAC",
+            "amount": 10000,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: AMERICAN INSURANCE ASSOCIATION POLITICAL ACTION COMMITTEE",
+            "amount": 5000,
+            "cycle": 2018,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: AMERICAN INSURANCE ASSOCIATION POLITICAL ACTION COMMITTEE",
+            "amount": 5000,
+            "cycle": 2016,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "travelers",
+      "canonicalName": "The Travelers Companies Inc",
+      "aliases": [
+        "Travelers",
+        "Travelers Insurance",
+        "The Travelers Companies"
+      ],
+      "domains": [
+        "travelers.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "insurance"
+      ],
+      "ceoName": "Alan Schnitzer",
+      "fecCommitteeId": "C00376376",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00376376",
+        "committeeName": "THE TRAVELERS COMPANIES, INC. POLITICAL ACTION COMMITTEE (T-PAC)",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00376376/",
+        "recentCycle": 2026,
+        "recentRepubs": 152500,
+        "recentDems": 94000,
+        "totalRepubs": 1567000,
+        "totalDems": 852500,
+        "totalO": 95000,
+        "recentO": 10000,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: AMERICAN PROPERTY CASUALTY INSURANCE ASSOC. PAC (INSURING AMERICA PAC)",
+            "amount": 10000,
+            "cycle": 2026,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: INSURING AMERICA PAC",
+            "amount": 16000,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: AMERICAN PROPERTY CASUALTY INSURANCE ASSOC. FEDERAL ONLY PAC",
+            "amount": 20000,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: THE SURETY & FIDELITY ASSN OF AMERICA PAC",
+            "amount": 22500,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: ZELDIN FOR CONGRESS",
+            "amount": 14500,
+            "cycle": 2018,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: FRIENDS OF PAT TOOMEY",
+            "amount": 12000,
+            "cycle": 2016,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "nationwide",
+      "canonicalName": "Nationwide Mutual Insurance Co",
+      "aliases": [
+        "Nationwide",
+        "Nationwide Insurance",
+        "Nationwide Financial"
+      ],
+      "domains": [
+        "nationwide.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "insurance"
+      ],
+      "ceoName": "Kirt Walker",
+      "fecCommitteeId": "C00076174",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00076174",
+        "committeeName": "NATIONWIDE MUTUAL INSURANCE COMPANY POLITICAL ACTION COMMITTEE",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00076174/",
+        "recentCycle": 2026,
+        "recentRepubs": 0,
+        "recentDems": 7500,
+        "totalRepubs": 328500,
+        "totalDems": 292500,
+        "totalO": 35550,
+        "recentO": 0,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: BUSINESS-INDUSTRY POLITICAL ACTION COMMITTEE",
+            "amount": 5000,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: OHIO FARM BUREAU FEDERATION INC-AGRICULTURE FOR GOOD GOVERNMENT PAC (OFBF-AGGPAC)",
+            "amount": 7000,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24G",
+            "description": "Bulk OTH 24G: NATIONWIDE MUTUAL INSURANCE COMPANY FINANCIAL & INVESTMENTS POLITICAL ACTION COMMITTEE",
+            "amount": 800,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: INSURED RETIREMENT INSTITUTE POLITICAL ACTION COMMITTEE (IRI PAC)",
+            "amount": 3250,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: NATIONAL ASSOCIATION OF MUTUAL INSURANCE COMPANIES PAC",
+            "amount": 12000,
+            "cycle": 2018,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: NATIONAL ASSOCIATION OF PROFESSIONAL SURPLUS LINES OFFICES (NAPSLO) PAC",
+            "amount": 7500,
+            "cycle": 2016,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "usaa",
+      "canonicalName": "United Services Automobile Association",
+      "aliases": [
+        "USAA",
+        "USAA Insurance",
+        "USAA Bank"
+      ],
+      "domains": [
+        "usaa.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "insurance",
+        "banking"
+      ],
+      "ceoName": "Juan C. Andrade",
+      "fecCommitteeId": "C00164145",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00164145",
+        "committeeName": "UNITED SERVICES AUTOMOBILE ASSOCIATION EMPLOYEE PAC - USAA EMPLOYEE PAC",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00164145/",
+        "recentCycle": 2026,
+        "recentRepubs": 271500,
+        "recentDems": 140500,
+        "totalRepubs": 5111000,
+        "totalDems": 3194500,
+        "totalO": 400500,
+        "recentO": 35000,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: WITH HONOR PAC",
+            "amount": 35000,
+            "cycle": 2026,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk PAS2 24K: ANGUS KING FOR U.S. SENATE CAMPAIGN",
+            "amount": 2500,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: WITH HONOR PAC",
+            "amount": 65000,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk PAS2 24K: ANGUS KING FOR U.S. SENATE CAMPAIGN",
+            "amount": 2500,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: NATIONAL ASSOCIATION OF MUTUAL INSURANCE COMPANIES PAC",
+            "amount": 70000,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: IDAHO CONSERVATIVE GROWTH FUND",
+            "amount": 80500,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: AMERICAN COUNCIL OF LIFE INSURERS POLITICAL ACTION COMMITTEE",
+            "amount": 80000,
+            "cycle": 2018,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: AMERICAN COUNCIL OF LIFE INSURERS POLITICAL ACTION COMMITTEE",
+            "amount": 65000,
+            "cycle": 2016,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "metlife",
+      "canonicalName": "MetLife Inc",
+      "aliases": [
+        "MetLife",
+        "MetLife Insurance",
+        "Metropolitan Life Insurance"
+      ],
+      "domains": [
+        "metlife.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "insurance"
+      ],
+      "ceoName": "Michel Khalaf",
+      "fecCommitteeId": "C00040923",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00040923",
+        "committeeName": "METLIFE INC. EMPLOYEES' POLITICAL PARTICIPATION FUND A",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00040923/",
+        "recentCycle": 2026,
+        "recentRepubs": 165750,
+        "recentDems": 79500,
+        "totalRepubs": 2004750,
+        "totalDems": 1433000,
+        "totalO": 259809,
+        "recentO": 11500,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: TOMORROW IS MEANINGFUL PAC - FEDERAL",
+            "amount": 11500,
+            "cycle": 2026,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: AMERICAN COUNCIL OF LIFE INSURERS PAC (ACLI PAC)",
+            "amount": 20500,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: NATIONAL ASSN OF DENTAL PLANS PAC (NADPAC)",
+            "amount": 42000,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24G",
+            "description": "Bulk OTH 24G: METLIFE INC. EMP. POL. PARTIC. FUND A (FEDERAL)",
+            "amount": 7309,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: AMERICAN BENEFITS COUNCIL PAC",
+            "amount": 73000,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: AMERICAN COUNCIL OF LIFE INSURERS PAC (ACLI PAC)",
+            "amount": 43000,
+            "cycle": 2018,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: INSURED RETIREMENT INSTITUTE PAC (IRI PAC)",
+            "amount": 62500,
+            "cycle": 2016,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "prudential-financial",
+      "canonicalName": "Prudential Financial Inc",
+      "aliases": [
+        "Prudential",
+        "Prudential Financial"
+      ],
+      "domains": [
+        "prudential.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "insurance"
+      ],
+      "ceoName": "Andrew Sullivan",
+      "fecCommitteeId": "C00127779",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00127779",
+        "committeeName": "PRUDENTIAL FINANCIAL INC. FEDERAL POLITICAL ACTION COMMITTEE (AKA - PRUDENTIAL FEDERAL PAC)",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00127779/",
+        "recentCycle": 2026,
+        "recentRepubs": 185000,
+        "recentDems": 169500,
+        "totalRepubs": 2196750,
+        "totalDems": 2224000,
+        "totalO": 44000,
+        "recentO": 0,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk PAS2 24K: ANGUS KING FOR U.S. SENATE CAMPAIGN",
+            "amount": 1000,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: INSURED RETIREMENT INSTITUTE POLITICAL ACTION COMMITTEE (IRI PAC)",
+            "amount": 25500,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: SENSIBLE AMERICAN SOLUTIONS SUPPORTING EVERYONE STATE PAC",
+            "amount": 7500,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: R SENATE PAC",
+            "amount": 10000,
+            "cycle": 2020,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "northwestern-mutual",
+      "canonicalName": "Northwestern Mutual Life Insurance Co",
+      "aliases": [
+        "Northwestern Mutual",
+        "Northwestern Mutual Life"
+      ],
+      "domains": [
+        "northwesternmutual.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "insurance"
+      ],
+      "ceoName": "Tim Gerend",
+      "fecCommitteeId": "C00197095",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00197095",
+        "committeeName": "THE NORTHWESTERN MUTUAL LIFE INSURANCE COMPANY POLITICAL ACTION COMMITTEE (NMPAC)",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00197095/",
+        "recentCycle": 2026,
+        "recentRepubs": 285000,
+        "recentDems": 130500,
+        "totalRepubs": 2284050,
+        "totalDems": 1856150,
+        "totalO": 130000,
+        "recentO": 14000,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: TOMORROW IS MEANINGFUL PAC - FEDERAL",
+            "amount": 14000,
+            "cycle": 2026,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk PAS2 24K: ANGUS KING FOR U.S. SENATE CAMPAIGN",
+            "amount": 1000,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: AMERICAN COUNCIL OF LIFE INSURERS POLITICAL ACTION COMMITTEE",
+            "amount": 10000,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: FINANCIAL SERVICES INSTITUTE PAC",
+            "amount": 15000,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: AMERICAN COUNCIL OF LIFE INSURERS POLITICAL ACTION COMMITTEE",
+            "amount": 15000,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: SECURITIES INDUSTRY AND FINANCIAL MARKETS ASSOCIATION POLITICAL ACTION COMMITTEE",
+            "amount": 25000,
+            "cycle": 2018,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: SECURITIES INDUSTRY AND FINANCIAL MARKETS ASSOCIATION POLITICAL ACTION COMMITTEE",
+            "amount": 50000,
+            "cycle": 2016,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "aflac",
+      "canonicalName": "Aflac Inc",
+      "aliases": [
+        "Aflac",
+        "Aflac Insurance"
+      ],
+      "domains": [
+        "aflac.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "insurance"
+      ],
+      "ceoName": "Daniel P. Amos",
+      "fecCommitteeId": "C00034157",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00034157",
+        "committeeName": "AFLAC POLITICAL ACTION COMMITTEE (AFLAC PAC)",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00034157/",
+        "recentCycle": 2026,
+        "recentRepubs": 654500,
+        "recentDems": 719500,
+        "totalRepubs": 5885500,
+        "totalDems": 5921000,
+        "totalO": 189000,
+        "recentO": 44000,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: AMERICAN COUNCIL OF LIFE INSURERS POLITICAL ACTION COMMITTEE",
+            "amount": 44000,
+            "cycle": 2026,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk PAS2 24K: ANGUS KING FOR U.S. SENATE CAMPAIGN",
+            "amount": 5000,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: AMERICAN COUNCIL OF LIFE INSURERS POLITICAL ACTION COMMITTEE",
+            "amount": 30000,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: AMERICAN COUNCIL OF LIFE INSURERS POLITICAL ACTION COMMITTEE",
+            "amount": 30000,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: AMERICAN COUNCIL OF LIFE INSURERS POLITICAL ACTION COMMITTEE",
+            "amount": 20000,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: AMERICAN COUNCIL OF LIFE INSURERS POLITICAL ACTION COMMITTEE",
+            "amount": 30000,
+            "cycle": 2018,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: GEORGIA VICTORY FUND 2016",
+            "amount": 30000,
+            "cycle": 2016,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "chubb",
+      "canonicalName": "Chubb Ltd",
+      "aliases": [
+        "Chubb",
+        "Chubb Insurance"
+      ],
+      "domains": [
+        "chubb.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "insurance"
+      ],
+      "ceoName": "Evan Greenberg",
+      "fecCommitteeId": "C00348938",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00348938",
+        "committeeName": "CHUBB GROUP HOLDINGS INC. POLITICAL ACTION COMMITTEE",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00348938/",
+        "recentCycle": 2026,
+        "recentRepubs": 53000,
+        "recentDems": 42000,
+        "totalRepubs": 652000,
+        "totalDems": 464000,
+        "totalO": 80000,
+        "recentO": 10000,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: ACLI PAC",
+            "amount": 10000,
+            "cycle": 2026,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: REINSURANCE ASSOCIATION OF AMERICA POLITICAL ACTION COMMITTEE INC (REPAC)",
+            "amount": 20000,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: REINSURANCE ASSOCIATION OF AMERICA POLITICAL ACTION COMMITTEE INC (REPAC)",
+            "amount": 15000,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: REINSURANCE ASSOCIATION OF AMERICA POLITICAL ACTION COMMITTEE INC (REPAC)",
+            "amount": 15000,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: FINANCIAL SERVICES ROUNDTABLE PAC",
+            "amount": 20000,
+            "cycle": 2018,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "edward-jones",
+      "canonicalName": "Edward D. Jones & Co LP",
+      "aliases": [
+        "Edward Jones",
+        "Edward D Jones",
+        "Edward Jones Investments"
+      ],
+      "domains": [
+        "edwardjones.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "investing"
+      ],
+      "ceoName": "Penny Pennington",
+      "fecCommitteeId": "C00410407",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00410407",
+        "committeeName": "EDJ HOLDING COMPANY, INC. POLITICAL ACTION COMMITTEE (EDWARD JONES PAC)",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00410407/",
+        "recentCycle": 2026,
+        "recentRepubs": 208500,
+        "recentDems": 189500,
+        "totalRepubs": 681000,
+        "totalDems": 522900,
+        "totalO": 136000,
+        "recentO": 35000,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: COMMONSENSE, CONSERVATIVE VALUES PAC",
+            "amount": 35000,
+            "cycle": 2026,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: INSURED RETIREMENT INSTITUTE POLITICAL ACTION COMMITTEE (IRI PAC)",
+            "amount": 25000,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: JUST PERMANENT INTERESTS POLITICAL ACTION COMMITTEE",
+            "amount": 27500,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: FINANCIAL SERVICES ROUNDTABLE PAC",
+            "amount": 25000,
+            "cycle": 2018,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: INVESTMENT COMPANY INSTITUTE POLITICAL ACTION COMMITTEE",
+            "amount": 23500,
+            "cycle": 2016,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "raymond-james",
+      "canonicalName": "Raymond James Financial Inc",
+      "aliases": [
+        "Raymond James",
+        "Raymond James Financial"
+      ],
+      "domains": [
+        "raymondjames.com"
+      ],
+      "categoryTags": [
+        "finance",
+        "investing"
+      ],
+      "ceoName": "Paul Reilly",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "equinox-holdings",
+      "canonicalName": "Equinox Holdings Inc",
+      "aliases": [
+        "Equinox",
+        "Equinox Fitness",
+        "SoulCycle",
+        "Soul Cycle",
+        "Blink Fitness",
+        "Equinox Hotels"
+      ],
+      "domains": [
+        "equinox.com",
+        "soul-cycle.com",
+        "blinkfitness.com",
+        "equinox-hotels.com"
+      ],
+      "categoryTags": [
+        "fitness",
+        "wellness",
+        "hospitality"
+      ],
+      "ceoName": "Harvey Spevak",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "orangetheory",
+      "canonicalName": "Orangetheory Fitness LLC",
+      "aliases": [
+        "Orangetheory",
+        "Orange Theory",
+        "Orangetheory Fitness",
+        "OTF"
+      ],
+      "domains": [
+        "orangetheory.com"
+      ],
+      "categoryTags": [
+        "fitness",
+        "wellness"
+      ],
+      "ceoName": "Dave Long",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "life-time",
+      "canonicalName": "Life Time Group Holdings Inc",
+      "aliases": [
+        "Life Time",
+        "Life Time Fitness",
+        "Life Time Athletic"
+      ],
+      "domains": [
+        "lifetime.life"
+      ],
+      "categoryTags": [
+        "fitness",
+        "wellness"
+      ],
+      "ceoName": "Bahram Akradi",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "24-hour-fitness",
+      "canonicalName": "24 Hour Fitness Worldwide Inc",
+      "aliases": [
+        "24 Hour Fitness",
+        "Twenty Four Hour Fitness"
+      ],
+      "domains": [
+        "24hourfitness.com"
+      ],
+      "categoryTags": [
+        "fitness",
+        "wellness"
+      ],
+      "ceoName": "Karl Sanft",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "crunch-fitness",
+      "canonicalName": "Crunch LLC",
+      "aliases": [
+        "Crunch Fitness"
+      ],
+      "domains": [
+        "crunch.com"
+      ],
+      "categoryTags": [
+        "fitness",
+        "wellness"
+      ],
+      "ceoName": "Jim Rowley",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "mindbody",
+      "canonicalName": "MINDBODY Inc",
+      "aliases": [
+        "Mindbody",
+        "Mindbodyonline",
+        "ClassPass",
+        "Booker"
+      ],
+      "domains": [
+        "mindbodyonline.com",
+        "classpass.com",
+        "booker.com"
+      ],
+      "categoryTags": [
+        "fitness",
+        "wellness",
+        "software"
+      ],
+      "ceoName": "Fritz Lanman",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "live-nation",
+      "canonicalName": "Live Nation Entertainment Inc",
+      "aliases": [
+        "Live Nation",
+        "Live Nation Entertainment",
+        "Ticketmaster",
+        "Ticket Master"
+      ],
+      "domains": [
+        "livenation.com",
+        "ticketmaster.com"
+      ],
+      "categoryTags": [
+        "entertainment",
+        "live-events"
+      ],
+      "ceoName": "Michael Rapino",
+      "fecCommitteeId": "C00791103",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00791103",
+        "committeeName": "LIVE NATION ENTERTAINMENT, INC., POLITICAL ACTION COMMITTEE (LIVE NATION PAC)",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00791103/",
+        "recentCycle": 2026,
+        "recentRepubs": 74000,
+        "recentDems": 37500,
+        "totalRepubs": 173400,
+        "totalDems": 136700,
+        "totalO": 10000,
+        "recentO": 5000,
+        "activeCycles": [
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: GUTHRIE VICTORY FUND",
+            "amount": 5000,
+            "cycle": 2026,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: ADELANTE FUND",
+            "amount": 5000,
+            "cycle": 2024,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "stubhub",
+      "canonicalName": "StubHub Holdings Inc",
+      "aliases": [
+        "StubHub",
+        "Viagogo"
+      ],
+      "domains": [
+        "stubhub.com",
+        "viagogo.com"
+      ],
+      "categoryTags": [
+        "entertainment",
+        "marketplace",
+        "live-events"
+      ],
+      "ceoName": "Eric Baker",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "seatgeek",
+      "canonicalName": "SeatGeek Inc",
+      "aliases": [
+        "SeatGeek",
+        "Seat Geek"
+      ],
+      "domains": [
+        "seatgeek.com"
+      ],
+      "categoryTags": [
+        "entertainment",
+        "marketplace",
+        "live-events"
+      ],
+      "ceoName": "Jack Groetzinger",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "six-flags",
+      "canonicalName": "Six Flags Entertainment Corp",
+      "aliases": [
+        "Six Flags",
+        "Cedar Fair",
+        "Cedar Point",
+        "Knott's Berry Farm",
+        "Kings Island",
+        "Kings Dominion",
+        "Canada's Wonderland",
+        "Dorney Park",
+        "Carowinds",
+        "Valleyfair",
+        "Worlds of Fun"
+      ],
+      "domains": [
+        "sixflags.com",
+        "cedarpoint.com",
+        "knotts.com",
+        "visitkingsisland.com",
+        "kingsdominion.com",
+        "canadaswonderland.com"
+      ],
+      "categoryTags": [
+        "entertainment",
+        "theme-parks"
+      ],
+      "ceoName": "Richard Zimmerman",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "united-parks-resorts",
+      "canonicalName": "United Parks & Resorts Inc",
+      "aliases": [
+        "United Parks & Resorts",
+        "SeaWorld",
+        "Sea World",
+        "Busch Gardens",
+        "Aquatica",
+        "Discovery Cove",
+        "Sesame Place",
+        "Water Country USA"
+      ],
+      "domains": [
+        "unitedparks.com",
+        "seaworld.com",
+        "buschgardens.com",
+        "aquatica.com",
+        "discoverycove.com",
+        "sesameplace.com"
+      ],
+      "categoryTags": [
+        "entertainment",
+        "theme-parks"
+      ],
+      "ceoName": "Marc Swanson",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "herschend-enterprises",
+      "canonicalName": "Herschend Enterprises",
+      "aliases": [
+        "Herschend",
+        "Herschend Family Entertainment",
+        "Dollywood",
+        "Silver Dollar City",
+        "Adventure Aquarium",
+        "Newport Aquarium",
+        "Kentucky Kingdom",
+        "Wild Adventures",
+        "Harlem Globetrotters"
+      ],
+      "domains": [
+        "herschendenterprises.com",
+        "dollywood.com",
+        "silverdollarcity.com",
+        "adventureaquarium.com",
+        "newportaquarium.com",
+        "kentuckykingdom.com",
+        "wildadventures.com",
+        "harlemglobetrotters.com"
+      ],
+      "categoryTags": [
+        "entertainment",
+        "theme-parks"
+      ],
+      "ceoName": "Andrew Wexler",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "jetblue",
+      "canonicalName": "JetBlue Airways Corp",
+      "aliases": [
+        "JetBlue",
+        "JetBlue Airways"
+      ],
+      "domains": [
+        "jetblue.com"
+      ],
+      "categoryTags": [
+        "travel",
+        "flights"
+      ],
+      "ceoName": "Joanna Geraghty",
+      "fecCommitteeId": "C00484584",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00484584",
+        "committeeName": "JETBLUE AIRWAYS CORPORATION CREWMEMBER GOOD GOVERNMENT FUND",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00484584/",
+        "recentCycle": 2026,
+        "recentRepubs": 18500,
+        "recentDems": 27000,
+        "totalRepubs": 315500,
+        "totalDems": 380500,
+        "totalO": 2000,
+        "recentO": 1000,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: KENNEDY FOR CONGRESS",
+            "amount": 1000,
+            "cycle": 2026,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk PAS2 24K: TODOS CON JENNIFFER INC. DBA JENNIFFER FOR CONGRESS",
+            "amount": 1000,
+            "cycle": 2020,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "alaska-air-group",
+      "canonicalName": "Alaska Air Group Inc",
+      "aliases": [
+        "Alaska Airlines",
+        "Alaska Air",
+        "Hawaiian Airlines",
+        "Hawaiian Air"
+      ],
+      "domains": [
+        "alaskaair.com",
+        "hawaiianairlines.com"
+      ],
+      "categoryTags": [
+        "travel",
+        "flights"
+      ],
+      "ceoName": "Ben Minicucci",
+      "fecCommitteeId": "C00024349",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00024349",
+        "committeeName": "ALASKA AIR GROUP INC. POLITICAL ACTION COMMITTEE",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00024349/",
+        "recentCycle": 2026,
+        "recentRepubs": 57500,
+        "recentDems": 82000,
+        "totalRepubs": 415700,
+        "totalDems": 477000,
+        "totalO": 28500,
+        "recentO": 5000,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: AIRLINES FOR AMERICA (A4A) POLITICAL ACTION COMMITTEE",
+            "amount": 5000,
+            "cycle": 2026,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: AIRLINES FOR AMERICA (A4A) POLITICAL ACTION COMMITTEE",
+            "amount": 2500,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: AIRLINES FOR AMERICA (A4A) POLITICAL ACTION COMMITTEE",
+            "amount": 5000,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: AIRLINES FOR AMERICA (A4A) POLITICAL ACTION COMMITTEE",
+            "amount": 12500,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: MAJORITY COMMITTEE PAC--MC PAC",
+            "amount": 3500,
+            "cycle": 2018,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "spirit-airlines",
+      "canonicalName": "Spirit Airlines Inc",
+      "aliases": [
+        "Spirit Airlines",
+        "Spirit Air"
+      ],
+      "domains": [
+        "spirit.com"
+      ],
+      "categoryTags": [
+        "travel",
+        "flights"
+      ],
+      "ceoName": "Dave Davis",
+      "fecCommitteeId": "C00562892",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00562892",
+        "committeeName": "SPIRIT AIRLINES INC PAC SPIRIT PAC",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00562892/",
+        "recentCycle": 0,
+        "recentRepubs": 0,
+        "recentDems": 0,
+        "totalRepubs": 0,
+        "totalDems": 0,
+        "totalO": 0,
+        "recentO": 0,
+        "activeCycles": [],
+        "raw": []
+      }
+    },
+    {
+      "id": "frontier-airlines",
+      "canonicalName": "Frontier Airlines Inc",
+      "aliases": [
+        "Frontier Airlines",
+        "Frontier Air"
+      ],
+      "domains": [
+        "flyfrontier.com"
+      ],
+      "categoryTags": [
+        "travel",
+        "flights"
+      ],
+      "ceoName": "Barry Biffle",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "allegiant-air",
+      "canonicalName": "Allegiant Travel Co",
+      "aliases": [
+        "Allegiant",
+        "Allegiant Air",
+        "Allegiant Travel"
+      ],
+      "domains": [
+        "allegiantair.com"
+      ],
+      "categoryTags": [
+        "travel",
+        "flights"
+      ],
+      "ceoName": "Gregory Anderson",
+      "fecCommitteeId": "C00516039",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00516039",
+        "committeeName": "ALLEGIANT TRAVEL COMPANY POLITICAL ACTION COMMITTEE",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00516039/",
+        "recentCycle": 2026,
+        "recentRepubs": 11500,
+        "recentDems": 5000,
+        "totalRepubs": 121800,
+        "totalDems": 139350,
+        "totalO": 4500,
+        "recentO": 0,
+        "activeCycles": [
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: NATIONAL AIR CARRIER ASSOCIATION PAC",
+            "amount": 4500,
+            "cycle": 2024,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "party-city",
+      "canonicalName": "Party City Holdco Inc",
+      "aliases": [
+        "Party City",
+        "Halloween City"
+      ],
+      "domains": [
+        "partycity.com",
+        "halloweencity.com"
+      ],
+      "categoryTags": [
+        "retail"
+      ],
+      "ceoName": "Barry Litwin",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "micro-center",
+      "canonicalName": "Micro Electronics Inc",
+      "aliases": [
+        "Micro Center",
+        "Microcenter"
+      ],
+      "domains": [
+        "microcenter.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "electronics"
+      ],
+      "ceoName": "Rick Mershad",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "ollies-bargain-outlet",
+      "canonicalName": "Ollie's Bargain Outlet Holdings Inc",
+      "aliases": [
+        "Ollie's Bargain Outlet",
+        "Ollie's",
+        "Ollies"
+      ],
+      "domains": [
+        "ollies.us"
+      ],
+      "categoryTags": [
+        "retail"
+      ],
+      "ceoName": "John Swygert",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "pet-supplies-plus",
+      "canonicalName": "Pet Supplies Plus LLC",
+      "aliases": [
+        "Pet Supplies Plus",
+        "Pets Supplies Plus",
+        "Wag N Wash"
+      ],
+      "domains": [
+        "petsuppliesplus.com",
+        "wagnwash.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "pets",
+        "petcare"
+      ],
+      "ceoName": "Chris Rowland",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "bass-pro-group",
+      "canonicalName": "Bass Pro Group LLC",
+      "aliases": [
+        "Bass Pro Shops",
+        "Bass Pro",
+        "Cabela's",
+        "Cabelas",
+        "Tracker Boats",
+        "White River Marine Group",
+        "Big Cedar Lodge"
+      ],
+      "domains": [
+        "basspro.com",
+        "cabelas.com",
+        "trackerboats.com",
+        "bigcedar.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "outdoor",
+        "sporting"
+      ],
+      "ceoName": "Jim Hagale",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified",
+      "publicFigureName": "Johnny Morris"
+    },
+    {
+      "id": "sportsmans-warehouse",
+      "canonicalName": "Sportsman's Warehouse Holdings Inc",
+      "aliases": [
+        "Sportsman's Warehouse",
+        "Sportsmans Warehouse"
+      ],
+      "domains": [
+        "sportsmans.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "outdoor",
+        "sporting"
+      ],
+      "ceoName": "Paul Stone",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "smith-wesson-brands",
+      "canonicalName": "Smith & Wesson Brands Inc",
+      "aliases": [
+        "Smith & Wesson",
+        "Smith and Wesson",
+        "Smith Wesson",
+        "Smith & Wesson Brands"
+      ],
+      "domains": [
+        "smith-wesson.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "outdoor",
+        "firearms"
+      ],
+      "ceoName": "Mark Smith",
+      "fecCommitteeId": "C00419051",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00419051",
+        "committeeName": "SMITH & WESSON BRANDS, INC. POLITICAL ACTION COMMITTEE",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00419051/",
+        "recentCycle": 2026,
+        "recentRepubs": 8000,
+        "recentDems": 0,
+        "totalRepubs": 115900,
+        "totalDems": 1000,
+        "totalO": 0,
+        "recentO": 0,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": []
+      }
+    },
+    {
+      "id": "sturm-ruger",
+      "canonicalName": "Sturm Ruger & Co Inc",
+      "aliases": [
+        "Sturm Ruger",
+        "Ruger",
+        "Sturm, Ruger & Co",
+        "Sturm Ruger and Co"
+      ],
+      "domains": [
+        "ruger.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "outdoor",
+        "firearms"
+      ],
+      "ceoName": "Christopher Killoy",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "patagonia",
+      "canonicalName": "Patagonia Inc",
+      "aliases": [
+        "Patagonia",
+        "Patagonia Provisions",
+        "Worn Wear"
+      ],
+      "domains": [
+        "patagonia.com",
+        "patagoniaprovisions.com",
+        "wornwear.patagonia.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "outdoor"
+      ],
+      "ceoName": "Ryan Gellert",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified",
+      "publicFigureName": "Yvon Chouinard"
+    },
+    {
+      "id": "carhartt",
+      "canonicalName": "Carhartt Inc",
+      "aliases": [
+        "Carhartt",
+        "Carhartt Work In Progress",
+        "Carhartt WIP"
+      ],
+      "domains": [
+        "carhartt.com",
+        "carhartt-wip.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "apparel",
+        "outdoor"
+      ],
+      "ceoName": "Linda Hubbard",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "valvoline",
+      "canonicalName": "Valvoline Inc",
+      "aliases": [
+        "Valvoline",
+        "Valvoline Instant Oil Change",
+        "Valvoline Instant Oil Change Service Center"
+      ],
+      "domains": [
+        "valvoline.com",
+        "vioc.com"
+      ],
+      "categoryTags": [
+        "automotive",
+        "auto-service"
+      ],
+      "ceoName": "Lori Flees",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "monro",
+      "canonicalName": "Monro Inc",
+      "aliases": [
+        "Monro",
+        "Monro Auto Service and Tire Centers",
+        "Mr. Tire",
+        "Tire Choice",
+        "Ken Towery",
+        "Car-X",
+        "Tire Warehouse"
+      ],
+      "domains": [
+        "monro.com",
+        "mrtire.com",
+        "thetirechoice.com",
+        "kentowery.com",
+        "carx.com"
+      ],
+      "categoryTags": [
+        "automotive",
+        "auto-service"
+      ],
+      "ceoName": "Peter Fitzsimmons",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "les-schwab-tire",
+      "canonicalName": "Les Schwab Tire Centers Inc",
+      "aliases": [
+        "Les Schwab",
+        "Les Schwab Tire",
+        "Les Schwab Tires"
+      ],
+      "domains": [
+        "lesschwab.com"
+      ],
+      "categoryTags": [
+        "automotive",
+        "auto-service"
+      ],
+      "ceoName": "Mike Broberg",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "essilorluxottica",
+      "canonicalName": "EssilorLuxottica SA",
+      "aliases": [
+        "EssilorLuxottica",
+        "LensCrafters",
+        "Pearle Vision",
+        "Sunglass Hut",
+        "Target Optical",
+        "Ray-Ban",
+        "Oakley",
+        "Oliver Peoples",
+        "Costa Del Mar",
+        "EyeMed"
+      ],
+      "domains": [
+        "essilorluxottica.com",
+        "lenscrafters.com",
+        "pearlevision.com",
+        "sunglasshut.com",
+        "targetoptical.com",
+        "ray-ban.com",
+        "oakley.com",
+        "oliverpeoples.com",
+        "costadelmar.com",
+        "eyemed.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "healthcare",
+        "optical"
+      ],
+      "ceoName": "Francesco Milleri",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "cumberland-farms",
+      "canonicalName": "Cumberland Farms Inc",
+      "aliases": [
+        "Cumberland Farms",
+        "Cumbies"
+      ],
+      "domains": [
+        "cumberlandfarms.com"
+      ],
+      "categoryTags": [
+        "retail",
+        "convenience",
+        "fuel"
+      ],
+      "ceoName": "Unknown CEO",
+      "parentEntityId": "eg-america",
+      "fecCommitteeId": "C00523225",
+      "lastVerifiedDate": "2026-04-21",
+      "verificationStatus": "pipeline",
+      "donationSummary": {
+        "committeeId": "C00523225",
+        "committeeName": "CUMBERLAND FARMS, INC. POLITICAL ACTION COMMITTEE (CUMBERLAND FARMS PAC)",
+        "lastUpdated": "2026-04-21",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00523225/",
+        "recentCycle": 2024,
+        "recentRepubs": 0,
+        "recentDems": 0,
+        "totalRepubs": 10900,
+        "totalDems": 33910,
+        "totalO": 105156,
+        "recentO": 97956,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024
+        ],
+        "raw": [
+          {
+            "lineNumber": "24G",
+            "description": "Bulk OTH 24G: EG AMERICA, LLC POLITICAL ACTION COMMITTEE (EG AMERICA PAC)",
+            "amount": 97956,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: MASSACHUSETTS VICTORY COMMITTEE",
+            "amount": 5000,
+            "cycle": 2018,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: MASSACHUSETTS VICTORY COMMITTEE",
+            "amount": 2200,
+            "cycle": 2016,
+            "isReceipt": false
+          }
+        ]
+      }
     }
   ]
 }

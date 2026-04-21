@@ -380,6 +380,18 @@ when a confident match is found. Marks confirmed no-PAC entities with `fecCommit
 
 Requires `FEC_API_KEY` for maintainers. Do not run without flagging the user first.
 
+### `npm run verify:entities:bulk`
+Verifies likely entity `fecCommitteeId` values against local FEC committee master files (`tools/fec-bulk/cm*.txt`) without using the FEC API. It is intended for broad entity expansion passes before donation hydration. The matcher is conservative: it uses PAC committee types only, rejects campaign-like names, prefers connected-organization evidence, and writes a review report at `tools/fec-bulk/reports/entity-bulk-verification-review.json`.
+
+Useful flags:
+
+- `--last-verified-date=YYYY-MM-DD` limits the run to newly-added/unverified entities from that batch.
+- `--ids=a,b,c` limits the run to specific entity IDs.
+- `--dry-run` writes the review report without modifying `entities.json`.
+- `--mark-no-match-null` marks no-match entities as confirmed no-PAC; use only after review.
+
+Do not blindly promote `nearMisses` from the report. Treat them as leads for manual review because short aliases can produce plausible but wrong matches.
+
 ### `npm run fetch:donations`
 Pre-fetches FEC donation totals for all entities with a verified `fecCommitteeId` and writes `donationSummary` to `entities.json`. The matching pipeline uses bundled data directly when present and fresh, skipping live FEC calls.
 
