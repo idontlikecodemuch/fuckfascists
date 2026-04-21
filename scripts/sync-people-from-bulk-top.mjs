@@ -863,6 +863,64 @@ function appendExtras(mergedPeople, existingPeople, usedIds) {
   return mergedPeople.concat(extras);
 }
 
+function manualPeopleFromOverrides(rawOverrides, mergedPeople, usedIds) {
+  const overridePeople = typeof rawOverrides?.people === 'object' && rawOverrides.people !== null ? rawOverrides.people : {};
+  const existingIds = new Set(mergedPeople.map((person) => person.id));
+  const existingDonorKeys = new Set(mergedPeople.map((person) => normalizeDonorKey(person.canonicalName)).filter(Boolean));
+  const manualPeople = [];
+
+  for (const [personId, entry] of Object.entries(overridePeople)) {
+    const person = typeof entry?.person === 'object' && entry.person !== null ? entry.person : null;
+    if (!person || existingIds.has(personId)) continue;
+
+    const canonicalName = cleanCanonicalName(person.canonicalName);
+    const displayName = normalizeWhitespace(person.displayName) || toDisplayName(canonicalName);
+    const donorKey = normalizeDonorKey(canonicalName);
+    if (!canonicalName || !displayName || existingDonorKeys.has(donorKey)) continue;
+
+    const commonName = normalizeCommonName(person.commonName, displayName);
+    const roleOverrides = runtimeRoleOverrides[personId] ?? {};
+    const rolesByEntity = {};
+    for (const [entityId, role] of Object.entries(roleOverrides)) {
+      const normalized = normalizeRoleRecord(role);
+      if (normalized) rolesByEntity[entityId] = normalized;
+    }
+
+    const associatedEntityIds = Object.keys(rolesByEntity);
+    manualPeople.push({
+      id: ensureUniqueId(personId, usedIds, manualPeople.length + 1),
+      canonicalName,
+      displayName,
+      commonName,
+      aliases: unique([
+        displayName,
+        commonName,
+        toDisplayName(canonicalName),
+        ...(Array.isArray(person.aliases) ? person.aliases : []),
+      ]),
+      fecContributorId: normalizeWhitespace(person.fecContributorId) || null,
+      fecSearchNames: unique([
+        canonicalName,
+        ...(Array.isArray(person.fecSearchNames) ? person.fecSearchNames : []),
+      ]),
+      associatedEntityIds,
+      rolesByEntity,
+      primaryState: normalizeWhitespace(person.primaryState) || undefined,
+      primaryEmployer: normalizeWhitespace(person.primaryEmployer) || undefined,
+      primaryOccupation: normalizeWhitespace(person.primaryOccupation) || undefined,
+      donorRank: Number.isFinite(person.donorRank) ? person.donorRank : undefined,
+      tier: Number.isFinite(person.donorRank) ? inferTier(person.donorRank) : undefined,
+      lastVerifiedDate: normalizeWhitespace(person.lastVerifiedDate) || today(),
+      verificationStatus: normalizeWhitespace(person.verificationStatus) || 'manual',
+      notes: normalizeWhitespace(person.notes),
+    });
+    existingIds.add(personId);
+    if (donorKey) existingDonorKeys.add(donorKey);
+  }
+
+  return manualPeople;
+}
+
 function pickBetterCanonicalName(a, b) {
   const candidates = unique([a, b]).filter(Boolean);
   if (candidates.length === 0) return a || b || '';
@@ -988,6 +1046,9 @@ async function main() {
     mergedPeople = appendExtras(mergedPeople, existingPeople, usedIds);
   }
 
+  const manualOverridePeople = manualPeopleFromOverrides(loadedOverrides.raw, mergedPeople, usedIds);
+  mergedPeople = mergedPeople.concat(manualOverridePeople);
+
   const nextPeopleFile = {
     _meta: buildMeta(
       existingRaw._meta ?? {},
@@ -1012,6 +1073,7 @@ async function main() {
     matchedDonors: donors.filter((donor) => donor.validation?.status === 'matched').length,
     ambiguousDonors: donors.filter((donor) => donor.validation?.status === 'ambiguous').length,
     missingDonors: donors.filter((donor) => donor.validation?.status === 'missing').length,
+    manualOverridePeople: manualOverridePeople.length,
     hydratedPeople: nextPeopleFile._meta.hydratedPeople,
     linkedPeople: nextPeopleFile._meta.linkedPeople,
     uniqueEntityIds: nextPeopleFile._meta.uniqueEntityIds,
