@@ -7,7 +7,6 @@ import { formatWeekRange } from '../utils/formatters';
 import { scorecardBg, scorecardFrame } from '../../../core/scorecard/scorecardAssets';
 import { CardPersonRow } from './CardPersonRow';
 import { PowerMeter } from './PowerMeter';
-import { PreviewStamp } from './PreviewStamp';
 import {
   SCORECARD_IMAGE_WIDTH,
   SCORECARD_IMAGE_HEIGHT,
@@ -35,7 +34,7 @@ interface ScorecardImageProps {
  */
 export const ScorecardImage = forwardRef<View, ScorecardImageProps>(
   ({ data }, ref) => {
-    const { weekOf, persons, grandTotal, powerTier, isPreview } = data;
+    const { weekOf, persons, grandTotal, powerTier } = data;
     const visiblePersons = persons.slice(0, TOP_N);
     const overflowCount = Math.max(0, persons.length - TOP_N);
     const dateRange = formatWeekRange(weekOf);
@@ -48,10 +47,9 @@ export const ScorecardImage = forwardRef<View, ScorecardImageProps>(
         {/* Layer 2: Gold frame overlay */}
         <Image source={scorecardFrame} style={styles.frameImage} resizeMode="stretch" />
 
-        {/* PREVIEW stamp — on-demand captures (dev tools, early generation)
-         * bear the stamp on the shared PNG. Real Friday drops do not.
-         * Spec: "the weekly drop retains its specialness." */}
-        {isPreview && <PreviewStamp />}
+        {/* The captured PNG never carries a PREVIEW stamp — the bitmap is the
+         * shareable artifact. Pre-drop "this isn't the real drop" signaling
+         * happens in-app via the fixed overlay on ScorecardScreen. */}
 
         {/* Layer 3: Power meter (left edge) */}
         {powerTier && (

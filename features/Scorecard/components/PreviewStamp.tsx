@@ -3,19 +3,45 @@ import { View, Text, StyleSheet } from 'react-native';
 import { scorecardCopy } from '../../../copy/scorecard';
 import { theme } from '../../../design/tokens';
 
+interface PreviewStampProps {
+  /**
+   * Visual scale multiplier. Use 1 for in-app UI overlays, and a larger
+   * multiplier inside the rendered-card canvas (ScorecardImage) where the
+   * stamp needs to read proportionally on a 1080×1920 bitmap. Defaults to 1.
+   */
+  scale?: number;
+}
+
 /**
  * Pixel art rubber-stamp overlay shown on on-demand (non-official-drop) cards.
  * Positioned absolutely over the top-right corner of the card.
  * Reduced-motion safe — no animation, pure static style.
  */
-export function PreviewStamp() {
+export function PreviewStamp({ scale = 1 }: PreviewStampProps) {
   return (
     <View
-      style={styles.stamp}
+      style={[
+        styles.stamp,
+        {
+          top: 20 * scale,
+          right: -10 * scale,
+          paddingHorizontal: 10 * scale,
+          paddingVertical: 4 * scale,
+          borderWidth: theme.borders.standard.width * scale,
+        },
+      ]}
       accessibilityLabel={scorecardCopy.previewA11y}
       importantForAccessibility="yes"
     >
-      <Text style={styles.text}>{scorecardCopy.previewStamp}</Text>
+      <Text
+        style={[
+          styles.text,
+          { fontSize: 14 * scale, letterSpacing: 3 * scale },
+        ]}
+        allowFontScaling={false}
+      >
+        {scorecardCopy.previewStamp}
+      </Text>
     </View>
   );
 }
@@ -23,20 +49,13 @@ export function PreviewStamp() {
 const styles = StyleSheet.create({
   stamp: {
     position:        'absolute',
-    top:             20,
-    right:           -10,
     backgroundColor: 'transparent',
-    borderWidth:     theme.borders.standard.width,
     borderColor:     theme.colors.rewardYellow,
-    paddingHorizontal: 10,
-    paddingVertical:   4,
     transform:       [{ rotate: '12deg' }],
   },
   text: {
     fontFamily:  theme.fonts.headline,
-    fontSize:    14,
     fontWeight:  'bold',
     color:       theme.colors.rewardYellow,
-    letterSpacing: 3,
   },
 });

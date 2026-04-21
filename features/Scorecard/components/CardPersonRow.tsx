@@ -26,7 +26,11 @@ export function CardPersonRow({ person, isLast }: CardPersonRowProps) {
 
   return (
     <View style={[styles.row, !isLast && styles.divider]} collapsable={false}>
-      <SpriteView spriteId={spriteId} state="defeated" size={SPRITE_SIZE} />
+      {/* Reserve the sprite slot dimensions whether or not a sprite exists so
+          the name/count columns stay aligned across rows (#100). */}
+      <View style={styles.spriteSlot} collapsable={false}>
+        <SpriteView spriteId={spriteId} state="defeated" size={SPRITE_SIZE} />
+      </View>
       <View style={styles.text} collapsable={false}>
         <Text style={styles.name} numberOfLines={1} allowFontScaling={false}>
           {lastName.toUpperCase()}
@@ -48,6 +52,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: scale(12),
     paddingVertical: scale(8),
+  },
+  spriteSlot: {
+    width: SPRITE_SIZE,
+    height: SPRITE_SIZE,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   divider: {
     borderBottomWidth: 1,

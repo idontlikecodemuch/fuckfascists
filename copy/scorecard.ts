@@ -40,8 +40,10 @@ export const scorecardCopy = {
   // Archive
   pastCardsLabel: "Past scorecards",
 
-  // Empty state
-  emptyState: "Hit the Map. Hit Track.\nMake them feel it.",
+  // Empty state — `{map}` and `{track}` tokens are rendered as tappable
+  // cross-tab links by LivePreview's EmptyHint. Do not remove the tokens;
+  // plain "Map"/"Track" strings regressed to unlinked text (#84).
+  emptyState: "Hit the {map}. Hit {track}.\nMake them feel it.",
 
   // Footer (rendered card)
   tagline: "The fascists won\u2019t f*ck themselves.",

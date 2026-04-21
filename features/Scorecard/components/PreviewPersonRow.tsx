@@ -23,7 +23,11 @@ export function PreviewPersonRow({ person, expanded, onToggle }: PreviewPersonRo
 
   const renderHeader = useCallback(() => (
     <View style={styles.header}>
-      <SpriteView spriteId={spriteId} state="defeated" size={SPRITE_SIZE} />
+      {/* Reserve the sprite slot dimensions whether or not a sprite exists,
+          so the name/count columns stay aligned across rows (#100). */}
+      <View style={styles.spriteSlot}>
+        <SpriteView spriteId={spriteId} state="defeated" size={SPRITE_SIZE} />
+      </View>
       <View style={styles.nameCol}>
         <Text style={styles.name} numberOfLines={1} allowFontScaling={false}>
           {lastName.toUpperCase()}
@@ -97,6 +101,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     minHeight: theme.a11y.minTapTarget,
     gap: theme.space.sm,
+  },
+  spriteSlot: {
+    width: SPRITE_SIZE,
+    height: SPRITE_SIZE,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   nameCol: {
     flex: 1,

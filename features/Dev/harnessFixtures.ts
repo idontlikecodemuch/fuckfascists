@@ -237,10 +237,10 @@ const scorecardPersons: ScorecardPerson[] = [
 ];
 
 export const harnessScorecardPopulated: ScorecardViewData = {
-  weekOf: today, persons: scorecardPersons, grandTotal: 11, powerTier: { fill: 0.55, label: 'powered', index: 1 }, isPreview: false,
+  weekOf: today, persons: scorecardPersons, grandTotal: 11, powerTier: { fill: 0.55, label: 'powered', index: 1 },
 };
 
-export const harnessScorecardEmpty: ScorecardViewData = { weekOf: today, persons: [], grandTotal: 0, powerTier: null, isPreview: false };
+export const harnessScorecardEmpty: ScorecardViewData = { weekOf: today, persons: [], grandTotal: 0, powerTier: null };
 
 // ── Info ────────────────────────────────────────────────────────────────────
 

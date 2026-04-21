@@ -11,7 +11,6 @@ export interface ScorecardViewData {
   persons: ScorecardPerson[];        // grouped by figure, sorted desc by totalCount
   grandTotal: number;                // sum of all person totalCounts
   powerTier: PowerTier | null;       // power meter tier for rendered card
-  isPreview: boolean;                // true → show PREVIEW stamp
 }
 
 /**

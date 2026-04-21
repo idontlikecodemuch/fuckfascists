@@ -11,7 +11,6 @@ import { theme } from '../../../design/tokens';
 import { formatWeekRange } from '../utils/formatters';
 import { NeonRule } from '../../Info/components/InfoDecorations';
 import { SparkleDecoration } from '../../../core/fx';
-import { PreviewStamp } from './PreviewStamp';
 import { PreviewPersonRow } from './PreviewPersonRow';
 
 interface LivePreviewProps {
@@ -64,10 +63,11 @@ export function LivePreview({ data, onSwitchTab }: LivePreviewProps) {
 
   return (
     <ScrollView contentContainerStyle={styles.scroll}>
-      {/* ── Preview frame ── */}
+      {/* ── Preview frame ──
+           PREVIEW stamp lives on ScorecardScreen as a fixed overlay (#100)
+           so it persists across scroll and screenshots — the screenshot
+           should always show "this isn't the real Friday drop." */}
       <View style={styles.frame}>
-        <PreviewStamp />
-
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.title} allowFontScaling={false}>

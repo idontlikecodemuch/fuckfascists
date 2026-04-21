@@ -248,7 +248,6 @@ export const scorecardWithData: ScorecardViewData = {
   ],
   grandTotal: 17,
   powerTier: { fill: 0.80, label: 'charged', index: 2 },
-  isPreview: false,
 };
 
 export const scorecardEmpty: ScorecardViewData = {
@@ -256,10 +255,9 @@ export const scorecardEmpty: ScorecardViewData = {
   persons: [],
   grandTotal: 0,
   powerTier: null,
-  isPreview: false,
 };
 
-export const scorecardPreview: ScorecardViewData = { ...scorecardWithData, isPreview: true };
+export const scorecardPreview: ScorecardViewData = { ...scorecardWithData };
 
 // ── Info content ────────────────────────────────────────────────────────────
 

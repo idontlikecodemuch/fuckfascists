@@ -8,14 +8,13 @@ import { computePowerTier } from '../data/computePowerTier';
 
 /**
  * Aggregates the week's avoidance events into person-grouped scorecard data.
- * Re-runs whenever weekOf or isPreview changes.
+ * Re-runs whenever weekOf changes.
  */
 export function useScorecard(
   adapter: StorageAdapter,
   entities: Entity[],
   platforms: Platform[],
   weekOf: string,
-  isPreview: boolean,
 ): { data: ScorecardViewData | null; loading: boolean; error: string | null } {
   const [data, setData] = useState<ScorecardViewData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -42,7 +41,7 @@ export function useScorecard(
         if (cancelled) return;
         const grandTotal = persons.reduce((sum, p) => sum + p.totalCount, 0);
         const powerTier = computePowerTier(grandTotal);
-        setData({ weekOf, persons, grandTotal, powerTier, isPreview });
+        setData({ weekOf, persons, grandTotal, powerTier });
         setLoading(false);
       } catch (err) {
         if (cancelled) return;
@@ -52,7 +51,7 @@ export function useScorecard(
     })();
 
     return () => { cancelled = true; };
-  }, [adapter, weekOf, isPreview]);
+  }, [adapter, weekOf]);
 
   return { data, loading, error };
 }

@@ -13,6 +13,7 @@ import { ScorecardLoader } from './components/ScorecardLoader';
 import { CardPresentation } from './components/CardPresentation';
 import { EmptyWeek } from './components/EmptyWeek';
 import { ScorecardImage } from './components/ScorecardImage';
+import { PreviewStamp } from './components/PreviewStamp';
 import { CardArchive } from './components/CardArchive';
 import { findLatestCard } from './data/cardArchive';
 import { StarField } from '../Info/components/InfoDecorations';
@@ -60,7 +61,6 @@ export function ScorecardScreen({ adapter, entities, platforms, onSwitchTab }: S
   const [cardUri, setCardUri] = useState<string | null>(null);
 
   const { schedule, hasDropped } = useDropSchedule();
-  const isPreview = !hasDropped;
 
   // The drop's "presentation window" — Scorecard tab takes over full-screen
   // only while we're within this window of the drop moment. After, the card
@@ -69,7 +69,7 @@ export function ScorecardScreen({ adapter, entities, platforms, onSwitchTab }: S
     hasDropped && Date.now() - schedule.dropAt < SCORECARD_PRESENTATION_WINDOW_MS;
 
   const { data, loading: dataLoading } = useScorecard(
-    adapter, entities, platforms, schedule.weekOf, isPreview,
+    adapter, entities, platforms, schedule.weekOf,
   );
   const { captureCard, capturing } = useCardCapture();
 
@@ -160,15 +160,19 @@ export function ScorecardScreen({ adapter, entities, platforms, onSwitchTab }: S
     if (!data || data.grandTotal < MIN_AVOIDS_FOR_DROP) return;
     setScreenState('loading');
 
-    requestAnimationFrame(async () => {
-      const result = await captureCard(imageRef, schedule.weekOf);
-      if (result) {
-        setCardUri(result.uri);
-        setScreenState('presentation');
-      } else {
-        setScreenState('preview');
-      }
-    });
+    // Allow one frame for the off-screen ScorecardImage to mount.
+    // useCardCapture also polls ref.current for up to 1s — belt + suspenders.
+    await new Promise<void>((resolve) =>
+      requestAnimationFrame(() => resolve()),
+    );
+
+    const result = await captureCard(imageRef, schedule.weekOf);
+    if (result) {
+      setCardUri(result.uri);
+      setScreenState('presentation');
+    } else {
+      setScreenState('preview');
+    }
   }, [data, captureCard, schedule.weekOf]);
 
   const handleDismiss = useCallback(() => {
@@ -185,13 +189,24 @@ export function ScorecardScreen({ adapter, entities, platforms, onSwitchTab }: S
     screenState === 'loading' || capturing ? 'loading' :
     screenState;
 
+  // PREVIEW stamp is a fixed viewport overlay in the in-app preview/empty
+  // states (#100) — it must persist while the user scrolls LivePreview so
+  // any screenshot makes the "this isn't the real drop" status explicit.
+  // The stamp never appears on the captured shareable PNG; the bitmap is
+  // the shared artifact and must stay clean.
+  const showPreviewStamp = effectiveState === 'preview' || effectiveState === 'empty';
+
   return (
     <SafeAreaView style={styles.container}>
       <StarField seed="scorecard" />
 
-      {/* Off-screen capture target — always mounted when data exists */}
+      {/* Off-screen capture target — always mounted when data exists.
+          Positioned off to the left so RN lays it out fully, but `opacity: 0`
+          is intentionally NOT used here: on iOS view-shot has been observed
+          to return a blank bitmap when capturing through an opacity:0
+          ancestor. Keep the view opaque + off-screen. */}
       {data && (
-        <View style={styles.offscreen} pointerEvents="none">
+        <View style={styles.offscreen} pointerEvents="none" collapsable={false}>
           <ScorecardImage ref={imageRef} data={data} />
         </View>
       )}
@@ -225,6 +240,14 @@ export function ScorecardScreen({ adapter, entities, platforms, onSwitchTab }: S
           weekOf={schedule.weekOf}
         />
       )}
+
+      {/* Fixed PREVIEW stamp — outside the ScrollView so screenshots always
+          capture it. Positioned top-right under the safe-area inset. */}
+      {showPreviewStamp && (
+        <View style={styles.previewStampHost} pointerEvents="none">
+          <PreviewStamp />
+        </View>
+      )}
     </SafeAreaView>
   );
 }
@@ -242,9 +265,12 @@ const styles = StyleSheet.create({
   },
   offscreen: {
     position: 'absolute',
-    left: -9999,
-    top: -9999,
-    opacity: 0,
+    left: -10000,
+    top: 0,
+    // Kept opaque intentionally (see JSX comment). z-index isn't strictly
+    // needed while the content below renders on top, but helps ensure the
+    // capture target never intercepts layout above it.
+    zIndex: -1,
   },
   archiveLink: {
     alignSelf: 'center',
@@ -257,5 +283,16 @@ const styles = StyleSheet.create({
     color: theme.colors.textSecondary,
     letterSpacing: 1,
     textDecorationLine: 'underline',
+  },
+  previewStampHost: {
+    // Fixed viewport-anchored container so the stamp never scrolls with
+    // LivePreview content. PreviewStamp positions itself absolutely within
+    // this host (top/right offsets set inside the component).
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: 140,
+    height: 60,
+    zIndex: 10,
   },
 });
