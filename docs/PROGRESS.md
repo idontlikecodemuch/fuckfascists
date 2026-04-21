@@ -12,6 +12,58 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 20, 2026 ET (late) — People linkage pass + UFC Gym + pipeline close-out
+
+**Focus:** Finish the people-side pass that was started in the earlier checkpoint. Added the manual-override seeding capability to sync-people-from-bulk-top, hydrated 8 net-new people from the overrides file (spouses, family members, key figures), reconciled reverse links, regenerated the bundle, and closed out with integrity clean.
+
+**What changed:**
+
+1. **Tooling — `scripts/sync-people-from-bulk-top.mjs`:** added `manualPeopleFromOverrides()` so override entries with a `person{}` block can seed net-new `PoliticalPerson` records without hand-editing `people.json`. The overrides file was already the source of truth for `entityLinks`; it is now also the source of truth for identity when a person isn't in the bulk top-donor set.
+
+2. **People override entries — `scripts/data/people-entity-overrides.json`:** `103` person override entries now live here, each keyed by person ID and carrying `benefitBasis` / `isCurrent` / `confidence` / `notes` per link.
+
+3. **8 manual hydrations seeded:** `larry-page`, `sergey-brin`, `lachlan-murdoch`, `steve-ballmer`, `todd-ricketts`, `pete-ricketts`, `vince-mcmahon`, `leon-cooperman`.
+
+4. **7 spouse / family links active:** `patty-quillin` → netflix, `connie-ballmer` → microsoft, `kathryn-murdoch` → fox-corporation + news-corp, `pat-stryker` / `jon-stryker` → stryker, `marlene-ricketts` → td-ameritrade, `marilyn-simons` → renaissance-technologies.
+
+5. **WWE / TKO deferred with explicit notes:** `vince-mcmahon` and `linda-e-mcmahon` carry "no link" overrides documenting the deferral. WWE/TKO is not a V1 consumer surface — consumer spend on wrestling routes through already-tracked entities (Peacock, Netflix, Ticketmaster), and a corporate-donor PAC filing against a consumer wrestling brand doesn't upgrade that reality.
+
+6. **UFC Gym entity added:** `assets/data/entities.json` gets `ufc-gym` (`Adam Sedlack`, domains `ufcgym.com` / `ufcfit.com`, `fitness` + `wellness` tags). Gyms are legitimate consumer interaction surfaces; `~100+` franchise locations. `fecCommitteeId` left as `""` pending verification.
+
+7. **Reverse links reconciled:** `node scripts/reconcile-v1-entities.mjs --write` populated `associatedPersonIds` on the updated parents (netflix, microsoft, stryker, td-ameritrade, google-alphabet, fox-corporation, news-corp, renaissance-technologies). Verizon aliases/domains were also alphabetically sorted as a reconcile side-effect.
+
+8. **Bundle regenerated:** `npm run strip:people:raw` → `12,395` retained raw rows, `154,151` stripped. Linked-only mode — raw contribution arrays survive only for entity-linked people.
+
+9. **Review queue refreshed:** `tools/fec-bulk/reports/people-entity-review-queue.json` now has `200` rows (`177` manual-review, `23` with possible candidates). `71` are flagged `needsEntityCreation: true` — the next entity-side pass worklist.
+
+**Current measured state:**
+
+- Live entities: `728` (UFC Gym added)
+- Live people: `1054` (up from `1046`)
+- Live-linked people: `108` / `1054` (`10.2%`)
+- Entity override entries in `scripts/data/people-entity-overrides.json`: `103`
+- People bundle: `12,395` raw rows retained / `154,151` stripped
+- Review queue: `200` rows; `71` flagged `needsEntityCreation: true`
+
+**Current gates:**
+
+- `node scripts/verify-data-integrity.mjs` -> live integrity clean. `0` duplicate IDs, `0` missing reverse entities, `0` missing reverse people, `0` undeclared forward refs. `4` declared V2 forward refs (`baupost-group`, `bigelow-aerospace`, `jw-childs-associates`, `pritzker-group`) correctly match the deferred report.
+- `2` pre-existing `invalidRoleLinks` on `tom-campion` / `thomas-campion` → `zumiez` (duplicate person records with `associatedEntityIds` but no `rolesByEntity` entries). Data-shape issue from older commit `b230d67`, not from this pass. Follow-up cleanup candidate.
+
+**Commits:**
+
+- `6aafb75 feat(scripts): seed new people records from manual overrides` — sync script enhancement only.
+- `ba39ec3 data: UFC Gym entity + people linkage pass (108 live-linked)` — entity add + overrides + hydrated people + reconcile output + bundle + reports.
+
+**Next recommended order:**
+
+1. Address the `71` `needsEntityCreation: true` rows in the review queue — these are people who need an entity to link to. Create entities in batches, re-run the pipeline.
+2. Verify `ufc-gym` FEC committee ID via `npm run verify:entities` (or skip if UFC Gym has no PAC — mark as `fecCommitteeId: null`).
+3. Consolidate `tom-campion` / `thomas-campion` duplicate records (data cleanup, not blocking).
+4. `docs/PROGRESS.md` rollover — this file is getting close to the 10K-token threshold.
+
+---
+
 ### Session: April 20, 2026 ET — Entity gap-fill expansion and bulk hydration checkpoint
 
 **Focus:** Expand "places people go daily" entity coverage, hydrate the new high-confidence PAC matches from local FEC bulk data, and stop before people hydration so the next pass can fill people-side gaps deliberately. No live FEC API calls were used.
