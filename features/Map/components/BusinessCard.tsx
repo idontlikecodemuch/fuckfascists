@@ -2,7 +2,7 @@ import React, { useRef, useMemo } from 'react';
 import { View, Text, Image, Pressable, Animated, PanResponder, StyleSheet, AccessibilityInfo } from 'react-native';
 import type { ScanResult } from '../types';
 import type { Entity, PoliticalPerson } from '../../../core/models';
-import { getDisplayFigure, getAssociatedPeople } from '../../../core/models';
+import { getDisplayFigure, getAssociatedPeople, getParentEntity } from '../../../core/models';
 import { CONFIDENCE_THRESHOLD_HIGH, CONFIDENCE_THRESHOLD_MEDIUM, CARD_SPRITE_SIZE, SCREEN_SHAKE_MS } from '../../../config/constants';
 import { mapCopy } from '../../../copy/map';
 import { theme } from '../../../design/tokens';
@@ -49,6 +49,11 @@ export function BusinessCard({
   const figureName = entity ? getDisplayFigure(entity, allEntities) : null;
   const spriteId = figureName ? nameToSpriteId(figureName) : null;
   const associatedPeople = entity && people ? getAssociatedPeople(entity, people, allEntities) : [];
+  // Surface parent attribution whenever the matched entity is a subsidiary.
+  // Spec §7 keeps CEO names off the card; parent linkage is informational,
+  // not CEO-blaming, so it's shown independently of SHOW_FIGURE_NAME_IN_CARD.
+  const parentEntity = entity && allEntities ? getParentEntity(entity, allEntities) : undefined;
+  const parentName = parentEntity?.canonicalName;
 
   const handleDetailPress = () => {};
 
@@ -135,6 +140,7 @@ export function BusinessCard({
             displayName={displayName}
             isMediumConfidence={isMedium}
             entityName={entity?.canonicalName}
+            parentName={parentName}
           />
 
           <View style={styles.buttonPad}>

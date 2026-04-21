@@ -18,6 +18,15 @@ interface DataZoneProps {
   isMediumConfidence: boolean;
   /** Entity canonicalName — used to derive short PAC source label. */
   entityName?: string;
+  /**
+   * Parent entity's canonicalName when the matched entity is a subsidiary
+   * (e.g. Instagram → "Meta Platforms Inc"). When present, the card surfaces
+   * a "via {Parent}" attribution line so the reader understands donation
+   * lineage without having to infer it. Shown regardless of
+   * SHOW_FIGURE_NAME_IN_CARD — parent linkage is informational, not
+   * CEO-blaming.
+   */
+  parentName?: string;
 }
 
 /** Extract last name from a display name (e.g. "Jeff Bezos" → "Bezos"). */
@@ -45,7 +54,7 @@ const AMOUNT_GAP = 10;
  * Document-style data table for the manila folder business card.
  * Larger party amount always leads. No dot separators — gap only.
  */
-export function DataZone({ donationSummary, committeeName, fecUrl, onDetailPress, associatedPeople, displayName, isMediumConfidence, entityName }: DataZoneProps) {
+export function DataZone({ donationSummary, committeeName, fecUrl, onDetailPress, associatedPeople, displayName, isMediumConfidence, entityName, parentName }: DataZoneProps) {
   // All donation math — totals, recent-cycle alignment, activeCycles union,
   // R>D ordering, and the hasRealDonations gate — is in deriveDonationSummary.
   // Keeps this component focused on layout and copy.
@@ -71,7 +80,7 @@ export function DataZone({ donationSummary, committeeName, fecUrl, onDetailPress
 
       <View style={styles.separator} />
 
-      {/* On file — entity name + optional confidence badge */}
+      {/* On file — entity name + optional confidence badge + parent attribution */}
       <View style={styles.tableRow}>
         <Text style={styles.rowLabel} allowFontScaling>{mapCopy.onFileLabel}</Text>
         <View style={styles.rowValue}>
@@ -82,6 +91,11 @@ export function DataZone({ donationSummary, committeeName, fecUrl, onDetailPress
             <View style={styles.badge}>
               <Text style={styles.badgeText} allowFontScaling>{sharedCopy.warningIcon} {sharedCopy.matched}</Text>
             </View>
+          )}
+          {parentName && (
+            <Text style={styles.parentAttribution} numberOfLines={1} allowFontScaling>
+              {mapCopy.parentAttribution(parentName)}
+            </Text>
           )}
         </View>
       </View>
@@ -213,6 +227,7 @@ const styles = StyleSheet.create({
   rowLabel: { width: LABEL_WIDTH, ...theme.type.caption, color: c.documentLabel, paddingTop: 2 },
   rowValue: { flex: 1, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: theme.space.xs },
   entityName: { fontFamily: theme.fonts.headline, fontSize: 18, lineHeight: 22, color: c.documentText },
+  parentAttribution: { ...theme.type.caption, color: c.documentLabel, width: '100%', marginTop: 2 },
   badge: { paddingHorizontal: 6, paddingVertical: 2, borderWidth: 1, borderColor: c.amberActionLight, backgroundColor: c.documentBg, borderRadius: theme.radii.sharp },
   badgeText: { ...theme.type.caption, fontSize: 10, color: c.amberActionLight, fontWeight: 'bold' },
   amountRow: { flex: 1, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'baseline', gap: AMOUNT_GAP },

@@ -1,5 +1,21 @@
 import type { Entity } from '../models';
 
+/**
+ * Hosts that small businesses commonly list as their "website" in MapKit even
+ * though the host is a third-party profile, listing, or shortlink page — not
+ * the business's own site. Matching on these hosts has produced critical false
+ * positives (e.g. "Discount Locksmith" → Alphabet via google.com Business
+ * Profile, "The Festival Center" → Meta via facebook.com).
+ *
+ * When the POI host is on this list, the pipeline only trusts the match if the
+ * POI name itself also aliases to the same entity (i.e. the user is tapping on
+ * an actual Meta/Alphabet office whose POI name is "Meta" / "Google").
+ *
+ * google.com, maps.google.com, g.page, g.co, goo.gl are all forms of Google
+ * Business Profile / Maps share links routinely returned by MKLocalSearch for
+ * unrelated local businesses. yelp / foursquare / tripadvisor / nextdoor are
+ * review-aggregator profile pages, not first-party sites.
+ */
 const THIRD_PARTY_PROFILE_DOMAINS = [
   'facebook.com',
   'instagram.com',
@@ -8,6 +24,20 @@ const THIRD_PARTY_PROFILE_DOMAINS = [
   'twitter.com',
   'x.com',
   'youtube.com',
+  'google.com',
+  'maps.google.com',
+  'business.google.com',
+  'sites.google.com',
+  'g.page',
+  'g.co',
+  'goo.gl',
+  'yelp.com',
+  'yelp.to',
+  'foursquare.com',
+  'tripadvisor.com',
+  'nextdoor.com',
+  'fb.com',
+  'fb.me',
 ];
 
 /**

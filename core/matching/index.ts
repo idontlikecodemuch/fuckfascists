@@ -5,7 +5,7 @@ export { jaro, jaroWinkler } from './jaroWinkler';
 export { findByAlias } from './aliasMatch';
 export type { AliasMatchResult } from './aliasMatch';
 export { findByDomain, isThirdPartyProfileHost, normalizeHost } from './domainMatch';
-export { scoreAll, pickBestMatch } from './scorer';
+export { scoreAll, pickBestMatch, candidateTokensAppearInInput } from './scorer';
 export type {
   FECCommittee,
   LookupStatus,

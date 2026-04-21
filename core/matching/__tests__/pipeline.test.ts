@@ -225,6 +225,81 @@ describe('domain match', () => {
       expect(result.confidence).toBe(1.0);
     }
   });
+
+  // TestFlight regression #117 — locksmith shop with a Google Business Profile
+  // link (host: google.com) was being served Alphabet's donation record.
+  // google.com is now treated as a third-party profile host, so the domain
+  // match is only trusted when the POI name itself aliases to Alphabet.
+  it('does not trust google.com domain matches for unrelated POI names', async () => {
+    const alphabetEntity: Entity = {
+      id: 'google-alphabet',
+      canonicalName: 'Alphabet Inc',
+      aliases: ['Alphabet', 'Google', 'YouTube'],
+      domains: ['google.com', 'youtube.com', 'alphabet.com'],
+      categoryTags: ['tech'],
+      ceoName: 'Sundar Pichai',
+      fecCommitteeId: 'C00428623',
+      verificationStatus: 'pipeline',
+      lastVerifiedDate: '2024-01-01',
+    };
+    const deps = makeDeps({ entities: [alphabetEntity] });
+
+    // POI flow passes allowFecFallback: false, matching the real caller.
+    const result = await matchEntity(
+      'Discount Locksmith', deps, '', 'google.com', { allowFecFallback: false },
+    );
+
+    expect(result.matched).toBe(false);
+    expect(deps.fetchOrgSummary).not.toHaveBeenCalled();
+  });
+
+  it('still trusts google.com domain match when POI name aliases to Alphabet', async () => {
+    const alphabetEntity: Entity = {
+      id: 'google-alphabet',
+      canonicalName: 'Alphabet Inc',
+      aliases: ['Alphabet', 'Google', 'YouTube'],
+      domains: ['google.com', 'youtube.com', 'alphabet.com'],
+      categoryTags: ['tech'],
+      ceoName: 'Sundar Pichai',
+      fecCommitteeId: 'C00428623',
+      verificationStatus: 'pipeline',
+      lastVerifiedDate: '2024-01-01',
+    };
+    const deps = makeDeps({ entities: [alphabetEntity] });
+
+    const result = await matchEntity('Google', deps, '', 'google.com');
+
+    expect(result.matched).toBe(true);
+    if (result.matched) {
+      expect(result.entity).toBe(alphabetEntity);
+    }
+  });
+});
+
+// ─── Prefix-bonus FEC fuzzy false positive (regression #87) ──────────────────
+
+describe('prefix-bonus FEC fuzzy false positive guard', () => {
+  // TestFlight regression #87 — "American Association of Teachers of German"
+  // was matched to the American Airlines PAC because Jaro-Winkler's 0.1
+  // prefix bonus pushes the score above the medium threshold whenever the
+  // input shares a generic prefix like "American " with the candidate. The
+  // token-safety guard in pickBestMatch rejects such matches.
+  it('rejects American Airlines for unrelated nonprofit with shared "American " prefix', async () => {
+    const deps = makeDeps({
+      entities: [],
+      fetchOrgs: jest.fn().mockResolvedValue([
+        { orgid: 'C00107300', orgname: 'American Airlines Inc. Political Action Committee (AAPAC)' },
+      ]),
+    });
+
+    const result = await matchEntity('American Association of Teachers of German', deps);
+
+    expect(result.matched).toBe(false);
+    if (!result.matched) {
+      expect(result.lookupStatus).toBe('no_match');
+    }
+    expect(deps.fetchOrgSummary).not.toHaveBeenCalled();
+  });
 });
 
 // ─── Alias match ──────────────────────────────────────────────────────────────
