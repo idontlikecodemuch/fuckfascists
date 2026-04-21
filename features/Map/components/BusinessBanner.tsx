@@ -63,7 +63,7 @@ export function BusinessBanner({ displayName, variant, onDismiss }: BusinessBann
         accessibilityLabel={sharedCopy.dismissLabel}
         accessibilityHint={mapCopy.bannerDismissLabel}
       >
-        <Text style={styles.bannerDismiss} allowFontScaling>{sharedCopy.dismiss}</Text>
+        <Text style={styles.bannerDismiss} allowFontScaling>{sharedCopy.dismissIcon}</Text>
       </Pressable>
     </View>
   );
@@ -84,6 +84,9 @@ const styles = StyleSheet.create({
   bannerText: {
     ...theme.type.bodyS,
     color: theme.colors.textPrimary,
+    // Center-aligned per #105. Banner text is brief and reads better
+    // centered in a narrow strip than left-ragged.
+    textAlign: 'center',
     paddingHorizontal: theme.space.md,
     paddingTop: theme.space.md,
     paddingBottom: theme.space.sm,
@@ -92,9 +95,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: theme.space.sm,
     paddingBottom: theme.space.md,
+    // Larger tap target around the × glyph
+    minHeight: theme.a11y.minTapTarget,
+    justifyContent: 'center',
   },
   bannerDismiss: {
-    ...theme.type.bodyS,
+    ...theme.type.bodyM,
     color: theme.colors.textSecondary,
+    fontSize: 20,
   },
 });

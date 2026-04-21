@@ -190,6 +190,21 @@ export const ARENA_SAME_FIGURE_PULSE_MS = 220;
 // Arena height: 16:9 aspect ratio from screen width, capped at this max.
 export const ARENA_HEIGHT = 200;
 
+// Duration of the R/D/O numeric count-up on the business card (#126).
+// Short enough to feel like a ticker, long enough to read as a sequence
+// rather than a pop-in. Respects Reduce Motion (skipped entirely when on).
+export const DONATION_COUNT_UP_MS = 650;
+
+// ── Arena ambient flicker (#127) ─────────────────────────────────────────────
+// Rare, subtle dip of the cyan highlight overlay — mimics a CRT / neon sign
+// flicker. Respects Reduce Motion (skipped entirely when enabled).
+// Range is randomized per cycle; dip is one quick down-up.
+export const ARENA_FLICKER_MIN_INTERVAL_MS = 4000;   // earliest next flicker
+export const ARENA_FLICKER_MAX_INTERVAL_MS = 14000;  // latest next flicker
+export const ARENA_FLICKER_DIP_MS          = 90;    // duration of down dip
+export const ARENA_FLICKER_RECOVER_MS      = 140;   // duration of recovery
+export const ARENA_FLICKER_DIP_OPACITY     = 0.35;  // floor of the dip (0–1)
+
 // StarFieldBg parallax — master toggle for tilt-based parallax on star backgrounds.
 export const STARBG_PARALLAX_ENABLED = true;
 

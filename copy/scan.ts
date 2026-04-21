@@ -13,5 +13,9 @@ export const scanCopy = {
   prefixMatchSource: 'MATCHED BY UPC',
   // Active scan state
   scanTitle: 'SCAN BARCODE',
-  scanHelper: 'Center a UPC or EAN code inside the frame.',
+  // #103 — expo-camera SDK 52 doesn't expose a close-focus tuning knob;
+  // `autofocus="on"` is the only switch, and on most phones it can't
+  // resolve UPC codes closer than ~4 inches. Giving users a concrete
+  // distance range helps the lens land on the code.
+  scanHelper: 'Hold 4\u20138 inches away. Center the code, hold steady.',
 } as const;

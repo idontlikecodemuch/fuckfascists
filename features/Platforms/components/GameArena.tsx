@@ -18,6 +18,11 @@ import {
   ARENA_HEIGHT,
   ARENA_SAME_FIGURE_PULSE_MS,
   ARENA_TRANSITION_MS,
+  ARENA_FLICKER_MIN_INTERVAL_MS,
+  ARENA_FLICKER_MAX_INTERVAL_MS,
+  ARENA_FLICKER_DIP_MS,
+  ARENA_FLICKER_RECOVER_MS,
+  ARENA_FLICKER_DIP_OPACITY,
   TRACK_ARENA_GRID_CROP_RATIO,
   TRACK_ARENA_GRID_CROP_OFFSET_X,
   TRACK_ARENA_GRID_CROP_OFFSET_Y,
@@ -72,6 +77,12 @@ export function GameArena() {
 
   const contentOpacity = useRef(new Animated.Value(1)).current;
   const pulseScale = useRef(new Animated.Value(1)).current;
+  // #127 — rare dip of the cyan rim highlight in the container's boxShadow.
+  // State swap (not an animated opacity overlay) so the flicker rides on the
+  // existing glow stack instead of adding a view layer. Boolean = "dimmed
+  // this frame"; effect flips it true for DIP_MS, back to false for
+  // RECOVER_MS, then schedules the next random gap.
+  const [flickerDim, setFlickerDim] = useState(false);
   const [backgroundKey, setBackgroundKey] = useState<string | null>(pickRandomArena);
   const backgroundKeyRef = useRef(backgroundKey);
   backgroundKeyRef.current = backgroundKey;
@@ -133,6 +144,43 @@ export function GameArena() {
     };
   }, [arenaFocusKey, contentOpacity, focusedFigureName, pulseScale, reducedMotion]);
 
+  // #127 — rare cyan-highlight flicker. Toggles flickerDim true for a brief
+  // dip, then back, on a randomized schedule. Skipped entirely when Reduce
+  // Motion is on; cleans up on unmount / reducedMotion flip.
+  useEffect(() => {
+    if (reducedMotion) {
+      setFlickerDim(false);
+      return;
+    }
+
+    let cancelled = false;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+
+    const scheduleNext = () => {
+      const span = ARENA_FLICKER_MAX_INTERVAL_MS - ARENA_FLICKER_MIN_INTERVAL_MS;
+      const delay = ARENA_FLICKER_MIN_INTERVAL_MS + Math.random() * span;
+      timer = setTimeout(() => {
+        if (cancelled) return;
+        setFlickerDim(true);
+        timer = setTimeout(() => {
+          if (cancelled) return;
+          setFlickerDim(false);
+          // Brief recovery gap before scheduling the next random dip,
+          // so two flickers never stack back-to-back.
+          timer = setTimeout(() => {
+            if (!cancelled) scheduleNext();
+          }, ARENA_FLICKER_RECOVER_MS);
+        }, ARENA_FLICKER_DIP_MS);
+      }, delay);
+    };
+
+    scheduleNext();
+    return () => {
+      cancelled = true;
+      if (timer) clearTimeout(timer);
+    };
+  }, [reducedMotion]);
+
   const fireHitFX = useCallback((x = 0.34, y = 0.22) => {
     const text = pickReaction();
     fx.fire('speechBubble', 'point', { text, x, y });
@@ -161,8 +209,33 @@ export function GameArena() {
   const backgroundSource = backgroundKey ? arenaAssets[backgroundKey] : null;
   const singleSpriteSize = Math.round(measuredHeight * TRACK_ARENA_SINGLE_DISPLAY_RATIO);
 
+  // Cyan rim highlight lives in the container's boxShadow stack alongside
+  // the blue diffuse glow (#127). During a flicker dip we swap the rim's
+  // color string for a lower-alpha cyan; rest of the stack is unchanged.
+  const rimCyan = flickerDim
+    ? `rgba(122, 242, 255, ${ARENA_FLICKER_DIP_OPACITY * 0.22})`
+    : theme.glow.colorHighlight;
+
   return (
-    <View style={styles.container} onLayout={handleLayout}>
+    <View
+      style={[
+        styles.container,
+        {
+          boxShadow: [
+            ...styles.container.boxShadow,
+            {
+              offsetX: 0,
+              offsetY: 0,
+              blurRadius: theme.glow.highlightBlurRadius,
+              spreadDistance: theme.glow.highlightSpreadDistance,
+              inset: true,
+              color: rimCyan,
+            },
+          ],
+        },
+      ]}
+      onLayout={handleLayout}
+    >
       {backgroundSource && (
         <ImageBackground
           source={backgroundSource}

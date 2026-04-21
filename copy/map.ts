@@ -56,9 +56,13 @@ export const mapCopy = {
   barcodeUnavailableTitle: "Camera unavailable",
   barcodeUnavailableBody: "Camera not available. Check your device settings.",
   barcodeFallbackLabel: "barcode",
-  barcodeNoMatch: (label: string) => `\u201C${label}\u201D was identified, but its parent company isn\u2019t in our entity list yet. Coverage is growing.`,
-  barcodeNotInDatabase: (label: string) => `Barcode read successfully, but \u201C${label}\u201D isn\u2019t in the product database yet. Coverage is growing \u2014 try another product.`,
-  barcodeLookupFailed: (label: string) => `Couldn\u2019t reach the product database for \u201C${label}\u201D. Check your connection and try again.`,
+  // #102 — the bundled-lookup-miss path DOES hit Open Food Facts before
+  // showing these; copy now says so explicitly. barcodeNoMatch = OFF found
+  // the product, we can't map it to a parent. barcodeNotInDatabase = OFF
+  // has no record of the barcode. barcodeLookupFailed = OFF unreachable.
+  barcodeNoMatch: (label: string) => `Found \u201C${label}\u201D on Open Food Facts, but its parent company isn\u2019t in our database yet. Coverage is growing.`,
+  barcodeNotInDatabase: (label: string) => `\u201C${label}\u201D isn\u2019t in the Open Food Facts database yet. Coverage is growing \u2014 try another product.`,
+  barcodeLookupFailed: (label: string) => `Couldn\u2019t reach Open Food Facts for \u201C${label}\u201D. Check your connection and try again.`,
   barcodeUnsupported: (label: string) => `Couldn\u2019t decode a valid barcode. Make sure a UPC or EAN code fills the frame and hold steady.`,
   barcodeContextEyebrow: "SCANNED PRODUCT",
   barcodeContextLine: (label: string, barcode: string) => `${label} \u00b7 BARCODE ${barcode}`,

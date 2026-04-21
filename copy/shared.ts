@@ -8,7 +8,10 @@ export const sharedCopy = {
   contactEmail: "info@fckapp.com",
   extensionChromeUrl: "https://fckapp.com/extension/chrome",
   extensionFirefoxUrl: "https://fckapp.com/extension/firefox",
-  dismiss: "DISMISS",
+  /** Close/cancel glyph (\u2715). Standardized across the app after the
+   *  BusinessCard manila-folder reskin (#102/#105). Use for the visible
+   *  control; dismissLabel stays as the spoken a11y label. */
+  dismissIcon: "\u2715",
   dismissLabel: "Dismiss",
   partyR: "R:",
   partyD: "D:",

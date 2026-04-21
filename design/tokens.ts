@@ -109,6 +109,12 @@ export const theme = {
   glow: {
     color: 'rgba(90, 180, 255, 0.35)',
     colorDefeated: 'rgba(44, 203, 99, 0.30)',
+    /** Secondary cyan rim used on top of the primary diffuse blue glow.
+     *  Drives the arena edge highlight (#127). Tighter blur than color,
+     *  less spread — reads as an inner rim accent, not a replacement. */
+    colorHighlight: 'rgba(122, 242, 255, 0.22)',
+    highlightBlurRadius: 8,
+    highlightSpreadDistance: -1,
     blurRadius: 16,
     spreadDistance: -2,
     /** Divider line height + glow shadow radius. */

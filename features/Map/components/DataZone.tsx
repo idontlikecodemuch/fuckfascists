@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, Image, Linking, StyleSheet } from 'react-native';
 import type { DonationSummary, PoliticalPerson } from '../../../core/models';
-import { formatDonationAmount, formatActiveCycles, getPersonDisplayName, makeFecIndividualUrl } from '../../../core/models';
+import { formatActiveCycles, getPersonDisplayName, makeFecIndividualUrl } from '../../../core/models';
+import { CountUpAmount } from './CountUpAmount';
 import { sharedCopy } from '../../../copy/shared';
 import { mapCopy } from '../../../copy/map';
 import { theme } from '../../../design/tokens';
@@ -104,23 +105,24 @@ export function DataZone({ donationSummary, committeeName, fecUrl, onDetailPress
 
       {hasRealDonations ? (
         <>
-          {/* Total row — largest party first */}
+          {/* Total row — largest party first. Amounts use CountUpAmount
+              for the ticker effect on card open (#126). */}
           <View style={styles.tableRow}>
             <Text style={styles.rowLabel} allowFontScaling>{mapCopy.totalRowLabel}</Text>
             <View style={styles.amountRow}>
               {rIsLarger ? (
                 <>
-                  <Text style={[styles.donationAmt, styles.colorR]} allowFontScaling>{sharedCopy.partyR} {formatDonationAmount(totalR)}</Text>
-                  <Text style={[styles.donationAmt, styles.colorD]} allowFontScaling>{sharedCopy.partyD} {formatDonationAmount(totalD)}</Text>
+                  <CountUpAmount value={totalR} prefix={sharedCopy.partyR} style={[styles.donationAmt, styles.colorR]} />
+                  <CountUpAmount value={totalD} prefix={sharedCopy.partyD} style={[styles.donationAmt, styles.colorD]} />
                 </>
               ) : (
                 <>
-                  <Text style={[styles.donationAmt, styles.colorD]} allowFontScaling>{sharedCopy.partyD} {formatDonationAmount(totalD)}</Text>
-                  <Text style={[styles.donationAmt, styles.colorR]} allowFontScaling>{sharedCopy.partyR} {formatDonationAmount(totalR)}</Text>
+                  <CountUpAmount value={totalD} prefix={sharedCopy.partyD} style={[styles.donationAmt, styles.colorD]} />
+                  <CountUpAmount value={totalR} prefix={sharedCopy.partyR} style={[styles.donationAmt, styles.colorR]} />
                 </>
               )}
               {totalO > 0 && (
-                <Text style={[styles.donationAmt, styles.otherAmt]} allowFontScaling>{sharedCopy.partyO} {formatDonationAmount(totalO)}</Text>
+                <CountUpAmount value={totalO} prefix={sharedCopy.partyO} style={[styles.donationAmt, styles.otherAmt]} />
               )}
             </View>
           </View>
@@ -135,13 +137,13 @@ export function DataZone({ donationSummary, committeeName, fecUrl, onDetailPress
                 <View style={styles.amountRow}>
                   {recentRIsLarger ? (
                     <>
-                      <Text style={[styles.recentAmt, styles.colorR]} allowFontScaling>{sharedCopy.partyR} {formatDonationAmount(recentR)}</Text>
-                      <Text style={[styles.recentAmt, styles.colorD]} allowFontScaling>{sharedCopy.partyD} {formatDonationAmount(recentD)}</Text>
+                      <CountUpAmount value={recentR} prefix={sharedCopy.partyR} style={[styles.recentAmt, styles.colorR]} />
+                      <CountUpAmount value={recentD} prefix={sharedCopy.partyD} style={[styles.recentAmt, styles.colorD]} />
                     </>
                   ) : (
                     <>
-                      <Text style={[styles.recentAmt, styles.colorD]} allowFontScaling>{sharedCopy.partyD} {formatDonationAmount(recentD)}</Text>
-                      <Text style={[styles.recentAmt, styles.colorR]} allowFontScaling>{sharedCopy.partyR} {formatDonationAmount(recentR)}</Text>
+                      <CountUpAmount value={recentD} prefix={sharedCopy.partyD} style={[styles.recentAmt, styles.colorD]} />
+                      <CountUpAmount value={recentR} prefix={sharedCopy.partyR} style={[styles.recentAmt, styles.colorR]} />
                     </>
                   )}
                 </View>

@@ -103,6 +103,14 @@ export function BarcodeScannerSheet({
     return (
       <View style={styles.cameraShell}>
         <View style={styles.cameraFrame}>
+          {/* #103 — expo-camera SDK 52 exposes `autofocus: "on" | "off"`
+              only; there's no close-focus / macro / minimum-focus-distance
+              tuning. On most phones continuous AF can't resolve UPC codes
+              closer than ~4 inches. The scanHelper copy instructs users
+              to hold 4–8 inches. If this remains a problem we'd need to
+              migrate scanning off expo-camera to a native module that
+              exposes AVCaptureDevice.autoFocusRangeRestriction (iOS) /
+              Camera2 AF_MODE_MACRO (Android). Not in scope now. */}
           <CameraView
             style={styles.camera}
             facing="back"
@@ -112,9 +120,22 @@ export function BarcodeScannerSheet({
             barcodeScannerSettings={{ barcodeTypes: [...PRODUCT_BARCODE_TYPES] }}
             accessibilityLabel={mapCopy.barcodeCameraLabel}
           />
-          <View style={styles.scanGuide} pointerEvents="none" accessible={false}>
-            <CornerReticle />
-            <SweepLine />
+          {/* Flex parent centers the reticle guide both axes (#101).
+              The guide itself keeps its fixed height + percent side inset. */}
+          <View style={styles.scanGuideContainer} pointerEvents="none" accessible={false}>
+            <View style={styles.scanGuide}>
+              <CornerReticle />
+              <SweepLine />
+            </View>
+          </View>
+          {/* Camera-edge corner brackets (#101). Small L-shaped brackets in
+              each corner of the camera frame — visual anchor echoing the
+              reticle's corners, reinforces "this is a scanner." */}
+          <View style={styles.edgeDeco} pointerEvents="none" accessible={false}>
+            <View style={[styles.edgeCorner, styles.edgeCornerTL]} />
+            <View style={[styles.edgeCorner, styles.edgeCornerTR]} />
+            <View style={[styles.edgeCorner, styles.edgeCornerBL]} />
+            <View style={[styles.edgeCorner, styles.edgeCornerBR]} />
           </View>
         </View>
         <Text style={styles.helpText}>{scanCopy.scanHelper}</Text>
@@ -136,7 +157,7 @@ export function BarcodeScannerSheet({
           style={styles.closeButton}
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         >
-          <Text style={styles.closeText}>{sharedCopy.dismiss}</Text>
+          <Text style={styles.closeText} allowFontScaling={false}>{sharedCopy.dismissIcon}</Text>
         </Pressable>
       </View>
       {renderBody()}
@@ -172,8 +193,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center' as const,
   },
   closeText: {
-    ...theme.type.bodyS,
     color: theme.colors.focusAccent,
+    fontSize: 22,
     fontWeight: 'bold',
   },
   cameraShell: {
@@ -195,13 +216,30 @@ const styles = StyleSheet.create({
   camera: {
     flex: 1,
   },
-  scanGuide: {
-    position: 'absolute',
-    left: `${BARCODE_SCAN_GUIDE_SIDE_INSET_PERCENT}%`,
-    right: `${BARCODE_SCAN_GUIDE_SIDE_INSET_PERCENT}%`,
-    height: BARCODE_SCAN_GUIDE_HEIGHT,
-    alignSelf: 'center',
+  // #101 — flex container centers the reticle both axes over the camera.
+  scanGuideContainer: {
+    ...StyleSheet.absoluteFillObject,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
+  scanGuide: {
+    width: `${100 - BARCODE_SCAN_GUIDE_SIDE_INSET_PERCENT * 2}%`,
+    height: BARCODE_SCAN_GUIDE_HEIGHT,
+  },
+  // #101 — camera-edge corner brackets
+  edgeDeco: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  edgeCorner: {
+    position: 'absolute',
+    width: 18,
+    height: 18,
+    borderColor: theme.colors.glowCyan,
+  },
+  edgeCornerTL: { top: 6, left: 6, borderTopWidth: 2, borderLeftWidth: 2 },
+  edgeCornerTR: { top: 6, right: 6, borderTopWidth: 2, borderRightWidth: 2 },
+  edgeCornerBL: { bottom: 6, left: 6, borderBottomWidth: 2, borderLeftWidth: 2 },
+  edgeCornerBR: { bottom: 6, right: 6, borderBottomWidth: 2, borderRightWidth: 2 },
   permissionCard: {
     ...bevelFocusRaised,
     backgroundColor: theme.colors.panelInner,

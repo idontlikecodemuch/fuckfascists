@@ -30,10 +30,12 @@ export function BarcodeLookupBanner({ notice, onDismiss }: BarcodeLookupBannerPr
       <Text style={styles.text} allowFontScaling>{message}</Text>
       <Pressable
         onPress={onDismiss}
+        style={styles.dismissHit}
+        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         accessibilityRole="button"
         accessibilityLabel={mapCopy.bannerDismissLabel}
       >
-        <Text style={styles.link} allowFontScaling>{sharedCopy.dismiss}</Text>
+        <Text style={styles.link} allowFontScaling={false}>{sharedCopy.dismissIcon}</Text>
       </Pressable>
     </View>
   );
@@ -59,9 +61,15 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: theme.space.sm,
   },
+  dismissHit: {
+    minWidth: theme.a11y.minTapTarget,
+    minHeight: theme.a11y.minTapTarget,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   link: {
-    ...theme.type.bodyS,
-    color: theme.colors.highlightBlue,
-    textDecorationLine: 'underline',
+    ...theme.type.bodyM,
+    color: theme.colors.textSecondary,
+    fontSize: 20,
   },
 });
