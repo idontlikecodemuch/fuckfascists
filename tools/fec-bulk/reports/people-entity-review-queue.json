@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-20",
+    "generatedAt": "2026-04-21",
     "totalCandidates": 200,
     "sourcePeopleFile": "assets/data/people.json",
     "sourceEntitiesFile": "assets/data/entities.json",
@@ -75,7 +75,7 @@
       "totalR": 24522046,
       "totalD": 0,
       "primaryState": "CT",
-      "primaryEmployer": "SELF-EMPLOYED",
+      "primaryEmployer": "AMERICA FIRST ACTION, INC",
       "primaryOccupation": "CHAIR",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": false,
@@ -138,7 +138,7 @@
       "totalD": 0,
       "primaryState": "NV",
       "primaryEmployer": "SELF-EMPLOYED",
-      "primaryOccupation": "AEROSPACE & REAL ESTATE DEVELOPMENT",
+      "primaryOccupation": "AEROSPACE/REAL ESTATE/GENERAL CONTRACT",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": false,
       "candidateEntityMatches": [],
@@ -156,17 +156,14 @@
       "totalR": 0,
       "totalD": 17548848,
       "primaryState": "IL",
-      "primaryEmployer": "PRITZKER GROUP",
-      "primaryOccupation": "MANAGING PARTNER",
+      "primaryEmployer": "STATE OF ILLINOIS",
+      "primaryOccupation": "GOVERNOR",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
-      "needsEntityCreation": true,
+      "needsEntityCreation": false,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
         "Jay Robert Pritzker company founder shareholder board",
-        "J.B. Pritzker company founder shareholder board",
-        "Jay Robert Pritzker PRITZKER GROUP",
-        "Jay Robert Pritzker MANAGING PARTNER PRITZKER GROUP",
-        "Jay Robert Pritzker MANAGING PARTNER company"
+        "J.B. Pritzker company founder shareholder board"
       ]
     },
     {
@@ -179,15 +176,15 @@
       "totalR": 1939562,
       "totalD": 100000,
       "primaryState": "FL",
-      "primaryEmployer": "JW CHILDS ASSOCIATES",
+      "primaryEmployer": "J.W. CHILDS ASSOCIATES",
       "primaryOccupation": "CHAIRMAN",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": true,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
         "John W Childs company founder shareholder board",
-        "John W Childs JW CHILDS ASSOCIATES",
-        "John W Childs CHAIRMAN JW CHILDS ASSOCIATES",
+        "John W Childs J.W. CHILDS ASSOCIATES",
+        "John W Childs CHAIRMAN J.W. CHILDS ASSOCIATES",
         "John W Childs CHAIRMAN company"
       ]
     },
@@ -262,15 +259,15 @@
       "totalD": 21977021,
       "primaryState": "MA",
       "primaryEmployer": "BAIN CAPITAL",
-      "primaryOccupation": "INVESTOR",
+      "primaryOccupation": "MANAGING DIRECTOR",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": true,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
         "Joshua Bekenstein company founder shareholder board",
         "Joshua Bekenstein BAIN CAPITAL",
-        "Joshua Bekenstein INVESTOR BAIN CAPITAL",
-        "Joshua Bekenstein INVESTOR company"
+        "Joshua Bekenstein MANAGING DIRECTOR BAIN CAPITAL",
+        "Joshua Bekenstein MANAGING DIRECTOR company"
       ]
     },
     {
@@ -303,7 +300,7 @@
       "totalD": 15961930,
       "primaryState": "CT",
       "primaryEmployer": "NOT EMPLOYED",
-      "primaryOccupation": "RETIRED",
+      "primaryOccupation": "NOT EMPLOYED",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": false,
       "candidateEntityMatches": [],
@@ -320,8 +317,8 @@
       "totalDonated": 15037766,
       "totalR": 101001,
       "totalD": 12005389,
-      "primaryState": "FL",
-      "primaryEmployer": "NOT EMPLOYED",
+      "primaryState": "MA",
+      "primaryEmployer": "MASS GENERAL HOSPITAL",
       "primaryOccupation": "EXECUTIVE",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": false,
@@ -383,13 +380,16 @@
       "totalR": 0,
       "totalD": 0,
       "primaryState": "IL",
-      "primaryEmployer": "RETIRED",
-      "primaryOccupation": "RETIRED",
+      "primaryEmployer": "PATHWAYS.ORG",
+      "primaryOccupation": "CHAIRMAN",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
-      "needsEntityCreation": false,
+      "needsEntityCreation": true,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
-        "Shirley W Ryan company founder shareholder board"
+        "Shirley W Ryan company founder shareholder board",
+        "Shirley W Ryan PATHWAYS.ORG",
+        "Shirley W Ryan CHAIRMAN PATHWAYS.ORG",
+        "Shirley W Ryan CHAIRMAN company"
       ]
     },
     {
@@ -424,7 +424,7 @@
       "totalR": 7805,
       "totalD": 16857660,
       "primaryState": "CA",
-      "primaryEmployer": "N/A",
+      "primaryEmployer": "HEISING-SIMONS FOUNDATION",
       "primaryOccupation": "RETIRED",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": false,
@@ -654,14 +654,14 @@
       "totalR": 100,
       "totalD": 1105500,
       "primaryState": "NY",
-      "primaryEmployer": "D. E. SHAW RESEARCH",
+      "primaryEmployer": "D.E. SHAW RESEARCH",
       "primaryOccupation": "BIOMEDICAL RESEARCH",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": false,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
         "David E Shaw company founder shareholder board",
-        "David E Shaw D. E. SHAW RESEARCH"
+        "David E Shaw D.E. SHAW RESEARCH"
       ]
     },
     {
@@ -674,8 +674,8 @@
       "totalR": 5641300,
       "totalD": 2900,
       "primaryState": "NY",
-      "primaryEmployer": "SELF-EMPLOYED",
-      "primaryOccupation": "SELF-EMPLOYED",
+      "primaryEmployer": "SELF EMPLOYED",
+      "primaryOccupation": "SELF EMPLOYED",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": false,
       "candidateEntityMatches": [],
@@ -715,13 +715,15 @@
       "totalR": 16550,
       "totalD": 7453725,
       "primaryState": "CA",
-      "primaryEmployer": "SELF-EMPLOYED",
+      "primaryEmployer": "SV ANGEL LLC",
       "primaryOccupation": "INVESTOR",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
-      "needsEntityCreation": false,
+      "needsEntityCreation": true,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
         "Ronald Conway company founder shareholder board",
+        "Ronald Conway SV ANGEL LLC",
+        "Ronald Conway INVESTOR SV ANGEL LLC",
         "Ronald Conway INVESTOR company"
       ]
     },
@@ -798,15 +800,15 @@
       "totalD": 644400,
       "primaryState": "CA",
       "primaryEmployer": "MEDLEY PARTNERS MANAGEMENT LLC",
-      "primaryOccupation": "FOUNDER",
+      "primaryOccupation": "MANAGING DIRECTOR",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": true,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
         "Mark W Heising company founder shareholder board",
         "Mark W Heising MEDLEY PARTNERS MANAGEMENT LLC",
-        "Mark W Heising FOUNDER MEDLEY PARTNERS MANAGEMENT LLC",
-        "Mark W Heising FOUNDER company"
+        "Mark W Heising MANAGING DIRECTOR MEDLEY PARTNERS MANAGEMENT LLC",
+        "Mark W Heising MANAGING DIRECTOR company"
       ]
     },
     {
@@ -858,16 +860,16 @@
       "totalR": 0,
       "totalD": 736100,
       "primaryState": "NY",
-      "primaryEmployer": "BLS INVESTMENTS",
-      "primaryOccupation": "OWNER",
+      "primaryEmployer": "BLS INVESTMENTS LLC",
+      "primaryOccupation": "CHAIRMAN & CEO",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": true,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
         "Bernard L Schwartz company founder shareholder board",
-        "Bernard L Schwartz BLS INVESTMENTS",
-        "Bernard L Schwartz OWNER BLS INVESTMENTS",
-        "Bernard L Schwartz OWNER company"
+        "Bernard L Schwartz BLS INVESTMENTS LLC",
+        "Bernard L Schwartz CHAIRMAN & CEO BLS INVESTMENTS LLC",
+        "Bernard L Schwartz CHAIRMAN & CEO company"
       ]
     },
     {
@@ -881,13 +883,15 @@
       "totalD": 0,
       "primaryState": "CT",
       "primaryEmployer": "BLUFF POINT ASSOCIATES",
-      "primaryOccupation": "VENTURE CAPITAL",
+      "primaryOccupation": "INVESTOR",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
-      "needsEntityCreation": false,
+      "needsEntityCreation": true,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
         "Thomas E Mcinerney company founder shareholder board",
-        "Thomas E Mcinerney BLUFF POINT ASSOCIATES"
+        "Thomas E Mcinerney BLUFF POINT ASSOCIATES",
+        "Thomas E Mcinerney INVESTOR BLUFF POINT ASSOCIATES",
+        "Thomas E Mcinerney INVESTOR company"
       ]
     },
     {
@@ -900,16 +904,16 @@
       "totalR": 4900,
       "totalD": 4889900,
       "primaryState": "MA",
-      "primaryEmployer": "SUFFOLK CONSTRUCTION COMPANY",
-      "primaryOccupation": "CEO & CHAIRMAN",
+      "primaryEmployer": "SUFFOLK CONSTRUCTION CO., INC.",
+      "primaryOccupation": "CHAIRMAN & CEO",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": true,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
         "John F Fish company founder shareholder board",
-        "John F Fish SUFFOLK CONSTRUCTION COMPANY",
-        "John F Fish CEO & CHAIRMAN SUFFOLK CONSTRUCTION COMPANY",
-        "John F Fish CEO & CHAIRMAN company"
+        "John F Fish SUFFOLK CONSTRUCTION CO., INC.",
+        "John F Fish CHAIRMAN & CEO SUFFOLK CONSTRUCTION CO., INC.",
+        "John F Fish CHAIRMAN & CEO company"
       ]
     },
     {
@@ -922,15 +926,15 @@
       "totalR": 6663300,
       "totalD": 1887950,
       "primaryState": "NY",
-      "primaryEmployer": "APOLLO GLOBAL MANAGEMENT",
+      "primaryEmployer": "APOLLO MANAGEMENT",
       "primaryOccupation": "CEO",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": true,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
         "Marc Rowan company founder shareholder board",
-        "Marc Rowan APOLLO GLOBAL MANAGEMENT",
-        "Marc Rowan CEO APOLLO GLOBAL MANAGEMENT",
+        "Marc Rowan APOLLO MANAGEMENT",
+        "Marc Rowan CEO APOLLO MANAGEMENT",
         "Marc Rowan CEO company"
       ]
     },
@@ -987,9 +991,16 @@
       "primaryState": "VA",
       "primaryEmployer": "CUMBERLAND DEVELOPMENT",
       "primaryOccupation": "MANAGER",
-      "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
+      "reviewReason": "high-dollar unlinked donor with possible live entity candidates",
       "needsEntityCreation": false,
-      "candidateEntityMatches": [],
+      "candidateEntityMatches": [
+        {
+          "entityId": "cumberland-farms",
+          "entityName": "Cumberland Farms Inc",
+          "score": 55,
+          "reason": "single_distinctive_token_overlap:cumberland"
+        }
+      ],
       "suggestedSearchQueries": [
         "Richard Baxter Gilliam company founder shareholder board",
         "Richard Baxter Gilliam CUMBERLAND DEVELOPMENT"
@@ -1025,15 +1036,15 @@
       "totalD": 0,
       "primaryState": "TX",
       "primaryEmployer": "WESTERN REFINING",
-      "primaryOccupation": "CHAIRMAN OF THE BOARD",
+      "primaryOccupation": "CHAIRMAN",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": true,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
         "Paul L Foster company founder shareholder board",
         "Paul L Foster WESTERN REFINING",
-        "Paul L Foster CHAIRMAN OF THE BOARD WESTERN REFINING",
-        "Paul L Foster CHAIRMAN OF THE BOARD company"
+        "Paul L Foster CHAIRMAN WESTERN REFINING",
+        "Paul L Foster CHAIRMAN company"
       ]
     },
     {
@@ -1046,15 +1057,15 @@
       "totalR": 348,
       "totalD": 7358950,
       "primaryState": "MA",
-      "primaryEmployer": "PILOT HOUSE ASSOCIATES LLC",
+      "primaryEmployer": "PILOT HOUSE ASSOCIATES",
       "primaryOccupation": "CHAIRMAN",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": true,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
         "Amos Hostetter company founder shareholder board",
-        "Amos Hostetter PILOT HOUSE ASSOCIATES LLC",
-        "Amos Hostetter CHAIRMAN PILOT HOUSE ASSOCIATES LLC",
+        "Amos Hostetter PILOT HOUSE ASSOCIATES",
+        "Amos Hostetter CHAIRMAN PILOT HOUSE ASSOCIATES",
         "Amos Hostetter CHAIRMAN company"
       ]
     },
@@ -1068,7 +1079,7 @@
       "totalR": 0,
       "totalD": 6889431,
       "primaryState": "NY",
-      "primaryEmployer": "SELF",
+      "primaryEmployer": "SELF-EMPLOYED",
       "primaryOccupation": "INVESTOR",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": false,
@@ -1153,8 +1164,8 @@
       "totalDonated": 8418100,
       "totalR": 5924500,
       "totalD": 702800,
-      "primaryState": "FL",
-      "primaryEmployer": "SELF",
+      "primaryState": "CA",
+      "primaryEmployer": "SELF-EMPLOYED",
       "primaryOccupation": "FUND MANAGER",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": false,
@@ -1271,16 +1282,35 @@
       "totalR": 5303600,
       "totalD": 208100,
       "primaryState": "CO",
-      "primaryEmployer": "40 NORTH MANAGEMENT LLC",
-      "primaryOccupation": "CO-CEO & CO-CIO",
-      "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
-      "needsEntityCreation": true,
-      "candidateEntityMatches": [],
+      "primaryEmployer": "STANDARD INDUSTRIES",
+      "primaryOccupation": "CO-CEO",
+      "reviewReason": "high-dollar unlinked donor with possible live entity candidates",
+      "needsEntityCreation": false,
+      "candidateEntityMatches": [
+        {
+          "entityId": "ashley-furniture",
+          "entityName": "Ashley Furniture Industries Inc",
+          "score": 55,
+          "reason": "single_distinctive_token_overlap:industries"
+        },
+        {
+          "entityId": "hyatt",
+          "entityName": "Hyatt Hotels Corp",
+          "score": 55,
+          "reason": "single_distinctive_token_overlap:standard"
+        },
+        {
+          "entityId": "koch-industries",
+          "entityName": "Koch Industries Inc",
+          "score": 55,
+          "reason": "single_distinctive_token_overlap:industries"
+        }
+      ],
       "suggestedSearchQueries": [
         "David J Millstone company founder shareholder board",
-        "David J Millstone 40 NORTH MANAGEMENT LLC",
-        "David J Millstone CO-CEO & CO-CIO 40 NORTH MANAGEMENT LLC",
-        "David J Millstone CO-CEO & CO-CIO company"
+        "David J Millstone STANDARD INDUSTRIES",
+        "David J Millstone CO-CEO STANDARD INDUSTRIES",
+        "David J Millstone CO-CEO company"
       ]
     },
     {
@@ -1367,13 +1397,14 @@
       "totalR": 0,
       "totalD": 9427646,
       "primaryState": "NY",
-      "primaryEmployer": "SELF-EMPLOYED",
+      "primaryEmployer": "LAUFER WIND GROUP",
       "primaryOccupation": "ENGINEER",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": false,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
-        "Eric Laufer company founder shareholder board"
+        "Eric Laufer company founder shareholder board",
+        "Eric Laufer LAUFER WIND GROUP"
       ]
     },
     {
@@ -1448,13 +1479,15 @@
       "totalR": 3059202,
       "totalD": 376405,
       "primaryState": "FL",
-      "primaryEmployer": "RETIRED",
+      "primaryEmployer": "PRESCOTT INVESTORS",
       "primaryOccupation": "INVESTOR",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
-      "needsEntityCreation": false,
+      "needsEntityCreation": true,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
         "Thomas W Smith company founder shareholder board",
+        "Thomas W Smith PRESCOTT INVESTORS",
+        "Thomas W Smith INVESTOR PRESCOTT INVESTORS",
         "Thomas W Smith INVESTOR company"
       ]
     },
@@ -1603,15 +1636,15 @@
       "totalR": 0,
       "totalD": 12133605,
       "primaryState": "CA",
-      "primaryEmployer": "DREAM WORKS ANIMATION",
+      "primaryEmployer": "WNDRCO",
       "primaryOccupation": "CEO",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": true,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
         "Jeffrey Katzenberg company founder shareholder board",
-        "Jeffrey Katzenberg DREAM WORKS ANIMATION",
-        "Jeffrey Katzenberg CEO DREAM WORKS ANIMATION",
+        "Jeffrey Katzenberg WNDRCO",
+        "Jeffrey Katzenberg CEO WNDRCO",
         "Jeffrey Katzenberg CEO company"
       ]
     },
@@ -1667,15 +1700,15 @@
       "totalD": 397900,
       "primaryState": "MA",
       "primaryEmployer": "INTERSYSTEMS CORPORATION",
-      "primaryOccupation": "EXECUTIVE",
+      "primaryOccupation": "CEO & FOUNDER",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": true,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
         "Phillip T Ragon company founder shareholder board",
         "Phillip T Ragon INTERSYSTEMS CORPORATION",
-        "Phillip T Ragon EXECUTIVE INTERSYSTEMS CORPORATION",
-        "Phillip T Ragon EXECUTIVE company"
+        "Phillip T Ragon CEO & FOUNDER INTERSYSTEMS CORPORATION",
+        "Phillip T Ragon CEO & FOUNDER company"
       ]
     },
     {
@@ -1730,14 +1763,29 @@
       "totalR": 397452,
       "totalD": 0,
       "primaryState": "TX",
-      "primaryEmployer": "REES-JONES HOLDINGS",
-      "primaryOccupation": "INVESTMENTS",
-      "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
+      "primaryEmployer": "CHIEF OIL & GAS LLC",
+      "primaryOccupation": "OWNER & CEO",
+      "reviewReason": "high-dollar unlinked donor with possible live entity candidates",
       "needsEntityCreation": false,
-      "candidateEntityMatches": [],
+      "candidateEntityMatches": [
+        {
+          "entityId": "shell",
+          "entityName": "Shell plc",
+          "score": 70,
+          "reason": "distinctive_token_overlap:oil,gas"
+        },
+        {
+          "entityId": "sinclair-oil",
+          "entityName": "Sinclair Oil LLC",
+          "score": 70,
+          "reason": "distinctive_token_overlap:oil,gas"
+        }
+      ],
       "suggestedSearchQueries": [
         "Trevor D Rees-Jones company founder shareholder board",
-        "Trevor D Rees-Jones REES-JONES HOLDINGS"
+        "Trevor D Rees-Jones CHIEF OIL & GAS LLC",
+        "Trevor D Rees-Jones OWNER & CEO CHIEF OIL & GAS LLC",
+        "Trevor D Rees-Jones OWNER & CEO company"
       ]
     },
     {
@@ -1751,13 +1799,19 @@
       "totalD": 10800,
       "primaryState": "CA",
       "primaryEmployer": "OBERNDORF ENTERPRISES LLC",
-      "primaryOccupation": "CHAIRMAN",
+      "primaryOccupation": "EXECUTIVE",
       "reviewReason": "high-dollar unlinked donor with possible live entity candidates",
       "needsEntityCreation": false,
       "candidateEntityMatches": [
         {
           "entityId": "five-guys",
           "entityName": "Five Guys Enterprises LLC",
+          "score": 55,
+          "reason": "single_distinctive_token_overlap:enterprises"
+        },
+        {
+          "entityId": "herschend-enterprises",
+          "entityName": "Herschend Enterprises",
           "score": 55,
           "reason": "single_distinctive_token_overlap:enterprises"
         },
@@ -1771,8 +1825,8 @@
       "suggestedSearchQueries": [
         "William E Oberndorf company founder shareholder board",
         "William E Oberndorf OBERNDORF ENTERPRISES LLC",
-        "William E Oberndorf CHAIRMAN OBERNDORF ENTERPRISES LLC",
-        "William E Oberndorf CHAIRMAN company"
+        "William E Oberndorf EXECUTIVE OBERNDORF ENTERPRISES LLC",
+        "William E Oberndorf EXECUTIVE company"
       ]
     },
     {
@@ -1849,7 +1903,7 @@
       "totalD": 3297292,
       "primaryState": "VA",
       "primaryEmployer": "MCARTHUR GLEN GROUP",
-      "primaryOccupation": "BUILDER",
+      "primaryOccupation": "DEVELOPER",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": false,
       "candidateEntityMatches": [],
@@ -1868,16 +1922,35 @@
       "totalR": 6665089,
       "totalD": 483506,
       "primaryState": "FL",
-      "primaryEmployer": "AXXES CAPITAL",
-      "primaryOccupation": "CO VICE CHAIRMAN",
-      "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
-      "needsEntityCreation": true,
-      "candidateEntityMatches": [],
+      "primaryEmployer": "BOOK CAPITAL ENTERPRISES LLC",
+      "primaryOccupation": "CHAIRMAN",
+      "reviewReason": "high-dollar unlinked donor with possible live entity candidates",
+      "needsEntityCreation": false,
+      "candidateEntityMatches": [
+        {
+          "entityId": "five-guys",
+          "entityName": "Five Guys Enterprises LLC",
+          "score": 55,
+          "reason": "single_distinctive_token_overlap:enterprises"
+        },
+        {
+          "entityId": "herschend-enterprises",
+          "entityName": "Herschend Enterprises",
+          "score": 55,
+          "reason": "single_distinctive_token_overlap:enterprises"
+        },
+        {
+          "entityId": "little-caesars",
+          "entityName": "Little Caesar Enterprises Inc",
+          "score": 55,
+          "reason": "single_distinctive_token_overlap:enterprises"
+        }
+      ],
       "suggestedSearchQueries": [
         "Robert Book company founder shareholder board",
-        "Robert Book AXXES CAPITAL",
-        "Robert Book CO VICE CHAIRMAN AXXES CAPITAL",
-        "Robert Book CO VICE CHAIRMAN company"
+        "Robert Book BOOK CAPITAL ENTERPRISES LLC",
+        "Robert Book CHAIRMAN BOOK CAPITAL ENTERPRISES LLC",
+        "Robert Book CHAIRMAN company"
       ]
     },
     {
@@ -1909,14 +1982,14 @@
       "totalR": 3247416,
       "totalD": 1232437,
       "primaryState": "NY",
-      "primaryEmployer": "SELF EMPLOYED",
-      "primaryOccupation": "NFL FRANCHISE OWNER",
+      "primaryEmployer": "108 MANAGEMENT",
+      "primaryOccupation": "RETIRED",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": false,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
         "Robert Wood Johnson company founder shareholder board",
-        "Robert Wood Johnson NFL FRANCHISE OWNER company"
+        "Robert Wood Johnson 108 MANAGEMENT"
       ]
     },
     {
@@ -2030,23 +2103,13 @@
       "totalR": 13500,
       "totalD": 0,
       "primaryState": "MO",
-      "primaryEmployer": "ANHEUSER BUSCH",
-      "primaryOccupation": "FORMER CEO",
-      "reviewReason": "high-dollar unlinked donor with possible live entity candidates",
+      "primaryEmployer": "RETIRED",
+      "primaryOccupation": "RETIRED",
+      "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": false,
-      "candidateEntityMatches": [
-        {
-          "entityId": "anheuser-busch-inbev",
-          "entityName": "Anheuser-Busch InBev SA/NV",
-          "score": 100,
-          "reason": "exact_employer_alias"
-        }
-      ],
+      "candidateEntityMatches": [],
       "suggestedSearchQueries": [
-        "August A Busch company founder shareholder board",
-        "August A Busch ANHEUSER BUSCH",
-        "August A Busch FORMER CEO ANHEUSER BUSCH",
-        "August A Busch FORMER CEO company"
+        "August A Busch company founder shareholder board"
       ]
     },
     {
@@ -2078,15 +2141,15 @@
       "totalR": 0,
       "totalD": 8006524,
       "primaryState": "CA",
-      "primaryEmployer": "ANDELL INC.",
+      "primaryEmployer": "ANDELL HOLDINGS",
       "primaryOccupation": "CHAIRMAN",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": true,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
         "Andrew Hauptman company founder shareholder board",
-        "Andrew Hauptman ANDELL INC.",
-        "Andrew Hauptman CHAIRMAN ANDELL INC.",
+        "Andrew Hauptman ANDELL HOLDINGS",
+        "Andrew Hauptman CHAIRMAN ANDELL HOLDINGS",
         "Andrew Hauptman CHAIRMAN company"
       ]
     },
@@ -2175,16 +2238,13 @@
       "totalR": 0,
       "totalD": 1230960,
       "primaryState": "TN",
-      "primaryEmployer": "OLAN MILLS, INC.",
-      "primaryOccupation": "OWNER",
+      "primaryEmployer": "N/A",
+      "primaryOccupation": "RETIRED",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
-      "needsEntityCreation": true,
+      "needsEntityCreation": false,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
-        "Olan Mills company founder shareholder board",
-        "Olan Mills OLAN MILLS, INC.",
-        "Olan Mills OWNER OLAN MILLS, INC.",
-        "Olan Mills OWNER company"
+        "Olan Mills company founder shareholder board"
       ]
     },
     {
@@ -2197,14 +2257,13 @@
       "totalR": 0,
       "totalD": 6104600,
       "primaryState": "CA",
-      "primaryEmployer": "DRAGONEER INVESTMENT GROUP",
+      "primaryEmployer": "NOT EMPLOYED",
       "primaryOccupation": "NOT EMPLOYED",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": false,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
-        "Marc Stad company founder shareholder board",
-        "Marc Stad DRAGONEER INVESTMENT GROUP"
+        "Marc Stad company founder shareholder board"
       ]
     },
     {
@@ -2258,15 +2317,15 @@
       "totalR": 99800,
       "totalD": 6052325,
       "primaryState": "CA",
-      "primaryEmployer": "APERTURE GROUP",
+      "primaryEmployer": "APERTURE GROUP LLC",
       "primaryOccupation": "PRESIDENT",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": true,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
         "John Pritzker company founder shareholder board",
-        "John Pritzker APERTURE GROUP",
-        "John Pritzker PRESIDENT APERTURE GROUP",
+        "John Pritzker APERTURE GROUP LLC",
+        "John Pritzker PRESIDENT APERTURE GROUP LLC",
         "John Pritzker PRESIDENT company"
       ]
     },
@@ -2318,7 +2377,7 @@
       "totalR": 0,
       "totalD": 5874662,
       "primaryState": "CA",
-      "primaryEmployer": "SELF EMPLOYED",
+      "primaryEmployer": "N/A",
       "primaryOccupation": "PHILANTHROPIST",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": false,
@@ -2398,7 +2457,7 @@
       "totalD": 1450450,
       "primaryState": "MA",
       "primaryEmployer": "BERKSHIRE PARTNERS",
-      "primaryOccupation": "MANAGING DIRECTOR",
+      "primaryOccupation": "SENIOR ADVISOR",
       "reviewReason": "high-dollar unlinked donor with possible live entity candidates",
       "needsEntityCreation": false,
       "candidateEntityMatches": [
@@ -2412,8 +2471,8 @@
       "suggestedSearchQueries": [
         "David Randolph Peeler company founder shareholder board",
         "David Randolph Peeler BERKSHIRE PARTNERS",
-        "David Randolph Peeler MANAGING DIRECTOR BERKSHIRE PARTNERS",
-        "David Randolph Peeler MANAGING DIRECTOR company"
+        "David Randolph Peeler SENIOR ADVISOR BERKSHIRE PARTNERS",
+        "David Randolph Peeler SENIOR ADVISOR company"
       ]
     },
     {
@@ -2445,15 +2504,15 @@
       "totalR": 49353,
       "totalD": 6010105,
       "primaryState": "NY",
-      "primaryEmployer": "DEER MANAGEMENT COMPANY LLC",
+      "primaryEmployer": "DEER MANAGEMENT CO. LLC",
       "primaryOccupation": "PARTNER",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": true,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
         "Robert Goodman company founder shareholder board",
-        "Robert Goodman DEER MANAGEMENT COMPANY LLC",
-        "Robert Goodman PARTNER DEER MANAGEMENT COMPANY LLC",
+        "Robert Goodman DEER MANAGEMENT CO. LLC",
+        "Robert Goodman PARTNER DEER MANAGEMENT CO. LLC",
         "Robert Goodman PARTNER company"
       ]
     },
@@ -2486,8 +2545,8 @@
       "totalR": 0,
       "totalD": 505400,
       "primaryState": "CA",
-      "primaryEmployer": "SELF",
-      "primaryOccupation": "PHILATHROPIST",
+      "primaryEmployer": "N/A",
+      "primaryOccupation": "PHILANTHROPIST",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": false,
       "candidateEntityMatches": [],
@@ -2565,7 +2624,7 @@
       "totalR": 0,
       "totalD": 8729339,
       "primaryState": "CT",
-      "primaryEmployer": "N/A",
+      "primaryEmployer": "NONE",
       "primaryOccupation": "RETIRED",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": false,
@@ -2611,16 +2670,16 @@
       "totalR": 0,
       "totalD": 168700,
       "primaryState": "FL",
-      "primaryEmployer": "HEALTH FOODS OF AMERICA",
-      "primaryOccupation": "EXECUTIVE",
+      "primaryEmployer": "BEACH CAPITAL MANAGEMENT, LLC",
+      "primaryOccupation": "INVESTOR",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": true,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
         "S Daniel Abraham company founder shareholder board",
-        "S Daniel Abraham HEALTH FOODS OF AMERICA",
-        "S Daniel Abraham EXECUTIVE HEALTH FOODS OF AMERICA",
-        "S Daniel Abraham EXECUTIVE company"
+        "S Daniel Abraham BEACH CAPITAL MANAGEMENT, LLC",
+        "S Daniel Abraham INVESTOR BEACH CAPITAL MANAGEMENT, LLC",
+        "S Daniel Abraham INVESTOR company"
       ]
     },
     {
@@ -2672,16 +2731,14 @@
       "totalR": 569800,
       "totalD": 12000,
       "primaryState": "NY",
-      "primaryEmployer": "INVEMED ASSOCIATES",
-      "primaryOccupation": "CHAIRMAN",
+      "primaryEmployer": "INVEMED",
+      "primaryOccupation": "BANKER",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
-      "needsEntityCreation": true,
+      "needsEntityCreation": false,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
         "Kenneth G Langone company founder shareholder board",
-        "Kenneth G Langone INVEMED ASSOCIATES",
-        "Kenneth G Langone CHAIRMAN INVEMED ASSOCIATES",
-        "Kenneth G Langone CHAIRMAN company"
+        "Kenneth G Langone INVEMED"
       ]
     },
     {
@@ -2694,8 +2751,8 @@
       "totalR": 237693,
       "totalD": 34300,
       "primaryState": "TX",
-      "primaryEmployer": "HUNT COMPANIES, LTD",
-      "primaryOccupation": "CHAIRMAN & CEO",
+      "primaryEmployer": "HUNT COMPANIES",
+      "primaryOccupation": "EXECUTIVE CHAIRMAN",
       "reviewReason": "high-dollar unlinked donor with possible live entity candidates",
       "needsEntityCreation": false,
       "candidateEntityMatches": [
@@ -2718,23 +2775,23 @@
           "reason": "single_distinctive_token_overlap:companies"
         },
         {
-          "entityId": "rocket-companies",
-          "entityName": "Rocket Companies Inc",
+          "entityId": "raleys",
+          "entityName": "Raley's Companies",
           "score": 55,
           "reason": "single_distinctive_token_overlap:companies"
         },
         {
-          "entityId": "tjx-companies",
-          "entityName": "TJX Companies Inc",
+          "entityId": "rocket-companies",
+          "entityName": "Rocket Companies Inc",
           "score": 55,
           "reason": "single_distinctive_token_overlap:companies"
         }
       ],
       "suggestedSearchQueries": [
         "Woody L Hunt company founder shareholder board",
-        "Woody L Hunt HUNT COMPANIES, LTD",
-        "Woody L Hunt CHAIRMAN & CEO HUNT COMPANIES, LTD",
-        "Woody L Hunt CHAIRMAN & CEO company"
+        "Woody L Hunt HUNT COMPANIES",
+        "Woody L Hunt EXECUTIVE CHAIRMAN HUNT COMPANIES",
+        "Woody L Hunt EXECUTIVE CHAIRMAN company"
       ]
     },
     {
@@ -2835,13 +2892,16 @@
       "totalR": 1522174,
       "totalD": 0,
       "primaryState": "FL",
-      "primaryEmployer": "SELF EMPLOYED",
-      "primaryOccupation": "ENTREPRENEUR",
+      "primaryEmployer": "NEXT GENERATION FILMS, INC.",
+      "primaryOccupation": "CEO",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
-      "needsEntityCreation": false,
+      "needsEntityCreation": true,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
-        "David Frecka company founder shareholder board"
+        "David Frecka company founder shareholder board",
+        "David Frecka NEXT GENERATION FILMS, INC.",
+        "David Frecka CEO NEXT GENERATION FILMS, INC.",
+        "David Frecka CEO company"
       ]
     },
     {
@@ -2929,6 +2989,12 @@
           "reason": "single_distinctive_token_overlap:enterprises"
         },
         {
+          "entityId": "herschend-enterprises",
+          "entityName": "Herschend Enterprises",
+          "score": 55,
+          "reason": "single_distinctive_token_overlap:enterprises"
+        },
+        {
           "entityId": "little-caesars",
           "entityName": "Little Caesar Enterprises Inc",
           "score": 55,
@@ -3001,16 +3067,16 @@
       "totalR": 1964189,
       "totalD": 956182,
       "primaryState": "NV",
-      "primaryEmployer": "STATION CASINOS, LLC",
-      "primaryOccupation": "DIRECTOR",
+      "primaryEmployer": "STATION CASINOS",
+      "primaryOccupation": "EXECUTIVE",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": true,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
         "Lorenzo Joseph Fertitta company founder shareholder board",
-        "Lorenzo Joseph Fertitta STATION CASINOS, LLC",
-        "Lorenzo Joseph Fertitta DIRECTOR STATION CASINOS, LLC",
-        "Lorenzo Joseph Fertitta DIRECTOR company"
+        "Lorenzo Joseph Fertitta STATION CASINOS",
+        "Lorenzo Joseph Fertitta EXECUTIVE STATION CASINOS",
+        "Lorenzo Joseph Fertitta EXECUTIVE company"
       ]
     },
     {
@@ -3023,15 +3089,15 @@
       "totalR": 17400,
       "totalD": 0,
       "primaryState": "NV",
-      "primaryEmployer": "STATION CASINOS",
+      "primaryEmployer": "RED ROCK RESORTS",
       "primaryOccupation": "CEO",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": true,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
         "Frank J Fertitta company founder shareholder board",
-        "Frank J Fertitta STATION CASINOS",
-        "Frank J Fertitta CEO STATION CASINOS",
+        "Frank J Fertitta RED ROCK RESORTS",
+        "Frank J Fertitta CEO RED ROCK RESORTS",
         "Frank J Fertitta CEO company"
       ]
     },
@@ -3068,15 +3134,15 @@
       "totalD": 52315,
       "primaryState": "MO",
       "primaryEmployer": "TAMKO BUILDING PRODUCTS",
-      "primaryOccupation": "CEO",
+      "primaryOccupation": "EXECUTIVE",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": true,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
         "David Humphreys company founder shareholder board",
         "David Humphreys TAMKO BUILDING PRODUCTS",
-        "David Humphreys CEO TAMKO BUILDING PRODUCTS",
-        "David Humphreys CEO company"
+        "David Humphreys EXECUTIVE TAMKO BUILDING PRODUCTS",
+        "David Humphreys EXECUTIVE company"
       ]
     },
     {
@@ -3109,15 +3175,15 @@
       "totalD": 837882,
       "primaryState": "TX",
       "primaryEmployer": "STEWART & STEVENSON",
-      "primaryOccupation": "CHAIRMAN",
+      "primaryOccupation": "EXECUTIVE CHAIRMAN",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": true,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
         "Hushang Ansary company founder shareholder board",
         "Hushang Ansary STEWART & STEVENSON",
-        "Hushang Ansary CHAIRMAN STEWART & STEVENSON",
-        "Hushang Ansary CHAIRMAN company"
+        "Hushang Ansary EXECUTIVE CHAIRMAN STEWART & STEVENSON",
+        "Hushang Ansary EXECUTIVE CHAIRMAN company"
       ]
     },
     {
@@ -3187,15 +3253,15 @@
       "totalR": 0,
       "totalD": 209500,
       "primaryState": "IL",
-      "primaryEmployer": "ARIEL INVESTMENTS",
+      "primaryEmployer": "ARIEL INVESTMENTS, LLC",
       "primaryOccupation": "PRESIDENT",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": true,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
         "Mellody L Hobson company founder shareholder board",
-        "Mellody L Hobson ARIEL INVESTMENTS",
-        "Mellody L Hobson PRESIDENT ARIEL INVESTMENTS",
+        "Mellody L Hobson ARIEL INVESTMENTS, LLC",
+        "Mellody L Hobson PRESIDENT ARIEL INVESTMENTS, LLC",
         "Mellody L Hobson PRESIDENT company"
       ]
     },
@@ -3494,15 +3560,15 @@
       "totalD": 0,
       "primaryState": "MI",
       "primaryEmployer": "PENSKE CORPORATION",
-      "primaryOccupation": "CHAIRMAN & CEO",
+      "primaryOccupation": "FOUNDER AND CHAIRMAN",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": true,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
         "Roger Penske company founder shareholder board",
         "Roger Penske PENSKE CORPORATION",
-        "Roger Penske CHAIRMAN & CEO PENSKE CORPORATION",
-        "Roger Penske CHAIRMAN & CEO company"
+        "Roger Penske FOUNDER AND CHAIRMAN PENSKE CORPORATION",
+        "Roger Penske FOUNDER AND CHAIRMAN company"
       ]
     },
     {
@@ -3561,8 +3627,20 @@
       "needsEntityCreation": false,
       "candidateEntityMatches": [
         {
+          "entityId": "brooks-brothers",
+          "entityName": "Brooks Brothers Group Inc",
+          "score": 55,
+          "reason": "single_distinctive_token_overlap:brothers"
+        },
+        {
           "entityId": "michaels",
           "entityName": "Michaels Stores Inc",
+          "score": 55,
+          "reason": "single_distinctive_token_overlap:brothers"
+        },
+        {
+          "entityId": "patel-brothers",
+          "entityName": "Patel Brothers Inc",
           "score": 55,
           "reason": "single_distinctive_token_overlap:brothers"
         },
@@ -3754,13 +3832,14 @@
       "totalR": 1150264,
       "totalD": 1877192,
       "primaryState": "TX",
-      "primaryEmployer": "RETIRED",
-      "primaryOccupation": "LAWYER",
+      "primaryEmployer": "WILLIAMS HART BOUNDAS EASTERBY LLP",
+      "primaryOccupation": "ATTORNEY",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": false,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
-        "John Williams company founder shareholder board"
+        "John Williams company founder shareholder board",
+        "John Williams WILLIAMS HART BOUNDAS EASTERBY LLP"
       ]
     },
     {
@@ -3773,7 +3852,7 @@
       "totalR": 17913,
       "totalD": 2980235,
       "primaryState": "MA",
-      "primaryEmployer": "SELF-EMPLOYED",
+      "primaryEmployer": "SELF EMPLOYED",
       "primaryOccupation": "PHILANTHROPIC ACTIVIST",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": false,
@@ -3792,16 +3871,14 @@
       "totalR": 5728619,
       "totalD": 43301,
       "primaryState": "NY",
-      "primaryEmployer": "JANE STREET",
-      "primaryOccupation": "MANAGING DIRECTOR",
+      "primaryEmployer": "JANE STREET CAPITAL",
+      "primaryOccupation": "FINANCE",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
-      "needsEntityCreation": true,
+      "needsEntityCreation": false,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
         "Richard Emmet company founder shareholder board",
-        "Richard Emmet JANE STREET",
-        "Richard Emmet MANAGING DIRECTOR JANE STREET",
-        "Richard Emmet MANAGING DIRECTOR company"
+        "Richard Emmet JANE STREET CAPITAL"
       ]
     },
     {
@@ -3814,22 +3891,46 @@
       "totalR": 5800,
       "totalD": 0,
       "primaryState": "NV",
-      "primaryEmployer": "FIDELITY",
+      "primaryEmployer": "FIDELITY NATIONAL FINANCIAL",
       "primaryOccupation": "CHAIRMAN",
       "reviewReason": "high-dollar unlinked donor with possible live entity candidates",
       "needsEntityCreation": false,
       "candidateEntityMatches": [
         {
-          "entityId": "fidelity",
-          "entityName": "FMR LLC",
-          "score": 100,
-          "reason": "exact_employer_alias"
+          "entityId": "ally-financial",
+          "entityName": "Ally Financial Inc",
+          "score": 55,
+          "reason": "single_distinctive_token_overlap:financial"
+        },
+        {
+          "entityId": "bmo-financial-group",
+          "entityName": "BMO Financial Group",
+          "score": 55,
+          "reason": "single_distinctive_token_overlap:financial"
+        },
+        {
+          "entityId": "bmw-group",
+          "entityName": "BMW Group",
+          "score": 55,
+          "reason": "single_distinctive_token_overlap:financial"
+        },
+        {
+          "entityId": "capital-one",
+          "entityName": "Capital One Financial Corp",
+          "score": 55,
+          "reason": "single_distinctive_token_overlap:financial"
+        },
+        {
+          "entityId": "chime",
+          "entityName": "Chime Financial Inc",
+          "score": 55,
+          "reason": "single_distinctive_token_overlap:financial"
         }
       ],
       "suggestedSearchQueries": [
         "William P Foley company founder shareholder board",
-        "William P Foley FIDELITY",
-        "William P Foley CHAIRMAN FIDELITY",
+        "William P Foley FIDELITY NATIONAL FINANCIAL",
+        "William P Foley CHAIRMAN FIDELITY NATIONAL FINANCIAL",
         "William P Foley CHAIRMAN company"
       ]
     },
@@ -3864,7 +3965,7 @@
       "totalDonated": 6698300,
       "totalR": 6581700,
       "totalD": 0,
-      "primaryState": "PA",
+      "primaryState": "FL",
       "primaryEmployer": "BRODIE GENERATIONAL CAPITAL PARTNERS",
       "primaryOccupation": "FOUNDER/RETIRED",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
@@ -3926,13 +4027,46 @@
       "totalR": 88900,
       "totalD": 0,
       "primaryState": "IL",
-      "primaryEmployer": "SELF EMPLOYED",
+      "primaryEmployer": "PAYROLL & INSURANCE GROUP INC.",
       "primaryOccupation": "VICE PRESIDENT",
-      "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
+      "reviewReason": "high-dollar unlinked donor with possible live entity candidates",
       "needsEntityCreation": false,
-      "candidateEntityMatches": [],
+      "candidateEntityMatches": [
+        {
+          "entityId": "aflac",
+          "entityName": "Aflac Inc",
+          "score": 55,
+          "reason": "single_distinctive_token_overlap:insurance"
+        },
+        {
+          "entityId": "allstate",
+          "entityName": "The Allstate Corp",
+          "score": 55,
+          "reason": "single_distinctive_token_overlap:insurance"
+        },
+        {
+          "entityId": "chubb",
+          "entityName": "Chubb Ltd",
+          "score": 55,
+          "reason": "single_distinctive_token_overlap:insurance"
+        },
+        {
+          "entityId": "farmers-group",
+          "entityName": "Farmers Group Inc",
+          "score": 55,
+          "reason": "single_distinctive_token_overlap:insurance"
+        },
+        {
+          "entityId": "humana",
+          "entityName": "Humana Inc",
+          "score": 55,
+          "reason": "single_distinctive_token_overlap:insurance"
+        }
+      ],
       "suggestedSearchQueries": [
         "Richard W Colburn company founder shareholder board",
+        "Richard W Colburn PAYROLL & INSURANCE GROUP INC.",
+        "Richard W Colburn VICE PRESIDENT PAYROLL & INSURANCE GROUP INC.",
         "Richard W Colburn VICE PRESIDENT company"
       ]
     },
@@ -3966,7 +4100,7 @@
       "totalR": 256800,
       "totalD": 0,
       "primaryState": "TX",
-      "primaryEmployer": "MAGNOLIA OIL AND GAS CORP.",
+      "primaryEmployer": "MAGNOLIA OIL & GAS",
       "primaryOccupation": "CORPORATE OFFICER",
       "reviewReason": "high-dollar unlinked donor with possible live entity candidates",
       "needsEntityCreation": false,
@@ -3976,11 +4110,17 @@
           "entityName": "Shell plc",
           "score": 70,
           "reason": "distinctive_token_overlap:oil,gas"
+        },
+        {
+          "entityId": "sinclair-oil",
+          "entityName": "Sinclair Oil LLC",
+          "score": 70,
+          "reason": "distinctive_token_overlap:oil,gas"
         }
       ],
       "suggestedSearchQueries": [
         "Stephen I Chazen company founder shareholder board",
-        "Stephen I Chazen MAGNOLIA OIL AND GAS CORP."
+        "Stephen I Chazen MAGNOLIA OIL & GAS"
       ]
     },
     {
@@ -3994,15 +4134,15 @@
       "totalD": 12200,
       "primaryState": "CT",
       "primaryEmployer": "POINT72 ASSET MANAGEMENT",
-      "primaryOccupation": "OWNER",
+      "primaryOccupation": "FOUNDER",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": true,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
         "Steven A Cohen company founder shareholder board",
         "Steven A Cohen POINT72 ASSET MANAGEMENT",
-        "Steven A Cohen OWNER POINT72 ASSET MANAGEMENT",
-        "Steven A Cohen OWNER company"
+        "Steven A Cohen FOUNDER POINT72 ASSET MANAGEMENT",
+        "Steven A Cohen FOUNDER company"
       ]
     },
     {
@@ -4054,12 +4194,13 @@
       "totalD": 0,
       "primaryState": "MI",
       "primaryEmployer": "RETIRED",
-      "primaryOccupation": "RETIRED",
+      "primaryOccupation": "EXECUTIVE",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": false,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
-        "Richard M Devos company founder shareholder board"
+        "Richard M Devos company founder shareholder board",
+        "Richard M Devos EXECUTIVE company"
       ]
     },
     {
@@ -4073,15 +4214,15 @@
       "totalD": 436900,
       "primaryState": "NY",
       "primaryEmployer": "RED APPLE GROUP",
-      "primaryOccupation": "CHAIRMAN",
+      "primaryOccupation": "CEO",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": true,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
         "John Catsimatidis company founder shareholder board",
         "John Catsimatidis RED APPLE GROUP",
-        "John Catsimatidis CHAIRMAN RED APPLE GROUP",
-        "John Catsimatidis CHAIRMAN company"
+        "John Catsimatidis CEO RED APPLE GROUP",
+        "John Catsimatidis CEO company"
       ]
     },
     {
@@ -4145,15 +4286,15 @@
       "totalR": 12000,
       "totalD": 3733940,
       "primaryState": "IL",
-      "primaryEmployer": "WICKLOW CAPITAL",
+      "primaryEmployer": "WICKLOW CAPITAL, INC",
       "primaryOccupation": "PRESIDENT",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": true,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
         "Daniel Tierney company founder shareholder board",
-        "Daniel Tierney WICKLOW CAPITAL",
-        "Daniel Tierney PRESIDENT WICKLOW CAPITAL",
+        "Daniel Tierney WICKLOW CAPITAL, INC",
+        "Daniel Tierney PRESIDENT WICKLOW CAPITAL, INC",
         "Daniel Tierney PRESIDENT company"
       ]
     },
@@ -4167,7 +4308,7 @@
       "totalR": 2556425,
       "totalD": 1500,
       "primaryState": "FL",
-      "primaryEmployer": "SELF-EMPLOYED",
+      "primaryEmployer": "SELF EMPLOYED",
       "primaryOccupation": "ATTORNEY",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": false,
@@ -4208,15 +4349,15 @@
       "totalR": 1410607,
       "totalD": 212424,
       "primaryState": "MI",
-      "primaryEmployer": "EDW. C. LEVY CO.",
+      "primaryEmployer": "EDWARD C. LEVY CO.",
       "primaryOccupation": "CHAIRMAN",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": true,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
         "Edward Levy company founder shareholder board",
-        "Edward Levy EDW. C. LEVY CO.",
-        "Edward Levy CHAIRMAN EDW. C. LEVY CO.",
+        "Edward Levy EDWARD C. LEVY CO.",
+        "Edward Levy CHAIRMAN EDWARD C. LEVY CO.",
         "Edward Levy CHAIRMAN company"
       ]
     },
@@ -4230,13 +4371,16 @@
       "totalR": 9600,
       "totalD": 300000,
       "primaryState": "AR",
-      "primaryEmployer": "NOT EMPLOYED",
-      "primaryOccupation": "RETIRED",
+      "primaryEmployer": "CRYSTAL BRIDGES MUSEUM OF AMERICAN ART",
+      "primaryOccupation": "CHAIRMAN",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
-      "needsEntityCreation": false,
+      "needsEntityCreation": true,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
-        "Alice L Walton company founder shareholder board"
+        "Alice L Walton company founder shareholder board",
+        "Alice L Walton CRYSTAL BRIDGES MUSEUM OF AMERICAN ART",
+        "Alice L Walton CHAIRMAN CRYSTAL BRIDGES MUSEUM OF AMERICAN ART",
+        "Alice L Walton CHAIRMAN company"
       ]
     },
     {
@@ -4292,15 +4436,15 @@
       "totalD": 292000,
       "primaryState": "TX",
       "primaryEmployer": "CROW HOLDINGS",
-      "primaryOccupation": "CHAIRMAN OF THE BOARD",
+      "primaryOccupation": "INVESTOR",
       "reviewReason": "high-dollar unlinked donor requires manual web/entity review",
       "needsEntityCreation": true,
       "candidateEntityMatches": [],
       "suggestedSearchQueries": [
         "Harlan R Crow company founder shareholder board",
         "Harlan R Crow CROW HOLDINGS",
-        "Harlan R Crow CHAIRMAN OF THE BOARD CROW HOLDINGS",
-        "Harlan R Crow CHAIRMAN OF THE BOARD company"
+        "Harlan R Crow INVESTOR CROW HOLDINGS",
+        "Harlan R Crow INVESTOR company"
       ]
     },
     {
@@ -4314,7 +4458,7 @@
       "totalD": 0,
       "primaryState": "NC",
       "primaryEmployer": "ESHELMAN VENTURES LLC",
-      "primaryOccupation": "INVESTOR",
+      "primaryOccupation": "SOLE MANAGER",
       "reviewReason": "high-dollar unlinked donor with possible live entity candidates",
       "needsEntityCreation": false,
       "candidateEntityMatches": [
@@ -4327,9 +4471,7 @@
       ],
       "suggestedSearchQueries": [
         "Fredric N Eshelman company founder shareholder board",
-        "Fredric N Eshelman ESHELMAN VENTURES LLC",
-        "Fredric N Eshelman INVESTOR ESHELMAN VENTURES LLC",
-        "Fredric N Eshelman INVESTOR company"
+        "Fredric N Eshelman ESHELMAN VENTURES LLC"
       ]
     }
   ]

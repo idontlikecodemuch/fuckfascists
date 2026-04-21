@@ -1,7 +1,7 @@
 {
   "_meta": {
     "formatVersion": "1.0",
-    "updatedAt": "2026-04-03",
+    "updatedAt": "2026-04-21",
     "description": "Curated person-to-entity overrides and common-name overrides used when generating assets/data/people.json from bulk donor data.",
     "methodology": "Human-reviewed accepted links only. Record borderline decisions in notes/confidence here; unresolved cases belong in the generated review queue."
   },
@@ -490,7 +490,9 @@
           "endYear": 2024,
           "benefitBasis": "founder_stake",
           "isCurrent": false,
-          "ownershipPct": null
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Jim Simons founded Renaissance Technologies in 1982; mark historical after his 2024 death."
         }
       }
     },
@@ -647,12 +649,24 @@
       "commonName": "Rupert Murdoch",
       "entityLinks": {
         "fox-corporation": {
-          "role": "Chairman Emeritus",
-          "startYear": 2023,
-          "endYear": null,
-          "benefitBasis": "executive",
+          "role": "Chairman Emeritus / Former Controlling Family Trust Figure",
+          "startYear": 2019,
+          "endYear": 2025,
+          "benefitBasis": "family_control",
           "isCurrent": false,
-          "ownershipPct": null
+          "ownershipPct": null,
+          "confidence": "medium",
+          "notes": "Rupert Murdoch is Chairman Emeritus; September 2025 trust resolution shifted voting control over FOX/News Corp trust-held shares solely to Lachlan, so Rupert is retained as a historical family-control link."
+        },
+        "news-corp": {
+          "role": "Chairman Emeritus / Former Controlling Family Trust Figure",
+          "startYear": 2013,
+          "endYear": 2025,
+          "benefitBasis": "family_control",
+          "isCurrent": false,
+          "ownershipPct": null,
+          "confidence": "medium",
+          "notes": "Rupert Murdoch is Chairman Emeritus; September 2025 trust resolution shifted voting control over FOX/News Corp trust-held shares solely to Lachlan, so Rupert is retained as a historical family-control link."
         }
       }
     },
@@ -860,11 +874,13 @@
       "entityLinks": {
         "netflix": {
           "role": "Co-Founder & Executive Chairman",
-          "startYear": 2023,
-          "endYear": null,
+          "startYear": 1997,
+          "endYear": 2026,
           "benefitBasis": "founder_stake",
           "isCurrent": true,
-          "ownershipPct": null
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Hastings co-founded Netflix and remains executive chair until the June 2026 annual meeting; mark current for this April 2026 pass and review after the board transition."
         }
       }
     },
@@ -1036,9 +1052,12 @@
           "endYear": null,
           "benefitBasis": "founder_stake",
           "isCurrent": true,
-          "ownershipPct": null
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Blackstones official bio identifies Schwarzman as Chairman, CEO and Co-Founder and says he has been involved since founding in 1985."
         }
-      }
+      },
+      "commonName": "Stephen Schwarzman"
     },
     "stephen-mandel": {
       "entityLinks": {
@@ -1100,6 +1119,387 @@
           "isCurrent": true,
           "ownershipPct": null
         }
+      }
+    },
+    "larry-page": {
+      "person": {
+        "canonicalName": "PAGE, LAWRENCE",
+        "displayName": "Larry Page",
+        "commonName": "Larry Page",
+        "aliases": [
+          "Larry Page",
+          "Lawrence Page"
+        ],
+        "fecSearchNames": [
+          "PAGE, LAWRENCE",
+          "PAGE, LARRY",
+          "PAGE, LAWRENCE E"
+        ],
+        "primaryEmployer": "Alphabet Inc",
+        "primaryOccupation": "Co-Founder",
+        "verificationStatus": "manual",
+        "notes": "Manual add for entity linkage: Alphabet 2025 proxy reports Larry Page beneficially owns 389,051,160 Class B shares, 45.5% of Class B and 27.1% total voting power."
+      },
+      "entityLinks": {
+        "google-alphabet": {
+          "role": "Co-Founder & Controlling Class B Shareholder",
+          "startYear": 1998,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Alphabet 2025 proxy reports Page holds 45.5% of Class B shares and 27.1% total voting power; ordinary Google/Alphabet revenue can affect the value of his founder stake."
+        }
+      }
+    },
+    "sergey-brin": {
+      "person": {
+        "canonicalName": "BRIN, SERGEY",
+        "displayName": "Sergey Brin",
+        "commonName": "Sergey Brin",
+        "aliases": [
+          "Sergey Brin"
+        ],
+        "fecSearchNames": [
+          "BRIN, SERGEY",
+          "BRIN, SERGEY M"
+        ],
+        "primaryEmployer": "Alphabet Inc",
+        "primaryOccupation": "Co-Founder",
+        "verificationStatus": "manual",
+        "notes": "Manual add for entity linkage: Alphabet 2025 proxy reports Sergey Brin beneficially owns 362,766,628 Class B shares, 42.4% of Class B and 25.2% total voting power."
+      },
+      "entityLinks": {
+        "google-alphabet": {
+          "role": "Co-Founder & Controlling Class B Shareholder",
+          "startYear": 1998,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Alphabet 2025 proxy reports Brin holds 42.4% of Class B shares and 25.2% total voting power; ordinary Google/Alphabet revenue can affect the value of his founder stake."
+        }
+      }
+    },
+    "lachlan-murdoch": {
+      "person": {
+        "canonicalName": "MURDOCH, LACHLAN",
+        "displayName": "Lachlan Murdoch",
+        "commonName": "Lachlan Murdoch",
+        "aliases": [
+          "Lachlan Murdoch",
+          "Lachlan K Murdoch"
+        ],
+        "fecSearchNames": [
+          "MURDOCH, LACHLAN",
+          "MURDOCH, LACHLAN K"
+        ],
+        "primaryEmployer": "Fox Corporation",
+        "primaryOccupation": "Executive Chair and CEO",
+        "verificationStatus": "manual",
+        "notes": "Manual add for entity linkage: Fox identifies Lachlan Murdoch as Executive Chair and CEO; News Corp identifies him as Chair. September 2025 Fox/News Corp releases state voting control over trust-held shares rests solely with Lachlan through LGC Holdco."
+      },
+      "entityLinks": {
+        "fox-corporation": {
+          "role": "Executive Chair, CEO & Controlling Family Trust Manager",
+          "startYear": 2019,
+          "endYear": null,
+          "benefitBasis": "control_owner",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Fox 2026 investor release identifies Lachlan as Executive Chair and CEO; 2025 trust-resolution release says voting control of FOX and News Corp shares owned by LGC Holdco rests solely with Lachlan."
+        },
+        "news-corp": {
+          "role": "Chair & Controlling Family Trust Manager",
+          "startYear": 2023,
+          "endYear": null,
+          "benefitBasis": "control_owner",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "News Corp board page identifies Lachlan as Chair; 2025 trust-resolution release says voting control of News Corp and FOX shares owned by LGC Holdco rests solely with Lachlan."
+        }
+      }
+    },
+    "steve-ballmer": {
+      "person": {
+        "canonicalName": "BALLMER, STEVEN",
+        "displayName": "Steve Ballmer",
+        "commonName": "Steve Ballmer",
+        "aliases": [
+          "Steve Ballmer",
+          "Steven Ballmer",
+          "Steven A Ballmer"
+        ],
+        "fecSearchNames": [
+          "BALLMER, STEVEN",
+          "BALLMER, STEVE",
+          "BALLMER, STEVEN A"
+        ],
+        "primaryEmployer": "Microsoft",
+        "primaryOccupation": "Former CEO",
+        "verificationStatus": "manual",
+        "notes": "Manual add for Microsoft audit: Forbes reports Ballmer held 4% of Microsoft when he retired and has said he is the companys largest individual shareholder."
+      },
+      "entityLinks": {
+        "microsoft": {
+          "role": "Former CEO & Major Individual Shareholder",
+          "startYear": 1980,
+          "endYear": null,
+          "benefitBasis": "major_shareholder",
+          "isCurrent": true,
+          "ownershipPct": 4,
+          "confidence": "high",
+          "notes": "Forbes reports Ballmer held 4% of Microsoft stock at retirement and has held onto most of it; ordinary Microsoft revenue can affect the value of this material stake."
+        }
+      }
+    },
+    "connie-ballmer": {
+      "entityLinks": {
+        "microsoft": {
+          "role": "Spouse of Major Individual Shareholder",
+          "startYear": null,
+          "endYear": null,
+          "benefitBasis": "family_control",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "medium",
+          "notes": "Connie Ballmer is Steve Ballmers spouse and Ballmer Group co-founder; Steve Ballmers Microsoft stake is reported as a material family wealth source."
+        }
+      }
+    },
+    "patty-quillin": {
+      "entityLinks": {
+        "netflix": {
+          "role": "Spouse of Co-Founder / Founder-Stake Holder",
+          "startYear": null,
+          "endYear": null,
+          "benefitBasis": "family_control",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "medium",
+          "notes": "Patricia Quillin is Reed Hastings spouse; Hastings co-founded Netflix, remained executive chair into 2026, and retains shareholder exposure even as he steps down from the board in June 2026."
+        }
+      }
+    },
+    "jon-stryker": {
+      "entityLinks": {
+        "stryker": {
+          "role": "Stryker Family Heir / Shareholder",
+          "startYear": null,
+          "endYear": null,
+          "benefitBasis": "family_control",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Jon Stryker is a billionaire heir to the Stryker Corporation fortune; the family wealth is tied to the medical technology company founded by Homer Stryker."
+        }
+      }
+    },
+    "pat-stryker": {
+      "entityLinks": {
+        "stryker": {
+          "role": "Stryker Family Heir / Shareholder",
+          "startYear": null,
+          "endYear": null,
+          "benefitBasis": "family_control",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Pat Stryker is a billionaire heir to the Stryker Corporation fortune; Forbes identifies her grandfather as Stryker Corp founder Homer Stryker."
+        }
+      }
+    },
+    "marlene-ricketts": {
+      "entityLinks": {
+        "td-ameritrade": {
+          "role": "Ricketts Family Matriarch / Founder Family",
+          "startYear": 1975,
+          "endYear": 2020,
+          "benefitBasis": "family_control",
+          "isCurrent": false,
+          "ownershipPct": null,
+          "confidence": "medium",
+          "notes": "Joe Ricketts founded Ameritrade/TD Ameritrade and Forbes reported the Ricketts family owned just under 12% before the Charles Schwab acquisition; mark historical because Schwab acquired TD Ameritrade in 2020 and the platform shut down in 2024."
+        }
+      }
+    },
+    "todd-ricketts": {
+      "person": {
+        "canonicalName": "RICKETTS, TODD",
+        "displayName": "Todd Ricketts",
+        "commonName": "Todd Ricketts",
+        "aliases": [
+          "Todd Ricketts"
+        ],
+        "fecSearchNames": [
+          "RICKETTS, TODD",
+          "RICKETTS, TODD M"
+        ],
+        "primaryEmployer": "Ricketts Family",
+        "primaryOccupation": "Businessperson",
+        "verificationStatus": "manual",
+        "notes": "Manual add for Ricketts family audit; linked historically to TD Ameritrade family wealth, not treated as a current operating role after Schwab acquisition."
+      },
+      "entityLinks": {
+        "td-ameritrade": {
+          "role": "Ricketts Founder Family Member",
+          "startYear": 1975,
+          "endYear": 2020,
+          "benefitBasis": "family_control",
+          "isCurrent": false,
+          "ownershipPct": null,
+          "confidence": "medium",
+          "notes": "Forbes reported the Ricketts family owned just under 12% of TD Ameritrade and Todd sat on the board; mark historical because Schwab acquired TD Ameritrade in 2020."
+        }
+      }
+    },
+    "pete-ricketts": {
+      "person": {
+        "canonicalName": "RICKETTS, PETE",
+        "displayName": "Pete Ricketts",
+        "commonName": "Pete Ricketts",
+        "aliases": [
+          "Pete Ricketts",
+          "John Peter Ricketts"
+        ],
+        "fecSearchNames": [
+          "RICKETTS, PETE",
+          "RICKETTS, JOHN PETER",
+          "RICKETTS, J PETER"
+        ],
+        "primaryEmployer": "United States Senate",
+        "primaryOccupation": "Senator",
+        "verificationStatus": "manual",
+        "notes": "Manual add for Ricketts family audit; linked historically to TD Ameritrade family wealth, not treated as a current operating role after Schwab acquisition."
+      },
+      "entityLinks": {
+        "td-ameritrade": {
+          "role": "Ricketts Founder Family Member",
+          "startYear": 1975,
+          "endYear": 2020,
+          "benefitBasis": "family_control",
+          "isCurrent": false,
+          "ownershipPct": null,
+          "confidence": "medium",
+          "notes": "Forbes reported the Ricketts family owned just under 12% of TD Ameritrade; mark historical because Schwab acquired TD Ameritrade in 2020 and the platform shut down in 2024."
+        }
+      }
+    },
+    "kathryn-murdoch": {
+      "entityLinks": {
+        "fox-corporation": {
+          "role": "Former Murdoch Family Trust Beneficiary Household",
+          "startYear": null,
+          "endYear": 2025,
+          "benefitBasis": "family_control",
+          "isCurrent": false,
+          "ownershipPct": null,
+          "confidence": "medium",
+          "notes": "Kathryn Murdoch is married to James Murdoch. Fox/News Corp announced in September 2025 that James and other departing beneficiaries would cease to be beneficiaries of trusts holding FOX or News Corp shares, so this is historical, not a current control link."
+        },
+        "news-corp": {
+          "role": "Former Murdoch Family Trust Beneficiary Household",
+          "startYear": null,
+          "endYear": 2025,
+          "benefitBasis": "family_control",
+          "isCurrent": false,
+          "ownershipPct": null,
+          "confidence": "medium",
+          "notes": "Kathryn Murdoch is married to James Murdoch. Fox/News Corp announced in September 2025 that James and other departing beneficiaries would cease to be beneficiaries of trusts holding FOX or News Corp shares, so this is historical, not a current control link."
+        }
+      }
+    },
+    "james-murdoch": {
+      "entityLinks": {
+        "fox-corporation": {
+          "role": "Former Murdoch Family Trust Beneficiary",
+          "startYear": null,
+          "endYear": 2025,
+          "benefitBasis": "family_control",
+          "isCurrent": false,
+          "ownershipPct": null,
+          "confidence": "medium",
+          "notes": "Fox/News Corp announced in September 2025 that James Murdoch and other departing beneficiaries would cease to be beneficiaries of trusts holding FOX or News Corp shares and receive cash consideration."
+        },
+        "news-corp": {
+          "role": "Former Murdoch Family Trust Beneficiary",
+          "startYear": null,
+          "endYear": 2025,
+          "benefitBasis": "family_control",
+          "isCurrent": false,
+          "ownershipPct": null,
+          "confidence": "medium",
+          "notes": "Fox/News Corp announced in September 2025 that James Murdoch and other departing beneficiaries would cease to be beneficiaries of trusts holding FOX or News Corp shares and receive cash consideration."
+        }
+      }
+    },
+    "marilyn-simons": {
+      "entityLinks": {
+        "renaissance-technologies": {
+          "role": "Spouse of Founder / Simons Family",
+          "startYear": 1982,
+          "endYear": 2024,
+          "benefitBasis": "family_control",
+          "isCurrent": false,
+          "ownershipPct": null,
+          "confidence": "medium",
+          "notes": "Marilyn Simons was James Simons spouse; Jim Simons founded Renaissance Technologies and remained tied to the firm until his 2024 death. Mark historical after 2024."
+        }
+      }
+    },
+    "linda-e-mcmahon": {
+      "commonName": "Linda McMahon",
+      "person": {
+        "notes": "Reviewed for WWE/TKO link. No live WWE/TKO entity exists in the current V1 graph, so no accepted link was added in this pass."
+      }
+    },
+    "vince-mcmahon": {
+      "person": {
+        "canonicalName": "MCMAHON, VINCENT",
+        "displayName": "Vince McMahon",
+        "commonName": "Vince McMahon",
+        "aliases": [
+          "Vince McMahon",
+          "Vincent McMahon",
+          "Vincent K McMahon"
+        ],
+        "fecSearchNames": [
+          "MCMAHON, VINCENT",
+          "MCMAHON, VINCE",
+          "MCMAHON, VINCENT K"
+        ],
+        "primaryEmployer": "TKO Group Holdings",
+        "primaryOccupation": "Former Executive Chairman",
+        "verificationStatus": "manual",
+        "notes": "Reviewed for WWE/TKO link. CNBC reported Vince McMahon resigned from TKO and WWE roles in January 2024; no live WWE/TKO entity exists in the current V1 graph, so no accepted link was added in this pass."
+      }
+    },
+    "henry-r-kravis": {
+      "commonName": "Henry Kravis",
+      "person": {
+        "notes": "Reviewed for KKR link. Person exists in bulk-ranked donors, but no live KKR entity exists in the current graph; do not link through portfolio companies by generalized association."
+      }
+    },
+    "leon-cooperman": {
+      "person": {
+        "canonicalName": "COOPERMAN, LEON",
+        "displayName": "Leon Cooperman",
+        "commonName": "Leon Cooperman",
+        "aliases": [
+          "Leon Cooperman"
+        ],
+        "fecSearchNames": [
+          "COOPERMAN, LEON",
+          "COOPERMAN, LEON G"
+        ],
+        "primaryEmployer": "Omega Advisors",
+        "primaryOccupation": "Investor",
+        "verificationStatus": "manual",
+        "notes": "Manual add for review completeness. No accepted entity link: Omega Advisors is not in the live graph and, as a private investment office, does not pass the ordinary consumer-spending economic-benefit test for this app surface."
       }
     }
   }

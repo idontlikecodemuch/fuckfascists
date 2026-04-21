@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "totalEntities": 727,
+    "totalEntities": 728,
     "updatedAt": "2026-04-21",
     "formatVersion": "1.0",
     "entityDonationHydrationSource": "FEC bulk PAS2/OTH files",
@@ -7653,8 +7653,10 @@
       "verificationStatus": "pipeline",
       "associatedPersonIds": [
         "brad-smith",
+        "connie-ballmer",
         "james-kevin-scott",
-        "john-thompson"
+        "john-thompson",
+        "steve-ballmer"
       ]
     },
     {
@@ -7762,7 +7764,9 @@
       },
       "verificationStatus": "pipeline",
       "associatedPersonIds": [
-        "eric-schmidt"
+        "eric-schmidt",
+        "larry-page",
+        "sergey-brin"
       ]
     },
     {
@@ -7800,6 +7804,7 @@
       },
       "verificationStatus": "pipeline",
       "associatedPersonIds": [
+        "patty-quillin",
         "reed-hastings"
       ]
     },
@@ -8764,27 +8769,27 @@
       "id": "verizon",
       "canonicalName": "Verizon Communications Inc",
       "aliases": [
+        "Simple Mobile",
+        "Straight Talk",
+        "Total Wireless",
+        "TracFone",
+        "Tracfone Wireless",
         "Verizon",
         "Verizon Fios",
         "Verizon Wireless",
         "Visible",
         "Visible by Verizon",
-        "TracFone",
-        "Tracfone Wireless",
-        "Straight Talk",
-        "Total Wireless",
-        "Simple Mobile",
         "Walmart Family Mobile"
       ],
       "domains": [
-        "verizon.com",
-        "verizonwireless.com",
-        "visible.com",
-        "tracfone.com",
+        "myfamilymobile.com",
+        "simplemobile.com",
         "straighttalk.com",
         "totalwireless.com",
-        "simplemobile.com",
-        "myfamilymobile.com"
+        "tracfone.com",
+        "verizon.com",
+        "verizonwireless.com",
+        "visible.com"
       ],
       "categoryTags": [
         "telecom",
@@ -9496,7 +9501,10 @@
       },
       "verificationStatus": "pipeline",
       "associatedPersonIds": [
-        "k-rupert-murdoch"
+        "james-murdoch",
+        "k-rupert-murdoch",
+        "kathryn-murdoch",
+        "lachlan-murdoch"
       ]
     },
     {
@@ -9559,7 +9567,10 @@
       },
       "verificationStatus": "pipeline",
       "associatedPersonIds": [
-        "k-rupert-murdoch"
+        "james-murdoch",
+        "k-rupert-murdoch",
+        "kathryn-murdoch",
+        "lachlan-murdoch"
       ]
     },
     {
@@ -11503,7 +11514,11 @@
       "ceoName": "Kevin Lobo",
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "manual"
+      "verificationStatus": "manual",
+      "associatedPersonIds": [
+        "jon-stryker",
+        "pat-stryker"
+      ]
     },
     {
       "id": "hca-healthcare",
@@ -22849,6 +22864,7 @@
       "associatedPersonIds": [
         "henry-laufer",
         "james-simons",
+        "marilyn-simons",
         "robert-mercer"
       ],
       "donationSummary": {
@@ -23215,7 +23231,10 @@
       "notes": "Historical entity added from people.json V2 forward refs. TD Ameritrade was acquired by Charles Schwab and the standalone brand was retired.",
       "lastVerifiedDate": "2026-04-20",
       "associatedPersonIds": [
-        "j-joe-ricketts"
+        "j-joe-ricketts",
+        "marlene-ricketts",
+        "pete-ricketts",
+        "todd-ricketts"
       ],
       "donationSummary": {
         "committeeId": "C00396887",
@@ -26776,7 +26795,11 @@
       "ceoName": "Richard M. Brooks",
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-04-20",
-      "verificationStatus": "unverified"
+      "verificationStatus": "unverified",
+      "associatedPersonIds": [
+        "thomas-campion",
+        "tom-campion"
+      ]
     },
     {
       "id": "tommy-bahama",
@@ -26868,7 +26891,10 @@
             "isReceipt": false
           }
         ]
-      }
+      },
+      "associatedPersonIds": [
+        "john-b-hess"
+      ]
     },
     {
       "id": "sinclair-oil",
@@ -28757,6 +28783,26 @@
       "ceoName": "Jim Rowley",
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-04-20",
+      "verificationStatus": "unverified"
+    },
+    {
+      "id": "ufc-gym",
+      "canonicalName": "UFC Gym",
+      "aliases": [
+        "UFC Gym",
+        "UFC Fit"
+      ],
+      "domains": [
+        "ufcgym.com",
+        "ufcfit.com"
+      ],
+      "categoryTags": [
+        "fitness",
+        "wellness"
+      ],
+      "ceoName": "Adam Sedlack",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-04-21",
       "verificationStatus": "unverified"
     },
     {
