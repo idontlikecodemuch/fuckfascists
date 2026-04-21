@@ -1,8 +1,18 @@
-import React, { useState } from 'react';
-import { View, TextInput, Pressable, Text, StyleSheet, Platform } from 'react-native';
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
+import { View, TextInput, Pressable, Text, StyleSheet, Platform, Keyboard } from 'react-native';
 import { mapCopy } from '../../../copy/map';
 import { theme } from '../../../design/tokens';
 import { SparkleDecoration } from '../../../core/fx';
+
+/**
+ * Imperative handle exposed to MapScreen. Lets surrounding map gestures
+ * (map tap, business-card open) pull focus out of the search field
+ * programmatically instead of the user having to find a dismiss target.
+ */
+export interface MapSearchBarHandle {
+  /** Blurs the TextInput and closes the system keyboard. */
+  blur: () => void;
+}
 
 interface MapSearchBarProps {
   value: string;
@@ -12,8 +22,29 @@ interface MapSearchBarProps {
   topOffset: number;
 }
 
-export function MapSearchBar({ value, onChangeText, onSubmit, isScanning, topOffset }: MapSearchBarProps) {
+export const MapSearchBar = forwardRef<MapSearchBarHandle, MapSearchBarProps>(
+  function MapSearchBar({ value, onChangeText, onSubmit, isScanning, topOffset }, ref) {
   const [focused, setFocused] = useState(false);
+  const inputRef = useRef<TextInput>(null);
+
+  useImperativeHandle(ref, () => ({
+    blur: () => {
+      inputRef.current?.blur();
+      // Belt + suspenders: some Android keyboards linger after blur alone.
+      Keyboard.dismiss();
+    },
+  }), []);
+
+  // Clear (×) affordance — #111/#112. Shown whenever the user could otherwise
+  // be stuck: they've typed something, or they focused the field and are
+  // looking for an explicit exit. Clears the query AND closes the keyboard
+  // in one tap. Hidden while scanning so it can't cancel an in-flight submit.
+  const showClear = !isScanning && (focused || value.length > 0);
+  const handleClear = () => {
+    onChangeText('');
+    inputRef.current?.blur();
+    Keyboard.dismiss();
+  };
 
   const outerStyle = isScanning
     ? styles.outerScanning
@@ -51,6 +82,7 @@ export function MapSearchBar({ value, onChangeText, onSubmit, isScanning, topOff
           {focused && !isScanning && <View style={styles.focusAccentBar} />}
 
           <TextInput
+            ref={inputRef}
             style={[styles.input, { color: inputColor }]}
             value={value}
             onChangeText={onChangeText}
@@ -64,6 +96,20 @@ export function MapSearchBar({ value, onChangeText, onSubmit, isScanning, topOff
             accessibilityHint={mapCopy.searchHint}
             allowFontScaling
           />
+
+          {showClear && (
+            <Pressable
+              onPress={handleClear}
+              style={styles.iconButton}
+              accessibilityRole="button"
+              accessibilityLabel={mapCopy.searchClearLabel}
+              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            >
+              <Text style={[styles.iconText, styles.clearText]} allowFontScaling={false}>
+                {mapCopy.searchClearIcon}
+              </Text>
+            </Pressable>
+          )}
 
           <Pressable
             onPress={onSubmit}
@@ -84,7 +130,7 @@ export function MapSearchBar({ value, onChangeText, onSubmit, isScanning, topOff
       {!isScanning && <SparkleDecoration />}
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -168,6 +214,10 @@ const styles = StyleSheet.create({
   iconText: {
     fontSize: 22,
     fontWeight: 'bold',
+  },
+  clearText: {
+    color: theme.colors.textSecondary,
+    fontSize: 18,
   },
 
   // ── Drop shadows ──

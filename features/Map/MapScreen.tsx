@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
-import { View, Image, Pressable, Animated, StyleSheet, SafeAreaView, Linking, Platform, useWindowDimensions } from 'react-native';
+import { View, Image, Pressable, Animated, StyleSheet, SafeAreaView, Linking, Platform, Keyboard, useWindowDimensions } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import type { Entity, PoliticalPerson } from '../../core/models';
 import { getAssociatedPeople } from '../../core/models';
@@ -21,6 +21,7 @@ import { BusinessCard, BusinessBanner, resolveCardMode } from './components/Busi
 import { FOLDER_AUTO_DISMISS_MS, AMBER_PULSE_MS, SURFACE_MAP } from '../../config/constants';
 import { FlagMarker } from './components/MapMarker';
 import { MapSearchBar } from './components/MapSearchBar';
+import type { MapSearchBarHandle } from './components/MapSearchBar';
 import { UnmatchedBanner } from './components/UnmatchedBanner';
 import { MatchChooser } from './components/MatchChooser';
 import { NoMatchToast } from './components/NoMatchToast';
@@ -77,6 +78,7 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
   const [pins, setPins] = useState<MapPin[]>([]);
   const [activeResult, setActiveResult] = useState<ScanResult | null>(null);
   const isTextSearch = useRef(false);
+  const searchBarRef = useRef<MapSearchBarHandle>(null);
 
   const avoidedTodayRef = useRef(new Set<string>());
 
@@ -215,6 +217,9 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
     const alreadyAvoided = entityId ? avoidedTodayRef.current.has(entityId) : false;
     setAvoidedResult(alreadyAvoided ? r : null);
     setActiveResult(r);
+    // Opening the business card also exits the search state (#111/#112) —
+    // keyboard + native autofill bar shouldn't cover the card.
+    searchBarRef.current?.blur();
   }, []);
 
   useEffect(() => {
@@ -252,7 +257,12 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
         ref={mapRef} style={styles.map}
         provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : undefined}
         initialRegion={defaultRegion} onRegionChangeComplete={handleRegionChange}
-        onPress={Platform.OS === 'ios' ? handleMapPress : undefined} onPoiClick={handlePoiClick}
+        // iOS: handleMapPress runs MKLocalSearch (and Keyboard.dismiss inside).
+        // Android: empty-map tap doesn't fire a search, but it IS the natural
+        // "tap outside" gesture, so wire a lightweight keyboard dismiss there
+        // too (#111/#112). POI taps on Android go through onPoiClick.
+        onPress={Platform.OS === 'ios' ? handleMapPress : () => Keyboard.dismiss()}
+        onPoiClick={handlePoiClick}
         showsUserLocation showsMyLocationButton={false} accessibilityLabel={mapCopy.mapLabel}
       >
         {allPins.map((pin) => {
@@ -279,7 +289,7 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
         <View style={styles.headerDivider} />
       </View>
 
-      <MapSearchBar value={searchText} onChangeText={setSearchText} onSubmit={handleSearch} isScanning={status === 'scanning'} topOffset={SEARCH_TOP} />
+      <MapSearchBar ref={searchBarRef} value={searchText} onChangeText={setSearchText} onSubmit={handleSearch} isScanning={status === 'scanning'} topOffset={SEARCH_TOP} />
       {hints.activeHint && !activeResult && (
         <>
           <Pressable

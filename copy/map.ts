@@ -8,6 +8,8 @@ export const mapCopy = {
   search: "Search",
   scanIcon: "\u2315",
   scanningIcon: "\u2026",
+  searchClearIcon: "\u2715",
+  searchClearLabel: "Clear search",
   zoomIn: "+",
   zoomOut: "\u2212",
   zoomInLabel: "Zoom in",

@@ -1,4 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
+import { Keyboard } from 'react-native';
 import type { MatchingDeps } from '../../../core/matching';
 import { matchEntity } from '../../../core/matching';
 import { normalizeHost } from '../../../core/matching';
@@ -227,6 +228,11 @@ export function useTapSearch(
    */
   const handleMapPress = useCallback(
     async (e: { nativeEvent: { coordinate: LatLng } }) => {
+      // Tap on the map is also the "get me out of here" gesture for a stuck
+      // keyboard (#111/#112). Dismiss before any debounce-drop so a stuck
+      // user still gets the keyboard closed even if the tap itself is a no-op.
+      Keyboard.dismiss();
+
       const now = Date.now();
       if (now - lastTapAt.current < TAP_DEBOUNCE_MS) return;
       lastTapAt.current = now;
@@ -279,6 +285,10 @@ export function useTapSearch(
    */
   const handlePoiClick = useCallback(
     async (e: PoiClickEvent) => {
+      // Android counterpart to the iOS map-tap dismiss — close the keyboard
+      // before any search work so a stuck user always gets out (#111/#112).
+      Keyboard.dismiss();
+
       if (inFlightRef.current) return;
       const { name, coordinate } = e.nativeEvent;
       setTapSearching(true);
