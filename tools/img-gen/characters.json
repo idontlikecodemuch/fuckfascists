@@ -556,13 +556,13 @@
     "id": "dario-amodei",
     "name": "Dario Amodei",
     "tier": "important",
-    "likeness": "Short curly brown hair, pale skin, medium build, round glasses, soft jaw, thoughtful expression",
+    "likeness": "Clean-shaven. Full, voluminous curly dark-brown hair piled high (NOT short, NOT flat, NOT close-cropped — visibly bushy with height on top). Round, full face with soft cheeks. Fair/light skin tone. Thick DARK ROUND tortoiseshell-or-black eyeglass frames (perfectly round lenses, not square, not rectangular, not wire-frame). Slightly stockier build, academic-looking. Friendly thoughtful expression. IMPORTANT: no beard, no mustache, no stubble — face is completely smooth.",
     "variants": {
       "A": {
-        "outfit": "Muted blue button-down, dark pants, gray sneakers, visible company logo on chest"
+        "outfit": "Navy blue blazer worn open over a plain white collared dress shirt (no tie), dark gray trousers, brown oxford dress shoes. No logos, no graphics."
       },
       "B": {
-        "outfit": "Charcoal tech-fleece over plain gray t-shirt, dark jeans, white sneakers, visible company logo on chest"
+        "outfit": "Plain olive-green long-sleeved button-down shirt worn open over a plain white t-shirt, dark blue jeans, white sneakers. No hoodie, no fleece, no zip-up jacket, no logos of any kind."
       }
     }
   },
