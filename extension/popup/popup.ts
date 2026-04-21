@@ -1,39 +1,31 @@
 /**
- * Popup script — renders the pixel art business card for the active tab.
+ * Popup entry — queries the active tab, asks the SW for its flag, and routes
+ * to the correct rendered state (clean / flagged / avoided).
  *
- * Flow:
- *  1. Query the active tab ID.
- *  2. Ask the service worker for the current flag (GET_CURRENT_FLAG).
- *  3. Render the appropriate state: clean, flagged, or already-avoided.
- *  4. Handle AVOID and SNOOZE button clicks.
- *  5. Fetch and render weekly stats footer.
+ * All flagged-state rendering lives in renderFlag.ts so this file stays a
+ * thin controller: DOM state switching, message plumbing, and button wiring.
  *
- * No browsing history is accessed here. The popup only reads state
- * that the service worker already has in memory.
+ * The donation math + card/banner routing mirror the mobile app's
+ * BusinessCard (Principle #8 cross-surface data parity): resolveCardMode
+ * runs in the SW, deriveDonationSummary runs in renderFlag.ts with the same
+ * inputs the app's DataZone uses.
+ *
+ * No browsing history is accessed here. The popup only reads state that the
+ * service worker already has in memory.
  */
 
-import type { TabFlag, WeeklyStats, GetCurrentFlagMsg, AvoidEntityMsg, SnoozeDomainMsg, GetWeeklyStatsMsg } from '../types';
-import { formatActiveCycles, formatCycleLabel, formatDonationAmount } from '../../core/models';
-import { SHOW_FIGURE_NAME_IN_POPUP, CONFIDENCE_THRESHOLD_HIGH } from '../../config/constants';
+import type {
+  TabFlag, WeeklyStats,
+  GetCurrentFlagMsg, AvoidEntityMsg, SnoozeDomainMsg, GetWeeklyStatsMsg,
+} from '../types';
 import { extCopy } from '../copy';
+import { renderFlag } from './renderFlag';
 
 // ── DOM refs ───────────────────────────────────────────────────────────────────
 
 const stateClean   = document.getElementById('state-clean')!;
 const stateFlagged = document.getElementById('state-flagged')!;
 const stateAvoided = document.getElementById('state-avoided')!;
-
-// Figure name visibility is controlled by SHOW_FIGURE_NAME_IN_POPUP (see config/constants.ts).
-const entityNameEl            = document.getElementById('entity-name')!;
-const figureNameEl            = document.getElementById('figure-name')!;
-const confidenceDisclaimerEl  = document.getElementById('confidence-disclaimer')!;
-const recentAmountEl          = document.getElementById('recent-amount')!;
-const recentCycleEl           = document.getElementById('recent-cycle')!;
-const totalSince2016          = document.getElementById('total-since-2016')!;
-const activeCyclesEl          = document.getElementById('active-cycles')!;
-const dataUnavailableEl       = document.getElementById('data-unavailable')!;
-const confidenceBadge         = document.getElementById('confidence-badge')!;
-const fecLink                 = document.getElementById('fec-link') as HTMLAnchorElement;
 
 const btnAvoided = document.getElementById('btn-avoided') as HTMLButtonElement;
 const btnSnooze  = document.getElementById('btn-snooze')  as HTMLButtonElement;
@@ -56,92 +48,6 @@ function getMondayOf(date: Date): string {
   const diff = day === 0 ? -6 : 1 - day;
   d.setUTCDate(d.getUTCDate() + diff);
   return d.toISOString().slice(0, 10);
-}
-
-// ── Render ────────────────────────────────────────────────────────────────────
-
-function renderFlag(flag: TabFlag) {
-  entityNameEl.textContent = flag.canonicalName.toUpperCase();
-
-  if (SHOW_FIGURE_NAME_IN_POPUP && flag.displayFigure) {
-    figureNameEl.textContent = flag.displayFigure;
-    figureNameEl.hidden = false;
-  } else {
-    figureNameEl.hidden = true;
-  }
-
-  if (flag.donationDataAvailable && flag.recentCycle !== null) {
-    // Larger party amount first + bigger
-    const rRecent = flag.recentRepubs;
-    const dRecent = flag.recentDems;
-    const rTotal = flag.totalRepubs;
-    const dTotal = flag.totalDems;
-    const oTotal = flag.totalO ?? 0;
-    const oSuffix = oTotal > 0 ? `${extCopy.oSep}${formatDonationAmount(oTotal)}` : '';
-
-    if (rRecent >= dRecent) {
-      recentAmountEl.innerHTML =
-        `<span class="amount-primary">${extCopy.rPrefix}${formatDonationAmount(rRecent)}</span>${extCopy.dSep}<span class="amount-secondary">${formatDonationAmount(dRecent)}</span>`;
-    } else {
-      recentAmountEl.innerHTML =
-        `<span class="amount-primary">D: ${formatDonationAmount(dRecent)}</span> \u00b7 <span class="amount-secondary">R: ${formatDonationAmount(rRecent)}</span>`;
-    }
-    recentCycleEl.textContent  = `${extCopy.cyclePrefix}${formatCycleLabel(flag.recentCycle)}`;
-    recentAmountEl.hidden = false;
-    recentCycleEl.hidden  = false;
-
-    if (rTotal >= dTotal) {
-      totalSince2016.innerHTML =
-        `Total since 2016: <span class="amount-primary">${extCopy.rPrefix}${formatDonationAmount(rTotal)}</span> \u00b7 <span class="amount-secondary">D: ${formatDonationAmount(dTotal)}</span>${oSuffix}`;
-    } else {
-      totalSince2016.innerHTML =
-        `Total since 2016: <span class="amount-primary">D: ${formatDonationAmount(dTotal)}</span> \u00b7 <span class="amount-secondary">R: ${formatDonationAmount(rTotal)}</span>${oSuffix}`;
-    }
-    totalSince2016.hidden = false;
-
-    if (flag.activeCycles.length > 0) {
-      activeCyclesEl.textContent = `${extCopy.activeCycles}${formatActiveCycles(flag.activeCycles)}`;
-      activeCyclesEl.hidden = false;
-    } else {
-      activeCyclesEl.hidden = true;
-    }
-
-    dataUnavailableEl.hidden = true;
-  } else {
-    recentAmountEl.hidden = true;
-    recentCycleEl.hidden  = true;
-    totalSince2016.hidden = true;
-    activeCyclesEl.hidden = true;
-    // Priority: live call failure > no bundled data > generic unavailable.
-    dataUnavailableEl.textContent = flag.liveLookupFailed
-      ? extCopy.fecError
-      : flag.noBundledData
-        ? extCopy.noBundledData
-        : extCopy.donationUnavail;
-    dataUnavailableEl.hidden = false;
-  }
-
-  // FEC record link
-  if (flag.fecCommitteeUrl) {
-    fecLink.href = flag.fecCommitteeUrl;
-    fecLink.hidden = false;
-  } else {
-    fecLink.hidden = true;
-  }
-
-  if (flag.confidence < CONFIDENCE_THRESHOLD_HIGH) {
-    confidenceBadge.textContent = extCopy.confidenceMedium;
-    confidenceBadge.className   = `confidence-badge ${extCopy.confidenceMedium}`;
-    confidenceBadge.title = extCopy.mediumTitle;
-    confidenceBadge.hidden = false;
-    confidenceDisclaimerEl.textContent = extCopy.mediumWarning;
-    confidenceDisclaimerEl.hidden = false;
-  } else {
-    confidenceBadge.hidden = true;
-    confidenceDisclaimerEl.hidden = true;
-  }
-
-  showOnly(stateFlagged);
 }
 
 // ── Weekly stats ───────────────────────────────────────────────────────────────
@@ -178,6 +84,7 @@ async function main() {
     showOnly(stateAvoided);
   } else {
     renderFlag(flag);
+    showOnly(stateFlagged);
   }
 
   // Wire up buttons

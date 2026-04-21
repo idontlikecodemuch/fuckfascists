@@ -42,7 +42,12 @@
           Donation data temporarily unavailable.
         </p>
 
-        <!-- FEC record link -->
+        <!-- "Based on" row — inline comma-separated source links for the
+             contributing PAC + any linked donor/executive FEC records.
+             Populated by popup.ts; hidden when there are no sources. -->
+        <p id="based-on" class="based-on" hidden></p>
+
+        <!-- FEC record link — hidden when "Based on" is present (superseded). -->
         <a id="fec-link" class="source-link" href="#" target="_blank" rel="noopener noreferrer">
           See FEC record ↗
         </a>

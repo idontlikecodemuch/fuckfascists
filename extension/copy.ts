@@ -23,4 +23,12 @@ export const extCopy = {
   mediumTitle: "MEDIUM confidence \u2014 verify at FEC.gov before acting.",
   mediumWarning: "MEDIUM confidence \u2014 verify before acting.",
   weeklyTop: "TOP: ",
+  // Source list ("Based on" row) — parity with the app's business card.
+  basedOnLabel: "Based on",
+  sourcePrefix: "PAC:",
+  donationsLinkSuffix: "donations",
+  // Banner-equivalent copy — matches copy/map.ts bannerNoPac / bannerDissolved
+  // so the confidence label and availability handling stay in sync.
+  bannerNoPac: (name: string) => `${name} has no corporate PAC on file.`,
+  bannerDissolved: (name: string) => `${name}\u2019s PAC is dissolved. No recorded activity.`,
 } as const;

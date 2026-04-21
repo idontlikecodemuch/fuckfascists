@@ -177,6 +177,30 @@ body {
   letter-spacing: 1px;
 }
 
+/* "Based on" row — compact label + inline-flowed comma-separated source
+   links. Matches the app's DataZone layout so the two surfaces read the
+   same. Each span.based-on-link is its own tappable link. */
+.based-on {
+  margin-top: 10px;
+  font-size: 10px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+.based-on-label {
+  color: var(--muted);
+  margin-right: 4px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 9px;
+}
+
+.based-on-link {
+  color: #0066CC;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 /* ── Action buttons ────────────────────────────────────────────────────────── */
 
 .action-row { margin-bottom: 6px; }

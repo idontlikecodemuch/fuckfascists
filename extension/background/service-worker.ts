@@ -13,9 +13,10 @@
  * NO browsing history is stored.
  */
 
-import type { Entity, DonationSummary } from '../../core/models';
-import { fecFilingUrl, getDisplayFigure } from '../../core/models';
-import type { ExtensionMsg, TabFlag, WeeklyStats } from '../types';
+import type { Entity, DonationSummary, PoliticalPerson } from '../../core/models';
+import { fecFilingUrl, getAssociatedPeople, getDisplayFigure } from '../../core/models';
+import { resolveCardMode } from '../../features/Map/components/cardMode';
+import type { ExtensionMsg, TabFlag, TabFlagPerson, WeeklyStats } from '../types';
 import { ChromeStorageAdapter } from '../storage/ChromeStorageAdapter';
 import { findByDomain } from './domainMatch';
 import {
@@ -45,6 +46,7 @@ const cacheDeps = makeCacheDeps(adapter);
 // is the primary path; live calls are the fallback for missing/stale entries.
 const apiClient = new FECClient({ apiKey: '' });
 let entities: Entity[] = [];
+let people: PoliticalPerson[] = [];
 
 async function init() {
   // Load entity list: prefer a CDN-refreshed copy in storage, fall back to the
@@ -57,6 +59,9 @@ async function init() {
   } else {
     await loadBundledEntityList();
   }
+  // People list is bundled-only for now; no CDN refresh path yet. Matches the
+  // app's people.bundle.json (raw[] stripped for non-live-linked people).
+  await loadBundledPeopleList();
 }
 
 /** Loads the entity list bundled at build time (assets/data/entities.json). */
@@ -79,6 +84,44 @@ async function loadBundledEntityList(): Promise<void> {
   } catch {
     // Bundled file missing — extension will not flag until CDN refresh succeeds
   }
+}
+
+/** Loads the people list bundled at build time (assets/data/people.bundle.json). */
+async function loadBundledPeopleList(): Promise<void> {
+  try {
+    const url = chrome.runtime.getURL('assets/data/people.bundle.json');
+    const res = await fetch(url);
+    if (!res.ok) return;
+    const raw: unknown = await res.json();
+    // Accept both { _meta, people: [...] } wrapper and a legacy flat array.
+    const arr =
+      typeof raw === 'object' &&
+      raw !== null &&
+      !Array.isArray(raw) &&
+      Array.isArray((raw as Record<string, unknown>)['people'])
+        ? ((raw as Record<string, unknown>)['people'] as PoliticalPerson[])
+        : (raw as PoliticalPerson[]);
+    if (Array.isArray(arr) && arr.length > 0) {
+      people = arr;
+    }
+  } catch {
+    // People bundle missing — extension still flags, card just has no linked-donor signal.
+  }
+}
+
+/**
+ * Produce the slim person summary that travels across the SW→popup boundary.
+ * Keeps everything getPersonDisplayName / makeFecIndividualUrl / the math in
+ * deriveDonationSummary need. raw[] is stripped — popup only renders summary
+ * totals and source links, never individual line items.
+ */
+function toTabFlagPerson(p: PoliticalPerson): TabFlagPerson {
+  return {
+    ...p,
+    donationSummary: p.donationSummary
+      ? { ...p.donationSummary, raw: [] as [] }
+      : undefined,
+  };
 }
 
 async function refreshEntityList(): Promise<void> {
@@ -216,6 +259,32 @@ async function handleCheckDomain(hostname: string, tabId: number): Promise<void>
   // Distinct from a transient API failure where we might retry later.
   const noBundledData = donationSummary === null && !entity.donationSummary;
 
+  // Resolve linked donor-people (walks one parent-entity level for subsidiaries,
+  // same as the app). Filtered to only people with a hydrated donationSummary
+  // inside getAssociatedPeople. These contribute to the displayed totals AND
+  // drive the "Based on" source list in the popup.
+  const associatedPeople = getAssociatedPeople(entity, people, entities);
+  const slimPeople = associatedPeople.map(toTabFlagPerson);
+
+  // Pre-compute card-vs-banner routing on the SW side. Same resolver the app's
+  // BusinessCard uses — Principle #8 cross-surface data parity. The popup
+  // branches on cardMode to render either the full donation view or a
+  // lightweight banner-equivalent row.
+  const cardMode = resolveCardMode(
+    {
+      entityId: entity.id,
+      canonicalName: entity.canonicalName,
+      matchedAlias: entity.canonicalName,
+      committeeName: donationSummary?.committeeName ?? null,
+      confidence: entityConfidence(undefined),
+      donationSummary,
+      fecCommitteeId: entity.fecCommitteeId ?? '',
+      fecFilingUrl: donationSummary?.fecCommitteeUrl ?? null,
+      entity,
+    },
+    associatedPeople,
+  );
+
   // Flag the tab regardless of whether donation data loaded. The amber icon
   // fires on any confirmed entity match; data is surfaced in the popup if
   // available.
@@ -238,6 +307,12 @@ async function handleCheckDomain(hostname: string, tabId: number): Promise<void>
     fecCommitteeUrl:       donationSummary?.fecCommitteeUrl ?? (committeeId ? fecFilingUrl(committeeId) : null),
     confidence:            entityConfidence(undefined),
     avoided:               false,
+
+    entityName:            entity.canonicalName,
+    entityFecCommitteeId:  entity.fecCommitteeId ?? null,
+    committeeName:         donationSummary?.committeeName ?? null,
+    associatedPeople:      slimPeople,
+    cardMode,
   };
 
   setTabFlag(tabId, flag);

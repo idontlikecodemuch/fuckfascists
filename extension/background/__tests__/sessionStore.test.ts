@@ -46,6 +46,12 @@ function makeFlag(overrides: Partial<TabFlag> = {}): TabFlag {
     fecCommitteeUrl: 'https://www.fec.gov/data/committee/C00431171/',
     confidence:      1.0,
     avoided:         false,
+
+    entityName:            'Amazon',
+    entityFecCommitteeId:  'C00431171',
+    committeeName:         'AMAZON.COM SERVICES LLC PAC',
+    associatedPeople:      [],
+    cardMode:              'card',
     ...overrides,
   };
 }

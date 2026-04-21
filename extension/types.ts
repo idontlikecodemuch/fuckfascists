@@ -45,6 +45,20 @@ export type ExtensionMsg =
 
 // ── Flag state stored per-tab in memory ───────────────────────────────────────
 
+import type { PoliticalPerson, PoliticalPersonDonationSummary } from '../core/models';
+import type { BannerVariant } from '../features/Map/components/cardMode';
+
+/**
+ * Slim PoliticalPerson for the SW→popup message boundary. Structurally
+ * compatible with PoliticalPerson so it can be passed directly to
+ * getPersonDisplayName, makeFecIndividualUrl, and deriveDonationSummary.
+ * donationSummary.raw[] is stripped before send to keep payload small —
+ * the popup only renders summary math + metadata for the "Based on" links.
+ */
+export type TabFlagPerson = Omit<PoliticalPerson, 'donationSummary'> & {
+  donationSummary?: Omit<PoliticalPersonDonationSummary, 'raw'> & { raw: [] };
+};
+
 export interface TabFlag {
   hostname: string;
   entityId: string;
@@ -74,6 +88,36 @@ export interface TabFlag {
   fecCommitteeUrl: string | null;
   confidence: number; // 0–1 score; compare against CONFIDENCE_THRESHOLD_HIGH/MEDIUM for display
   avoided: boolean;
+
+  // ── Cross-surface parity fields (Principle #8) ──────────────────────────────
+  // Mirror the app's card: linked donor-people contribute to totals + source
+  // list, and the SW pre-computes the unified card-vs-banner routing so the
+  // popup just renders.
+
+  /** Entity canonicalName — enables short-PAC label derivation in the popup. */
+  entityName: string;
+  /**
+   * Entity's fecCommitteeId, forwarded so popup copy can reason about the
+   * three states:
+   *  - non-empty string = confirmed PAC ID
+   *  - empty string     = unverified
+   *  - null             = confirmed no PAC
+   */
+  entityFecCommitteeId: string | null;
+  /** PAC full committee name — "Based on" PAC source link label. */
+  committeeName: string | null;
+  /**
+   * Donors/executives linked to this entity (or its parent) whose Schedule A
+   * totals roll into the displayed numbers + drive the "Based on" source list.
+   * raw[] stripped for payload size.
+   */
+  associatedPeople: TabFlagPerson[];
+  /**
+   * Pre-computed by resolveCardMode on the SW side. The popup branches on this
+   * — 'card' renders the full donation view, 'banner' renders a lightweight
+   * unavailable-reason row. Single source of truth shared with the app.
+   */
+  cardMode: 'card' | { banner: BannerVariant };
 }
 
 // ── Snooze record ─────────────────────────────────────────────────────────────
