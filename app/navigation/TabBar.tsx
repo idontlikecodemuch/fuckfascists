@@ -88,8 +88,14 @@ const styles = StyleSheet.create<{
     paddingTop: theme.space.xs,
     overflow: 'visible',
   },
+  // Cyan glow above the tab bar — relocated from the map header (#120).
+  // Uses the glowDividerLine base (height + shadow radius + opacity) but
+  // overrides the color channels to cyan to match the treatment the user
+  // signed off on for the header. Other in-app dividers are unchanged.
   topGlow: {
     ...glowDividerLine,
+    backgroundColor: theme.colors.glowCyan,
+    shadowColor: theme.colors.glowCyan,
     position: 'absolute',
     top: 0,
     left: 0,
