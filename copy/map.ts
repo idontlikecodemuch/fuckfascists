@@ -93,6 +93,7 @@ export const mapCopy = {
   documentHeader: "CAMPAIGN FINANCE RECORD",
   onFileLabel: "On file",
   totalRowLabel: "Total",
+  basedOnLabel: "Based on",
   sourcePrefix: "PAC:",
   avoidedStamp: "AVOIDED",
 } as const;

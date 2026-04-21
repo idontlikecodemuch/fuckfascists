@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, Pressable, Linking, StyleSheet } from 'react-native';
+import { View, Text, Image, Linking, StyleSheet } from 'react-native';
 import type { DonationSummary, PoliticalPerson } from '../../../core/models';
 import { formatDonationAmount, formatCycleLabel, formatActiveCycles, getPersonDisplayName, makeFecIndividualUrl } from '../../../core/models';
 import { sharedCopy } from '../../../copy/shared';
@@ -171,38 +171,44 @@ export function DataZone({ donationSummary, committeeName, fecUrl, onDetailPress
         </View>
       )}
 
-      {/* Source line(s) — short PAC name */}
-      {(pacFullName || people.length > 0) && (
-        <View style={styles.sourceSection}>
-          {pacFullName && fecUrl && (
-            <Pressable
-              onPress={() => { onDetailPress(); Linking.openURL(fecUrl); }}
-              accessibilityRole="link"
-              accessibilityLabel={`${pacFullName} FEC record`}
-              hitSlop={{ top: 4, bottom: 4, left: 4, right: 4 }}
-            >
-              <Text style={styles.sourceLink} allowFontScaling>
+      {/* Source lines — "Based on" label with inline-flowing, comma-separated
+           links (PAC + associated people). Reads as one labeled list of sources
+           that compose the displayed total. Inline <Text onPress> lets the items
+           wrap naturally like body text; VoiceOver treats each link as its own
+           focusable run. */}
+      {((pacFullName && fecUrl) || people.length > 0) && (
+        <View style={styles.sourceRow}>
+          <Text style={styles.rowLabel} allowFontScaling>{mapCopy.basedOnLabel}</Text>
+          <Text style={styles.sourceLinksFlow} allowFontScaling>
+            {pacFullName && fecUrl && (
+              <Text
+                style={styles.sourceLink}
+                onPress={() => { onDetailPress(); Linking.openURL(fecUrl); }}
+                accessibilityRole="link"
+                accessibilityLabel={`${pacFullName} FEC record`}
+              >
                 {mapCopy.sourcePrefix} {shortPacName(entityName, pacFullName)} {'\u2197'}
               </Text>
-            </Pressable>
-          )}
-          {people.map((person) => {
-            const lastName = extractLastName(getPersonDisplayName(person));
-            const url = makeFecIndividualUrl(person);
-            return (
-              <Pressable
-                key={person.id}
-                onPress={() => Linking.openURL(url)}
-                accessibilityRole="link"
-                accessibilityLabel={`${lastName} ${sharedCopy.donationsLinkSuffix} FEC record`}
-                hitSlop={{ top: 4, bottom: 4, left: 4, right: 4 }}
-              >
-                <Text style={styles.sourceLink} allowFontScaling>
-                  {lastName} {sharedCopy.donationsLinkSuffix} {'\u2197'}
+            )}
+            {people.map((person, i) => {
+              const lastName = extractLastName(getPersonDisplayName(person));
+              const url = makeFecIndividualUrl(person);
+              const needsSep = Boolean(pacFullName && fecUrl) || i > 0;
+              return (
+                <Text key={person.id}>
+                  {needsSep && ', '}
+                  <Text
+                    style={styles.sourceLink}
+                    onPress={() => Linking.openURL(url)}
+                    accessibilityRole="link"
+                    accessibilityLabel={`${lastName} ${sharedCopy.donationsLinkSuffix} FEC record`}
+                  >
+                    {lastName} {sharedCopy.donationsLinkSuffix} {'\u2197'}
+                  </Text>
                 </Text>
-              </Pressable>
-            );
-          })}
+              );
+            })}
+          </Text>
         </View>
       )}
     </View>
@@ -232,6 +238,7 @@ const styles = StyleSheet.create({
   labelSpacer: { width: LABEL_WIDTH },
   footnote: { ...theme.type.caption, color: c.documentLabel },
   unavailable: { flex: 1, ...theme.type.bodyS, color: c.documentLabel, fontStyle: 'italic', paddingTop: 2 },
-  sourceSection: { paddingTop: theme.space.xs, paddingLeft: LABEL_WIDTH, paddingBottom: theme.space.xs, gap: theme.space.xs },
+  sourceRow: { flexDirection: 'row', alignItems: 'flex-start', paddingTop: theme.space.xs, paddingBottom: theme.space.sm },
+  sourceLinksFlow: { flex: 1, ...theme.type.caption, color: c.documentLabel },
   sourceLink: { ...theme.type.caption, color: c.highlightBlue },
 });

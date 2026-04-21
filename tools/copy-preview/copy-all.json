@@ -104,7 +104,17 @@
     "hintSearch": "Search a business or tap on the map to see its political funding.",
     "hintTap": "Tap any business on the map to pull up its record.",
     "hintBarcode": "Use the UPC button to scan a product barcode.",
-    "hintDismissLabel": "Dismiss hint"
+    "hintDismissLabel": "Dismiss hint",
+    "hintProgress": "{n}/{total}",
+    "reportTabLabel": "REPORT",
+    "reportTabClose": "×",
+    "closeReportA11y": "Close report",
+    "documentHeader": "CAMPAIGN FINANCE RECORD",
+    "onFileLabel": "On file",
+    "totalRowLabel": "Total",
+    "basedOnLabel": "Based on",
+    "sourcePrefix": "PAC:",
+    "avoidedStamp": "AVOIDED"
   },
   "platforms": {
     "tabLabel": "TRACK",
