@@ -99,7 +99,9 @@ export const mapCopy = {
   documentHeader: "CAMPAIGN FINANCE RECORD",
   onFileLabel: "On file",
   totalRowLabel: "Total",
-  basedOnLabel: "Based on",
+  // Clerical document-voice label for the sources row (Clark the Clerk).
+  // Was "Based on"; "Source" reads more like a filed record than a caption.
+  basedOnLabel: "Source",
   sourcePrefix: "PAC:",
   avoidedStamp: "AVOIDED",
 } as const;

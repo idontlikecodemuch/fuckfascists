@@ -181,7 +181,7 @@ export function DataZone({ donationSummary, committeeName, fecUrl, onDetailPress
            focusable run. */}
       {((pacFullName && fecUrl) || people.length > 0) && (
         <View style={styles.sourceRow}>
-          <Text style={styles.rowLabel} allowFontScaling>{mapCopy.basedOnLabel}</Text>
+          <Text style={[styles.rowLabel, styles.sourceRowLabel]} allowFontScaling>{mapCopy.basedOnLabel}</Text>
           <Text style={styles.sourceLinksFlow} allowFontScaling>
             {pacFullName && fecUrl && (
               <Text
@@ -243,6 +243,11 @@ const styles = StyleSheet.create({
   footnote: { ...theme.type.caption, color: c.documentLabel },
   unavailable: { flex: 1, ...theme.type.bodyS, color: c.documentLabel, fontStyle: 'italic', paddingTop: 2 },
   sourceRow: { flexDirection: 'row', alignItems: 'flex-start', paddingTop: theme.space.xs, paddingBottom: theme.space.sm },
+  // Neutralize the shared rowLabel's paddingTop (which is there to bias the
+  // label down against larger donationAmt/entityName text). On the sources
+  // row both sides are caption-sized, so that 2px just misaligns the label
+  // below the first line of links.
+  sourceRowLabel: { paddingTop: 0 },
   sourceLinksFlow: { flex: 1, ...theme.type.caption, color: c.documentLabel },
   sourceLink: { ...theme.type.caption, color: c.highlightBlue },
 });

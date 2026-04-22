@@ -23,8 +23,9 @@ export const extCopy = {
   mediumTitle: "MEDIUM confidence \u2014 verify at FEC.gov before acting.",
   mediumWarning: "MEDIUM confidence \u2014 verify before acting.",
   weeklyTop: "TOP: ",
-  // Source list ("Based on" row) — parity with the app's business card.
-  basedOnLabel: "Based on",
+  // Source list — parity with the app's business card (Clark-the-Clerk
+  // document voice). Was "Based on"; "Source" reads more like a filed record.
+  basedOnLabel: "Source",
   sourcePrefix: "PAC:",
   donationsLinkSuffix: "donations",
   // Banner-equivalent copy — matches copy/map.ts bannerNoPac / bannerDissolved
