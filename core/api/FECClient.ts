@@ -1,6 +1,7 @@
 import type { DonationSummary, FECLineItem } from '../models';
 import { makeFecCommitteeUrl } from '../models';
 import type { FECCommittee } from '../matching/types';
+import { normalizeForFecQuery } from '../matching/fecQuery';
 import { RateLimiter, FEC_DEFAULT_LIMITS } from './rateLimit';
 import { RateLimitError } from './errors'; // eslint-disable-line @typescript-eslint/no-unused-vars -- re-thrown by RateLimiter
 import { FEC_API_BASE_URL } from '../../config/constants';
@@ -115,9 +116,17 @@ export class FECClient {
   /**
    * Searches FEC for committees matching `name`.
    * Returns up to 20 results as orgid/orgname pairs for the matching pipeline.
+   *
+   * `name` is expected to be the RAW brand / alias / POI string — not pre-
+   * normalized via `normalize()` from core/matching. We run it through
+   * `normalizeForFecQuery` here so the `q=` value round-trips cleanly
+   * through FEC's server-side parse_fulltext (AT&T → "AT T" tokens, not
+   * "att" which can't prefix-match any stored token). See fecQuery.ts.
    */
   async searchCommittees(name: string): Promise<FECCommittee[]> {
-    const params = new URLSearchParams({ q: name, per_page: '20' });
+    const q = normalizeForFecQuery(name);
+    if (!q) return [];
+    const params = new URLSearchParams({ q, per_page: '20' });
     if (this.apiKey) params.set('api_key', this.apiKey);
     const data = await this.get<FECSearchResponse>(`/committees/?${params}`);
     return (data.results ?? []).map((c) => ({
