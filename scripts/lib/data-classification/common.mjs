@@ -1,5 +1,5 @@
 import { createReadStream } from 'node:fs';
-import { readdir } from 'node:fs/promises';
+import { readdir, stat } from 'node:fs/promises';
 import readline from 'node:readline';
 import path from 'node:path';
 
@@ -61,12 +61,30 @@ export function committeeCycleKey(committeeId, cycle) {
   return `${committeeId}:${cycle}`;
 }
 
+// Lists entries in `root` whose name matches `pattern` and resolves to the
+// requested `type` ('file' or 'dir'). Follows symlinks — Dirent.isDirectory()
+// and .isFile() return false for symlinks, so we fall back to stat() when
+// the Dirent reports itself as a symbolic link. Needed so bulk-pipeline
+// scripts work when tools/fec-bulk/ is staged via symlinks (e.g. worktree
+// sharing the main repo's bulk dir).
 export async function listMatchingEntries(root, pattern, type = 'file') {
   const entries = await readdir(root, { withFileTypes: true });
-  return entries
-    .filter((entry) => (type === 'dir' ? entry.isDirectory() : entry.isFile()) && pattern.test(entry.name))
-    .map((entry) => path.join(root, entry.name))
-    .sort();
+  const matches = [];
+  for (const entry of entries) {
+    if (!pattern.test(entry.name)) continue;
+    const fullPath = path.join(root, entry.name);
+    let isMatch = type === 'dir' ? entry.isDirectory() : entry.isFile();
+    if (!isMatch && entry.isSymbolicLink()) {
+      try {
+        const stats = await stat(fullPath);
+        isMatch = type === 'dir' ? stats.isDirectory() : stats.isFile();
+      } catch {
+        isMatch = false;
+      }
+    }
+    if (isMatch) matches.push(fullPath);
+  }
+  return matches.sort();
 }
 
 export async function readLines(filePath, onLine) {

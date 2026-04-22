@@ -12,6 +12,76 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 22, 2026 ET — FEC name-fuzz rebuild (Bezos coverage gap)
+
+**Branch:** `data/fec-fuzz-rebuild` (isolated worktree, no main merge until signed off).
+
+**Focus:** A TestFlight user tapped the scorecard's FEC link for Jeff Bezos and saw 14+ committees across 1998–2026 including Blue Origin LLC PAC (C00557793, $55K/11 donations). The app showed 2 records. Root cause: `hydrate-people-from-bulk.mjs` used `rg --fixed-strings -e '|NAME|'` — delimiter-bounded exact string match on the NAME column against every person's `fecSearchNames`. Anything filed under a name variant not pre-enumerated (e.g. `BEZOS, JEFFREY` or `BEZOS, JEFFREY P` vs. our `BEZOS, JEFF`) was silently dropped. Any linked person with name variance was under-captured the same way.
+
+**The fix:** Port openFEC's `parse_fulltext` (verbatim from [fecgov/openFEC/webservices/utils.py](https://github.com/fecgov/openFEC/blob/develop/webservices/utils.py)) into `scripts/lib/fecNameFuzz.mjs`, swap it INTO the hydrator as THE match function (not a new parallel path). Same pipeline, better matcher. FEC's semantics replicated verbatim: NFKD-strip-accents → `\W+` split → uppercase tokens → every query token must prefix-match some field token (Postgres tsquery `token:*` AND semantics).
+
+**What changed:**
+
+1. **`scripts/lib/fecNameFuzz.mjs` (NEW, 99 lines):** FEC tsquery port. Exports `tokenize()`, `buildQuery()`, `matchesQuery()`, `matchesQueryAgainst()`. Doc comment quotes the upstream `parse_fulltext` definition and links the source. Hydrator uses `matchesQueryAgainst` with pre-tokenized field tokens on the hot path.
+
+2. **`scripts/__tests__/fecNameFuzz.test.mjs` (NEW, 17 tests via `node --test`):** Covers the Bezos canonical case, prefix direction, accent folding (`MUÑOZ` ↔ `MUNOZ`), punctuation split on `\W`, non-decomposable ASCII drop (`STRAßE` → `STRAE`), compound last names, empty/null edge cases. All pass.
+
+3. **`scripts/hydrate-people-from-bulk.mjs`:** `buildSearchIndex` now tokenizes each person's `fecSearchNames` via `buildQuery()` and groups candidates by distinctive (first) token. rg prefilter is now `|${distinctive_token}` (no right delimiter) per person. Inline `buildCandidateResolver` handles both exact-first-token match and the rare proper-prefix case (`JACKS, ...` ↔ `JACKSON, ...`) with per-key caching. Field names tokenized once per line, then `matchesQueryAgainst` per candidate. Dead `cleanNameToken` removed. `_meta.bulkHydrationSearchNames` renamed to `bulkHydrationDistinctiveTokens` (more accurate semantics).
+
+4. **`scripts/build-people-discovered-committees.mjs` (NEW, 249 lines):** Reads people.json raw[], groups committees not already covered by any live entity (via `entity.fecCommitteeId` + `fecCommitteeRecords[]`). Classifies via local cm*.txt into `entity_candidate` (Q/N + non-generic CONNECTED_ORG_NM), `leadership_pac_classify_only` (CMTE_DSGN=D), `classify_only` (H/S/P candidate / O/V/W super PAC / X/Y/Z party / Q/N without org), `unknown_committee` (not in cm*.txt). Writes `tools/fec-bulk/reports/people-discovered-committees-YYYY-MM-DD.json`. Never auto-creates entities — feeds the manual-review + overrides workflow.
+
+5. **`scripts/validate-people-fec-coverage.mjs` (NEW, 241 lines):** Bulk-local by default (no API), `--api` compares our raw[] against `/schedules/schedule_a/?contributor_name=...` per person. Primary target: `--person=jeff-bezos`. Reports committee-set diff, dollar delta, per-cycle coverage. Dedicated Blue Origin PAC check (C00557793) as success criterion. Respects bulk-first posture — one API call for the canary, not per-linked-person sweep.
+
+6. **`scripts/lib/data-classification/common.mjs` + `scripts/lib/data-classification/report-files.mjs`:** Both helpers used `Dirent.isFile()` / `isDirectory()` which return `false` for symlinks. Worktrees sharing the main repo's `tools/fec-bulk/` via symlink silently found zero files. Fixed by falling back to `stat()` when `Dirent.isSymbolicLink()` — preserves existing behavior for real files, adds symlink support. Same fix also applied to `listCommitteeMasterFiles` in the hydrator.
+
+**Pipeline run (all bulk-first, API only for Bezos canary):**
+
+1. `npm run hydrate:people:bulk` — fuzz-matched scan of 6 cycles (2016–2026) × indiv*.txt. 737 distinctive last-name tokens. Selected 1054 people, hydrated **1053** (prior Apr 20 pre-fuzz: 1027). Missing: 1. File grew 49MB → 70MB (+42%). **Runtime: ~6 min with warm cache.**
+2. `node scripts/build-committee-beneficiary-map.mjs --basename=committee-beneficiary-classification-2026-04-22` — 45,600 committee-cycle entries (R: 16,878, D: 15,106, O: 13,616). Input totals: $15.8B PAS2 scoreable + $6.6B OTH proxy. **Runtime: ~2 min.**
+3. `node scripts/build-people-classification-preview.mjs --basename=people-classification-preview-2026-04-22` — reused Apr 7 inherently-partisan staging (bulk-first; F13 discovery would need API). 1042 people reclassified, 213,256 rows reclassified, 89 inherently partisan rows added. totalO $4.88B (37.40%) → $1.17B (8.92%). **Runtime: seconds.**
+4. Applied preview to live `assets/data/people.json` via `cp` of `.people.json` artifact.
+5. `npm run strip:people:raw` — linked-only bundle: retained 21,414 raw rows (was 12,395 Apr 20 → **+72%** for linked people), stripped 228,294.
+6. `node scripts/build-people-discovered-committees.mjs` — 10,580 committees not in live entities: **880 entity_candidates** (corporate PACs worth considering), 8,696 classify_only, 638 leadership_pac, 366 unknown.
+7. `node scripts/validate-people-fec-coverage.mjs --person=jeff-bezos --api` — single FEC API call for the canary.
+
+**Bezos canary result:**
+
+- Before: rows 2, committees 2 ($10.13M), Blue Origin PAC **MISSING** ✗
+- After: rows 17, committees 7 ($10.31M), Blue Origin PAC **PRESENT ✓** across cycles 2020, 2022, 2024, 2026 totaling $70K (user's brief said ~$55K/11 donations; we caught it plus a bit more).
+- Dollar delta vs FEC API first page (post-2016): **+$50,396 (+0.49%)** — within rounding tolerance, we actually have more than API's first-page snapshot (API has 64 records all-time, 32 post-2016, paginates at 100/page).
+- "Missing" from ours vs API: WinRed $1 + ActBlue $3 = **$4 of conduit reporting artifacts**. Below any meaningful threshold.
+- WITH HONOR FUND ($10.13M) correctly stays in O bucket as bipartisan — by design.
+
+**Gates:**
+
+- `npm run audit:aliases` → **exit 0** (unchanged: 0 dupes, 80 single-word warnings, 6 FEC canonical drift warnings).
+- `node scripts/verify-data-integrity.mjs` → exit 1. Pre-existing issues only:
+  - 2 invalidRoleLinks (tom-campion / thomas-campion → zumiez) — same as Apr 20 Late session notes (data-shape issue from commit b230d67).
+  - 4 missingEntitiesFromPeople = 4 declaredForwardRefs (baupost-group, bigelow-aerospace, jw-childs-associates, pritzker-group). `forwardRefMismatch: false`. V2 deferred, expected.
+- `npx tsc --noEmit` → **exit 0**.
+- Unit tests: `node --test scripts/__tests__/fecNameFuzz.test.mjs` → 17/17 pass.
+
+**Known followup (not done this pass):**
+
+- **People-side OpenStates classification.** Currently `line29Classifier.mjs` (which includes OpenStates Tier 4) is invoked only by entity-side Schedule B hydration, not by the people pipeline. Threading it through `build-people-classification-preview` would claw back more of the remaining $1.17B totalO where person donations to state/local candidates/PACs stay unclassified because they're not in federal FEC `cn*.txt` or `ccl*.txt`.
+- **CLAUDE.md Data Maintenance workflow** didn't include the beneficiary-classifier chain, even though the Apr 7 staging docs describe it. Updated in this session — see CLAUDE.md diff.
+- **Entity hydrator has the same fuzz gap.** `hydrate-entities-from-bulk.mjs` uses similar exact-match patterns for committee names. Same fix applicable; didn't touch this pass.
+- **FEC pagination in validation script.** Canary compares against FEC API first page only (100 per_page). Bezos has 64 total records so first page covers everything; for any linked person with >100 records, pagination needed before extras/missing diffs are meaningful.
+
+**Files (all under 250 lines except pre-existing scripts/ exceptions):**
+
+- `scripts/lib/fecNameFuzz.mjs` (99 lines, new)
+- `scripts/__tests__/fecNameFuzz.test.mjs` (118 lines, new)
+- `scripts/build-people-discovered-committees.mjs` (249 lines, new)
+- `scripts/validate-people-fec-coverage.mjs` (241 lines, new)
+- `scripts/hydrate-people-from-bulk.mjs` (modified; still over 250 — pre-existing scripts/ exception applies)
+- `scripts/lib/data-classification/common.mjs` (modified)
+- `scripts/lib/data-classification/report-files.mjs` (modified)
+
+**Not merged to main.** Branch `data/fec-fuzz-rebuild` stays isolated pending review. Updated live `people.json` and `people.bundle.json` in the worktree only; main's copies untouched.
+
+---
+
 ### Session: April 20, 2026 ET (late) — People linkage pass + UFC Gym + pipeline close-out
 
 **Focus:** Finish the people-side pass that was started in the earlier checkpoint. Added the manual-override seeding capability to sync-people-from-bulk-top, hydrated 8 net-new people from the overrides file (spouses, family members, key figures), reconciled reverse links, regenerated the bundle, and closed out with integrity clean.
