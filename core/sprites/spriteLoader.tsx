@@ -9,8 +9,15 @@
  * and offsetting the Image position. No animation — state changes via React re-render.
  */
 import React, { useEffect, useRef } from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import type { ImageSourcePropType, LayoutChangeEvent } from 'react-native';
+// expo-image uses SDWebImage on iOS — a different native class from RN's
+// RCTImageView, so it bypasses Fabric's view-recycling pool. That pool is the
+// root cause of the "top-of-head only" clipping on repeat sprite mounts under
+// load (many FlagMarker Images on the map + repeated card opens). RN 0.76 +
+// new arch regression class: see facebook/react-native#48392 (overflow:hidden
+// re-render clip) and related.
+import { Image } from 'expo-image';
 import { spriteAssets } from './spriteAssets';
 
 // ── Manifest (bundled JSON) ──────────────────────────────────────────────────
@@ -243,7 +250,7 @@ export function SpriteView({
           left: -((frame.offsetX * scale) + centeredCropLeft + leftCropOffset),
           top: -((frame.offsetY * scale) + topCropOffset),
         }}
-        resizeMode="contain"
+        contentFit="contain"
         onLayout={__DEV__ ? onImageLayout : undefined}
       />
     </View>
