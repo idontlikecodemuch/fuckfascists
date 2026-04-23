@@ -41,4 +41,23 @@ describe('normalize', () => {
     expect(normalize('7-Eleven')).toBe('7eleven');
     expect(normalize('24 Hour Fitness')).toBe('24 hour fitness');
   });
+
+  it('folds NFKD-decomposable accents to plain ASCII', () => {
+    // Combining marks are dropped after NFKD decomposition, so accented chars
+    // reduce to their ASCII base. Applied symmetrically to input and alias at
+    // call sites, so Pâtisserie POI matches "Patisserie" alias entries.
+    expect(normalize('Pâtisserie Valerie')).toBe('patisserie valerie');
+    expect(normalize('Zoé')).toBe('zoe');
+    expect(normalize('Hëineken')).toBe('heineken');
+    expect(normalize('Crêpes & Waffles')).toBe('crepes waffles');
+    expect(normalize('MUÑOZ')).toBe('munoz');
+  });
+
+  it('drops non-ASCII characters that do not NFKD-decompose', () => {
+    // ß, Ø, Æ don't decompose to ASCII equivalents in NFKD, so they're dropped
+    // entirely. Adjacent characters concatenate. Matches the FEC parse_fulltext
+    // behavior (Python ascii-ignore) for consistency across name surfaces.
+    expect(normalize('STRAßE')).toBe('strae');
+    expect(normalize('ØLSEN')).toBe('lsen');
+  });
 });

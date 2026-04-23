@@ -145,9 +145,12 @@ export async function matchEntity(
   if (!allowFecFallback) return { matched: false, lookupStatus: 'no_match', normalizedInput };
 
   // fetchOrgs can 403 in anonymous mode — treat as no candidates rather than a hard error.
+  // Pass `rawInput` (not `normalizedInput`) so FECClient can apply its own
+  // FEC-flavored normalization for the `q=` value — notably keeping ampersands
+  // and hyphens as token separators instead of collapsing them. See fecQuery.ts.
   let candidates: FECCommittee[] = [];
   try {
-    candidates = await deps.fetchOrgs(normalizedInput);
+    candidates = await deps.fetchOrgs(rawInput);
   } catch {
     return { matched: false, lookupStatus: 'lookup_unavailable', normalizedInput };
   }
@@ -274,13 +277,16 @@ async function resolveEntityMatch(
  * Resolves a FEC committee ID for an entity that lacks one.
  * Throws on network failure — callers are responsible for catching and returning
  * lookupStatus: 'lookup_unavailable'.
+ *
+ * Passes the raw canonical name to `fetchOrgs` — FECClient applies its own
+ * FEC-flavored normalization for the `q=` value. J-W scoring still uses our
+ * internal `normalize()` form on both sides for a symmetric comparison.
  */
 async function resolveOrgId(
   canonicalName: string,
   deps: MatchingDeps
 ): Promise<string | null> {
-  const normalized = normalize(canonicalName);
-  const candidates = await deps.fetchOrgs(normalized); // throws on network error
-  const best = pickBestMatch(normalized, candidates);
+  const candidates = await deps.fetchOrgs(canonicalName); // throws on network error
+  const best = pickBestMatch(normalize(canonicalName), candidates);
   return best?.org.orgid ?? null;
 }
