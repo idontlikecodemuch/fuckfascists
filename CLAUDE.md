@@ -419,14 +419,21 @@ Run `npm run audit:aliases` and `node scripts/verify-data-integrity.mjs` after t
 ### People bulk scripts
 `npm run build:people:bulk-top`, `npm run sync:people:bulk-top`, `npm run hydrate:people:bulk`, `npm run build:people:entity-review-queue`, and `npm run strip:people:raw` maintain `people.json` and `people.bundle.json` from local FEC individual-contribution bulk files. Cycles include `2026`. `sync:people:bulk-top` keeps extra pre-existing people by default; `--drop-extra` intentionally discards people outside the top-donor merge and should be treated as destructive.
 
-Preferred order:
+The hydrator matches FEC contributor-name rows to our people using FEC-flavored fuzz (`scripts/lib/fecNameFuzz.mjs`, a verbatim port of openFEC's `parse_fulltext`). It tokenizes on `\W+`, strips non-ASCII via NFKD + ascii-ignore, and requires every query token to prefix-match some field token (Postgres tsquery `:*` AND semantics). This matches FEC's web UI coverage exactly — if FEC's site returns a row for a contributor_name query, ours does too. Name variants (`BEZOS, JEFF` ↔ `BEZOS, JEFFREY PRESTON`) no longer need to be pre-enumerated in `fecSearchNames`, though the field remains supported as an escape hatch for exotic filings.
+
+Preferred order (bulk-first; API only for targeted validation):
 
 1. `npm run build:people:bulk-top`
 2. `npm run sync:people:bulk-top`
 3. `npm run hydrate:people:bulk`
-4. `npm run build:people:entity-review-queue`
-5. `node scripts/reconcile-v1-entities.mjs --write`
-6. `npm run strip:people:raw`
+4. `node scripts/build-committee-beneficiary-map.mjs --basename=committee-beneficiary-classification-YYYY-MM-DD` — rebuild committee-cycle classification from local bulk (no API)
+5. `node scripts/build-people-classification-preview.mjs --basename=people-classification-preview-YYYY-MM-DD` — apply beneficiary + inherently partisan classifications to a staging `.people.json` preview (does not touch live)
+6. Review preview totals (`*-people-classification-preview-*.md`), then apply: `cp tools/fec-bulk/reports/people-classification-preview-YYYY-MM-DD.people.json assets/data/people.json`
+7. `npm run build:people:entity-review-queue`
+8. `node scripts/build-people-discovered-committees.mjs` — review queue of committees in raw[] not yet covered by any live entity (`entity_candidate` / `classify_only` / `leadership_pac_classify_only` / `unknown_committee`)
+9. `node scripts/reconcile-v1-entities.mjs --write`
+10. `npm run strip:people:raw`
+11. (Optional canary) `node scripts/validate-people-fec-coverage.mjs --person=jeff-bezos --api` — one FEC API call to spot-check a person's coverage vs. Schedule A
 
 ### `python3 scripts/sync-products-from-off.py`
 Processes the Open Food Facts MongoDB bulk dump into `assets/data/products.json`. Scans ~4.4M product documents, extracts exact barcode product rows plus UPC prefix evidence per producer, and outputs a three-layer index: exact runtime `products` (1,000 rows in the April 2026 data-cleaning batch), conservative runtime `producers` (87 entries), and broader `producerResearch` (206 entries for future expansion). Rebuilds read current `entities.json` to refresh product-side entity match fields before runtime producers are built, including clearing stale product-side `entityId` values after alias cleanup. Checkpoint-based resume (`tools/off-bulk/checkpoints/`). Requires the OFF bulk archive at `tools/off-bulk/openfoodfacts-mongodbdump` (not committed — 91GB+). Use `--rebuild-from-checkpoint --exact-product-limit 1000` to regenerate `products.json` from saved aggregates and the 5,000-row exact-product candidate pool without rescanning. Philip Morris International and Altria currently resolve to distinct runtime entity IDs. See `docs/PRODUCTS_DATA_PIPELINE.md` and `docs/DATA_CLEANING_AUDIT_2026-04-20.md` for details and current audit caveats.
@@ -866,14 +873,19 @@ After writing any file, scan it once for deprecated APIs, `.then()` chains, `var
 - `tools/fec-bulk/reports/people-entity-review-queue.json` is only a review worksheet. Its candidate suggestions are heuristic leads, not accepted links.
 - A person may still appear in the review queue even after a manual link is added if the linked company ID is only a forward ref in `people.json` and still needs a real `entities.json` record.
 - For manual-review cases, record the final decision in `scripts/data/people-entity-overrides.json` using `benefitBasis`, `isCurrent`, `confidence`, and `notes` rather than editing `people.json` directly.
-- Preferred maintenance order:
+- Preferred maintenance order (bulk-first; includes the beneficiary-classifier chain that was previously omitted from this doc):
   1. Update `scripts/data/people-entity-overrides.json`
   2. Run `npm run sync:people:bulk-top`
-  3. Run `npm run hydrate:people:bulk`
-  4. Run `npm run build:people:entity-review-queue`
-  5. Run `node scripts/reconcile-v1-entities.mjs --write`
-  6. Run `npm run strip:people:raw`
-  7. Only then inspect `assets/data/people.json`, `assets/data/people.bundle.json`, and the review queue output
+  3. Run `npm run hydrate:people:bulk` (FEC-fuzz matcher — see `scripts/lib/fecNameFuzz.mjs`)
+  4. Run `node scripts/build-committee-beneficiary-map.mjs` — regenerate committee-cycle classification from local bulk
+  5. Run `node scripts/build-people-classification-preview.mjs` — writes a staging `.people.json` preview (does not touch live)
+  6. Review preview, then apply: `cp tools/fec-bulk/reports/people-classification-preview-YYYY-MM-DD.people.json assets/data/people.json`
+  7. Run `npm run build:people:entity-review-queue`
+  8. Run `node scripts/build-people-discovered-committees.mjs` — review queue of people-observed committees not yet in any entity
+  9. Run `node scripts/reconcile-v1-entities.mjs --write`
+  10. Run `npm run strip:people:raw`
+  11. Only then inspect `assets/data/people.json`, `assets/data/people.bundle.json`, and the review queue output
+  12. (Optional canary) Run `node scripts/validate-people-fec-coverage.mjs --person=jeff-bezos --api` to spot-check one person against FEC's Schedule A
 
 ### people.json schema — `PoliticalPerson`
 ```typescript

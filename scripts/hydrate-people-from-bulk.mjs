@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
 import { COMMITTEE_PARTY_OVERRIDES } from './lib/committeePartyOverrides.mjs';
+import { buildQuery, matchesQueryAgainst, tokenize } from './lib/fecNameFuzz.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PEOPLE_PATH = path.join(__dirname, '../assets/data/people.json');
@@ -90,13 +91,6 @@ function parseArgs(argv) {
 
 function normalizeWhitespace(value) {
   return String(value ?? '').replace(/\s+/g, ' ').trim();
-}
-
-function cleanNameToken(value) {
-  return normalizeWhitespace(value)
-    .toUpperCase()
-    .replace(/[.'"]/g, '')
-    .replace(/\s+/g, ' ');
 }
 
 function parseAmount(value) {
@@ -194,22 +188,73 @@ function createAggregate() {
   };
 }
 
+// Build the person-lookup structures used during bulk scan.
+//
+// For every (person, searchName) pair we tokenize the search name using the
+// FEC fuzz tokenizer and group by the distinctive (first) token — effectively
+// the last name for canonical "LAST, FIRST" FEC filings. The distinctive
+// token becomes the ripgrep prefilter pattern; each candidate group carries
+// the full query token set for the in-JS FEC tsquery match downstream.
+//
+// See scripts/lib/fecNameFuzz.mjs for the matching semantics; they mirror
+// openFEC's parse_fulltext verbatim so coverage matches the FEC web UI.
 function buildSearchIndex(people) {
-  const searchIndex = new Map();
-  const rawSearchNames = new Set();
+  const personsByDistinctive = new Map();
+  const distinctiveTokens = new Set();
 
   for (const person of people) {
-    const searchNames = unique([person.canonicalName, ...(person.fecSearchNames ?? [])]).map(normalizeWhitespace);
-    for (const rawName of searchNames) {
-      const normalizedName = cleanNameToken(rawName);
-      rawSearchNames.add(rawName);
-      searchIndex.set(normalizedName, person.id);
+    const searchNames = unique([person.canonicalName, ...(person.fecSearchNames ?? [])])
+      .map(normalizeWhitespace)
+      .filter(Boolean);
+    for (const searchName of searchNames) {
+      const queryTokens = buildQuery(searchName);
+      if (queryTokens.length === 0) continue;
+      const distinctive = queryTokens[0];
+      distinctiveTokens.add(distinctive);
+      if (!personsByDistinctive.has(distinctive)) {
+        personsByDistinctive.set(distinctive, []);
+      }
+      personsByDistinctive.get(distinctive).push({
+        personId: person.id,
+        queryTokens,
+        searchName,
+      });
     }
   }
 
   return {
-    searchIndex,
-    rawSearchNames: Array.from(rawSearchNames),
+    personsByDistinctive,
+    distinctiveTokens: Array.from(distinctiveTokens),
+  };
+}
+
+// Resolve the set of person candidates for a given first field token. The
+// common case is exact-match (person "BEZOS, JEFF" → field "BEZOS, ..."); we
+// also cover the rare prefix case (person "JACKS, ..." → field "JACKSON, ...")
+// because FEC tsquery's `JACKS:*` lexeme prefix does match `JACKSON` — it
+// would be a correctness regression to silently drop those. Results cached
+// per firstFieldToken so the full-scan pass is amortized over hot keys.
+function buildCandidateResolver(personsByDistinctive) {
+  const distinctiveTokens = Array.from(personsByDistinctive.keys());
+  const cache = new Map();
+
+  return function resolveCandidates(firstFieldToken) {
+    const cached = cache.get(firstFieldToken);
+    if (cached !== undefined) return cached;
+
+    const candidates = [];
+    const exact = personsByDistinctive.get(firstFieldToken);
+    if (exact) candidates.push(...exact);
+    for (const token of distinctiveTokens) {
+      if (token === firstFieldToken) continue;
+      if (firstFieldToken.startsWith(token)) {
+        const extra = personsByDistinctive.get(token);
+        if (extra) candidates.push(...extra);
+      }
+    }
+
+    cache.set(firstFieldToken, candidates);
+    return candidates;
   };
 }
 
@@ -359,9 +404,20 @@ async function listFilesForCycle(cycle) {
 
 async function listCommitteeMasterFiles() {
   const entries = await readdir(BULK_ROOT, { withFileTypes: true });
+  // Follow symlinks — Dirent.isFile() returns false for them. Matters when
+  // tools/fec-bulk/ is staged via symlink from another worktree.
+  const candidates = [];
+  for (const entry of entries) {
+    if (!COMMITTEE_MASTER_PATTERN.test(entry.name)) continue;
+    const full = path.join(BULK_ROOT, entry.name);
+    let ok = entry.isFile();
+    if (!ok && entry.isSymbolicLink()) {
+      try { ok = (await stat(full)).isFile(); } catch { ok = false; }
+    }
+    if (ok) candidates.push(entry);
+  }
   const files = await Promise.all(
-    entries
-      .filter((entry) => entry.isFile() && COMMITTEE_MASTER_PATTERN.test(entry.name))
+    candidates
       .map(async (entry) => {
         const filePath = path.join(BULK_ROOT, entry.name);
         const fileStat = await stat(filePath);
@@ -453,15 +509,22 @@ async function runRipgrep(patterns, files, onMatch) {
   });
 }
 
-async function scanBulkFiles({ cycles, filesByCycle, rawSearchNames, searchIndex, aggregates, meta }) {
+async function scanBulkFiles({ cycles, filesByCycle, personsByDistinctive, distinctiveTokens, aggregates, meta }) {
+  // Ripgrep prefilter: one literal pattern per distinctive token, anchored by
+  // the left `|` delimiter so the match falls at the start of some FEC bulk
+  // field. Without a right delimiter we get FEC-flavored prefix behavior for
+  // free (e.g. `|BEZOS` matches `|BEZOS,` and `|BEZOS-SMITH,`). Downstream,
+  // matchesQueryAgainst against the parsed contributor-name field rejects any
+  // false positives that matched in a non-name field (employer, memo, etc).
   const patternChunks = chunk(
-    rawSearchNames.map((name) => `|${name}|`),
+    distinctiveTokens.map((token) => `|${token}`),
     RG_PATTERN_CHUNK_SIZE
   );
+  const resolveCandidates = buildCandidateResolver(personsByDistinctive);
 
   for (const cycle of cycles) {
     const files = filesByCycle.get(cycle) ?? [];
-    console.log(`Scanning cycle ${cycle} (${files.length} files, ${rawSearchNames.length} search names)...`);
+    console.log(`Scanning cycle ${cycle} (${files.length} files, ${distinctiveTokens.length} distinctive tokens)...`);
 
     for (let index = 0; index < patternChunks.length; index += 1) {
       const patterns = patternChunks[index];
@@ -471,17 +534,32 @@ async function scanBulkFiles({ cycles, filesByCycle, rawSearchNames, searchIndex
         meta.matchedLines += 1;
 
         const fields = rawLine.split('|');
-        const matchedName = cleanNameToken(fields[FIELD.contributorName] ?? '');
-        const personId = searchIndex.get(matchedName);
-        if (!personId) {
+        const contributorName = fields[FIELD.contributorName] ?? '';
+        const fieldTokens = tokenize(contributorName);
+        if (fieldTokens.length === 0) {
           meta.missingMatches += 1;
           return;
         }
 
-        const aggregate = aggregates.get(personId);
-        if (!aggregate) return;
+        const candidates = resolveCandidates(fieldTokens[0]);
+        if (candidates.length === 0) {
+          meta.missingMatches += 1;
+          return;
+        }
 
-        updateAggregate(aggregate, fields, cycle, matchedName);
+        let attributed = false;
+        for (const candidate of candidates) {
+          if (!matchesQueryAgainst(fieldTokens, candidate.queryTokens)) continue;
+          const aggregate = aggregates.get(candidate.personId);
+          if (!aggregate) continue;
+          updateAggregate(aggregate, fields, cycle, contributorName);
+          attributed = true;
+        }
+
+        if (!attributed) {
+          meta.missingMatches += 1;
+          return;
+        }
         meta.includedRows += includeBulkRow(fields) ? 1 : 0;
         if (fields[FIELD.memoCode] === 'X') meta.excludedMemoRows += 1;
       });
@@ -546,7 +624,7 @@ async function main() {
   }
 
   const { committeeLookup, committeeMasterFiles } = await loadCommitteeLookup();
-  const { searchIndex, rawSearchNames } = buildSearchIndex(selectedPeople);
+  const { personsByDistinctive, distinctiveTokens } = buildSearchIndex(selectedPeople);
   const aggregates = new Map(selectedPeople.map((person) => [person.id, createAggregate()]));
   const meta = {
     matchedLines: 0,
@@ -558,8 +636,8 @@ async function main() {
   await scanBulkFiles({
     cycles: args.cycles,
     filesByCycle,
-    rawSearchNames,
-    searchIndex,
+    personsByDistinctive,
+    distinctiveTokens,
     aggregates,
     meta,
   });
@@ -606,7 +684,7 @@ async function main() {
       bulkHydrationSelectedPeople: selectedPeople.length,
       bulkHydrationHydratedPeople: hydratedCount,
       bulkHydrationMissingPeople: missingCount,
-      bulkHydrationSearchNames: rawSearchNames.length,
+      bulkHydrationDistinctiveTokens: distinctiveTokens.length,
       bulkHydrationMatchedLines: meta.matchedLines,
       bulkHydrationIncludedRows: meta.includedRows,
       bulkHydrationExcludedMemoRows: meta.excludedMemoRows,
