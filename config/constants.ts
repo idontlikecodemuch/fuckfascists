@@ -195,6 +195,18 @@ export const ARENA_HEIGHT = 200;
 // rather than a pop-in. Respects Reduce Motion (skipped entirely when on).
 export const DONATION_COUNT_UP_MS = 650;
 
+// Delay before CountUpAmount starts its RAF loop after mount. Six
+// CountUpAmount instances fire ~60Hz setState each for 650ms starting right
+// after the card opens — in total ~216 state updates in the same window
+// where the sprite perch Image is doing async layout/decode, especially on
+// recycled Fabric native views for a second sprite-bearing card. On cold
+// mount the AccessibilityInfo.isReduceMotionEnabled() await incidentally
+// provided this breathing room (~50–100ms); on re-mount the OS cached the
+// reduce-motion value and resolved near-instantly, letting the setState
+// storm kick off before the Image had settled → sprite clipped to a
+// partial frame. This explicit delay removes that timing dependency.
+export const DONATION_COUNT_UP_START_DELAY_MS = 120;
+
 // ── Arena ambient flicker (#127) ─────────────────────────────────────────────
 // Rare, subtle dip of the cyan highlight overlay — mimics a CRT / neon sign
 // flicker. Respects Reduce Motion (skipped entirely when enabled).

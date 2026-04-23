@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { AccessibilityInfo, Text } from 'react-native';
 import type { TextStyle, StyleProp } from 'react-native';
 import { formatDonationAmount } from '../../../core/models';
-import { DONATION_COUNT_UP_MS } from '../../../config/constants';
+import { DONATION_COUNT_UP_MS, DONATION_COUNT_UP_START_DELAY_MS } from '../../../config/constants';
 
 interface CountUpAmountProps {
   /** Final displayed value — the animation interpolates 0 → value. */
@@ -53,6 +53,13 @@ export function CountUpAmount({
         setDisplay(value);
         return;
       }
+
+      // Let the card's first paint — especially the sprite perch Image's
+      // async layout/decode on recycled Fabric native views — complete
+      // before we start pushing ~60Hz setState updates. See
+      // DONATION_COUNT_UP_START_DELAY_MS comment for the full story.
+      await new Promise<void>((resolve) => setTimeout(resolve, DONATION_COUNT_UP_START_DELAY_MS));
+      if (cancelled) return;
 
       const start = Date.now();
       let raf = 0;
