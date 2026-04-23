@@ -8,9 +8,9 @@
  * SpriteView renders one frame by clipping the sheet with overflow:hidden
  * and offsetting the Image position. No animation — state changes via React re-render.
  */
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
-import type { ImageSourcePropType } from 'react-native';
+import type { ImageSourcePropType, LayoutChangeEvent } from 'react-native';
 import { spriteAssets } from './spriteAssets';
 
 // ── Manifest (bundled JSON) ──────────────────────────────────────────────────
@@ -155,6 +155,23 @@ export function SpriteView({
   cropOffsetX = 0,
   cropOffsetY = 0,
 }: SpriteViewProps) {
+  // [SPRITE-DBG] Hooks declared unconditionally before early-return branches.
+  // Logs gated on __DEV__.
+  const renderCountRef = useRef(0);
+  useEffect(() => {
+    if (__DEV__) {
+      // eslint-disable-next-line no-console
+      console.log(`[SPRITE-DBG] SpriteView MOUNT id=${spriteId} state=${state} size=${size}`);
+    }
+    return () => {
+      if (__DEV__) {
+        // eslint-disable-next-line no-console
+        console.log(`[SPRITE-DBG] SpriteView UNMOUNT id=${spriteId}`);
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   if (!spriteId) return null;
 
   const frame = getSpriteFrame(spriteId, state, variant);
@@ -166,6 +183,47 @@ export function SpriteView({
   const leftCropOffset = frame.frameWidth * cropOffsetX * scale;
   const topCropOffset = frame.frameHeight * cropOffsetY * scale;
 
+  const imgWidth = frame.sheetWidth * scale;
+  const imgHeight = frame.sheetHeight * scale;
+  const imgLeft = -((frame.offsetX * scale) + centeredCropLeft + leftCropOffset);
+  const imgTop = -((frame.offsetY * scale) + topCropOffset);
+
+  if (__DEV__) {
+    renderCountRef.current += 1;
+    // eslint-disable-next-line no-console
+    console.log(
+      `[SPRITE-DBG] SpriteView RENDER #${renderCountRef.current} id=${spriteId} state=${state} size=${size} ` +
+      `scale=${scale.toFixed(3)} frameWH=${frame.frameWidth}x${frame.frameHeight} ` +
+      `sheetWH=${frame.sheetWidth}x${frame.sheetHeight} offsetXY=${frame.offsetX},${frame.offsetY} ` +
+      `imgWH=${imgWidth.toFixed(1)}x${imgHeight.toFixed(1)} imgLT=${imgLeft.toFixed(1)},${imgTop.toFixed(1)}`,
+    );
+  }
+
+  const onContainerLayout = (e: LayoutChangeEvent) => {
+    if (__DEV__) {
+      const { width, height, x, y } = e.nativeEvent.layout;
+      // eslint-disable-next-line no-console
+      console.log(
+        `[SPRITE-DBG] SpriteView container onLayout id=${spriteId} measured=${width.toFixed(1)}x${height.toFixed(1)} ` +
+        `xy=${x.toFixed(1)},${y.toFixed(1)} expected=${size}x${size}` +
+        (width !== size || height !== size ? ' !!! SIZE MISMATCH' : ''),
+      );
+    }
+  };
+
+  const onImageLayout = (e: LayoutChangeEvent) => {
+    if (__DEV__) {
+      const { width, height, x, y } = e.nativeEvent.layout;
+      // eslint-disable-next-line no-console
+      console.log(
+        `[SPRITE-DBG] SpriteView image onLayout id=${spriteId} measured=${width.toFixed(1)}x${height.toFixed(1)} ` +
+        `xy=${x.toFixed(1)},${y.toFixed(1)} expected=${imgWidth.toFixed(1)}x${imgHeight.toFixed(1)} ` +
+        `expectedLT=${imgLeft.toFixed(1)},${imgTop.toFixed(1)}` +
+        (Math.abs(width - imgWidth) > 0.5 || Math.abs(height - imgHeight) > 0.5 ? ' !!! SIZE MISMATCH' : ''),
+      );
+    }
+  };
+
   return (
     <View
       style={[
@@ -174,6 +232,7 @@ export function SpriteView({
       ]}
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"
+      onLayout={__DEV__ ? onContainerLayout : undefined}
     >
       <Image
         source={frame.source}
@@ -185,6 +244,7 @@ export function SpriteView({
           top: -((frame.offsetY * scale) + topCropOffset),
         }}
         resizeMode="contain"
+        onLayout={__DEV__ ? onImageLayout : undefined}
       />
     </View>
   );

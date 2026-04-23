@@ -34,6 +34,33 @@ export function CountUpAmount({
   const [display, setDisplay] = useState(0);
   const reducedMotionRef = useRef<boolean | null>(null);
 
+  // [SPRITE-DBG] Render count + mount — correlates setState storm timing
+  // with SpriteView Image onLayout to verify the race theory.
+  const renderCountRef = useRef(0);
+  useEffect(() => {
+    if (__DEV__) {
+      // eslint-disable-next-line no-console
+      console.log(`[SPRITE-DBG] CountUpAmount MOUNT prefix=${prefix} value=${value}`);
+    }
+    return () => {
+      if (__DEV__) {
+        // eslint-disable-next-line no-console
+        console.log(`[SPRITE-DBG] CountUpAmount UNMOUNT prefix=${prefix}`);
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  if (__DEV__) {
+    renderCountRef.current += 1;
+    // Only log every 10th render to keep logs readable — the ticker fires ~36 frames.
+    if (renderCountRef.current === 1 || renderCountRef.current % 10 === 0) {
+      // eslint-disable-next-line no-console
+      console.log(
+        `[SPRITE-DBG] CountUpAmount RENDER #${renderCountRef.current} prefix=${prefix} display=${display} final=${value}`,
+      );
+    }
+  }
+
   useEffect(() => {
     let cancelled = false;
 

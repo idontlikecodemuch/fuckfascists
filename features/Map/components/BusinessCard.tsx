@@ -1,5 +1,6 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, useEffect } from 'react';
 import { View, Text, Image, Pressable, Animated, PanResponder, StyleSheet, AccessibilityInfo } from 'react-native';
+import type { LayoutChangeEvent } from 'react-native';
 import type { ScanResult } from '../types';
 import type { Entity, PoliticalPerson } from '../../../core/models';
 import { getDisplayFigure, getAssociatedPeople, getParentEntity } from '../../../core/models';
@@ -49,6 +50,44 @@ export function BusinessCard({
   const figureName = entity ? getDisplayFigure(entity, allEntities) : null;
   const spriteId = figureName ? nameToSpriteId(figureName) : null;
   const associatedPeople = entity && people ? getAssociatedPeople(entity, people, allEntities) : [];
+
+  // [SPRITE-DBG] BusinessCard mount/unmount lifecycle — correlates with
+  // SpriteView MOUNT/UNMOUNT to determine whether the card is remounted
+  // between taps or just receives new props.
+  const cardRenderCountRef = useRef(0);
+  useEffect(() => {
+    if (__DEV__) {
+      // eslint-disable-next-line no-console
+      console.log(`[SPRITE-DBG] BusinessCard MOUNT spriteId=${spriteId} entityId=${entity?.id ?? 'none'}`);
+    }
+    return () => {
+      if (__DEV__) {
+        // eslint-disable-next-line no-console
+        console.log(`[SPRITE-DBG] BusinessCard UNMOUNT spriteId=${spriteId}`);
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  if (__DEV__) {
+    cardRenderCountRef.current += 1;
+    // eslint-disable-next-line no-console
+    console.log(
+      `[SPRITE-DBG] BusinessCard RENDER #${cardRenderCountRef.current} ` +
+      `spriteId=${spriteId} entityId=${entity?.id ?? 'none'} avoided=${avoided} avoidAnimating=${avoidAnimating}`,
+    );
+  }
+
+  const onPerchLayout = (e: LayoutChangeEvent) => {
+    if (__DEV__) {
+      const { width, height, x, y } = e.nativeEvent.layout;
+      // eslint-disable-next-line no-console
+      console.log(
+        `[SPRITE-DBG] spritePerch onLayout spriteId=${spriteId} ` +
+        `measured=${width.toFixed(1)}x${height.toFixed(1)} xy=${x.toFixed(1)},${y.toFixed(1)} ` +
+        `expectedW=${CARD_SPRITE_SIZE} expectedH=${CARD_SPRITE_SIZE} expectedTop=${-SPRITE_ABOVE}`,
+      );
+    }
+  };
   // Surface parent attribution whenever the matched entity is a subsidiary.
   // Spec §7 keeps CEO names off the card; parent linkage is informational,
   // not CEO-blaming, so it's shown independently of SHOW_FIGURE_NAME_IN_CARD.
@@ -123,7 +162,12 @@ export function BusinessCard({
 
       {/* Sprite — perching on document */}
       {spriteId && (
-        <View style={styles.spritePerch} pointerEvents="none" accessibilityElementsHidden>
+        <View
+          style={styles.spritePerch}
+          pointerEvents="none"
+          accessibilityElementsHidden
+          onLayout={__DEV__ ? onPerchLayout : undefined}
+        >
           <SpriteView spriteId={spriteId} state={avoided ? 'defeated' : 'neutral'} size={CARD_SPRITE_SIZE} />
         </View>
       )}
