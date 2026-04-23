@@ -176,6 +176,10 @@ export function SpriteView({
       importantForAccessibility="no-hide-descendants"
     >
       <Image
+        // key forces a fresh native view when the frame changes (spriteId /
+        // state / variant switch) so RN 0.76 Fabric doesn't recycle a stale
+        // layout from a previous sprite into the next tap.
+        key={`${spriteId}-${state}-${variant ?? 'auto'}`}
         source={frame.source}
         style={{
           width: frame.sheetWidth * scale,
@@ -184,7 +188,12 @@ export function SpriteView({
           left: -((frame.offsetX * scale) + centeredCropLeft + leftCropOffset),
           top: -((frame.offsetY * scale) + topCropOffset),
         }}
-        resizeMode="contain"
+        // `stretch` fills the requested width/height deterministically; our
+        // offset math assumes the sheet is drawn at exactly sheetWidth*scale ×
+        // sheetHeight*scale. `contain` preserves aspect and can letterbox or
+        // under-fill during first-mount layout on Fabric, leaving the visible
+        // crop pointed at a partial frame (top-of-head only).
+        resizeMode="stretch"
       />
     </View>
   );
