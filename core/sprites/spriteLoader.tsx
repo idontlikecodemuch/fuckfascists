@@ -20,17 +20,28 @@ import type { ImageSourcePropType, LayoutChangeEvent } from 'react-native';
 import { Image } from 'expo-image';
 import { spriteAssets } from './spriteAssets';
 
-// [SPRITE-VERIFY] Module-load marker — prints once when the JS module first
-// loads. If this log doesn't appear in Metro after reload, the running app
-// isn't using this file. If it DOES appear, logs the actual Image class so
-// we can confirm expo-image vs react-native Image at runtime.
+// [SPRITE-VERIFY] Module-load marker. Checks for expo-image specific static
+// APIs (clearMemoryCache / clearDiskCache / getCachePathAsync) that are
+// NOT on react-native's Image. If these are functions → expo-image is in
+// use; if undefined → RN Image silently substituted and our recyclingKey
+// fix is inert.
 if (__DEV__) {
+  const ImgAny = Image as unknown as {
+    clearMemoryCache?: unknown;
+    clearDiskCache?: unknown;
+    getCachePathAsync?: unknown;
+  };
+  const isExpoImage =
+    typeof ImgAny.clearMemoryCache === 'function' &&
+    typeof ImgAny.clearDiskCache === 'function' &&
+    typeof ImgAny.getCachePathAsync === 'function';
   // eslint-disable-next-line no-console
   console.log(
     `[SPRITE-VERIFY] spriteLoader.tsx LOADED. ` +
-    `Image.displayName=${(Image as unknown as { displayName?: string }).displayName ?? 'undefined'} ` +
-    `Image.name=${Image.name ?? 'undefined'} ` +
-    `Image.toString=${Image.toString().slice(0, 80).replace(/\s+/g, ' ')}`,
+    `isExpoImage=${isExpoImage} ` +
+    `clearMemoryCache=${typeof ImgAny.clearMemoryCache} ` +
+    `clearDiskCache=${typeof ImgAny.clearDiskCache} ` +
+    `getCachePathAsync=${typeof ImgAny.getCachePathAsync}`,
   );
 }
 
