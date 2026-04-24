@@ -160,10 +160,16 @@ export function BusinessCard({
       {/* Red seal — decorative */}
       <Image source={sealEagle} style={styles.seal} accessibilityElementsHidden />
 
-      {/* Sprite — perching on document */}
+      {/* Sprite — perching on document. collapsable={false} + explicit
+          width/height on the perch style keep the UIView frame stable
+          across Fabric view recycling — without both, iOS's recycled frame
+          can stay at a stale smaller height while Yoga's shadow frame
+          reports the intended 168×168, which shows up as the sprite's
+          top-only clip under load. */}
       {spriteId && (
         <View
           style={styles.spritePerch}
+          collapsable={false}
           pointerEvents="none"
           accessibilityElementsHidden
           onLayout={__DEV__ ? onPerchLayout : undefined}
@@ -278,6 +284,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: theme.space.lg,
     top: -(SPRITE_ABOVE),
+    // Explicit width/height — without these, the perch is content-sized and
+    // Yoga's shadow frame can disagree with the recycled UIView's actual
+    // frame on Fabric (facebook/react-native#42732). That divergence shows
+    // up as "onLayout reports 168×168 but iOS keeps a stale shorter frame,"
+    // which with overflow:hidden on the inner SpriteView crops the bitmap
+    // to the top sliver only.
+    width: CARD_SPRITE_SIZE,
+    height: CARD_SPRITE_SIZE,
     zIndex: 4,
   },
   documentShadow: {
