@@ -165,6 +165,17 @@ export function SpriteView({
   // [SPRITE-DBG] Hooks declared unconditionally before early-return branches.
   // Logs gated on __DEV__.
   const renderCountRef = useRef(0);
+  // Per-mount unique key passed to expo-image's `recyclingKey`. When the key
+  // differs from the recycled view's prior occupant, expo-image resets the
+  // view's content to blank before loading the new image — sidestepping
+  // RN's Fabric pool staleness bug (RCTImageComponentView.prepareForRecycle
+  // only clears .image, not contentMode/frame/autoresizingMask — see
+  // facebook/react-native#42732, #48790, #48392). Using a useRef so the key
+  // is stable across this instance's re-renders but unique across instances.
+  const mountKeyRef = useRef<string>('');
+  if (!mountKeyRef.current) {
+    mountKeyRef.current = `${spriteId}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  }
   useEffect(() => {
     if (__DEV__) {
       // eslint-disable-next-line no-console
@@ -237,11 +248,23 @@ export function SpriteView({
         styles.container,
         { width: size, height: size, opacity: opacity ?? 1 },
       ]}
+      // collapsable={false} blocks Fabric view flattening for this overflow:
+      // hidden container. Without it, Fabric can merge this wrapper into its
+      // parent, at which point the clip region is computed against the
+      // recycled parent's bounds — classic staleness path for
+      // overflow:'hidden' + re-render on new arch (react-native#48392).
+      collapsable={false}
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"
       onLayout={__DEV__ ? onContainerLayout : undefined}
     >
       <Image
+        // Unique per-mount recyclingKey forces expo-image to reset the
+        // underlying view's content before applying new props. Without it,
+        // a view recycled from Fabric's pool inherits stale internal
+        // geometry and the bitmap composites at the prior view's cached
+        // bounds — the "top of head only" clip under load.
+        recyclingKey={mountKeyRef.current}
         source={frame.source}
         style={{
           width: frame.sheetWidth * scale,
