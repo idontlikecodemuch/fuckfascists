@@ -63,6 +63,60 @@ target 'FckFascists' do
       end
     end
 
+    # ── RCTViewComponentView layoutMetrics recycle patch ────────────────
+    # Backport of facebook/react-native#55796 (lands in RN 0.85.0):
+    # "Fix transformOrigin calculating based on incorrect value" and the
+    # corresponding _layoutMetrics reset in prepareForRecycle.
+    #
+    # On RN 0.76.0 + new arch (Fabric), recycled UIViews retain stale
+    # _layoutMetrics from their prior occupants. resolveTransform() and
+    # downstream layout reads then use wrong frame dimensions, which on
+    # iOS shows up as overflow:'hidden' children clipping to a stale
+    # smaller frame — the BusinessCard sprite "top of head only" bug we
+    # spent the night chasing. Symptoms documented in #48392, #48790,
+    # #42732. Idempotent — safe to re-run.
+    rct_view_path = File.join(
+      __dir__, '..', 'node_modules', 'react-native', 'React', 'Fabric',
+      'Mounting', 'ComponentViews', 'View', 'RCTViewComponentView.mm'
+    )
+    if File.exist?(rct_view_path)
+      content = File.read(rct_view_path)
+      unless content.include?('// FCK layout-metrics recycle patch')
+        patched = content
+          # 1. Reset _layoutMetrics in prepareForRecycle so recycled views
+          #    don't hand stale frame data to the next occupant.
+          .gsub(
+            '_reactSubviews = [NSMutableArray new];',
+            "_reactSubviews = [NSMutableArray new];\n  // FCK layout-metrics recycle patch — backport of react-native#55796 (RN 0.85.0)\n  _layoutMetrics = {};"
+          )
+          # 2. Capture previous frame size BEFORE the super-call mutates
+          #    _layoutMetrics. The transform recompute condition below
+          #    needs the actual previous frame, not the recycled-view
+          #    stored value.
+          .gsub(
+            '[super updateLayoutMetrics:layoutMetrics oldLayoutMetrics:_layoutMetrics];',
+            "// FCK layout-metrics recycle patch — capture previous frame before super updates _layoutMetrics\n  auto previousFrameSize = _layoutMetrics.frame.size;\n  [super updateLayoutMetrics:layoutMetrics oldLayoutMetrics:_layoutMetrics];"
+          )
+          # 3. Use the captured previousFrameSize for the transform
+          #    recompute trigger instead of the parameter oldLayoutMetrics
+          #    (which is also stale on a recycled view).
+          .gsub(
+            'layoutMetrics.frame.size != oldLayoutMetrics.frame.size',
+            'layoutMetrics.frame.size != previousFrameSize'
+          )
+        if patched != content
+          File.write(rct_view_path, patched)
+          Pod::UI.puts "✅ RCTViewComponentView.mm patched (layoutMetrics recycle fix from RN 0.85.0)"
+        else
+          Pod::UI.puts "⚠️  RCTViewComponentView.mm patch patterns not matched — review RN version"
+        end
+      else
+        Pod::UI.puts "✅ RCTViewComponentView.mm layoutMetrics patch already present"
+      end
+    else
+      Pod::UI.puts "⚠️  RCTViewComponentView.mm not found at #{rct_view_path} — skipping patch"
+    end
+
     # ── AIRMap nil guard patch ──────────────────────────────────────────
     # Prevents NSInvalidArgumentException crash when Fabric reconciler
     # passes nil subviews to the native map during rapid marker add/remove.
