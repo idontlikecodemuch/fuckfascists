@@ -68,6 +68,8 @@ All components reference tokens from `design/tokens.ts`. Never hardcode hex valu
 
 **Layout:** Folder wrapper `overflow: 'visible'`, full-width (no marginHorizontal). Sprite perch: `CARD_SPRITE_SIZE` (168px), ~80% above document top edge, ~20% overlapping, `zIndex: 4`. Document panel: `marginHorizontal: space.lg`, cream background. Card container: `maxHeight: '65%'`, positioned at bottom.
 
+**Rendering note:** The map card host stays mounted after first open. Visibility is controlled by the parent via opacity / pointer-events / accessibility gating instead of unmounting the card subtree. This is intentional: `SpriteView` uses an `overflow: 'hidden'` crop box around a larger sprite-sheet image, and RN 0.76 + Fabric can recycle that clipped native view with stale bounds when the card is torn down and remounted. While hidden, the sprite image is parked far outside the crop box so switching from a `2x1` to a `2x2` sheet, or vice versa, does not flash the old crop region for a frame on reopen.
+
 **Dismiss:** Three methods: folder tab tap (Pressable, ≥44pt, a11yLabel "Close report"), backdrop tap, swipe down (PanResponder, follow-finger spring). No DISMISS text button.
 
 **Post-avoid celebration:** Card-local animations, not FXLayer:

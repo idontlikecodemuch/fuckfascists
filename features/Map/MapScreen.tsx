@@ -248,6 +248,14 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
   const showFullCard = cardMode === 'card';
   const bannerVariant = cardMode && typeof cardMode === 'object' ? cardMode.banner : null;
   const isCelebrating = avoidAnimating;
+  const lastFullCardResultRef = useRef<ScanResult | null>(null);
+  if (activeResult && showFullCard) {
+    lastFullCardResultRef.current = activeResult;
+  }
+  const persistentCardResult = activeResult && showFullCard
+    ? activeResult
+    : lastFullCardResultRef.current;
+  const cardVisible = activeResult !== null && showFullCard;
   const headerBarHeight = Math.round(screenWidth / HEADER_BAR_ASPECT);
   const SEARCH_TOP = insets.top + headerBarHeight + theme.space.md;
 
@@ -320,15 +328,33 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
 
       {latestTapBatch.length >= 2 && !activeResult && <MatchChooser results={latestTapBatch} onSelect={handleChooserSelect} onDismiss={handleChooserDismiss} />}
 
-      {activeResult && showFullCard && (
+      {cardVisible && (
         <>
           <Pressable style={styles.backdrop} onPress={isCelebrating ? undefined : handleDismiss} accessibilityRole="button" accessibilityLabel={sharedCopy.dismissLabel} disabled={isCelebrating} />
           {/* Amber pulse overlay behind card */}
           <Animated.View style={[styles.amberPulse, { opacity: amberPulseOpacity }]} pointerEvents="none" />
-          <View style={styles.cardContainer} pointerEvents={isCelebrating ? 'none' : 'auto'}>
-            <BusinessCard result={activeResult} onAvoid={handleAvoid} avoidDisabled={!activeResult.entity} avoided={avoidedResult === activeResult || avoidedTodayRef.current.has(activeResult.entityId ?? activeResult.fecCommitteeId)} onDismiss={handleDismiss} allEntities={entities} people={people} avoidAnimating={avoidAnimating} />
-          </View>
         </>
+      )}
+
+      {persistentCardResult && (
+        <View
+          style={[styles.cardContainer, { opacity: cardVisible ? 1 : 0 }]}
+          pointerEvents={cardVisible && !isCelebrating ? 'auto' : 'none'}
+          accessibilityElementsHidden={!cardVisible}
+          importantForAccessibility={cardVisible ? 'auto' : 'no-hide-descendants'}
+        >
+          <BusinessCard
+            result={persistentCardResult}
+            onAvoid={handleAvoid}
+            avoidDisabled={!persistentCardResult.entity}
+            avoided={avoidedTodayRef.current.has(persistentCardResult.entityId ?? persistentCardResult.fecCommitteeId)}
+            onDismiss={handleDismiss}
+            allEntities={entities}
+            people={people}
+            avoidAnimating={avoidAnimating}
+            visible={cardVisible}
+          />
+        </View>
       )}
 
       {activeResult && bannerVariant && (

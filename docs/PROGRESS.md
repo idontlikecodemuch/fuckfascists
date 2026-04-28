@@ -2264,3 +2264,34 @@ This document is updated continuously. New instances should read this first — 
 - App / extension material data-state changes must stay in parity unless explicitly deferred to V2
 - Tesla → null (no corporate PAC, Musk donates personally)
 - Patagonia → removed (IE filer only, no Republican history)
+
+---
+
+### Session: April 27, 2026 (BusinessCard sprite repeat-open clipping on Fabric)
+**Focus:** Diagnose and fix the map business-card sprite clipping bug that appeared only after dismissing and reopening a card on device.
+
+**Symptom observed on device:**
+1. First business-card open rendered the sprite normally.
+2. Dismissing the card and opening the same or another card could clip the sprite to a narrow top region, often just the hair / forehead.
+3. The visual failure was more obvious when switching between `2x1` and `2x2` sprite sheets because the wrong crop region could flash briefly during the swap.
+
+**Root cause:**
+- The bug was not bad perch positioning and not bad crop math.
+- `SpriteView` renders one frame from a larger sprite sheet by placing a large `Image` inside an `overflow: 'hidden'` crop container.
+- `MapScreen` previously rendered the business card with `activeResult && showFullCard`, so dismissing the card fully unmounted that clipped sprite subtree.
+- On RN 0.76 + Fabric, reopening the card could recycle the native clipped view with stale geometry. That stale native clip rect produced the "top of head only" render even though the JS layout math was still correct.
+
+**Solution shipped to `main`:**
+1. `MapScreen.tsx` now keeps the full business-card host mounted after first open using `lastFullCardResultRef`.
+2. Visibility is toggled with opacity, pointer events, and accessibility flags instead of unmounting the card subtree.
+3. `BusinessCard.tsx` receives `visible?: boolean` and resets transient animated values (`translateY`, `shakeX`, `shakeY`) when the card becomes visible again so prior swipe-dismiss / shake state does not leak into the next open.
+4. `SpriteView` receives `visible?: boolean`; when hidden, the inner bitmap is moved far outside the crop container so sheet swaps while hidden do not briefly show the previous crop region.
+
+**Why this approach:**
+- It targets the actual trigger: dismiss/remount under Fabric.
+- It preserves the existing sprite-sheet asset pipeline and runtime crop behavior.
+- It is a much smaller intervention than pre-slicing all sheets into per-frame PNGs.
+
+**Fallback if the bug returns:**
+- Treat the issue as native view lifecycle first.
+- If persistent mount is no longer acceptable, replace runtime sprite-sheet cropping for the card with pre-sliced frame assets.

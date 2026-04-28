@@ -136,9 +136,12 @@ interface SpriteViewProps {
   cropOffsetX?: number;
   /** Optional vertical crop offset ratio of frame height. Negative reveals more top. */
   cropOffsetY?: number;
+  /** Temporarily park the bitmap outside the clip box while hidden. */
+  visible?: boolean;
 }
 
 const DEFAULT_HEAD_CROP_RATIO = 0.38;
+const HIDDEN_TOP = -10000;
 
 /**
  * Renders a single static frame from a CEO sprite sheet.
@@ -154,6 +157,7 @@ export function SpriteView({
   cropRatio,
   cropOffsetX = 0,
   cropOffsetY = 0,
+  visible = true,
 }: SpriteViewProps) {
   if (!spriteId) return null;
 
@@ -182,7 +186,7 @@ export function SpriteView({
           height: frame.sheetHeight * scale,
           position: 'absolute' as const,
           left: -((frame.offsetX * scale) + centeredCropLeft + leftCropOffset),
-          top: -((frame.offsetY * scale) + topCropOffset),
+          top: visible ? -((frame.offsetY * scale) + topCropOffset) : HIDDEN_TOP,
         }}
         resizeMode="contain"
       />

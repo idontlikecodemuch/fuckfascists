@@ -279,6 +279,17 @@ If one surface gets a material data-state fix and the other does not, treat that
 as documentation/process debt and address it in the same workstream whenever
 practical.
 
+**Renderer note for the mobile card sprite:** the map business card's CEO sprite
+is not a plain avatar image. `SpriteView` crops a larger sprite sheet inside an
+`overflow: 'hidden'` container. On RN 0.76 + Fabric, repeatedly dismissing and
+reopening the card can recycle the native clipped view with stale geometry,
+producing the "head only" / top-clipped sprite bug. The current fix keeps the
+full-card subtree mounted across closes and hides it with opacity +
+pointer-events instead of unmounting. While hidden, the sprite bitmap is parked
+far outside the crop box so sheet swaps do not flash the previous crop region on
+reopen. If this bug reappears, treat it as a native view-lifecycle issue first,
+not a positioning bug.
+
 ---
 
 ## 6. CDN-Fetch-with-Bundled-Fallback Pattern

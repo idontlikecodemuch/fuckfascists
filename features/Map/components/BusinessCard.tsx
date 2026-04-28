@@ -1,4 +1,4 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, useEffect } from 'react';
 import { View, Text, Image, Pressable, Animated, PanResponder, StyleSheet, AccessibilityInfo } from 'react-native';
 import type { ScanResult } from '../types';
 import type { Entity, PoliticalPerson } from '../../../core/models';
@@ -27,6 +27,7 @@ export interface BusinessCardProps {
   people?: PoliticalPerson[];
   modal?: boolean;
   avoidAnimating?: boolean;
+  visible?: boolean;
 }
 
 /**
@@ -39,6 +40,7 @@ export interface BusinessCardProps {
 export function BusinessCard({
   result, onAvoid, avoidDisabled = false, avoided = false,
   onDismiss, allEntities, people, modal = true, avoidAnimating = false,
+  visible = true,
 }: BusinessCardProps) {
   const { canonicalName, matchedAlias, committeeName, confidence, donationSummary, entity, fecFilingUrl } = result;
 
@@ -94,6 +96,14 @@ export function BusinessCard({
     },
   }), [onDismiss, translateY]);
 
+  useEffect(() => {
+    if (visible) {
+      translateY.setValue(0);
+      shakeX.setValue(0);
+      shakeY.setValue(0);
+    }
+  }, [visible, translateY, shakeX, shakeY]);
+
   return (
     <Animated.View
       style={[styles.folder, { transform: [{ translateX: shakeX }, { translateY: Animated.add(translateY, shakeY) }] }]}
@@ -124,7 +134,7 @@ export function BusinessCard({
       {/* Sprite — perching on document */}
       {spriteId && (
         <View style={styles.spritePerch} pointerEvents="none" accessibilityElementsHidden>
-          <SpriteView spriteId={spriteId} state={avoided ? 'defeated' : 'neutral'} size={CARD_SPRITE_SIZE} />
+          <SpriteView spriteId={spriteId} state={avoided ? 'defeated' : 'neutral'} size={CARD_SPRITE_SIZE} visible={visible} />
         </View>
       )}
 
