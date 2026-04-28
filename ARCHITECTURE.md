@@ -281,14 +281,22 @@ practical.
 
 **Renderer note for the mobile card sprite:** the map business card's CEO sprite
 is not a plain avatar image. `SpriteView` crops a larger sprite sheet inside an
-`overflow: 'hidden'` container. On RN 0.76 + Fabric, repeatedly dismissing and
-reopening the card can recycle the native clipped view with stale geometry,
-producing the "head only" / top-clipped sprite bug. The current fix keeps the
-full-card subtree mounted across closes and hides it with opacity +
-pointer-events instead of unmounting. While hidden, the sprite bitmap is parked
-far outside the crop box so sheet swaps do not flash the previous crop region on
-reopen. If this bug reappears, treat it as a native view-lifecycle issue first,
-not a positioning bug.
+`overflow: 'hidden'` container. On RN 0.76 + Fabric, both remounts and ordinary
+rerenders can corrupt clipped native view geometry, producing the "head only" /
+top-clipped sprite bug. The current fix keeps the full-card subtree mounted
+across closes, keeps the perch and crop box as non-collapsible fixed-size native
+views, translates the sheet with transforms instead of negative layout offsets,
+and patches `RCTViewComponentView` during `pod install` so recycled views reset
+stale layout metrics. While hidden, the sprite bitmap is parked far outside the
+crop box so sheet swaps do not flash the previous crop region on reopen.
+
+**v1.5 future path:** if any sprite clipping survives the renderer hardening,
+replace runtime sprite-sheet cropping on the map card with pre-sliced per-frame
+PNG assets. A local estimate on the current 189 sheets found that slicing only
+the frames currently used by deterministic variant selection would add roughly
+8 MB of raw PNG assets; slicing every manifest frame would add roughly 16 MB.
+This is acceptable as a deliberate v1.5 tradeoff if it lets the card render a
+plain frame image without relying on `overflow: 'hidden'`.
 
 ---
 

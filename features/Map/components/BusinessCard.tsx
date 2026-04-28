@@ -131,9 +131,15 @@ export function BusinessCard({
       {/* Red seal — decorative */}
       <Image source={sealEagle} style={styles.seal} accessibilityElementsHidden />
 
-      {/* Sprite — perching on document */}
+      {/* Sprite — perching on document. Keep this as a real fixed-size native
+          view so Fabric does not flatten or content-size the clipped sprite. */}
       {spriteId && (
-        <View style={styles.spritePerch} pointerEvents="none" accessibilityElementsHidden>
+        <View
+          style={styles.spritePerch}
+          collapsable={false}
+          pointerEvents="none"
+          accessibilityElementsHidden
+        >
           <SpriteView spriteId={spriteId} state={avoided ? 'defeated' : 'neutral'} size={CARD_SPRITE_SIZE} visible={visible} />
         </View>
       )}
@@ -244,6 +250,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: theme.space.lg,
     top: -(SPRITE_ABOVE),
+    width: CARD_SPRITE_SIZE,
+    height: CARD_SPRITE_SIZE,
     zIndex: 4,
   },
   documentShadow: {
