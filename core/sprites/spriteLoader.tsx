@@ -6,8 +6,7 @@
  *   - Standard tier  (2×1): varA neutral (col 0), defeated (col 1)
  *
  * SpriteView renders one frame by clipping the sheet with overflow:hidden
- * and translating the Image inside the crop box. No animation — state changes
- * via React re-render.
+ * and offsetting the Image position. No animation — state changes via React re-render.
  */
 import React from 'react';
 import { View, Image, StyleSheet } from 'react-native';
@@ -142,7 +141,7 @@ interface SpriteViewProps {
 }
 
 const DEFAULT_HEAD_CROP_RATIO = 0.38;
-const HIDDEN_TRANSLATE_Y = -10000;
+const HIDDEN_TOP = -10000;
 
 /**
  * Renders a single static frame from a CEO sprite sheet.
@@ -170,8 +169,6 @@ export function SpriteView({
   const centeredCropLeft = Math.max(0, ((frame.frameWidth * scale) - size) / 2);
   const leftCropOffset = frame.frameWidth * cropOffsetX * scale;
   const topCropOffset = frame.frameHeight * cropOffsetY * scale;
-  const translateX = -((frame.offsetX * scale) + centeredCropLeft + leftCropOffset);
-  const translateY = visible ? -((frame.offsetY * scale) + topCropOffset) : HIDDEN_TRANSLATE_Y;
 
   return (
     <View
@@ -179,7 +176,6 @@ export function SpriteView({
         styles.container,
         { width: size, height: size, opacity: opacity ?? 1 },
       ]}
-      collapsable={false}
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"
     >
@@ -189,12 +185,8 @@ export function SpriteView({
           width: frame.sheetWidth * scale,
           height: frame.sheetHeight * scale,
           position: 'absolute' as const,
-          left: 0,
-          top: 0,
-          transform: [
-            { translateX },
-            { translateY },
-          ],
+          left: -((frame.offsetX * scale) + centeredCropLeft + leftCropOffset),
+          top: visible ? -((frame.offsetY * scale) + topCropOffset) : HIDDEN_TOP,
         }}
         resizeMode="contain"
       />

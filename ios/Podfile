@@ -63,46 +63,6 @@ target 'FckFascists' do
       end
     end
 
-    # ── RCTViewComponentView layoutMetrics recycle patch ────────────────
-    # RN 0.76 + Fabric can reuse RCTViewComponentView instances with stale
-    # layout metrics. That shows up as clipped / corrupted overflow:hidden
-    # children after rerenders or remounts, including the BusinessCard sprite
-    # crop box. This backports the later RN behavior that resets recycled
-    # metrics and recomputes transforms against the actual prior native frame.
-    # Idempotent — safe to run after every pod install.
-    rct_view_path = File.join(
-      __dir__, '..', 'node_modules', 'react-native', 'React', 'Fabric',
-      'Mounting', 'ComponentViews', 'View', 'RCTViewComponentView.mm'
-    )
-    if File.exist?(rct_view_path)
-      content = File.read(rct_view_path)
-      unless content.include?('// FCK layout-metrics recycle patch')
-        patched = content
-          .gsub(
-            "_reactSubviews = [NSMutableArray new];\n}",
-            "_reactSubviews = [NSMutableArray new];\n  // FCK layout-metrics recycle patch\n  _layoutMetrics = {};\n}"
-          )
-          .gsub(
-            '[super updateLayoutMetrics:layoutMetrics oldLayoutMetrics:_layoutMetrics];',
-            "// FCK layout-metrics recycle patch — capture previous frame before super updates _layoutMetrics\n  auto previousFrameSize = _layoutMetrics.frame.size;\n  [super updateLayoutMetrics:layoutMetrics oldLayoutMetrics:_layoutMetrics];"
-          )
-          .gsub(
-            'layoutMetrics.frame.size != oldLayoutMetrics.frame.size',
-            'layoutMetrics.frame.size != previousFrameSize'
-          )
-        if patched != content
-          File.write(rct_view_path, patched)
-          Pod::UI.puts "✅ RCTViewComponentView.mm patched with layoutMetrics recycle fix"
-        else
-          Pod::UI.puts "⚠️  RCTViewComponentView.mm patch patterns not found — check React Native version"
-        end
-      else
-        Pod::UI.puts "✅ RCTViewComponentView.mm layoutMetrics patch already present"
-      end
-    else
-      Pod::UI.puts "⚠️  RCTViewComponentView.mm not found at #{rct_view_path} — skipping layoutMetrics patch"
-    end
-
     # ── AIRMap nil guard patch ──────────────────────────────────────────
     # Prevents NSInvalidArgumentException crash when Fabric reconciler
     # passes nil subviews to the native map during rapid marker add/remove.

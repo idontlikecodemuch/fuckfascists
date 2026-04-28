@@ -2279,23 +2279,19 @@ This document is updated continuously. New instances should read this first — 
 - The bug was not bad perch positioning and not bad crop math.
 - `SpriteView` renders one frame from a larger sprite sheet by placing a large `Image` inside an `overflow: 'hidden'` crop container.
 - `MapScreen` previously rendered the business card with `activeResult && showFullCard`, so dismissing the card fully unmounted that clipped sprite subtree.
-- On RN 0.76 + Fabric, reopening the card could recycle the native clipped view with stale geometry. Upstream RN reports also show `overflow: hidden` view corruption after ordinary rerenders on Expo 52 / RN 0.76 new architecture, so persistent mount alone was necessary but not sufficient.
+- On RN 0.76 + Fabric, reopening the card could recycle the native clipped view with stale geometry. That stale native clip rect produced the "top of head only" render even though the JS layout math was still correct.
 
 **Solution shipped to `main`:**
 1. `MapScreen.tsx` now keeps the full business-card host mounted after first open using `lastFullCardResultRef`.
 2. Visibility is toggled with opacity, pointer events, and accessibility flags instead of unmounting the card subtree.
 3. `BusinessCard.tsx` receives `visible?: boolean` and resets transient animated values (`translateY`, `shakeX`, `shakeY`) when the card becomes visible again so prior swipe-dismiss / shake state does not leak into the next open.
-4. `BusinessCard.tsx` keeps the sprite perch as a fixed-size `collapsable={false}` native view so Fabric cannot flatten or content-size the sprite host.
-5. `SpriteView` keeps its crop box `collapsable={false}` and moves the sprite sheet with `transform` values instead of negative `left` / `top` layout offsets.
-6. `SpriteView` receives `visible?: boolean`; when hidden, the inner bitmap is moved far outside the crop container so sheet swaps while hidden do not briefly show the previous crop region.
-7. `ios/Podfile` patches `RCTViewComponentView.mm` during `pod install` so recycled Fabric views reset stale layout metrics and recompute transforms against the actual prior native frame.
+4. `SpriteView` receives `visible?: boolean`; when hidden, the inner bitmap is moved far outside the crop container so sheet swaps while hidden do not briefly show the previous crop region.
 
 **Why this approach:**
 - It targets the actual trigger: dismiss/remount under Fabric.
 - It preserves the existing sprite-sheet asset pipeline and runtime crop behavior.
 - It is a much smaller intervention than pre-slicing all sheets into per-frame PNGs.
 
-**v1.5 future path:**
-- Replace runtime sprite-sheet cropping for the map card with pre-sliced per-frame PNG assets if the renderer hardening still flakes on device.
-- Local size estimate on the current asset set: current sheets are ~10.65 MB; slicing only frames currently reachable by deterministic variant selection is ~18.57 MB (~+7.92 MB); slicing every manifest frame is ~26.68 MB (~+16.03 MB).
-- Keep sheet-based crops for Track / Scorecard until needed; the card is the priority because it is the repeated dismiss/reopen surface.
+**Fallback if the bug returns:**
+- Treat the issue as native view lifecycle first.
+- If persistent mount is no longer acceptable, replace runtime sprite-sheet cropping for the card with pre-sliced frame assets.
