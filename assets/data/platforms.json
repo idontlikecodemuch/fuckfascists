@@ -137,6 +137,13 @@
       ]
     },
     {
+      "id": "grindr",
+      "name": "Grindr",
+      "entityId": "grindr",
+      "defaultSelected": false,
+      "sortOrder": 1750
+    },
+    {
       "id": "microsoft",
       "name": "Microsoft",
       "entityId": "microsoft",

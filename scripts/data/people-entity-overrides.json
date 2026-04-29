@@ -339,6 +339,39 @@
         }
       }
     },
+    "george-arison": {
+      "commonName": "George Arison",
+      "person": {
+        "canonicalName": "ARISON, GEORGE",
+        "displayName": "George Arison",
+        "aliases": [
+          "Irakli Areshidze",
+          "Irakly Areshidze"
+        ],
+        "fecSearchNames": [
+          "ARISON, GEORGE",
+          "ARESHIDZE, IRAKLI",
+          "ARESHIDZE, IRAKLY"
+        ],
+        "primaryEmployer": "GRINDR",
+        "primaryOccupation": "CEO",
+        "lastVerifiedDate": "2026-04-29",
+        "verificationStatus": "manual",
+        "notes": "Manual add for Grindr TestFlight feedback #134. Current CEO verified from Grindr investor relations; FEC filings appear under George Arison and prior legal/name variant Irakli/Irakly Areshidze."
+      },
+      "entityLinks": {
+        "grindr": {
+          "role": "Chief Executive Officer",
+          "startYear": 2022,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Grindr investor relations lists Arison as CEO since October 2022."
+        }
+      }
+    },
     "haim-saban": {
       "entityLinks": {
         "saban-entertainment": {

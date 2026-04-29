@@ -181,6 +181,7 @@ describe('TRACKED_PLATFORMS', () => {
     expect(ids.has('tiktok')).toBe(true);
     expect(ids.has('x-twitter')).toBe(true);
     expect(ids.has('netflix')).toBe(true);
+    expect(ids.has('grindr')).toBe(true);
     // Group children
     expect(ids.has('facebook')).toBe(true);
     expect(ids.has('instagram')).toBe(true);

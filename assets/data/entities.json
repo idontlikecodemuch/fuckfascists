@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "totalEntities": 728,
-    "updatedAt": "2026-04-21",
+    "totalEntities": 729,
+    "updatedAt": "2026-04-29",
     "formatVersion": "1.0",
     "entityDonationHydrationSource": "FEC bulk PAS2/OTH files",
     "entityDonationHydrationCycles": [
@@ -15020,6 +15020,34 @@
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-04-20",
       "verificationStatus": "manual"
+    },
+    {
+      "id": "grindr",
+      "canonicalName": "Grindr Inc",
+      "aliases": [
+        "Grindr",
+        "Grindr Inc",
+        "Grindr XTRA",
+        "Grindr Unlimited",
+        "Grindr for Equality"
+      ],
+      "domains": [
+        "grindr.com"
+      ],
+      "categoryTags": [
+        "social-media",
+        "platform",
+        "dating"
+      ],
+      "ceoName": "George Arison",
+      "publicFigureName": "George Arison",
+      "fecCommitteeId": null,
+      "lastVerifiedDate": "2026-04-29",
+      "notes": "Added from TestFlight feedback #134. Local FEC committee-master search found no Grindr corporate PAC match; CEO verified from Grindr investor relations.",
+      "verificationStatus": "manual",
+      "associatedPersonIds": [
+        "george-arison"
+      ]
     },
     {
       "id": "conagra",
