@@ -44,8 +44,8 @@ export const theme = {
 
     // Folder / document system — manila folder reskin for business card
     folderBg: '#AF7E5A',
-    folderBgLight: '#C09570',
-    folderBgDark: '#8E6844',
+    folderBgLight: '#B88867',
+    folderBgDark: '#9A6D4C',
     documentBg: '#F5F0E8',
     documentText: '#2A2420',
     documentBorder: '#D4C8B8',

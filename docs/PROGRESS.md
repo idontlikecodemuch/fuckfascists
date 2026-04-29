@@ -12,6 +12,44 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 29, 2026 ET — MatchChooser visual refresh from hand-designed mockup
+
+**Branch:** `claude/jovial-mahavira-688fb1` (merged to main same day).
+
+**Focus:** Visual refresh of the multi-entity POI tap chooser to match a hand-designed SVG mockup (`tools/img-gen/reference/match-chooser-mockup-v5.svg`). The previous design had small tabs offset from the right edge with a 10px gap between rows; the mockup tightened the tab geometry and stacked folders flush so each successive tab overlaps the previous body — reads like a stack of nested file folders rather than a list of separate cards. No data path or trigger logic changes; surrounding cyan sheet + "SEVERAL ON FILE" header + × dismiss preserved.
+
+**What changed:**
+
+1. **`design/tokens.ts`** — `folderBgLight: #C09570 → #B88867` (less yellow), `folderBgDark: #8E6844 → #9A6D4C` (warmer, less harsh). The mockup's gradient stops were `#B88867 → #AF7E5A → #9A6D4C`; the token midpoint already exact-matches `folderBg`. Both replaced tokens also feed the BusinessCard manila gradient (intentional — propagates a more believable manila palette across both surfaces).
+
+2. **`features/Map/components/MatchChooser.tsx`** — full layout rewrite:
+   - Tab `44×14, right offset 28` → `70×14, right offset 6` (tighter to right edge, larger flap)
+   - Tab background `folderBgDark` → `folderBg` (mid-tone — matches gradient average instead of bottom stop)
+   - Row gap `10 → 0`, `row` height fixed at `FOLDER_BODY_HEIGHT = 65`. Tab still positioned `top: -TAB_HEIGHT` with overflow visible, so with zero gap it overlaps the previous folder body bottom by 14pt.
+   - Gradient overlays expanded to `50%/50%` with tuned opacities (`0.55` top / `0.45` bottom) so they meet at midline instead of leaving the prior 20% flat band.
+   - `folderContent` padding rederived from `PAPER_LIGHT_HEIGHT + PAPER_SHADOW_HEIGHT` (3+1) — clean derivation in place of the prior `theme.space.sm + 4` magic number.
+   - Font sizes: `rowName 15 → 22`, `chevron 22 → 24`. Both stay on `theme.fonts.headline` (Bungee) + `theme.colors.documentText` — no font import.
+   - `LIST_MAX_HEIGHT` derived: `TAB_HEIGHT + 4 × FOLDER_BODY_HEIGHT + theme.space.xs = 278`. Sheet grows to fit up to 4 folders inline; scrolls past 4 (`overflow: 'visible'` on list keeps the protruding tabs visible during scroll).
+   - `ItemSeparatorComponent` removed — no separator at zero gap.
+
+3. **`features/Dev/sections/MapSections.tsx`** — `StaticMatchChooser` (catalog mock that avoids FlatList-in-ScrollView warning) kept in sync: same constants, new hex values, dropped `rowGap` style.
+
+**Decisions reached during the session:**
+
+- Surrounding cyan sheet + header retained (mockup only zoomed on folder rows). Without it the chooser loses the dismiss path, modal a11y label, and visual delineation from the map.
+- App fonts (Bungee) instead of mockup's Impact — keeps consistency with BusinessCard / rest of app, avoids a font import for one surface.
+- Approximate gradient via overlay views, not a real linear-gradient lib. Token shift makes the overlay technique closer to the mockup's three-stop gradient without a new dep.
+- Sheet grows to content (option c), not scrolling FlatList inside fixed window or hard cap. Real-world POI taps almost always return 2–3, and a stack that grows reads more "stack of folders" than scrolling-window-of-cards.
+- `documentBg` and `documentText` left untouched — drift vs. mockup is <2% color distance and updating them propagates everywhere those tokens are used (BusinessCard, scorecard, etc.).
+
+**Verification:** `npx tsc --noEmit` → EXIT 0. No tests reference `MatchChooser` or folder tokens. No copy changes — `copy/map.ts` chooser strings unchanged.
+
+**No new tokens or constants** other than the layout numerics local to `MatchChooser.tsx` (`TAB_WIDTH`, `TAB_RIGHT`, `FOLDER_BODY_HEIGHT`, etc.). All visual values still resolve through `theme.colors.*`.
+
+**Companion artifact:** `tools/img-gen/reference/track-row-states.svg` — hand-drawable reference for the next visual refresh on the Track screen's `PlatformRow`. Shows default / focused-with-day-circles / avoided-today / child-row states stacked at production proportions. Not consumed by code; reference only.
+
+---
+
 ### Session: April 22, 2026 ET — FEC name-fuzz rebuild (Bezos coverage gap)
 
 **Branch:** `data/fec-fuzz-rebuild` (isolated worktree, no main merge until signed off).

@@ -71,6 +71,12 @@ BannerDissolved.displayName = 'BannerDissolved';
 // ── MatchChooser — static mock (avoids FlatList-in-ScrollView warning) ─────
 
 const TAB_HEIGHT = 14;
+const TAB_WIDTH = 70;
+const TAB_RIGHT = 6;
+const FOLDER_BODY_HEIGHT = 65;
+const PAPER_LIGHT_HEIGHT = 3;
+const PAPER_SHADOW_HEIGHT = 1;
+const PAPER_TOTAL_HEIGHT = PAPER_LIGHT_HEIGHT + PAPER_SHADOW_HEIGHT;
 
 function StaticMatchChooser({ results }: { results: ScanResult[] }) {
   return (
@@ -87,12 +93,12 @@ function StaticMatchChooser({ results }: { results: ScanResult[] }) {
         </View>
         <View style={mc.divider} />
         <View style={mc.listContent}>
-          {results.map((item, i) => {
+          {results.map((item) => {
             const name = item.matchedAlias || item.canonicalName;
             return (
               <View
                 key={item.entityId ?? item.fecCommitteeId}
-                style={[mc.row, i > 0 && mc.rowGap]}
+                style={mc.row}
               >
                 <View style={mc.tab} />
                 <View style={mc.folder}>
@@ -138,22 +144,21 @@ const mc = StyleSheet.create({
   dismiss: { minWidth: 44, minHeight: 44, alignItems: 'center', justifyContent: 'center' },
   dismissIcon: { fontFamily: 'Bungee-Regular', fontSize: 22, color: '#DCE7F6' },
   divider: { height: 1, backgroundColor: '#2878C8', opacity: 0.4, marginBottom: 12 },
-  listContent: { paddingTop: TAB_HEIGHT },
-  row: { overflow: 'visible', minHeight: 44 + TAB_HEIGHT },
-  rowGap: { marginTop: 10 },
+  listContent: { paddingTop: TAB_HEIGHT, paddingBottom: 4 },
+  row: { overflow: 'visible', height: FOLDER_BODY_HEIGHT },
   tab: {
-    position: 'absolute', top: -TAB_HEIGHT, right: 28, width: 44, height: TAB_HEIGHT,
-    backgroundColor: '#8E6844', borderTopLeftRadius: 8, borderTopRightRadius: 8,
-    borderTopWidth: 1, borderTopColor: '#2A2420',
+    position: 'absolute', top: -TAB_HEIGHT, right: TAB_RIGHT, width: TAB_WIDTH, height: TAB_HEIGHT,
+    backgroundColor: '#AF7E5A', borderTopLeftRadius: 8, borderTopRightRadius: 8,
+    borderTopWidth: 1, borderTopColor: '#2A2420', zIndex: 2,
   },
-  folder: { backgroundColor: '#AF7E5A', minHeight: 44, overflow: 'hidden' },
-  folderGradTop: { position: 'absolute', top: 0, left: 0, right: 0, height: '45%', backgroundColor: '#C09570', opacity: 0.5 },
-  folderGradBot: { position: 'absolute', bottom: 0, left: 0, right: 0, height: '35%', backgroundColor: '#8E6844', opacity: 0.35 },
-  paperBorder: { position: 'absolute', top: 0, left: 0, right: 0, height: 3, backgroundColor: '#F5F0E8' },
-  paperShadow: { position: 'absolute', top: 3, left: 0, right: 0, height: 1, backgroundColor: 'rgba(30,20,10,0.25)' },
-  folderContent: { flexDirection: 'row', alignItems: 'center', paddingVertical: 8, paddingHorizontal: 12, paddingTop: 12 },
-  rowName: { flex: 1, fontFamily: 'Bungee-Regular', fontSize: 15, letterSpacing: 1, color: '#2A2420', marginRight: 8 },
-  chevron: { fontFamily: 'Bungee-Regular', fontSize: 22, color: '#2A2420', opacity: 0.55 },
+  folder: { backgroundColor: '#AF7E5A', height: FOLDER_BODY_HEIGHT, overflow: 'hidden' },
+  folderGradTop: { position: 'absolute', top: 0, left: 0, right: 0, height: '50%', backgroundColor: '#B88867', opacity: 0.55 },
+  folderGradBot: { position: 'absolute', bottom: 0, left: 0, right: 0, height: '50%', backgroundColor: '#9A6D4C', opacity: 0.45 },
+  paperBorder: { position: 'absolute', top: 0, left: 0, right: 0, height: PAPER_LIGHT_HEIGHT, backgroundColor: '#F5F0E8', zIndex: 1 },
+  paperShadow: { position: 'absolute', top: PAPER_LIGHT_HEIGHT, left: 0, right: 0, height: PAPER_SHADOW_HEIGHT, backgroundColor: 'rgba(30,20,10,0.25)', zIndex: 1 },
+  folderContent: { flex: 1, flexDirection: 'row', alignItems: 'center', paddingTop: PAPER_TOTAL_HEIGHT, paddingHorizontal: 16, zIndex: 2 },
+  rowName: { flex: 1, fontFamily: 'Bungee-Regular', fontSize: 22, letterSpacing: 1, color: '#2A2420', marginRight: 8 },
+  chevron: { fontFamily: 'Bungee-Regular', fontSize: 24, color: '#2A2420', opacity: 0.55 },
 });
 
 export const MatchChooser3 = forwardRef<View>((_, ref) => (

@@ -12,14 +12,23 @@ interface MatchChooserProps {
 }
 
 const TAB_HEIGHT = 14;
-const TAB_WIDTH = 44;
-const TAB_RIGHT = 28;
-const ROW_GAP = 10;
-const LIST_MAX_HEIGHT = 320;
+const TAB_WIDTH = 70;
+const TAB_RIGHT = 6;
+const FOLDER_BODY_HEIGHT = 65;
+const PAPER_LIGHT_HEIGHT = 3;
+const PAPER_SHADOW_HEIGHT = 1;
+const PAPER_TOTAL_HEIGHT = PAPER_LIGHT_HEIGHT + PAPER_SHADOW_HEIGHT;
+const VISIBLE_FOLDERS_BEFORE_SCROLL = 4;
+const LIST_MAX_HEIGHT =
+  TAB_HEIGHT +
+  FOLDER_BODY_HEIGHT * VISIBLE_FOLDERS_BEFORE_SCROLL +
+  theme.space.xs;
 
 /**
  * Bottom-anchored overlay shown when a single map tap returns 2+ matched
- * entities. Cockpit cyan sheet with a stack of manila-folder rows.
+ * entities. Cockpit cyan sheet wrapping a flush stack of manila-folder rows —
+ * each successive folder's tab overlaps the previous folder body, reading
+ * like a stack of nested file folders.
  *
  * All matched entities also appear as map markers for visual context —
  * the chooser is the primary interaction path for multi-match taps.
@@ -62,7 +71,6 @@ export function MatchChooser({ results, onSelect, onDismiss }: MatchChooserProps
             keyExtractor={(item) => item.entityId ?? item.fecCommitteeId}
             style={styles.list}
             contentContainerStyle={styles.listContent}
-            ItemSeparatorComponent={ItemSeparator}
             renderItem={({ item }) => (
               <FolderRow result={item} onSelect={onSelect} />
             )}
@@ -71,10 +79,6 @@ export function MatchChooser({ results, onSelect, onDismiss }: MatchChooserProps
       </View>
     </View>
   );
-}
-
-function ItemSeparator() {
-  return <View style={styles.separator} />;
 }
 
 function FolderRow({
@@ -195,10 +199,9 @@ const styles = StyleSheet.create({
     paddingTop: TAB_HEIGHT,
     paddingBottom: theme.space.xs,
   },
-  separator: { height: ROW_GAP },
   row: {
     overflow: 'visible',
-    minHeight: theme.a11y.minTapTarget + TAB_HEIGHT,
+    height: FOLDER_BODY_HEIGHT,
   },
   tab: {
     position: 'absolute',
@@ -206,7 +209,7 @@ const styles = StyleSheet.create({
     right: TAB_RIGHT,
     width: TAB_WIDTH,
     height: TAB_HEIGHT,
-    backgroundColor: theme.colors.folderBgDark,
+    backgroundColor: theme.colors.folderBg,
     borderTopLeftRadius: theme.radii.folderTab,
     borderTopRightRadius: theme.radii.folderTab,
     borderTopWidth: 1,
@@ -215,7 +218,7 @@ const styles = StyleSheet.create({
   },
   folder: {
     backgroundColor: theme.colors.folderBg,
-    minHeight: theme.a11y.minTapTarget,
+    height: FOLDER_BODY_HEIGHT,
     overflow: 'hidden',
   },
   folderGradTop: {
@@ -223,56 +226,56 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    height: '45%',
+    height: '50%',
     backgroundColor: theme.colors.folderBgLight,
-    opacity: 0.5,
+    opacity: 0.55,
   },
   folderGradBot: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
-    height: '35%',
+    height: '50%',
     backgroundColor: theme.colors.folderBgDark,
-    opacity: 0.35,
+    opacity: 0.45,
   },
   paperBorder: {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
-    height: 3,
+    height: PAPER_LIGHT_HEIGHT,
     backgroundColor: theme.colors.documentBg,
     zIndex: 1,
   },
   paperShadow: {
     position: 'absolute',
-    top: 3,
+    top: PAPER_LIGHT_HEIGHT,
     left: 0,
     right: 0,
-    height: 1,
+    height: PAPER_SHADOW_HEIGHT,
     backgroundColor: theme.colors.documentShadow,
     zIndex: 1,
   },
   folderContent: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: theme.space.sm,
-    paddingHorizontal: theme.space.md,
-    paddingTop: theme.space.sm + 4,
+    paddingTop: PAPER_TOTAL_HEIGHT,
+    paddingHorizontal: theme.space.lg,
     zIndex: 2,
   },
   rowName: {
     flex: 1,
     fontFamily: theme.fonts.headline,
-    fontSize: 15,
+    fontSize: 22,
     letterSpacing: 1,
     color: theme.colors.documentText,
     marginRight: theme.space.sm,
   },
   chevron: {
     fontFamily: theme.fonts.headline,
-    fontSize: 22,
+    fontSize: 24,
     color: theme.colors.documentText,
     opacity: 0.55,
   },
