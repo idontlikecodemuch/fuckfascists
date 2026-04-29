@@ -15,7 +15,10 @@ export const theme = {
     successGreenBright: '#2D8A4E',
     successGreenDeep: '#1A3A1A',
     successGreenText: '#5AB55A',
-    trackFocusTint: 'rgba(40, 120, 200, 0.08)',
+    // Brighter than the general focusTint (0.08) — focused Track rows need to
+    // read clearly against the panelInner row bg, and the today cell that
+    // sits inside this band is bumped further (TRACK_TODAY_BAND_OPACITY).
+    trackFocusTint: 'rgba(40, 120, 200, 0.18)',
 
     // Panel bevel system — cool grey at rest
     bevelLight: '#3A3E42',

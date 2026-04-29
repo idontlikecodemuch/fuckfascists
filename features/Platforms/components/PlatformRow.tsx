@@ -37,6 +37,11 @@ interface PlatformRowProps {
   onAvoidPress: () => void;
 }
 
+// Sprite renders inside the screen container with a 1px border, so the
+// rendered sprite size is the column size minus the two border edges.
+const SPRITE_SCREEN_BORDER = 1;
+const SPRITE_INNER_SIZE = TRACK_ROW_SPRITE_SIZE - SPRITE_SCREEN_BORDER * 2;
+
 export function PlatformRow({
   item,
   isChild,
@@ -53,7 +58,14 @@ export function PlatformRow({
     : '';
 
   return (
-    <View style={[styles.row, isChild && styles.childRow, focused && styles.focusedRow]}>
+    <View
+      style={[
+        styles.row,
+        isChild && styles.childRow,
+        focused && styles.focusedRow,
+        focused && expanded && styles.focusedExpandedRow,
+      ]}
+    >
       <Pressable
         onPress={onRowPress}
         style={[styles.rowBody, dimmed && styles.dimmedBody]}
@@ -66,14 +78,16 @@ export function PlatformRow({
         accessibilityState={{ expanded }}
       >
           {!isChild && (
-            <FigureBadge
-              figureName={figureName}
-              state="neutral"
-              size={TRACK_ROW_SPRITE_SIZE}
-              cropRatio={TRACK_SPRITE_BUST_CROP_RATIO}
-              cropOffsetX={TRACK_SPRITE_BUST_CROP_OFFSET_X}
-              cropOffsetY={TRACK_SPRITE_BUST_CROP_OFFSET_Y}
-            />
+            <View style={styles.spriteScreen}>
+              <FigureBadge
+                figureName={figureName}
+                state="neutral"
+                size={SPRITE_INNER_SIZE}
+                cropRatio={TRACK_SPRITE_BUST_CROP_RATIO}
+                cropOffsetX={TRACK_SPRITE_BUST_CROP_OFFSET_X}
+                cropOffsetY={TRACK_SPRITE_BUST_CROP_OFFSET_Y}
+              />
+            </View>
         )}
 
         <View style={styles.nameColumn}>
@@ -122,7 +136,6 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: theme.space.sm,
     minHeight: theme.a11y.minTapTarget,
     paddingHorizontal: TRACK_ROW_PADDING_HORIZONTAL,
     paddingVertical: TRACK_ROW_PADDING_VERTICAL,
@@ -136,10 +149,17 @@ const styles = StyleSheet.create({
     paddingVertical: TRACK_CHILD_ROW_PADDING_VERTICAL,
     backgroundColor: theme.colors.panelInner,
   },
+  // Focused row: top + bottom focusAccent rules across the whole row width
+  // (matches the day-today convention). When the row is also expanded the
+  // bottom rule drops so day-circles continues the band as one cell.
   focusedRow: {
-    borderLeftWidth: theme.borders.accent.width,
-    borderLeftColor: TRACK_ROW_FOCUS_BORDER_COLOR,
+    borderTopWidth: 1,
+    borderTopColor: TRACK_ROW_FOCUS_BORDER_COLOR,
+    borderBottomColor: TRACK_ROW_FOCUS_BORDER_COLOR,
     backgroundColor: TRACK_ROW_FOCUS_BG_COLOR,
+  },
+  focusedExpandedRow: {
+    borderBottomWidth: 0,
   },
   rowBody: {
     flex: 1,
@@ -151,9 +171,28 @@ const styles = StyleSheet.create({
   dimmedBody: {
     opacity: TRACK_ROW_DIMMED_OPACITY,
   },
+  // Sprite "screen": full-row-height column with cyan tint + focusAccent edge
+  // and a soft cyan glow. Always-on (not focus-gated) — the sprite reads as
+  // a backlit panel in every row.
+  spriteScreen: {
+    width: TRACK_ROW_SPRITE_SIZE,
+    height: TRACK_ROW_SPRITE_SIZE,
+    backgroundColor: theme.colors.trackFocusTint,
+    borderWidth: SPRITE_SCREEN_BORDER,
+    borderColor: theme.colors.focusAccent,
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'visible',
+    shadowColor: theme.glow.colorHighlight,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 1,
+    shadowRadius: theme.glow.highlightBlurRadius,
+    elevation: 2,
+  },
   nameColumn: {
     flex: 1,
     gap: 1,
+    paddingHorizontal: theme.space.md,
   },
   name: {
     fontFamily: theme.fonts.bodySemiBold,
@@ -182,6 +221,7 @@ const styles = StyleSheet.create({
     fontFamily: theme.fonts.bodySemiBold,
     fontSize: TRACK_ROW_FONT_SIZE_COUNT,
     color: theme.colors.textSecondary,
+    paddingRight: theme.space.sm,
   },
   childCount: {
     fontSize: TRACK_CHILD_FONT_SIZE_COUNT,

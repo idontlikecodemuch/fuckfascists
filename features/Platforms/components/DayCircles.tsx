@@ -87,10 +87,13 @@ export function DayCircles({ weekOf, platformName, dayCounts, onAvoidDate, isChi
 }
 
 const styles = StyleSheet.create({
+  // Day-circles strip closes the focused-expanded zone. The focused row above
+  // drops its bottom rule (focusedExpandedRow) so the band is continuous; the
+  // strip carries the closing focusAccent rule on its bottom edge.
   wrapper: {
     backgroundColor: TRACK_ROW_FOCUS_BG_COLOR,
     borderBottomWidth: 1,
-    borderBottomColor: theme.colors.bevelDark,
+    borderBottomColor: theme.colors.focusAccent,
   },
   childWrapper: {
     paddingLeft: TRACK_CHILD_INDENT,

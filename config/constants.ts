@@ -223,16 +223,24 @@ export const STARBG_PARALLAX_ENABLED = true;
 // ── Track screen layout tuning ───────────────────────────────────────────────
 // All visual sizing for the Track platform list. Adjust these to tune the
 // entire list appearance without opening component files.
-export const TRACK_ROW_PADDING_VERTICAL = 5;
+//
+// Row layout convention (full-height columns): row paddingHorizontal/Vertical
+// are 0 so the sprite-screen and AVOID button can fill row height edge-to-edge.
+// nameColumn carries its own paddingHorizontal for text breathing.
+export const TRACK_ROW_PADDING_VERTICAL = 0;
 export const TRACK_GROUP_HEADER_PADDING_VERTICAL = 5;
-export const TRACK_ROW_PADDING_HORIZONTAL = 12;
-export const TRACK_CHILD_INDENT = 56;
-export const TRACK_ROW_SPRITE_SIZE = 32;
+export const TRACK_ROW_PADDING_HORIZONTAL = 0;
+// Child rows: row paddingLeft. nameColumn adds its own paddingLeft (12), so
+// child name lands at TRACK_CHILD_INDENT + 12 = 76 — visually indented past
+// where parent names land (44 sprite + 12 nameColumn = 56).
+export const TRACK_CHILD_INDENT = 64;
+// Sprite renders at row height so the sprite-screen container fills its column top-to-bottom.
+export const TRACK_ROW_SPRITE_SIZE = 44;
 export const TRACK_ROW_FONT_SIZE_NAME = 15;
 export const TRACK_ROW_FONT_SIZE_SUBTITLE = 11;
 export const TRACK_ROW_FONT_SIZE_COUNT = 14;
 export const TRACK_ROW_FOCUS_BORDER_COLOR = theme.colors.focusAccent;
-export const TRACK_ROW_FOCUS_BG_COLOR = theme.colors.focusTint;
+export const TRACK_ROW_FOCUS_BG_COLOR = theme.colors.trackFocusTint;
 export const TRACK_ROW_DIMMED_OPACITY = 0.45;
 export const TRACK_CHILD_ROW_BG_COLOR = 'rgba(95, 174, 255, 0.06)';
 export const TRACK_CHILD_GUIDE_COLOR = 'rgba(95, 174, 255, 0.55)';
@@ -241,7 +249,8 @@ export const TRACK_DAY_COLUMN_TODAY_BG = 'rgba(40, 120, 200, 0.18)';
 export const TRACK_CHILD_FONT_SIZE_NAME = 13;
 export const TRACK_CHILD_FONT_SIZE_COUNT = 13;
 export const TRACK_BUTTON_WIDTH = 64;
-export const TRACK_BUTTON_HEIGHT = 36;
+// AVOID button fills row height — full-height column convention.
+export const TRACK_BUTTON_HEIGHT = 44;
 export const TRACK_DAY_CIRCLE_SIZE = 28;
 export const TRACK_DAY_CIRCLES_GAP = 4;
 export const TRACK_EXPAND_INDICATOR_SIZE = 14;
@@ -274,11 +283,14 @@ export const TRACK_ARENA_INNER_GLOW_OPACITY = 0.15;
 export const TRACK_GRID_SPRITE_SCALE = 1.0;
 // Score bar count font size
 export const TRACK_SCORE_COUNT_FONT_SIZE = 20;
-// Today highlight band
-export const TRACK_TODAY_BAND_OPACITY = 0.12;
-// Day circles row padding (top/bottom split)
-export const TRACK_DAY_CIRCLES_PADDING_TOP = 3;
-export const TRACK_DAY_CIRCLES_PADDING_BOTTOM = 5;
+// Today highlight band — brighter so the today cell still reads against
+// the brighter focused-row tint (0.18) it sits inside.
+export const TRACK_TODAY_BAND_OPACITY = 0.3;
+// Day circles row padding (top/bottom split) — tightened so the strip
+// matches row height (44) and the focused row + day circles read as one
+// continuous band rather than two padded zones.
+export const TRACK_DAY_CIRCLES_PADDING_TOP = 1;
+export const TRACK_DAY_CIRCLES_PADDING_BOTTOM = 1;
 
 // ── Parent company short names (Track screen group headers) ──────────────────
 // Data mapping for display — not user-facing copy.

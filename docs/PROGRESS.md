@@ -12,6 +12,50 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 29, 2026 ET — Track row full-height columns + sprite-screen
+
+**Branch:** `claude/jovial-mahavira-688fb1` (merged to main same day).
+
+**Focus:** Visual refresh of `PlatformRow` based on a hand-built reference SVG (`tools/img-gen/reference/track-row-states.svg`). The Track screen rows previously had ~50pt height with content vertically padded inside; the new design treats sprite, name, and AVOID as full-row-height columns and adopts the day-today highlight convention (top + bottom focusAccent rules + tinted bg) for the focused row, extended across the entire row. Sprite container also gets a "screen" treatment — cyan tint + focusAccent border + soft cyan glow — so the sprite reads as a backlit panel always (not just on focus). JSX structure preserved; only one new wrapper `<View>` (around FigureBadge) and value/style changes.
+
+**What changed:**
+
+1. **`config/constants.ts` — value bumps only, no new constants:**
+   - `TRACK_ROW_PADDING_VERTICAL: 5 → 0` and `TRACK_ROW_PADDING_HORIZONTAL: 12 → 0` so sprite-screen and AVOID column fill row height edge-to-edge.
+   - `TRACK_ROW_SPRITE_SIZE: 32 → 44` (sprite expands to fit its column, also propagates to PlatformGroupHeader's avatarFrame for consistency).
+   - `TRACK_BUTTON_HEIGHT: 36 → 44` (AvoidButton fills row height).
+   - `TRACK_TODAY_BAND_OPACITY: 0.12 → 0.30` (today cell stays the brightest band even with the focused-row tint bumped underneath it).
+   - `TRACK_DAY_CIRCLES_PADDING_TOP / _BOTTOM: 3 / 5 → 1 / 1` so the strip matches row height (44pt).
+   - `TRACK_CHILD_INDENT: 56 → 64` (with new `nameColumn` paddingHorizontal 12, child name lands at x=76 — 20pt indent past parent name x=56).
+   - `TRACK_ROW_FOCUS_BG_COLOR: theme.colors.focusTint → theme.colors.trackFocusTint` (latter previously dead, now repurposed for the brighter Track-specific tint).
+
+2. **`design/tokens.ts`:** `trackFocusTint` 0.08 → 0.18 (was a dead token; now the live Track focus bg). `focusTint` (general) untouched at 0.08 — FaqItem and PreviewPersonRow keep their subtle tint.
+
+3. **`features/Platforms/components/PlatformRow.tsx`:**
+   - Wrap `FigureBadge` in a single new `<View style={styles.spriteScreen}>` (only structural addition).
+   - `spriteScreen` style: 44×44, `trackFocusTint` bg, 1px `focusAccent` border, `theme.glow.colorHighlight` shadow at `theme.glow.highlightBlurRadius` (8px) — softer than the standard `theme.glow.color/blurRadius` (16px). Reads as a CRT-ish backlit screen.
+   - Inner sprite size = `TRACK_ROW_SPRITE_SIZE - 2 * SPRITE_SCREEN_BORDER` (42) so the sprite fits inside the border; render is full-bleed otherwise.
+   - `focusedRow`: drops `borderLeft 3px` in favor of `borderTopWidth/borderBottomWidth: 1, focusAccent`. Day-today convention extended row-wide.
+   - Added `focusedExpandedRow` style that sets `borderBottomWidth: 0` — applied via JSX condition `focused && expanded && styles.focusedExpandedRow`. Lets the row + day circles read as one continuous tint band.
+   - Drop `gap: theme.space.sm` from the `row` style so AvoidButton sits flush against rowBody. `count.paddingRight: theme.space.sm` preserves the visual breathing space between count text and AVOID column.
+   - Add `paddingHorizontal: theme.space.md` to `nameColumn` so name/subtitle text doesn't hug the sprite-screen edge now that row paddingHorizontal is 0.
+
+4. **`features/Platforms/components/DayCircles.tsx`:** `wrapper.borderBottomColor: bevelDark → focusAccent`. The strip closes the focused-expanded zone with the same cyan rule the focused row opens with on top.
+
+**Decisions reached during the session:**
+
+- Don't change PlatformRow's JSX structure beyond adding the single sprite-screen wrapper. User explicitly asked to keep the working structure.
+- Bump `TRACK_ROW_SPRITE_SIZE` (used by both PlatformRow and PlatformGroupHeader) rather than introducing a new constant for "row screen size" — accepts that PlatformGroupHeader's avatarFrame grows correspondingly. Avoiding constant proliferation kept the change a single-value bump.
+- Sprite-screen glow uses `theme.glow.colorHighlight` (rgba(122,242,255,0.22)) and `highlightBlurRadius` (8) — the existing "less intense" cyan rim treatment used elsewhere in the app — rather than the standard 16px diffuse glow. Per spec ("less intense version of the implementation").
+- Focused-row borders adopted from the day-today convention (top+bottom focusAccent rules) rather than a single full-width focusAccent stripe at top — keeps the row's identity as a discrete zone with clear top and bottom edges.
+- PlatformGroupHeader left alone — its avatarFrame already has its own bevel + bg distinct from the row treatment; the avatarFrame just gets a slightly bigger sprite (32 → 44) inside the same shell.
+
+**Verification:** `npx tsc --noEmit` → EXIT 0. `npx jest features/Platforms` → 3 suites / 35 tests all green (platformHelpers, trackUIState, platformList). No copy changes — `copy/platforms.ts` unchanged.
+
+**No new constants, no new tokens** beyond repurposing the previously dead `trackFocusTint` token. Changes contained to `config/constants.ts`, `design/tokens.ts`, `PlatformRow.tsx`, `DayCircles.tsx`, plus documentation.
+
+---
+
 ### Session: April 29, 2026 ET — MatchChooser visual refresh from hand-designed mockup
 
 **Branch:** `claude/jovial-mahavira-688fb1` (merged to main same day).
