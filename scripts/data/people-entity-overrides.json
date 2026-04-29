@@ -372,6 +372,38 @@
         }
       }
     },
+    "joel-simkhai": {
+      "commonName": "Joel Simkhai",
+      "person": {
+        "canonicalName": "SIMKHAI, JOEL",
+        "displayName": "Joel Simkhai",
+        "aliases": [
+          "Joel Simkhai-Strauss"
+        ],
+        "fecSearchNames": [
+          "SIMKHAI, JOEL",
+          "SIMKHAI STRAUSS, JOEL",
+          "SIMKHAI-STRAUSS, JOEL"
+        ],
+        "primaryEmployer": "GRINDR",
+        "primaryOccupation": "CHIEF EXECUTIVE OFFICER",
+        "lastVerifiedDate": "2026-04-29",
+        "verificationStatus": "manual",
+        "notes": "Manual add for Grindr founder request. Grindr's 2018 acquisition release identifies Simkhai as founder/CEO and says he exited after Kunlun purchased the remaining stake."
+      },
+      "entityLinks": {
+        "grindr": {
+          "role": "Founder & Former CEO",
+          "startYear": 2009,
+          "endYear": 2018,
+          "benefitBasis": "founder_stake",
+          "isCurrent": false,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Grindr's 2018 acquisition release says Kunlun bought the remaining stake from founder Joel Simkhai and that Simkhai exited the company."
+        }
+      }
+    },
     "haim-saban": {
       "entityLinks": {
         "saban-entertainment": {
