@@ -57,6 +57,12 @@ export const theme = {
     sealRed: '#8B3A3A',
     stampRed: '#CC2222',
     amberPulse: 'rgba(255,180,40,0.25)',
+
+    // Scorecard share-image (1080×1920) — warmer palette than the in-app
+    // textPrimary (which is cooler / blue-tinted). The share card reads as a
+    // standalone artifact; cream + dim slate match the gold + cyan accents.
+    scorecardCream: '#E8E0D0',
+    scorecardDim: '#667788',
   },
 
   fonts: {

@@ -15,14 +15,14 @@ export const scorecardCopy = {
   heroLabel: "avoids",
   heroWeek: "THIS WEEK",
 
-  // Sentence bookends (rendered card + preview)
-  framingOpen: "I FCKd",
-  framingClose: (n: number) => `${n}\u00d7 this week`,
+  // Rendered card headline \u2014 "I FCK'D N\u00d7" lives together at the top of the
+  // content section. Closing beat at the bottom-right is just heroWeek.
+  heroPrefix: "I FCK'D",
 
   // Person rows
   personCount: (n: number) => `${n}\u00d7`,
   platformList: (platforms: string[]) => platforms.join(' \u00b7 '),
-  othersLine: (n: number) => `+ ${n} more`,
+  othersLine: (n: number) => `+ ${n} MORE`,
 
   // Share
   shareBtn: "SHARE",

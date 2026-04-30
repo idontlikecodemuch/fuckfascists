@@ -12,6 +12,11 @@ export const scorecardBg: ImageSourcePropType =
 export const scorecardFrame: ImageSourcePropType =
   require('../../assets/pixel/scorecard/frame.png');
 
+/** Scanline tile (1080×4, 1px dark row + 3px transparent) — tiled vertically
+ *  to overlay subtle CRT-style scanlines on the rendered card. */
+export const scorecardScanlines: ImageSourcePropType =
+  require('../../assets/pixel/scorecard/scanlines.png');
+
 /** Power meter tier assets — indexed by tier index (0–3). */
 export const powerMeterAssets: ImageSourcePropType[] = [
   require('../../assets/pixel/scorecard/power_idle.png'),

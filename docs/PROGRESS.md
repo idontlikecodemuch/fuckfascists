@@ -12,6 +12,59 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 30, 2026 ET — Scorecard image finalization (Claude Design "polished main")
+
+**Branch:** `claude/jovial-mahavira-688fb1` (merged to main same day).
+
+**Focus:** Aligned the rendered scorecard share image with the Claude Design mockup at `tools/img-gen/reference/fck-scorecard claude design/project/scorecard/index.html`. Major composition shift: the grand total moves from the bottom-right ("15× this week") up to the headline ("I FCK'D 11×" together), only `THIS WEEK` stays at the bottom-right. Person rows scale up significantly (sprite 200, name 52, count 104 Bungee gold w/ glow). Data panel gains four cyan corner-tick brackets and a vertical gradient bg. Header gets beam-flanked date range; footer gets a beam divider, 🤘 emoji decorations, and a bigger CTA. Vignette + scanlines + sparkle positions match the design exactly.
+
+**What changed:**
+
+1. **`config/constants.ts`** — `SCORECARD_CONTENT_ZONE` updated to `{top:120, left:140, right:140, bottom:130}` (matches design). New constants: `SCORECARD_BAR_WIDTH 70`, `SCORECARD_BAR_LEFT 22`, `SCORECARD_BAR_BOTTOM 520`, `SCORECARD_BAR_TUBE_HEIGHT_DESIGN 820`, `POWER_METER_TIER_NATIVE_H = [1371, 1473, 1576, 1580]`.
+
+2. **`design/tokens.ts`** — added `scorecardCream: '#E8E0D0'` (warmer cream than `textPrimary`) and `scorecardDim: '#667788'` (date / DATA: FEC.GOV).
+
+3. **`copy/scorecard.ts`** — added `heroPrefix: "I FCK'D"` (combined with the count in the headline). Removed dead `framingOpen` / `framingClose`. Capitalized `othersLine` to `+ N MORE`.
+
+4. **`features/Scorecard/components/ScorecardImage.tsx`** — full rewrite, now 248 lines. Layered render order: starfield bg → vignette (inset boxShadow) → scanlines (tiled PNG) → power meter → content (header / hero / panel / closing / footer) → sparkles → frame overlay. Headline composition now `I FCK'D` + count together at top; `THIS WEEK` alone at bottom-right. Data panel has four cyan corner ticks (via `<CornerTick>` helper).
+
+5. **`features/Scorecard/components/ScorecardImageHeader.tsx` (NEW, 79 lines)** — extracted header section: 520-wide FF logo with gold drop-shadow, SCORECARD subtitle (Plex SemiBold 32, letterSpacing 14, scorecardCream), beam-flanked date row.
+
+6. **`features/Scorecard/components/ScorecardImageFooter.tsx` (NEW, 73 lines)** — extracted footer section: full-width beam, 🤘 tagline (gold horns + muted body), CTA URL (Bungee 58 cyan w/ strong glow), DATA: FEC.GOV (Plex 600 22 dim).
+
+7. **`features/Scorecard/components/ScorecardImageDecorations.tsx` (NEW, 111 lines)** — extracted three helper components: `Beam` (cyan rule + cyan/blue boxShadow stack), `CornerTick` (cyan L-bracket with cyan glow, edge prop selects which two borders draw), `Sparkle` (✦/✧ unicode glyph with textShadow color glow).
+
+8. **`features/Scorecard/components/CardPersonRow.tsx`** — sized up to design proportions: 200pt sprite slot, 180pt sprite, name Plex SemiBold 52pt (scorecardCream), detail Plex Medium 26pt (textSecondary), count Bungee 104pt gold with `0 0 18 rgba(255,201,60,0.55)` glow + 0/4 black drop. Sprite uses face-anchor (0.5, 0.5) so the face hits the same y on every character regardless of state.
+
+9. **`features/Scorecard/components/PowerMeter.tsx`** — full rewrite. New geometry: `width: 70`, `left: 22`, `bottom: 520` (anchored from canvas bottom). Render height = `820 × (nativeH / idleNativeH)` so the bar TUBE stays at the same physical place across tiers; the **top decoration** (flame, glow) is what extends further up at higher tiers. Width and tube position are constant; native PNG height is the variable.
+
+10. **`assets/pixel/scorecard/scanlines.png` (NEW, 99 bytes)** — 1080×4 tile (1px dark row + 3px transparent). Tiled vertically via `<Image resizeMode="repeat">` at 60% opacity. Replaces the "open decision" of how to do scanlines in RN — repeating-linear-gradient isn't supported natively, but a tiny tiled asset reads identically.
+
+11. **`core/scorecard/scorecardAssets.ts`** — added `scorecardScanlines` export.
+
+12. **`tools/img-gen/scripts/composite_scorecard.py` (NEW)** — replacement test pipeline that renders the new design at 1080×1920 with PIL. Mirrors the RN component layer-for-layer: starfield, per-pixel radial vignette, rasterized scanlines, tier-proportional power bar, beam-flanked header, gold-glow headline, gradient-bg panel with corner ticks, large person rows, beam-divided footer with 🤘 + cyan CTA, sparkles, gold frame. Used for design iteration; output is `tools/img-gen/output/scorecard/scorecard_test.png`.
+
+13. **`tools/img-gen/scripts/composite_scorecard_legacy.py`** — preserved unchanged (formerly `composite_scorecard.py`); only the docstring header was updated to mark it as legacy.
+
+14. **`tools/copy-preview/copy-all.json` + `copy-all.js`** — synced the entire `scorecard.*` block (it had drifted significantly with multiple stale keys / missing keys); regenerated `copy-all.js`.
+
+15. **`docs/SCORECARD_IMAGE.md`** — extensive rewrite. New "Source of Truth" section pointing at the Claude Design bundle. Updated test pipeline section (current + legacy). New layout ASCII diagram. Updated typography table (new sizes), color palette table (added `scorecardCream` / `scorecardDim`), effects section (vignette + scanlines + beams + corner ticks now described). Component map for the 6 RN files. Open Decisions table updated — scanlines/vignette resolved.
+
+**Verification:** `npx tsc --noEmit` → EXIT 0. `npx jest features/Scorecard` → 2 suites / 35 tests all green. `bash scripts/audit-copy.sh` clean for new code (only pre-existing dev-fixture / formatter hits remain). `python3 tools/img-gen/scripts/composite_scorecard.py` renders cleanly to 3.5MB PNG.
+
+**Decisions reached during the session:**
+
+- Variants in the Claude Design bundle (`VariantClean`, `VariantAlert`, `VariantTotalFirst`, `VariantCards`, `HierarchyA/B/C`) are **out of scope** — only "polished main" is wired up.
+- Composition reorder (count up to the top headline) is the canonical layout.
+- Scanlines + vignette **are** replicated in RN (was previously an "open decision"). Tiled-PNG approach for scanlines, inset-shadow approach for vignette.
+- Power bar geometry: tier-proportional native height, fixed bottom anchor — the **bar tube** stays in the same physical place; only the **top decoration** changes between tiers. PNGs encode this directly via different native heights.
+- Two parallel test pipelines kept (legacy + new) per user request — old is reference-only, new is current.
+- PreviewStamp does not appear on the captured PNG (live in-app overlay only). Doc fixed to match this long-standing reality.
+
+**Files touched (15):** `config/constants.ts`, `design/tokens.ts`, `copy/scorecard.ts`, `core/scorecard/scorecardAssets.ts`, `features/Scorecard/components/ScorecardImage.tsx`, `features/Scorecard/components/ScorecardImageHeader.tsx` (new), `features/Scorecard/components/ScorecardImageFooter.tsx` (new), `features/Scorecard/components/ScorecardImageDecorations.tsx` (new), `features/Scorecard/components/CardPersonRow.tsx`, `features/Scorecard/components/PowerMeter.tsx`, `assets/pixel/scorecard/scanlines.png` (new), `tools/img-gen/scripts/composite_scorecard.py` (new), `tools/img-gen/scripts/composite_scorecard_legacy.py` (renamed), `tools/copy-preview/copy-all.{json,js}`, `docs/SCORECARD_IMAGE.md`.
+
+---
+
 ### Session: April 29, 2026 ET — Sprite face-anchor (canonical face position post-normalization)
 
 **Branch:** `claude/jovial-mahavira-688fb1` (merged to main same day).

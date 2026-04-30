@@ -1,453 +1,476 @@
 #!/usr/bin/env python3
 """
-Scorecard composite — shareable weekly brag card.
+Scorecard composite — Claude Design "polished main" rendering at 1080×1920.
 
-Sentence structure: "I FCKd [grid] 15× this week"
-  - "I FCKd" top-left bookend
-  - Count grid: person rows in a bordered panel zone
-  - "15× this week" bottom-right bookend
-  - Power bar: original amber/gold, no recolor
+Mirrors features/Scorecard/components/ScorecardImage.tsx (and helpers). All
+sizes / positions / colors live here AND in the RN component; the Python
+output is the visual reference target so design tweaks can iterate without
+running the app.
+
+Composition (top → bottom):
+  Header   — FF logo + SCORECARD subtitle + beam-flanked date range
+  Hero     — "I FCK'D N×" together (gold count w/ glow)
+  Panel    — person rows + cyan corner ticks + 2px border + inset glow
+  Closing  — THIS WEEK, right-aligned
+  Footer   — beam + 🤘 tagline + CTA URL + DATA: FEC.GOV
+  Decor    — vignette, scanlines, sparkles, gold frame
+
+Run:
+  python3 tools/img-gen/scripts/composite_scorecard.py
+Output:
+  tools/img-gen/output/scorecard/scorecard_test.png
 """
+
+from __future__ import annotations
 
 import math
 import random
 from pathlib import Path
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
-import numpy as np
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 MAIN_REPO = Path("/Users/christophershannon/fuckfascists")
-REF_DIR = MAIN_REPO / "tools" / "img-gen" / "reference"
 OUT_DIR = REPO_ROOT / "tools" / "img-gen" / "output" / "scorecard"
 FONT_DIR = MAIN_REPO / "assets" / "fonts"
 SPRITE_DIR = MAIN_REPO / "assets" / "pixel" / "sprites"
+SCORECARD_ASSETS = MAIN_REPO / "assets" / "pixel" / "scorecard"
+BRAND_DIR = MAIN_REPO / "assets" / "pixel" / "brand"
 
-# design/tokens.ts
-GOLD = "#FFC93C"            # rewardYellow
-WHITE = "#DCE7F6"           # textPrimary
-MUTED = "#A8B4C8"           # textSecondary
-BLUE = "#2878C8"            # focusAccent
-HIGHLIGHT_BLUE = "#5FAEFF"  # highlightBlue
-GLOW_CYAN = "#7AF2FF"       # glowCyan
-PANEL_OUTER = "#0A0B0C"     # panelOuter
-PANEL_BORDER = "#2A2D30"    # panelBorder
-DIM = "#667788"             # (candidate token)
-
+# ── Design constants (1080×1920) ────────────────────────────────────────────
 W, H = 1080, 1920
-VH, VW = H / 100, W / 100
-CONTENT_TOP = 80
-CONTENT_BOTTOM = 1835
-CONTENT_RIGHT = 1000
-BAR_GAP_TOP = 479
-BAR_GAP_BOT = 1465
-BAR_GAP_CENTER_Y = (BAR_GAP_TOP + BAR_GAP_BOT) // 2
-BAR_SLOT_X_CENTER = 38
+CONTENT_TOP = 120
+CONTENT_LEFT = 140
+CONTENT_RIGHT = 140
+CONTENT_BOTTOM = 130
+INNER_W = W - CONTENT_LEFT - CONTENT_RIGHT  # 800
+
+# Colors (mirrored from design/tokens.ts + scorecard mock)
+GOLD = (255, 201, 60, 255)
+CREAM = (232, 224, 208, 255)
+MUTED = (168, 180, 200, 255)
+DIM = (102, 119, 136, 255)
+CYAN = (122, 242, 255, 255)
+BLUE = (40, 120, 200, 255)
+PANEL_BORDER = (42, 45, 48, 255)
+
+# Fonts
+BUNGEE = "Bungee-Regular.ttf"
+PLEX_MEDIUM = "IBMPlexSans-Medium.ttf"
+PLEX_SEMIBOLD = "IBMPlexSans-SemiBold.ttf"
+
+# Power bar geometry (matches config/constants.ts)
+BAR_LEFT = 22
+BAR_BOTTOM = 520
+BAR_WIDTH = 70
+BAR_TUBE_HEIGHT = 820
+TIER_NATIVE_H = {"idle": 1371, "hot": 1473, "fck": 1576, "legendary": 1580}
+
+# Sample data (matches scorecard/card.jsx defaults — design source of truth)
+DEFAULT_PERSONS = [
+    ("ZUCKERBERG", "Meta · Instagram · Facebook", 5, "mark-zuckerberg"),
+    ("BEZOS",      "Amazon · Amazon Prime",       3, "jeff-bezos"),
+    ("JOYNER",     "CVS",                         2, "david-joyner"),
+    ("MUSK",       "X · Tesla",                   2, "elon-musk"),
+]
+DATE_RANGE = "APR 4 — APR 10"
+GRAND_TOTAL = 11
+POWER_TIER = "legendary"
+
+# 2×1 layout sprites (others are 2×2). Defeated = right half.
+SPRITE_2X1 = {"david-joyner"}
 
 
-def font(name, size):
+def font(name: str, size: int) -> ImageFont.FreeTypeFont:
     return ImageFont.truetype(str(FONT_DIR / name), size)
 
 
-def extract_power_bars():
-    img = Image.open(REF_DIR / "Powerbars.png")
-    arr = np.array(img)
-    h, w = arr.shape[:2]
-    alpha_row = arr[h // 2, :, 3]
-    bars_x, in_bar, start = [], False, 0
-    for x in range(w):
-        if alpha_row[x] > 10 and not in_bar:
-            start, in_bar = x, True
-        elif alpha_row[x] <= 10 and in_bar:
-            bars_x.append((start, x)); in_bar = False
-    if in_bar: bars_x.append((start, w))
-    names = ["idle", "hot", "fck", "legendary"]
-    results = []
-    for i, (xs, xe) in enumerate(bars_x):
-        x0, x1 = max(0, xs - 30), min(w, xe + 30)
-        ca = arr[:, x0:x1, 3]
-        rows = np.any(ca > 5, axis=1)
-        y0 = np.where(rows)[0][0] if rows.any() else 0
-        y1 = np.where(rows)[0][-1] + 1 if rows.any() else h
-        bar = img.crop((x0, y0, x1, y1))
-        bar.save(str(OUT_DIR / f"{names[i]}.png"))
-        results.append(bar)
-    return results
+def text_w(draw: ImageDraw.ImageDraw, text: str, f: ImageFont.FreeTypeFont, ls: float = 0) -> int:
+    """Width of text including letterSpacing (PIL ignores letterSpacing)."""
+    bbox = draw.textbbox((0, 0), text, font=f)
+    base = bbox[2] - bbox[0]
+    return base + max(0, len(text) - 1) * int(ls)
 
 
-def extract_sprite(name, variant="defeated"):
-    sheet = Image.open(SPRITE_DIR / f"{name}.png")
-    sw, sh = sheet.size
-    fw = sw // 2
-    fh = sh // 2 if sh > fw * 1.5 else sh
-    offsets = {"neutral": (0, 0), "defeated": (fw, 0)}
-    if sh > fw * 1.5:
-        offsets.update({"alt_neutral": (0, fh), "alt_defeated": (fw, fh)})
-    ox, oy = offsets.get(variant, (fw, 0))
-    f = sheet.crop((ox, oy, ox + fw, oy + fh))
-    bb = f.getbbox()
-    return f.crop(bb) if bb else f
+def draw_letter_spaced(canvas: Image.Image, xy: tuple[int, int], text: str,
+                       f: ImageFont.FreeTypeFont, fill: tuple, ls: float = 0,
+                       shadow: tuple | None = None, shadow_off: tuple = (0, 4),
+                       glow: tuple | None = None, glow_radius: int = 22):
+    """Draw text with optional drop shadow + glow, honouring letterSpacing."""
+    draw = ImageDraw.Draw(canvas)
+    if glow is not None:
+        glow_layer = Image.new("RGBA", canvas.size, (0, 0, 0, 0))
+        gd = ImageDraw.Draw(glow_layer)
+        x = xy[0]
+        for ch in text:
+            gd.text((x, xy[1]), ch, font=f, fill=glow)
+            x += gd.textbbox((0, 0), ch, font=f)[2] + ls
+        glow_layer = glow_layer.filter(ImageFilter.GaussianBlur(radius=glow_radius))
+        canvas.alpha_composite(glow_layer)
+    if shadow is not None:
+        x = xy[0] + shadow_off[0]
+        y = xy[1] + shadow_off[1]
+        sd = ImageDraw.Draw(canvas)
+        for ch in text:
+            sd.text((x, y), ch, font=f, fill=shadow)
+            x += draw.textbbox((0, 0), ch, font=f)[2] + ls
+    x = xy[0]
+    for ch in text:
+        draw.text((x, xy[1]), ch, font=f, fill=fill)
+        x += draw.textbbox((0, 0), ch, font=f)[2] + ls
 
 
-def draw_star(d, cx, cy, sz, fill):
-    coords = []
-    for i in range(8):
-        angle = math.pi / 4 * i - math.pi / 2
-        r = sz if i % 2 == 0 else sz * 0.3
-        coords.append((cx + r * math.cos(angle), cy + r * math.sin(angle)))
-    d.polygon(coords, fill=fill)
+def render_starfield(canvas: Image.Image) -> None:
+    """Layer 1: starfield bg, fill canvas."""
+    bg = Image.open(SCORECARD_ASSETS / "starbg.jpg").convert("RGBA")
+    canvas.paste(bg.resize((W, H), Image.LANCZOS), (0, 0))
 
 
-def draw_beam(canvas, x0, x1, y, mode="blue", thickness=1.0):
-    beam = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    d = ImageDraw.Draw(beam)
-    half_h = int(14 * thickness)
-    fade = int((x1 - x0) * 0.25)
-    for off in range(-half_h, half_h + 1):
-        vt = abs(off) / half_h
-        for x in range(x0, x1):
-            if x < x0 + fade: ht = ((x - x0) / fade) ** 1.3
-            elif x > x1 - fade: ht = ((x1 - x) / fade) ** 1.3
-            else: ht = 1.0
-            inten = ht * (1.0 - vt ** 0.6)
-            if mode == "gold":
-                if vt < 0.15: r,g,b = 255,int(240+15*inten),int(180+75*inten); a = int(255*inten)
-                elif vt < 0.4: r,g,b = 255,201,60; a = int(220*inten*(1-vt*0.3))
-                elif vt < 0.7: r,g,b = 200,150,30; a = int(140*inten*(1-vt*0.4))
-                else: r,g,b = 150,100,20; a = int(60*inten*(1-vt*0.6))
-            else:
-                if vt < 0.15: r,g,b = 255,255,255; a = int(255*inten)
-                elif vt < 0.35: r,g,b = 180,248,255; a = int(255*inten*(1-vt*0.2))
-                elif vt < 0.6: r,g,b = 122,242,255; a = int(200*inten*(1-vt*0.25))
-                elif vt < 0.8: r,g,b = 95,174,255; a = int(150*inten*(1-vt*0.3))
-                else: r,g,b = 40,120,200; a = int(80*inten*(1-vt*0.4))
-            if a > 2: d.point((x, y+off), fill=(r,g,b,min(255,a)))
-    beam = beam.filter(ImageFilter.GaussianBlur(radius=3))
-    return Image.alpha_composite(canvas, beam)
+def render_vignette(canvas: Image.Image) -> None:
+    """Layer 2: radial dark vignette at edges (transparent center → 55% black corners)."""
+    overlay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    cx, cy = W / 2, H / 2
+    max_r = math.sqrt(cx * cx + cy * cy)
+    px = overlay.load()
+    for y in range(H):
+        for x in range(W):
+            d = math.sqrt((x - cx) ** 2 + (y - cy) ** 2)
+            t = max(0.0, (d / max_r - 0.5) / 0.5)  # 0 in inner half, 1 at corners
+            a = int(140 * t)  # ~0.55 max alpha
+            if a > 0:
+                px[x, y] = (0, 0, 0, a)
+    canvas.alpha_composite(overlay)
 
 
-def txt_glow(canvas, x, y, text, f, color, gc, radius=8):
-    g = Image.new("RGBA", canvas.size, (0, 0, 0, 0))
-    ImageDraw.Draw(g).text((x, y), text, fill=gc, font=f)
-    g = g.filter(ImageFilter.GaussianBlur(radius=radius))
-    canvas = Image.alpha_composite(canvas, g)
-    ImageDraw.Draw(canvas).text((x, y), text, fill=color, font=f)
-    return canvas
+def render_scanlines(canvas: Image.Image) -> None:
+    """Layer 3: subtle 1px-every-4px CRT scanlines."""
+    overlay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    d = ImageDraw.Draw(overlay)
+    for y in range(0, H, 4):
+        d.line([(0, y), (W, y)], fill=(0, 0, 0, 46))
+    # 60% opacity matches the RN side
+    overlay.putalpha(overlay.split()[3].point(lambda a: int(a * 0.6)))
+    canvas.alpha_composite(overlay)
 
 
-def center_txt(draw, y, text, f, fill, cx):
-    bb = draw.textbbox((0, 0), text, font=f)
-    tw = bb[2] - bb[0]; x = cx - tw // 2
-    draw.text((x, y), text, fill=fill, font=f)
-    return tw, x
+def render_power_bar(canvas: Image.Image, tier: str = POWER_TIER) -> None:
+    """Layer 4: tier PNG anchored to fixed bottom; height scales with native PNG height."""
+    img = Image.open(SCORECARD_ASSETS / f"power_{tier}.png").convert("RGBA")
+    nat_h = TIER_NATIVE_H.get(tier, TIER_NATIVE_H["idle"])
+    render_h = int(BAR_TUBE_HEIGHT * (nat_h / TIER_NATIVE_H["idle"]))
+    bar = img.resize((BAR_WIDTH, render_h), Image.LANCZOS)
+    # Soft amber glow underlay
+    glow = Image.new("RGBA", canvas.size, (0, 0, 0, 0))
+    glow.paste(bar, (BAR_LEFT, H - BAR_BOTTOM - render_h), bar)
+    glow = glow.filter(ImageFilter.GaussianBlur(radius=10))
+    canvas.alpha_composite(glow)
+    canvas.paste(bar, (BAR_LEFT, H - BAR_BOTTOM - render_h), bar)
 
 
-def center_glow(canvas, y, text, f, fill, cx, gc, r=10):
-    bb = ImageDraw.Draw(canvas).textbbox((0, 0), text, font=f)
-    tw = bb[2] - bb[0]; x = cx - tw // 2
-    canvas = txt_glow(canvas, x, y, text, f, fill, gc, r)
-    return canvas, tw, x
+def draw_beam(canvas: Image.Image, x_center: int, y: int, width: int) -> None:
+    """Horizontal cyan rule with cyan + blue glow."""
+    bar = Image.new("RGBA", (width, 4), CYAN[:3] + (217,))  # 0.85 alpha
+    glow = Image.new("RGBA", (width + 60, 60), (0, 0, 0, 0))
+    glow.paste(bar, (30, 28), bar)
+    glow_cyan = glow.filter(ImageFilter.GaussianBlur(radius=14))
+    glow_blue = Image.new("RGBA", (width + 60, 60), (0, 0, 0, 0))
+    bar_blue = Image.new("RGBA", (width, 4), BLUE[:3] + (102,))  # 0.4 alpha
+    glow_blue.paste(bar_blue, (30, 28), bar_blue)
+    glow_blue = glow_blue.filter(ImageFilter.GaussianBlur(radius=28))
+    base_x = x_center - (width + 60) // 2
+    base_y = y - 30
+    canvas.alpha_composite(glow_blue, (base_x, base_y))
+    canvas.alpha_composite(glow_cyan, (base_x, base_y))
+    canvas.alpha_composite(glow, (base_x, base_y))
 
 
-def draw_panel_zone(canvas, x0, y0, x1, y1):
-    """Draw a count grid panel: cyan wash bg + inset blue glow border.
+def render_header(canvas: Image.Image, date_range: str) -> int:
+    """Layer 5: logo + SCORECARD subtitle + beam-flanked date range. Returns y-cursor."""
+    cursor = CONTENT_TOP
+    logo = Image.open(BRAND_DIR / "FF_logo.png").convert("RGBA")
+    target_w = 520
+    aspect = logo.height / logo.width
+    target_h = int(target_w * aspect)
+    logo_resized = logo.resize((target_w, target_h), Image.NEAREST)
+    # Gold drop-shadow
+    shadow = logo_resized.copy()
+    shadow.putalpha(shadow.split()[3].point(lambda a: a // 3))
+    shadow_layer = Image.new("RGBA", canvas.size, (0, 0, 0, 0))
+    sx = (W - target_w) // 2
+    shadow_layer.paste(shadow, (sx, cursor), shadow)
+    shadow_layer = shadow_layer.filter(ImageFilter.GaussianBlur(radius=20))
+    gold_tint = Image.new("RGBA", canvas.size, GOLD[:3] + (0,))
+    canvas.alpha_composite(shadow_layer)
+    canvas.paste(logo_resized, (sx, cursor), logo_resized)
+    cursor += target_h + 6
+    # SCORECARD subtitle
+    f_sub = font(PLEX_SEMIBOLD, 32)
+    sub_text = "SCORECARD"
+    sub_w = text_w(ImageDraw.Draw(canvas), sub_text, f_sub, 14)
+    draw_letter_spaced(canvas, ((W - sub_w) // 2, cursor - 4), sub_text, f_sub, CREAM, 14)
+    cursor += 32 + 4
+    # Beam-flanked date row
+    f_date = font(PLEX_MEDIUM, 26)
+    date_w = text_w(ImageDraw.Draw(canvas), date_range, f_date, 4)
+    beam_w = 140
+    gap = 20
+    total_w = beam_w + gap + date_w + gap + beam_w
+    bx = (W - total_w) // 2
+    by = cursor + 16
+    draw_beam(canvas, bx + beam_w // 2, by, beam_w)
+    text_x = bx + beam_w + gap
+    draw_letter_spaced(canvas, (text_x, cursor), date_range, f_date, DIM, 4)
+    draw_beam(canvas, text_x + date_w + gap + beam_w // 2, by, beam_w)
+    cursor += 26 + 30
+    _ = gold_tint  # silence unused
+    return cursor
 
-    Matches GameArena panel styling: panelOuter bg, focusAccent inset shadow.
-    """
-    panel = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    d = ImageDraw.Draw(panel)
 
-    # Background: panelOuter at ~0.5 opacity (dark, lets starfield peek)
-    d.rectangle([x0, y0, x1, y1], fill=(10, 16, 28, 130))
-
-    # Cyan wash overlay: focusAccent at 0.05 opacity
-    d.rectangle([x0, y0, x1, y1], fill=(40, 120, 200, 13))
-
-    # Border: panelBorder
-    d.rectangle([x0, y0, x1, y1], outline=(42, 45, 48, 180), width=2)
-
-    # Inset glow: draw bright lines inside edges, then blur
-    glow = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    gd = ImageDraw.Draw(glow)
-    inset = 4
-    # Top inner glow
-    gd.line([(x0+inset, y0+inset), (x1-inset, y0+inset)], fill=(40, 120, 200, 50), width=3)
-    # Bottom inner glow
-    gd.line([(x0+inset, y1-inset), (x1-inset, y1-inset)], fill=(40, 120, 200, 50), width=3)
-    # Left inner glow
-    gd.line([(x0+inset, y0+inset), (x0+inset, y1-inset)], fill=(40, 120, 200, 30), width=3)
-    # Right inner glow
-    gd.line([(x1-inset, y0+inset), (x1-inset, y1-inset)], fill=(40, 120, 200, 30), width=3)
-    glow = glow.filter(ImageFilter.GaussianBlur(radius=8))
-
-    canvas = Image.alpha_composite(canvas, panel)
-    canvas = Image.alpha_composite(canvas, glow)
-    return canvas
+def render_headline(canvas: Image.Image, total: int, y: int) -> int:
+    """Layer 6: 'I FCK'D N×' together — Bungee 120, gold N× with glow."""
+    f_hl = font(BUNGEE, 120)
+    f_x = font(PLEX_SEMIBOLD, 84)
+    prefix = "I FCK'D"
+    count = str(total)
+    times = "×"
+    draw = ImageDraw.Draw(canvas)
+    px = CONTENT_LEFT
+    # Drop shadow on white prefix
+    draw_letter_spaced(canvas, (px, y), prefix, f_hl, CREAM, 2,
+                       shadow=(0, 0, 0, 178), shadow_off=(0, 4))
+    px += text_w(draw, prefix, f_hl, 2) + 18
+    # Gold count with glow
+    draw_letter_spaced(canvas, (px, y), count, f_hl, GOLD,
+                       shadow=(0, 0, 0, 153), shadow_off=(0, 4),
+                       glow=GOLD[:3] + (179,), glow_radius=22)
+    px += draw.textbbox((0, 0), count, font=f_hl)[2]
+    # × suffix in Plex SemiBold (smaller)
+    draw.text((px, y + 30), times, font=f_x, fill=GOLD)
+    return y + 120
 
 
-def add_bar_glow(canvas, bx, by, bw, bh):
-    """Subtle amber glow — whisper, not a wash."""
-    glow = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    d = ImageDraw.Draw(glow)
-    gcx = bx + bw // 2
-    half = bw // 3
-    for seg in range(50):
-        sy = by + int(bh * seg / 50)
-        sh = bh // 50 + 1
-        vt = seg / 50
-        if vt < 0.15:
-            color = (255, 220, 100, 50)
-        elif vt < 0.5:
-            color = (255, 201, 60, 35)
+def render_panel(canvas: Image.Image, persons, y: int) -> int:
+    """Data panel + cyan corner ticks + person rows."""
+    pad_top, pad_x, pad_bot = 14, 24, 18
+    sprite_h = 180
+    row_h = sprite_h + 28  # padding 14×2
+    panel_h = pad_top + len(persons) * row_h + pad_bot
+    px, py = CONTENT_LEFT, y + 20
+    pw, ph = INNER_W, panel_h
+
+    # Panel bg (gradient 0.55 → 0.70)
+    panel = Image.new("RGBA", (pw, ph), (0, 0, 0, 0))
+    pd = ImageDraw.Draw(panel)
+    for row in range(ph):
+        t = row / max(1, ph - 1)
+        a = int(140 + (179 - 140) * t)  # 0.55 → 0.70
+        pd.line([(0, row), (pw, row)], fill=(10, 16, 28, a))
+    canvas.alpha_composite(panel, (px, py))
+
+    # Border 2px panelBorder
+    pd2 = ImageDraw.Draw(canvas)
+    pd2.rectangle([px, py, px + pw - 1, py + ph - 1], outline=PANEL_BORDER, width=2)
+
+    # Inset glow approximation — blue inner shadow
+    inner_glow = Image.new("RGBA", (pw + 80, ph + 80), (0, 0, 0, 0))
+    igd = ImageDraw.Draw(inner_glow)
+    igd.rectangle([40, 40, pw + 40 - 1, ph + 40 - 1], outline=BLUE[:3] + (31,), width=20)
+    inner_glow = inner_glow.filter(ImageFilter.GaussianBlur(radius=18))
+    canvas.alpha_composite(inner_glow, (px - 40, py - 40))
+
+    # Corner ticks (4 cyan L-brackets, 18×18, 2px borders, 8px glow)
+    for edge in ("tl", "tr", "bl", "br"):
+        is_top = "t" in edge
+        is_left = "l" in edge
+        cx = px - 3 if is_left else px + pw + 3 - 18
+        cy = py - 3 if is_top else py + ph + 3 - 18
+        tick = Image.new("RGBA", (18, 18), (0, 0, 0, 0))
+        td = ImageDraw.Draw(tick)
+        if is_top:
+            td.line([(0, 0), (18, 0)], fill=CYAN, width=2)
         else:
-            color = (200, 150, 40, 20)
-        d.rectangle([gcx - half, sy, gcx + half, sy + sh], fill=color)
-    glow = glow.filter(ImageFilter.GaussianBlur(radius=12))
-    return Image.alpha_composite(canvas, glow)
+            td.line([(0, 17), (18, 17)], fill=CYAN, width=2)
+        if is_left:
+            td.line([(0, 0), (0, 18)], fill=CYAN, width=2)
+        else:
+            td.line([(17, 0), (17, 18)], fill=CYAN, width=2)
+        glow = Image.new("RGBA", (38, 38), (0, 0, 0, 0))
+        glow.paste(tick, (10, 10), tick)
+        glow = glow.filter(ImageFilter.GaussianBlur(radius=8))
+        canvas.alpha_composite(glow, (cx - 10, cy - 10))
+        canvas.paste(tick, (cx, cy), tick)
+
+    # Person rows
+    for i, p in enumerate(persons):
+        row_y = py + pad_top + i * row_h
+        render_person_row(canvas, px + pad_x, row_y, pw - pad_x * 2, p,
+                          is_last=(i == len(persons) - 1))
+    return py + ph
 
 
-def build_composite():
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
-
-    BRAG_SZ = 56
-    F_BRAND = font("Bungee-Regular.ttf", 60)
-    F_SUB = font("IBMPlexSans-SemiBold.ttf", 26)
-    F_DATE = font("IBMPlexSans-Medium.ttf", 22)
-    F_BRAG_CAPS = font("Bungee-Regular.ttf", BRAG_SZ)
-    F_BRAG_LC = font("IBMPlexSans-SemiBold.ttf", BRAG_SZ)
-    F_NUM = font("Bungee-Regular.ttf", BRAG_SZ)
-    F_WEEK = font("Bungee-Regular.ttf", BRAG_SZ)
-    F_NAME = font("IBMPlexSans-SemiBold.ttf", 40)
-    F_DETAIL = font("IBMPlexSans-Medium.ttf", 24)  # collapsed company + platforms
-    F_COUNT = font("Bungee-Regular.ttf", 80)
-    F_MORE = font("Bungee-Regular.ttf", 32)
-    F_TAG = font("IBMPlexSans-SemiBold.ttf", 28)
-    F_URL = font("Bungee-Regular.ttf", 44)         # bigger CTA
-    F_ATTR = font("IBMPlexSans-SemiBold.ttf", 20)
-
-    print("Extracting power bars...")
-    bars = extract_power_bars()
-    fck_bar = bars[2]  # FCK tier — original amber/gold, no recolor
-
-    print("Preparing layers...")
-    starbg = Image.open(REF_DIR / "starbg.png").convert("RGBA").resize((W, H), Image.LANCZOS)
-    frame = Image.open(REF_DIR / "frame2_sized.png").convert("RGBA")
-
-    print("Loading sprites...")
-    SPH = 200  # ~15-20% smaller than 240
-    sprites = {}
-    for label, fn in [("ZUCKERBERG", "mark-zuckerberg"),
-                      ("BEZOS", "jeff-bezos"), ("JOYNER", "david-joyner")]:
-        sp = extract_sprite(fn, "defeated")
-        sc = SPH / sp.height
-        sp = sp.resize((int(sp.width * sc), SPH), Image.LANCZOS)
-        sprites[label] = sp
-
-    print("Compositing...")
-    canvas = starbg.copy()
-
-    # ═══ POWER BAR — original amber/gold, no recolor, with subtle glow ═══
-    bgh = BAR_GAP_BOT - BAR_GAP_TOP
-    # Force wider while filling gap
-    bh = bgh
-    bw = 130
-    bar_scaled = fck_bar.resize((bw, bh), Image.LANCZOS)
-    bx = BAR_SLOT_X_CENTER - bw // 2
-    by = BAR_GAP_TOP
-    canvas = add_bar_glow(canvas, bx, by, bw, bh)
-    canvas.paste(bar_scaled, (bx, by), bar_scaled)
-    canvas = Image.alpha_composite(canvas, frame)
-
-    # --- Layout zones ---
-    cl, cr = 100, CONTENT_RIGHT
-    cx = cl + (cr - cl) // 2
-    sprite_left = cl + int(2 * VW)
-    text_after_sprite = int(8 * VW)
-    count_right = W - int(W * 0.15)
-
-    y = CONTENT_TOP + 12
-
-    # ═══ BRAND — framing ═══
-    canvas, _, _ = center_glow(canvas, y, "FCK FASCISTS", F_BRAND, GOLD, cx,
-                                (255, 201, 60, 60), r=10)
-    y += 68
-
+def render_person_row(canvas: Image.Image, x: int, y: int, w: int,
+                      person: tuple, is_last: bool) -> None:
+    name, platforms, count, slug = person
+    # Sprite slot 200, sprite 180 centered
+    spr = sprite_defeated(slug, 180)
+    if spr is not None:
+        canvas.paste(spr, (x + (200 - 180) // 2, y), spr)
+    # Name + detail column
+    name_x = x + 200 + 20
+    f_name = font(PLEX_SEMIBOLD, 52)
+    f_det = font(PLEX_MEDIUM, 26)
+    draw_letter_spaced(canvas, (name_x, y + 30), name, f_name, CREAM, 2,
+                       shadow=(0, 0, 0, 204), shadow_off=(0, 2))
+    ImageDraw.Draw(canvas).text((name_x, y + 30 + 60), platforms, font=f_det, fill=MUTED)
+    # Count right-aligned, gold w/ glow
+    f_count = font(BUNGEE, 104)
+    f_x = font(PLEX_SEMIBOLD, 68)
+    count_str = str(count)
+    times = "×"
     draw = ImageDraw.Draw(canvas)
-    center_txt(draw, y, "SCORECARD", F_SUB, MUTED, cx)
-    y += 34
+    times_w = draw.textbbox((0, 0), times, font=f_x)[2]
+    count_w = draw.textbbox((0, 0), count_str, font=f_count)[2]
+    total_w = count_w + times_w + 4
+    cx = x + w - 16 - total_w
+    draw_letter_spaced(canvas, (cx, y + 18), count_str, f_count, GOLD,
+                       shadow=(0, 0, 0, 153), shadow_off=(0, 4),
+                       glow=GOLD[:3] + (140,), glow_radius=18)
+    draw.text((cx + count_w + 4, y + 50), times, font=f_x, fill=GOLD)
+    # Divider when not last
+    if not is_last:
+        d = ImageDraw.Draw(canvas)
+        d.line([(x, y + 200), (x + w, y + 200)], fill=(255, 255, 255, 18), width=1)
 
-    dt = "APR 4 \u2014 APR 10"
-    dtw, _ = center_txt(draw, y, dt, F_DATE, DIM, cx)
-    by2 = y + 12
-    canvas = draw_beam(canvas, cx-dtw//2-14-80, cx-dtw//2-14, by2, thickness=0.6)
-    canvas = draw_beam(canvas, cx+dtw//2+14, cx+dtw//2+14+80, by2, thickness=0.6)
-    y += 48
 
-    # ═══ "I FCKd" — left-aligned bookend ═══
+def sprite_defeated(slug: str, size: int) -> Image.Image | None:
+    """Extract defeated variant from sprite sheet, scaled to 'size' tall."""
+    path = SPRITE_DIR / f"{slug}.png"
+    if not path.exists():
+        return None
+    sheet = Image.open(path).convert("RGBA")
+    sw, sh = sheet.size
+    is_2x1 = slug in SPRITE_2X1 or sw > sh * 1.5
+    if is_2x1:
+        cell_w, cell_h = sw // 2, sh
+        frame = sheet.crop((cell_w, 0, sw, sh))
+    else:
+        cell_w, cell_h = sw // 2, sh // 2
+        frame = sheet.crop((cell_w, 0, sw, cell_h))
+    # Scale so the rendered cell height = size; preserve aspect.
+    scale = size / cell_h
+    new_w = int(cell_w * scale)
+    new_h = int(cell_h * scale)
+    return frame.resize((new_w, new_h), Image.NEAREST)
+
+
+def render_this_week(canvas: Image.Image, y: int) -> int:
+    f = font(BUNGEE, 64)
+    text = "THIS WEEK"
     draw = ImageDraw.Draw(canvas)
-    # "I FCK" in Bungee + "d" in Plex (lowercase)
-    bb1 = draw.textbbox((0, 0), "I FCK", font=F_BRAG_CAPS)
-    w_caps = bb1[2] - bb1[0]
-    h_caps = bb1[3] - bb1[1]
-    bb_d = draw.textbbox((0, 0), "d", font=F_BRAG_LC)
-    w_d = bb_d[2] - bb_d[0]
-    h_d = bb_d[3] - bb_d[1]
+    tw = text_w(draw, text, f, 6)
+    x = CONTENT_LEFT + INNER_W - tw
+    draw_letter_spaced(canvas, (x, y + 20), text, f, CREAM, 6,
+                       shadow=(0, 0, 0, 178), shadow_off=(0, 3))
+    return y + 20 + 64
 
-    brag_x = cl
-    draw.text((brag_x, y), "I FCK", fill=WHITE, font=F_BRAG_CAPS)
-    d_y_offset = (h_caps - h_d) + 2
-    draw.text((brag_x + w_caps, y + d_y_offset), "d", fill=WHITE, font=F_BRAG_LC)
-    y += 72
 
-    # ═══ COUNT GRID ZONE — panel with inset glow ═══
-    grid_top = y
-    grid_pad = 16
+def render_footer(canvas: Image.Image) -> None:
+    """Layer 8: beam + 🤘 tagline + CTA URL + DATA: FEC.GOV. Bottom-anchored."""
+    cursor = H - CONTENT_BOTTOM
+    f_attr = font(PLEX_SEMIBOLD, 22)
+    f_cta = font(BUNGEE, 58)
+    f_tag = font(PLEX_SEMIBOLD, 32)
+    draw = ImageDraw.Draw(canvas)
+    # Bottom-up
+    attr_text = "DATA: FEC.GOV"
+    aw = text_w(draw, attr_text, f_attr, 6)
+    cursor -= 22 - 4
+    draw_letter_spaced(canvas, ((W - aw) // 2, cursor), attr_text, f_attr, DIM, 6)
+    cursor -= 16
+    # CTA
+    cta_text = "FCKFASCISTS.ORG"
+    cw = text_w(draw, cta_text, f_cta, 6)
+    cursor -= 58 + 4
+    draw_letter_spaced(canvas, ((W - cw) // 2, cursor), cta_text, f_cta, CYAN, 6,
+                       shadow=(0, 0, 0, 153), shadow_off=(0, 3),
+                       glow=CYAN[:3] + (230,), glow_radius=20)
+    cursor -= 16
+    # Tagline (with horns)
+    horns_l, tag, horns_r = "🤘 ", "The fascists won't f*ck themselves.", " 🤘"
+    full = horns_l + tag + horns_r
+    fw = draw.textbbox((0, 0), full, font=f_tag)[2]
+    cursor -= 32 + 8
+    tx = (W - fw) // 2
+    # Render tagline body in muted, horns in gold (PIL doesn't support inline color).
+    draw.text((tx, cursor), horns_l, font=f_tag, fill=GOLD)
+    hw_l = draw.textbbox((0, 0), horns_l, font=f_tag)[2]
+    draw.text((tx + hw_l, cursor), tag, font=f_tag, fill=MUTED)
+    tw = draw.textbbox((0, 0), tag, font=f_tag)[2]
+    draw.text((tx + hw_l + tw, cursor), horns_r, font=f_tag, fill=GOLD)
+    cursor -= 16
+    # Beam divider
+    draw_beam(canvas, W // 2, cursor, 520)
 
-    rows = [
-        {"name": "ZUCKERBERG", "detail": "Meta \u00b7 Instagram \u00b7 Facebook", "ct": "5\u00d7"},
-        {"name": "BEZOS", "detail": "Amazon \u00b7 Amazon Prime", "ct": "3\u00d7"},
-        {"name": "JOYNER", "detail": "CVS", "ct": "2\u00d7"},
+
+def render_sparkles(canvas: Image.Image) -> None:
+    """Layer 9: sparkles (gold + cyan) at design positions."""
+    sparks = [
+        (180, 140, 22, GOLD, 0, 1.0),
+        (940, 210, 18, GOLD, 25, 1.0),
+        (150, 1700, 20, GOLD, 0, 1.0),
+        (960, 1760, 24, GOLD, -15, 1.0),
+        (240, 900, 14, GOLD, 0, 0.7),
+        (880, 1100, 14, GOLD, 0, 0.7),
+        (90, 1500, 18, CYAN, 0, 0.8),
+        (1000, 1400, 16, CYAN, 0, 0.7),
     ]
+    for x, y, size, color, rot, alpha in sparks:
+        draw_sparkle(canvas, x, y, size, color, rot, alpha)
 
-    row_h = SPH + 16
-    total_grid_h = len(rows) * row_h + 50 + grid_pad * 2  # +50 for "+ 4 MORE"
-    grid_bottom = grid_top + total_grid_h
 
-    # Draw panel background
-    canvas = draw_panel_zone(canvas, cl - 4, grid_top, cr + 4, grid_bottom)
+def draw_sparkle(canvas: Image.Image, x: int, y: int, size: int,
+                 color: tuple, rot: int, alpha: float) -> None:
+    """4-pointed star path with drop-shadow glow."""
+    layer = Image.new("RGBA", (size * 2, size * 2), (0, 0, 0, 0))
+    d = ImageDraw.Draw(layer)
+    cx = cy = size
+    pts = [(cx, cy - size), (cx + size // 5, cy), (cx + size, cy),
+           (cx + size // 5, cy + size // 5), (cx, cy + size),
+           (cx - size // 5, cy + size // 5), (cx - size, cy),
+           (cx - size // 5, cy - size // 5)]
+    fc = (color[0], color[1], color[2], int(255 * alpha))
+    d.polygon(pts, fill=fc)
+    if rot != 0:
+        layer = layer.rotate(rot, resample=Image.BICUBIC)
+    glow = layer.filter(ImageFilter.GaussianBlur(radius=6))
+    canvas.alpha_composite(glow, (x - size, y - size))
+    canvas.alpha_composite(layer, (x - size, y - size))
 
-    y = grid_top + grid_pad
 
-    for idx, row in enumerate(rows):
-        rcy = y + row_h // 2
-        sp = sprites[row["name"]]
-        canvas.paste(sp, (sprite_left, rcy - sp.height // 2), sp)
-        draw = ImageDraw.Draw(canvas)
+def render_frame(canvas: Image.Image) -> None:
+    """Layer 10: gold frame ornament — final layer above content."""
+    fr = Image.open(SCORECARD_ASSETS / "frame.png").convert("RGBA")
+    canvas.alpha_composite(fr.resize((W, H), Image.LANCZOS))
 
-        tx = sprite_left + sp.width + text_after_sprite
-        # Name + collapsed detail on one line below
-        name_y = rcy - 30
-        draw.text((tx, name_y), row["name"], fill=WHITE, font=F_NAME)
-        draw.text((tx, name_y + 46), row["detail"], fill=MUTED, font=F_DETAIL)
 
-        # Count — GOLD, not red
-        cb = draw.textbbox((0, 0), row["ct"], font=F_COUNT)
-        cw2, ch2 = cb[2]-cb[0], cb[3]-cb[1]
-        draw.text((count_right - cw2, rcy - ch2//2), row["ct"], fill=GOLD, font=F_COUNT)
-        y += row_h
-        if idx < len(rows) - 1:
-            draw.line([(sprite_left, y-2), (cr-20, y-2)], fill=(255,255,255,15), width=1)
-
-    # + 4 MORE inside the panel
-    y += 6
-    draw.text((sprite_left + 30, y), "+ 4 MORE", fill=MUTED, font=F_MORE)
-    y = grid_bottom + 16
-
-    # ═══ "15× this week" — right-aligned bookend ═══
-    draw = ImageDraw.Draw(canvas)
-    # "15×" gold glow + " THIS WEEK" white — right-aligned
-    bb_num = draw.textbbox((0, 0), "15\u00d7", font=F_NUM)
-    w_num = bb_num[2] - bb_num[0]
-    bb_wk = draw.textbbox((0, 0), " THIS WEEK", font=F_WEEK)
-    w_wk = bb_wk[2] - bb_wk[0]
-    total_brag_w = w_num + w_wk
-    brag2_x = cr - total_brag_w  # right-aligned
-
-    canvas = txt_glow(canvas, brag2_x, y, "15\u00d7", F_NUM, GOLD,
-                      (255, 201, 60, 130), radius=18)
-    canvas = txt_glow(canvas, brag2_x, y, "15\u00d7", F_NUM, GOLD,
-                      (255, 180, 20, 35), radius=40)
-    draw = ImageDraw.Draw(canvas)
-    draw.text((brag2_x + w_num, y), " THIS WEEK", fill=WHITE, font=F_WEEK)
-    y += 72
-
-    # ═══ FOOTER ═══
-    fh = 220
-    fy = max(y + 8, CONTENT_BOTTOM - fh)
-    y = fy
-
-    canvas = draw_beam(canvas, cl+20, cr-20, y, thickness=1.2)
-    y += 40
-
-    draw = ImageDraw.Draw(canvas)
-    tag = "The fascists won\u2019t f*ck themselves."
-    tb = draw.textbbox((0, 0), tag, font=F_TAG)
-    tw = tb[2] - tb[0]; tx = cx - tw // 2
-    try:
-        fe = ImageFont.truetype("/System/Library/Fonts/Apple Color Emoji.ttc", 32)
-        rock = "\U0001f918"
-        eb = draw.textbbox((0, 0), rock, font=fe)
-        ew = eb[2] - eb[0]
-        draw.text((tx-ew-12, y-1), rock, font=fe, embedded_color=True)
-        draw.text((tx+tw+12, y-1), rock, font=fe, embedded_color=True)
-    except Exception: pass
-    draw.text((tx, y), tag, fill=WHITE, font=F_TAG)
-    y += 42
-
-    # CTA — sized up
-    canvas, _, ux = center_glow(canvas, y, "FCKFASCISTS.ORG", F_URL, GLOW_CYAN, cx,
-                                 (122, 242, 255, 140), r=18)
-    canvas = txt_glow(canvas, ux, y, "FCKFASCISTS.ORG", F_URL,
-                      GLOW_CYAN, (40, 120, 200, 70), radius=30)
-    y += 56
-    draw = ImageDraw.Draw(canvas)
-    center_txt(draw, y, "DATA: FEC.GOV", F_ATTR, DIM, cx)
-
-    # ═══ FLAIR ═══
-    print("Adding flair...")
+def main() -> None:
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
     random.seed(42)
-    sparkle = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    sd = ImageDraw.Draw(sparkle)
-    for _ in range(35):
-        sx2 = random.randint(100, W-60)
-        sy2 = random.randint(CONTENT_TOP+20, CONTENT_BOTTOM-20)
-        sz = random.randint(2, 6)
-        a = random.randint(60, 180)
-        sd.line([(sx2-sz, sy2), (sx2+sz, sy2)], fill=(255,230,140,a))
-        sd.line([(sx2, sy2-sz), (sx2, sy2+sz)], fill=(255,230,140,a))
-    sparkle = sparkle.filter(ImageFilter.GaussianBlur(radius=1))
-    canvas = Image.alpha_composite(canvas, sparkle)
-
-    # Vignette
-    vig = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    vd = ImageDraw.Draw(vig)
-    for i in range(40):
-        t = i/40
-        if t < 0.6: continue
-        a = int(255*0.4*((t-0.6)/0.4)**1.5)
-        ix, iy = int(W*(1-t)/2), int(H*(1-t)/2)
-        for ew in range(3):
-            vd.rectangle([ix-ew, iy-ew, W-ix+ew, H-iy+ew], outline=(0,0,0,a))
-    vig = vig.filter(ImageFilter.GaussianBlur(radius=40))
-    canvas = Image.alpha_composite(canvas, vig)
-
-    # Scanlines
-    sl = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    sld = ImageDraw.Draw(sl)
-    for sy3 in range(0, H, 4):
-        sld.line([(0, sy3), (W, sy3)], fill=(0,0,0,14))
-    canvas = Image.alpha_composite(canvas, sl)
-
-    # Stars
-    draw = ImageDraw.Draw(canvas)
-    for sx, sy2, sz in [
-        (cl+10, CONTENT_TOP+35, 10), (cr-8, CONTENT_TOP+55, 8),
-        (cx+280, 195, 7), (cx-300, 180, 6), (cr-20, 350, 9),
-        (cl+15, 480, 7), (cr-12, 850, 6), (cr-25, 1150, 7),
-        (cl+8, 1000, 5), (cr-15, 1350, 6), (cl+20, fy-30, 8),
-        (cr-10, fy+180, 7), (cx+200, fy+100, 5),
-    ]:
-        draw_star(draw, sx, sy2, sz, GOLD)
-    for sx, sy2, sz in [(cl+70, 750, 4), (cr-80, 1200, 4), (cx+130, 300, 3)]:
-        draw_star(draw, sx, sy2, sz, MUTED)
-    for c2x, c2y in [(cl-5, CONTENT_TOP+10), (cr+5, CONTENT_TOP+10),
-                      (cl-5, CONTENT_BOTTOM-5), (cr+5, CONTENT_BOTTOM-5)]:
-        draw_star(draw, c2x, c2y, 5, GOLD)
-        draw_star(draw, c2x+12, c2y+8, 3, GOLD)
-
-    canvas.convert("RGB").save(str(OUT_DIR / "scorecard_test.jpg"), "JPEG", quality=95)
-    canvas.save(str(OUT_DIR / "scorecard_test.png"))
-    print(f"\nDone → {OUT_DIR}/")
+    canvas = Image.new("RGBA", (W, H), (6, 8, 14, 255))
+    render_starfield(canvas)
+    render_vignette(canvas)
+    render_scanlines(canvas)
+    render_power_bar(canvas, POWER_TIER)
+    y = render_header(canvas, DATE_RANGE)
+    y = render_headline(canvas, GRAND_TOTAL, y + 80)
+    y = render_panel(canvas, DEFAULT_PERSONS[:3], y + 4)
+    render_this_week(canvas, y)
+    render_footer(canvas)
+    render_sparkles(canvas)
+    render_frame(canvas)
+    out = OUT_DIR / "scorecard_test.png"
+    canvas.convert("RGBA").save(out, "PNG", optimize=True)
+    print(f"wrote {out} ({out.stat().st_size // 1024} KB)")
 
 
 if __name__ == "__main__":
-    build_composite()
+    main()

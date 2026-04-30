@@ -22,13 +22,31 @@ export const MIN_AVOIDS_FOR_DROP = 1;
 export const SCORECARD_IMAGE_WIDTH = 1080;
 export const SCORECARD_IMAGE_HEIGHT = 1920;
 
-// Scorecard — content zone inside the frame (px offsets from frame edges)
+// Scorecard — content zone inside the frame (px offsets in 1080×1920 design space).
+// The frame's gold border sits outside this zone; content lays out with
+// flexbox space-between (header / content / footer) inside these insets.
 export const SCORECARD_CONTENT_ZONE = {
-  top: 40,
-  left: 56,   // accounts for power meter width
-  right: 40,
-  bottom: 40,
+  top: 120,
+  left: 140,
+  right: 140,
+  bottom: 130,
 } as const;
+
+// Scorecard — power meter geometry. Bar tube stays the same VISUAL height
+// across tiers (BAR_TUBE_HEIGHT_DESIGN); the top decoration (flame, glow,
+// extra ornaments) extends ABOVE the tube as the tier climbs, so the PNG's
+// native height varies even though the tube portion is uniform. The bar is
+// anchored to BOTTOM, so the tube lands in the same physical place every
+// week — only the crown grows. Width stays constant across tiers.
+export const SCORECARD_BAR_WIDTH = 70;
+export const SCORECARD_BAR_LEFT = 22;
+export const SCORECARD_BAR_BOTTOM = 520;
+export const SCORECARD_BAR_TUBE_HEIGHT_DESIGN = 820;
+
+// Per-tier native PNG metrics (pixel art, taken from assets/pixel/scorecard).
+// Index matches POWER_METER_TIERS index. nativeH varies because the top
+// decoration is taller for higher tiers (the bar tube portion is consistent).
+export const POWER_METER_TIER_NATIVE_H = [1371, 1473, 1576, 1580] as const;
 
 // Scorecard — card archive ceiling (oldest dropped when exceeded)
 export const SCORECARD_ARCHIVE_MAX = 104; // 2 years of weekly cards
