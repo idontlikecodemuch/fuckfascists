@@ -22,6 +22,9 @@ interface PlatformGroupHeaderProps {
   shortName: string;
   totalAvoids: number;
   focused: boolean;
+  /** True when this header sits inside a panel that contains the focused row.
+   *  Picks up the cyan tint so the cyan-bevel frame reads as one filled cell. */
+  panelFocused: boolean;
   onPress: () => void;
 }
 
@@ -30,12 +33,13 @@ export function PlatformGroupHeader({
   shortName,
   totalAvoids,
   focused,
+  panelFocused,
   onPress,
 }: PlatformGroupHeaderProps) {
   return (
     <Pressable
       onPress={onPress}
-      style={[styles.container, focused && styles.focused]}
+      style={[styles.container, panelFocused && styles.panelFocusedContainer, focused && styles.focused]}
       accessibilityRole="button"
       accessibilityLabel={platformsCopy.groupHeaderA11y(shortName, totalAvoids)}
       accessibilityState={{ expanded: focused }}
@@ -82,6 +86,12 @@ const styles = StyleSheet.create({
     borderBottomColor: glowDividerLine.backgroundColor as string,
     backgroundColor: theme.colors.panelInner,
     overflow: 'visible',
+  },
+  // Header inside a focused panel — picks up the same cyan fill as the rows
+  // beneath it so the whole panel reads as one filled cell.
+  panelFocusedContainer: {
+    backgroundColor: theme.colors.trackFocusBg,
+    borderBottomColor: theme.colors.focusBevelDark,
   },
   focused: {
     shadowColor: theme.glow.color,

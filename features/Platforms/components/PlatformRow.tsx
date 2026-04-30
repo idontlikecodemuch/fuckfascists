@@ -30,6 +30,10 @@ interface PlatformRowProps {
   item: PlatformItem;
   isChild: boolean;
   focused: boolean;
+  /** True when this row sits inside a panel that contains the focused row.
+   *  Sibling rows in a focused group use this to pick up the focus tint so
+   *  the whole cyan-bevel panel reads as one filled cell. */
+  panelFocused: boolean;
   expanded: boolean;
   dimmed: boolean;
   onRowPress: () => void;
@@ -45,6 +49,7 @@ export function PlatformRow({
   item,
   isChild,
   focused,
+  panelFocused,
   expanded,
   dimmed,
   onRowPress,
@@ -61,6 +66,7 @@ export function PlatformRow({
       style={[
         styles.row,
         isChild && styles.childRow,
+        panelFocused && styles.panelFocusedRow,
         focused && styles.focusedRow,
         focused && expanded && styles.focusedExpandedRow,
       ]}
@@ -148,9 +154,15 @@ const styles = StyleSheet.create({
     paddingVertical: TRACK_CHILD_ROW_PADDING_VERTICAL,
     backgroundColor: theme.colors.panelInner,
   },
-  // Focused row: brighter bg only. The dimensional cyan outline lives on the
-  // surrounding panel pieces (panelTopCap / panelSides / panelBottomCap in
-  // TrackList) — no interior border line, the panel bevel itself goes cyan.
+  // Any row inside a focused panel — including non-selected siblings under a
+  // focused group header — picks up the cyan tint so the panel reads as one
+  // continuously filled cell rather than dark rows inside a cyan frame.
+  panelFocusedRow: {
+    backgroundColor: TRACK_ROW_FOCUS_BG_COLOR,
+    borderBottomColor: theme.colors.focusBevelDark,
+  },
+  // Focused row: same cyan fill as panelFocusedRow. The selected row is
+  // distinguished by name color (focusText) + SparkleDecoration, not by bg.
   focusedRow: {
     backgroundColor: TRACK_ROW_FOCUS_BG_COLOR,
   },

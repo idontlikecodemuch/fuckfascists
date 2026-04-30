@@ -180,6 +180,7 @@ export function TrackList() {
             shortName={item.shortName}
             totalAvoids={personWeeklyAvoids(item.figureName)}
             focused={selectedPlatformId === null && focusedFigureName === item.figureName}
+            panelFocused={panelFocused}
             onPress={() => {
               dismissDailyPreview();
               focusGroup(item.figureName);
@@ -224,6 +225,7 @@ export function TrackList() {
           item={platformItem}
           isChild={item.type === 'childRow'}
           focused={focused}
+          panelFocused={panelFocused}
           expanded={expanded}
           dimmed={focusedFigureName !== null && !focused}
           onRowPress={() => {
@@ -312,7 +314,9 @@ const styles = StyleSheet.create({
   panelTopCapFocused: {
     marginHorizontal: theme.space.sm,
     height: 4,
-    backgroundColor: theme.colors.panelOuter,
+    // Match the focused row + sides bg so the inside of the cyan bevel reads
+    // as one filled cell — no dark gap between the bevel and the row.
+    backgroundColor: theme.colors.trackFocusBg,
     borderTopWidth: theme.borders.bevel.width,
     borderLeftWidth: theme.borders.bevel.width,
     borderRightWidth: theme.borders.bevel.width,
@@ -338,7 +342,7 @@ const styles = StyleSheet.create({
   panelBottomCapFocused: {
     marginHorizontal: theme.space.sm,
     height: 4,
-    backgroundColor: theme.colors.panelOuter,
+    backgroundColor: theme.colors.trackFocusBg,
     borderBottomWidth: theme.borders.bevel.width,
     borderLeftWidth: theme.borders.bevel.width,
     borderRightWidth: theme.borders.bevel.width,
@@ -363,7 +367,7 @@ const styles = StyleSheet.create({
     borderRightWidth: theme.borders.bevel.width,
     borderLeftColor: theme.colors.focusBevelLight,
     borderRightColor: theme.colors.focusBevelDark,
-    backgroundColor: theme.colors.panelOuter,
+    backgroundColor: theme.colors.trackFocusBg,
     overflow: 'visible',
   },
   separator: {

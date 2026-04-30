@@ -19,6 +19,10 @@ export const theme = {
     // read clearly against the panelInner row bg, and the today cell that
     // sits inside this band is bumped further (TRACK_TODAY_BAND_OPACITY).
     trackFocusTint: 'rgba(40, 120, 200, 0.18)',
+    // Solid equivalent of trackFocusTint over panelInner — used by every piece
+    // inside a focused Track panel (caps, sides, rows, group header) so the
+    // dimensional cyan bevel reads as one filled cell with no dark gaps.
+    trackFocusBg: '#15243A',
 
     // Panel bevel system — cool grey at rest
     bevelLight: '#3A3E42',

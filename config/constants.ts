@@ -258,7 +258,9 @@ export const TRACK_ROW_FONT_SIZE_NAME = 15;
 export const TRACK_ROW_FONT_SIZE_SUBTITLE = 11;
 export const TRACK_ROW_FONT_SIZE_COUNT = 14;
 export const TRACK_ROW_FOCUS_BORDER_COLOR = theme.colors.focusAccent;
-export const TRACK_ROW_FOCUS_BG_COLOR = theme.colors.trackFocusTint;
+// Solid color shared by every piece inside a focused Track panel — caps,
+// sides, rows, group header. See `trackFocusBg` token for the rationale.
+export const TRACK_ROW_FOCUS_BG_COLOR = theme.colors.trackFocusBg;
 export const TRACK_ROW_DIMMED_OPACITY = 0.45;
 export const TRACK_CHILD_ROW_BG_COLOR = 'rgba(95, 174, 255, 0.06)';
 export const TRACK_CHILD_GUIDE_COLOR = 'rgba(95, 174, 255, 0.55)';
