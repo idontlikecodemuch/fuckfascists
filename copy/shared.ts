@@ -1,6 +1,6 @@
 export const sharedCopy = {
   appName: "FCK FASCISTS",
-  siteUrl: "fckapp.com",
+  siteUrl: "FCKfascists.com",
   repoUrl: "https://github.com/idontlikecodemuch/fuckfascists",
   dataRepoUrl: "https://github.com/idontlikecodemuch/fckfascists-data",
   issuesUrl: "https://github.com/idontlikecodemuch/fuckfascists/issues",

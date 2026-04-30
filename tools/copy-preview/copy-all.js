@@ -2,7 +2,7 @@
 var COPY_ALL_DATA = {
   "shared": {
     "appName": "FCK FASCISTS",
-    "siteUrl": "fckapp.com",
+    "siteUrl": "FCKfascists.com",
     "repoUrl": "https://github.com/idontlikecodemuch/fuckfascists",
     "dataRepoUrl": "https://github.com/idontlikecodemuch/fckfascists-data",
     "issuesUrl": "https://github.com/idontlikecodemuch/fuckfascists/issues",
@@ -178,8 +178,8 @@ var COPY_ALL_DATA = {
     "loaderText": "Locking in my card.\nShredding the data.",
     "pastCardsLabel": "Past scorecards",
     "emptyState": "Hit the {map}. Hit {track}.\nMake them feel it.",
-    "tagline": "The fascists won't f*ck themselves.",
-    "cta": "fckfascists.org",
+    "tagline": "The fascists wont FCK themselves.",
+    "cta": "FCKfascists.com",
     "dataAttribution": "DATA: FEC.GOV"
   },
   "onboard": {

@@ -46,13 +46,10 @@ export function CardPersonRow({ person, isLast }: CardPersonRowProps) {
           spriteId={spriteId}
           state="defeated"
           size={scale(SPRITE_DESIGN)}
-          // Defeated face position has the head leaning forward; for the
-          // share image we still want the face roughly centered horizontally
-          // so the row reads as a portrait row. SpriteView reads state to
-          // pick the correct face position — anchor at viewport center for
-          // both axes.
-          faceAnchorX={0.5}
-          faceAnchorY={0.5}
+          // Render the full sprite cell — face lands where the artist drew
+          // it (post-normalization, that's consistent across sprites).
+          // Face-anchor is for tight head-only crops (Track sprite-screen),
+          // not for the scorecard's full-figure row portrait.
         />
       </View>
       <View style={styles.text} collapsable={false}>
