@@ -7,13 +7,13 @@ import { SparkleDecoration } from '../../../core/fx';
 import { hasSprite } from '../../../core/sprites/spriteLoader';
 import { FigureBadge } from './FigureBadge';
 import {
+  TRACK_ROW_FACE_ANCHOR_X,
+  TRACK_ROW_FACE_ANCHOR_Y,
   TRACK_ROW_FONT_SIZE_COUNT,
   TRACK_ROW_FONT_SIZE_SUBTITLE,
   TRACK_GROUP_HEADER_PADDING_VERTICAL,
   TRACK_ROW_PADDING_HORIZONTAL,
   TRACK_ROW_SPRITE_SIZE,
-  TRACK_SPRITE_BUST_CROP_OFFSET_X,
-  TRACK_SPRITE_BUST_CROP_OFFSET_Y,
   TRACK_SPRITE_BUST_CROP_RATIO,
 } from '../../../config/constants';
 
@@ -47,8 +47,8 @@ export function PlatformGroupHeader({
             state="neutral"
             size={TRACK_ROW_SPRITE_SIZE}
             cropRatio={TRACK_SPRITE_BUST_CROP_RATIO}
-            cropOffsetX={TRACK_SPRITE_BUST_CROP_OFFSET_X}
-            cropOffsetY={TRACK_SPRITE_BUST_CROP_OFFSET_Y}
+            faceAnchorX={TRACK_ROW_FACE_ANCHOR_X}
+            faceAnchorY={TRACK_ROW_FACE_ANCHOR_Y}
           />
         </View>
       )}

@@ -14,6 +14,11 @@ interface FigureBadgeProps {
   cropRatio?: number;
   cropOffsetX?: number;
   cropOffsetY?: number;
+  /** Forwarded to SpriteView — when set, face is anchored at this viewport Y
+   *  and cropOffsetY is computed dynamically by state. */
+  faceAnchorY?: number;
+  /** Forwarded to SpriteView. Defaults to 0.5 inside SpriteView. */
+  faceAnchorX?: number;
   fallbackVariant?: 'list' | 'arena';
 }
 
@@ -24,6 +29,8 @@ export function FigureBadge({
   cropRatio,
   cropOffsetX,
   cropOffsetY,
+  faceAnchorY,
+  faceAnchorX,
   fallbackVariant = 'list',
 }: FigureBadgeProps) {
   const spriteId = nameToSpriteId(figureName);
@@ -42,6 +49,8 @@ export function FigureBadge({
         cropRatio={cropRatio}
         cropOffsetX={cropOffsetX}
         cropOffsetY={cropOffsetY}
+        faceAnchorX={faceAnchorX}
+        faceAnchorY={faceAnchorY}
       />
     );
   }

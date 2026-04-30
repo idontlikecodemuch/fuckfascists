@@ -14,6 +14,8 @@ import {
   TRACK_CHILD_FONT_SIZE_NAME,
   TRACK_CHILD_ROW_PADDING_VERTICAL,
   TRACK_ROW_DIMMED_OPACITY,
+  TRACK_ROW_FACE_ANCHOR_X,
+  TRACK_ROW_FACE_ANCHOR_Y,
   TRACK_ROW_FOCUS_BG_COLOR,
   TRACK_ROW_FOCUS_BORDER_COLOR,
   TRACK_ROW_FONT_SIZE_COUNT,
@@ -22,8 +24,6 @@ import {
   TRACK_ROW_PADDING_HORIZONTAL,
   TRACK_ROW_PADDING_VERTICAL,
   TRACK_ROW_SPRITE_SIZE,
-  TRACK_SPRITE_BUST_CROP_OFFSET_X,
-  TRACK_SPRITE_BUST_CROP_OFFSET_Y,
   TRACK_SPRITE_BUST_CROP_RATIO,
 } from '../../../config/constants';
 
@@ -84,8 +84,8 @@ export function PlatformRow({
                 state="neutral"
                 size={SPRITE_INNER_SIZE}
                 cropRatio={TRACK_SPRITE_BUST_CROP_RATIO}
-                cropOffsetX={TRACK_SPRITE_BUST_CROP_OFFSET_X}
-                cropOffsetY={TRACK_SPRITE_BUST_CROP_OFFSET_Y}
+                faceAnchorX={TRACK_ROW_FACE_ANCHOR_X}
+                faceAnchorY={TRACK_ROW_FACE_ANCHOR_Y}
               />
             </View>
         )}

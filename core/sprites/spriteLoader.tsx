@@ -11,6 +11,12 @@
 import React from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 import type { ImageSourcePropType } from 'react-native';
+import {
+  SPRITE_FACE_NEUTRAL_X,
+  SPRITE_FACE_NEUTRAL_Y,
+  SPRITE_FACE_DEFEATED_X,
+  SPRITE_FACE_DEFEATED_Y,
+} from '../../config/constants';
 import { spriteAssets } from './spriteAssets';
 
 // ── Manifest (bundled JSON) ──────────────────────────────────────────────────
@@ -136,6 +142,17 @@ interface SpriteViewProps {
   cropOffsetX?: number;
   /** Optional vertical crop offset ratio of frame height. Negative reveals more top. */
   cropOffsetY?: number;
+  /**
+   * Target viewport Y for the sprite's face center, fraction of viewport height
+   * (0 = top, 0.5 = center, 1 = bottom). When provided, SpriteView ignores
+   * cropOffsetY and computes the offset that places the face at this anchor —
+   * using the SPRITE_FACE_* constants in config/constants.ts (face position is
+   * the same for every sprite, post-normalization).
+   */
+  faceAnchorY?: number;
+  /** Target viewport X for the face center. Defaults to 0.5 (centered) when
+   *  faceAnchorY is provided. Ignored otherwise. */
+  faceAnchorX?: number;
   /** Temporarily park the bitmap outside the clip box while hidden. */
   visible?: boolean;
 }
@@ -157,6 +174,8 @@ export function SpriteView({
   cropRatio,
   cropOffsetX = 0,
   cropOffsetY = 0,
+  faceAnchorY,
+  faceAnchorX = 0.5,
   visible = true,
 }: SpriteViewProps) {
   if (!spriteId) return null;
@@ -165,10 +184,25 @@ export function SpriteView({
   if (!frame) return null;
 
   const resolvedCropRatio = cropRatio ?? (headOnly ? DEFAULT_HEAD_CROP_RATIO : 1);
+
+  // Face-anchor mode: derive cropOffsetX/Y from the canonical face position
+  // so the face lands at (faceAnchorX, faceAnchorY) in viewport space,
+  // regardless of which sprite is rendered or which state it's in.
+  let resolvedCropOffsetX = cropOffsetX;
+  let resolvedCropOffsetY = cropOffsetY;
+  if (faceAnchorY != null) {
+    const isDefeated = state === 'defeated';
+    const faceX = isDefeated ? SPRITE_FACE_DEFEATED_X : SPRITE_FACE_NEUTRAL_X;
+    const faceY = isDefeated ? SPRITE_FACE_DEFEATED_Y : SPRITE_FACE_NEUTRAL_Y;
+    resolvedCropOffsetY = faceY - faceAnchorY * resolvedCropRatio;
+    resolvedCropOffsetX =
+      faceX - 0.5 + (0.5 - faceAnchorX) * resolvedCropRatio * frame.frameHeight / frame.frameWidth;
+  }
+
   const scale = size / (frame.frameHeight * resolvedCropRatio);
   const centeredCropLeft = Math.max(0, ((frame.frameWidth * scale) - size) / 2);
-  const leftCropOffset = frame.frameWidth * cropOffsetX * scale;
-  const topCropOffset = frame.frameHeight * cropOffsetY * scale;
+  const leftCropOffset = frame.frameWidth * resolvedCropOffsetX * scale;
+  const topCropOffset = frame.frameHeight * resolvedCropOffsetY * scale;
 
   return (
     <View

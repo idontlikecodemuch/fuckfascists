@@ -12,6 +12,59 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: April 29, 2026 ET — Sprite face-anchor (canonical face position post-normalization)
+
+**Branch:** `claude/jovial-mahavira-688fb1` (merged to main same day).
+
+**Focus:** Long-standing inconsistency in how sprites land in their containers — heads cut off in arena cells, faces too low in row sprite-screens, defeated state shifted out of position. The fix the team has reached for many times but never made stick. Root cause: `TRACK_SPRITE_*_CROP_OFFSET_X/Y` constants were empirical magic numbers tuned for the median sprite, didn't account for `state` (defeated heads lean forward — different position than neutral), and were applied uniformly across all sprites even when individual sprite proportions varied.
+
+The actual fix uses the fact that the normalize_sprites.py pipeline already places every sprite at a canonical body position. We measured where the face center sits in any normalized frame (sampled 16 random sprites, both standard and important tier, neutral and defeated states) and got tight clusters:
+
+- **Neutral:** face center at frame `(0.52, 0.23)` — basically dead center horizontally, upper quarter vertically. Range across 14 well-detected sprites: `±0.02`.
+- **Defeated:** face center at frame `(0.62, 0.24)` — `+0.10` X shift (the "head leans forward" the team has always described), Y essentially unchanged. X cluster tight; Y noisy from algorithmic detection but visually consistent.
+
+Two pairs of constants — same for every sprite, swap by state. SpriteView derives the cropOffset dynamically.
+
+**What changed:**
+
+1. **`config/constants.ts` — new constants:**
+   - `SPRITE_FACE_NEUTRAL_X/Y = 0.52, 0.23`, `SPRITE_FACE_DEFEATED_X/Y = 0.62, 0.24` — surface-agnostic, named without `TRACK_` prefix because they're a property of the normalization pipeline (any future surface can use them).
+   - Per-Track-surface face anchors: `TRACK_ROW_FACE_ANCHOR_X/Y = 0.5/0.5` (face dead-center in row sprite-screen), `TRACK_ARENA_SINGLE_FACE_ANCHOR_X/Y = 0.5/0.3` (upper third in single-figure arena), `TRACK_ARENA_GRID_FACE_ANCHOR_X/Y = 0.5/0.35` (slightly upper in grid cells).
+   - **Removed dead constants:** `TRACK_SPRITE_BUST_CROP_OFFSET_X/Y`, `TRACK_ARENA_GRID_CROP_OFFSET_X/Y`, `TRACK_ARENA_SINGLE_CROP_OFFSET_X/Y` — the empirical magic numbers the face-anchor approach replaces.
+   - `TRACK_GRID_SPRITE_SCALE: 1.0 → 0.93` — fixes the long-standing arena grid clipping. Cell is `84×84` with `borderWidth: 2 + paddingBottom: 2` → content area `80×78`. Sprite at scale 1.0 was 84pt wide, overshot the content area, top-of-head got clipped. 0.93 ≈ `(84-6)/84` so sprite fits inside the content area.
+
+2. **`core/sprites/spriteLoader.tsx` — new SpriteView props:**
+   - `faceAnchorY?: number` — when provided, enables face-anchor mode.
+   - `faceAnchorX?: number` — defaults to 0.5 inside SpriteView. In face-anchor mode SpriteView reads the `state` prop, looks up `SPRITE_FACE_*`, and computes:
+     ```
+     cropOffsetY = faceY - faceAnchorY * cropRatio
+     cropOffsetX = faceX - 0.5 + (0.5 - faceAnchorX) * cropRatio * (frameHeight / frameWidth)
+     ```
+   - When `faceAnchorY` is not passed, behaves identically to before (existing `cropOffsetX/Y` props honored). Fully backward-compatible — BusinessCard, Scorecard, etc. unaffected.
+
+3. **`features/Platforms/components/FigureBadge.tsx`** — pass-through `faceAnchorX/Y` props.
+
+4. **`features/Platforms/components/PlatformRow.tsx`** — drop `cropOffsetX={TRACK_SPRITE_BUST_CROP_OFFSET_X}` etc., add `faceAnchorX/Y={TRACK_ROW_FACE_ANCHOR_X/Y}`.
+
+5. **`features/Platforms/components/PlatformGroupHeader.tsx`** — same swap.
+
+6. **`features/Platforms/components/GameArena.tsx`** — same swap for both single-figure and grid sprites, with their respective face-anchor constants.
+
+**Decisions reached:**
+
+- Constants named `SPRITE_FACE_*` (not `TRACK_SPRITE_FACE_*`) because they're a property of the sprite art / normalization pipeline. Surface-agnostic.
+- Face position constants live in `config/constants.ts` (alongside `TRACK_SPRITE_*` and other tunable visual values), not in `core/sprites/`. SpriteView imports them. Keeps all tunable values in one place.
+- Two pairs of constants (neutral + defeated), not per-sprite metadata. Sprites are normalized — face position IS the same across them. Per-sprite face data in the manifest would have been over-engineering.
+- Same face position for `varA` and `varB` variants (different artistic poses, same canonical position). Same for `important` (2×2) vs `standard` (2×1) tiers — cell dimensions are identical, just layout differs.
+- `cropRatio` stays as the zoom knob; `faceAnchorX/Y` is the position knob. Clean separation of concerns.
+- Backward-compatible API on SpriteView — surfaces outside Track (BusinessCard, Scorecard) keep their explicit `cropOffsetX/Y` and ignore the new props.
+
+**Verification:** `npx tsc --noEmit` → EXIT 0. `npx jest features/Platforms` → 3 suites / 35 tests all green. No copy changes.
+
+**Files touched:** `config/constants.ts`, `core/sprites/spriteLoader.tsx`, `features/Platforms/components/FigureBadge.tsx`, `features/Platforms/components/PlatformRow.tsx`, `features/Platforms/components/PlatformGroupHeader.tsx`, `features/Platforms/components/GameArena.tsx`, plus this PROGRESS entry + CLAUDE.md sprint table.
+
+---
+
 ### Session: April 29, 2026 ET — Track row full-height columns + sprite-screen
 
 **Branch:** `claude/jovial-mahavira-688fb1` (merged to main same day).

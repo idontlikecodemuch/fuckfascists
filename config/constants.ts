@@ -255,19 +255,38 @@ export const TRACK_DAY_CIRCLE_SIZE = 28;
 export const TRACK_DAY_CIRCLES_GAP = 4;
 export const TRACK_EXPAND_INDICATOR_SIZE = 14;
 export const TRACK_SPRITE_BUST_CROP_RATIO = 0.46;
-export const TRACK_SPRITE_BUST_CROP_OFFSET_X = -0.04;
-export const TRACK_SPRITE_BUST_CROP_OFFSET_Y = -0.01;
+
+// ── Sprite face position (post-normalize_sprites.py pipeline) ───────────────
+// Where the face center sits in any normalized sprite frame, fraction of frame
+// width × height. The same for every sprite — guaranteed by the normalization
+// pipeline (tools/img-gen/scripts/normalize_sprites.py). Defeated state shifts
+// ~+0.10 in X (head leans forward) and ~+0.01 in Y. Surface-agnostic — used
+// by SpriteView to compute cropOffsetX/Y dynamically when faceAnchor* props
+// are passed (see core/sprites/spriteLoader.tsx).
+export const SPRITE_FACE_NEUTRAL_X = 0.52;
+export const SPRITE_FACE_NEUTRAL_Y = 0.23;
+export const SPRITE_FACE_DEFEATED_X = 0.62;
+export const SPRITE_FACE_DEFEATED_Y = 0.24;
+
+// ── Face anchor per Track surface ───────────────────────────────────────────
+// Where the sprite's face center should land in the viewport (0–1 fraction).
+// SpriteView reads these via faceAnchorX/Y props and computes cropOffset from
+// SPRITE_FACE_* + cropRatio. Tune these to nudge face placement per surface
+// without touching sprites or per-state offsets.
+export const TRACK_ROW_FACE_ANCHOR_X = 0.5;
+export const TRACK_ROW_FACE_ANCHOR_Y = 0.5;
+export const TRACK_ARENA_SINGLE_FACE_ANCHOR_X = 0.5;
+export const TRACK_ARENA_SINGLE_FACE_ANCHOR_Y = 0.3;
+export const TRACK_ARENA_GRID_FACE_ANCHOR_X = 0.5;
+export const TRACK_ARENA_GRID_FACE_ANCHOR_Y = 0.35;
 export const TRACK_FIGURE_FALLBACK_BG_COLOR = theme.colors.surface2;
 export const TRACK_FIGURE_FALLBACK_BORDER_COLOR = theme.colors.highlightBlue;
 export const TRACK_FIGURE_FALLBACK_TEXT_COLOR = theme.colors.rewardYellow;
-// Arena tuning
+// Arena tuning — cropOffset values are now derived from SPRITE_FACE_* +
+// TRACK_ARENA_*_FACE_ANCHOR_Y above. Legacy explicit offsets removed.
 export const TRACK_ARENA_GRID_CELL_SIZE = 84;
 export const TRACK_ARENA_GRID_CROP_RATIO = 0.65;
-export const TRACK_ARENA_GRID_CROP_OFFSET_X = 0;
-export const TRACK_ARENA_GRID_CROP_OFFSET_Y = 0.05;
 export const TRACK_ARENA_SINGLE_CROP_RATIO = 0.72;
-export const TRACK_ARENA_SINGLE_CROP_OFFSET_X = -0.03;
-export const TRACK_ARENA_SINGLE_CROP_OFFSET_Y = -0.02;
 export const TRACK_ARENA_SINGLE_DISPLAY_RATIO = 0.9;
 export const TRACK_ARENA_SINGLE_LEFT_INSET = 16;
 export const TRACK_ARENA_SINGLE_BOTTOM_INSET = 0;
@@ -279,8 +298,10 @@ export const TRACK_ARENA_FLEX = 0.38;
 export const TRACK_ARENA_SEPARATOR_HEIGHT = 4;
 export const TRACK_ARENA_INNER_GLOW_HEIGHT = 8;
 export const TRACK_ARENA_INNER_GLOW_OPACITY = 0.15;
-// Grid cell — sprite sizing scale (0-1, fraction of cell size for breathing room)
-export const TRACK_GRID_SPRITE_SCALE = 1.0;
+// Grid cell — sprite scaled to fit cell content area (cell size minus
+// 2*borderWidth + paddingBottom). At 1.0 the sprite was wider than the
+// content area and the top of the head got clipped.
+export const TRACK_GRID_SPRITE_SCALE = 0.93;
 // Score bar count font size
 export const TRACK_SCORE_COUNT_FONT_SIZE = 20;
 // Today highlight band — brighter so the today cell still reads against

@@ -24,13 +24,13 @@ import {
   ARENA_FLICKER_RECOVER_MS,
   ARENA_FLICKER_DIP_OPACITY,
   TRACK_ARENA_GRID_CROP_RATIO,
-  TRACK_ARENA_GRID_CROP_OFFSET_X,
-  TRACK_ARENA_GRID_CROP_OFFSET_Y,
+  TRACK_ARENA_GRID_FACE_ANCHOR_X,
+  TRACK_ARENA_GRID_FACE_ANCHOR_Y,
   TRACK_ARENA_SINGLE_BOTTOM_INSET,
   TRACK_ARENA_SINGLE_CROP_RATIO,
-  TRACK_ARENA_SINGLE_CROP_OFFSET_X,
-  TRACK_ARENA_SINGLE_CROP_OFFSET_Y,
   TRACK_ARENA_SINGLE_DISPLAY_RATIO,
+  TRACK_ARENA_SINGLE_FACE_ANCHOR_X,
+  TRACK_ARENA_SINGLE_FACE_ANCHOR_Y,
   TRACK_ARENA_SINGLE_LEFT_INSET,
   TRACK_GRID_SPRITE_SCALE,
 } from '../../../config/constants';
@@ -265,8 +265,8 @@ export function GameArena() {
                 state={isDefeated(focusedFigureName) ? 'defeated' : 'neutral'}
                 size={singleSpriteSize}
                 cropRatio={TRACK_ARENA_SINGLE_CROP_RATIO}
-                cropOffsetX={TRACK_ARENA_SINGLE_CROP_OFFSET_X}
-                cropOffsetY={TRACK_ARENA_SINGLE_CROP_OFFSET_Y}
+                faceAnchorX={TRACK_ARENA_SINGLE_FACE_ANCHOR_X}
+                faceAnchorY={TRACK_ARENA_SINGLE_FACE_ANCHOR_Y}
                 fallbackVariant="arena"
               />
             </Pressable>
@@ -292,8 +292,8 @@ export function GameArena() {
                     state={defeated ? 'defeated' : 'neutral'}
                     size={gridSpriteSize}
                     cropRatio={TRACK_ARENA_GRID_CROP_RATIO}
-                    cropOffsetX={TRACK_ARENA_GRID_CROP_OFFSET_X}
-                    cropOffsetY={TRACK_ARENA_GRID_CROP_OFFSET_Y}
+                    faceAnchorX={TRACK_ARENA_GRID_FACE_ANCHOR_X}
+                    faceAnchorY={TRACK_ARENA_GRID_FACE_ANCHOR_Y}
                     fallbackVariant="arena"
                   />
                 </Pressable>
