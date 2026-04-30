@@ -2,7 +2,6 @@ import React from 'react';
 import { Pressable, Text, StyleSheet } from 'react-native';
 import { platformsCopy } from '../../../copy/platforms';
 import { theme } from '../../../design/tokens';
-import { bevelFocusRaised, bevelGreenInset } from '../../../design/bevel';
 import { TRACK_BUTTON_WIDTH, TRACK_BUTTON_HEIGHT } from '../../../config/constants';
 
 interface AvoidButtonProps {
@@ -54,11 +53,9 @@ const styles = StyleSheet.create({
   },
   buttonActive: {
     backgroundColor: theme.colors.focusAccent,
-    ...bevelFocusRaised,
   },
   buttonDone: {
     backgroundColor: theme.colors.successGreenDeep,
-    ...bevelGreenInset,
   },
   label: {
     fontFamily: theme.fonts.bodySemiBold,

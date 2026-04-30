@@ -17,7 +17,6 @@ import {
   TRACK_ROW_FACE_ANCHOR_X,
   TRACK_ROW_FACE_ANCHOR_Y,
   TRACK_ROW_FOCUS_BG_COLOR,
-  TRACK_ROW_FOCUS_BORDER_COLOR,
   TRACK_ROW_FONT_SIZE_COUNT,
   TRACK_ROW_FONT_SIZE_NAME,
   TRACK_ROW_FONT_SIZE_SUBTITLE,
@@ -149,13 +148,10 @@ const styles = StyleSheet.create({
     paddingVertical: TRACK_CHILD_ROW_PADDING_VERTICAL,
     backgroundColor: theme.colors.panelInner,
   },
-  // Focused row: top + bottom focusAccent rules across the whole row width
-  // (matches the day-today convention). When the row is also expanded the
-  // bottom rule drops so day-circles continues the band as one cell.
+  // Focused row: brighter bg only. The dimensional cyan outline lives on the
+  // surrounding panel pieces (panelTopCap / panelSides / panelBottomCap in
+  // TrackList) — no interior border line, the panel bevel itself goes cyan.
   focusedRow: {
-    borderTopWidth: 1,
-    borderTopColor: TRACK_ROW_FOCUS_BORDER_COLOR,
-    borderBottomColor: TRACK_ROW_FOCUS_BORDER_COLOR,
     backgroundColor: TRACK_ROW_FOCUS_BG_COLOR,
   },
   focusedExpandedRow: {

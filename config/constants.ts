@@ -292,7 +292,10 @@ export const SPRITE_FACE_DEFEATED_Y = 0.24;
 // SPRITE_FACE_* + cropRatio. Tune these to nudge face placement per surface
 // without touching sprites or per-state offsets.
 export const TRACK_ROW_FACE_ANCHOR_X = 0.5;
-export const TRACK_ROW_FACE_ANCHOR_Y = 0.5;
+// Lower = face higher in the row's sprite-screen viewport. 0.5 centered the
+// face vertically, which read as "head sitting low" — bumped up so the eyes
+// land near the upper third of the screen.
+export const TRACK_ROW_FACE_ANCHOR_Y = 0.42;
 export const TRACK_ARENA_SINGLE_FACE_ANCHOR_X = 0.5;
 export const TRACK_ARENA_SINGLE_FACE_ANCHOR_Y = 0.3;
 export const TRACK_ARENA_GRID_FACE_ANCHOR_X = 0.5;

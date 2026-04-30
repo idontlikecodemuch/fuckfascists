@@ -58,6 +58,42 @@ export function TrackList() {
         item.type === 'childRow' || item.type === 'platformRow')
       .map((item) => item.platformId);
   }, [baseListData]);
+
+  // Set of item keys (panelStart/panelEnd/group/row/dayCircles) belonging to a
+  // panel that contains the focused row. Used to swap panel bevel pieces from
+  // grey to cyan so the dimensional outline itself reads as the focus highlight
+  // — no separate interior cyan border needed.
+  const focusedPanelItemKeys = useMemo(() => {
+    const focused = new Set<string>();
+    let currentPanel: { startKey: string; memberKeys: string[]; hasFocus: boolean } | null = null;
+
+    for (const item of listData) {
+      if (item.type === 'panelStart') {
+        currentPanel = { startKey: item.key, memberKeys: [item.key], hasFocus: false };
+        continue;
+      }
+      if (item.type === 'panelEnd') {
+        if (!currentPanel) continue;
+        currentPanel.memberKeys.push(item.key);
+        if (currentPanel.hasFocus) {
+          for (const k of currentPanel.memberKeys) focused.add(k);
+        }
+        currentPanel = null;
+        continue;
+      }
+      if (currentPanel) currentPanel.memberKeys.push(item.key);
+
+      let itemFocused = false;
+      if (item.type === 'platformRow' || item.type === 'childRow') {
+        itemFocused = item.platformId === selectedPlatformId;
+      } else if (item.type === 'groupHeader') {
+        itemFocused = selectedPlatformId === null && focusedFigureName === item.figureName;
+      }
+      if (itemFocused && currentPanel) currentPanel.hasFocus = true;
+    }
+
+    return focused;
+  }, [focusedFigureName, listData, selectedPlatformId]);
   const dailyOpenHandledRef = useRef(false);
   const collapseTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
   const previewDismissedRef = useRef(false);
@@ -123,11 +159,14 @@ export function TrackList() {
   }, [focusedFigureName]);
 
   const renderItem = useCallback(({ item }: { item: TrackListItem }) => {
+    const panelFocused = focusedPanelItemKeys.has(item.key);
+    const sidesStyle = panelFocused ? styles.panelSidesFocused : styles.panelSides;
+
     if (item.type === 'panelStart') {
-      return <View style={styles.panelTopCap} />;
+      return <View style={panelFocused ? styles.panelTopCapFocused : styles.panelTopCap} />;
     }
     if (item.type === 'panelEnd') {
-      return <View style={styles.panelBottomCap} />;
+      return <View style={panelFocused ? styles.panelBottomCapFocused : styles.panelBottomCap} />;
     }
     if (item.type === 'separator') {
       return <View style={styles.separator} />;
@@ -135,7 +174,7 @@ export function TrackList() {
 
     if (item.type === 'groupHeader') {
       return (
-        <View style={styles.panelSides}>
+        <View style={sidesStyle}>
           <PlatformGroupHeader
             figureName={item.figureName}
             shortName={item.shortName}
@@ -161,7 +200,7 @@ export function TrackList() {
 
     if (item.type === 'dayCircles') {
       return (
-        <Animated.View entering={FadeIn.duration(200)} style={styles.panelSides}>
+        <Animated.View entering={FadeIn.duration(200)} style={sidesStyle}>
           <DayCircles
             weekOf={weekOf}
             platformName={platformItem.platform.name}
@@ -180,7 +219,7 @@ export function TrackList() {
     }
 
     return (
-      <View style={styles.panelSides}>
+      <View style={sidesStyle}>
         <PlatformRow
           item={platformItem}
           isChild={item.type === 'childRow'}
@@ -215,6 +254,7 @@ export function TrackList() {
     dismissDailyPreview,
     focusPlatform,
     focusedFigureName,
+    focusedPanelItemKeys,
     focusGroup,
     getArenaDelay,
     openPlatformDetails,
@@ -269,6 +309,19 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: theme.radii.sharp,
     borderTopRightRadius: theme.radii.sharp,
   },
+  panelTopCapFocused: {
+    marginHorizontal: theme.space.sm,
+    height: 4,
+    backgroundColor: theme.colors.panelOuter,
+    borderTopWidth: theme.borders.bevel.width,
+    borderLeftWidth: theme.borders.bevel.width,
+    borderRightWidth: theme.borders.bevel.width,
+    borderTopColor: theme.colors.focusBevelLight,
+    borderLeftColor: theme.colors.focusBevelLight,
+    borderRightColor: theme.colors.focusBevelDark,
+    borderTopLeftRadius: theme.radii.sharp,
+    borderTopRightRadius: theme.radii.sharp,
+  },
   panelBottomCap: {
     marginHorizontal: theme.space.sm,
     height: 4,
@@ -282,12 +335,34 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: theme.radii.sharp,
     borderBottomRightRadius: theme.radii.sharp,
   },
+  panelBottomCapFocused: {
+    marginHorizontal: theme.space.sm,
+    height: 4,
+    backgroundColor: theme.colors.panelOuter,
+    borderBottomWidth: theme.borders.bevel.width,
+    borderLeftWidth: theme.borders.bevel.width,
+    borderRightWidth: theme.borders.bevel.width,
+    borderBottomColor: theme.colors.focusBevelDark,
+    borderLeftColor: theme.colors.focusBevelLight,
+    borderRightColor: theme.colors.focusBevelDark,
+    borderBottomLeftRadius: theme.radii.sharp,
+    borderBottomRightRadius: theme.radii.sharp,
+  },
   panelSides: {
     marginHorizontal: theme.space.sm,
     borderLeftWidth: theme.borders.bevel.width,
     borderRightWidth: theme.borders.bevel.width,
     borderLeftColor: theme.colors.bevelLight,
     borderRightColor: theme.colors.bevelDark,
+    backgroundColor: theme.colors.panelOuter,
+    overflow: 'visible',
+  },
+  panelSidesFocused: {
+    marginHorizontal: theme.space.sm,
+    borderLeftWidth: theme.borders.bevel.width,
+    borderRightWidth: theme.borders.bevel.width,
+    borderLeftColor: theme.colors.focusBevelLight,
+    borderRightColor: theme.colors.focusBevelDark,
     backgroundColor: theme.colors.panelOuter,
     overflow: 'visible',
   },
