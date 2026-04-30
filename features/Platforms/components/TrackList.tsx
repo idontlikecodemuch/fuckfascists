@@ -313,9 +313,9 @@ const styles = StyleSheet.create({
   },
   panelTopCapFocused: {
     marginHorizontal: theme.space.sm,
-    height: 4,
-    // Match the focused row + sides bg so the inside of the cyan bevel reads
-    // as one filled cell — no dark gap between the bevel and the row.
+    // Height equals the border thickness only — collapses to just the cyan
+    // top edge. No fill space between the bevel and the row content.
+    height: theme.borders.bevel.width,
     backgroundColor: theme.colors.trackFocusBg,
     borderTopWidth: theme.borders.bevel.width,
     borderLeftWidth: theme.borders.bevel.width,
@@ -341,7 +341,7 @@ const styles = StyleSheet.create({
   },
   panelBottomCapFocused: {
     marginHorizontal: theme.space.sm,
-    height: 4,
+    height: theme.borders.bevel.width,
     backgroundColor: theme.colors.trackFocusBg,
     borderBottomWidth: theme.borders.bevel.width,
     borderLeftWidth: theme.borders.bevel.width,

@@ -88,10 +88,11 @@ const styles = StyleSheet.create({
     overflow: 'visible',
   },
   // Header inside a focused panel — picks up the same cyan fill as the rows
-  // beneath it so the whole panel reads as one filled cell.
+  // beneath it so the whole panel reads as one filled cell. The header's own
+  // bottom divider drops to 0 so child rows sit flush.
   panelFocusedContainer: {
     backgroundColor: theme.colors.trackFocusBg,
-    borderBottomColor: theme.colors.focusBevelDark,
+    borderBottomWidth: 0,
   },
   focused: {
     shadowColor: theme.glow.color,

@@ -157,9 +157,11 @@ const styles = StyleSheet.create({
   // Any row inside a focused panel — including non-selected siblings under a
   // focused group header — picks up the cyan tint so the panel reads as one
   // continuously filled cell rather than dark rows inside a cyan frame.
+  // Bottom border drops to 0 so the row content sits flush against the
+  // panelBottomCap's cyan bevel — no dark separator inside the frame.
   panelFocusedRow: {
     backgroundColor: TRACK_ROW_FOCUS_BG_COLOR,
-    borderBottomColor: theme.colors.focusBevelDark,
+    borderBottomWidth: 0,
   },
   // Focused row: same cyan fill as panelFocusedRow. The selected row is
   // distinguished by name color (focusText) + SparkleDecoration, not by bg.
