@@ -52,7 +52,7 @@ became canonical.
 | Property | Value | Rationale |
 |---|---|---|
 | Dimensions | 1080 × 1920 px | 9:16 — Instagram/TikTok story native ratio |
-| Format | PNG (lossless) | Capture target for `react-native-view-shot`; share sheet handles platform conversion |
+| Format | **JPEG, q=0.88** | ~6× smaller than PNG (~500 KB vs. ~3.5 MB). Pixel-art sprites mask compression artifacts; A/B'd q=0.88 vs q=0.98 — visually indistinguishable |
 | Background | `starbg.jpg` resized to fill | Cosmic theme, consistent with app bg |
 | Frame | `frame.png` overlay (transparent interior, gold ornaments) | Renders on top so corner ornaments sit above content edges |
 | Content insets | `top: 120, left: 140, right: 140, bottom: 130` | Outside the gold frame border; flexbox `space-between` lays out header / hero / footer inside |
@@ -188,12 +188,13 @@ better than cool-blue-tinted white.
 ## Effects
 
 ### Light Beams (rules flanking date + footer)
-Approximation: solid cyan core (`rgba(122,242,255,0.85)`) with stacked
-boxShadow glows — a tight cyan halo (`rgba(122,242,255,0.6)` blur 14) plus
-a wider blue diffuse (`rgba(40,120,200,0.4)` blur 28). RN has no native
-horizontal gradient lib, so the gradient ends are not tapered to transparent;
-the strong central glow is what makes it read as a beam against the
-dark starfield. The Python test pipeline matches this approximation.
+Backed by a baked PNG gradient (`assets/pixel/scorecard/beam.png`, 520×4)
+matching the design's CSS `linear-gradient(transparent → blue → cyan →
+white core → cyan → blue → transparent)`. Rendered via `<Image
+resizeMode="stretch">` so narrower beams (140 flanking the date) scale the
+gradient down proportionally while keeping the white core. A subtle
+cyan/blue `boxShadow` on the wrapper adds the surrounding glow the asset
+alone can't carry.
 
 ### Text Glow
 - **Headline gold count** — `textShadowColor: rgba(255,201,60,0.7)`, blur 22
@@ -286,13 +287,22 @@ See CLAUDE.md § "Scorecard capture-then-purge — privacy upgrade" and § "Scor
 
 ## Filename
 
-Captured PNGs are saved to `FileSystem.documentDirectory/scorecards/` as:
+Captured images are saved to `FileSystem.documentDirectory/scorecards/` as:
 
 ```
-Those-I-FCKd-{Month}-{DD}-{YY}.png
+Those-I-FCKd-{Month}-{DD}-{YY}.jpg
 ```
 
-e.g. `Those-I-FCKd-April-11-26.png`. Built by `buildCardFilename(weekOf)` in `features/Scorecard/utils/formatters.ts`. Voice: Sh*tposter (user voice, first-person), non-vulgar, FCK substitution. The prefix echoes the card's hero sentence and reads like an inscription when the share receiver sees it — riff on "To Those I Loved." Archive view renders a readable label via `formatCardLabel()` → `"April 11, 2026"`.
+e.g. `Those-I-FCKd-April-11-26.jpg`. Built by `buildCardFilename(weekOf)`
+in `features/Scorecard/utils/formatters.ts`. Voice: Sh*tposter (user voice,
+first-person), non-vulgar, FCK substitution. The prefix echoes the card's
+hero sentence and reads like an inscription when the share receiver sees
+it — riff on "To Those I Loved." Archive view renders a readable label
+via `formatCardLabel()` → `"April 11, 2026"`.
+
+`formatCardLabel` and the archive listing both accept `.png` for backward
+compatibility — users upgrading from the pre-2026-04-30 PNG-only era keep
+their archived cards visible. New captures only ever produce `.jpg`.
 
 ---
 

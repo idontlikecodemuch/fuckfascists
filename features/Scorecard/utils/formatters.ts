@@ -24,12 +24,12 @@ export function formatWeekRange(weekOf: string): string {
 }
 
 /**
- * Formats a weekOf date for the scorecard PNG filename.
+ * Formats a weekOf date for the scorecard image filename.
  * e.g. "2026-04-11" → "April-11-26"
  *
  * Hyphen-separated, full month name title-cased, 2-digit year. Reads as
  * an inscription date when combined with the filename prefix:
- * "Those-I-FCKd-April-11-26.png".
+ * "Those-I-FCKd-April-11-26.jpg".
  */
 export function formatFilenameDate(weekOf: string): string {
   const d = new Date(`${weekOf}T00:00:00Z`);
@@ -55,14 +55,19 @@ export function formatReadableDate(weekOf: string): string {
 }
 
 /**
- * Builds the scorecard PNG filename (without path).
- * e.g. "2026-04-11" → "Those-I-FCKd-April-11-26.png"
+ * Builds the scorecard image filename (without path).
+ * e.g. "2026-04-11" → "Those-I-FCKd-April-11-26.jpg"
  *
  * The prefix echoes the card's hero sentence ("I FCKd [grid] N× this week")
  * and reads like an inscription when the receiver sees it on share.
+ *
+ * New captures are JPEG (q=0.88, ~6× smaller than PNG with no perceivable
+ * loss given the pixel-art content). Existing `.png` cards captured under
+ * the previous lossless format remain readable — see formatCardLabel +
+ * cardArchive listing logic.
  */
 export function buildCardFilename(weekOf: string): string {
-  return `Those-I-FCKd-${formatFilenameDate(weekOf)}.png`;
+  return `Those-I-FCKd-${formatFilenameDate(weekOf)}.jpg`;
 }
 
 const MONTH_NAMES = [
@@ -72,13 +77,15 @@ const MONTH_NAMES = [
 
 /**
  * Formats a filename (or stem) back to a human-readable archive label.
- * e.g. "Those-I-FCKd-April-11-26.png" → "April 11, 2026"
+ * e.g. "Those-I-FCKd-April-11-26.jpg" → "April 11, 2026"
  *
+ * Accepts both `.jpg` (current format) and `.png` (legacy lossless captures
+ * from before 2026-04-30) so the archive view shows pre-upgrade cards too.
  * Returns the raw stem if the filename doesn't match the expected pattern —
  * so a legacy or malformed filename never crashes the archive view.
  */
 export function formatCardLabel(filename: string): string {
-  const stem = filename.replace(/\.png$/i, '');
+  const stem = filename.replace(/\.(jpg|jpeg|png)$/i, '');
   const match = stem.match(/^Those-I-FCKd-([A-Za-z]+)-(\d{1,2})-(\d{2})$/);
   if (!match) return stem;
   const [, month, day, yy] = match;

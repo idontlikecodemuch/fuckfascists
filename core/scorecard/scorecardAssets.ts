@@ -17,6 +17,13 @@ export const scorecardFrame: ImageSourcePropType =
 export const scorecardScanlines: ImageSourcePropType =
   require('../../assets/pixel/scorecard/scanlines.png');
 
+/** Beam (520×4) — horizontal cyan-core gradient with blue → transparent
+ *  taper at the ends. Used as a glowing rule (date row + footer divider).
+ *  RN doesn't have a horizontal gradient primitive without a 3rd-party lib;
+ *  the asset is rendered via <Image resizeMode="stretch"> at the target width. */
+export const scorecardBeam: ImageSourcePropType =
+  require('../../assets/pixel/scorecard/beam.png');
+
 /** Power meter tier assets — indexed by tier index (0–3). */
 export const powerMeterAssets: ImageSourcePropType[] = [
   require('../../assets/pixel/scorecard/power_idle.png'),

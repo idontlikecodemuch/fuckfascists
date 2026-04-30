@@ -1,6 +1,7 @@
 import React from 'react';
-import { PixelRatio, StyleSheet, Text, View } from 'react-native';
+import { Image, PixelRatio, StyleSheet, Text, View } from 'react-native';
 import { theme } from '../../../design/tokens';
+import { scorecardBeam } from '../../../core/scorecard/scorecardAssets';
 
 const pr = PixelRatio.get();
 const scale = (px: number) => px / pr;
@@ -10,19 +11,24 @@ const SPARKLE_GLYPH_SM = '✧';
 
 const CORNER_TICK_DESIGN = 18;
 const CORNER_TICK_BORDER = 2;
+const BEAM_HEIGHT_DESIGN = 4;
 
-// ── Beam — horizontal light-rule with cyan glow ───────────────────────────
-// Approximation of the design's horizontal gradient (transparent → blue →
-// cyan → white core → cyan → blue → transparent). RN has no native linear
-// gradient without a third-party lib, so we render a thin solid-cyan core
-// with a stacked cyan + blue boxShadow that reads as a glowing rule against
-// the dark starfield. Width passed in design-space pixels (already scaled).
+// ── Beam — horizontal light-rule (cyan core + blue/transparent taper) ─────
+// Backed by a 520×4 PNG asset (`scorecard/beam.png`) whose pixel pattern
+// matches the design's CSS linear-gradient. Rendered via <Image> with
+// resizeMode="stretch" so narrower beams (e.g. 140 flanking the date)
+// scale the gradient down proportionally while keeping the white core.
+// A subtle cyan/blue boxShadow on the wrapper adds the surrounding glow
+// the asset alone can't carry. Width is in points (already scaled).
 export function Beam({ width }: { width: number }) {
   return (
-    <View
-      style={[styles.beam, { width }]}
-      collapsable={false}
-    />
+    <View style={[styles.beamWrapper, { width }]} collapsable={false}>
+      <Image
+        source={scorecardBeam}
+        style={[styles.beamImage, { width }]}
+        resizeMode="stretch"
+      />
+    </View>
   );
 }
 
@@ -87,13 +93,15 @@ export function Sparkle({
 }
 
 const styles = StyleSheet.create({
-  beam: {
-    height: scale(4),
-    backgroundColor: 'rgba(122,242,255,0.85)',
+  beamWrapper: {
+    height: scale(BEAM_HEIGHT_DESIGN),
     boxShadow: [
       { offsetX: 0, offsetY: 0, blurRadius: scale(14), spreadDistance: 0, color: 'rgba(122,242,255,0.6)' },
       { offsetX: 0, offsetY: 0, blurRadius: scale(28), spreadDistance: 0, color: 'rgba(40,120,200,0.4)' },
     ],
+  },
+  beamImage: {
+    height: scale(BEAM_HEIGHT_DESIGN),
   },
   cornerTick: {
     position: 'absolute',

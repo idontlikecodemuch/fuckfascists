@@ -4,16 +4,20 @@ import { SCORECARD_ARCHIVE_MAX } from '../../../config/constants';
 const ARCHIVE_DIR = `${FileSystem.documentDirectory}scorecards/`;
 
 export interface ArchivedCard {
-  filename: string;          // e.g. "Those-I-FCKd-April-11-26.png"
+  filename: string;          // e.g. "Those-I-FCKd-April-11-26.jpg"
   uri: string;               // local file URI
   modificationTime: number;  // seconds since epoch (FileSystem convention)
 }
 
 /**
- * Lists all archived scorecard PNGs, sorted newest-first by file mtime.
- * Sorting by mtime (vs. filename) is robust to the new human-readable
- * filename format where "April" would lexically precede "May" correctly
- * but "November" would precede "October" incorrectly.
+ * Lists all archived scorecard images, sorted newest-first by file mtime.
+ * Accepts both `.jpg` (current format, JPEG q=0.88, ~6× smaller than PNG)
+ * and `.png` (legacy lossless captures from before 2026-04-30) so users
+ * who upgrade keep their archive intact.
+ *
+ * Sorting by mtime (vs. filename) is robust to the human-readable filename
+ * format where "April" would lexically precede "May" correctly but
+ * "November" would precede "October" incorrectly.
  */
 export async function listArchivedCards(): Promise<ArchivedCard[]> {
   try {
@@ -21,10 +25,10 @@ export async function listArchivedCards(): Promise<ArchivedCard[]> {
     if (!info.exists) return [];
 
     const files = await FileSystem.readDirectoryAsync(ARCHIVE_DIR);
-    const pngs = files.filter((f) => f.endsWith('.png'));
+    const images = files.filter((f) => /\.(jpg|jpeg|png)$/i.test(f));
 
     const withTime = await Promise.all(
-      pngs.map(async (filename) => {
+      images.map(async (filename) => {
         const uri = `${ARCHIVE_DIR}${filename}`;
         const stat = await FileSystem.getInfoAsync(uri);
         const modificationTime =
@@ -42,8 +46,8 @@ export async function listArchivedCards(): Promise<ArchivedCard[]> {
 }
 
 /**
- * Returns the most recently captured scorecard PNG, or null if none exists.
- * Used by ScorecardScreen to resolve the "current drop" PNG without having
+ * Returns the most recently captured scorecard image, or null if none exists.
+ * Used by ScorecardScreen to resolve the "current drop" file without having
  * to compute the filename from a scored-week date.
  */
 export async function findLatestCard(): Promise<ArchivedCard | null> {

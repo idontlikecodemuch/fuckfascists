@@ -7,8 +7,11 @@ import { Beam } from './ScorecardImageDecorations';
 const pr = PixelRatio.get();
 const scale = (px: number) => px / pr;
 
+// Logo PNG is 1466×827 (aspect ~1.773). Setting both width and height
+// explicitly is required — `aspectRatio` on <Image> is unreliable on RN
+// 0.76 + Fabric (logo renders at intrinsic size, blowing out the layout).
 const LOGO_W_DESIGN = 520;
-const LOGO_ASPECT = 520 / 280;
+const LOGO_H_DESIGN = Math.round(520 / (1466 / 827)); // ≈ 293
 const SUBTITLE_FONT_SIZE_DESIGN = 32;
 const SUBTITLE_LETTER_SPACING_DESIGN = 14;
 const DATE_FONT_SIZE_DESIGN = 26;
@@ -51,7 +54,7 @@ const styles = StyleSheet.create({
   header: { alignItems: 'center', gap: scale(10) },
   logo: {
     width: scale(LOGO_W_DESIGN),
-    aspectRatio: LOGO_ASPECT,
+    height: scale(LOGO_H_DESIGN),
     shadowColor: 'rgba(255,201,60,0.3)',
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 1,
