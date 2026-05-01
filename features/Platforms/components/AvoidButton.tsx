@@ -2,6 +2,7 @@ import React from 'react';
 import { Pressable, Text, StyleSheet } from 'react-native';
 import { platformsCopy } from '../../../copy/platforms';
 import { theme } from '../../../design/tokens';
+import { bevelFocusRaised, bevelGreenInset } from '../../../design/bevel';
 import { TRACK_BUTTON_WIDTH, TRACK_BUTTON_HEIGHT } from '../../../config/constants';
 
 interface AvoidButtonProps {
@@ -49,12 +50,18 @@ const styles = StyleSheet.create({
     height: TRACK_BUTTON_HEIGHT,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: theme.radii.button,
+    // Truly square corners — reads as a slice of the row, not a chip.
+    borderRadius: 0,
   },
+  // Per-state bevel adds the subtle dimensionality that the business-card
+  // AvoidButton has — light top/left, dark bottom/right (inverted for
+  // pressed/done). Square corners preserved.
   buttonActive: {
+    ...bevelFocusRaised,
     backgroundColor: theme.colors.focusAccent,
   },
   buttonDone: {
+    ...bevelGreenInset,
     backgroundColor: theme.colors.successGreenDeep,
   },
   label: {

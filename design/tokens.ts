@@ -23,6 +23,9 @@ export const theme = {
     // inside a focused Track panel (caps, sides, rows, group header) so the
     // dimensional cyan bevel reads as one filled cell with no dark gaps.
     trackFocusBg: '#15243A',
+    // Distinctly darker variant for sub-rows inside a focused multi-row
+    // panel. Sits visually recessed behind the gradient-lit parent header.
+    trackFocusBgDeep: '#0B1422',
 
     // Panel bevel system — cool grey at rest
     bevelLight: '#3A3E42',

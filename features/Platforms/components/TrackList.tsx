@@ -22,7 +22,14 @@ import { PlatformRow } from './PlatformRow';
 
 const TRACK_DAILY_OPEN_KEY = 'track_daily_open_last_visit';
 
-export function TrackList() {
+interface TrackListProps {
+  /** Called when a SEE FILE link is tapped on a top-level row. The
+   *  parent owns the BusinessCard overlay state — this just forwards
+   *  the entityId to look up. */
+  onShowCard?: (entityId: string | null) => void;
+}
+
+export function TrackList({ onShowCard }: TrackListProps = {}) {
   const {
     avoid,
     avoidForDate,
@@ -158,7 +165,7 @@ export function TrackList() {
     return focusedFigureName === figureName ? 0 : ARENA_TRANSITION_MS;
   }, [focusedFigureName]);
 
-  const renderItem = useCallback(({ item }: { item: TrackListItem }) => {
+  const renderItem = useCallback(({ item, index }: { item: TrackListItem; index: number }) => {
     const panelFocused = focusedPanelItemKeys.has(item.key);
     const sidesStyle = panelFocused ? styles.panelSidesFocused : styles.panelSides;
 
@@ -173,6 +180,11 @@ export function TrackList() {
     }
 
     if (item.type === 'groupHeader') {
+      // Group children share a parentCompany — the first one's entityId
+      // resolves to the company entity (e.g. Meta) for the BusinessCard.
+      const firstChildId = item.childPlatformIds[0];
+      const firstChild = platforms.find((p) => p.id === firstChildId);
+      const groupEntityId = firstChild?.entityId ?? null;
       return (
         <View style={sidesStyle}>
           <PlatformGroupHeader
@@ -185,6 +197,16 @@ export function TrackList() {
               dismissDailyPreview();
               focusGroup(item.figureName);
             }}
+            onSeeFile={onShowCard && groupEntityId
+              ? () => {
+                // Focus the group as well so the cyan-bevel panel reads
+                // as active when the user dismisses the card and lands
+                // back on the list.
+                dismissDailyPreview();
+                focusGroup(item.figureName);
+                onShowCard(groupEntityId);
+              }
+              : undefined}
           />
         </View>
       );
@@ -219,6 +241,13 @@ export function TrackList() {
       );
     }
 
+    // True when the next non-dayCircles item is the panel end — no row
+    // separator needed since the panelBottomCap renders directly below.
+    let nextIdx = index + 1;
+    while (nextIdx < listData.length && listData[nextIdx].type === 'dayCircles') nextIdx++;
+    const isLastInGroup = nextIdx >= listData.length || listData[nextIdx].type === 'panelEnd';
+
+    const isTopLevel = item.type === 'platformRow';
     return (
       <View style={sidesStyle}>
         <PlatformRow
@@ -226,12 +255,23 @@ export function TrackList() {
           isChild={item.type === 'childRow'}
           focused={focused}
           panelFocused={panelFocused}
+          isLastInGroup={isLastInGroup}
           expanded={expanded}
           dimmed={focusedFigureName !== null && !focused}
           onRowPress={() => {
             dismissDailyPreview();
             togglePlatformDetails(platformId);
           }}
+          onSeeFile={isTopLevel && onShowCard
+            ? () => {
+              // Focus the row so it stays active when the card is dismissed
+              // — prevents accidentally tapping a different row's SEE FILE
+              // and ending up with focus elsewhere.
+              dismissDailyPreview();
+              focusPlatform(platformId);
+              onShowCard(platformItem.platform.entityId ?? null);
+            }
+            : undefined}
           onAvoidPress={async () => {
             dismissDailyPreview();
             const delay = getArenaDelay(figureName);
@@ -259,9 +299,12 @@ export function TrackList() {
     focusedPanelItemKeys,
     focusGroup,
     getArenaDelay,
+    listData,
+    onShowCard,
     openPlatformDetails,
     personWeeklyAvoids,
     platformItemsById,
+    platforms,
     queueArenaHit,
     selectedPlatformId,
     togglePlatformDetails,

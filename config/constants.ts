@@ -171,6 +171,14 @@ export const FX_AVOID_DURATION_MS = 3000;
 // Fade-out portion at the end of the avoid celebration (ms).
 export const FX_AVOID_FADE_MS = 400;
 
+// ── BusinessCard overlay slide-in / dim animation ────────────────────────────
+// Shared by Map + Track via core/ui/useCardOverlayAnimation. Tune here to
+// change behavior on both surfaces simultaneously.
+export const CARD_OVERLAY_SLIDE_DISTANCE = 600;
+export const CARD_OVERLAY_SLIDE_IN_MS = 280;
+export const CARD_OVERLAY_SLIDE_OUT_MS = 220;
+export const CARD_OVERLAY_DIM_PEAK_OPACITY = 0.4;
+
 // ── Folder card post-avoid animation ─────────────────────────────────────────
 export const FOLDER_AUTO_DISMISS_MS = 1200;
 export const STAMP_SLAM_MS = 200;
@@ -229,11 +237,14 @@ export const DONATION_COUNT_UP_START_DELAY_MS = 120;
 // Rare, subtle dip of the cyan highlight overlay — mimics a CRT / neon sign
 // flicker. Respects Reduce Motion (skipped entirely when enabled).
 // Range is randomized per cycle; dip is one quick down-up.
-export const ARENA_FLICKER_MIN_INTERVAL_MS = 4000;   // earliest next flicker
-export const ARENA_FLICKER_MAX_INTERVAL_MS = 14000;  // latest next flicker
-export const ARENA_FLICKER_DIP_MS          = 90;    // duration of down dip
-export const ARENA_FLICKER_RECOVER_MS      = 140;   // duration of recovery
-export const ARENA_FLICKER_DIP_OPACITY     = 0.35;  // floor of the dip (0–1)
+// Pronounced CRT-style flicker — deeper dip, slightly longer on, more
+// frequent. DIP_OPACITY especially: 0.35 was barely a flicker; 0.10
+// reads as a clear "screen pulse."
+export const ARENA_FLICKER_MIN_INTERVAL_MS = 2500;   // earliest next flicker
+export const ARENA_FLICKER_MAX_INTERVAL_MS = 8000;   // latest next flicker
+export const ARENA_FLICKER_DIP_MS          = 120;    // duration of down dip
+export const ARENA_FLICKER_RECOVER_MS      = 180;    // duration of recovery
+export const ARENA_FLICKER_DIP_OPACITY     = 0.10;   // floor of the dip (0–1)
 
 // StarFieldBg parallax — master toggle for tilt-based parallax on star backgrounds.
 export const STARBG_PARALLAX_ENABLED = true;
@@ -246,14 +257,19 @@ export const STARBG_PARALLAX_ENABLED = true;
 // are 0 so the sprite-screen and AVOID button can fill row height edge-to-edge.
 // nameColumn carries its own paddingHorizontal for text breathing.
 export const TRACK_ROW_PADDING_VERTICAL = 0;
-export const TRACK_GROUP_HEADER_PADDING_VERTICAL = 5;
+// Group header padding matches the row (0) so multi-row panels stack flush
+// — header + children read as one container without internal padding gaps.
+export const TRACK_GROUP_HEADER_PADDING_VERTICAL = 0;
 export const TRACK_ROW_PADDING_HORIZONTAL = 0;
 // Child rows: row paddingLeft. nameColumn adds its own paddingLeft (12), so
 // child name lands at TRACK_CHILD_INDENT + 12 = 76 — visually indented past
 // where parent names land (44 sprite + 12 nameColumn = 56).
 export const TRACK_CHILD_INDENT = 64;
 // Sprite renders at row height so the sprite-screen container fills its column top-to-bottom.
-export const TRACK_ROW_SPRITE_SIZE = 44;
+// This also drives row height + AVOID button height — one knob to tune the
+// vertical density of the entire Track list. 48 keeps tap target above the
+// 44pt a11y floor while staying compact.
+export const TRACK_ROW_SPRITE_SIZE = 48;
 export const TRACK_ROW_FONT_SIZE_NAME = 15;
 export const TRACK_ROW_FONT_SIZE_SUBTITLE = 11;
 export const TRACK_ROW_FONT_SIZE_COUNT = 14;
@@ -264,13 +280,17 @@ export const TRACK_ROW_FOCUS_BG_COLOR = theme.colors.trackFocusBg;
 export const TRACK_ROW_DIMMED_OPACITY = 0.45;
 export const TRACK_CHILD_ROW_BG_COLOR = 'rgba(95, 174, 255, 0.06)';
 export const TRACK_CHILD_GUIDE_COLOR = 'rgba(95, 174, 255, 0.55)';
-export const TRACK_CHILD_ROW_PADDING_VERTICAL = 4;
+// Child rows stack flush with the parent group header — no extra vertical
+// padding so the panel reads as one continuous block.
+export const TRACK_CHILD_ROW_PADDING_VERTICAL = 0;
 export const TRACK_DAY_COLUMN_TODAY_BG = 'rgba(40, 120, 200, 0.18)';
 export const TRACK_CHILD_FONT_SIZE_NAME = 13;
 export const TRACK_CHILD_FONT_SIZE_COUNT = 13;
-export const TRACK_BUTTON_WIDTH = 64;
-// AVOID button fills row height — full-height column convention.
-export const TRACK_BUTTON_HEIGHT = 44;
+// AVOID button: square slice that fills the row top-to-bottom. Height
+// matches TRACK_ROW_SPRITE_SIZE so the button reads as a continuous part
+// of the row, no gap above/below.
+export const TRACK_BUTTON_WIDTH = 56;
+export const TRACK_BUTTON_HEIGHT = TRACK_ROW_SPRITE_SIZE;
 export const TRACK_DAY_CIRCLE_SIZE = 28;
 export const TRACK_DAY_CIRCLES_GAP = 4;
 export const TRACK_EXPAND_INDICATOR_SIZE = 14;
@@ -318,7 +338,7 @@ export const TRACK_ARENA_SINGLE_BOTTOM_INSET = 0;
 export const TRACK_ARENA_MIN_HEIGHT = 180;
 export const TRACK_ARENA_MAX_HEIGHT = 360;
 export const TRACK_ARENA_FLEX = 0.38;
-export const TRACK_ARENA_SEPARATOR_HEIGHT = 4;
+export const TRACK_ARENA_SEPARATOR_HEIGHT = 8;
 export const TRACK_ARENA_INNER_GLOW_HEIGHT = 8;
 export const TRACK_ARENA_INNER_GLOW_OPACITY = 0.15;
 // Grid cell — sprite scaled to fit cell content area (cell size minus

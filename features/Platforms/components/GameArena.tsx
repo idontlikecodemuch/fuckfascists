@@ -343,12 +343,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     gap: theme.space.xs,
-    padding: theme.space.sm,
+    // Bumped from theme.space.sm (8) → md (12) so the first row of cells
+    // sits visibly inside the arena's edge glow rather than crowding it.
+    padding: theme.space.md,
   },
   gridCell: {
     alignItems: 'center',
     justifyContent: 'flex-end',
-    paddingBottom: 2,
+    // No paddingBottom — sprite art sits flush against the yellow border
+    // bottom edge. The 2px we used to have left a visible dark gap.
     borderWidth: theme.borders.standard.width,
     borderColor: theme.colors.rewardYellow,
     backgroundColor: 'rgba(10, 11, 12, 0.65)',

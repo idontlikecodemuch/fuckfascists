@@ -54,8 +54,11 @@ export function buildListData(
     items.push({ type: 'panelStart', key: `panel-start-${company}`, variant: 'group' });
 
     const figure = getDisplayFigure(members[0]!);
+    // Strip corporate suffix words (Inc/Corp/LLC/Ltd/Platforms/.com) from
+    // the canonicalName fallback so "Meta Platforms Inc" reads as just
+    // "META" on the row. SHORT_PARENT_NAMES still wins for explicit overrides.
     const shortName = SHORT_PARENT_NAMES[company]
-      ?? company.replace(/,?\s*(Inc|Corp|LLC|Ltd|\.com)\.?/gi, '').trim().toUpperCase();
+      ?? company.replace(/,?\s*(Inc|Corp|LLC|Ltd|Platforms|\.com)\.?/gi, '').trim().toUpperCase();
 
     items.push({
       type: 'groupHeader',

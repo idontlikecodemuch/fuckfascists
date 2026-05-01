@@ -41,6 +41,10 @@ export const platformsCopy = {
   // Parent company group headers
   groupHeaderA11y: (name: string, total: number) => `${name} \u2014 ${total}\u00d7 this week`,
 
+  // See File link on top-level rows (singletons + group headers).
+  seeFileLabel: "SEE FILE",
+  seeFileA11y: (name: string) => `See file for ${name}`,
+
   // Arena sprite tap reactions (cosmetic only — no data logged)
   spriteReactions: ["ow!", "quit it!", "no!", "hey!", "FCK!"] as readonly string[],
   arenaTapA11y: (name: string) => `${name} sprite. Tap for reaction.`,
