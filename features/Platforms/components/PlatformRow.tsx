@@ -40,10 +40,11 @@ interface PlatformRowProps {
   onAvoidPress: () => void;
 }
 
-// Sprite renders inside the screen container with a 1px border, so the
-// rendered sprite size is the column size minus the two border edges.
+// Sprite-screen has a single 1px right divider only — top/left/bottom are
+// already provided by the surrounding panel bevel + cap edges. The inner
+// sprite size accounts for that one border.
 const SPRITE_SCREEN_BORDER = 1;
-const SPRITE_INNER_SIZE = TRACK_ROW_SPRITE_SIZE - SPRITE_SCREEN_BORDER * 2;
+const SPRITE_INNER_SIZE = TRACK_ROW_SPRITE_SIZE - SPRITE_SCREEN_BORDER;
 
 export function PlatformRow({
   item,
@@ -68,7 +69,6 @@ export function PlatformRow({
         isChild && styles.childRow,
         panelFocused && styles.panelFocusedRow,
         focused && styles.focusedRow,
-        focused && expanded && styles.focusedExpandedRow,
       ]}
     >
       <Pressable
@@ -144,8 +144,6 @@ const styles = StyleSheet.create({
     minHeight: theme.a11y.minTapTarget,
     paddingHorizontal: TRACK_ROW_PADDING_HORIZONTAL,
     paddingVertical: TRACK_ROW_PADDING_VERTICAL,
-    borderBottomWidth: 1,
-    borderBottomColor: theme.colors.bevelDark,
     backgroundColor: theme.colors.panelInner,
     overflow: 'visible',
   },
@@ -157,19 +155,13 @@ const styles = StyleSheet.create({
   // Any row inside a focused panel — including non-selected siblings under a
   // focused group header — picks up the cyan tint so the panel reads as one
   // continuously filled cell rather than dark rows inside a cyan frame.
-  // Bottom border drops to 0 so the row content sits flush against the
-  // panelBottomCap's cyan bevel — no dark separator inside the frame.
   panelFocusedRow: {
     backgroundColor: TRACK_ROW_FOCUS_BG_COLOR,
-    borderBottomWidth: 0,
   },
   // Focused row: same cyan fill as panelFocusedRow. The selected row is
   // distinguished by name color (focusText) + SparkleDecoration, not by bg.
   focusedRow: {
     backgroundColor: TRACK_ROW_FOCUS_BG_COLOR,
-  },
-  focusedExpandedRow: {
-    borderBottomWidth: 0,
   },
   rowBody: {
     flex: 1,
@@ -181,15 +173,15 @@ const styles = StyleSheet.create({
   dimmedBody: {
     opacity: TRACK_ROW_DIMMED_OPACITY,
   },
-  // Sprite "screen": full-row-height column with cyan tint + focusAccent edge
-  // and a soft cyan glow. Always-on (not focus-gated) — the sprite reads as
-  // a backlit panel in every row.
+  // Sprite "screen": full-row-height column with cyan tint and a soft cyan
+  // glow. Only a right divider — the panel cap + sides already contain the
+  // sprite on top/left/bottom, so additional borders there would double up.
   spriteScreen: {
     width: TRACK_ROW_SPRITE_SIZE,
     height: TRACK_ROW_SPRITE_SIZE,
     backgroundColor: theme.colors.trackFocusTint,
-    borderWidth: SPRITE_SCREEN_BORDER,
-    borderColor: theme.colors.focusAccent,
+    borderRightWidth: SPRITE_SCREEN_BORDER,
+    borderRightColor: theme.colors.focusAccent,
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'visible',

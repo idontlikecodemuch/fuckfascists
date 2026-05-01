@@ -2,7 +2,7 @@ import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { platformsCopy } from '../../../copy/platforms';
 import { theme } from '../../../design/tokens';
-import { bevelRaised, bevelFocusRaised, glowDividerLine } from '../../../design/bevel';
+import { bevelRaised, bevelFocusRaised } from '../../../design/bevel';
 import { SparkleDecoration } from '../../../core/fx';
 import { hasSprite } from '../../../core/sprites/spriteLoader';
 import { FigureBadge } from './FigureBadge';
@@ -82,17 +82,13 @@ const styles = StyleSheet.create({
     minHeight: theme.a11y.minTapTarget,
     paddingHorizontal: TRACK_ROW_PADDING_HORIZONTAL,
     paddingVertical: TRACK_GROUP_HEADER_PADDING_VERTICAL,
-    borderBottomWidth: glowDividerLine.height as number,
-    borderBottomColor: glowDividerLine.backgroundColor as string,
     backgroundColor: theme.colors.panelInner,
     overflow: 'visible',
   },
   // Header inside a focused panel — picks up the same cyan fill as the rows
-  // beneath it so the whole panel reads as one filled cell. The header's own
-  // bottom divider drops to 0 so child rows sit flush.
+  // beneath it so the whole panel reads as one filled cell.
   panelFocusedContainer: {
     backgroundColor: theme.colors.trackFocusBg,
-    borderBottomWidth: 0,
   },
   focused: {
     shadowColor: theme.glow.color,

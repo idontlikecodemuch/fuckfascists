@@ -300,7 +300,9 @@ const styles = StyleSheet.create({
   },
   panelTopCap: {
     marginHorizontal: theme.space.sm,
-    height: 4,
+    // Collapses to border thickness so the row content sits flush with the
+    // bevel edge — no fill gap between the dimensional outline and the row.
+    height: theme.borders.bevel.width,
     backgroundColor: theme.colors.panelOuter,
     borderTopWidth: theme.borders.bevel.width,
     borderLeftWidth: theme.borders.bevel.width,
@@ -328,7 +330,7 @@ const styles = StyleSheet.create({
   },
   panelBottomCap: {
     marginHorizontal: theme.space.sm,
-    height: 4,
+    height: theme.borders.bevel.width,
     backgroundColor: theme.colors.panelOuter,
     borderBottomWidth: theme.borders.bevel.width,
     borderLeftWidth: theme.borders.bevel.width,
