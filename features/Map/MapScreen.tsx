@@ -27,6 +27,7 @@ import { MatchChooser } from './components/MatchChooser';
 import { NoMatchToast } from './components/NoMatchToast';
 import { NoMatchMarker } from './components/NoMatchMarker';
 import { Tooltip } from '../../core/ui/Tooltip';
+import { useCardOverlayAnimation } from '../../core/ui/useCardOverlayAnimation';
 import type { MapPin, ScanResult } from './types';
 import { MapControls } from './components/MapControls';
 import { useMapHints } from './hooks/useMapHints';
@@ -256,6 +257,11 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
     ? activeResult
     : lastFullCardResultRef.current;
   const cardVisible = activeResult !== null && showFullCard;
+  // Slide-in / slide-out + dim backdrop fade. Shared with TrackScreen via
+  // useCardOverlayAnimation. The hook drives slideY (card translateY) +
+  // dimOpacity (backdrop opacity) — wrapper-level so BusinessCard's own
+  // swipe-dismiss PanResponder runs independently.
+  const { slideY, dimOpacity } = useCardOverlayAnimation(cardVisible);
   const headerBarHeight = Math.round(screenWidth / HEADER_BAR_ASPECT);
   const SEARCH_TOP = insets.top + headerBarHeight + theme.space.md;
 
@@ -328,17 +334,32 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
 
       {latestTapBatch.length >= 2 && !activeResult && <MatchChooser results={latestTapBatch} onSelect={handleChooserSelect} onDismiss={handleChooserDismiss} />}
 
+      {/* Persistent dim backdrop + tap-to-dismiss. Stays mounted across
+          open/close cycles so the dim-fade animation runs cleanly. */}
+      {persistentCardResult && (
+        <Animated.View
+          style={[styles.dimBackdrop, { opacity: dimOpacity }]}
+          pointerEvents={cardVisible ? 'auto' : 'none'}
+        >
+          <Pressable
+            style={StyleSheet.absoluteFill}
+            onPress={isCelebrating ? undefined : handleDismiss}
+            disabled={isCelebrating}
+            accessibilityRole="button"
+            accessibilityLabel={sharedCopy.dismissLabel}
+          />
+        </Animated.View>
+      )}
+
+      {/* Amber pulse — separate from the dim layer because it's a transient
+          celebration glow, not part of the card's appear/dismiss animation. */}
       {cardVisible && (
-        <>
-          <Pressable style={styles.backdrop} onPress={isCelebrating ? undefined : handleDismiss} accessibilityRole="button" accessibilityLabel={sharedCopy.dismissLabel} disabled={isCelebrating} />
-          {/* Amber pulse overlay behind card */}
-          <Animated.View style={[styles.amberPulse, { opacity: amberPulseOpacity }]} pointerEvents="none" />
-        </>
+        <Animated.View style={[styles.amberPulse, { opacity: amberPulseOpacity }]} pointerEvents="none" />
       )}
 
       {persistentCardResult && (
-        <View
-          style={[styles.cardContainer, { opacity: cardVisible ? 1 : 0 }]}
+        <Animated.View
+          style={[styles.cardContainer, { transform: [{ translateY: slideY }] }]}
           pointerEvents={cardVisible && !isCelebrating ? 'auto' : 'none'}
           accessibilityElementsHidden={!cardVisible}
           importantForAccessibility={cardVisible ? 'auto' : 'no-hide-descendants'}
@@ -354,7 +375,7 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
             avoidAnimating={avoidAnimating}
             visible={cardVisible}
           />
-        </View>
+        </Animated.View>
       )}
 
       {activeResult && bannerVariant && (
@@ -385,6 +406,10 @@ const styles = StyleSheet.create({
   headerBarImg:   { position: 'absolute', left: 0 },
   headerLogo:     { height: 42, aspectRatio: 1536 / 322, zIndex: 3 },
   backdrop:       { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
+  // dimBackdrop = backdrop + black bg. Animated opacity (driven by
+  // useCardOverlayAnimation) modulates visibility. Used for the card
+  // overlay; hint/banner backdrops keep using the plain `backdrop`.
+  dimBackdrop:    { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#000' },
   cardContainer:  { position: 'absolute', bottom: 0, left: 0, right: 0, overflow: 'visible' as const, maxHeight: '65%', paddingTop: theme.space['3xl'] },
   bannerContainer:{ position: 'absolute', bottom: 80, left: 0, right: 0 },
   amberPulse:     { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: theme.colors.amberPulse },

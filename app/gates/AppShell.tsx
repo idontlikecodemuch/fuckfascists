@@ -142,7 +142,7 @@ export function AppShell({ adapter, entities, people }: AppShellProps) {
           />
         );
       case 'platforms':
-        return <TrackScreen adapter={adapter} />;
+        return <TrackScreen adapter={adapter} entities={entities} people={people} />;
       case 'report':
         return (
           <ScorecardScreen

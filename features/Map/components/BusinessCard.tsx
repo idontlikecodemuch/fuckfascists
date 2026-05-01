@@ -28,6 +28,11 @@ export interface BusinessCardProps {
   modal?: boolean;
   avoidAnimating?: boolean;
   visible?: boolean;
+  /** Hide the AVOID button + post-avoid celebration overlay. Used when the
+   *  card is opened from a context that doesn't track per-row avoids
+   *  (e.g. SEE FILE on a multi-platform group, where logging an avoid for
+   *  the whole company would be ambiguous). */
+  hideAvoid?: boolean;
 }
 
 /**
@@ -40,7 +45,7 @@ export interface BusinessCardProps {
 export function BusinessCard({
   result, onAvoid, avoidDisabled = false, avoided = false,
   onDismiss, allEntities, people, modal = true, avoidAnimating = false,
-  visible = true,
+  visible = true, hideAvoid = false,
 }: BusinessCardProps) {
   const { canonicalName, matchedAlias, committeeName, confidence, donationSummary, entity, fecFilingUrl } = result;
 
@@ -153,17 +158,19 @@ export function BusinessCard({
             parentName={parentName}
           />
 
-          <View style={styles.buttonPad}>
-            <AvoidButton onPress={handleAvoid} disabled={avoidDisabled} initialConfirmed={avoided} />
-          </View>
+          {!hideAvoid && (
+            <View style={styles.buttonPad}>
+              <AvoidButton onPress={handleAvoid} disabled={avoidDisabled} initialConfirmed={avoided} />
+            </View>
+          )}
 
           {/* Post-avoid stamp overlay */}
-          {avoidAnimating && <StampOverlay onLand={triggerShake} />}
+          {!hideAvoid && avoidAnimating && <StampOverlay onLand={triggerShake} />}
         </View>
       </View>
 
       {/* Post-avoid money particles */}
-      {avoidAnimating && <MoneyParticles originY={-CARD_SPRITE_SIZE * 0.5} />}
+      {!hideAvoid && avoidAnimating && <MoneyParticles originY={-CARD_SPRITE_SIZE * 0.5} />}
     </Animated.View>
   );
 }
