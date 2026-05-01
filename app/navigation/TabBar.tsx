@@ -88,18 +88,24 @@ const styles = StyleSheet.create<{
     paddingTop: theme.space.xs,
     overflow: 'visible',
   },
-  // Cyan glow above the tab bar — relocated from the map header (#120).
-  // Uses the glowDividerLine base (height + shadow radius + opacity) but
-  // overrides the color channels to cyan to match the treatment the user
-  // signed off on for the header. Other in-app dividers are unchanged.
+  // Thin brand-yellow line above the tab bar with a heavy multi-layer
+  // halo. Three boxShadow stops (tight bright + mid + soft far) make
+  // the glow read clearly even on bright screens. Drops the legacy
+  // shadow* props from glowDividerLine — RN 0.76 boxShadow is more
+  // reliable for this kind of layered effect.
   topGlow: {
-    ...glowDividerLine,
-    backgroundColor: theme.colors.glowCyan,
-    shadowColor: theme.colors.glowCyan,
+    backgroundColor: theme.colors.rewardYellow,
+    height: 2,
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
+    boxShadow: [
+      { offsetX: 0, offsetY: 0, blurRadius: 12, color: 'rgba(255, 201, 60, 1)' },
+      { offsetX: 0, offsetY: 0, blurRadius: 24, color: 'rgba(255, 201, 60, 0.7)' },
+      { offsetX: 0, offsetY: -4, blurRadius: 36, color: 'rgba(255, 201, 60, 0.4)' },
+    ],
+    elevation: 12,
   },
   bgTexture: {
     opacity: 0.3,
