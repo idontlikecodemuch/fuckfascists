@@ -24,8 +24,15 @@ export function AvoidButton({ onPress, disabled = false, initialConfirmed = fals
   const [error, setError] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
 
-  // Sync confirmed state when initialConfirmed changes (hydration on card reopen)
-  useEffect(() => { if (initialConfirmed) setConfirmed(true); }, [initialConfirmed]);
+  // Two-way sync so confirmed (and error) reset cleanly when the
+  // BusinessCard switches to a different result. Persistent-mount
+  // means this AvoidButton instance is reused across cards — without
+  // this, confirmed=true from a previous avoid would leak onto every
+  // subsequent (non-avoided) card and read as already-avoided.
+  useEffect(() => {
+    setConfirmed(initialConfirmed);
+    setError(false);
+  }, [initialConfirmed]);
 
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const flashAnim = useRef(new Animated.Value(1)).current;
