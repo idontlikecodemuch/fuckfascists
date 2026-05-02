@@ -12,6 +12,72 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: May 1, 2026 ET — Track screen + SEE FILE overlay + arena/tabbar polish + AvoidButton bug fix
+
+**Branch:** `claude/confident-jepsen-cbbe1c` (merged to `main`, ending at `531ae65`).
+
+**Focus:** Big iterative polish pass on the Track screen, plus a new SEE FILE flow that opens the BusinessCard from any top-level platform row, plus a sweep of arena and tab-bar visual polish, plus one bug fix (AvoidButton state leak across Map cards). 26 iteration commits collapsed into 4 clean commits via `git reset --soft origin/main` + 4 logical re-commits.
+
+**The 4 commits on `main`:**
+
+1. `1c21723` — `fix(map): clear ✓ AVOIDED state leak between cards on the map BusinessCard`
+2. `bd1e1a2` — `fix(tabbar): brand-yellow glow strip above tab bar — readable + on-brand`
+3. `039d784` — `feat(business-card): hideAvoid prop + shared slide+dim overlay animation`
+4. `531ae65` — `feat(track): screen rebuild + SEE FILE links + arena polish + sprite tuning`
+
+**Major pieces:**
+
+- **AvoidButton state-leak bug fix (`1c21723`).** `features/Map/components/AvoidButton.tsx`'s useEffect was a one-way sync (`if (initialConfirmed) setConfirmed(true)`) — symmetric reset was missing. After Apr 27's persistent-mount fix made `BusinessCard` reuse the AvoidButton instance across card opens, `confirmed=true` from any prior avoid leaked onto every subsequent (non-avoided) card, making them all read as already avoided. Two-way useEffect now resets both `confirmed` and `error` whenever `initialConfirmed` changes. Pre-existing bug, not introduced by recent work — just surfaced by the pattern reaching Track.
+
+- **TabBar yellow glow (`bd1e1a2`).** Replaced the cyan strip above the tab bar with a brand-yellow line + heavy multi-layer halo. Switched legacy `shadowColor`/`shadowRadius`/`shadowOpacity` to RN 0.76 `boxShadow` (three stops: blur 12 alpha 1.0 / blur 24 alpha 0.7 / blur 36 offsetY -4 alpha 0.4). Line: 3px → 2px so the halo carries the visual.
+
+- **BusinessCard `hideAvoid` + shared overlay animation (`039d784`).**
+  - New `core/ui/useCardOverlayAnimation.ts` hook: takes a `visible` boolean, returns `{ slideY, dimOpacity }` Animated.Values driven by parallel spring (slide-in/out) + timing (dim fade). Map + Track render their own backdrop + card JSX but share these values.
+  - `BusinessCard` gains `hideAvoid?: boolean` prop. When true, skips `AvoidButton` + `StampOverlay` + `MoneyParticles`. Used by SEE FILE callers (Track) where logging an avoid for a multi-platform group would be ambiguous.
+  - `MapScreen` rewritten to use the hook; backdrop becomes persistent (was gated on `cardVisible`, now on `persistentCardResult`) + animated `dimBackdrop` style with `#000` bg + animated opacity. Card container becomes `Animated.View` with `translateY: slideY`; old `opacity: cardVisible ? 1 : 0` flag dropped.
+  - `TrackScreen` now takes `entities` + `people` props, owns `cardEntityId` state, synthesizes a `ScanResult` inline from the matched Entity (canonicalName, donationSummary, fecCommitteeId, fecFilingUrl, confidence: 1.0). Uses the same hook + persistent-mount pattern so Fabric doesn't recycle the sprite-clip native view between SEE FILE opens.
+  - `AppShell` passes `entities` + `people` through to `TrackScreen`.
+  - New constants `CARD_OVERLAY_SLIDE_DISTANCE` (600), `CARD_OVERLAY_SLIDE_IN_MS` (280), `CARD_OVERLAY_SLIDE_OUT_MS` (220), `CARD_OVERLAY_DIM_PEAK_OPACITY` (0.4) — single tuning knob across surfaces.
+
+- **Track screen rebuild + SEE FILE links + arena polish (`531ae65`).** Single big commit because of cross-cutting file overlap (`config/constants.ts`, `TrackScreen.tsx`, `PlatformRow.tsx`, `PlatformGroupHeader.tsx` all touched by every theme).
+  - **Row visual rebuild.** Full-height columns (sprite-screen + AVOID button at row's `minHeight` = `TRACK_ROW_SPRITE_SIZE` = 48). 2-step gradient overlay (`#FFFFFF` 0.10 top half, `#000000` 0.28 bottom half) for raised/curved feel; right edge stops at `TRACK_BUTTON_WIDTH` so AVOID stays flat. Sprite-screen: `trackFocusTint` bg + glow shadow + 1px `focusAccent` right divider only. Cyan dimensional bevel on the focused panel via new `panelFocusedRow` + sub-row darker `panelFocusedChildRow` styles. Row separator (`rowSeparator`) for non-last rows in the panel — crosses the whole row width including under the AVOID button. AvoidButton gets `bevelFocusRaised` on active + `bevelGreenInset` on done with `borderRadius: 0` (true square slice).
+  - **Multi-platform group header.** Avatar mirrors PlatformRow's sprite-screen (cyan tint + glow + 1px right divider + 1px bottom divider). Bungee headline name 18pt → 14pt (`META PLATFORMS` was over-shouting). Inline SEE FILE link beside the company name. Count: `dangerRed` + `paddingRight: space.sm` matches the singleton row count. 2-step gradient overlay (full width since no AVOID button). Header bottom border `bevelLight` default / `focusBevelDark` focused.
+  - **TrackList plumbing.** New `onShowCard` prop. `focusedPanelItemKeys` precomputed: walks `listData` once to mark every item in a panel that contains the focused row, so `panelTopCap` / `panelSides` / `panelBottomCap` all switch to cyan focused styling together. Cap variants collapsed to `bevel.width` height (just border thickness, no fill gap inside the cyan bevel). Inline `isLastInGroup` lookup in `renderItem` (no extra Set). SEE FILE handlers focus the row first (`focusPlatform` / `focusGroup`) before opening the card so dismissing leaves the user on the right focused row. Group headers resolve their company entityId via the first child's `platform.entityId`.
+  - **Arena polish.** `gridCell.paddingBottom: 2 → 0` (sprite art now flush with yellow border bottom). `grid` padding `space.sm` (8) → `space.md` (12) so first row of cells sits visibly inside the inset edge glow. `arenaFrame` gets a flat 1px `focusBevelLight` outer outline (was 2px raised plaque); `gameArenaWrap` (new wrapper View with `bgVoid` solid bg) gets a 2px top + 1px other-sides border framing the arena content as a "screen." Pumped flicker constants: `ARENA_FLICKER_DIP_OPACITY` 0.35 → 0.10, intervals 4–14s → 2.5–8s, `DIP_MS` 90 → 120, `RECOVER_MS` 140 → 180. The previous flicker was near-imperceptible; now reads as a CRT pulse.
+  - **Sprite + button sizing.** `TRACK_ROW_SPRITE_SIZE: 32 → 48` drives row + button height; `TRACK_BUTTON_WIDTH: 64 → 56`, `TRACK_BUTTON_HEIGHT: 36 → TRACK_ROW_SPRITE_SIZE`, `TRACK_ROW_FACE_ANCHOR_Y: 0.5 → 0.42` (heads land in upper third of viewport). `TRACK_ARENA_SEPARATOR_HEIGHT: 4 → 8` for breathing room between arena and platform list. AvoidButton `borderRadius: theme.radii.button → 0`.
+  - **Padding to 0.** `TRACK_GROUP_HEADER_PADDING_VERTICAL: 5 → 0`, `TRACK_CHILD_ROW_PADDING_VERTICAL: 4 → 0`, `TRACK_ROW_PADDING_VERTICAL: 5 → 0`, `TRACK_ROW_PADDING_HORIZONTAL: 12 → 0`.
+  - **Group short names.** `features/Platforms/utils/listData.ts` regex strips `Platforms` alongside `Inc/Corp/LLC/Ltd/.com` so `Meta Platforms Inc` (the actual `Entity.canonicalName`) collapses to `META`. Display-only.
+  - **New tokens.** `theme.colors.trackFocusBg = '#15243A'` (solid equivalent of `trackFocusTint` over `panelInner`) — used by every piece inside a focused Track panel. `theme.colors.trackFocusBgDeep = '#0B1422'` (distinctly darker variant for sub-rows in a focused multi-row panel).
+  - **New copy.** `platformsCopy.seeFileLabel`, `platformsCopy.seeFileA11y(name)`.
+
+**TestFlight items resolved this session** (see `tools/review/TESTFLIGHT_REVIEW.md` for full notes per item): #98, #120, #127, #128 (partial — Info top bar still pending), #131, #133, #146, #147, #148, #150.
+
+**Outstanding from this session:**
+
+- `#102` — comprehensive `dismiss` → `×` text sweep across the whole app (only the surfaces I touched landed it).
+- `#128` — Info screen top blue bar still needs to match the bottom bar treatment.
+- `#154` — `AlertBanner` wiggle animation feels off for a UI alert; should probably swap the `useWiggleAnimation` for a size-pulse animation. The animation hook lives at `core/ui/useWiggleAnimation.ts`.
+
+**Files touched (16):**
+- `app/gates/AppShell.tsx`
+- `app/navigation/TabBar.tsx`
+- `config/constants.ts`
+- `copy/platforms.ts`
+- `core/ui/useCardOverlayAnimation.ts` (new)
+- `design/tokens.ts`
+- `features/Map/MapScreen.tsx`
+- `features/Map/components/AvoidButton.tsx`
+- `features/Map/components/BusinessCard.tsx`
+- `features/Platforms/TrackScreen.tsx`
+- `features/Platforms/components/AvoidButton.tsx`
+- `features/Platforms/components/GameArena.tsx`
+- `features/Platforms/components/PlatformGroupHeader.tsx`
+- `features/Platforms/components/PlatformRow.tsx`
+- `features/Platforms/components/TrackList.tsx`
+- `features/Platforms/utils/listData.ts`
+
+---
+
 ### Session: April 30, 2026 ET — Scorecard image finalization (Claude Design "polished main")
 
 **Branch:** `claude/jovial-mahavira-688fb1` (merged to main same day).

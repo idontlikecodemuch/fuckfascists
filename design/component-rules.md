@@ -540,3 +540,129 @@ All exports are `ViewStyle` objects. Spread into component styles.
 **Layout:** Absolute `bottom: 80`, `alignSelf: 'center'`. `paddingVertical: space.xs`, `paddingHorizontal: space.md`. No wiggle animation.
 
 **Accessibility:** `accessibilityRole="alert"`, `accessibilityLabel={mapCopy.tapNoMatchA11y}`, `pointerEvents="none"` on outer container so it never blocks map interaction.
+
+---
+
+## 21. Card Overlay Animation (core/ui)
+
+**Purpose:** Shared slide-in / slide-out + dim-fade animation for the BusinessCard overlay across Map and Track. Single tuning knob — both surfaces move identically.
+
+**Location:** `core/ui/useCardOverlayAnimation.ts`. Constants live in `config/constants.ts` (`CARD_OVERLAY_*`).
+
+**API:**
+
+```ts
+const { slideY, dimOpacity } = useCardOverlayAnimation(visible: boolean);
+```
+
+| Animated value | Drives |
+|---|---|
+| `slideY` | `transform: [{ translateY }]` on the bottom-anchored card container |
+| `dimOpacity` | `opacity` on the full-screen dim/tap-dismiss backdrop |
+
+**Behavior on `visible=true`:**
+- `slideY`: spring to `0` (`friction: 11`, `tension: 70`) — bouncy slide-up.
+- `dimOpacity`: timing to `CARD_OVERLAY_DIM_PEAK_OPACITY` over `CARD_OVERLAY_SLIDE_IN_MS`.
+
+**Behavior on `visible=false`:**
+- `slideY`: timing to `CARD_OVERLAY_SLIDE_DISTANCE` over `CARD_OVERLAY_SLIDE_OUT_MS`.
+- `dimOpacity`: timing to `0` over the same duration.
+
+**Caller responsibility:**
+- Keep the card subtree mounted across show/hide cycles (persistent-mount via a `lastResultRef`) so the slide-out animation has something to animate. Without persistent mount, the card unmounts on `visible=false` and the slide-out skips. Persistent mount also dodges the RN 0.76 + Fabric `SpriteView`-clip native-view recycle bug.
+- Toggle `pointerEvents` + `accessibilityElementsHidden` + `importantForAccessibility` based on `visible` so the wrapper doesn't intercept taps when invisible.
+
+**Constants (config/constants.ts):**
+
+| | Value | Purpose |
+|---|---|---|
+| `CARD_OVERLAY_SLIDE_DISTANCE` | 600 | Off-screen target Y for slide-out. Matches `BusinessCard`'s own swipe-dismiss target so the wrapper-level slide and the swipe-dismiss `PanResponder` converge on the same off-screen position. |
+| `CARD_OVERLAY_SLIDE_IN_MS` | 280 | Slide-in + dim-up duration. |
+| `CARD_OVERLAY_SLIDE_OUT_MS` | 220 | Slide-out + dim-down duration. |
+| `CARD_OVERLAY_DIM_PEAK_OPACITY` | 0.4 | Dim layer's peak alpha (40% black at peak). |
+
+**Used by:** `MapScreen` (BusinessCard overlay), `TrackScreen` (SEE FILE → BusinessCard overlay).
+
+---
+
+## 22. Track Focus Bevel System
+
+**Purpose:** Cyan dimensional bevel that wraps the entire panel containing the focused row on the Track screen — replaces the per-row interior cyan border with a single panel-level frame.
+
+**Location:** Logic in `features/Platforms/components/TrackList.tsx` (`focusedPanelItemKeys` precomputation). Style hooks in `PlatformRow.tsx` (`panelFocused` / `panelFocusedRow` / `panelFocusedChildRow`) and `PlatformGroupHeader.tsx` (`panelFocused` / `panelFocusedContainer`).
+
+**Tokens:**
+
+| Property | Token |
+|---|---|
+| Panel cap top + side bevel (rest) | `bevelLight` top/left, `bevelDark` right |
+| Panel cap top + side bevel (focused) | `focusBevelLight` top/left, `focusBevelDark` right |
+| Focused panel cap fill height | `theme.borders.bevel.width` (just the border thickness — no fill gap inside the cyan bevel) |
+| Focused row interior fill | `colors.trackFocusBg` (#15243A — solid equivalent of `trackFocusTint` over `panelInner`) |
+| Focused sub-row fill (in multi-row group) | `colors.trackFocusBgDeep` (#0B1422 — distinctly darker; gradient-lit parent reads as raised in front of recessed children) |
+| Row separator (rest) | 1px `colors.panelBorder` |
+| Row separator (focused) | 1px `colors.focusBevelDark` |
+
+**`focusedPanelItemKeys` mechanism (TrackList):**
+
+```ts
+// Walk listData once. For every panelStart, accumulate member item keys.
+// If any item in the panel matches the focused row (selectedPlatformId on
+// platformRow/childRow, or focusedFigureName on groupHeader when no
+// platformId is selected), add ALL collected member keys to the set.
+// renderItem looks up panelFocused = focusedPanelItemKeys.has(item.key)
+// and swaps panelTopCap / panelSides / panelBottomCap / row styles to
+// their focused variants together.
+```
+
+**`isLastInGroup` mechanism (TrackList renderItem):**
+
+```ts
+// Inline lookup, no precomputed Set. For platformRow/childRow:
+//   walk past optional dayCircles, isLastInGroup = next is panelEnd.
+// Drives the row-level bottom separator (rowSeparator) on non-last rows.
+```
+
+**Sprite-screen pattern:**
+
+| Surface | Borders |
+|---|---|
+| `PlatformRow.spriteScreen` (singletons) | 1px right `focusAccent` only — top/left/bottom rely on the surrounding panel bevel + cap edges |
+| `PlatformGroupHeader.avatarFrame` (group headers) | 1px right + 1px bottom `focusAccent` — bottom is unique to group headers since they border child rows below them |
+| Both | `trackFocusTint` rgba bg + glow shadow (`theme.glow.colorHighlight`) + `overflow: 'visible'` |
+
+**Inner FigureBadge size:**
+- `SPRITE_INNER_SIZE = TRACK_ROW_SPRITE_SIZE - SPRITE_SCREEN_BORDER` (PlatformRow, single border)
+- `AVATAR_INNER_SIZE = TRACK_ROW_SPRITE_SIZE - AVATAR_RIGHT_BORDER` (PlatformGroupHeader)
+
+Sized to fit cleanly inside the container without overflow on any uncovered edge.
+
+**2-step gradient overlay (top-level rows + group headers):**
+
+| Layer | Spec |
+|---|---|
+| Top half (45% height) | `#FFFFFF` @ 0.10 opacity — subtle highlight |
+| Bottom half (35% height) | `#000000` @ 0.28 opacity — soft shadow |
+| Right edge (PlatformRow only) | Stops at `TRACK_BUTTON_WIDTH` so the AVOID button stays a flat slice |
+
+`pointerEvents: 'none'` on both overlays — purely cosmetic.
+
+---
+
+## 23. BusinessCard hideAvoid Mode
+
+**Purpose:** Render the BusinessCard without the AVOID button + post-avoid celebration. Used when the card is opened from a context that doesn't track per-row avoids (e.g. SEE FILE on a multi-platform group, where logging an avoid for the whole company would be ambiguous).
+
+**Location:** `features/Map/components/BusinessCard.tsx` — new optional prop `hideAvoid?: boolean` (default `false`).
+
+**When `hideAvoid` is `true`:**
+- `AvoidButton` (and its surrounding `buttonPad`) is not rendered.
+- `StampOverlay` (post-avoid stamp) is not rendered.
+- `MoneyParticles` (post-avoid celebration) is not rendered.
+- Folder tab close, swipe-down dismiss, sprite, DataZone, FEC link all remain.
+
+**Caller responsibility:**
+- Pass a no-op `onAvoid: async () => {}` (since the button won't render but the prop is still required by the type).
+- Pass `avoidAnimating={false}` and an `entityId`-based `avoided` lookup that's always `false` (or omit since render is gated anyway).
+
+**Used by:** `TrackScreen`'s SEE FILE overlay path.
