@@ -14,6 +14,7 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import * as Sharing from 'expo-sharing';
+import { addScreenshotListener } from 'expo-screen-capture';
 import { scorecardCopy } from '../../../copy/scorecard';
 import { theme } from '../../../design/tokens';
 import { MoneyParticles } from '../../Map/components/MoneyParticles';
@@ -40,14 +41,9 @@ interface CardPresentationProps {
   onDismiss: () => void;
 }
 
-/**
- * Trophy moment — full-screen card takeover.
- * Layout: dismiss X · card (9:16, contained) · runway (chevrons + SHARE).
- * Reveal: shake → halo pulse + 4-corner MoneyParticles → runway fades in.
- * Gestures: tap SHARE / swipe-up → share · swipe-down → dismiss.
- * Privacy intercept: !appActive swaps to bare PNG (iOS screenshot/App
- * Switcher catch). Android screenshots are silent → SHARE is primary path.
- */
+// Trophy moment — full-screen card takeover. iOS gets a pre-capture swap
+// via AppState; Android gets a post-capture screenshot listener that
+// auto-opens the share sheet with the clean PNG. See CLAUDE.md.
 export function CardPresentation({ pngUri, onDismiss }: CardPresentationProps) {
   const { width: screenW, height: screenH } = useWindowDimensions();
   const appActive = useAppActive();
@@ -92,13 +88,9 @@ export function CardPresentation({ pngUri, onDismiss }: CardPresentationProps) {
     };
   }, [shakeX, runwayOpacity]);
 
+  // iOS: RN Share. Android: expo-sharing (RN's `url` is iOS-only).
   const handleShare = useCallback(async () => {
     try {
-      // iOS: RN Share.share with `url` lights up the full system share sheet
-      //   (AirDrop, Messages, Save to Files, third-party apps) for file URIs.
-      // Android: Share.share's `url` is iOS-only — silently does nothing.
-      //   Use expo-sharing, which wraps a content-URI Intent.ACTION_SEND for
-      //   the file, surfacing the OS share sheet with attached image.
       if (Platform.OS === 'ios') {
         await Share.share({ url: pngUri });
       } else if (await Sharing.isAvailableAsync()) {
@@ -111,6 +103,17 @@ export function CardPresentation({ pngUri, onDismiss }: CardPresentationProps) {
       // User cancel or platform error — non-fatal.
     }
   }, [pngUri]);
+
+  // Android post-capture parity: Android exposes no pre-capture hook, so we
+  // can't swap the bitmap like iOS. Closest we can offer — detect the post-
+  // capture event and auto-open the share sheet with the clean PNG. The
+  // chrome screenshot still lands in Photos; this just makes the gesture
+  // also produce the clean-PNG share flow. No-op on iOS (AppState wins).
+  useEffect(() => {
+    if (Platform.OS !== 'android') return;
+    const sub = addScreenshotListener(() => handleShare());
+    return () => sub.remove();
+  }, [handleShare]);
 
   const panResponder = useMemo(
     () =>
