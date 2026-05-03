@@ -12,6 +12,72 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: May 2, 2026 ET — Scorecard share experience (runway + privacy intercept + Android parity)
+
+**Branch:** `claude/scorecard-share-experience-cq4uh` → merged to `main`.
+
+**Focus:** Refine the post-drop scorecard so the card on screen feels like the share artifact, not a thing being shared. Replace the giant overlapping SHARE button with a glowing cyan button beneath an animated chevron runway pointing up at it. Add a privacy intercept so a screenshot produces the clean PNG, not the surrounding chrome. Make it work on iOS and Android.
+
+**Commits on `main`:**
+
+1. `406d41d` — `feat(scorecard): runway share experience + privacy intercept + cross-platform share`
+2. `dcd2732` — `feat(scorecard): android screenshot parity via post-capture listener`
+
+**Major pieces:**
+
+- **CardPresentation rebuild.** The cached PNG is now the on-screen artifact. Card sits centered at native 9:16 with `CardHalo` (animated cyan + yellow boxShadow stack borrowing the scan-CTA glow language) and `MoneyParticles` bursting from all 4 corners on reveal. Below the card: tightly stacked `ChevronRunway` (4 chevrons, 150ms stagger, 1.2s loop, animating bottom→top toward the card to indicate swipe-up) above the new `ShareButton` (cyan `bevelFocusRaised` + multi-stop boxShadow glow). Runway fades in `SCORECARD_REVEAL_DELAY_MS=600` after the card lands.
+
+- **Gestures.** Tap SHARE → share, swipe-up (>`SCORECARD_SHARE_SWIPE_UP_THRESHOLD=80`) → share, swipe-down (>120) → dismiss. Existing screen shake on mount preserved.
+
+- **Privacy intercept (iOS pre-capture).** New `useAppActive` hook wraps RN `AppState`. When the app leaves `'active'` (iOS screenshot pre-capture, App Switcher preview, control-center pull, incoming-call interrupt), `CardPresentation` swaps to a full-bleed `Image` of the cached PNG with `<StatusBar hidden />` — so the captured bitmap is the rendered card alone, no chrome. Restored on `'active'`. Hook is mounted only inside `CardPresentation`; nothing else in the app intercepts AppState.
+
+- **Android screenshot parity (post-capture).** Researched extensively: Android exposes no pre-capture hook — `MediaStore.ContentObserver`, `FileObserver`, and Android 14's official `registerScreenCaptureCallback` all fire post-capture by deliberate OS design (pre-capture detection would create privacy holes). Closest parity is `expo-screen-capture`'s `addScreenshotListener` mounted inside `CardPresentation`, only on Android — when fired, it auto-invokes `handleShare`, so the screenshot gesture also produces the clean-PNG share flow. The chrome screenshot still lands in Photos (unavoidable on Android), but the user immediately gets the OS share sheet with the clean PNG. iOS skips this listener entirely (the AppState swap already produced a clean bitmap). Listener lifecycle is scoped to the component.
+
+- **Cross-platform share fix.** Pre-existing bug discovered while reviewing the share path: RN's `Share.share({ url })` is iOS-only — `url` is silently ignored on Android. iOS now uses RN `Share.share` (full system sheet incl. Save to Files); Android uses `expo-sharing`'s `Sharing.shareAsync(uri, { mimeType: 'image/png' })`, which surfaces the OS share sheet via `Intent.ACTION_SEND` for the file. Single helper, branched on `Platform.OS`.
+
+- **Scope.** All swap and listener behavior is scoped strictly to `CardPresentation` — both the post-drop trophy state in the Scorecard tab and the gallery tap-thru path (`CardArchive` routes the tap through the same component). Map, Track, Scan, Info, LivePreview, EmptyWeek, the gallery grid itself — none of them touch AppState or the screenshot listener. Outside `CardPresentation`, screenshots and AppState transitions behave normally.
+
+- **New constants:** `SCORECARD_REVEAL_DELAY_MS` (600), `SCORECARD_REVEAL_FADE_MS` (320), `SCORECARD_CHEVRON_COUNT` (4), `SCORECARD_CHEVRON_STAGGER_MS` (150), `SCORECARD_CHEVRON_LOOP_MS` (1200), `SCORECARD_SHARE_SWIPE_UP_THRESHOLD` (80).
+
+- **New copy:** `scorecardCopy.shareHint = "Swipe up or tap to share"` (used as `accessibilityHint` on the SHARE button).
+
+- **New files:** `features/Scorecard/components/{CardHalo,ChevronRunway,ShareButton}.tsx`, `features/Scorecard/hooks/useAppActive.ts`. All ≤250 lines.
+
+- **New deps:** `expo-sharing@~13.0.0`, `expo-screen-capture@~7.0.1`. Both are SDK 52-aligned per `expo/bundledNativeModules.json`. Expo autolinking picks up both — no Podfile edits needed.
+
+**Required after pulling on Mac:** `cd ios && pod install` — autolinking will pick up the two new Expo native modules.
+
+**Outcome by platform:**
+
+| Platform | Screenshot gesture | Photos result | Share flow |
+|---|---|---|---|
+| iOS | clean PNG (AppState swap fires before bitmap is captured) | clean PNG | OS share sheet on demand via SHARE / swipe-up / auto on screenshot |
+| Android | chrome screenshot (no pre-capture hook in OS) | chrome PNG | OS share sheet auto-opens with clean PNG when screenshot is detected; SHARE / swipe-up also work |
+
+Both platforms produce a clean PNG share artifact from the screenshot gesture; SHARE button works identically on both.
+
+**Files touched (10):**
+- `CLAUDE.md`
+- `config/constants.ts`
+- `copy/scorecard.ts`
+- `docs/PROGRESS.md` (this entry)
+- `docs/SPEC_VS_CURRENT.md`
+- `features/Scorecard/components/CardHalo.tsx` (new)
+- `features/Scorecard/components/CardPresentation.tsx`
+- `features/Scorecard/components/ChevronRunway.tsx` (new)
+- `features/Scorecard/components/ShareButton.tsx` (new)
+- `features/Scorecard/hooks/useAppActive.ts` (new)
+- `package.json` + `package-lock.json`
+
+**Outstanding:**
+
+- `cd ios && pod install` on the Mac before building — both new Expo native modules need their pods.
+- Test on Expo (user is doing this).
+- Tune chevron timing on device if 150ms / 1.2s feels off.
+- `BETA_SCORECARD_INTERVAL_HOURS` flip to 0 before production (pre-existing V1 launch blocker, not introduced by this session).
+
+---
+
 ### Session: May 1, 2026 ET — Track screen + SEE FILE overlay + arena/tabbar polish + AvoidButton bug fix
 
 **Branch:** `claude/confident-jepsen-cbbe1c` (merged to `main`, ending at `531ae65`).
