@@ -24,7 +24,7 @@ export function PreviewStamp({ scale = 1 }: PreviewStampProps) {
         styles.stamp,
         {
           top: 20 * scale,
-          right: -10 * scale,
+          right: 8 * scale,
           paddingHorizontal: 10 * scale,
           paddingVertical: 4 * scale,
           borderWidth: theme.borders.standard.width * scale,
@@ -49,7 +49,7 @@ export function PreviewStamp({ scale = 1 }: PreviewStampProps) {
 const styles = StyleSheet.create({
   stamp: {
     position:        'absolute',
-    backgroundColor: 'transparent',
+    backgroundColor: 'rgba(7, 11, 18, 0.8)', // theme.colors.bgVoid (#070B12) at 80%
     borderColor:     theme.colors.rewardYellow,
     transform:       [{ rotate: '12deg' }],
   },

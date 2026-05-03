@@ -8,6 +8,7 @@ import {
 import type { ScorecardViewData } from '../types';
 import { scorecardCopy } from '../../../copy/scorecard';
 import { theme } from '../../../design/tokens';
+import { glow } from '../../../design/glow';
 import { formatWeekRange } from '../utils/formatters';
 import { NeonRule } from '../../Info/components/InfoDecorations';
 import { SparkleDecoration } from '../../../core/fx';
@@ -153,6 +154,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: theme.colors.amberActionLight,
     overflow: 'visible',
+    boxShadow: glow(theme.colors.rewardYellow, 'subtle'),
   },
   // Header
   header: {

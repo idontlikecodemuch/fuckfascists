@@ -121,7 +121,21 @@ export const theme = {
     highlightWidth: 2,
   },
 
-  /** Unified glow treatment — used for both box shadows and divider lines. */
+  /** Unified glow treatment — used for both box shadows and divider lines.
+   *
+   *  Two distinct concerns live here:
+   *
+   *  1. INSET glows + dividers (legacy fields below) — the cyan/green arena rim,
+   *     panel inner glow, and divider line treatments. Color is semantic
+   *     (`color` = the cyan-arena rim, `colorDefeated` = the green defeated
+   *     state). Used directly by GameArena, AlertBanner, MatchChooser, etc.
+   *
+   *  2. OUTER halo glows (intensities below) — color-parameterized scale used
+   *     by the `glow(hex, intensity)` helper in design/glow.ts. Pick an
+   *     intensity step; the helper applies the color you pass in. This avoids
+   *     a combinatorial color × intensity token table and keeps consistency
+   *     across surfaces.
+   */
   glow: {
     color: 'rgba(90, 180, 255, 0.35)',
     colorDefeated: 'rgba(44, 203, 99, 0.30)',
@@ -137,6 +151,22 @@ export const theme = {
     dividerHeight: 3,
     dividerShadowRadius: 10,
     dividerShadowOpacity: 0.6,
+    /** Outer-halo intensity scale. Inner stop = the rim; outer stop = the
+     *  diffuse atmospheric halo. Consumed by the `glow()` helper. */
+    intensities: {
+      subtle: {
+        inner: { blurRadius: 16, spreadDistance: 2,  opacity: 0.30 },
+        outer: { blurRadius: 40, spreadDistance: 6,  opacity: 0.12 },
+      },
+      mid: {
+        inner: { blurRadius: 24, spreadDistance: 4,  opacity: 0.55 },
+        outer: { blurRadius: 48, spreadDistance: 10, opacity: 0.25 },
+      },
+      strong: {
+        inner: { blurRadius: 36, spreadDistance: 10, opacity: 0.65 },
+        outer: { blurRadius: 80, spreadDistance: 20, opacity: 0.30 },
+      },
+    },
   },
 
   a11y: {

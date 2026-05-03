@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { AccessibilityInfo, Animated, Easing, StyleSheet } from 'react-native';
 import { theme } from '../../../design/tokens';
+import { glow } from '../../../design/glow';
 
 interface CardHaloProps {
   width: number;
@@ -84,16 +85,10 @@ const styles = StyleSheet.create({
   },
   cyanHalo: {
     backgroundColor: theme.colors.focusAccent,
-    boxShadow: [
-      { offsetX: 0, offsetY: 0, blurRadius: 28, spreadDistance: 8, color: 'rgba(40,120,200,0.85)' },
-      { offsetX: 0, offsetY: 0, blurRadius: 64, spreadDistance: 16, color: 'rgba(40,120,200,0.45)' },
-    ],
+    boxShadow: glow(theme.colors.focusAccent, 'strong'),
   },
   yellowHalo: {
     backgroundColor: theme.colors.rewardYellow,
-    boxShadow: [
-      { offsetX: 0, offsetY: 0, blurRadius: 36, spreadDistance: 10, color: 'rgba(255,201,60,0.6)' },
-      { offsetX: 0, offsetY: 0, blurRadius: 80, spreadDistance: 20, color: 'rgba(255,201,60,0.25)' },
-    ],
+    boxShadow: glow(theme.colors.rewardYellow, 'strong'),
   },
 });

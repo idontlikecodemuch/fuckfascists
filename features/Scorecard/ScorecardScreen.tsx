@@ -1,5 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Notifications from 'expo-notifications';
 import type { Entity } from '../../core/models';
 import type { StorageAdapter } from '../../core/data';
@@ -59,6 +60,7 @@ export function ScorecardScreen({ adapter, entities, platforms, onSwitchTab }: S
   const imageRef = useRef<View>(null);
   const [screenState, setScreenState] = useState<ScreenState>('preview');
   const [cardUri, setCardUri] = useState<string | null>(null);
+  const insets = useSafeAreaInsets();
 
   const { schedule, hasDropped } = useDropSchedule();
 
@@ -244,7 +246,7 @@ export function ScorecardScreen({ adapter, entities, platforms, onSwitchTab }: S
       {/* Fixed PREVIEW stamp — outside the ScrollView so screenshots always
           capture it. Positioned top-right under the safe-area inset. */}
       {showPreviewStamp && (
-        <View style={styles.previewStampHost} pointerEvents="none">
+        <View style={[styles.previewStampHost, { top: insets.top }]} pointerEvents="none">
           <PreviewStamp />
         </View>
       )}
@@ -286,10 +288,10 @@ const styles = StyleSheet.create({
   },
   previewStampHost: {
     // Fixed viewport-anchored container so the stamp never scrolls with
-    // LivePreview content. PreviewStamp positions itself absolutely within
-    // this host (top/right offsets set inside the component).
+    // LivePreview content. `top` is set inline via safe-area inset so the
+    // stamp clears the dynamic island / status bar. PreviewStamp positions
+    // itself absolutely within this host (right offset set inside the component).
     position: 'absolute',
-    top: 0,
     right: 0,
     width: 140,
     height: 60,

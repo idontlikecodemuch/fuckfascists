@@ -12,6 +12,54 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: May 2–3, 2026 ET — Avoided-marker asset + scorecard preview polish + outer-glow tokenization
+
+**Branch:** `claude/sleepy-sinoussi-d76599` → committed directly to `main`.
+
+**Focus:** Wire a new green-checkmark map marker for avoided locations, fix the PREVIEW stamp landing behind the dynamic island, polish the LivePreview frame, and unify the previously-hardcoded outer-halo glow values into a small token + helper system.
+
+**Commits on `main`:**
+
+1. `edb8b2d` — `feat(map): green checkmark marker for avoided locations`
+2. (this commit) — `feat(scorecard): preview stamp safe-area + dark backdrop, frame glow, glow() helper + theme.glow.intensities`
+
+**Major pieces:**
+
+- **Avoided-marker asset (`edb8b2d`).** New `assets/pixel/marker_flag_avoided.png` (green flag + checkmark, 96×96 source). `FlagMarker` selection now resolves `avoided ? MARKER_AVOIDED : isHigh ? MARKER_FLAG : MARKER_WARN` instead of reusing the red flag for both flagged + avoided. High/medium-confidence flagged pins unchanged.
+
+- **PREVIEW stamp safe-area fix.** `previewStampHost` was `position: absolute; top: 0` inside RN's core `<SafeAreaView>`. Absolute children don't respect parent safe-area padding — they anchor to the screen edge — so the stamp's internal `top: 20` left it ~20pt from the top of the screen, behind the dynamic island on iPhone 17. Adopted the existing `useSafeAreaInsets()` pattern (already used in NudgeBanner / MapScreen / TabBar / etc.) and apply `top: insets.top` inline on the host. No new dependency, no new utility — just the canonical pattern in this file.
+
+- **PREVIEW stamp backdrop + reposition.** Stamp itself moved from `right: -10` (10pt past host's right edge → off-screen on rotation) to `right: 8`. Background switched from `'transparent'` to `'rgba(7, 11, 18, 0.8)'` — `theme.colors.bgVoid` (`#070B12`) at 80% — so the stamp reads cleanly over light or busy backgrounds without losing the surrounding star-field.
+
+- **LivePreview frame glow.** Added 2-stop amber `boxShadow` to the LivePreview `frame` style — was a flat amber border, now the outer edge glows. Initial values (blur 24/56, opacity 0.45/0.18) read too hot; tuned to subtle (blur 16/40, opacity 0.30/0.12) before tokenization.
+
+- **Outer-halo glow tokenization (refactor).** Outer-glow `boxShadow` values were hardcoded across 11 surfaces — same hue palette (rewardYellow / focusAccent / glowCyan) but different blur/spread/opacity per file. Audit broke them into 3 categories: (a) clean 2-stop layered halos that share a pattern, (b) bespoke patterns that don't fit a 2-stop helper (3-stop emissive, 2-color layered, single-stop tight rim), (c) inset glows + dividers (already tokenized via legacy `theme.glow.{color,colorDefeated,colorHighlight}` for the cyan arena rim).
+  - Added `theme.glow.intensities = { subtle | mid | strong }` to `design/tokens.ts` — each tier defines `inner` + `outer` blur/spread/opacity. Color is parameterized.
+  - New helper at `design/glow.ts`: `glow(hex, intensity)` converts a hex color to two layered rgba shadow stops. Two-stop only — bespoke patterns stay bespoke.
+  - Migrated 3 cleanly-fitting surfaces: `LivePreview` frame (`subtle`), `CardHalo` cyanHalo + yellowHalo (both `strong`).
+  - Left bespoke (intentional, hand-tuned, ship-quality patterns the 2-stop helper can't represent without losing intent): `TabBar.topGlow` (3-stop emissive with 1.0-alpha inner — the bar IS the light source), `ShareButton` (3-stop emissive same idea), `ScorecardImageDecorations.beamWrapper` (2-color layered: cyan inner / blue outer), `ScorecardImageDecorations.cornerTick` (single tight rim, 1.0 alpha).
+  - Inset glows + divider system untouched — different concept, already correctly tokenized via `theme.glow.color` etc.
+  - Visual diff after migration: LivePreview frame identical (`subtle` matches the just-tuned hardcoded values exactly); CardHalo cyan slightly softer (alpha 0.65/0.30 vs prior 0.85/0.45); CardHalo yellow nearly identical (0.65/0.30 vs prior 0.6/0.25).
+
+**Files touched (8):**
+- `assets/pixel/marker_flag_avoided.png` (new — Map marker)
+- `features/Map/components/MapMarker.tsx`
+- `features/Scorecard/ScorecardScreen.tsx`
+- `features/Scorecard/components/PreviewStamp.tsx`
+- `features/Scorecard/components/LivePreview.tsx`
+- `features/Scorecard/components/CardHalo.tsx`
+- `design/tokens.ts`
+- `design/glow.ts` (new)
+- `CLAUDE.md` (this entry)
+- `docs/PROGRESS.md` (this entry)
+
+**Outstanding:**
+
+- If TabBar / ShareButton / beam consistency becomes important, add a 4th `emissive` tier (with 1.0-alpha inner) and a 2-color layered helper variant — would let the remaining 4 bespoke surfaces migrate. Not urgent; current bespoke values are intentional and ship-quality.
+- Inset-glow + divider system is the next candidate for unification if/when the legacy `theme.glow.{color, colorDefeated, colorHighlight}` start to drift across surfaces. Today they're consistent because every consumer reads from the same fields.
+
+---
+
 ### Session: May 2, 2026 ET — Scorecard share experience (runway + privacy intercept + Android parity)
 
 **Branch:** `claude/scorecard-share-experience-cq4uh` → merged to `main`.
@@ -329,6 +377,29 @@ Two pairs of constants — same for every sprite, swap by state. SpriteView deri
 **No new tokens or constants** other than the layout numerics local to `MatchChooser.tsx` (`TAB_WIDTH`, `TAB_RIGHT`, `FOLDER_BODY_HEIGHT`, etc.). All visual values still resolve through `theme.colors.*`.
 
 **Companion artifact:** `tools/img-gen/reference/track-row-states.svg` — hand-drawable reference for the next visual refresh on the Track screen's `PlatformRow`. Shows default / focused-with-day-circles / avoided-today / child-row states stacked at production proportions. Not consumed by code; reference only.
+
+---
+
+### Session: April 29, 2026 ET — TestFlight beta backlog consolidation
+
+**Focus:** Read the project guide, current progress notes, and `tools/review/TESTFLIGHT_REVIEW.md`; collapse the 149 TestFlight screenshot items into a current actionable beta-testing backlog; inspect the latest screenshots and code paths enough to separate live issues from already-fixed clusters.
+
+**What changed:**
+
+1. Added `tools/review/BETA_TESTING_TODO.md` as the current working list for beta follow-up. It groups remaining work by launch risk and preserves screenshot references.
+2. Marked done/superseded clusters based on `docs/PROGRESS.md` and current code, including portrait lock, tooltip reset/tail fixes, scorecard capture/archive architecture, Platform setup ordering, Track week-start/defeat-state fixes, and the critical POI false-positive guards.
+3. Diagnosed the highest-risk live clusters:
+   - Map POI matching is now safer than the screenshots imply, but still needs a fixture suite, clearer "not on file" taxonomy, and missing domain/entity coverage such as `wholefoodsmarket.com`, Navy Federal, Hotel AKA / Washington Plaza, and Grindr.
+   - Scorecard sharing architecture exists, but the current presenter still needs a designed 9:16 image surface and the empty state should not show the PREVIEW stamp.
+   - Track sprite crop issues are still visible in the latest screenshots; current constants bottom-align full-scale grid sprites, leaving too little breathing room.
+   - Scan close-focus remains an Expo Camera limitation unless a native scanner module replaces it.
+   - Leadership/person donation asks are data-review work, not UI bugs, for several entities without accepted `associatedPersonIds`.
+
+**Files changed:**
+- `tools/review/BETA_TESTING_TODO.md` (new)
+- `docs/PROGRESS.md` (this entry)
+
+**Verification:** Documentation-only pass; no tests run.
 
 ---
 
