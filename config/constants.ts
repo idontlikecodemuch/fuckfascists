@@ -63,6 +63,21 @@ export const SCORECARD_PRESENTATION_WINDOW_MS = 48 * 60 * 60 * 1000; // 48 hours
 // result → retain-on-failure path → raw events preserved for retry.
 export const SCORECARD_CAPTURE_TIMEOUT_MS = 10 * 1000;
 
+// Scorecard — share-experience reveal + runway tuning. The reveal sequence
+// is: card appears → particles + glow burst → after REVEAL_DELAY the runway
+// (chevrons + SHARE button) fades in.
+export const SCORECARD_REVEAL_DELAY_MS = 600;
+export const SCORECARD_REVEAL_FADE_MS = 320;
+
+// Chevron runway — landing-strip pulse pointing the eye at SHARE.
+// 4 chevrons stacked vertically, animating bottom→top to indicate swipe-up.
+export const SCORECARD_CHEVRON_COUNT = 4;
+export const SCORECARD_CHEVRON_STAGGER_MS = 150;
+export const SCORECARD_CHEVRON_LOOP_MS = 1200;
+
+// Swipe-up gesture threshold to trigger share (matches dismiss threshold sign).
+export const SCORECARD_SHARE_SWIPE_UP_THRESHOLD = 80;
+
 // Scorecard — power meter tiers (configurable for tuning based on real usage data)
 export const POWER_METER_TIERS = [
   { min: 1,  fill: 0.25, label: 'warming-up' },

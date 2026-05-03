@@ -27,6 +27,7 @@ export const scorecardCopy = {
   // Share
   shareBtn: "SHARE",
   shareLabel: "Share your scorecard",
+  shareHint: "Swipe up or tap to share",
 
   // Card presentation
   dismissLabel: "Done",
