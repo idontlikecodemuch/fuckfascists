@@ -20,10 +20,10 @@ This document is updated continuously. New instances should read this first — 
 
 **Commits on `main` (in order):**
 
-1. `<a>` — `fix(ios): home-screen app label "FCK"`
-2. `<b>` — `fix(scorecard): shrink name font in rendered card so 'ZUCKERBERG' fits`
-3. `<c>` — `feat(scorecard): card presentation rebuild — calm halo, hollow chevrons, glowing SHARE word, money rainfall, safe-area pinned layout`
-4. `<d>` — `docs: session log for May 3–4 card-presentation pass`
+1. `896aeea` — `fix(ios): home-screen app label "FCK"`
+2. `7e39256` — `fix(scorecard): shrink rendered card name font so longer last names fit`
+3. `0349e68` — `feat(scorecard): card presentation rebuild — calm halo, hollow chevrons, glowing SHARE word, money rainfall, safe-area pinned layout`
+4. `163e94e` + this fixup — `docs: session log for May 3–4 card-presentation pass`
 
 **Major pieces:**
 
