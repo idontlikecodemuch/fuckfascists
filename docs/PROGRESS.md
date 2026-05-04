@@ -12,6 +12,58 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: May 3–4, 2026 ET — Card presentation rebuild + iOS app label fix
+
+**Branch:** `claude/sleepy-sinoussi-d76599` → committed directly to `main` in chunks.
+
+**Focus:** Iterate on the `CardPresentation` trophy moment with the user driving testing on the iOS simulator. Replace the "growing yellow box" halo with a calm static glow + opacity-only pulse rings. Rebuild the chevron runway as hollow `^` shapes that pulse in strict bottom-to-top order from a single shared driver. Drop the `bevelFocusRaised` SHARE button in favor of a glowing pulsing word. Add `MoneyRainfall` for a falling-money burst on reveal. Fix the persistent top-padding clipping under the dynamic island. Shrink the rendered card's name font so longer last names fit. And fix the iOS home-screen label that was rendering as `F*ck Fascists` while `app.json` already said `FCK`.
+
+**Commits on `main` (in order):**
+
+1. `<a>` — `fix(ios): home-screen app label "FCK"`
+2. `<b>` — `fix(scorecard): shrink name font in rendered card so 'ZUCKERBERG' fits`
+3. `<c>` — `feat(scorecard): card presentation rebuild — calm halo, hollow chevrons, glowing SHARE word, money rainfall, safe-area pinned layout`
+4. `<d>` — `docs: session log for May 3–4 card-presentation pass`
+
+**Major pieces:**
+
+- **CardPresentation safe-area pinning.** First fix attempt used `useSafeAreaInsets()` directly on the absolute-fill takeover; `insets.top` came back as 0 because `SafeAreaProvider` context fails to fully propagate into absolute-positioned takeovers in this layout. Adopted the documented `Math.max(insets.top, SAFE_AREA_TOP_MIN) + 60` floor pattern (per CLAUDE.md "Configurable Variables") so the top edge of the card always clears the dynamic island regardless of context. Restructured `cardArea` from a flex-1 paddingTop child into a deterministic flexbox column: explicit top spacer (`<View style={{ height: topPad }} />`) → flex-1 cardArea → runway with `marginBottom: bottomPad`. No more absolute math that can collapse silently.
+
+- **Card sized to 85% width.** Width-first sizing — `cardW = 0.85 * screenW`, height derived 9:16, scaled down only if it can't fit between top inset + runway + bottom. Runway height dropped from 360 → 150 to make room for the larger card. Bottom padding pushed to `theme.space.md` so SHARE sits close to the tab bar.
+
+- **CardHalo rebuilt: calm static glow + opacity-only pulse rings.** Replaced two solid colored Animated.Views (which scaled 1→1.02 and read as a "growing yellow box") with: (a) one static yellow boxShadow halo around the card edge using `glow(rewardYellow, 'mid')` from the design helper, (b) two thin yellow border rings inset 5pt + 14pt outside the card that pulse opacity only (no scale, no shape change) — same idea as the Scan-tab CTA `PulseRing`. Inner ring base opacity 0.5 / outer 0.3, staggered 600ms on a 1.8s cycle.
+
+- **ChevronRunway rebuilt: hollow `^` chevrons + in-order pulse via shared driver.** Filled triangles → hollow chevrons drawn as two thin angled stroke lines per chevron (`HollowChevron` component, anchored at bottom corners, rotated to meet at a top peak). 3 chevrons (was 4), overlap = `-(chevHeight - 10)` so successive peaks sit exactly 10pt apart vertically — the chevrons nest tightly, almost touching. Animation rebuilt around a single `Animated.Value` driver (0 → COUNT + 0.5) shared across chevrons; each chevron's opacity is an `interpolate` with input range `[peakStep - 1, peakStep, peakStep + 0.6]` and output `[DIM_OPACITY, BASE_OPACITY, DIM_OPACITY]`. Strict bottom-to-top sequence with no per-chevron drift across cycles.
+
+- **ShareButton rebuilt: glowing pulsing word, no button frame.** Dropped `bevelFocusRaised`, the cyan background fill, and the multi-stop boxShadow rectangle. Now a `Pressable` wrapping `Animated.Text` with `textShadowColor` cyan glow at 0.5 alpha + radius 10. Font dropped 28 → 18, letter-spacing 6 → 4. Opacity pulses 1↔0.55 on a 2.2s cycle. Top-aligned inside the tap area (`justifyContent: 'flex-start'`, `paddingVertical: 0`) so the visible word sits tight against the chevrons while the tap area still extends down 44pt for a11y. Tap on word triggers share; swipe-up >80pt anywhere on the screen also triggers share (`pointerEvents="none"` on chevrons lets the gesture through).
+
+- **MoneyRainfall — new component.** Replaces the previous 4-corner `MoneyParticles` bursts. Spawns 22 large bills (~47–73pt wide, scaled per-bill) at deterministic-pseudo-random X positions across the screen, falls each bill with `Easing.in(Easing.quad)` from above the viewport past the bottom edge with a slight horizontal drift and a tumble rotation. Fires once on reveal (`MONEY_RAINFALL_DURATION_MS = 2200`), then unmounts. `pointerEvents="none"`, `accessibilityElementsHidden`, reduced-motion → render nothing. New constants `MONEY_RAINFALL_{COUNT,DURATION_MS,BILL_WIDTH}` in `config/constants.ts`.
+
+- **StarField passthrough behind the card.** Removed `backgroundColor: bgVoid` from the `CardPresentation` Animated.View container. The `<StarField>` mounted in `ScorecardScreen` now shows through behind the card. The iOS pre-screenshot intercept (when `useAppActive()` reports inactive) still uses solid bgVoid since we want the captured bitmap clean — no chrome, no stars.
+
+- **Rendered card name font shrunk.** `NAME_FONT_SIZE_DESIGN` in [`CardPersonRow.tsx`](features/Scorecard/components/CardPersonRow.tsx) dropped from 52 → 44 (in 1080-design coords). Longer last names like `ZUCKERBERG` now fit cleanly in the row's flex-1 text column without truncation. Applies on the next captured PNG (tap **Generate Card Now** in dev tools).
+
+- **iOS app label fix (cosmetic).** [`ios/FckFascists/Info.plist`](ios/FckFascists/Info.plist) had `CFBundleDisplayName = "F*ck Fascists"` hardcoded since the file was first committed; `app.json` had `"name": "FCK"` (correct). The home-screen icon label comes from `CFBundleDisplayName`, which overrides app.json. Since `Info.plist` is committed to the repo (per CLAUDE.md "ios/ — generated by expo prebuild; committed to repo"), edits to it persist between prebuilds. Updated `CFBundleDisplayName` to `"FCK"`. Permission descriptions (`NSCameraUsageDescription`, `NSLocationWhenInUseUsageDescription`) intentionally still say `"F*ck Fascists ..."` — the long-form brand name reads naturally in those sentences. Requires a fresh native build (Cmd+B / `npm run ios`) to update the home-screen label.
+
+**Files touched:**
+- `config/constants.ts` (new MONEY_RAINFALL_* constants)
+- `features/Scorecard/components/CardHalo.tsx` (rewrite)
+- `features/Scorecard/components/CardPresentation.tsx` (rebuild — flex column layout, safe-area floor, MoneyRainfall integration)
+- `features/Scorecard/components/CardPersonRow.tsx` (name font 52 → 44)
+- `features/Scorecard/components/ChevronRunway.tsx` (rebuild — hollow `^` + shared driver)
+- `features/Scorecard/components/MoneyRainfall.tsx` (new)
+- `features/Scorecard/components/ShareButton.tsx` (rebuild — glowing word + pulse)
+- `ios/FckFascists/Info.plist` (CFBundleDisplayName)
+- `docs/PROGRESS.md` (this entry)
+
+**Outstanding:**
+
+- iOS home-screen label change requires a fresh native build (`npm run ios`) — JS reload alone won't update `CFBundleDisplayName`.
+- During testing, repeated Metro cache staleness was a recurring issue: `Cmd+R` reload sometimes served stale bundles even after Metro had restarted. The reliable fix in this session was kill Metro → `expo start --clear` → `xcrun simctl terminate booted com.fckapp.fck` → `xcrun simctl launch booted com.fckapp.fck` so the app cold-starts and pulls a brand-new bundle. Worth documenting as the canonical "Metro doesn't see my changes" recovery flow.
+- `RUNWAY_HEIGHT = 150` and `topPad = max(insets.top, 52) + 60` are tuned to a typical iPhone 17 viewport. Smaller / taller devices may need re-tuning; keep an eye out during physical-device testing.
+
+---
+
 ### Session: May 2–3, 2026 ET — Avoided-marker asset + scorecard preview polish + outer-glow tokenization
 
 **Branch:** `claude/sleepy-sinoussi-d76599` → committed directly to `main`.
