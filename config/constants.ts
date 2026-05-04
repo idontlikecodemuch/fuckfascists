@@ -204,6 +204,11 @@ export const AMBER_PULSE_MS = 400;
 export const SCREEN_SHAKE_MS = 60;
 export const CARD_SPRITE_SIZE = 168;
 
+// ── Scorecard money rainfall (CardPresentation reveal) ───────────────────────
+export const MONEY_RAINFALL_COUNT = 22;        // bills spawned per burst
+export const MONEY_RAINFALL_DURATION_MS = 2200; // total burst lifetime
+export const MONEY_RAINFALL_BILL_WIDTH = 56;    // bill width in pt (height is 3:4 aspect via bill assets)
+
 // Launch screen art bounds
 export const LAUNCH_HERO_LOGO_MAX_WIDTH = 220;
 export const LAUNCH_HERO_LOGO_MAX_HEIGHT = 140;

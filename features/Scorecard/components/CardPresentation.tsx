@@ -15,10 +15,13 @@ import {
 } from 'react-native';
 import * as Sharing from 'expo-sharing';
 import { addScreenshotListener } from 'expo-screen-capture';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { scorecardCopy } from '../../../copy/scorecard';
 import { theme } from '../../../design/tokens';
-import { MoneyParticles } from '../../Map/components/MoneyParticles';
+import { MoneyRainfall } from './MoneyRainfall';
 import {
+  MONEY_RAINFALL_DURATION_MS,
+  SAFE_AREA_TOP_MIN,
   SCORECARD_REVEAL_DELAY_MS,
   SCORECARD_REVEAL_FADE_MS,
   SCORECARD_SHARE_SWIPE_UP_THRESHOLD,
@@ -30,11 +33,10 @@ import { ShareButton } from './ShareButton';
 import { useAppActive } from '../hooks/useAppActive';
 
 const DISMISS_THRESHOLD = 120;
-const RUNWAY_HEIGHT = 180;
-const CARD_HORIZONTAL_PAD = 24;
-const RUNWAY_WIDTH_PCT = 0.32;
-const SHARE_BTN_WIDTH_PCT = 0.32;
-const PARTICLE_BURST_MS = 1400;
+const RUNWAY_HEIGHT = 150;            // chevron stack (3 thin triangles) + small SHARE word
+const CARD_WIDTH_PCT = 0.85;          // card image width = 85% of screen width
+const CHEVRON_WIDTH_PCT = 0.42;       // wide triangle width
+const SHARE_TEXT_WIDTH_PCT = 0.40;
 
 interface CardPresentationProps {
   pngUri: string;
@@ -47,21 +49,32 @@ interface CardPresentationProps {
 export function CardPresentation({ pngUri, onDismiss }: CardPresentationProps) {
   const { width: screenW, height: screenH } = useWindowDimensions();
   const appActive = useAppActive();
+  const insets = useSafeAreaInsets();
 
   const translateY = useRef(new Animated.Value(0)).current;
   const shakeX = useRef(new Animated.Value(0)).current;
   const runwayOpacity = useRef(new Animated.Value(0)).current;
   const [showParticles, setShowParticles] = useState(true);
 
+  // SafeAreaProvider context can fail to propagate into absolute-positioned
+  // takeover screens; SAFE_AREA_TOP_MIN is the documented floor for that case
+  // (see CLAUDE.md "Configurable Variables"). Generous bonus on top so the
+  // ornate gold frame on the rendered card sits well clear of the dynamic
+  // island and reads as a centerpiece, not a fullscreen takeover.
+  const topPad = Math.max(insets.top, SAFE_AREA_TOP_MIN) + 60;
+  const bottomPad = theme.space.md; // push the runway / SHARE down close to the tab bar
   const { cardW, cardH } = useMemo(() => {
-    const availableW = screenW - CARD_HORIZONTAL_PAD * 2;
-    const availableH = screenH - RUNWAY_HEIGHT - 80;
-    const w = Math.min(availableW, (availableH * 9) / 16);
+    // Width-first: card fills 85% of screen width. If 9:16 height won't fit
+    // between top inset + runway + bottom inset, scale down by height instead.
+    const widthCapped = screenW * CARD_WIDTH_PCT;
+    const heightAvailable = screenH - topPad - RUNWAY_HEIGHT - bottomPad;
+    const heightCapped = (heightAvailable * 9) / 16;
+    const w = Math.min(widthCapped, heightCapped);
     return { cardW: w, cardH: (w * 16) / 9 };
-  }, [screenW, screenH]);
+  }, [screenW, screenH, topPad, bottomPad]);
 
-  const runwayWidth = Math.round(screenW * RUNWAY_WIDTH_PCT);
-  const shareBtnWidth = Math.round(screenW * SHARE_BTN_WIDTH_PCT);
+  const chevronWidth = Math.round(screenW * CHEVRON_WIDTH_PCT);
+  const shareTextWidth = Math.round(screenW * SHARE_TEXT_WIDTH_PCT);
 
   useEffect(() => {
     const pattern = [2, -2, 2, -2, 0];
@@ -80,7 +93,7 @@ export function CardPresentation({ pngUri, onDismiss }: CardPresentationProps) {
         useNativeDriver: true,
       }).start();
     }, SCORECARD_REVEAL_DELAY_MS);
-    const particleTimer = setTimeout(() => setShowParticles(false), PARTICLE_BURST_MS);
+    const particleTimer = setTimeout(() => setShowParticles(false), MONEY_RAINFALL_DURATION_MS);
 
     return () => {
       clearTimeout(runwayTimer);
@@ -155,8 +168,12 @@ export function CardPresentation({ pngUri, onDismiss }: CardPresentationProps) {
       style={[styles.container, { transform: [{ translateX: shakeX }, { translateY }] }]}
       {...panResponder.panHandlers}
     >
+      {/* Falling money — large, scattered. Bursts on reveal then stops so it
+          doesn't permanently obscure the card. */}
+      {showParticles && <MoneyRainfall screenW={screenW} screenH={screenH} />}
+
       <Pressable
-        style={styles.dismissBtn}
+        style={[styles.dismissBtn, { top: insets.top + 12 }]}
         onPress={onDismiss}
         accessibilityRole="button"
         accessibilityLabel={scorecardCopy.dismissLabel}
@@ -165,44 +182,41 @@ export function CardPresentation({ pngUri, onDismiss }: CardPresentationProps) {
         <Text style={styles.dismissText}>{'✕'}</Text>
       </Pressable>
 
+      {/* Top spacer — explicit View instead of paddingTop so the column flex
+          math can't collapse it. Card centers in the middle flex region;
+          runway pinned at the bottom. */}
+      <View style={{ height: topPad }} />
+
       <View style={styles.cardArea}>
         <View style={[styles.cardWrap, { width: cardW, height: cardH }]}>
           <CardHalo width={cardW} height={cardH} />
           <Image source={{ uri: pngUri }} style={styles.cardImage} resizeMode="contain" />
-
-          {showParticles && (
-            <>
-              <View style={[styles.particleHost, { top: -8, left: -8 }]}>
-                <MoneyParticles originY={0} />
-              </View>
-              <View style={[styles.particleHost, { top: -8, right: -8 }]}>
-                <MoneyParticles originY={0} />
-              </View>
-              <View style={[styles.particleHost, { bottom: 0, left: -8 }]}>
-                <MoneyParticles originY={0} />
-              </View>
-              <View style={[styles.particleHost, { bottom: 0, right: -8 }]}>
-                <MoneyParticles originY={0} />
-              </View>
-            </>
-          )}
         </View>
       </View>
 
       <Animated.View
-        style={[styles.runway, { opacity: runwayOpacity, height: RUNWAY_HEIGHT }]}
+        style={[
+          styles.runway,
+          {
+            opacity: runwayOpacity,
+            height: RUNWAY_HEIGHT,
+            marginBottom: bottomPad,
+          },
+        ]}
       >
-        <ChevronRunway width={runwayWidth} />
-        <ShareButton width={shareBtnWidth} onPress={handleShare} />
+        <ChevronRunway width={chevronWidth} color={theme.colors.glowCyan} />
+        <ShareButton width={shareTextWidth} onPress={handleShare} />
       </Animated.View>
     </Animated.View>
   );
 }
 
 const styles = StyleSheet.create({
+  // Transparent so ScorecardScreen's <StarField /> shows through behind the
+  // card. The intercept (iOS pre-screenshot swap) keeps a solid bgVoid since
+  // we want the captured bitmap to be the rendered card alone, no chrome.
   container: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: theme.colors.bgVoid,
     zIndex: 100,
   },
   intercept: {
@@ -215,7 +229,6 @@ const styles = StyleSheet.create({
   fullBleed: { width: '100%', height: '100%' },
   dismissBtn: {
     position: 'absolute',
-    top: 56,
     right: 16,
     width: theme.a11y.minTapTarget,
     height: theme.a11y.minTapTarget,
@@ -230,21 +243,14 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: CARD_HORIZONTAL_PAD,
-    paddingTop: 56,
   },
   cardWrap: { alignItems: 'center', justifyContent: 'center' },
   cardImage: { width: '100%', height: '100%' },
-  particleHost: {
-    position: 'absolute',
-    width: 1,
-    height: 1,
-    overflow: 'visible',
-  },
   runway: {
+    alignSelf: 'stretch',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    paddingBottom: 36,
-    gap: theme.space.md,
+    // No gap between chevrons stack + SHARE word; ShareButton's internal
+    // paddingVertical provides the small breathing room.
   },
 });
