@@ -7,7 +7,7 @@ import { SpriteView, nameToSpriteId } from '../../../core/sprites/spriteLoader';
 
 const SPRITE_SLOT_DESIGN = 200;
 const SPRITE_DESIGN = 180;
-const NAME_FONT_SIZE_DESIGN = 52;
+const NAME_FONT_SIZE_DESIGN = 44;
 const DETAIL_FONT_SIZE_DESIGN = 26;
 const COUNT_FONT_SIZE_DESIGN = 104;
 const COL_GAP_DESIGN = 20;
