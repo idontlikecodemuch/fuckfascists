@@ -39,11 +39,15 @@ export function InfoScreen({ onVersionTap }: InfoScreenProps) {
       <Animated.ScrollView contentContainerStyle={styles.scroll} onScroll={scrollHandler} scrollEventThrottle={16}>
         <StarField seed="info" scrollY={scrollY} />
 
-        {/* ── Page header ── */}
+        {/* ── Page header ──
+             Bonus: no background fill so the title sits directly on the
+             star field. #128: bottom strip mirrors the TabBar's brand-yellow
+             glow strip (2px line + three-stop boxShadow halo). */}
         <View style={styles.pageHeader}>
           <Text style={styles.pageTitle} accessibilityRole="header" allowFontScaling>
             {infoCopy.title}
           </Text>
+          <View style={styles.headerBottomGlow} pointerEvents="none" />
         </View>
 
         {/* ── About — amber plaque ── */}
@@ -129,13 +133,27 @@ const styles = StyleSheet.create({
   scroll: { paddingBottom: theme.space['4xl'] },
 
   pageHeader: {
-    backgroundColor: theme.colors.bgNav,
     padding: theme.space.lg,
-    borderBottomWidth: theme.borders.hero.width,
-    borderColor: theme.colors.frameBlue,
     alignItems: 'center',
   },
   pageTitle: { ...theme.type.displayM, color: theme.colors.textPrimary, letterSpacing: 3 },
+  // Mirrors `topGlow` on app/navigation/TabBar.tsx — same brand-yellow line +
+  // three-stop boxShadow halo, anchored at the bottom of the Info header so
+  // the top + bottom bars read as the same treatment (#128).
+  headerBottomGlow: {
+    backgroundColor: theme.colors.rewardYellow,
+    height: 2,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    boxShadow: [
+      { offsetX: 0, offsetY: 0, blurRadius: 12, color: 'rgba(255, 201, 60, 1)' },
+      { offsetX: 0, offsetY: 0, blurRadius: 24, color: 'rgba(255, 201, 60, 0.7)' },
+      { offsetX: 0, offsetY: 4, blurRadius: 36, color: 'rgba(255, 201, 60, 0.4)' },
+    ],
+    elevation: 12,
+  },
 
   aboutOuter: {
     margin: theme.space.lg,
