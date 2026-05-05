@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
-import { sharedCopy } from '../../../copy/shared';
+import { View, Text, StyleSheet } from 'react-native';
 import { mapCopy } from '../../../copy/map';
 import { theme } from '../../../design/tokens';
 import { bevelFocusRaised } from '../../../design/bevel';
@@ -48,6 +47,8 @@ export function BusinessBanner({ displayName, variant, onDismiss }: BusinessBann
     }
   })();
 
+  // No inline × dismiss control (#105) — the parent renders a tap-outside
+  // backdrop and an auto-dismiss timer fires after BANNER_AUTO_DISMISS_MS.
   return (
     <View
       style={styles.banner}
@@ -56,15 +57,6 @@ export function BusinessBanner({ displayName, variant, onDismiss }: BusinessBann
     >
       <View style={[styles.accentBar, { backgroundColor: accentColor(variant) }]} />
       <Text style={styles.bannerText} allowFontScaling>{message}</Text>
-      <Pressable
-        onPress={onDismiss}
-        style={styles.dismissButton}
-        accessibilityRole="button"
-        accessibilityLabel={sharedCopy.dismissLabel}
-        accessibilityHint={mapCopy.bannerDismissLabel}
-      >
-        <Text style={styles.bannerDismiss} allowFontScaling>{sharedCopy.dismissIcon}</Text>
-      </Pressable>
     </View>
   );
 }
@@ -85,23 +77,10 @@ const styles = StyleSheet.create({
     ...theme.type.bodyS,
     color: theme.colors.textPrimary,
     // Center-aligned per #105. Banner text is brief and reads better
-    // centered in a narrow strip than left-ragged.
+    // centered in a narrow strip than left-ragged. Vertical padding gives
+    // the message body breathing room now that the inline × button is gone.
     textAlign: 'center',
     paddingHorizontal: theme.space.md,
-    paddingTop: theme.space.md,
-    paddingBottom: theme.space.sm,
-  },
-  dismissButton: {
-    alignItems: 'center',
-    paddingVertical: theme.space.sm,
-    paddingBottom: theme.space.md,
-    // Larger tap target around the × glyph
-    minHeight: theme.a11y.minTapTarget,
-    justifyContent: 'center',
-  },
-  bannerDismiss: {
-    ...theme.type.bodyM,
-    color: theme.colors.textSecondary,
-    fontSize: 20,
+    paddingVertical: theme.space.md,
   },
 });
