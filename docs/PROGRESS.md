@@ -12,6 +12,57 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: May 4, 2026 ET — TestFlight beta polish sprint (12 items)
+
+**Branch:** `claude/sleepy-sinoussi-d76599` → committed directly to `main` in chunks.
+
+**Focus:** Quick-wins sprint covering twelve `tools/review/TESTFLIGHT_REVIEW.md` items + a launch-screen tweak. Items grouped by surface for clean per-area commits. Constraint: simplest fix wins, no overengineering, no duplication, design-token / copy-token discipline maintained.
+
+**Items resolved this session (status updates in `tools/review/TESTFLIGHT_REVIEW.md`):**
+
+- **#102** — Scan dismiss audit: only `dismissLabel` (a11y) + `dismissIcon` (×) remain across the codebase; no literal "DISMISS" labels. Plus: `lookupBarcodeViaOpenFoodFacts` now hands the brand name down to the full entity-match pipeline when the alias-only check misses, so the FEC fuzzy fallback runs before the toast appears. → `features/Map/barcode/openFoodFacts.ts`.
+- **#103 / #144** — Camera close-up focus. Discovered `expo-camera`'s `autofocus` prop is counter-named: `on` = lock-once-then-freeze, `off` = continuous AF (verified in `Camera.types.d.ts`). We had been stuck on `on` since launch — switched to `off` so barcodes refocus continuously when the user moves closer to a UPC. Old explanatory comment about hardware limits removed. → `features/Map/components/BarcodeScannerSheet.tsx`.
+- **#105** — No-PAC card / `BusinessBanner`. Inline × dismiss button removed (the visible "DISMISS" affordance the user flagged); body text was already `textAlign: center`; `MapScreen`'s tap-outside backdrop `Pressable` already wraps the banner so outside-tap dismiss already works. Auto-dismiss timer (5s) preserved.
+- **#114** — Onboarding privacy text bumped one type-token step (`bodyM` → `uiLabel`) with `lineHeight: 26` override for multi-line legibility. No new tokens introduced.
+- **#128** + bonus — Info top bar matches the new bottom yellow glow strip (2px line + three-stop boxShadow halo, mirrored from `app/navigation/TabBar.tsx`'s `topGlow`). Bonus: `pageHeader` background fill removed so the title sits directly on the StarField.
+- **#151** — Track phantom animation. Investigation: same artifact appears on Scan first-screen outline + Track row close, suggesting a shared root cause. Surface-level fix attempts (one-shot `hasMounted` flag on `TrackList` reanimated entrances) reverted in favor of identifying the shared cause in a follow-up. **Status: still OPEN**, with notes captured in the review doc.
+- **#153** — Scan toast (`BarcodeLookupBanner`) rebuilt: text centered, × moved to absolute top-right, transparent backdrop `Pressable` catches outside taps. Auto-dismiss preserved.
+- **#154** — `AlertBanner` swapped `useWiggleAnimation` for a local scale-only pulse (1.0 ↔ 1.04, `ALERT_BANNER_PULSE_MS = 2400`). Tooltip keeps the wiggle so usage-hint tone is preserved. Inline `useScalePulse` helper added inside `AlertBanner` (single-purpose, no new shared hook). Reduced-motion: holds at scale 1.
+- **#157** — Welcome screen now renders a horizontal feature row below the tagline: `[map / track / scan]` with cyan Ionicons + short labels (`bodyS`). Reuses the tab-bar icon glyphs (`map-outline`, `checkmark-done-outline`, `barcode-outline`). New copy keys `featureMap` / `featureTrack` / `featureScan` in `copy/onboard.ts`. A11y label combines all three labels for VoiceOver.
+- **#158** — Tagline `"f*ck themselves"` → `"FCK themselves"` per the brand FCK substitution rule. `copy/onboard.ts`.
+- **#159** — `OnboardingSlide` container background dropped (was `bgVoid`); `StarFieldBg` now shows through directly across all 3 onboarding screens.
+
+**Bonus tweaks rolled in:**
+
+- Launch screen `AUTO_DISMISS_MS` 5000 → 3000 (one second shorter — felt long).
+
+**Files touched:**
+- `config/constants.ts` (+ `ALERT_BANNER_PULSE_MS`)
+- `copy/onboard.ts` (tagline, feature row labels)
+- `core/ui/AlertBanner.tsx` (wiggle → scale pulse + inline `useScalePulse` helper)
+- `features/Info/InfoScreen.tsx` (header bg + bottom-glow strip)
+- `features/Launch/LaunchScreen.tsx` (3s)
+- `features/Map/barcode/openFoodFacts.ts` (entity-match fallback)
+- `features/Map/components/BarcodeLookupBanner.tsx` (toast rebuild)
+- `features/Map/components/BarcodeScannerSheet.tsx` (autofocus correction)
+- `features/Map/components/BusinessBanner.tsx` (× removal)
+- `features/Onboarding/components/OnboardingSlide.tsx` (transparent container)
+- `features/Onboarding/screens/PrivacyScreen.tsx` (bigger body text)
+- `features/Onboarding/screens/WelcomeScreen.tsx` (feature row)
+- `tools/copy-preview/copy-all.json` + `copy-all.js` (synced for tagline + feature labels)
+- `tools/review/TESTFLIGHT_REVIEW.md` (status bumps for the 11 resolved items)
+- `docs/PROGRESS.md` (this entry)
+
+**Verification:**
+- `npx tsc --noEmit` — clean.
+- `npx jest --silent` — 548 suites / 6697 tests pass.
+- `bash scripts/audit-copy.sh` — only pre-existing hits remain (Dev harness, formatters, Permissions ONLINE/OFFLINE); nothing new introduced.
+
+**Outstanding:**
+- **#151** — phantom animation. Need to identify the shared trigger between Track list (mount) + Track row close + Scan first-screen outline before a surface-by-surface patch. Likely candidates being investigated: reanimated `entering` + `LinearTransition` interaction, RN bevel-shadow first-paint flash, or a global LayoutAnimation transition fired by tab navigation. Not patched in this commit — explicitly deferred.
+
+---
+
 ### Session: May 3–4, 2026 ET — Card presentation rebuild + iOS app label fix
 
 **Branch:** `claude/sleepy-sinoussi-d76599` → committed directly to `main` in chunks.
