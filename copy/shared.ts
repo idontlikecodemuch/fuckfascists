@@ -1,5 +1,7 @@
 export const sharedCopy = {
   appName: "FCK FASCISTS",
+  brandTagline: "The fascists won\u2019t FCK themselves.",
+  brandTaglineStacked: "The fascists won\u2019t\nFCK themselves.",
   siteUrl: "FCKfascists.com",
   repoUrl: "https://github.com/idontlikecodemuch/fuckfascists",
   dataRepoUrl: "https://github.com/idontlikecodemuch/fckfascists-data",

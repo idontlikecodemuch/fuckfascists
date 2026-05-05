@@ -47,7 +47,7 @@ export const scorecardCopy = {
   emptyState: "Hit the {map}. Hit {track}.\nMake them feel it.",
 
   // Footer (rendered card)
-  tagline: "The fascists wont FCK themselves.",
+  tagline: sharedCopy.brandTagline,
   cta: sharedCopy.siteUrl,
   dataAttribution: "DATA: FEC.GOV",
 } as const;

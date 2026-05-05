@@ -24,7 +24,7 @@ const HERO_LOGO_MAX_HEIGHT_RATIO = 0.22;
 
 /**
  * Screen 1 — Welcome (Sh*tposter voice).
- * Centered layout: app logo, tagline, body. No feature lines — let the app teach itself.
+ * Centered layout: app logo, tagline, feature row, body.
  */
 export function WelcomeScreen({ stepIndex, onNext }: WelcomeScreenProps) {
   const { height: screenHeight } = useWindowDimensions();
@@ -33,7 +33,7 @@ export function WelcomeScreen({ stepIndex, onNext }: WelcomeScreenProps) {
   const logoWidth = logoHeight * HERO_LOGO_ASPECT;
 
   return (
-    <OnboardingSlide stepIndex={stepIndex} title={onboardCopy.appDisplay.replace('\n', ' ')} nextLabel={onboardCopy.letsGo} onNext={onNext}>
+    <OnboardingSlide stepIndex={stepIndex} title={onboardCopy.welcomeTitle} nextLabel={onboardCopy.letsGo} onNext={onNext}>
       <View style={styles.content}>
         <Image
           source={require('../../../assets/pixel/brand/FF_logo.png')}

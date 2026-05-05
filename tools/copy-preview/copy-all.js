@@ -2,6 +2,8 @@
 var COPY_ALL_DATA = {
   "shared": {
     "appName": "FCK FASCISTS",
+    "brandTagline": "The fascists won't FCK themselves.",
+    "brandTaglineStacked": "The fascists won't\nFCK themselves.",
     "siteUrl": "FCKfascists.com",
     "repoUrl": "https://github.com/idontlikecodemuch/fuckfascists",
     "dataRepoUrl": "https://github.com/idontlikecodemuch/fckfascists-data",
@@ -178,7 +180,7 @@ var COPY_ALL_DATA = {
     "loaderText": "Locking in my card.\nShredding the data.",
     "pastCardsLabel": "Past scorecards",
     "emptyState": "Hit the {map}. Hit {track}.\nMake them feel it.",
-    "tagline": "The fascists wont FCK themselves.",
+    "tagline": "The fascists won't FCK themselves.",
     "cta": "FCKfascists.com",
     "dataAttribution": "DATA: FEC.GOV"
   },
@@ -186,7 +188,7 @@ var COPY_ALL_DATA = {
     "welcomeTitle": "WELCOME",
     "letsGo": "LET'S GO",
     "appDisplay": "FCK\nFASCISTS",
-    "tagline": "The fascists won't\nFCK themselves. 🤘🏽",
+    "tagline": "The fascists won't\nFCK themselves.",
     "body": "Map, Track, and Scan to see who businesses fund. Political contribution data. In your hands.",
     "featureMap": "Map",
     "featureTrack": "Track",

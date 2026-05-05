@@ -5,8 +5,13 @@ import { TOTAL_STEPS } from '../types';
 import { onboardCopy } from '../../../copy/onboard';
 import { theme } from '../../../design/tokens';
 import { bevelAmberRaised, glowDividerLine } from '../../../design/bevel';
+import { fillSelf, fixedFillSelf } from '../../../design/layout';
 import { SparkleDecoration } from '../../../core/fx';
+import { PulseRing } from '../../../core/ui/PulseRing';
 import { StarFieldBg } from '../../../core/starbg';
+
+const CTA_PULSE_CYCLE_MS = 2400;
+const CTA_PULSE_OUTER_DELAY_MS = 500;
 
 interface OnboardingSlideProps {
   stepIndex: number;
@@ -56,6 +61,22 @@ export function OnboardingSlide({
       <View style={styles.glowDivider} />
       <View style={styles.actions}>
         <View style={styles.ctaWrap}>
+          <PulseRing
+            inset={5}
+            borderWidth={1.5}
+            baseOpacity={0.36}
+            delayMs={0}
+            color={theme.colors.rewardYellow}
+            cycleMs={CTA_PULSE_CYCLE_MS}
+          />
+          <PulseRing
+            inset={10}
+            borderWidth={1}
+            baseOpacity={0.22}
+            delayMs={CTA_PULSE_OUTER_DELAY_MS}
+            color={theme.colors.rewardYellow}
+            cycleMs={CTA_PULSE_CYCLE_MS}
+          />
           <Pressable
             style={styles.nextButton}
             onPress={onNext}
@@ -84,10 +105,9 @@ export function OnboardingSlide({
 }
 
 const styles = StyleSheet.create({
-  // Per #159 — no bgVoid layer; let StarFieldBg show through directly.
-  container: { flex: 1 },
+  // Matches StarFieldBg's own bgVoid fallback so safe-area edges never flash white.
+  container: { flex: 1, backgroundColor: theme.colors.bgVoid },
   header: {
-    backgroundColor: theme.colors.bgNav,
     padding: theme.space.lg,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -106,8 +126,9 @@ const styles = StyleSheet.create({
     padding: theme.space.lg,
     gap: 10,
   },
-  ctaWrap: { overflow: 'visible' },
+  ctaWrap: { ...fillSelf, overflow: 'visible' },
   nextButton: {
+    ...fixedFillSelf,
     ...bevelAmberRaised,
     backgroundColor: theme.colors.rewardYellow,
     borderRadius: theme.radii.button,

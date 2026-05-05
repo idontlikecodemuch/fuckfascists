@@ -25,6 +25,7 @@ import {
   STARBG_TWINKLE_STAR_COUNT, STARBG_STREAK_COUNT, STARBG_SUBTLE_STREAK_COUNT,
 } from './starbgConstants';
 import { STARBG_PARALLAX_ENABLED } from '../../config/constants';
+import { theme } from '../../design/tokens';
 
 // Low-perf: @2x devices get halved twinkle + no tilt parallax.
 const IS_LOW_PERF = PixelRatio.get() <= 2;
@@ -141,17 +142,21 @@ export function StarFieldBg({
           <Image source={starbgBase} style={styles.baseTexture} resizeMode="cover" />
         )}
         {layout.milkyway != null && (
-          <Image
-            source={layout.milkyway.source}
-            style={[
-              styles.milkyway,
-              {
-                opacity: layout.milkyway.opacity,
-                transform: [{ rotate: `${layout.milkyway.rotation}deg` }],
-              },
-            ]}
-            resizeMode="contain"
-          />
+          <View style={styles.milkywayFrame} pointerEvents="none">
+            <Image
+              source={layout.milkyway.source}
+              style={[
+                styles.milkyway,
+                {
+                  width,
+                  height: width * MILKYWAY_ASPECT_H_OVER_W,
+                  opacity: layout.milkyway.opacity,
+                  transform: [{ rotate: `${layout.milkyway.rotation}deg` }],
+                },
+              ]}
+              resizeMode="contain"
+            />
+          </View>
         )}
       </Animated.View>
 
@@ -229,16 +234,17 @@ export function StarFieldBg({
 }
 
 const absFill = { ...StyleSheet.absoluteFillObject, width: undefined, height: undefined };
+const MILKYWAY_ASPECT_H_OVER_W = 960 / 640;
 const styles = StyleSheet.create({
-  container: { ...StyleSheet.absoluteFillObject, overflow: 'hidden' },
+  container: { ...StyleSheet.absoluteFillObject, backgroundColor: theme.colors.bgVoid, overflow: 'hidden' },
   layer: { ...StyleSheet.absoluteFillObject },
   baseTexture: absFill,
-  milkyway: {
-    position: 'absolute' as const,
-    width: '100%' as unknown as number,
-    height: '60%' as unknown as number,
-    top: '20%' as unknown as number,
+  milkywayFrame: {
+    ...StyleSheet.absoluteFillObject,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
+  milkyway: {},
   asset: { position: 'absolute', width: 200, height: undefined, aspectRatio: 1 },
   twinkleDot: { position: 'absolute' },
   twinkleGlyph: { position: 'absolute', textAlign: 'center' },

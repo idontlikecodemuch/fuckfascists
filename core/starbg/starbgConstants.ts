@@ -16,8 +16,8 @@ export const STARBG_ROCK_COUNT = 2;
 // Milkyway JPGs have baked bgVoid background — rendered at full opacity as the base layer.
 // This constant controls brightness dimming if needed (1.0 = full, 0.8 = slightly dimmed).
 export const STARBG_MILKYWAY_OPACITY = 1.0;
-export const STARBG_MILKYWAY_ROTATION_MIN = -15;
-export const STARBG_MILKYWAY_ROTATION_MAX = 15;
+export const STARBG_MILKYWAY_ROTATION_MIN = 0;
+export const STARBG_MILKYWAY_ROTATION_MAX = 0;
 
 // ── Galaxy / rock placement ──────────────────────────────────────────────────
 export const STARBG_GALAXY_OPACITY_MIN = 0.06;

@@ -1,7 +1,10 @@
+import { sharedCopy } from './shared';
+
 export const onboardCopy = {
   // Screen 1: Welcome (Sh*tposter)
   appDisplay: "FCK\nFASCISTS",
-  tagline: "The fascists won\u2019t\nFCK themselves. \uD83E\uDD18\uD83C\uDFFD",
+  welcomeTitle: "WELCOME",
+  tagline: sharedCopy.brandTaglineStacked,
   body: "See how businesses fund politics.\nDecide what to do about it. Share.",
   letsGo: "PRESS START",
   // Feature row on Welcome (per #157) — short labels paired with tab-bar icons
