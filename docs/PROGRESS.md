@@ -12,6 +12,22 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: May 5, 2026 ET — #151 Track/Scan sizing-glitch fix
+
+**Focus:** Deep dive on TestFlight #151 phantom half-second fill/size animation seen on Track AVOID buttons, Map card AVOID button, and the Scan standby panel.
+
+**Findings:** No global blanket animation or app-wide `LayoutAnimation` was found. Track's broad trigger is the intended Reanimated `itemLayoutAnimation` daily row reveal/collapse path; the visual bug came from loose first-layout sizing inside animated rows, where child fills could paint at intrinsic width before stretching to final width under RN 0.76/Fabric. Scan showed the same class of issue on its standby panel because the panel/CTA relied on implicit stretch inside a centered `ScrollView`.
+
+**Fix:** Kept the Track first-open daily row animation and the existing list structure, but made animated list rows, panel caps/sides, row bodies, labels, and AVOID buttons deterministic (`alignSelf: 'stretch'`, `minWidth: 0`, `flexShrink: 0`). Track detail-row fade/layout timing now uses the existing `DAY_CIRCLES_ANIMATE_MS` constant. Scan standby panel/content/CTA and Map card AVOID wrapper now stretch explicitly so first paint matches final geometry.
+
+**Verification:** `npx tsc --noEmit` — clean. Simulator/Metro visual check started after implementation.
+
+**Follow-up:** Onboarding showed a white fallback behind the star field because `OnboardingSlide` had recently removed its solid root background while `StarFieldBg` itself was transparent in places. Moved the correct fallback into `StarFieldBg` itself (`bgVoid`) and kept onboarding's root on the same color so safe-area edges never flash white. Also normalized the milky way layer: the six JPGs are all 640x960 portrait backplates, so the layer now renders unrotated in a full-screen `contain` box. This keeps it full-width without cover-zooming/cropping.
+
+**Follow-up 2:** Same first-paint width flash appeared on onboarding permission ALLOW buttons. Added shared layout atoms in `design/layout.ts` (`fillSelf`, `fixedFillSelf`, `flexChild`, `noShrink`) and applied them to production CTAs/full-width pressables that share the risk profile: onboarding next/ALLOW/GRANTED, platform setup DONE, barcode scanner permission primary button, MatchChooser folder rows, and AlertBanner flex body. Documented the rule in `design/component-rules.md` so new animated/late-measured buttons do not reintroduce intrinsic first-paint sizing. No structure or animation changes.
+
+**Follow-up 3:** Extracted the Scan CTA pulse into reusable `core/ui/PulseRing.tsx` and applied the same subtle two-ring treatment to onboarding bottom CTAs in reward yellow. Fixed the Map header logo ratio to the actual `FF_logo_horizontal.png` dimensions (`1938x491`) so it no longer appears vertically stretched. Removed the child-only indent from `DayCircles` so multi-platform date selectors match singleton padding. Centralized the brand tagline in `copy/shared.ts`; scorecard rendered-card copy now uses that token with the apostrophe restored, and onboarding uses the stacked no-emoji variant.
+
 ### Session: May 4, 2026 ET — TestFlight beta polish sprint (12 items)
 
 **Branch:** `claude/sleepy-sinoussi-d76599` → committed directly to `main` in chunks.

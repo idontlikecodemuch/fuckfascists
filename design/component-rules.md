@@ -15,6 +15,30 @@ All components reference tokens from `design/tokens.ts`. Never hardcode hex valu
 - **Coded in React:** layout, text, buttons, rows, sheets, tabs, state logic
 - **Rendered as assets:** markers, corner brackets, spark FX, scorecard frame, topbands, texture tiles
 
+### Layout Stability
+
+Full-width CTAs, framed panels, and row slices inside `ScrollView`, `FlatList`,
+Reanimated layout transitions, or late-measured native views must not rely on
+intrinsic first-paint width.
+
+- Use `fillSelf` from `design/layout.ts` for wrappers/panels that should stretch
+  to the final parent width.
+- Use `fixedFillSelf` for visual button faces/CTA surfaces that should stretch
+  and must not shrink during parent layout animation.
+- Use `flexChild` for flex text/content columns that need to shrink inside rows
+  instead of pushing sibling buttons off-size.
+- Use `noShrink` for fixed-size row slices such as icon cells, checkboxes, and
+  AVOID buttons.
+
+On RN 0.76 + Fabric, implicit-width controls can briefly paint at content width
+before stretching when their parent is animated or first measured.
+
+### Pulse Rings
+
+Use `core/ui/PulseRing.tsx` for CTA glow rings. It handles reduced-motion,
+color, delay, and cycle timing, so onboarding and scan buttons share one motion
+primitive instead of duplicating local animation code.
+
 ---
 
 ## 1. Business Card — Manila Folder (5 files: BusinessCard.tsx, BusinessBanner.tsx, DataZone.tsx, StampOverlay.tsx, MoneyParticles.tsx)
