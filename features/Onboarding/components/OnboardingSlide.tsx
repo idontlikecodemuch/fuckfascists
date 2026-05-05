@@ -84,7 +84,8 @@ export function OnboardingSlide({
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: theme.colors.bgVoid },
+  // Per #159 — no bgVoid layer; let StarFieldBg show through directly.
+  container: { flex: 1 },
   header: {
     backgroundColor: theme.colors.bgNav,
     padding: theme.space.lg,

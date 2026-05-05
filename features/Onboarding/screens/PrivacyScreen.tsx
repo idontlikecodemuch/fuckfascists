@@ -59,10 +59,12 @@ const styles = StyleSheet.create({
     paddingVertical: theme.space.lg,
     paddingHorizontal: theme.space.lg,
   },
+  // Per #114 — bumped one type-token step (bodyM → uiLabel) for the privacy
+  // promise so it reads bigger. Override lineHeight for multi-line legibility.
   body: {
-    ...theme.type.bodyM,
+    ...theme.type.uiLabel,
     color: theme.colors.textSecondary,
-    lineHeight: 24,
+    lineHeight: 26,
   },
   link: {
     ...theme.type.bodyS,

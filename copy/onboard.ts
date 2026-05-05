@@ -1,9 +1,13 @@
 export const onboardCopy = {
   // Screen 1: Welcome (Sh*tposter)
   appDisplay: "FCK\nFASCISTS",
-  tagline: "The fascists won\u2019t\nf*ck themselves. \uD83E\uDD18\uD83C\uDFFD",
+  tagline: "The fascists won\u2019t\nFCK themselves. \uD83E\uDD18\uD83C\uDFFD",
   body: "See how businesses fund politics.\nDecide what to do about it. Share.",
   letsGo: "PRESS START",
+  // Feature row on Welcome (per #157) — short labels paired with tab-bar icons
+  featureMap: "Map",
+  featureTrack: "Track",
+  featureScan: "Scan",
 
   // Screen 2: Privacy — WHAT WE DON'T DO (Clark)
   privacyTitle: "WHAT WE DON\u2019T DO",

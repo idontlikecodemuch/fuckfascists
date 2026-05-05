@@ -10,12 +10,12 @@ import {
 } from '../../config/constants';
 
 const LAUNCH_DATE_KEY = 'ff_last_launch_date';
-const AUTO_DISMISS_MS = 5000;
+const AUTO_DISMISS_MS = 3000;
 const HERO_LOGO_ASPECT = 1466 / 827;
 
 /**
  * Daily launch screen — shown once per calendar day.
- * Rotating daily message, pulsing "TAP TO START", auto-dismisses after 5s.
+ * Rotating daily message, pulsing "TAP TO START", auto-dismisses after 3s.
  * Logo breathes with a subtle scale pulse — video game title screen energy.
  */
 export function LaunchScreen({ onDismiss }: { onDismiss: () => void }) {
