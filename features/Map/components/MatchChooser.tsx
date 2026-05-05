@@ -4,6 +4,7 @@ import type { ScanResult } from '../types';
 import { mapCopy } from '../../../copy/map';
 import { bevelFocusRaised } from '../../../design/bevel';
 import { theme } from '../../../design/tokens';
+import { fillSelf, fixedFillSelf, flexChild } from '../../../design/layout';
 
 interface MatchChooserProps {
   results: ScanResult[];
@@ -162,7 +163,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.space.xs,
     paddingBottom: theme.space.sm,
   },
-  headerText: { flex: 1 },
+  headerText: { flex: 1, ...flexChild },
   heading: {
     ...theme.type.displayS,
     color: theme.colors.focusAccent,
@@ -200,6 +201,7 @@ const styles = StyleSheet.create({
     paddingBottom: theme.space.xs,
   },
   row: {
+    ...fillSelf,
     overflow: 'visible',
     height: FOLDER_BODY_HEIGHT,
   },
@@ -217,6 +219,7 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   folder: {
+    ...fixedFillSelf,
     backgroundColor: theme.colors.folderBg,
     height: FOLDER_BODY_HEIGHT,
     overflow: 'hidden',

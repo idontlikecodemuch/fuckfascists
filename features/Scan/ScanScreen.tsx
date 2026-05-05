@@ -164,6 +164,7 @@ const styles = StyleSheet.create({
   scrollContent: {
     flexGrow: 1,
     justifyContent: 'center',
+    alignItems: 'stretch',
     paddingBottom: theme.space['4xl'] * 2,
   },
   resultWrap: {

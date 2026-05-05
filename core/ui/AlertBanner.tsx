@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { AccessibilityInfo, Animated, Pressable, StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
 import { bevelFocusRaised } from '../../design/bevel';
 import { theme } from '../../design/tokens';
+import { fillSelf, flexChild } from '../../design/layout';
 import { ALERT_BANNER_PULSE_MS } from '../../config/constants';
 
 interface AlertBannerProps {
@@ -134,6 +135,7 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   panel: {
+    ...fillSelf,
     ...bevelFocusRaised,
     backgroundColor: theme.colors.focusAccent,
     flexDirection: 'row',
@@ -161,10 +163,12 @@ const styles = StyleSheet.create({
     ],
   },
   content: {
+    ...flexChild,
     justifyContent: 'center',
   },
   bodyPress: {
     flex: 1,
+    ...flexChild,
     justifyContent: 'center',
     minHeight: theme.a11y.minTapTarget,
   },

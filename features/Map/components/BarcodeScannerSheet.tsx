@@ -7,6 +7,7 @@ import { mapCopy } from '../../../copy/map';
 import { scanCopy } from '../../../copy/scan';
 import { theme } from '../../../design/tokens';
 import { bevelFocusRaised } from '../../../design/bevel';
+import { fillSelf, fixedFillSelf } from '../../../design/layout';
 import { CornerReticle, SweepLine } from '../../../features/Scan/ScanDecorations';
 import { StarField } from '../../../features/Info/components/InfoDecorations';
 import {
@@ -239,6 +240,7 @@ const styles = StyleSheet.create({
   edgeCornerBL: { bottom: 6, left: 6, borderBottomWidth: 2, borderLeftWidth: 2 },
   edgeCornerBR: { bottom: 6, right: 6, borderBottomWidth: 2, borderRightWidth: 2 },
   permissionCard: {
+    ...fillSelf,
     ...bevelFocusRaised,
     backgroundColor: theme.colors.panelInner,
     padding: theme.space.lg,
@@ -255,6 +257,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   primaryButton: {
+    ...fixedFillSelf,
     marginTop: theme.space.lg,
     minHeight: theme.a11y.minTapTarget,
     backgroundColor: theme.colors.focusAccent,

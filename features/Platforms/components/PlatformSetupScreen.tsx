@@ -6,6 +6,7 @@ import { sharedCopy } from '../../../copy/shared';
 import { getDefaultSelectedIds } from '../hooks/usePlatformRoster';
 import { theme } from '../../../design/tokens';
 import { bevelRaised, bevelInset, bevelGreenRaised, bevelGreenInset, bevelAmberRaised, glowDividerLine } from '../../../design/bevel';
+import { fillSelf, fixedFillSelf, flexChild, noShrink } from '../../../design/layout';
 import { StarField, NeonRule } from '../../Info/components/InfoDecorations';
 import { SparkleDecoration } from '../../../core/fx';
 
@@ -120,7 +121,7 @@ export function PlatformSetupScreen({ platforms, initialSelection, onDone }: Pla
 
       <View style={styles.footerDivider} />
       <View style={styles.footer}>
-        <View style={{ overflow: 'visible' }}>
+        <View style={styles.doneWrap}>
           <Pressable
             onPress={handleDone}
             style={[styles.doneBtn, selected.size === 0 && styles.doneBtnDisabled]}
@@ -172,6 +173,7 @@ const styles = StyleSheet.create({
   // ── Cell inner content ────────────────────────────────────────────────────
   cellContent: {
     flex: 1,
+    ...flexChild,
     flexDirection: 'row',
     alignItems: 'center',
     padding: theme.space.md,
@@ -180,6 +182,7 @@ const styles = StyleSheet.create({
 
   // ── Checkbox ──────────────────────────────────────────────────────────────
   checkbox: {
+    ...noShrink,
     width: 22,
     height: 22,
     alignItems: 'center',
@@ -216,10 +219,15 @@ const styles = StyleSheet.create({
     padding: theme.space.lg,
     backgroundColor: theme.colors.bgVoid,
   },
+  doneWrap: {
+    ...fillSelf,
+    overflow: 'visible',
+  },
   footerDivider: {
     ...glowDividerLine,
   },
   doneBtn: {
+    ...fixedFillSelf,
     ...bevelAmberRaised,
     backgroundColor: theme.colors.rewardYellow,
     borderRadius: theme.radii.button,

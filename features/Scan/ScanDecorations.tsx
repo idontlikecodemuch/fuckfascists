@@ -6,9 +6,11 @@ import React, { useEffect, useRef } from 'react';
 import { AccessibilityInfo, Animated, Easing, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SparkleDecoration } from '../../core/fx';
+import { PulseRing } from '../../core/ui/PulseRing';
 import { scanCopy } from '../../copy/scan';
 import { theme } from '../../design/tokens';
 import { bevelFocusRaised } from '../../design/bevel';
+import { fillSelf, fixedFillSelf } from '../../design/layout';
 import {
   SCAN_ICON_SIZE,
   SCAN_PANEL_HORIZONTAL_MARGIN,
@@ -32,42 +34,6 @@ import {
   BARCODE_SCAN_GUIDE_HEIGHT,
   BARCODE_SCAN_GUIDE_SIDE_INSET_PERCENT,
 } from '../../config/constants';
-
-// ── Pulse Ring ───────────────────────────────────────────────────────────────
-
-export function PulseRing({ inset, borderWidth, baseOpacity, delayMs }: {
-  inset: number; borderWidth: number; baseOpacity: number; delayMs: number;
-}) {
-  const anim = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    let cancelled = false;
-    AccessibilityInfo.isReduceMotionEnabled().then((enabled) => {
-      if (cancelled) return;
-      if (enabled) { anim.setValue(0.5); return; }
-      Animated.loop(Animated.sequence([
-        Animated.delay(delayMs),
-        Animated.timing(anim, { toValue: 1, duration: SCAN_PULSE_CYCLE_MS / 2, useNativeDriver: true }),
-        Animated.timing(anim, { toValue: 0, duration: SCAN_PULSE_CYCLE_MS / 2, useNativeDriver: true }),
-      ])).start();
-    });
-    return () => { cancelled = true; anim.stopAnimation(); };
-  }, [anim, delayMs]);
-
-  const opacity = anim.interpolate({ inputRange: [0, 1], outputRange: [0.3 * baseOpacity, baseOpacity] });
-  const scale = anim.interpolate({ inputRange: [0, 1], outputRange: [1, 1.01] });
-
-  return (
-    <Animated.View
-      style={{
-        position: 'absolute', top: -inset, left: -inset, right: -inset, bottom: -inset,
-        borderWidth, borderColor: theme.colors.focusAccent,
-        borderRadius: theme.radii.button + inset, opacity, transform: [{ scale }],
-      }}
-      pointerEvents="none"
-    />
-  );
-}
 
 // ── Standby Panel ────────────────────────────────────────────────────────────
 
@@ -97,8 +63,8 @@ export function ScanStandbyPanel({ busy, onOpenScanner }: ScanStandbyPanelProps)
             </Text>
 
             <View style={styles.ctaWrapper}>
-              <PulseRing inset={SCAN_PULSE_INNER_INSET} borderWidth={SCAN_PULSE_INNER_BORDER} baseOpacity={SCAN_PULSE_INNER_OPACITY} delayMs={0} />
-              <PulseRing inset={SCAN_PULSE_OUTER_INSET} borderWidth={SCAN_PULSE_OUTER_BORDER} baseOpacity={SCAN_PULSE_OUTER_OPACITY} delayMs={SCAN_PULSE_OUTER_DELAY_MS} />
+              <PulseRing inset={SCAN_PULSE_INNER_INSET} borderWidth={SCAN_PULSE_INNER_BORDER} baseOpacity={SCAN_PULSE_INNER_OPACITY} delayMs={0} color={theme.colors.focusAccent} cycleMs={SCAN_PULSE_CYCLE_MS} />
+              <PulseRing inset={SCAN_PULSE_OUTER_INSET} borderWidth={SCAN_PULSE_OUTER_BORDER} baseOpacity={SCAN_PULSE_OUTER_OPACITY} delayMs={SCAN_PULSE_OUTER_DELAY_MS} color={theme.colors.focusAccent} cycleMs={SCAN_PULSE_CYCLE_MS} />
               <Pressable
                 onPress={onOpenScanner}
                 disabled={busy}
@@ -132,12 +98,13 @@ const styles = StyleSheet.create({
     opacity: SCAN_PANEL_WASH_OPACITY,
   },
   panelOuter: {
+    ...fillSelf,
     marginHorizontal: SCAN_PANEL_HORIZONTAL_MARGIN,
     shadowColor: theme.colors.focusAccent, shadowOffset: { width: 0, height: 0 },
     shadowOpacity: SCAN_PANEL_SHADOW_OPACITY, shadowRadius: SCAN_PANEL_SHADOW_RADIUS, elevation: 12,
   },
   panel: {
-    ...bevelFocusRaised, backgroundColor: theme.colors.panelInner, overflow: 'visible',
+    ...fillSelf, ...bevelFocusRaised, backgroundColor: theme.colors.panelInner, overflow: 'visible',
     boxShadow: [
       { offsetX: 0, offsetY: 6, blurRadius: theme.glow.blurRadius, spreadDistance: theme.glow.spreadDistance, inset: true, color: theme.glow.color },
       { offsetX: 0, offsetY: -6, blurRadius: theme.glow.blurRadius, spreadDistance: theme.glow.spreadDistance, inset: true, color: theme.glow.color },
@@ -152,13 +119,15 @@ const styles = StyleSheet.create({
     height: 1, backgroundColor: theme.colors.focusAccent, opacity: SCAN_PANEL_SCAN_LINE_OPACITY,
   },
   panelContent: {
+    ...fillSelf,
     alignItems: 'center', paddingVertical: theme.space['3xl'], paddingHorizontal: theme.space.xl, zIndex: 2,
   },
   icon: { marginBottom: theme.space.md },
   heading: { ...theme.type.displayL, color: theme.colors.focusText, textAlign: 'center', marginBottom: theme.space.sm },
   body: { ...theme.type.bodyM, color: theme.colors.textSecondary, textAlign: 'center', lineHeight: 22 },
-  ctaWrapper: { marginTop: theme.space['2xl'], marginBottom: theme.space.lg, overflow: 'visible' },
+  ctaWrapper: { ...fillSelf, marginTop: theme.space['2xl'], marginBottom: theme.space.lg, overflow: 'visible' },
   cta: {
+    ...fixedFillSelf,
     minHeight: theme.a11y.minTapTarget, paddingHorizontal: theme.space['3xl'],
     alignItems: 'center', justifyContent: 'center', backgroundColor: theme.colors.focusAccent,
     ...bevelFocusRaised, borderRadius: theme.radii.button,

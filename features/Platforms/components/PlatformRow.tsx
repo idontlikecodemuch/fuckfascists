@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { platformsCopy } from '../../../copy/platforms';
 import { theme } from '../../../design/tokens';
+import { fillSelf, flexChild } from '../../../design/layout';
 import { getLocalDateString } from '../../../core/utils/localDate';
 import { SparkleDecoration } from '../../../core/fx';
 import type { PlatformItem } from '../types';
@@ -184,6 +185,7 @@ export function PlatformRow({
 
 const styles = StyleSheet.create({
   row: {
+    ...fillSelf,
     flexDirection: 'row',
     alignItems: 'center',
     // Row height tracks the sprite-screen — sprite, button, and row all
@@ -238,6 +240,7 @@ const styles = StyleSheet.create({
   },
   rowBody: {
     flex: 1,
+    ...flexChild,
     flexDirection: 'row',
     alignItems: 'center',
     gap: theme.space.sm,
@@ -289,6 +292,7 @@ const styles = StyleSheet.create({
   },
   nameColumn: {
     flex: 1,
+    ...flexChild,
     gap: 1,
     paddingHorizontal: theme.space.md,
   },

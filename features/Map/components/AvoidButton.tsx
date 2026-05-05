@@ -4,6 +4,7 @@ import * as Haptics from 'expo-haptics';
 import { mapCopy } from '../../../copy/map';
 import { theme } from '../../../design/tokens';
 import { bevelFocusRaised, bevelGreenInset } from '../../../design/bevel';
+import { fillSelf, fixedFillSelf } from '../../../design/layout';
 import { SparkleDecoration } from '../../../core/fx';
 
 interface AvoidButtonProps {
@@ -98,8 +99,9 @@ export function AvoidButton({ onPress, disabled = false, initialConfirmed = fals
 }
 
 const styles = StyleSheet.create({
-  wrapper: { overflow: 'visible' as const },
+  wrapper: { ...fillSelf, overflow: 'visible' as const },
   button: {
+    ...fixedFillSelf,
     ...bevelFocusRaised,
     backgroundColor: theme.colors.focusAccent,
     borderRadius: theme.radii.button,

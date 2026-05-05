@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { platformsCopy } from '../../../copy/platforms';
 import { theme } from '../../../design/tokens';
+import { flexChild } from '../../../design/layout';
 import { SparkleDecoration } from '../../../core/fx';
 import { hasSprite } from '../../../core/sprites/spriteLoader';
 import { FigureBadge } from './FigureBadge';
@@ -187,6 +188,7 @@ const styles = StyleSheet.create({
   },
   labelColumn: {
     flex: 1,
+    ...flexChild,
     gap: 1,
   },
   // Inline row holding the company name + the SEE FILE link.

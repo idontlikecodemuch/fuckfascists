@@ -3,6 +3,7 @@ import { Pressable, Text, StyleSheet } from 'react-native';
 import { platformsCopy } from '../../../copy/platforms';
 import { theme } from '../../../design/tokens';
 import { bevelFocusRaised, bevelGreenInset } from '../../../design/bevel';
+import { noShrink } from '../../../design/layout';
 import { TRACK_BUTTON_WIDTH, TRACK_BUTTON_HEIGHT } from '../../../config/constants';
 
 interface AvoidButtonProps {
@@ -46,6 +47,7 @@ export function AvoidButton({ avoidedToday, platformName, onPress }: AvoidButton
 
 const styles = StyleSheet.create({
   button: {
+    ...noShrink,
     width: TRACK_BUTTON_WIDTH,
     height: TRACK_BUTTON_HEIGHT,
     alignItems: 'center',

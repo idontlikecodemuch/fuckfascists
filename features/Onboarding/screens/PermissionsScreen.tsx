@@ -7,6 +7,7 @@ import { OnboardingSlide } from '../components/OnboardingSlide';
 import { onboardCopy } from '../../../copy/onboard';
 import { theme } from '../../../design/tokens';
 import { bevelFocusRaised, bevelAmberRaised, bevelGreenInset } from '../../../design/bevel';
+import { fillSelf, fixedFillSelf, flexChild } from '../../../design/layout';
 import { SparkleDecoration } from '../../../core/fx';
 
 const BETA_KEY = 'ff_beta_mode';
@@ -190,6 +191,7 @@ export function PermissionsScreen({ stepIndex, onNext }: PermissionsScreenProps)
 const styles = StyleSheet.create({
   cards: { gap: theme.space.xl },
   card: {
+    ...fillSelf,
     ...bevelFocusRaised,
     backgroundColor: theme.colors.panelInner,
     flexDirection: 'row',
@@ -207,6 +209,7 @@ const styles = StyleSheet.create({
   },
   cardInner: {
     flex: 1,
+    ...flexChild,
     padding: theme.space.lg,
   },
   statusRow: {
@@ -255,6 +258,7 @@ const styles = StyleSheet.create({
     marginBottom: theme.space.md,
   },
   allowButton: {
+    ...fixedFillSelf,
     ...bevelAmberRaised,
     backgroundColor: theme.colors.rewardYellow,
     borderRadius: theme.radii.button,
@@ -270,6 +274,7 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
   },
   grantedBadge: {
+    ...fixedFillSelf,
     ...bevelGreenInset,
     backgroundColor: theme.colors.successGreenDeep,
     minHeight: theme.a11y.minTapTarget,
