@@ -103,18 +103,16 @@ export function BarcodeScannerSheet({
     return (
       <View style={styles.cameraShell}>
         <View style={styles.cameraFrame}>
-          {/* #103 — expo-camera SDK 52 exposes `autofocus: "on" | "off"`
-              only; there's no close-focus / macro / minimum-focus-distance
-              tuning. On most phones continuous AF can't resolve UPC codes
-              closer than ~4 inches. The scanHelper copy instructs users
-              to hold 4–8 inches. If this remains a problem we'd need to
-              migrate scanning off expo-camera to a native module that
-              exposes AVCaptureDevice.autoFocusRangeRestriction (iOS) /
-              Camera2 AF_MODE_MACRO (Android). Not in scope now. */}
+          {/* #103/#144 — expo-camera's `autofocus` prop is counter-named:
+                `on`  = focus once and LOCK (verified in Camera.types.d.ts)
+                `off` = automatically focus when needed (continuous AF)
+              We were locked at `on` since launch, which is why close-up
+              barcode scans never refocused. Switching to `off` enables
+              continuous AF on every supported device. */}
           <CameraView
             style={styles.camera}
             facing="back"
-            autofocus="on"
+            autofocus="off"
             onBarcodeScanned={busy ? undefined : handleBarcodeScanned}
             onMountError={() => setMountError(true)}
             barcodeScannerSettings={{ barcodeTypes: [...PRODUCT_BARCODE_TYPES] }}

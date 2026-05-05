@@ -10,6 +10,15 @@ interface BarcodeLookupBannerProps {
   onDismiss: () => void;
 }
 
+/**
+ * Toast for the Scan tab — surfaces OFF lookup failures, unsupported codes,
+ * and "brand not in our database yet" responses.
+ *
+ * Per #153:
+ *   - text centered
+ *   - dismiss × pinned to the top-right (not inline with the body)
+ *   - outside-tap dismisses via a transparent backdrop Pressable
+ */
 export function BarcodeLookupBanner({ notice, onDismiss }: BarcodeLookupBannerProps) {
   const message = (() => {
     switch (notice.kind) {
@@ -26,22 +35,34 @@ export function BarcodeLookupBanner({ notice, onDismiss }: BarcodeLookupBannerPr
   })();
 
   return (
-    <View style={styles.banner} accessibilityRole="alert">
-      <Text style={styles.text} allowFontScaling>{message}</Text>
+    <>
       <Pressable
+        style={styles.backdrop}
         onPress={onDismiss}
-        style={styles.dismissHit}
-        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         accessibilityRole="button"
         accessibilityLabel={mapCopy.bannerDismissLabel}
-      >
-        <Text style={styles.link} allowFontScaling={false}>{sharedCopy.dismissIcon}</Text>
-      </Pressable>
-    </View>
+      />
+      <View style={styles.banner} accessibilityRole="alert" accessibilityLabel={message}>
+        <Pressable
+          onPress={onDismiss}
+          style={styles.dismissHit}
+          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          accessibilityRole="button"
+          accessibilityLabel={mapCopy.bannerDismissLabel}
+        >
+          <Text style={styles.dismissIcon} allowFontScaling={false}>{sharedCopy.dismissIcon}</Text>
+        </Pressable>
+        <Text style={styles.text} allowFontScaling>{message}</Text>
+      </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
+  // Catches taps anywhere except the banner. Transparent.
+  backdrop: {
+    ...StyleSheet.absoluteFillObject,
+  },
   banner: {
     position: 'absolute',
     bottom: theme.space['4xl'] * 2,
@@ -50,24 +71,25 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.surface1,
     borderWidth: theme.borders.standard.width,
     borderColor: theme.colors.rewardYellow,
-    padding: theme.space.md,
-    flexDirection: 'row',
-    alignItems: 'center',
+    paddingVertical: theme.space.lg,
+    paddingHorizontal: theme.space.lg,
     minHeight: theme.a11y.minTapTarget,
   },
   text: {
     ...theme.type.bodyS,
     color: theme.colors.textPrimary,
-    flex: 1,
-    marginRight: theme.space.sm,
+    textAlign: 'center',
   },
   dismissHit: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
     minWidth: theme.a11y.minTapTarget,
     minHeight: theme.a11y.minTapTarget,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  link: {
+  dismissIcon: {
     ...theme.type.bodyM,
     color: theme.colors.textSecondary,
     fontSize: 20,

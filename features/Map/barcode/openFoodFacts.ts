@@ -108,22 +108,38 @@ export async function lookupBarcodeViaOpenFoodFacts(
     }
 
     const matched = matchProductBrandsToEntity(payload.product, entities);
-    if (!matched) {
-      const brands = extractBrandCandidates(payload.product);
+    if (matched) {
       return {
-        kind: 'no_match',
-        barcode: barcode.displayCode,
-        productName: payload.product.product_name?.trim() || null,
-        brandName: brands[0] ?? null,
+        kind: 'matched',
+        target: { ...matched, barcode: barcode.displayCode },
+      };
+    }
+
+    // #102 — alias lookup didn't hit, but if OFF gave us a brand name we hand
+    // it down to the full entity-match pipeline (matchEntity does normalize +
+    // alias + FEC fuzzy via useEntityScan). The downstream pipeline still
+    // gates on confidence, so a no-confidence result falls back to the
+    // BarcodeLookupBanner toast — but at least we tried.
+    const brands = extractBrandCandidates(payload.product);
+    const productName = payload.product.product_name?.trim() || null;
+    const brandName = brands[0] ?? null;
+    if (brandName) {
+      return {
+        kind: 'matched',
+        target: {
+          barcode: barcode.displayCode,
+          searchTerm: brandName,
+          productName,
+          brandName,
+        },
       };
     }
 
     return {
-      kind: 'matched',
-      target: {
-        ...matched,
-        barcode: barcode.displayCode,
-      },
+      kind: 'no_match',
+      barcode: barcode.displayCode,
+      productName,
+      brandName: null,
     };
   } catch {
     return { kind: 'lookup_unavailable', barcode: barcode.displayCode };
