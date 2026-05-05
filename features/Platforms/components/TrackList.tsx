@@ -8,9 +8,11 @@ import * as SecureStore from 'expo-secure-store';
 import { getLocalDateString } from '../../../core/utils/localDate';
 import { platformsCopy } from '../../../copy/platforms';
 import { theme } from '../../../design/tokens';
+import { fillSelf } from '../../../design/layout';
 import {
   ARENA_TRANSITION_MS,
   DAY_CIRCLES_AUTO_COLLAPSE_DELAY_MS,
+  DAY_CIRCLES_ANIMATE_MS,
   DAY_CIRCLES_COLLAPSE_STAGGER_MS,
 } from '../../../config/constants';
 import { getDisplayFigure, useTrack } from '../context/TrackContext';
@@ -223,12 +225,14 @@ export function TrackList({ onShowCard }: TrackListProps = {}) {
 
     if (item.type === 'dayCircles') {
       return (
-        <Animated.View entering={FadeIn.duration(200)} style={sidesStyle}>
+        <Animated.View
+          entering={FadeIn.duration(DAY_CIRCLES_ANIMATE_MS)}
+          style={[styles.animatedDetailRow, sidesStyle]}
+        >
           <DayCircles
             weekOf={weekOf}
             platformName={platformItem.platform.name}
             dayCounts={platformItem.dayCounts}
-            isChild={item.isChild}
             onAvoidDate={async (date) => {
               dismissDailyPreview();
               openPlatformDetails(platformId);
@@ -313,7 +317,7 @@ export function TrackList({ onShowCard }: TrackListProps = {}) {
 
   return (
     <Animated.FlatList
-      itemLayoutAnimation={LinearTransition.duration(250)}
+      itemLayoutAnimation={LinearTransition.duration(DAY_CIRCLES_ANIMATE_MS)}
       data={listData}
       keyExtractor={(item) => item.key}
       renderItem={renderItem}
@@ -340,9 +344,14 @@ const styles = StyleSheet.create({
   },
   listContent: {
     paddingBottom: theme.space['3xl'],
+    alignItems: 'stretch',
+  },
+  animatedDetailRow: {
+    ...fillSelf,
   },
   panelTopCap: {
     marginHorizontal: theme.space.sm,
+    ...fillSelf,
     // Collapses to border thickness so the row content sits flush with the
     // bevel edge — no fill gap between the dimensional outline and the row.
     height: theme.borders.bevel.width,
@@ -358,6 +367,7 @@ const styles = StyleSheet.create({
   },
   panelTopCapFocused: {
     marginHorizontal: theme.space.sm,
+    ...fillSelf,
     // Height equals the border thickness only — collapses to just the cyan
     // top edge. No fill space between the bevel and the row content.
     height: theme.borders.bevel.width,
@@ -373,6 +383,7 @@ const styles = StyleSheet.create({
   },
   panelBottomCap: {
     marginHorizontal: theme.space.sm,
+    ...fillSelf,
     height: theme.borders.bevel.width,
     backgroundColor: theme.colors.panelOuter,
     borderBottomWidth: theme.borders.bevel.width,
@@ -386,6 +397,7 @@ const styles = StyleSheet.create({
   },
   panelBottomCapFocused: {
     marginHorizontal: theme.space.sm,
+    ...fillSelf,
     height: theme.borders.bevel.width,
     backgroundColor: theme.colors.trackFocusBg,
     borderBottomWidth: theme.borders.bevel.width,
@@ -399,6 +411,7 @@ const styles = StyleSheet.create({
   },
   panelSides: {
     marginHorizontal: theme.space.sm,
+    ...fillSelf,
     borderLeftWidth: theme.borders.bevel.width,
     borderRightWidth: theme.borders.bevel.width,
     borderLeftColor: theme.colors.bevelLight,
@@ -408,6 +421,7 @@ const styles = StyleSheet.create({
   },
   panelSidesFocused: {
     marginHorizontal: theme.space.sm,
+    ...fillSelf,
     borderLeftWidth: theme.borders.bevel.width,
     borderRightWidth: theme.borders.bevel.width,
     borderLeftColor: theme.colors.focusBevelLight,

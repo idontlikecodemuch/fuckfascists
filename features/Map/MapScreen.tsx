@@ -59,6 +59,7 @@ interface MapScreenProps {
  * They are never written to disk, transmitted, or passed to core/data.
  */
 const HEADER_BAR_ASPECT = 1242 / 153;
+const HORIZONTAL_LOGO_ASPECT = 1938 / 491;
 
 const HINT_COPY: Record<HintId, string> = {
   search: mapCopy.hintSearch,
@@ -404,7 +405,7 @@ const styles = StyleSheet.create({
   headerBgStrip:  { position: 'absolute', top: 0, left: 0, width: '100%', overflow: 'hidden' },
   headerBgTile:   { width: '100%', height: '100%', transform: [{ scale: 2.5 }] },
   headerBarImg:   { position: 'absolute', left: 0 },
-  headerLogo:     { height: 42, aspectRatio: 1536 / 322, zIndex: 3 },
+  headerLogo:     { height: 42, aspectRatio: HORIZONTAL_LOGO_ASPECT, zIndex: 3 },
   backdrop:       { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
   // dimBackdrop = backdrop + black bg. Animated opacity (driven by
   // useCardOverlayAnimation) modulates visibility. Used for the card

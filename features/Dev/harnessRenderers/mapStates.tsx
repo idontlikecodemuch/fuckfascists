@@ -24,6 +24,7 @@ const noop = () => {};
 const noopAsync = async () => {};
 
 const HEADER_BAR_ASPECT = 1242 / 153;
+const HORIZONTAL_LOGO_ASPECT = 1938 / 491;
 
 function MapShell({ children }: { children?: React.ReactNode }) {
   const insets = useSafeAreaInsets();
@@ -135,7 +136,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.bgVoid,
   },
   headerBarImg: { position: 'absolute', left: 0 },
-  headerLogo: { height: 28, aspectRatio: 1536 / 322, zIndex: 3 },
+  headerLogo: { height: 28, aspectRatio: HORIZONTAL_LOGO_ASPECT, zIndex: 3 },
   backdrop: {
     position: 'absolute',
     top: 0, left: 0, right: 0, bottom: 0,

@@ -7,7 +7,6 @@ import { getLocalDateString } from '../../../core/utils/localDate';
 import { theme } from '../../../design/tokens';
 import { bevelInset, bevelGreenInset } from '../../../design/bevel';
 import {
-  TRACK_CHILD_INDENT,
   TRACK_DAY_CIRCLE_SIZE,
   TRACK_DAY_CIRCLES_GAP,
   TRACK_DAY_CIRCLES_PADDING_BOTTOM,
@@ -22,7 +21,6 @@ interface DayCirclesProps {
   platformName: string;
   dayCounts: Map<string, number>;
   onAvoidDate: (date: string) => Promise<void>;
-  isChild: boolean;
 }
 
 /**
@@ -30,11 +28,11 @@ interface DayCirclesProps {
  * - Open (past/today): empty bordered, tappable
  * - Future: faded, not tappable
  */
-export function DayCircles({ weekOf, platformName, dayCounts, onAvoidDate, isChild }: DayCirclesProps) {
+export function DayCircles({ weekOf, platformName, dayCounts, onAvoidDate }: DayCirclesProps) {
   const dates = getWeekDates(weekOf);
 
   return (
-    <View style={[styles.wrapper, isChild && styles.childWrapper]}>
+    <View style={styles.wrapper}>
       <View style={styles.container} accessibilityRole="list">
         {dates.map((date, index) => {
           const dayLabel = platformsCopy.dayLabels[index]!;
@@ -94,9 +92,6 @@ const styles = StyleSheet.create({
     backgroundColor: TRACK_ROW_FOCUS_BG_COLOR,
     borderBottomWidth: 1,
     borderBottomColor: theme.colors.focusAccent,
-  },
-  childWrapper: {
-    paddingLeft: TRACK_CHILD_INDENT,
   },
   container: {
     flexDirection: 'row',
