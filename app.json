@@ -18,7 +18,7 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "F*ck Fascists uses your camera to scan product barcodes and match brands to corporate donation records.",
+          "cameraPermission": "FCK uses your camera to scan product barcodes and match brands to corporate donation records.",
           "recordAudioAndroid": false
         }
       ],
@@ -37,7 +37,7 @@
     "ios": {
       "bundleIdentifier": "com.fckapp.fck",
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "F*ck Fascists uses your location to find nearby businesses and check their political donation records."
+        "NSLocationWhenInUseUsageDescription": "FCK uses your location to find nearby businesses and check their political donation records."
       }
     },
     "android": {
