@@ -32,6 +32,7 @@ interface ScorecardScreenProps {
   entities: Entity[];
   platforms: Platform[];
   onSwitchTab?: (tab: string) => void;
+  onPresentationActiveChange?: (active: boolean) => void;
 }
 
 /**
@@ -56,7 +57,13 @@ interface ScorecardScreenProps {
  *   error), raw events are RETAINED and the next visit retries — we never
  *   silently destroy data on failure.
  */
-export function ScorecardScreen({ adapter, entities, platforms, onSwitchTab }: ScorecardScreenProps) {
+export function ScorecardScreen({
+  adapter,
+  entities,
+  platforms,
+  onSwitchTab,
+  onPresentationActiveChange,
+}: ScorecardScreenProps) {
   const imageRef = useRef<View>(null);
   const [screenState, setScreenState] = useState<ScreenState>('preview');
   const [cardUri, setCardUri] = useState<string | null>(null);
@@ -190,6 +197,12 @@ export function ScorecardScreen({ adapter, entities, platforms, onSwitchTab }: S
     dataLoading ? 'loading' :
     screenState === 'loading' || capturing ? 'loading' :
     screenState;
+  const presentationActive = effectiveState === 'presentation' && Boolean(cardUri);
+
+  React.useEffect(() => {
+    onPresentationActiveChange?.(presentationActive);
+    return () => onPresentationActiveChange?.(false);
+  }, [onPresentationActiveChange, presentationActive]);
 
   // PREVIEW stamp is a fixed viewport overlay in the in-app preview/empty
   // states (#100) — it must persist while the user scrolls LivePreview so
@@ -227,7 +240,7 @@ export function ScorecardScreen({ adapter, entities, platforms, onSwitchTab }: S
           </Pressable>
         </>
       )}
-      {effectiveState === 'presentation' && cardUri && (
+      {presentationActive && cardUri && (
         <CardPresentation pngUri={cardUri} onDismiss={handleDismiss} />
       )}
       {effectiveState === 'archive' && (

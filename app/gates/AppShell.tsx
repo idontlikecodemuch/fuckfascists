@@ -67,6 +67,7 @@ export function AppShell({ adapter, entities, people }: AppShellProps) {
   // stale native-view ghost behind Scorecard on RN 0.76 + Fabric.
   const [activeTab, setActiveTab] = useState<Tab | null>(null);
   const [harnessOpen, setHarnessOpen] = useState(false);
+  const [scorecardPresentationActive, setScorecardPresentationActive] = useState(false);
   // Incrementing key forces screen remount after beta reset, clearing all
   // in-memory state (map pins, tap results, etc.).
   const [resetKey, setResetKey] = useState(0);
@@ -150,6 +151,7 @@ export function AppShell({ adapter, entities, people }: AppShellProps) {
             entities={entities}
             platforms={TRACKED_PLATFORMS}
             onSwitchTab={(tab) => setActiveTab(tab as Tab)}
+            onPresentationActiveChange={setScorecardPresentationActive}
           />
         );
       case 'info':
@@ -175,6 +177,8 @@ export function AppShell({ adapter, entities, people }: AppShellProps) {
     setResetKey((k) => k + 1);
   }, []);
 
+  const showShellChrome = !scorecardPresentationActive;
+
   // Screenshot harness takes over the full screen when open (beta mode only)
   if (betaEnabled && harnessOpen) {
     const Harness = getScreenshotHarness();
@@ -191,9 +195,9 @@ export function AppShell({ adapter, entities, people }: AppShellProps) {
   return (
     <View style={styles.root}>
       <View key={resetKey} style={styles.content}>{renderScreen()}</View>
-      <NudgeBanner onPress={handleNudgePress} />
-      <TabBar activeTab={activeTab} onSelect={setActiveTab} />
-      {betaEnabled && (
+      {showShellChrome && <NudgeBanner onPress={handleNudgePress} />}
+      {showShellChrome && <TabBar activeTab={activeTab} onSelect={setActiveTab} />}
+      {betaEnabled && showShellChrome && (
         <BetaOverlay
           activeTab={activeTab}
           onOpenHarness={handleOpenHarness}

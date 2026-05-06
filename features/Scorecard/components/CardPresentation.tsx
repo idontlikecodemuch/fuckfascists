@@ -65,7 +65,7 @@ export function CardPresentation({ pngUri, onDismiss }: CardPresentationProps) {
   // ornate gold frame on the rendered card sits well clear of the dynamic
   // island and reads as a centerpiece, not a fullscreen takeover.
   const topPad = Math.max(insets.top, SAFE_AREA_TOP_MIN) + 60;
-  const bottomPad = theme.space.md; // push the runway / SHARE down close to the tab bar
+  const bottomPad = theme.space.md; // keep the runway / SHARE close to the screen bottom
   const { cardW, cardH } = useMemo(() => {
     // Width-first: card fills 85% of screen width. If 9:16 height won't fit
     // between top inset + runway + bottom inset, scale down by height instead.
