@@ -18,6 +18,8 @@ import { addScreenshotListener } from 'expo-screen-capture';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { scorecardCopy } from '../../../copy/scorecard';
 import { theme } from '../../../design/tokens';
+import { StarFieldBg } from '../../../core/starbg';
+import { SecureCaptureOverlay } from '../../../core/ui/SecureCaptureOverlay';
 import { MoneyRainfall } from './MoneyRainfall';
 import {
   MONEY_RAINFALL_DURATION_MS,
@@ -43,9 +45,10 @@ interface CardPresentationProps {
   onDismiss: () => void;
 }
 
-// Trophy moment — full-screen card takeover. iOS gets a pre-capture swap
-// via AppState; Android gets a post-capture screenshot listener that
-// auto-opens the share sheet with the clean PNG. See CLAUDE.md.
+// Trophy moment — full-screen card takeover. iOS keeps the clean card as an
+// unprotected base layer, then renders presentation chrome in a secure overlay
+// that is hidden from screenshots. Android gets a post-capture screenshot
+// listener that auto-opens the share sheet with the clean PNG. See CLAUDE.md.
 export function CardPresentation({ pngUri, onDismiss }: CardPresentationProps) {
   const { width: screenW, height: screenH } = useWindowDimensions();
   const appActive = useAppActive();
@@ -118,10 +121,9 @@ export function CardPresentation({ pngUri, onDismiss }: CardPresentationProps) {
   }, [pngUri]);
 
   // Android post-capture parity: Android exposes no pre-capture hook, so we
-  // can't swap the bitmap like iOS. Closest we can offer — detect the post-
-  // capture event and auto-open the share sheet with the clean PNG. The
-  // chrome screenshot still lands in Photos; this just makes the gesture
-  // also produce the clean-PNG share flow. No-op on iOS (AppState wins).
+  // can't hide the chrome before the bitmap lands. Closest we can offer —
+  // detect the post-capture event and auto-open the share sheet with the
+  // clean card image. iOS uses the secure overlay instead.
   useEffect(() => {
     if (Platform.OS !== 'android') return;
     const sub = addScreenshotListener(() => handleShare());
@@ -168,56 +170,80 @@ export function CardPresentation({ pngUri, onDismiss }: CardPresentationProps) {
       style={[styles.container, { transform: [{ translateX: shakeX }, { translateY }] }]}
       {...panResponder.panHandlers}
     >
-      {/* Falling money — large, scattered. Bursts on reveal then stops so it
-          doesn't permanently obscure the card. */}
-      {showParticles && <MoneyRainfall screenW={screenW} screenH={screenH} />}
+      {Platform.OS === 'ios' && (
+        <>
+          <StatusBar hidden />
+          <View style={styles.captureBase} pointerEvents="none">
+            <Image source={{ uri: pngUri }} style={styles.fullBleed} resizeMode="contain" />
+          </View>
+        </>
+      )}
 
-      <Pressable
-        style={[styles.dismissBtn, { top: insets.top + 12 }]}
-        onPress={onDismiss}
-        accessibilityRole="button"
-        accessibilityLabel={scorecardCopy.dismissLabel}
-        hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
-      >
-        <Text style={styles.dismissText}>{'✕'}</Text>
-      </Pressable>
+      <SecureCaptureOverlay style={styles.presentationLayer}>
+        {Platform.OS === 'ios' && <StarFieldBg seed="scorecard-presentation" />}
 
-      {/* Top spacer — explicit View instead of paddingTop so the column flex
-          math can't collapse it. Card centers in the middle flex region;
-          runway pinned at the bottom. */}
-      <View style={{ height: topPad }} />
+        {/* Falling money — large, scattered. Bursts on reveal then stops so it
+            doesn't permanently obscure the card. */}
+        {showParticles && <MoneyRainfall screenW={screenW} screenH={screenH} />}
 
-      <View style={styles.cardArea}>
-        <View style={[styles.cardWrap, { width: cardW, height: cardH }]}>
-          <CardHalo width={cardW} height={cardH} />
-          <Image source={{ uri: pngUri }} style={styles.cardImage} resizeMode="contain" />
+        <Pressable
+          style={[styles.dismissBtn, { top: insets.top + 12 }]}
+          onPress={onDismiss}
+          accessibilityRole="button"
+          accessibilityLabel={scorecardCopy.dismissLabel}
+          hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+        >
+          <Text style={styles.dismissText}>{'✕'}</Text>
+        </Pressable>
+
+        {/* Top spacer — explicit View instead of paddingTop so the column flex
+            math can't collapse it. Card centers in the middle flex region;
+            runway pinned at the bottom. */}
+        <View style={{ height: topPad }} />
+
+        <View style={styles.cardArea}>
+          <View style={[styles.cardWrap, { width: cardW, height: cardH }]}>
+            <CardHalo width={cardW} height={cardH} />
+            <Image source={{ uri: pngUri }} style={styles.cardImage} resizeMode="contain" />
+          </View>
         </View>
-      </View>
 
-      <Animated.View
-        style={[
-          styles.runway,
-          {
-            opacity: runwayOpacity,
-            height: RUNWAY_HEIGHT,
-            marginBottom: bottomPad,
-          },
-        ]}
-      >
-        <ChevronRunway width={chevronWidth} color={theme.colors.glowCyan} />
-        <ShareButton width={shareTextWidth} onPress={handleShare} />
-      </Animated.View>
+        <Animated.View
+          style={[
+            styles.runway,
+            {
+              opacity: runwayOpacity,
+              height: RUNWAY_HEIGHT,
+              marginBottom: bottomPad,
+            },
+          ]}
+        >
+          <ChevronRunway width={chevronWidth} color={theme.colors.glowCyan} />
+          <ShareButton width={shareTextWidth} onPress={handleShare} />
+        </Animated.View>
+      </SecureCaptureOverlay>
     </Animated.View>
   );
 }
 
 const styles = StyleSheet.create({
-  // Transparent so ScorecardScreen's <StarField /> shows through behind the
-  // card. The intercept (iOS pre-screenshot swap) keeps a solid bgVoid since
-  // we want the captured bitmap to be the rendered card alone, no chrome.
+  // Transparent on Android so ScorecardScreen's <StarField /> shows through.
+  // iOS adds an unprotected clean-card base, then covers it with this
+  // screenshot-hidden presentation layer.
   container: {
     ...StyleSheet.absoluteFillObject,
     zIndex: 100,
+  },
+  captureBase: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: theme.colors.bgVoid,
+    zIndex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  presentationLayer: {
+    ...StyleSheet.absoluteFillObject,
+    zIndex: 2,
   },
   intercept: {
     ...StyleSheet.absoluteFillObject,

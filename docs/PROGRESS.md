@@ -28,6 +28,8 @@ This document is updated continuously. New instances should read this first — 
 
 **Follow-up 3:** Extracted the Scan CTA pulse into reusable `core/ui/PulseRing.tsx` and applied the same subtle two-ring treatment to onboarding bottom CTAs in reward yellow. Fixed the Map header logo ratio to the actual `FF_logo_horizontal.png` dimensions (`1938x491`) so it no longer appears vertically stretched. Removed the child-only indent from `DayCircles` so multi-platform date selectors match singleton padding. Centralized the brand tagline in `copy/shared.ts`; scorecard rendered-card copy now uses that token with the apostrophe restored, and onboarding uses the stacked no-emoji variant.
 
+**Scorecard screenshot follow-up:** Replaced the earlier iOS AppState-only screenshot assumption with a scoped secure-overlay sandwich. In `CardPresentation`, iOS now renders a full-screen clean cached card as the unprotected base layer, then renders the entire presentation experience (starfield, smaller card, halo, money, runway, SHARE, dismiss) inside native `FFSecureCaptureView`, a tiny local `UITextField.secureTextEntry` wrapper. iOS screenshots should omit that secure presentation layer and reveal the clean full card underneath. AppState still swaps to the clean card for app-switcher/control-center/interruption snapshots. Android keeps the post-capture screenshot listener that auto-opens share with the clean card.
+
 ### Session: May 4, 2026 ET — TestFlight beta polish sprint (12 items)
 
 **Branch:** `claude/sleepy-sinoussi-d76599` → committed directly to `main` in chunks.
@@ -196,9 +198,9 @@ This document is updated continuously. New instances should read this first — 
 
 - **Gestures.** Tap SHARE → share, swipe-up (>`SCORECARD_SHARE_SWIPE_UP_THRESHOLD=80`) → share, swipe-down (>120) → dismiss. Existing screen shake on mount preserved.
 
-- **Privacy intercept (iOS pre-capture).** New `useAppActive` hook wraps RN `AppState`. When the app leaves `'active'` (iOS screenshot pre-capture, App Switcher preview, control-center pull, incoming-call interrupt), `CardPresentation` swaps to a full-bleed `Image` of the cached PNG with `<StatusBar hidden />` — so the captured bitmap is the rendered card alone, no chrome. Restored on `'active'`. Hook is mounted only inside `CardPresentation`; nothing else in the app intercepts AppState.
+- **Privacy intercept (iOS system snapshots).** New `useAppActive` hook wraps RN `AppState`. When the app leaves `'active'` (App Switcher preview, control-center pull, incoming-call interrupt), `CardPresentation` swaps to a full-bleed `Image` of the cached PNG with `<StatusBar hidden />` — so system snapshots are the rendered card alone, no chrome. Restored on `'active'`. Hook is mounted only inside `CardPresentation`; nothing else in the app intercepts AppState. May 5 correction: iOS screenshots use a secure-overlay sandwich instead of AppState timing — full clean card underneath, full presentation inside native secure overlay above it.
 
-- **Android screenshot parity (post-capture).** Researched extensively: Android exposes no pre-capture hook — `MediaStore.ContentObserver`, `FileObserver`, and Android 14's official `registerScreenCaptureCallback` all fire post-capture by deliberate OS design (pre-capture detection would create privacy holes). Closest parity is `expo-screen-capture`'s `addScreenshotListener` mounted inside `CardPresentation`, only on Android — when fired, it auto-invokes `handleShare`, so the screenshot gesture also produces the clean-PNG share flow. The chrome screenshot still lands in Photos (unavoidable on Android), but the user immediately gets the OS share sheet with the clean PNG. iOS skips this listener entirely (the AppState swap already produced a clean bitmap). Listener lifecycle is scoped to the component.
+- **Android screenshot parity (post-capture).** Researched extensively: Android exposes no pre-capture hook — `MediaStore.ContentObserver`, `FileObserver`, and Android 14's official `registerScreenCaptureCallback` all fire post-capture by deliberate OS design (pre-capture detection would create privacy holes). Closest parity is `expo-screen-capture`'s `addScreenshotListener` mounted inside `CardPresentation`, only on Android — when fired, it auto-invokes `handleShare`, so the screenshot gesture also produces the clean-PNG share flow. The chrome screenshot still lands in Photos (unavoidable on Android), but the user immediately gets the OS share sheet with the clean PNG. Listener lifecycle is scoped to the component.
 
 - **Cross-platform share fix.** Pre-existing bug discovered while reviewing the share path: RN's `Share.share({ url })` is iOS-only — `url` is silently ignored on Android. iOS now uses RN `Share.share` (full system sheet incl. Save to Files); Android uses `expo-sharing`'s `Sharing.shareAsync(uri, { mimeType: 'image/png' })`, which surfaces the OS share sheet via `Intent.ACTION_SEND` for the file. Single helper, branched on `Platform.OS`.
 
@@ -218,7 +220,7 @@ This document is updated continuously. New instances should read this first — 
 
 | Platform | Screenshot gesture | Photos result | Share flow |
 |---|---|---|---|
-| iOS | clean PNG (AppState swap fires before bitmap is captured) | clean PNG | OS share sheet on demand via SHARE / swipe-up / auto on screenshot |
+| iOS | clean full card via secure-overlay sandwich | clean full card | OS share sheet on demand via SHARE / swipe-up |
 | Android | chrome screenshot (no pre-capture hook in OS) | chrome PNG | OS share sheet auto-opens with clean PNG when screenshot is detected; SHARE / swipe-up also work |
 
 Both platforms produce a clean PNG share artifact from the screenshot gesture; SHARE button works identically on both.
