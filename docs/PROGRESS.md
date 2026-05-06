@@ -30,7 +30,7 @@ This document is updated continuously. New instances should read this first — 
 
 **Scorecard screenshot follow-up:** Replaced the earlier iOS AppState-only screenshot assumption with a scoped secure-overlay sandwich. In `CardPresentation`, iOS now renders a full-screen clean cached card as the unprotected base layer, then renders the entire presentation experience (starfield, smaller card, halo, money, runway, SHARE, dismiss) inside native `FFSecureCaptureView`, a tiny local `UITextField.secureTextEntry` wrapper. While the scorecard presentation is active, `AppShell` hides shell chrome (tab bar, nudge banner, beta overlay) so the presentation owns the full viewport and the screenshot base centers correctly. iOS screenshots should omit that secure presentation layer and reveal the clean full card underneath. AppState still swaps to the clean card for app-switcher/control-center/interruption snapshots. Android keeps the post-capture screenshot listener that auto-opens share with the clean card; it does not render the hidden clean-card base during active presentation.
 
-**Follow-up 4:** Added a first-presentation scorecard tooltip using the existing `Tooltip` component: `"Swipe up or screenshot"`. The hint is session-only and writes nothing to disk. Added Android screenshot parity to V1.5 technical debt: keep the current post-capture share fallback for V1, then revisit native Android options without adding heavy rendering or dependencies.
+**Follow-up 4:** Added a first-presentation scorecard tooltip using the existing `Tooltip` component: `"Swipe up or screenshot"`. Extracted shared `usePersistentHints` so Map and Scorecard use the same SecureStore-backed hint semantics: one stable key per hint family, `{ id: version }` values, legacy Map array migration, and explicit version bumps only when a hint should replay. Added Android screenshot parity to V1.5 technical debt: keep the current post-capture share fallback for V1, then revisit native Android options without adding heavy rendering or dependencies.
 
 ### Session: May 4, 2026 ET — TestFlight beta polish sprint (12 items)
 
@@ -1069,7 +1069,7 @@ Two pairs of constants — same for every sprite, swap by state. SpriteView deri
 1. **Apple MapKit POI matching** — Added prefix matching to `aliasMatch.ts` as a fallback after exact match. When the normalized input starts with a normalized alias followed by a space (e.g. "apple georgetown" → "apple "), the entity matches. Covers retail store naming patterns ("Apple Georgetown", "Walmart Neighborhood Market") without requiring per-location aliases. Pass 2 only runs if Pass 1 (exact) misses. No false positive risk — no aliases ≤5 chars exist in the current entity list.
    - **Files:** `core/matching/aliasMatch.ts`
 
-2. **Tooltip reset on beta data clear** — Added `map_hints_dismissed` to `RESET_SECURE_STORE_KEYS` in `resetAppState.ts`. First-use map tooltips (search → tap → barcode) now replay after beta reset.
+2. **Tooltip reset on beta data clear** — Added persisted tooltip keys to `RESET_SECURE_STORE_KEYS` in `resetAppState.ts`. First-use map tooltips (search → tap → barcode) and the first scorecard presentation hint now replay after beta reset.
    - **Files:** `features/Beta/resetAppState.ts`
 
 3. **Map pin persistence after beta clear** — Added `onReset` callback to `BetaOverlay` and `resetKey` counter in `AppShell`. Beta reset increments the key, forcing a full screen content remount that clears all in-memory map state (tap pins, no-match ghosts, latest batch). No coupling between resetAppState and map internals.
@@ -1093,7 +1093,7 @@ Two pairs of constants — same for every sprite, swap by state. SpriteView deri
 - `core/dropSchedule/__tests__/computeDropTime.test.ts` — window bound fix
 - `core/matching/aliasMatch.ts` — prefix matching fallback
 - `features/Beta/BetaOverlay.tsx` — onReset callback
-- `features/Beta/resetAppState.ts` — map_hints_dismissed key
+- `features/Beta/resetAppState.ts` — persisted tooltip keys
 - `features/Scorecard/data/__tests__/aggregateScorecard.test.ts` — objectContaining
 - `features/Scorecard/hooks/useDropSchedule.ts` — beta schedule conditional
 

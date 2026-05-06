@@ -21,6 +21,7 @@ import { theme } from '../../../design/tokens';
 import { StarFieldBg } from '../../../core/starbg';
 import { SecureCaptureOverlay } from '../../../core/ui/SecureCaptureOverlay';
 import { Tooltip } from '../../../core/ui/Tooltip';
+import { usePersistentHints } from '../../../core/ui/usePersistentHints';
 import { MoneyRainfall } from './MoneyRainfall';
 import {
   MONEY_RAINFALL_DURATION_MS,
@@ -41,7 +42,9 @@ const CARD_WIDTH_PCT = 0.85;          // card image width = 85% of screen width
 const CHEVRON_WIDTH_PCT = 0.42;       // wide triangle width
 const SHARE_TEXT_WIDTH_PCT = 0.40;
 const PRESENTATION_HINT_MS = 6000;
-let presentationHintShownThisSession = false;
+const PRESENTATION_HINTS_KEY = 'scorecard_presentation_hints_seen';
+const PRESENTATION_HINTS = [{ id: 'share', version: 'v1' }] as const;
+type PresentationHintId = (typeof PRESENTATION_HINTS)[number]['id'];
 
 interface CardPresentationProps {
   pngUri: string;
@@ -62,6 +65,13 @@ export function CardPresentation({ pngUri, onDismiss }: CardPresentationProps) {
   const runwayOpacity = useRef(new Animated.Value(0)).current;
   const [showParticles, setShowParticles] = useState(true);
   const [showPresentationHint, setShowPresentationHint] = useState(false);
+  const {
+    activeHint: activePresentationHint,
+    dismiss: dismissPresentationHint,
+  } = usePersistentHints<PresentationHintId>({
+    storageKey: PRESENTATION_HINTS_KEY,
+    hints: PRESENTATION_HINTS,
+  });
 
   // SafeAreaProvider context can fail to propagate into absolute-positioned
   // takeover screens; SAFE_AREA_TOP_MIN is the documented floor for that case
@@ -109,15 +119,17 @@ export function CardPresentation({ pngUri, onDismiss }: CardPresentationProps) {
   }, [shakeX, runwayOpacity]);
 
   useEffect(() => {
-    if (presentationHintShownThisSession) return;
+    if (activePresentationHint !== 'share') return;
 
-    presentationHintShownThisSession = true;
     setShowPresentationHint(true);
-    const timer = setTimeout(() => setShowPresentationHint(false), PRESENTATION_HINT_MS);
+    const timer = setTimeout(() => {
+      setShowPresentationHint(false);
+      dismissPresentationHint('share').catch(() => undefined);
+    }, PRESENTATION_HINT_MS);
     return () => {
       clearTimeout(timer);
     };
-  }, []);
+  }, [activePresentationHint, dismissPresentationHint]);
 
   // iOS: RN Share. Android: expo-sharing (RN's `url` is iOS-only).
   const handleShare = useCallback(async () => {

@@ -13,6 +13,7 @@ const RESET_SECURE_STORE_KEYS = [
   'platform_roster',
   'track_daily_open_last_visit',
   'map_hints_dismissed',
+  'scorecard_presentation_hints_seen',
 ] as const;
 
 /**
