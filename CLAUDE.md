@@ -537,6 +537,9 @@ When a flagged domain is detected, `handleCheckDomain` resolves donation data in
 - App fetches updates periodically from ENTITY_LIST_UPDATE_URL and caches locally
 - Domain mappings (amazon.com → Amazon → Jeff Bezos) live in the same list
 
+### Future expansion: non-corporate entities
+V1 covers for-profit corporations and their PACs. Add foundations (e.g. Gates Foundation), NGOs / nonprofits (e.g. Goodwill, ASPCA), and family offices in a later release — users will reasonably search for these.
+
 ### Entity schema
 ```typescript
 {
