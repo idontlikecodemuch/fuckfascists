@@ -1,8 +1,18 @@
 # Sprite Generation Handoff
 
-**Date:** April 8, 2026
+**Date:** April 8, 2026 (historical)
 **Session:** vibrant-mcnulty worktree
 **Status:** Batch 1 of 4 complete and deployed. Batches 2-4 ready to run.
+
+> ⚠️ **This document is historical.** It predates the optimize-pipeline rewrite in commit
+> [`84d701e`](https://github.com/anthropics/fckfascists/commit/84d701e) (Apr 18, 2026), which
+> introduced `assets/pixel/sprites-hires/` as the source of truth and added
+> `optimize_sprites.py` to 2× downscale into `assets/pixel/sprites/`. The deployment step
+> below ("`cp output/processed/<id>.png ../../assets/pixel/sprites/<id>.png`") is no longer
+> the right place to put a hires sheet — copy to `sprites-hires/`, run normalize with
+> `--source hires`, then run `optimize_sprites.py`. See
+> [`tools/img-gen/USAGE.md`](../tools/img-gen/USAGE.md) for the current pipeline and the
+> single-character regen reference.
 
 ---
 

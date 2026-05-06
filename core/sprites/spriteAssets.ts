@@ -77,6 +77,7 @@ export const spriteAssets: Record<string, ImageSourcePropType> = {
   'gabriel-weinberg': require('../../assets/pixel/sprites/gabriel-weinberg.png'),
   'gail-boudreaux': require('../../assets/pixel/sprites/gail-boudreaux.png'),
   'gary-friedman': require('../../assets/pixel/sprites/gary-friedman.png'),
+  'george-arison': require('../../assets/pixel/sprites/george-arison.png'),
   'goli-sheikholeslami': require('../../assets/pixel/sprites/goli-sheikholeslami.png'),
   'greg-peters': require('../../assets/pixel/sprites/greg-peters.png'),
   'guillaume-motte': require('../../assets/pixel/sprites/guillaume-motte.png'),
@@ -173,6 +174,7 @@ export const spriteAssets: Record<string, ImageSourcePropType> = {
   'shantanu-narayen': require('../../assets/pixel/sprites/shantanu-narayen.png'),
   'shou-zi-chew': require('../../assets/pixel/sprites/shou-zi-chew.png'),
   'sky-xu': require('../../assets/pixel/sprites/sky-xu.png'),
+  'spencer-rascoff': require('../../assets/pixel/sprites/spencer-rascoff.png'),
   'sridhar-ramaswamy': require('../../assets/pixel/sprites/sridhar-ramaswamy.png'),
   'stephen-schwarzman': require('../../assets/pixel/sprites/stephen-schwarzman.png'),
   'steve-huffman': require('../../assets/pixel/sprites/steve-huffman.png'),
@@ -194,6 +196,7 @@ export const spriteAssets: Record<string, ImageSourcePropType> = {
   'vivek-sankaran': require('../../assets/pixel/sprites/vivek-sankaran.png'),
   'vlad-tenev': require('../../assets/pixel/sprites/vlad-tenev.png'),
   'warren-buffett': require('../../assets/pixel/sprites/warren-buffett.png'),
+  'zhang-yiming': require('../../assets/pixel/sprites/zhang-yiming.png'),
 };
 
-// 189 sprites
+// 192 sprites

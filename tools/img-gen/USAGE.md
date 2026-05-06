@@ -23,11 +23,27 @@ pip3 install -r requirements.txt
 1. generate.py            Generate raw sprite variant pairs (neutral + defeated) via Gemini
 2. compose.py             Stack variant rows into final sprite sheets
 3. remove_magenta.py      Chroma-key magenta background → transparent PNG
-4. analyze_sprites.py     Analyze body placement + scale (run once to compute targets)
-5. normalize_sprites.py   Normalize body height, foot position, centering across all sprites
-6. manifest.py            Generate sprite sheet metadata JSON (frame coordinates)
-7. deploy_assets.py       (for UI assets only) Copy processed assets → assets/pixel/
+4. cp processed → hires   Copy output/processed/<id>.png → assets/pixel/sprites-hires/<id>.png
+5. normalize_sprites.py   Normalize body height/foot/centering on the hires sheet (--source hires)
+6. optimize_sprites.py    2× nearest-neighbor downscale + pngquant → assets/pixel/sprites/
+7. manifest.py            Write per-sprite frame metadata to assets/pixel/sprites/manifest.json
+8. generate-sprite-assets.mjs  (run from repo root) Regenerate core/sprites/spriteAssets.ts
 ```
+
+**Single-character regen reference (Citron, Apr 30 2026 — see commit `4e72618`):**
+```bash
+echo "d" | python3 scripts/generate.py --character jason-citron --force
+python3 scripts/compose.py --character jason-citron --force
+python3 scripts/remove_magenta.py "output/raw/jason-citron.png" "output/processed/jason-citron.png" --defringe
+cp output/processed/jason-citron.png ../../assets/pixel/sprites-hires/jason-citron.png
+python3 scripts/normalize_sprites.py --character jason-citron --source hires \
+  --target-height-pct 86 --target-bottom-margin-pct 5
+python3 scripts/optimize_sprites.py --sprite jason-citron --force
+python3 scripts/manifest.py --source deployed --output ../../assets/pixel/sprites/manifest.json
+cd ../.. && node scripts/generate-sprite-assets.mjs
+```
+
+**Why `--source hires` matters:** before commit `84d701e` the pipeline kept full-res sprites in `assets/pixel/sprites/` and there was no optimize step, so normalize ran directly on the deployed file. After `84d701e`, deployed sprites are 2× downscaled (`728×720` for important tier with cells of `364×360`), and the source-of-truth lives in `assets/pixel/sprites-hires/` (`1456×1440`, `728×720` cells, gitignored). Run normalize on the hires source so the output of optimize already has the right body height, then optimize once.
 
 ### Gemini UI asset generation flow
 
@@ -215,18 +231,27 @@ python3 scripts/deploy_assets.py --asset marker_flag_default
 
 ### manifest.py
 
-Generate sprite sheet metadata JSON from processed output images. Reads PNG dimensions, calculates grid layout (2x1 for standard tier, 2x2 for important tier), and outputs frame coordinate maps for the app runtime.
+Generate sprite sheet metadata JSON from a sprite directory. Reads PNG dimensions per sprite, calculates grid layout (2×1 for standard tier, 2×2 for important tier), and outputs frame coordinate maps the app runtime consumes via `core/sprites/spriteAssets.ts`.
+
+`frameWidth` and `frameHeight` are derived per sprite from the PNG, so important-tier sheets that come back at unusual heights (e.g. zhang-yiming at 728×744 with 372-tall cells, when Gemini's varA returned 768 instead of 720) are recorded accurately without manual edits.
 
 | Flag | Description |
 |---|---|
-| *(none)* | Reads `output/processed/` and `characters.json`, writes `output/manifest.json` |
-
-**Output:** `output/manifest.json`
+| `--source processed|deployed|hires` | Which sprite directory to read from (default: `processed`). For app builds use `deployed`. |
+| `--output <path>` | Output manifest path (default: `output/manifest.json`). For app builds pass `../../assets/pixel/sprites/manifest.json`. |
 
 **Examples:**
 ```bash
-# Generate the sprite manifest
+# App-build manifest (writes to assets/pixel/sprites/manifest.json)
+python3 scripts/manifest.py --source deployed --output ../../assets/pixel/sprites/manifest.json
+
+# Quick check on processed/ before deploy
 python3 scripts/manifest.py
+```
+
+After regenerating the manifest, regenerate the static `require()` map from the repo root:
+```bash
+node scripts/generate-sprite-assets.mjs
 ```
 
 ---
@@ -299,6 +324,8 @@ python3 scripts/gpt_image.py --process \
 
 Analyze body placement and scale across all deployed CEO sprite sheets. Reads sprites from `assets/pixel/sprites/` and `characters.json`, computes per-sprite body bounds from the neutral frame (col 0, row 0), and writes analysis reports with aggregate stats and outlier detection.
 
+Cell width and height are read from each PNG dynamically (`img_w // grid.cols`, `img_h // grid.rows`), so the report is correct for both pre-optimize hires sheets and post-optimize deployed sheets — important tier sprites are 728×720 with 364×360 cells, standard tier are 728×360 with 364×360 cells.
+
 No API keys required.
 
 | Flag | Description |
@@ -321,35 +348,65 @@ python3 scripts/analyze_sprites.py
 
 Normalize body placement and scale across CEO sprite sheets. Computes body bounds from the neutral frame, then applies uniform scaling + translation to place all sprites at consistent height, foot position, and horizontal center. The same transform is applied to every frame in the sheet (defeated variants stay in registration with neutral).
 
-Backs up originals to `assets/pixel/sprites/originals/` before modifying. Requires `analyze_sprites.py` to have been run first (reads targets from `reports/sprite-analysis.json`), or accepts manual target overrides.
+Pixel targets are derived per sprite from the actual cell dimensions (`cell_h * pct / 100`), not from a hardcoded canonical 720, so the script normalizes both pre-optimize hires sheets (720-tall cells, occasionally 744 when Gemini returns a 768-tall frame) and post-optimize deployed sheets (360-tall cells) to the same body fill percentage.
+
+Backs up originals to `<source-dir>/originals/` before modifying. Requires `analyze_sprites.py` to have been run first (reads targets from `reports/sprite-analysis.json`), or accepts manual target overrides.
 
 No API keys required.
 
 | Flag | Description |
 |---|---|
-| `--all` | Normalize all sprites in `assets/pixel/sprites/` |
+| `--all` | Normalize all sprites in the source directory |
 | `--character <id>` | Normalize one sprite by kebab-case ID |
+| `--source hires|deployed` | Read/write `assets/pixel/sprites-hires/` (modern pipeline, before optimize) or `assets/pixel/sprites/` (legacy / post-optimize touch-up). Default: `deployed`. |
 | `--validate` | Dry run — report what would change without modifying files |
 | `--target-height-pct <float>` | Override target body height as % of cell height |
 | `--target-bottom-margin-pct <float>` | Override target bottom margin as % of cell height |
 
-**Input:** `assets/pixel/sprites/*.png`
-**Backup:** `assets/pixel/sprites/originals/` (gitignored)
+**Input:** `assets/pixel/sprites-hires/*.png` (with `--source hires`) or `assets/pixel/sprites/*.png` (default)
+**Backup:** `<source-dir>/originals/` (gitignored)
 **Output:** Modified sprites in-place
 
 **Examples:**
 ```bash
-# Dry run — see what would change
+# Modern pipeline — normalize hires before optimize
+python3 scripts/normalize_sprites.py --character elon-musk --source hires \
+  --target-height-pct 86 --target-bottom-margin-pct 5
+
+# Dry run on deployed sprites
 python3 scripts/normalize_sprites.py --all --validate
 
-# Normalize all sprites (backs up originals first)
-python3 scripts/normalize_sprites.py --all
-
-# Normalize a single sprite
-python3 scripts/normalize_sprites.py --character elon-musk
-
-# Override targets manually
+# Override targets manually (use after a fresh analyze_sprites.py run)
 python3 scripts/normalize_sprites.py --all --target-height-pct 86.0 --target-bottom-margin-pct 5.0
+```
+
+---
+
+### optimize_sprites.py
+
+2× nearest-neighbor downscale + pngquant palette quantization. Reads full-res sprites from `assets/pixel/sprites-hires/` and writes optimized indexed PNGs to `assets/pixel/sprites/`. Typical reduction: ~91% (a hires important-tier sprite at ~1.5 MB shrinks to ~80 KB).
+
+Nearest-neighbor preserves pixel-art edges exactly because each "pixel block" in the source is already an integer multiple of physical pixels.
+
+Requires `pngquant` on PATH (`brew install pngquant`).
+
+| Flag | Description |
+|---|---|
+| *(none)* | Optimize all hires sprites that are newer than their deployed counterpart |
+| `--sprite <id>` | Optimize one sprite by kebab-case ID |
+| `--scale <int>` | Downscale factor (default: 2) |
+| `--force` | Re-optimize even if the deployed sprite is up to date |
+
+**Input:** `assets/pixel/sprites-hires/*.png`
+**Output:** `assets/pixel/sprites/*.png`
+
+**Examples:**
+```bash
+# Optimize all sprites that have a newer hires source
+python3 scripts/optimize_sprites.py
+
+# Re-optimize a single sprite (run after normalize_sprites.py --source hires)
+python3 scripts/optimize_sprites.py --sprite jason-citron --force
 ```
 
 ---

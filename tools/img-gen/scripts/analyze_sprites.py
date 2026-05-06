@@ -41,8 +41,14 @@ def _grid_for_tier(tier: str) -> dict:
     return {"cols": 2, "rows": 1}
 
 
-def _body_bounds(cell: Image.Image) -> dict | None:
-    """Find bounding box of non-transparent pixels. Returns None if fully transparent."""
+def _body_bounds(cell: Image.Image, cell_w: int, cell_h: int) -> dict | None:
+    """Find bounding box of non-transparent pixels. Returns None if fully transparent.
+
+    Percentages are computed against the actual extracted cell dimensions, not
+    the legacy CELL_WIDTH/CELL_HEIGHT constants — deployed sprites can be at
+    any 2x downscale of the canonical 728x720 (or variant) sheet, and important
+    tier sheets pack 2 rows in the same image height as standard tier's 1 row.
+    """
     bbox = cell.getbbox()
     if bbox is None:
         return None
@@ -60,12 +66,12 @@ def _body_bounds(cell: Image.Image) -> dict | None:
         "bodyHeight": h,
         "centerX": round(cx, 1),
         "centerY": round(cy, 1),
-        "widthPct": round(w / CELL_WIDTH * 100, 2),
-        "heightPct": round(h / CELL_HEIGHT * 100, 2),
-        "topMarginPct": round(top / CELL_HEIGHT * 100, 2),
-        "bottomMarginPct": round((CELL_HEIGHT - bottom) / CELL_HEIGHT * 100, 2),
-        "leftMarginPct": round(left / CELL_WIDTH * 100, 2),
-        "rightMarginPct": round((CELL_WIDTH - right) / CELL_WIDTH * 100, 2),
+        "widthPct": round(w / cell_w * 100, 2),
+        "heightPct": round(h / cell_h * 100, 2),
+        "topMarginPct": round(top / cell_h * 100, 2),
+        "bottomMarginPct": round((cell_h - bottom) / cell_h * 100, 2),
+        "leftMarginPct": round(left / cell_w * 100, 2),
+        "rightMarginPct": round((cell_w - right) / cell_w * 100, 2),
     }
 
 
@@ -111,12 +117,20 @@ def _aggregate(metrics: list[dict]) -> dict:
 
 
 def _recommend_targets(agg: dict) -> dict:
-    """Recommend normalization targets based on median values."""
+    """Recommend normalization targets based on median values.
+
+    targetBodyHeight/targetFeetY are reported against the canonical CELL_HEIGHT
+    for backward compatibility with normalize_sprites.py; the percentages are
+    the source of truth and normalize uses them against the input's actual
+    cell height (which may be 360, 372, 720, or 744 depending on tier + scale).
+    """
+    height_pct = agg.get("heightPct", {}).get("median", 86.0)
+    bottom_margin_pct = agg.get("bottomMarginPct", {}).get("median", 5.0)
     return {
-        "targetHeightPct": agg.get("heightPct", {}).get("median", 86.0),
-        "targetBottomMarginPct": agg.get("bottomMarginPct", {}).get("median", 5.0),
-        "targetBodyHeight": round(CELL_HEIGHT * agg.get("heightPct", {}).get("median", 86.0) / 100),
-        "targetFeetY": round(CELL_HEIGHT * (1 - agg.get("bottomMarginPct", {}).get("median", 5.0) / 100)),
+        "targetHeightPct": height_pct,
+        "targetBottomMarginPct": bottom_margin_pct,
+        "targetBodyHeight": round(CELL_HEIGHT * height_pct / 100),
+        "targetFeetY": round(CELL_HEIGHT * (1 - bottom_margin_pct / 100)),
         "cellWidth": CELL_WIDTH,
         "cellHeight": CELL_HEIGHT,
     }
@@ -221,7 +235,7 @@ def main() -> None:
 
         # Extract neutral frame (col 0, row 0)
         neutral = img.crop((0, 0, cell_w, cell_h))
-        bounds = _body_bounds(neutral)
+        bounds = _body_bounds(neutral, cell_w, cell_h)
 
         if bounds is None:
             print(f"  [warn] {char_id}: neutral frame is fully transparent — skipping")

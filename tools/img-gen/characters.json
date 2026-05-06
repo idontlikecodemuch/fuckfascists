@@ -2353,13 +2353,13 @@
     "id": "zhang-yiming",
     "name": "Zhang Yiming",
     "tier": "important",
-    "likeness": "Short neatly-cropped black hair parted to the side, light-medium East Asian skin, slim build, slim youthful oval face, clean-shaven, calm reserved soft-spoken expression, no glasses",
+    "likeness": "Short neatly-cropped black hair parted to the side, light-medium East Asian skin, slim build, slim oval face, clean-shaven, calm reserved soft-spoken expression, no glasses",
     "variants": {
       "A": {
         "outfit": "Soft pastel-blue ByteDance polo shirt, dark slim chinos, white sneakers, visible company logo on chest"
       },
       "B": {
-        "outfit": "Plain black ByteDance t-shirt under unzipped gray hoodie, dark joggers, white sneakers, visible company logo on chest"
+        "outfit": "Plain black ByteDance t-shirt, dark slim chinos, white sneakers, visible company logo on chest"
       }
     }
   }

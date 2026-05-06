@@ -1728,6 +1728,34 @@
         }
       }
     },
+    "george-arison": {
+      "file": "george-arison.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
     "goli-sheikholeslami": {
       "file": "goli-sheikholeslami.png",
       "tier": "standard",
@@ -3936,6 +3964,34 @@
         }
       }
     },
+    "spencer-rascoff": {
+      "file": "spencer-rascoff.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
     "sridhar-ramaswamy": {
       "file": "sridhar-ramaswamy.png",
       "tier": "standard",
@@ -4409,6 +4465,34 @@
       },
       "frameWidth": 364,
       "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "zhang-yiming": {
+      "file": "zhang-yiming.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 372,
       "frames": {
         "varA_neutral": {
           "col": 0,

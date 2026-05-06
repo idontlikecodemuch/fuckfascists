@@ -30,14 +30,15 @@ from PIL import Image
 
 
 TOOL_DIR = Path(__file__).resolve().parent.parent
-SPRITES_DIR = (
-    Path(__file__).resolve().parent.parent.parent.parent
-    / "assets" / "pixel" / "sprites"
-)
-BACKUP_DIR = SPRITES_DIR / "originals"
+REPO_ROOT = TOOL_DIR.parent.parent
+DEFAULT_SPRITES_DIR = REPO_ROOT / "assets" / "pixel" / "sprites"
+HIRES_SPRITES_DIR = REPO_ROOT / "assets" / "pixel" / "sprites-hires"
 REPORTS_DIR = TOOL_DIR / "reports"
 ANALYSIS_PATH = REPORTS_DIR / "sprite-analysis.json"
 
+# Cell dimensions are detected per sprite from the input sheet (img_w//cols,
+# img_h//rows). The constants below are the canonical pre-optimize size and are
+# only used as a fallback for _load_targets when the analysis report is absent.
 CELL_WIDTH = 728
 CELL_HEIGHT = 720
 
@@ -71,12 +72,20 @@ def _extract_cell(img: Image.Image, col: int, row: int,
 
 
 def _normalize_cell(cell: Image.Image, scale: float,
-                    offset_x: int, offset_y: int) -> Image.Image:
-    """Scale and reposition cell content on a fresh transparent canvas."""
+                    offset_x: int, offset_y: int,
+                    cell_w: int, cell_h: int) -> Image.Image:
+    """Scale and reposition cell content on a fresh transparent canvas.
+
+    The output canvas matches the input cell size (cell_w x cell_h), not the
+    legacy CELL_WIDTH/CELL_HEIGHT constants — important tier 2x downscaled
+    sheets have 360-tall cells, the canonical pre-optimize size has 720, and
+    Gemini occasionally produces variable cell heights (e.g. 744 for sheets
+    that come back at 1488 instead of 1440).
+    """
     # Get content bounds
     bbox = cell.getbbox()
     if bbox is None:
-        return Image.new("RGBA", (CELL_WIDTH, CELL_HEIGHT), (0, 0, 0, 0))
+        return Image.new("RGBA", (cell_w, cell_h), (0, 0, 0, 0))
 
     # Extract content region
     content = cell.crop(bbox)
@@ -92,18 +101,21 @@ def _normalize_cell(cell: Image.Image, scale: float,
     paste_x = round(bbox[0] * scale) + offset_x
     paste_y = round(bbox[1] * scale) + offset_y
 
-    # Create fresh canvas and paste
-    canvas = Image.new("RGBA", (CELL_WIDTH, CELL_HEIGHT), (0, 0, 0, 0))
+    # Create fresh canvas matching the cell, and paste
+    canvas = Image.new("RGBA", (cell_w, cell_h), (0, 0, 0, 0))
     canvas.paste(scaled, (paste_x, paste_y), scaled)
     return canvas
 
 
 def _compute_transform(bounds: tuple[int, int, int, int],
-                       target_height: int, target_feet_y: int
+                       target_height: int, target_feet_y: int,
+                       cell_w: int
                        ) -> tuple[float, int, int]:
     """Compute scale factor and offsets for normalization.
 
     Returns (scale, offset_x, offset_y) where offsets are applied after scaling.
+    cell_w is the actual cell width — used to center the body horizontally
+    rather than always centering on the canonical 728px CELL_WIDTH.
     """
     left, top, right, bottom = bounds
     body_w = right - left
@@ -129,33 +141,46 @@ def _compute_transform(bounds: tuple[int, int, int, int],
 
     # Horizontal offset: center body in cell
     current_center_x = scaled_left + scaled_body_w / 2
-    target_center_x = CELL_WIDTH / 2
+    target_center_x = cell_w / 2
     offset_x = round(target_center_x - current_center_x)
 
     return scale, offset_x, offset_y
 
 
 def _is_within_tolerance(bounds: tuple[int, int, int, int],
-                         target_height: int, target_feet_y: int) -> bool:
-    """Check if sprite is already close enough to targets."""
+                         target_height: int, target_feet_y: int,
+                         cell_w: int, cell_h: int) -> bool:
+    """Check if sprite is already close enough to targets.
+
+    All percentages are computed against the actual cell dimensions, not the
+    canonical CELL_WIDTH/CELL_HEIGHT — keeps tolerance meaningful regardless
+    of whether the input is post-optimize (360-tall) or pre-optimize (720-tall).
+    """
     body_h = bounds[3] - bounds[1]
     feet_y = bounds[3]
 
-    height_diff_pct = abs(body_h - target_height) / CELL_HEIGHT * 100
-    feet_diff_pct = abs(feet_y - target_feet_y) / CELL_HEIGHT * 100
+    height_diff_pct = abs(body_h - target_height) / cell_h * 100
+    feet_diff_pct = abs(feet_y - target_feet_y) / cell_h * 100
 
     # Also check horizontal centering
     body_w = bounds[2] - bounds[0]
     center_x = bounds[0] + body_w / 2
-    center_diff_pct = abs(center_x - CELL_WIDTH / 2) / CELL_WIDTH * 100
+    center_diff_pct = abs(center_x - cell_w / 2) / cell_w * 100
 
     return (height_diff_pct <= TOLERANCE_PCT and
             feet_diff_pct <= TOLERANCE_PCT and
             center_diff_pct <= TOLERANCE_PCT)
 
 
-def _load_targets(args: argparse.Namespace) -> tuple[int, int]:
-    """Load target values from analysis report or CLI overrides."""
+def _load_target_pcts(args: argparse.Namespace) -> tuple[float, float]:
+    """Load target percentages from analysis report or CLI overrides.
+
+    Percentages (not absolute pixel values) are returned because the input
+    cell height is no longer constant — important tier 2x downscaled sheets
+    use 360-tall cells, the canonical pre-optimize size uses 720, and Gemini
+    can produce variable cell heights. Absolute pixel targets are computed
+    per sprite from the actual cell dimensions in _process_sprite.
+    """
     height_pct = args.target_height_pct
     bottom_margin_pct = args.target_bottom_margin_pct
 
@@ -172,14 +197,19 @@ def _load_targets(args: argparse.Namespace) -> tuple[int, int]:
         if bottom_margin_pct is None:
             bottom_margin_pct = targets.get("targetBottomMarginPct", 5.0)
 
-    target_height = round(CELL_HEIGHT * height_pct / 100)
-    target_feet_y = round(CELL_HEIGHT * (1 - bottom_margin_pct / 100))
-    return target_height, target_feet_y
+    return height_pct, bottom_margin_pct
 
 
-def _process_sprite(png_path: Path, tier: str, target_height: int,
-                    target_feet_y: int, validate: bool) -> dict:
-    """Normalize a single sprite sheet. Returns status dict."""
+def _process_sprite(png_path: Path, tier: str, target_height_pct: float,
+                    target_bottom_margin_pct: float, validate: bool) -> dict:
+    """Normalize a single sprite sheet. Returns status dict.
+
+    Cell dimensions are read from the input sheet (img_w//cols, img_h//rows)
+    and target body height / feet Y are computed from the cell height — so the
+    same script normalizes both pre-optimize 1456x1440 hires sheets (720-tall
+    cells) and post-optimize 728x720 deployed sheets (360-tall cells) to the
+    same body fill percentage.
+    """
     grid = _grid_for_tier(tier)
     cols, rows = grid["cols"], grid["rows"]
 
@@ -187,6 +217,10 @@ def _process_sprite(png_path: Path, tier: str, target_height: int,
     img_w, img_h = img.size
     cell_w = img_w // cols
     cell_h = img_h // rows
+
+    # Compute pixel targets from percentages against the actual cell height
+    target_height = round(cell_h * target_height_pct / 100)
+    target_feet_y = round(cell_h * (1 - target_bottom_margin_pct / 100))
 
     # Get bounds from neutral frame (col 0, row 0)
     neutral = _extract_cell(img, 0, 0, cell_w, cell_h)
@@ -197,23 +231,23 @@ def _process_sprite(png_path: Path, tier: str, target_height: int,
 
     body_h = bounds[3] - bounds[1]
 
-    if _is_within_tolerance(bounds, target_height, target_feet_y):
+    if _is_within_tolerance(bounds, target_height, target_feet_y, cell_w, cell_h):
         return {
             "id": png_path.stem,
             "status": "unchanged",
             "bodyHeight": body_h,
-            "heightPct": round(body_h / CELL_HEIGHT * 100, 2),
+            "heightPct": round(body_h / cell_h * 100, 2),
         }
 
     scale, offset_x, offset_y = _compute_transform(
-        bounds, target_height, target_feet_y
+        bounds, target_height, target_feet_y, cell_w
     )
 
     result = {
         "id": png_path.stem,
         "status": "would_change" if validate else "normalized",
         "bodyHeight": body_h,
-        "heightPct": round(body_h / CELL_HEIGHT * 100, 2),
+        "heightPct": round(body_h / cell_h * 100, 2),
         "scale": round(scale, 4),
         "offsetX": offset_x,
         "offsetY": offset_y,
@@ -222,9 +256,10 @@ def _process_sprite(png_path: Path, tier: str, target_height: int,
     if validate:
         return result
 
-    # Back up original before modifying
-    BACKUP_DIR.mkdir(parents=True, exist_ok=True)
-    backup_path = BACKUP_DIR / png_path.name
+    # Back up original before modifying — siblings of the input dir
+    backup_dir = png_path.parent / "originals"
+    backup_dir.mkdir(parents=True, exist_ok=True)
+    backup_path = backup_dir / png_path.name
     if not backup_path.exists():
         shutil.copy2(png_path, backup_path)
 
@@ -234,7 +269,9 @@ def _process_sprite(png_path: Path, tier: str, target_height: int,
     for r in range(rows):
         for c in range(cols):
             cell = _extract_cell(img, c, r, cell_w, cell_h)
-            normalized = _normalize_cell(cell, scale, offset_x, offset_y)
+            normalized = _normalize_cell(
+                cell, scale, offset_x, offset_y, cell_w, cell_h
+            )
             paste_x = c * cell_w
             paste_y = r * cell_h
             new_sheet.paste(normalized, (paste_x, paste_y))
@@ -258,28 +295,36 @@ def main() -> None:
                         help="Target body height as %% of cell height (default: from analysis)")
     parser.add_argument("--target-bottom-margin-pct", type=float, default=None,
                         help="Target bottom margin as %% of cell height (default: from analysis)")
+    parser.add_argument("--source", choices=["deployed", "hires"], default="deployed",
+                        help="Which directory to read/write: deployed (assets/pixel/sprites/) "
+                        "or hires (assets/pixel/sprites-hires/). Hires runs the normalization "
+                        "before optimize, deployed runs it on the 2x downscaled sheets.")
     args = parser.parse_args()
 
-    if not SPRITES_DIR.exists():
-        print(f"ERROR: sprites directory not found: {SPRITES_DIR}")
+    sprites_dir = HIRES_SPRITES_DIR if args.source == "hires" else DEFAULT_SPRITES_DIR
+    if not sprites_dir.exists():
+        print(f"ERROR: sprites directory not found: {sprites_dir}")
         sys.exit(1)
 
     characters_list = _load_json(TOOL_DIR / "characters.json")
     characters_by_id = {c["id"]: c for c in characters_list}
 
-    target_height, target_feet_y = _load_targets(args)
-    print(f"Targets: body height {target_height}px, feet Y {target_feet_y}px")
+    target_height_pct, target_bottom_margin_pct = _load_target_pcts(args)
+    print(f"Source: {sprites_dir}")
+    print(f"Targets: body height {target_height_pct}%, "
+          f"bottom margin {target_bottom_margin_pct}%")
     print(f"Tolerance: ±{TOLERANCE_PCT}%")
     if args.validate:
         print("MODE: validate (dry run)\n")
     else:
-        print(f"MODE: normalize (originals backed up to {BACKUP_DIR}/)\n")
+        print(f"MODE: normalize (originals backed up to "
+              f"{sprites_dir / 'originals'}/)\n")
 
     # Collect sprites to process
     if args.all:
-        png_files = sorted(SPRITES_DIR.glob("*.png"))
+        png_files = sorted(sprites_dir.glob("*.png"))
     else:
-        png_path = SPRITES_DIR / f"{args.character}.png"
+        png_path = sprites_dir / f"{args.character}.png"
         if not png_path.exists():
             print(f"ERROR: sprite not found: {png_path}")
             sys.exit(1)
@@ -294,7 +339,8 @@ def main() -> None:
         tier = characters_by_id[char_id].get("tier", "standard")
         try:
             result = _process_sprite(
-                png_path, tier, target_height, target_feet_y, args.validate
+                png_path, tier, target_height_pct,
+                target_bottom_margin_pct, args.validate
             )
             results.append(result)
 
