@@ -20,6 +20,7 @@ import { scorecardCopy } from '../../../copy/scorecard';
 import { theme } from '../../../design/tokens';
 import { StarFieldBg } from '../../../core/starbg';
 import { SecureCaptureOverlay } from '../../../core/ui/SecureCaptureOverlay';
+import { Tooltip } from '../../../core/ui/Tooltip';
 import { MoneyRainfall } from './MoneyRainfall';
 import {
   MONEY_RAINFALL_DURATION_MS,
@@ -39,6 +40,8 @@ const RUNWAY_HEIGHT = 150;            // chevron stack (3 thin triangles) + smal
 const CARD_WIDTH_PCT = 0.85;          // card image width = 85% of screen width
 const CHEVRON_WIDTH_PCT = 0.42;       // wide triangle width
 const SHARE_TEXT_WIDTH_PCT = 0.40;
+const PRESENTATION_HINT_MS = 6000;
+let presentationHintShownThisSession = false;
 
 interface CardPresentationProps {
   pngUri: string;
@@ -58,6 +61,7 @@ export function CardPresentation({ pngUri, onDismiss }: CardPresentationProps) {
   const shakeX = useRef(new Animated.Value(0)).current;
   const runwayOpacity = useRef(new Animated.Value(0)).current;
   const [showParticles, setShowParticles] = useState(true);
+  const [showPresentationHint, setShowPresentationHint] = useState(false);
 
   // SafeAreaProvider context can fail to propagate into absolute-positioned
   // takeover screens; SAFE_AREA_TOP_MIN is the documented floor for that case
@@ -103,6 +107,17 @@ export function CardPresentation({ pngUri, onDismiss }: CardPresentationProps) {
       clearTimeout(particleTimer);
     };
   }, [shakeX, runwayOpacity]);
+
+  useEffect(() => {
+    if (presentationHintShownThisSession) return;
+
+    presentationHintShownThisSession = true;
+    setShowPresentationHint(true);
+    const timer = setTimeout(() => setShowPresentationHint(false), PRESENTATION_HINT_MS);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
 
   // iOS: RN Share. Android: expo-sharing (RN's `url` is iOS-only).
   const handleShare = useCallback(async () => {
@@ -221,6 +236,20 @@ export function CardPresentation({ pngUri, onDismiss }: CardPresentationProps) {
           <ChevronRunway width={chevronWidth} color={theme.colors.glowCyan} />
           <ShareButton width={shareTextWidth} onPress={handleShare} />
         </Animated.View>
+
+        {showPresentationHint && (
+          <View
+            style={[styles.presentationHintHost, { bottom: RUNWAY_HEIGHT + bottomPad - 8 }]}
+            pointerEvents="none"
+          >
+            <Tooltip
+              message={scorecardCopy.presentationHint}
+              tailDirection="down"
+              tailOffset={105}
+              style={styles.presentationHint}
+            />
+          </View>
+        )}
       </SecureCaptureOverlay>
     </Animated.View>
   );
@@ -278,5 +307,15 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     // No gap between chevrons stack + SHARE word; ShareButton's internal
     // paddingVertical provides the small breathing room.
+  },
+  presentationHintHost: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+    zIndex: 40,
+  },
+  presentationHint: {
+    width: 230,
   },
 });

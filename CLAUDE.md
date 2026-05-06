@@ -1039,6 +1039,9 @@ Schedule E (independent expenditures) is not tracked. IEs are spending by outsid
 ### MIN_AVOIDS_FOR_DROP threshold tuning (Priority: V1.5)
 `MIN_AVOIDS_FOR_DROP = 1` in `config/constants.ts` means a single avoid generates a card + notification. Decide whether this is the right floor for "card-worthy" before V1 launch. Raising it (e.g. to 3) also implies updating the `EmptyWeek` copy and any marketing referencing "any avoid counts."
 
+### Android scorecard screenshot parity (Priority: V1.5)
+Android currently keeps scorecard screenshot parity post-capture: `expo-screen-capture` detects the screenshot after it lands, then opens share with the clean cached PNG. This is intentionally lighter than rendering an Android-only hidden clean-card base, and avoids `FLAG_SECURE` because that would block screenshots rather than produce the clean card. V1.5: revisit whether a native Android implementation can approximate the iOS secure-overlay sandwich without new dependencies or heavy background rendering. If no clean path exists, keep Android on the post-capture share fallback.
+
 ### Thursday nudge silent wipe — ✅ Resolved
 **Landed 2026-04-18.** `useDropSchedule.ts` and `ScorecardScreen.tsx` previously both called `cancelAllScheduledNotificationsAsync()` when re-scheduling the drop or suppressing it on an empty week. That wiped every scheduled notification — including the Thursday platform nudge (`platform-nudge-thursday`). Users on a week with zero avoids lost their nudge silently. Drop notification now has a stable identifier (`scorecard-drop`); cancellation is scoped via `cancelScheduledNotificationAsync(id)` and the Thursday nudge is untouched.
 

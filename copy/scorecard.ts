@@ -31,6 +31,7 @@ export const scorecardCopy = {
 
   // Card presentation
   dismissLabel: "Done",
+  presentationHint: "Swipe up or screenshot",
 
   // Loader — shown during the capture-then-purge transition. Two-line
   // privacy-proving copy: the second line is literally true at the moment

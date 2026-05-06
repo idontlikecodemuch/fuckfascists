@@ -30,6 +30,8 @@ This document is updated continuously. New instances should read this first — 
 
 **Scorecard screenshot follow-up:** Replaced the earlier iOS AppState-only screenshot assumption with a scoped secure-overlay sandwich. In `CardPresentation`, iOS now renders a full-screen clean cached card as the unprotected base layer, then renders the entire presentation experience (starfield, smaller card, halo, money, runway, SHARE, dismiss) inside native `FFSecureCaptureView`, a tiny local `UITextField.secureTextEntry` wrapper. While the scorecard presentation is active, `AppShell` hides shell chrome (tab bar, nudge banner, beta overlay) so the presentation owns the full viewport and the screenshot base centers correctly. iOS screenshots should omit that secure presentation layer and reveal the clean full card underneath. AppState still swaps to the clean card for app-switcher/control-center/interruption snapshots. Android keeps the post-capture screenshot listener that auto-opens share with the clean card; it does not render the hidden clean-card base during active presentation.
 
+**Follow-up 4:** Added a first-presentation scorecard tooltip using the existing `Tooltip` component: `"Swipe up or screenshot"`. The hint is session-only and writes nothing to disk. Added Android screenshot parity to V1.5 technical debt: keep the current post-capture share fallback for V1, then revisit native Android options without adding heavy rendering or dependencies.
+
 ### Session: May 4, 2026 ET — TestFlight beta polish sprint (12 items)
 
 **Branch:** `claude/sleepy-sinoussi-d76599` → committed directly to `main` in chunks.
