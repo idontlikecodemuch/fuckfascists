@@ -556,7 +556,7 @@
     "id": "dario-amodei",
     "name": "Dario Amodei",
     "tier": "important",
-    "likeness": "Clean-shaven. Full, voluminous curly dark-brown hair piled high (NOT short, NOT flat, NOT close-cropped — visibly bushy with height on top). Round, full face with soft cheeks. Fair/light skin tone. Thick DARK ROUND tortoiseshell-or-black eyeglass frames (perfectly round lenses, not square, not rectangular, not wire-frame). Slightly stockier build, academic-looking. Friendly thoughtful expression. IMPORTANT: no beard, no mustache, no stubble — face is completely smooth.",
+    "likeness": "Clean-shaven. Full, voluminous curly dark-brown hair piled high (NOT short, NOT flat, NOT close-cropped \u2014 visibly bushy with height on top). Round, full face with soft cheeks. Fair/light skin tone. Thick DARK ROUND tortoiseshell-or-black eyeglass frames (perfectly round lenses, not square, not rectangular, not wire-frame). Slightly stockier build, academic-looking. Friendly thoughtful expression. IMPORTANT: no beard, no mustache, no stubble \u2014 face is completely smooth.",
     "variants": {
       "A": {
         "outfit": "Navy blue blazer worn open over a plain white collared dress shirt (no tie), dark gray trousers, brown oxford dress shoes. No logos, no graphics."
@@ -2318,6 +2318,48 @@
       },
       "B": {
         "outfit": "White short-sleeve polo, khaki pants, brown loafers, thick black glasses, red Coca-Cola can in hand"
+      }
+    }
+  },
+  {
+    "id": "george-arison",
+    "name": "George Arison",
+    "tier": "important",
+    "likeness": "Shaved bald head, dark heavy stubble across cheeks chin and upper lip (5 o'clock shadow, NOT a groomed full beard, NOT clean-shaven), heavy dark eyebrows, prominent strong nose, medium-light skin, medium-heavy build with broad shoulders and fuller face, no glasses, expressive animated demeanor",
+    "variants": {
+      "A": {
+        "outfit": "Pale blue button-down shirt open at collar, dark slacks, brown leather belt, visible company logo on chest"
+      },
+      "B": {
+        "outfit": "Black Grindr t-shirt with yellow Grindr mask logo, dark slim jeans, white sneakers, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "spencer-rascoff",
+    "name": "Spencer Rascoff",
+    "tier": "important",
+    "likeness": "Short medium-brown wavy hair with slight volume on top, pale skin, average build, oval face with soft features, broad warm friendly smile, clean-shaven, dark eyebrows, no glasses",
+    "variants": {
+      "A": {
+        "outfit": "Light-blue dress shirt unbuttoned at collar (no tie) under tan/oatmeal heather blazer, dark slacks, brown belt, visible company logo on chest"
+      },
+      "B": {
+        "outfit": "Charcoal Match Group polo shirt, dark slim chinos, white sneakers, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "zhang-yiming",
+    "name": "Zhang Yiming",
+    "tier": "important",
+    "likeness": "Short neatly-cropped black hair parted to the side, light-medium East Asian skin, slim build, slim youthful oval face, clean-shaven, calm reserved soft-spoken expression, no glasses",
+    "variants": {
+      "A": {
+        "outfit": "Soft pastel-blue ByteDance polo shirt, dark slim chinos, white sneakers, visible company logo on chest"
+      },
+      "B": {
+        "outfit": "Plain black ByteDance t-shirt under unzipped gray hoodie, dark joggers, white sneakers, visible company logo on chest"
       }
     }
   }
