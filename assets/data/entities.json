@@ -29699,6 +29699,27 @@
           }
         ]
       }
+    },
+    {
+      "id": "one-medical",
+      "canonicalName": "One Medical",
+      "aliases": [
+        "One Medical",
+        "1Life Healthcare"
+      ],
+      "domains": [
+        "onemedical.com"
+      ],
+      "categoryTags": [
+        "healthcare",
+        "primary-care",
+        "medical"
+      ],
+      "ceoName": "Trent Green",
+      "fecCommitteeId": null,
+      "lastVerifiedDate": "2026-05-06",
+      "parentEntityId": "amazon",
+      "verificationStatus": "manual"
     }
   ]
 }
