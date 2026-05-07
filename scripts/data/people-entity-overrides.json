@@ -1,11 +1,177 @@
 {
   "_meta": {
     "formatVersion": "1.0",
-    "updatedAt": "2026-04-21",
+    "updatedAt": "2026-05-06",
     "description": "Curated person-to-entity overrides and common-name overrides used when generating assets/data/people.json from bulk donor data.",
-    "methodology": "Human-reviewed accepted links only. Record borderline decisions in notes/confidence here; unresolved cases belong in the generated review queue."
+    "methodology": "Human-reviewed accepted links only. Record borderline decisions in notes/confidence here; unresolved cases belong in the generated review queue.",
+    "changelog": [
+      "2026-05-06: Round 3 platform-leadership hydration. Added 21 person seeds for current/recent CEOs and founders across the 19 V1 platforms (Zuckerberg, Pichai, Jassy, Chew, Sarandos, Khosrowshahi, Altman, Huffman, Chriss, Lores, Ek, Spiegel, Murphy, McMillon, Dario+Daniela Amodei, Ready, Silbermann, Citron, Kim, Nadella). Added 4 Walton heir entityLinks (Alice, Christy, Lukas, Sam Rawlings) for walmart. Strict matching policy: founders included only with current material stake or current board seat. Three deferred-review cases documented in CLAUDE.md Known Limitations: Thiel→PayPal (no stake/board since 2002), Kalanick→Uber (sold ~90% in 2019, off board since 2019), Gates→Microsoft (1.3% stake but majority of equity built pre-2016 scoring window, off board since 2020). Walton record dedup (rob-walton/s-robson-walton/robert-s-walton) flagged for separate cleanup pass.",
+      "2026-05-06: Added manualMergePairs for confirmed top-donor first-name variants (Ken/Kenneth, Tom/Thomas, etc.) so sync:people:bulk-top collapses durable same-person splits before hydration. This fixes duplicate FEC-fuzz hydration without adding broad heuristic identity clustering."
+    ]
   },
+  "manualMergePairs": [
+    {
+      "keep": "kenneth-c-griffin",
+      "merge": [
+        "ken-griffin"
+      ],
+      "notes": "Same Citadel founder donor split between FEC rows using Kenneth C. Griffin and Ken Griffin; same IL state and Citadel employer evidence."
+    },
+    {
+      "keep": "jeff-yass",
+      "merge": [
+        "jeffrey-s-yass"
+      ],
+      "notes": "Same Susquehanna donor split between Jeff Yass and Jeffrey S. Yass; same PA state and SIG employer evidence."
+    },
+    {
+      "keep": "thomas-f-steyer",
+      "merge": [
+        "tom-steyer"
+      ],
+      "notes": "Same Farallon/Fahr donor split between Thomas F. Steyer and Tom Steyer; same CA state and FAHR employer evidence."
+    },
+    {
+      "keep": "stephen-mandel",
+      "merge": [
+        "steve-f-mandel",
+        "steve-mandel"
+      ],
+      "notes": "Same Lone Pine Capital founder donor split between Stephen Mandel, Steve Mandel, and Steve F. Mandel; same CT state and employer evidence."
+    },
+    {
+      "keep": "susan-mandel",
+      "merge": [
+        "sue-mandel"
+      ],
+      "notes": "Same donor split between Susan Mandel and Sue Mandel; same CT state and not-employed filings."
+    },
+    {
+      "keep": "christian-larsen",
+      "merge": [
+        "chris-larsen"
+      ],
+      "notes": "Same Ripple co-founder donor split between Christian Larsen and Chris Larsen; same CA state and Ripple employer evidence."
+    },
+    {
+      "keep": "geoffrey-h-palmer",
+      "merge": [
+        "geoff-palmer"
+      ],
+      "notes": "Same real-estate donor split between Geoffrey H. Palmer and Geoff Palmer; same CA state and matching G.H. Palmer/self-employed filings."
+    },
+    {
+      "keep": "timothy-dunn",
+      "merge": [
+        "tim-dunn"
+      ],
+      "notes": "Same CrownQuest donor split between Timothy Dunn and Tim Dunn; same TX state and CrownQuest employer evidence."
+    },
+    {
+      "keep": "jeffrey-lawson",
+      "merge": [
+        "jeff-lawson"
+      ],
+      "notes": "Same Twilio founder donor split between Jeffrey Lawson and Jeff Lawson; same CA state and Twilio employer evidence."
+    },
+    {
+      "keep": "tom-campion",
+      "merge": [
+        "thomas-campion"
+      ],
+      "notes": "Same Zumiez donor split between Tom Campion and Thomas Campion; same WA state and Zumiez employer evidence."
+    },
+    {
+      "keep": "timothy-disney",
+      "merge": [
+        "tim-disney"
+      ],
+      "notes": "Same donor split between Timothy Disney and Tim Disney; same CA state and self-employed filings."
+    },
+    {
+      "keep": "pat-stryker",
+      "merge": [
+        "patricia-stryker"
+      ],
+      "notes": "Same Stryker-family donor split between Pat Stryker and Patricia Stryker; same CO state and self-employed filings."
+    },
+    {
+      "keep": "d-andrew-beal",
+      "merge": [
+        "andrew-beal",
+        "daniel-a-beal",
+        "andy-beal"
+      ],
+      "notes": "Same Beal Bank donor split across D. Andrew Beal, Andrew Beal, Daniel A. Beal, and Andy Beal; same TX state and Beal Bank employer evidence."
+    },
+    {
+      "keep": "fredric-n-eshelman",
+      "merge": [
+        "fred-eshelman"
+      ],
+      "notes": "Same Eshelman Ventures donor split between Fredric N. Eshelman and Fred Eshelman; same NC state and employer evidence."
+    },
+    {
+      "keep": "phil-ruffin",
+      "merge": [
+        "phillip-ruffin"
+      ],
+      "notes": "Same Nevada casino donor split between Phil Ruffin and Phillip Ruffin; same NV state and Ruffin/self-employed filings."
+    },
+    {
+      "keep": "marcy-carsey",
+      "merge": [
+        "marcia-carsey"
+      ],
+      "notes": "Same Carsey-Werner donor split between Marcy Carsey and Marcia Carsey; same CA state and Carsey Werner/self-employed filings."
+    }
+  ],
   "people": {
+    "alex-chriss": {
+      "person": {
+        "canonicalName": "CHRISS, ALEX",
+        "displayName": "Alex Chriss",
+        "commonName": "Alex Chriss",
+        "aliases": [
+          "Alex Chriss"
+        ],
+        "fecSearchNames": [
+          "CHRISS, ALEX",
+          "CHRISS, ALEXANDER",
+          "CHRISS, ALEX W"
+        ],
+        "primaryEmployer": "PAYPAL HOLDINGS",
+        "primaryOccupation": "Former President & Chief Executive Officer",
+        "verificationStatus": "manual",
+        "notes": "Former President and CEO of PayPal (September 2023 – March 2026); replaced by Enrique Lores effective March 1, 2026."
+      },
+      "entityLinks": {
+        "paypal": {
+          "role": "Former President & Chief Executive Officer",
+          "startYear": 2023,
+          "endYear": 2026,
+          "benefitBasis": "executive",
+          "isCurrent": false,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "CEO of PayPal from September 2023 through March 1, 2026; succeeded by Enrique Lores."
+        }
+      }
+    },
+    "alice-l-walton": {
+      "entityLinks": {
+        "walmart": {
+          "role": "Heir & Major Shareholder",
+          "startYear": 1992,
+          "endYear": null,
+          "benefitBasis": "family_control",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Daughter of Sam Walton. Part of the Walton family ~46% control bloc held through Walton Enterprises and Walton Family Holdings Trust; ordinary Walmart performance materially affects this stake."
+        }
+      }
+    },
     "allen-blue": {
       "entityLinks": {
         "linkedin": {
@@ -15,6 +181,37 @@
           "benefitBasis": "founder_stake",
           "isCurrent": true,
           "ownershipPct": null
+        }
+      }
+    },
+    "andy-jassy": {
+      "person": {
+        "canonicalName": "JASSY, ANDREW",
+        "displayName": "Andy Jassy",
+        "commonName": "Andy Jassy",
+        "aliases": [
+          "Andy Jassy"
+        ],
+        "fecSearchNames": [
+          "JASSY, ANDREW",
+          "JASSY, ANDY",
+          "JASSY, ANDREW R"
+        ],
+        "primaryEmployer": "AMAZON",
+        "primaryOccupation": "President & Chief Executive Officer",
+        "verificationStatus": "manual",
+        "notes": "President and CEO of Amazon since July 2021; previously CEO of Amazon Web Services."
+      },
+      "entityLinks": {
+        "amazon": {
+          "role": "President & Chief Executive Officer",
+          "startYear": 2021,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "CEO of Amazon since July 2021, succeeding Jeff Bezos."
         }
       }
     },
@@ -58,6 +255,65 @@
         }
       }
     },
+    "ben-silbermann": {
+      "person": {
+        "canonicalName": "SILBERMANN, BENJAMIN",
+        "displayName": "Ben Silbermann",
+        "commonName": "Ben Silbermann",
+        "aliases": [
+          "Ben Silbermann"
+        ],
+        "fecSearchNames": [
+          "SILBERMANN, BENJAMIN",
+          "SILBERMANN, BEN"
+        ],
+        "primaryEmployer": "PINTEREST",
+        "primaryOccupation": "Co-Founder & Executive Chairman",
+        "verificationStatus": "manual",
+        "notes": "Co-founder of Pinterest in 2010; stepped down as CEO in June 2022 but remains Executive Chairman with retained founder equity."
+      },
+      "entityLinks": {
+        "pinterest": {
+          "role": "Co-Founder & Executive Chairman",
+          "startYear": 2010,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Co-founded Pinterest in 2010. Stepped down as CEO in 2022; remains Executive Chairman with retained founder equity that materially benefits from ongoing Pinterest performance."
+        }
+      }
+    },
+    "bernard-kim": {
+      "person": {
+        "canonicalName": "KIM, BERNARD",
+        "displayName": "Bernard Kim",
+        "commonName": "Bernard Kim",
+        "aliases": [
+          "Bernard Kim"
+        ],
+        "fecSearchNames": [
+          "KIM, BERNARD"
+        ],
+        "primaryEmployer": "MATCH GROUP",
+        "primaryOccupation": "Chief Executive Officer",
+        "verificationStatus": "manual",
+        "notes": "CEO of Match Group since May 2022; previously president of publishing at Zynga."
+      },
+      "entityLinks": {
+        "match-group": {
+          "role": "Chief Executive Officer",
+          "startYear": 2022,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "CEO of Match Group since May 2022."
+        }
+      }
+    },
     "bernard-marcus": {
       "commonName": "Bernie Marcus",
       "entityLinks": {
@@ -68,6 +324,68 @@
           "benefitBasis": "founder_stake",
           "isCurrent": true,
           "ownershipPct": null
+        }
+      }
+    },
+    "bill-ready": {
+      "person": {
+        "canonicalName": "READY, WILLIAM",
+        "displayName": "Bill Ready",
+        "commonName": "Bill Ready",
+        "aliases": [
+          "Bill Ready"
+        ],
+        "fecSearchNames": [
+          "READY, WILLIAM",
+          "READY, BILL",
+          "READY, WILLIAM J"
+        ],
+        "primaryEmployer": "PINTEREST",
+        "primaryOccupation": "President & Chief Executive Officer",
+        "verificationStatus": "manual",
+        "notes": "President and CEO of Pinterest since June 2022; previously president of commerce, payments, and next billion users at Google."
+      },
+      "entityLinks": {
+        "pinterest": {
+          "role": "President & Chief Executive Officer",
+          "startYear": 2022,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "CEO of Pinterest since June 2022."
+        }
+      }
+    },
+    "bobby-murphy": {
+      "person": {
+        "canonicalName": "MURPHY, ROBERT",
+        "displayName": "Bobby Murphy",
+        "commonName": "Bobby Murphy",
+        "aliases": [
+          "Bobby Murphy"
+        ],
+        "fecSearchNames": [
+          "MURPHY, ROBERT",
+          "MURPHY, BOBBY",
+          "MURPHY, ROBERT C"
+        ],
+        "primaryEmployer": "SNAP",
+        "primaryOccupation": "Co-Founder & Chief Technology Officer",
+        "verificationStatus": "manual",
+        "notes": "Co-founder and CTO of Snap Inc. since 2011. Murphy and Evan Spiegel together hold approximately 99% of Snap's Class C supervoting shares."
+      },
+      "entityLinks": {
+        "snap": {
+          "role": "Co-Founder & Chief Technology Officer",
+          "startYear": 2011,
+          "endYear": null,
+          "benefitBasis": "control_owner",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Co-founded Snapchat in 2011. Supervoting Class C ownership (jointly with Evan Spiegel) gives controlling vote."
         }
       }
     },
@@ -121,6 +439,34 @@
         }
       }
     },
+    "christy-walton": {
+      "entityLinks": {
+        "walmart": {
+          "role": "Heir (Widow of John T. Walton)",
+          "startYear": 2005,
+          "endYear": null,
+          "benefitBasis": "family_control",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Inherited stake on John T. Walton's death in 2005. Part of the Walton family ~46% control bloc held through Walton Enterprises and Walton Family Holdings Trust; ordinary Walmart performance materially affects this stake."
+        }
+      }
+    },
+    "connie-ballmer": {
+      "entityLinks": {
+        "microsoft": {
+          "role": "Spouse of Major Individual Shareholder",
+          "startYear": null,
+          "endYear": null,
+          "benefitBasis": "family_control",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "medium",
+          "notes": "Connie Ballmer is Steve Ballmers spouse and Ballmer Group co-founder; Steve Ballmers Microsoft stake is reported as a material family wealth source."
+        }
+      }
+    },
     "craig-j-duchossois": {
       "entityLinks": {
         "duchossois-group": {
@@ -133,6 +479,36 @@
         }
       }
     },
+    "daniel-ek": {
+      "person": {
+        "canonicalName": "EK, DANIEL",
+        "displayName": "Daniel Ek",
+        "commonName": "Daniel Ek",
+        "aliases": [
+          "Daniel Ek"
+        ],
+        "fecSearchNames": [
+          "EK, DANIEL",
+          "EK, DANIEL G"
+        ],
+        "primaryEmployer": "SPOTIFY",
+        "primaryOccupation": "Co-Founder & Chief Executive Officer",
+        "verificationStatus": "manual",
+        "notes": "Co-founder and CEO of Spotify since 2006. Holds beneficiary class supervoting shares giving him controlling vote despite ~16% ordinary economic ownership."
+      },
+      "entityLinks": {
+        "spotify": {
+          "role": "Co-Founder & Chief Executive Officer",
+          "startYear": 2006,
+          "endYear": null,
+          "benefitBasis": "control_owner",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Co-founded Spotify in 2006. Supervoting beneficiary shares give him majority voting control; ordinary Spotify performance materially affects his founder stake."
+        }
+      }
+    },
     "daniel-gilbert": {
       "entityLinks": {
         "rocket-companies": {
@@ -142,6 +518,92 @@
           "benefitBasis": "founder_stake",
           "isCurrent": true,
           "ownershipPct": null
+        }
+      }
+    },
+    "daniela-amodei": {
+      "person": {
+        "canonicalName": "AMODEI, DANIELA",
+        "displayName": "Daniela Amodei",
+        "commonName": "Daniela Amodei",
+        "aliases": [
+          "Daniela Amodei"
+        ],
+        "fecSearchNames": [
+          "AMODEI, DANIELA"
+        ],
+        "primaryEmployer": "ANTHROPIC",
+        "primaryOccupation": "Co-Founder & President",
+        "verificationStatus": "manual",
+        "notes": "Co-founder and President of Anthropic (founded 2021 with brother Dario Amodei). Anthropic is a private company; founder stake material per public reporting."
+      },
+      "entityLinks": {
+        "anthropic": {
+          "role": "Co-Founder & President",
+          "startYear": 2021,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Co-founded Anthropic in 2021. Private company; founder stake material per 2025 funding-round reporting."
+        }
+      }
+    },
+    "dara-khosrowshahi": {
+      "person": {
+        "canonicalName": "KHOSROWSHAHI, DARA",
+        "displayName": "Dara Khosrowshahi",
+        "aliases": [
+          "Dara Khosrowshahi"
+        ],
+        "fecSearchNames": [
+          "KHOSROWSHAHI, DARA"
+        ],
+        "primaryEmployer": "UBER TECHNOLOGIES",
+        "primaryOccupation": "Chief Executive Officer",
+        "verificationStatus": "manual",
+        "notes": "Chief Executive Officer of Uber Technologies since August 2017."
+      },
+      "entityLinks": {
+        "uber": {
+          "role": "Chief Executive Officer",
+          "startYear": 2017,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "CEO of Uber since August 2017, succeeding Travis Kalanick."
+        }
+      }
+    },
+    "dario-amodei": {
+      "person": {
+        "canonicalName": "AMODEI, DARIO",
+        "displayName": "Dario Amodei",
+        "commonName": "Dario Amodei",
+        "aliases": [
+          "Dario Amodei"
+        ],
+        "fecSearchNames": [
+          "AMODEI, DARIO"
+        ],
+        "primaryEmployer": "ANTHROPIC",
+        "primaryOccupation": "Co-Founder & Chief Executive Officer",
+        "verificationStatus": "manual",
+        "notes": "Co-founder and CEO of Anthropic (founded 2021 with sister Daniela Amodei and ex-OpenAI colleagues). Anthropic is a private company; founder stake is material per public reporting on the 2025 funding rounds."
+      },
+      "entityLinks": {
+        "anthropic": {
+          "role": "Co-Founder & Chief Executive Officer",
+          "startYear": 2021,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Co-founded Anthropic in 2021. Private company; founder stake material per 2025 funding-round reporting."
         }
       }
     },
@@ -190,6 +652,38 @@
           "benefitBasis": "founder_stake",
           "isCurrent": true,
           "ownershipPct": null
+        }
+      }
+    },
+    "doug-mcmillon": {
+      "person": {
+        "canonicalName": "MCMILLON, C DOUGLAS",
+        "displayName": "Doug McMillon",
+        "commonName": "Doug McMillon",
+        "aliases": [
+          "Doug McMillon"
+        ],
+        "fecSearchNames": [
+          "MCMILLON, C DOUGLAS",
+          "MCMILLON, DOUG",
+          "MCMILLON, DOUGLAS",
+          "MCMILLON, C D"
+        ],
+        "primaryEmployer": "WALMART",
+        "primaryOccupation": "President & Chief Executive Officer",
+        "verificationStatus": "manual",
+        "notes": "President and CEO of Walmart since February 2014; long-tenured Walmart executive prior to that."
+      },
+      "entityLinks": {
+        "walmart": {
+          "role": "President & Chief Executive Officer",
+          "startYear": 2014,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "CEO of Walmart since February 2014."
         }
       }
     },
@@ -253,6 +747,36 @@
         }
       }
     },
+    "enrique-lores": {
+      "person": {
+        "canonicalName": "LORES, ENRIQUE",
+        "displayName": "Enrique Lores",
+        "commonName": "Enrique Lores",
+        "aliases": [
+          "Enrique Lores"
+        ],
+        "fecSearchNames": [
+          "LORES, ENRIQUE",
+          "LORES, ENRIQUE J"
+        ],
+        "primaryEmployer": "PAYPAL HOLDINGS",
+        "primaryOccupation": "President & Chief Executive Officer",
+        "verificationStatus": "manual",
+        "notes": "President and CEO of PayPal effective March 1, 2026; previously CEO of HP Inc."
+      },
+      "entityLinks": {
+        "paypal": {
+          "role": "President & Chief Executive Officer",
+          "startYear": 2026,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Appointed CEO of PayPal effective March 1, 2026, succeeding Alex Chriss."
+        }
+      }
+    },
     "eric-schmidt": {
       "entityLinks": {
         "google-alphabet": {
@@ -274,6 +798,37 @@
           "benefitBasis": "founder_stake",
           "isCurrent": true,
           "ownershipPct": null
+        }
+      }
+    },
+    "evan-spiegel": {
+      "person": {
+        "canonicalName": "SPIEGEL, EVAN",
+        "displayName": "Evan Spiegel",
+        "commonName": "Evan Spiegel",
+        "aliases": [
+          "Evan Spiegel"
+        ],
+        "fecSearchNames": [
+          "SPIEGEL, EVAN",
+          "SPIEGEL, EVAN T",
+          "SPIEGEL, EVAN THOMAS"
+        ],
+        "primaryEmployer": "SNAP",
+        "primaryOccupation": "Co-Founder & Chief Executive Officer",
+        "verificationStatus": "manual",
+        "notes": "Co-founder and CEO of Snap Inc. since 2011. Spiegel and Bobby Murphy together hold approximately 99% of Snap's Class C supervoting shares (10 votes each), giving them joint controlling vote."
+      },
+      "entityLinks": {
+        "snap": {
+          "role": "Co-Founder & Chief Executive Officer",
+          "startYear": 2011,
+          "endYear": null,
+          "benefitBasis": "control_owner",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Co-founded Snapchat in 2011. Supervoting Class C ownership (jointly with Bobby Murphy) gives controlling vote."
         }
       }
     },
@@ -315,30 +870,6 @@
         }
       }
     },
-    "george-m-marcus": {
-      "entityLinks": {
-        "marcus-millichap": {
-          "role": "Founder & Chairman",
-          "startYear": 1971,
-          "endYear": null,
-          "benefitBasis": "founder_stake",
-          "isCurrent": true,
-          "ownershipPct": null
-        }
-      }
-    },
-    "george-soros": {
-      "entityLinks": {
-        "soros-fund-management": {
-          "role": "Founder & Chairman",
-          "startYear": 1970,
-          "endYear": null,
-          "benefitBasis": "founder_stake",
-          "isCurrent": true,
-          "ownershipPct": null
-        }
-      }
-    },
     "george-arison": {
       "commonName": "George Arison",
       "person": {
@@ -372,35 +903,27 @@
         }
       }
     },
-    "joel-simkhai": {
-      "commonName": "Joel Simkhai",
-      "person": {
-        "canonicalName": "SIMKHAI, JOEL",
-        "displayName": "Joel Simkhai",
-        "aliases": [
-          "Joel Simkhai-Strauss"
-        ],
-        "fecSearchNames": [
-          "SIMKHAI, JOEL",
-          "SIMKHAI STRAUSS, JOEL",
-          "SIMKHAI-STRAUSS, JOEL"
-        ],
-        "primaryEmployer": "GRINDR",
-        "primaryOccupation": "CHIEF EXECUTIVE OFFICER",
-        "lastVerifiedDate": "2026-04-29",
-        "verificationStatus": "manual",
-        "notes": "Manual add for Grindr founder request. Grindr's 2018 acquisition release identifies Simkhai as founder/CEO and says he exited after Kunlun purchased the remaining stake."
-      },
+    "george-m-marcus": {
       "entityLinks": {
-        "grindr": {
-          "role": "Founder & Former CEO",
-          "startYear": 2009,
-          "endYear": 2018,
+        "marcus-millichap": {
+          "role": "Founder & Chairman",
+          "startYear": 1971,
+          "endYear": null,
           "benefitBasis": "founder_stake",
-          "isCurrent": false,
-          "ownershipPct": null,
-          "confidence": "high",
-          "notes": "Grindr's 2018 acquisition release says Kunlun bought the remaining stake from founder Joel Simkhai and that Simkhai exited the company."
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
+    },
+    "george-soros": {
+      "entityLinks": {
+        "soros-fund-management": {
+          "role": "Founder & Chairman",
+          "startYear": 1970,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
         }
       }
     },
@@ -440,8 +963,26 @@
         }
       }
     },
+    "henry-r-kravis": {
+      "commonName": "Henry Kravis",
+      "person": {
+        "notes": "Reviewed for KKR link. Person exists in bulk-ranked donors, but no live KKR entity exists in the current graph; do not link through portfolio companies by generalized association."
+      }
+    },
     "howard-w-lutnick": {
       "commonName": "Howard Lutnick"
+    },
+    "irwin-jacobs": {
+      "entityLinks": {
+        "qualcomm": {
+          "role": "Co-Founder",
+          "startYear": 1985,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
+      }
     },
     "isaac-perlmutter": {
       "entityLinks": {
@@ -454,18 +995,6 @@
           "ownershipPct": null,
           "confidence": "high",
           "notes": "Disney stated in December 2023 that Perlmutter owned more than 25 million Disney shares through Trian's proxy fight and described him as a former Disney executive."
-        }
-      }
-    },
-    "irwin-jacobs": {
-      "entityLinks": {
-        "qualcomm": {
-          "role": "Co-Founder",
-          "startYear": 1985,
-          "endYear": null,
-          "benefitBasis": "founder_stake",
-          "isCurrent": true,
-          "ownershipPct": null
         }
       }
     },
@@ -533,6 +1062,30 @@
         }
       }
     },
+    "james-murdoch": {
+      "entityLinks": {
+        "fox-corporation": {
+          "role": "Former Murdoch Family Trust Beneficiary",
+          "startYear": null,
+          "endYear": 2025,
+          "benefitBasis": "family_control",
+          "isCurrent": false,
+          "ownershipPct": null,
+          "confidence": "medium",
+          "notes": "Fox/News Corp announced in September 2025 that James Murdoch and other departing beneficiaries would cease to be beneficiaries of trusts holding FOX or News Corp shares and receive cash consideration."
+        },
+        "news-corp": {
+          "role": "Former Murdoch Family Trust Beneficiary",
+          "startYear": null,
+          "endYear": 2025,
+          "benefitBasis": "family_control",
+          "isCurrent": false,
+          "ownershipPct": null,
+          "confidence": "medium",
+          "notes": "Fox/News Corp announced in September 2025 that James Murdoch and other departing beneficiaries would cease to be beneficiaries of trusts holding FOX or News Corp shares and receive cash consideration."
+        }
+      }
+    },
     "james-s-davis": {
       "commonName": "Jim Davis",
       "entityLinks": {
@@ -583,6 +1136,36 @@
           "benefitBasis": "board_routine",
           "isCurrent": false,
           "ownershipPct": null
+        }
+      }
+    },
+    "jason-citron": {
+      "person": {
+        "canonicalName": "CITRON, JASON",
+        "displayName": "Jason Citron",
+        "commonName": "Jason Citron",
+        "aliases": [
+          "Jason Citron"
+        ],
+        "fecSearchNames": [
+          "CITRON, JASON",
+          "CITRON, JASON A"
+        ],
+        "primaryEmployer": "DISCORD",
+        "primaryOccupation": "Co-Founder & Chief Executive Officer",
+        "verificationStatus": "manual",
+        "notes": "Co-founder and CEO of Discord since 2015. Discord is a private company; founder stake material per public reporting on its valuation rounds."
+      },
+      "entityLinks": {
+        "discord": {
+          "role": "Co-Founder & Chief Executive Officer",
+          "startYear": 2015,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Co-founded Discord in 2015. Private company; founder stake material."
         }
       }
     },
@@ -658,6 +1241,38 @@
         }
       }
     },
+    "joel-simkhai": {
+      "commonName": "Joel Simkhai",
+      "person": {
+        "canonicalName": "SIMKHAI, JOEL",
+        "displayName": "Joel Simkhai",
+        "aliases": [
+          "Joel Simkhai-Strauss"
+        ],
+        "fecSearchNames": [
+          "SIMKHAI, JOEL",
+          "SIMKHAI STRAUSS, JOEL",
+          "SIMKHAI-STRAUSS, JOEL"
+        ],
+        "primaryEmployer": "GRINDR",
+        "primaryOccupation": "CHIEF EXECUTIVE OFFICER",
+        "lastVerifiedDate": "2026-04-29",
+        "verificationStatus": "manual",
+        "notes": "Manual add for Grindr founder request. Grindr's 2018 acquisition release identifies Simkhai as founder/CEO and says he exited after Kunlun purchased the remaining stake."
+      },
+      "entityLinks": {
+        "grindr": {
+          "role": "Founder & Former CEO",
+          "startYear": 2009,
+          "endYear": 2018,
+          "benefitBasis": "founder_stake",
+          "isCurrent": false,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Grindr's 2018 acquisition release says Kunlun bought the remaining stake from founder Joel Simkhai and that Simkhai exited the company."
+        }
+      }
+    },
     "john-l-nau": {
       "commonName": "John Nau III",
       "entityLinks": {
@@ -697,6 +1312,20 @@
         }
       }
     },
+    "jon-stryker": {
+      "entityLinks": {
+        "stryker": {
+          "role": "Stryker Family Heir / Shareholder",
+          "startYear": null,
+          "endYear": null,
+          "benefitBasis": "family_control",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Jon Stryker is a billionaire heir to the Stryker Corporation fortune; the family wealth is tied to the medical technology company founded by Homer Stryker."
+        }
+      }
+    },
     "jonathan-d-gray": {
       "commonName": "Jon Gray",
       "entityLinks": {
@@ -732,6 +1361,30 @@
           "ownershipPct": null,
           "confidence": "medium",
           "notes": "Rupert Murdoch is Chairman Emeritus; September 2025 trust resolution shifted voting control over FOX/News Corp trust-held shares solely to Lachlan, so Rupert is retained as a historical family-control link."
+        }
+      }
+    },
+    "kathryn-murdoch": {
+      "entityLinks": {
+        "fox-corporation": {
+          "role": "Former Murdoch Family Trust Beneficiary Household",
+          "startYear": null,
+          "endYear": 2025,
+          "benefitBasis": "family_control",
+          "isCurrent": false,
+          "ownershipPct": null,
+          "confidence": "medium",
+          "notes": "Kathryn Murdoch is married to James Murdoch. Fox/News Corp announced in September 2025 that James and other departing beneficiaries would cease to be beneficiaries of trusts holding FOX or News Corp shares, so this is historical, not a current control link."
+        },
+        "news-corp": {
+          "role": "Former Murdoch Family Trust Beneficiary Household",
+          "startYear": null,
+          "endYear": 2025,
+          "benefitBasis": "family_control",
+          "isCurrent": false,
+          "ownershipPct": null,
+          "confidence": "medium",
+          "notes": "Kathryn Murdoch is married to James Murdoch. Fox/News Corp announced in September 2025 that James and other departing beneficiaries would cease to be beneficiaries of trusts holding FOX or News Corp shares, so this is historical, not a current control link."
         }
       }
     },
@@ -785,6 +1438,79 @@
         }
       }
     },
+    "lachlan-murdoch": {
+      "person": {
+        "canonicalName": "MURDOCH, LACHLAN",
+        "displayName": "Lachlan Murdoch",
+        "commonName": "Lachlan Murdoch",
+        "aliases": [
+          "Lachlan Murdoch",
+          "Lachlan K Murdoch"
+        ],
+        "fecSearchNames": [
+          "MURDOCH, LACHLAN",
+          "MURDOCH, LACHLAN K"
+        ],
+        "primaryEmployer": "Fox Corporation",
+        "primaryOccupation": "Executive Chair and CEO",
+        "verificationStatus": "manual",
+        "notes": "Manual add for entity linkage: Fox identifies Lachlan Murdoch as Executive Chair and CEO; News Corp identifies him as Chair. September 2025 Fox/News Corp releases state voting control over trust-held shares rests solely with Lachlan through LGC Holdco."
+      },
+      "entityLinks": {
+        "fox-corporation": {
+          "role": "Executive Chair, CEO & Controlling Family Trust Manager",
+          "startYear": 2019,
+          "endYear": null,
+          "benefitBasis": "control_owner",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Fox 2026 investor release identifies Lachlan as Executive Chair and CEO; 2025 trust-resolution release says voting control of FOX and News Corp shares owned by LGC Holdco rests solely with Lachlan."
+        },
+        "news-corp": {
+          "role": "Chair & Controlling Family Trust Manager",
+          "startYear": 2023,
+          "endYear": null,
+          "benefitBasis": "control_owner",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "News Corp board page identifies Lachlan as Chair; 2025 trust-resolution release says voting control of News Corp and FOX shares owned by LGC Holdco rests solely with Lachlan."
+        }
+      }
+    },
+    "larry-page": {
+      "person": {
+        "canonicalName": "PAGE, LAWRENCE",
+        "displayName": "Larry Page",
+        "commonName": "Larry Page",
+        "aliases": [
+          "Larry Page",
+          "Lawrence Page"
+        ],
+        "fecSearchNames": [
+          "PAGE, LAWRENCE",
+          "PAGE, LARRY",
+          "PAGE, LAWRENCE E"
+        ],
+        "primaryEmployer": "Alphabet Inc",
+        "primaryOccupation": "Co-Founder",
+        "verificationStatus": "manual",
+        "notes": "Manual add for entity linkage: Alphabet 2025 proxy reports Larry Page beneficially owns 389,051,160 Class B shares, 45.5% of Class B and 27.1% total voting power."
+      },
+      "entityLinks": {
+        "google-alphabet": {
+          "role": "Co-Founder & Controlling Class B Shareholder",
+          "startYear": 1998,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Alphabet 2025 proxy reports Page holds 45.5% of Class B shares and 27.1% total voting power; ordinary Google/Alphabet revenue can affect the value of his founder stake."
+        }
+      }
+    },
     "laurene-powell-jobs": {
       "entityLinks": {
         "the-atlantic": {
@@ -822,6 +1548,44 @@
         }
       }
     },
+    "leon-cooperman": {
+      "person": {
+        "canonicalName": "COOPERMAN, LEON",
+        "displayName": "Leon Cooperman",
+        "commonName": "Leon Cooperman",
+        "aliases": [
+          "Leon Cooperman"
+        ],
+        "fecSearchNames": [
+          "COOPERMAN, LEON",
+          "COOPERMAN, LEON G"
+        ],
+        "primaryEmployer": "Omega Advisors",
+        "primaryOccupation": "Investor",
+        "verificationStatus": "manual",
+        "notes": "Manual add for review completeness. No accepted entity link: Omega Advisors is not in the live graph and, as a private investment office, does not pass the ordinary consumer-spending economic-benefit test for this app surface."
+      }
+    },
+    "linda-e-mcmahon": {
+      "commonName": "Linda McMahon",
+      "person": {
+        "notes": "Reviewed for WWE/TKO link. No live WWE/TKO entity exists in the current V1 graph, so no accepted link was added in this pass."
+      }
+    },
+    "lukas-t-walton": {
+      "entityLinks": {
+        "walmart": {
+          "role": "Heir (Son of John & Christy Walton)",
+          "startYear": 2005,
+          "endYear": null,
+          "benefitBasis": "family_control",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Inherited from John T. Walton on his 2005 death. Part of the Walton family ~46% control bloc held through Walton Enterprises and Walton Family Holdings Trust; ordinary Walmart performance materially affects this stake."
+        }
+      }
+    },
     "m-jude-reyes": {
       "commonName": "Jude Reyes",
       "entityLinks": {
@@ -835,6 +1599,20 @@
         }
       }
     },
+    "marilyn-simons": {
+      "entityLinks": {
+        "renaissance-technologies": {
+          "role": "Spouse of Founder / Simons Family",
+          "startYear": 1982,
+          "endYear": 2024,
+          "benefitBasis": "family_control",
+          "isCurrent": false,
+          "ownershipPct": null,
+          "confidence": "medium",
+          "notes": "Marilyn Simons was James Simons spouse; Jim Simons founded Renaissance Technologies and remained tied to the firm until his 2024 death. Mark historical after 2024."
+        }
+      }
+    },
     "mark-epstein": {
       "entityLinks": {
         "qualcomm": {
@@ -844,6 +1622,50 @@
           "benefitBasis": "executive",
           "isCurrent": true,
           "ownershipPct": null
+        }
+      }
+    },
+    "mark-zuckerberg": {
+      "person": {
+        "canonicalName": "ZUCKERBERG, MARK",
+        "displayName": "Mark Zuckerberg",
+        "aliases": [
+          "Mark Zuckerberg"
+        ],
+        "fecSearchNames": [
+          "ZUCKERBERG, MARK",
+          "ZUCKERBERG, MARK E",
+          "ZUCKERBERG, MARK ELLIOT"
+        ],
+        "primaryEmployer": "META PLATFORMS",
+        "primaryOccupation": "Founder, Chairman & CEO",
+        "verificationStatus": "manual",
+        "notes": "Founder, Chairman, and CEO of Meta Platforms (formerly Facebook); holds approximately 13.6% of Class A and ~99% of Class B supervoting shares per Meta's 2025 proxy, giving him controlling vote."
+      },
+      "entityLinks": {
+        "meta": {
+          "role": "Founder, Chairman & CEO",
+          "startYear": 2004,
+          "endYear": null,
+          "benefitBasis": "control_owner",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Founder of Facebook (2004); Class B supervoting majority gives him controlling vote at Meta. Ongoing Meta performance materially affects his founder stake."
+        }
+      }
+    },
+    "marlene-ricketts": {
+      "entityLinks": {
+        "td-ameritrade": {
+          "role": "Ricketts Family Matriarch / Founder Family",
+          "startYear": 1975,
+          "endYear": 2020,
+          "benefitBasis": "family_control",
+          "isCurrent": false,
+          "ownershipPct": null,
+          "confidence": "medium",
+          "notes": "Joe Ricketts founded Ameritrade/TD Ameritrade and Forbes reported the Ricketts family owned just under 12% before the Charles Schwab acquisition; mark historical because Schwab acquired TD Ameritrade in 2020 and the platform shut down in 2024."
         }
       }
     },
@@ -897,6 +1719,20 @@
         }
       }
     },
+    "pat-stryker": {
+      "entityLinks": {
+        "stryker": {
+          "role": "Stryker Family Heir / Shareholder",
+          "startYear": null,
+          "endYear": null,
+          "benefitBasis": "family_control",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Pat Stryker is a billionaire heir to the Stryker Corporation fortune; Forbes identifies her grandfather as Stryker Corp founder Homer Stryker."
+        }
+      }
+    },
     "patrick-g-ryan": {
       "commonName": "Pat Ryan",
       "entityLinks": {
@@ -910,6 +1746,20 @@
         }
       }
     },
+    "patty-quillin": {
+      "entityLinks": {
+        "netflix": {
+          "role": "Spouse of Co-Founder / Founder-Stake Holder",
+          "startYear": null,
+          "endYear": null,
+          "benefitBasis": "family_control",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "medium",
+          "notes": "Patricia Quillin is Reed Hastings spouse; Hastings co-founded Netflix, remained executive chair into 2026, and retains shareholder exposure even as he steps down from the board in June 2026."
+        }
+      }
+    },
     "paul-e-singer": {
       "commonName": "Paul Singer",
       "entityLinks": {
@@ -920,6 +1770,38 @@
           "benefitBasis": "founder_stake",
           "isCurrent": true,
           "ownershipPct": null
+        }
+      }
+    },
+    "pete-ricketts": {
+      "person": {
+        "canonicalName": "RICKETTS, PETE",
+        "displayName": "Pete Ricketts",
+        "commonName": "Pete Ricketts",
+        "aliases": [
+          "Pete Ricketts",
+          "John Peter Ricketts"
+        ],
+        "fecSearchNames": [
+          "RICKETTS, PETE",
+          "RICKETTS, JOHN PETER",
+          "RICKETTS, J PETER"
+        ],
+        "primaryEmployer": "United States Senate",
+        "primaryOccupation": "Senator",
+        "verificationStatus": "manual",
+        "notes": "Manual add for Ricketts family audit; linked historically to TD Ameritrade family wealth, not treated as a current operating role after Schwab acquisition."
+      },
+      "entityLinks": {
+        "td-ameritrade": {
+          "role": "Ricketts Founder Family Member",
+          "startYear": 1975,
+          "endYear": 2020,
+          "benefitBasis": "family_control",
+          "isCurrent": false,
+          "ownershipPct": null,
+          "confidence": "medium",
+          "notes": "Forbes reported the Ricketts family owned just under 12% of TD Ameritrade; mark historical because Schwab acquired TD Ameritrade in 2020 and the platform shut down in 2024."
         }
       }
     },
@@ -985,20 +1867,6 @@
         }
       }
     },
-    "robert-t-bigelow": {
-      "entityLinks": {
-        "bigelow-aerospace": {
-          "role": "Founder & President",
-          "startYear": 1999,
-          "endYear": null,
-          "benefitBasis": "founder_stake",
-          "isCurrent": true,
-          "ownershipPct": null,
-          "confidence": "high",
-          "notes": "Bigelow Aerospace's official 'Who We Are' page identifies Robert T. Bigelow as the company's founder and president and dates the founding to 1999."
-        }
-      }
-    },
     "rob-walton": {
       "entityLinks": {
         "walmart": {
@@ -1020,6 +1888,20 @@
           "benefitBasis": "executive",
           "isCurrent": false,
           "ownershipPct": null
+        }
+      }
+    },
+    "robert-t-bigelow": {
+      "entityLinks": {
+        "bigelow-aerospace": {
+          "role": "Founder & President",
+          "startYear": 1999,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Bigelow Aerospace's official 'Who We Are' page identifies Robert T. Bigelow as the company's founder and president and dates the founding to 1999."
         }
       }
     },
@@ -1059,6 +1941,51 @@
         }
       }
     },
+    "sam-altman": {
+      "person": {
+        "canonicalName": "ALTMAN, SAMUEL",
+        "displayName": "Sam Altman",
+        "commonName": "Sam Altman",
+        "aliases": [
+          "Sam Altman"
+        ],
+        "fecSearchNames": [
+          "ALTMAN, SAMUEL",
+          "ALTMAN, SAM",
+          "ALTMAN, SAMUEL H"
+        ],
+        "primaryEmployer": "OPENAI",
+        "primaryOccupation": "Chief Executive Officer",
+        "verificationStatus": "manual",
+        "notes": "Co-founder and CEO of OpenAI since 2019 (initially co-founded the organization in 2015)."
+      },
+      "entityLinks": {
+        "openai": {
+          "role": "Co-Founder & Chief Executive Officer",
+          "startYear": 2015,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "CEO of OpenAI since 2019; co-founder of the original OpenAI nonprofit in 2015."
+        }
+      }
+    },
+    "sam-rawlings-walton": {
+      "entityLinks": {
+        "walmart": {
+          "role": "Heir (Son of Jim Walton)",
+          "startYear": null,
+          "endYear": null,
+          "benefitBasis": "family_control",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Grandson of Sam Walton, son of Jim C. Walton. Part of the Walton family ~46% control bloc held through Walton Enterprises and Walton Family Holdings Trust; ordinary Walmart performance materially affects this stake."
+        }
+      }
+    },
     "samuel-bankman-fried": {
       "entityLinks": {
         "ftx": {
@@ -1071,150 +1998,32 @@
         }
       }
     },
-    "sheldon-adelson": {
-      "entityLinks": {
-        "las-vegas-sands": {
-          "role": "Founder & CEO",
-          "startYear": 1989,
-          "endYear": 2021,
-          "benefitBasis": "founder_stake",
-          "isCurrent": false,
-          "ownershipPct": null
-        }
-      }
-    },
-    "seth-klarman": {
-      "entityLinks": {
-        "baupost-group": {
-          "role": "CEO & Portfolio Manager",
-          "startYear": 1982,
-          "endYear": null,
-          "benefitBasis": "executive",
-          "isCurrent": true,
-          "ownershipPct": null,
-          "confidence": "high",
-          "notes": "Baupost's official About and Team pages identify Seth Klarman as CEO & Portfolio Manager and say he has overseen the firm's investments since its 1982 inception."
-        }
-      }
-    },
-    "sheryl-sandberg": {
-      "entityLinks": {
-        "meta": {
-          "role": "Former COO",
-          "startYear": 2008,
-          "endYear": 2022,
-          "benefitBasis": "executive",
-          "isCurrent": false,
-          "ownershipPct": null
-        }
-      }
-    },
-    "stephen-a-schwarzman": {
-      "entityLinks": {
-        "blackstone": {
-          "role": "Co-Founder, Chairman & CEO",
-          "startYear": 1985,
-          "endYear": null,
-          "benefitBasis": "founder_stake",
-          "isCurrent": true,
-          "ownershipPct": null,
-          "confidence": "high",
-          "notes": "Blackstones official bio identifies Schwarzman as Chairman, CEO and Co-Founder and says he has been involved since founding in 1985."
-        }
-      },
-      "commonName": "Stephen Schwarzman"
-    },
-    "stephen-mandel": {
-      "entityLinks": {
-        "lone-pine-capital": {
-          "role": "Founder",
-          "startYear": 1997,
-          "endYear": null,
-          "benefitBasis": "founder_stake",
-          "isCurrent": true,
-          "ownershipPct": null
-        }
-      }
-    },
-    "thomas-f-steyer": {
-      "commonName": "Tom Steyer",
-      "entityLinks": {
-        "farallon-capital": {
-          "role": "Founder",
-          "startYear": 1986,
-          "endYear": null,
-          "benefitBasis": "founder_stake",
-          "isCurrent": true,
-          "ownershipPct": null
-        }
-      }
-    },
-    "thomas-peterffy": {
-      "entityLinks": {
-        "interactive-brokers": {
-          "role": "Founder & Chairman",
-          "startYear": 1977,
-          "endYear": null,
-          "benefitBasis": "founder_stake",
-          "isCurrent": true,
-          "ownershipPct": null
-        }
-      }
-    },
-    "vivek-ramaswamy": {
-      "entityLinks": {
-        "roivant-sciences": {
-          "role": "Founder & Former CEO",
-          "startYear": 2014,
-          "endYear": null,
-          "benefitBasis": "founder_stake",
-          "isCurrent": false,
-          "ownershipPct": null
-        }
-      }
-    },
-    "warren-a-stephens": {
-      "commonName": "Warren Stephens",
-      "entityLinks": {
-        "stephens-inc": {
-          "role": "Chairman, President & CEO",
-          "startYear": null,
-          "endYear": null,
-          "benefitBasis": "executive",
-          "isCurrent": true,
-          "ownershipPct": null
-        }
-      }
-    },
-    "larry-page": {
+    "satya-nadella": {
       "person": {
-        "canonicalName": "PAGE, LAWRENCE",
-        "displayName": "Larry Page",
-        "commonName": "Larry Page",
+        "canonicalName": "NADELLA, SATYA",
+        "displayName": "Satya Nadella",
+        "commonName": "Satya Nadella",
         "aliases": [
-          "Larry Page",
-          "Lawrence Page"
+          "Satya Nadella"
         ],
         "fecSearchNames": [
-          "PAGE, LAWRENCE",
-          "PAGE, LARRY",
-          "PAGE, LAWRENCE E"
+          "NADELLA, SATYA"
         ],
-        "primaryEmployer": "Alphabet Inc",
-        "primaryOccupation": "Co-Founder",
+        "primaryEmployer": "MICROSOFT",
+        "primaryOccupation": "Chairman & Chief Executive Officer",
         "verificationStatus": "manual",
-        "notes": "Manual add for entity linkage: Alphabet 2025 proxy reports Larry Page beneficially owns 389,051,160 Class B shares, 45.5% of Class B and 27.1% total voting power."
+        "notes": "CEO of Microsoft since February 2014; Chairman since June 2021. Long-tenured Microsoft executive prior to taking the CEO role."
       },
       "entityLinks": {
-        "google-alphabet": {
-          "role": "Co-Founder & Controlling Class B Shareholder",
-          "startYear": 1998,
+        "microsoft": {
+          "role": "Chairman & Chief Executive Officer",
+          "startYear": 2014,
           "endYear": null,
-          "benefitBasis": "founder_stake",
+          "benefitBasis": "executive",
           "isCurrent": true,
           "ownershipPct": null,
           "confidence": "high",
-          "notes": "Alphabet 2025 proxy reports Page holds 45.5% of Class B shares and 27.1% total voting power; ordinary Google/Alphabet revenue can affect the value of his founder stake."
+          "notes": "CEO of Microsoft since February 2014; Chairman since June 2021."
         }
       }
     },
@@ -1248,44 +2057,99 @@
         }
       }
     },
-    "lachlan-murdoch": {
+    "seth-klarman": {
+      "entityLinks": {
+        "baupost-group": {
+          "role": "CEO & Portfolio Manager",
+          "startYear": 1982,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "Baupost's official About and Team pages identify Seth Klarman as CEO & Portfolio Manager and say he has overseen the firm's investments since its 1982 inception."
+        }
+      }
+    },
+    "sheldon-adelson": {
+      "entityLinks": {
+        "las-vegas-sands": {
+          "role": "Founder & CEO",
+          "startYear": 1989,
+          "endYear": 2021,
+          "benefitBasis": "founder_stake",
+          "isCurrent": false,
+          "ownershipPct": null
+        }
+      }
+    },
+    "sheryl-sandberg": {
+      "entityLinks": {
+        "meta": {
+          "role": "Former COO",
+          "startYear": 2008,
+          "endYear": 2022,
+          "benefitBasis": "executive",
+          "isCurrent": false,
+          "ownershipPct": null
+        }
+      }
+    },
+    "shou-chew": {
       "person": {
-        "canonicalName": "MURDOCH, LACHLAN",
-        "displayName": "Lachlan Murdoch",
-        "commonName": "Lachlan Murdoch",
+        "canonicalName": "CHEW, SHOU",
+        "displayName": "Shou Chew",
+        "commonName": "Shou Chew",
         "aliases": [
-          "Lachlan Murdoch",
-          "Lachlan K Murdoch"
+          "Shou Chew"
         ],
         "fecSearchNames": [
-          "MURDOCH, LACHLAN",
-          "MURDOCH, LACHLAN K"
+          "CHEW, SHOU",
+          "CHEW, SHOU ZI",
+          "CHEW, SHOU-ZI"
         ],
-        "primaryEmployer": "Fox Corporation",
-        "primaryOccupation": "Executive Chair and CEO",
+        "primaryEmployer": "TIKTOK",
+        "primaryOccupation": "Chief Executive Officer",
         "verificationStatus": "manual",
-        "notes": "Manual add for entity linkage: Fox identifies Lachlan Murdoch as Executive Chair and CEO; News Corp identifies him as Chair. September 2025 Fox/News Corp releases state voting control over trust-held shares rests solely with Lachlan through LGC Holdco."
+        "notes": "CEO of TikTok Inc. since 2021. ByteDance (parent) is a separate entity not currently represented in the live graph; TikTok→ByteDance parent relationship is a V2 entity-batch decision."
       },
       "entityLinks": {
-        "fox-corporation": {
-          "role": "Executive Chair, CEO & Controlling Family Trust Manager",
-          "startYear": 2019,
+        "tiktok": {
+          "role": "Chief Executive Officer",
+          "startYear": 2021,
           "endYear": null,
-          "benefitBasis": "control_owner",
+          "benefitBasis": "executive",
           "isCurrent": true,
           "ownershipPct": null,
           "confidence": "high",
-          "notes": "Fox 2026 investor release identifies Lachlan as Executive Chair and CEO; 2025 trust-resolution release says voting control of FOX and News Corp shares owned by LGC Holdco rests solely with Lachlan."
-        },
-        "news-corp": {
-          "role": "Chair & Controlling Family Trust Manager",
-          "startYear": 2023,
+          "notes": "CEO of TikTok Inc. (the U.S.-facing entity) since 2021."
+        }
+      }
+    },
+    "stephen-a-schwarzman": {
+      "entityLinks": {
+        "blackstone": {
+          "role": "Co-Founder, Chairman & CEO",
+          "startYear": 1985,
           "endYear": null,
-          "benefitBasis": "control_owner",
+          "benefitBasis": "founder_stake",
           "isCurrent": true,
           "ownershipPct": null,
           "confidence": "high",
-          "notes": "News Corp board page identifies Lachlan as Chair; 2025 trust-resolution release says voting control of News Corp and FOX shares owned by LGC Holdco rests solely with Lachlan."
+          "notes": "Blackstones official bio identifies Schwarzman as Chairman, CEO and Co-Founder and says he has been involved since founding in 1985."
+        }
+      },
+      "commonName": "Stephen Schwarzman"
+    },
+    "stephen-mandel": {
+      "entityLinks": {
+        "lone-pine-capital": {
+          "role": "Founder",
+          "startYear": 1997,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
         }
       }
     },
@@ -1322,73 +2186,120 @@
         }
       }
     },
-    "connie-ballmer": {
+    "steve-huffman": {
+      "person": {
+        "canonicalName": "HUFFMAN, STEVEN",
+        "displayName": "Steve Huffman",
+        "commonName": "Steve Huffman",
+        "aliases": [
+          "Steve Huffman"
+        ],
+        "fecSearchNames": [
+          "HUFFMAN, STEVEN",
+          "HUFFMAN, STEVE",
+          "HUFFMAN, STEPHEN",
+          "HUFFMAN, STEVEN L"
+        ],
+        "primaryEmployer": "REDDIT",
+        "primaryOccupation": "Co-Founder & Chief Executive Officer",
+        "verificationStatus": "manual",
+        "notes": "Co-founder of Reddit in 2005; returned as CEO in 2015. Reddit S-1 disclosed Huffman's beneficial ownership at approximately 3.3% post-IPO."
+      },
       "entityLinks": {
-        "microsoft": {
-          "role": "Spouse of Major Individual Shareholder",
-          "startYear": null,
+        "reddit": {
+          "role": "Co-Founder & Chief Executive Officer",
+          "startYear": 2005,
           "endYear": null,
-          "benefitBasis": "family_control",
+          "benefitBasis": "founder_stake",
           "isCurrent": true,
           "ownershipPct": null,
-          "confidence": "medium",
-          "notes": "Connie Ballmer is Steve Ballmers spouse and Ballmer Group co-founder; Steve Ballmers Microsoft stake is reported as a material family wealth source."
+          "confidence": "high",
+          "notes": "Co-founded Reddit in 2005; CEO since 2015. Post-IPO ownership ~3.3% per S-1 disclosure."
         }
       }
     },
-    "patty-quillin": {
+    "sundar-pichai": {
+      "person": {
+        "canonicalName": "PICHAI, SUNDAR",
+        "displayName": "Sundar Pichai",
+        "aliases": [
+          "Sundar Pichai"
+        ],
+        "fecSearchNames": [
+          "PICHAI, SUNDAR",
+          "PICHAI, SUNDARARAJAN"
+        ],
+        "primaryEmployer": "ALPHABET",
+        "primaryOccupation": "Chief Executive Officer",
+        "verificationStatus": "manual",
+        "notes": "Chief Executive Officer of Alphabet Inc. since December 2019 (CEO of Google subsidiary since 2015)."
+      },
+      "entityLinks": {
+        "google-alphabet": {
+          "role": "Chief Executive Officer",
+          "startYear": 2019,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null,
+          "confidence": "high",
+          "notes": "CEO of Alphabet Inc. since 2019; previously CEO of Google subsidiary from 2015."
+        }
+      }
+    },
+    "ted-sarandos": {
+      "person": {
+        "canonicalName": "SARANDOS, THEODORE",
+        "displayName": "Ted Sarandos",
+        "commonName": "Ted Sarandos",
+        "aliases": [
+          "Ted Sarandos"
+        ],
+        "fecSearchNames": [
+          "SARANDOS, THEODORE",
+          "SARANDOS, TED",
+          "SARANDOS, THEODORE A"
+        ],
+        "primaryEmployer": "NETFLIX",
+        "primaryOccupation": "Co-Chief Executive Officer",
+        "verificationStatus": "manual",
+        "notes": "Co-CEO of Netflix since July 2020 alongside Greg Peters; long-time chief content officer prior to that."
+      },
       "entityLinks": {
         "netflix": {
-          "role": "Spouse of Co-Founder / Founder-Stake Holder",
-          "startYear": null,
+          "role": "Co-Chief Executive Officer",
+          "startYear": 2020,
           "endYear": null,
-          "benefitBasis": "family_control",
-          "isCurrent": true,
-          "ownershipPct": null,
-          "confidence": "medium",
-          "notes": "Patricia Quillin is Reed Hastings spouse; Hastings co-founded Netflix, remained executive chair into 2026, and retains shareholder exposure even as he steps down from the board in June 2026."
-        }
-      }
-    },
-    "jon-stryker": {
-      "entityLinks": {
-        "stryker": {
-          "role": "Stryker Family Heir / Shareholder",
-          "startYear": null,
-          "endYear": null,
-          "benefitBasis": "family_control",
+          "benefitBasis": "executive",
           "isCurrent": true,
           "ownershipPct": null,
           "confidence": "high",
-          "notes": "Jon Stryker is a billionaire heir to the Stryker Corporation fortune; the family wealth is tied to the medical technology company founded by Homer Stryker."
+          "notes": "Co-CEO of Netflix since 2020 (with Greg Peters)."
         }
       }
     },
-    "pat-stryker": {
+    "thomas-f-steyer": {
+      "commonName": "Tom Steyer",
       "entityLinks": {
-        "stryker": {
-          "role": "Stryker Family Heir / Shareholder",
-          "startYear": null,
+        "farallon-capital": {
+          "role": "Founder",
+          "startYear": 1986,
           "endYear": null,
-          "benefitBasis": "family_control",
+          "benefitBasis": "founder_stake",
           "isCurrent": true,
-          "ownershipPct": null,
-          "confidence": "high",
-          "notes": "Pat Stryker is a billionaire heir to the Stryker Corporation fortune; Forbes identifies her grandfather as Stryker Corp founder Homer Stryker."
+          "ownershipPct": null
         }
       }
     },
-    "marlene-ricketts": {
+    "thomas-peterffy": {
       "entityLinks": {
-        "td-ameritrade": {
-          "role": "Ricketts Family Matriarch / Founder Family",
-          "startYear": 1975,
-          "endYear": 2020,
-          "benefitBasis": "family_control",
-          "isCurrent": false,
-          "ownershipPct": null,
-          "confidence": "medium",
-          "notes": "Joe Ricketts founded Ameritrade/TD Ameritrade and Forbes reported the Ricketts family owned just under 12% before the Charles Schwab acquisition; mark historical because Schwab acquired TD Ameritrade in 2020 and the platform shut down in 2024."
+        "interactive-brokers": {
+          "role": "Founder & Chairman",
+          "startYear": 1977,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
+          "ownershipPct": null
         }
       }
     },
@@ -1422,104 +2333,18 @@
         }
       }
     },
-    "pete-ricketts": {
-      "person": {
-        "canonicalName": "RICKETTS, PETE",
-        "displayName": "Pete Ricketts",
-        "commonName": "Pete Ricketts",
-        "aliases": [
-          "Pete Ricketts",
-          "John Peter Ricketts"
-        ],
-        "fecSearchNames": [
-          "RICKETTS, PETE",
-          "RICKETTS, JOHN PETER",
-          "RICKETTS, J PETER"
-        ],
-        "primaryEmployer": "United States Senate",
-        "primaryOccupation": "Senator",
-        "verificationStatus": "manual",
-        "notes": "Manual add for Ricketts family audit; linked historically to TD Ameritrade family wealth, not treated as a current operating role after Schwab acquisition."
-      },
+    "tom-campion": {
       "entityLinks": {
-        "td-ameritrade": {
-          "role": "Ricketts Founder Family Member",
-          "startYear": 1975,
-          "endYear": 2020,
-          "benefitBasis": "family_control",
-          "isCurrent": false,
+        "zumiez": {
+          "role": "Co-Founder & Chairman",
+          "startYear": 1978,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": true,
           "ownershipPct": null,
-          "confidence": "medium",
-          "notes": "Forbes reported the Ricketts family owned just under 12% of TD Ameritrade; mark historical because Schwab acquired TD Ameritrade in 2020 and the platform shut down in 2024."
+          "confidence": "high",
+          "notes": "Zumiez investor relations identifies Thomas D. Campion as co-founder, director since inception in 1978, and chairman since June 2000."
         }
-      }
-    },
-    "kathryn-murdoch": {
-      "entityLinks": {
-        "fox-corporation": {
-          "role": "Former Murdoch Family Trust Beneficiary Household",
-          "startYear": null,
-          "endYear": 2025,
-          "benefitBasis": "family_control",
-          "isCurrent": false,
-          "ownershipPct": null,
-          "confidence": "medium",
-          "notes": "Kathryn Murdoch is married to James Murdoch. Fox/News Corp announced in September 2025 that James and other departing beneficiaries would cease to be beneficiaries of trusts holding FOX or News Corp shares, so this is historical, not a current control link."
-        },
-        "news-corp": {
-          "role": "Former Murdoch Family Trust Beneficiary Household",
-          "startYear": null,
-          "endYear": 2025,
-          "benefitBasis": "family_control",
-          "isCurrent": false,
-          "ownershipPct": null,
-          "confidence": "medium",
-          "notes": "Kathryn Murdoch is married to James Murdoch. Fox/News Corp announced in September 2025 that James and other departing beneficiaries would cease to be beneficiaries of trusts holding FOX or News Corp shares, so this is historical, not a current control link."
-        }
-      }
-    },
-    "james-murdoch": {
-      "entityLinks": {
-        "fox-corporation": {
-          "role": "Former Murdoch Family Trust Beneficiary",
-          "startYear": null,
-          "endYear": 2025,
-          "benefitBasis": "family_control",
-          "isCurrent": false,
-          "ownershipPct": null,
-          "confidence": "medium",
-          "notes": "Fox/News Corp announced in September 2025 that James Murdoch and other departing beneficiaries would cease to be beneficiaries of trusts holding FOX or News Corp shares and receive cash consideration."
-        },
-        "news-corp": {
-          "role": "Former Murdoch Family Trust Beneficiary",
-          "startYear": null,
-          "endYear": 2025,
-          "benefitBasis": "family_control",
-          "isCurrent": false,
-          "ownershipPct": null,
-          "confidence": "medium",
-          "notes": "Fox/News Corp announced in September 2025 that James Murdoch and other departing beneficiaries would cease to be beneficiaries of trusts holding FOX or News Corp shares and receive cash consideration."
-        }
-      }
-    },
-    "marilyn-simons": {
-      "entityLinks": {
-        "renaissance-technologies": {
-          "role": "Spouse of Founder / Simons Family",
-          "startYear": 1982,
-          "endYear": 2024,
-          "benefitBasis": "family_control",
-          "isCurrent": false,
-          "ownershipPct": null,
-          "confidence": "medium",
-          "notes": "Marilyn Simons was James Simons spouse; Jim Simons founded Renaissance Technologies and remained tied to the firm until his 2024 death. Mark historical after 2024."
-        }
-      }
-    },
-    "linda-e-mcmahon": {
-      "commonName": "Linda McMahon",
-      "person": {
-        "notes": "Reviewed for WWE/TKO link. No live WWE/TKO entity exists in the current V1 graph, so no accepted link was added in this pass."
       }
     },
     "vince-mcmahon": {
@@ -1543,28 +2368,29 @@
         "notes": "Reviewed for WWE/TKO link. CNBC reported Vince McMahon resigned from TKO and WWE roles in January 2024; no live WWE/TKO entity exists in the current V1 graph, so no accepted link was added in this pass."
       }
     },
-    "henry-r-kravis": {
-      "commonName": "Henry Kravis",
-      "person": {
-        "notes": "Reviewed for KKR link. Person exists in bulk-ranked donors, but no live KKR entity exists in the current graph; do not link through portfolio companies by generalized association."
+    "vivek-ramaswamy": {
+      "entityLinks": {
+        "roivant-sciences": {
+          "role": "Founder & Former CEO",
+          "startYear": 2014,
+          "endYear": null,
+          "benefitBasis": "founder_stake",
+          "isCurrent": false,
+          "ownershipPct": null
+        }
       }
     },
-    "leon-cooperman": {
-      "person": {
-        "canonicalName": "COOPERMAN, LEON",
-        "displayName": "Leon Cooperman",
-        "commonName": "Leon Cooperman",
-        "aliases": [
-          "Leon Cooperman"
-        ],
-        "fecSearchNames": [
-          "COOPERMAN, LEON",
-          "COOPERMAN, LEON G"
-        ],
-        "primaryEmployer": "Omega Advisors",
-        "primaryOccupation": "Investor",
-        "verificationStatus": "manual",
-        "notes": "Manual add for review completeness. No accepted entity link: Omega Advisors is not in the live graph and, as a private investment office, does not pass the ordinary consumer-spending economic-benefit test for this app surface."
+    "warren-a-stephens": {
+      "commonName": "Warren Stephens",
+      "entityLinks": {
+        "stephens-inc": {
+          "role": "Chairman, President & CEO",
+          "startYear": null,
+          "endYear": null,
+          "benefitBasis": "executive",
+          "isCurrent": true,
+          "ownershipPct": null
+        }
       }
     }
   }

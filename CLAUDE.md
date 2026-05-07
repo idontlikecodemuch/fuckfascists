@@ -428,6 +428,8 @@ Run `npm run audit:aliases` and `node scripts/verify-data-integrity.mjs` after t
 
 The hydrator matches FEC contributor-name rows to our people using FEC-flavored fuzz (`scripts/lib/fecNameFuzz.mjs`, a verbatim port of openFEC's `parse_fulltext`). It tokenizes on `\W+`, strips non-ASCII via NFKD + ascii-ignore, and requires every query token to prefix-match some field token (Postgres tsquery `:*` AND semantics). This matches FEC's web UI coverage exactly — if FEC's site returns a row for a contributor_name query, ours does too. Name variants (`BEZOS, JEFF` ↔ `BEZOS, JEFFREY PRESTON`) no longer need to be pre-enumerated in `fecSearchNames`, though the field remains supported as an escape hatch for exotic filings.
 
+When one person has multiple `fecSearchNames`, a single FEC row must update that person at most once. `scripts/hydrate-people-from-bulk.mjs` dedupes matching candidates by `personId` and keeps the most-specific matching query before aggregating. Do not reintroduce per-query aggregation; it double-counts rows for merged variants such as `GRIFFIN, KENNETH C` + `GRIFFIN, KEN`.
+
 Preferred order (bulk-first; API only for targeted validation):
 
 1. `npm run build:people:bulk-top`
@@ -758,6 +760,7 @@ After writing any file, scan it once for deprecated APIs, `.then()` chains, `var
 - **Optional chaining and nullish coalescing** — use `?.` and `??` where appropriate; avoid verbose `=== null || === undefined` guards.
 - **Strict mode** — `tsconfig.json` has `"strict": true`. Never disable strict checks per-file.
 - Do not use deprecated TypeScript utility types (e.g. `Readonly` is fine; `Extract`/`Exclude` are fine; avoid anything marked `@deprecated` in the TS release notes).
+- **FEC contributor-name matching** — use `scripts/lib/fecNameFuzz.mjs` for people/contributor matching. Do not add new exact-string, Jaro-Winkler, or coarse `LAST|FIRST` identity matching for FEC contributor rows unless the path is explicitly review-only and documented as non-authoritative. When aggregating matched rows, dedupe by `personId` before updating totals.
 
 ### React Native / Expo SDK 52
 - Use **Expo SDK 52** APIs only. Check the SDK 52 changelog before using any Expo module.
@@ -1072,6 +1075,36 @@ Rapid marker add/remove cycles cause the Fabric reconciler to pass nil subviews 
 
 ### V2: Optional Server Schedule Override
 Drop time is computed on-device (see `core/dropSchedule/computeDropTime.ts`). V2 may add a lightweight server ping for: schedule overrides, entity list freshness checks, info content freshness checks. Constraints: minimal data (version hashes only, no payloads), no user-identifying or behavioral data, app functions identically if ping fails. The ping is a freshness hint, not a dependency. Do not build now.
+
+### People hydration — explicitly-excluded historical founders (Priority: V1.5 review)
+
+The May 6, 2026 platform-leadership hydration (`scripts/data/people-entity-overrides.json` `_meta.changelog` 2026-05-06) applied a strict "current material stake OR current board seat" matching standard for the founder benefit-basis. Three TestFlight items asked for inclusions that fail this test cleanly and were excluded with this flag for later policy reconsideration. Card totals roll up linked-people donations into the entity's headline R / D / O via `deriveDonationSummary` ([dataZoneSummary.ts:77](features/Map/components/dataZoneSummary.ts:77)), so admitting any of these three would attribute their personal donations to the company's surface — not just decorate the source list.
+
+- **Peter Thiel → PayPal** (TestFlight #156). Sold all PayPal stock at the 2002 eBay acquisition (~$100M proceeds). Off the board since 2002. Currently focused on Palantir (~3%, where he is already linked) and Founders Fund. The TestFlight feedback's mental model treats him as PayPal-adjacent for political-attribution purposes; the data does not support an economic-benefit link. His R-leaning donations remain visible on his existing `peter-thiel` person record via Palantir.
+
+- **Travis Kalanick → Uber** (TestFlight #160). Sold ~90% of his Uber stock for $2.5B in 2019; resigned from the board Dec 31, 2019; not listed as major shareholder or insider in the May 2024 proxy. The user noted suspicion that material interest may persist beyond what public sources show — flag for a deeper SEC 13D/13G filing review before any future policy revisit.
+
+- **Bill Gates → Microsoft** (session-internal). Holds ~1.3% of MSFT directly (plus indirect Gates Foundation Trust holdings). Per the percentage rule in the matching algorithm (1–5% bucket + founder), he passes. Excluded anyway because (a) he has been off the Microsoft board since March 2020 with no operational role, (b) the majority of his MSFT equity value was built well before our 2016–2026 donation scoring window, weakening the donation-to-current-performance attribution chain, and (c) Microsoft's card already has heavy individual-donor coverage from current/recent execs (Connie Ballmer alone is $60M D-side). His current public identity is the Gates Foundation, not Microsoft.
+
+Revisit this entire pattern if the matching algorithm in CLAUDE.md is amended to allow a "founder + cultural identity" carve-out alongside `material_stake` and `board_seat`, or if an absolute-dollar-exposure axis is added alongside the percentage rule (Gates at 1.3% of $3T = ~$40B, vastly larger absolute exposure than the 5% rule typically anticipates).
+
+### People hydration — Walton family record dedup (Priority: V1.5 cleanup)
+
+Three FEC contributor records in `assets/data/people.json` are almost certainly the same individual (S. Robson "Rob" Walton, b. 1944, son of Sam Walton, former Walmart Chairman):
+
+- `rob-walton` — canonical `WALTON, ROB` — currently linked to walmart as `Former Chairman`
+- `s-robson-walton` — canonical `WALTON, S ROBSON` — unlinked
+- `robert-s-walton` — canonical `WALTON, ROBERT S` — unlinked
+
+In addition, `samuel-walton` (canonical `WALTON, SAMUEL`) is ambiguous — the founder Sam Walton died in 1992, but FEC records under "Samuel Walton" continue, suggesting either a different individual (e.g., a grandson) or a name collision worth manual verification.
+
+The May 2026 hydration pass intentionally left this dedup alone to avoid merging the wrong people inside a hydration round. The clean dedup approach: add the alternate canonical names as `fecSearchNames` on the canonical `rob-walton` override entry, then remove the duplicate IDs from `people.json` once the next sync rebuild confirms no cross-linked records depend on the duplicate IDs. The `samuel-walton` ambiguity needs separate manual review against FEC contributor metadata (state, employer, occupation) before any merge.
+
+### People hydration — donor name variants (resolved 2026-05-07)
+
+Round 3 exposed same-person top-donor splits caused by `build-bulk-top-donors.mjs` ranking with a coarse `LAST|FIRST_TOKEN` donor key. Examples included Ken/Kenneth Griffin, Jeff/Jeffrey Yass, Tom/Thomas Steyer, Stephen/Steve Mandel, and D. Andrew/Andrew/Daniel A./Andy Beal. The accepted fix is not broad heuristic clustering. Reviewed same-person splits live in `scripts/data/people-entity-overrides.json` as `manualMergePairs`, and `scripts/sync-people-from-bulk-top.mjs` applies those merges durably after sync.
+
+The second bug was inside hydration: after merging variants into one person, multiple `fecSearchNames` could match the same FEC row and update the same aggregate more than once. `scripts/hydrate-people-from-bulk.mjs` now dedupes matched candidates by `personId` before aggregation. Future contributor-matching changes should preserve both rules: curated identity merges at sync time, and per-person row de-dupe at hydrate time.
 
 ---
 

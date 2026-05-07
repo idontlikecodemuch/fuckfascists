@@ -28,6 +28,12 @@ tools/img-gen/cache_id.txt
 tools/fec-bulk/
 tools/off-bulk/
 
+# Local shared data archive (often symlinked into Claude worktrees)
+/data
+
+# Data-pipeline session backups (per-step snapshots for reversibility)
+tools/data-backups/
+
 # OpenStates legislator data (downloaded by scripts/download-openstates.mjs)
 data/openstates/
 

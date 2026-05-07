@@ -547,16 +547,22 @@ async function scanBulkFiles({ cycles, filesByCycle, personsByDistinctive, disti
           return;
         }
 
-        let attributed = false;
+        const bestCandidateByPerson = new Map();
         for (const candidate of candidates) {
           if (!matchesQueryAgainst(fieldTokens, candidate.queryTokens)) continue;
-          const aggregate = aggregates.get(candidate.personId);
-          if (!aggregate) continue;
-          updateAggregate(aggregate, fields, cycle, contributorName);
-          attributed = true;
+          if (!aggregates.has(candidate.personId)) continue;
+          const current = bestCandidateByPerson.get(candidate.personId);
+          if (!current || candidate.queryTokens.length > current.queryTokens.length) {
+            bestCandidateByPerson.set(candidate.personId, candidate);
+          }
         }
 
-        if (!attributed) {
+        for (const candidate of bestCandidateByPerson.values()) {
+          const aggregate = aggregates.get(candidate.personId);
+          updateAggregate(aggregate, fields, cycle, contributorName);
+        }
+
+        if (bestCandidateByPerson.size === 0) {
           meta.missingMatches += 1;
           return;
         }

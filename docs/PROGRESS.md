@@ -12,6 +12,61 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: May 6-7, 2026 ET — Round 3 people hydration complete
+
+**Branch:** `claude/intelligent-shannon-2760a4`
+**Focus:** TestFlight #155 (Alphabet too D), #156 (PayPal missing Thiel), #160 (Uber missing Kalanick → broaden to all 19 platforms). Bulk-first hydration chain to add platform-leadership person seeds.
+
+**Status:** Complete. Codex resumed from [docs/HANDOFF_PEOPLE_HYDRATION_2026-05-06.md](HANDOFF_PEOPLE_HYDRATION_2026-05-06.md), chose Option D for Hole #2, fixed the additional same-person double-count bug inside hydration, and ran the full remaining chain through integrity verification.
+
+**Done this session:**
+
+- **Step 1: Override edits.** Added 21 person seeds (Zuckerberg, Pichai, Jassy, Chew, Sarandos, Khosrowshahi, Altman, Huffman, Chriss, Lores, Ek, Spiegel, Murphy, McMillon, Dario+Daniela Amodei, Ready, Silbermann, Citron, Kim, Nadella) + 4 Walton heir entityLinks (Alice, Christy, Lukas, Sam Rawlings) to `scripts/data/people-entity-overrides.json`. Applied strict matching policy: founders included only with current material stake or current board seat. Three deferred-review cases documented in CLAUDE.md Known Limitations: **Thiel→PayPal** (no stake/board since 2002), **Kalanick→Uber** (sold ~90% in 2019, off board since 2019), **Gates→Microsoft** (1.3% stake but majority of equity built pre-2016 scoring window, off board since 2020).
+- **Step 1b: CLAUDE.md Known Limitations.** Added 2 entries: deferred-review founders (with revisit conditions) + Walton record dedup task (rob/s-robson/robert-s + ambiguous samuel).
+- **Steps 2–3: Initial sync + hydrate.** Found Ricketts dedup collision — `pete-ricketts` had `fecSearchNames` containing `J PETER` and `JOHN PETER` which collided with J. Joe Ricketts via `normalizeDonorKey`'s coarse `LAST|FIRST_TOKEN` hash. Joe's $13.35M Citizens for Free Enterprise was being mis-attributed to Pete.
+- **Step 3a: Ricketts patch.** Restored baseline; cleaned `pete-ricketts.fecSearchNames` to just `["RICKETTS, PETE"]`; consolidated `john-joe-ricketts` into `j-joe-ricketts` (same person — John Joseph Ricketts).
+- **Steps 3b–3c: Re-sync + re-hydrate.** Pete and Joe now show distinct, uncontaminated totals.
+- **Step 3d: Initial inherent-partisan staging.** 95 rows / $27.4M. **Missed Sam Altman's $1M Trump-Vance Inaugural** because the script was using exact-string match instead of FEC-fuzz. Audit revealed broader coverage gap: any contributor whose CSV row had a full middle name (most contributors) was missed unless `fecSearchNames` had an exact-form match.
+- **Hole #1 fix.** Refactored `scripts/lib/inherentlyPartisanSources.mjs` IND matching to use `scripts/lib/fecNameFuzz.mjs` (the openFEC `parse_fulltext` port we ported earlier). Added `findPersonForContributor` with most-specific-wins + tie→null semantics. Entity branch unchanged.
+- **Step 3e: Re-ran inherent-partisan staging.** **137 rows / $36.8M (+42 rows / +$9.4M).** Sam Altman now correctly captured at $1M Trump-Vance Inaugural Committee (2024-12-13). No regressions on the prior 95 captures.
+- **Hole #2 audit.** Found ~25 same-person variant splits in the top-1000 donor ranking (Griffin, Yass, Steyer, Mandel, Larsen, etc.) caused by `build-bulk-top-donors.mjs` aggregating with the same coarse `normalizeDonorKey`. Each split → duplicate person records in `people.json` → double-counting at hydrate time.
+- **Hole #2 fix.** Added auditable `manualMergePairs` to `scripts/data/people-entity-overrides.json` and a durable post-sync merge pass in `scripts/sync-people-from-bulk-top.mjs`. Also added a second duplicate-display collapse after extras/manual merges so stale carryover duplicates cannot survive sync.
+- **Hydrator double-count fix.** Fixed `scripts/hydrate-people-from-bulk.mjs` so one FEC bulk line updates a given person at most once, even when multiple `fecSearchNames` for that same person match the line. This was the hidden rehydration bug after merging variants.
+- **Completed chain.** Re-ran sync + hydrate, generated `inherently-partisan-staging-2026-05-07`, `committee-beneficiary-classification-2026-05-07`, and `people-classification-preview-2026-05-07`, applied the preview to live `people.json`, rebuilt the entity review queue and discovered committees report, reconciled V1 entity reverse links, and regenerated `people.bundle.json`.
+- **Inherently partisan API fallback verified.** The May 7 staging run used filing CSVs where available and exercised `schedule_a_api` fallback for the 2018 `58TH PRESIDENTIAL INAUGURAL COMMITTEE` (`C00629584`, `90D/90S`). This is intentional: older F13 committee filings are not always available through the local bulk CSV path, so the targeted API hydration path remains part of the authoritative staging chain.
+
+**Naming-matching audit findings (across the pipeline):**
+
+| Script | Matcher | Risk |
+|---|---|---|
+| `hydrate-people-from-bulk.mjs` | FEC-fuzz + per-person row de-dupe ✓ | fixed |
+| `inherentlyPartisanSources.mjs` | now FEC-fuzz ✓ (this session) | fixed |
+| `build-bulk-top-donors.mjs` | `normalizeDonorKey` (coarse hash) | **Hole #2 — splits same person under multiple first-name forms** |
+| `sync-people-from-bulk-top.mjs` | `normalizeDonorKey` + curated `manualMergePairs` | fixed for reviewed splits |
+| `verify-entities.mjs`, `verify-entities-from-bulk.mjs`, `audit-committee-ids.mjs`, `line29Classifier.mjs` | Jaro-Winkler | entity-side, separate concern |
+
+**Verification:**
+
+- `node --check scripts/hydrate-people-from-bulk.mjs`
+- `node --check scripts/sync-people-from-bulk-top.mjs`
+- `node --test scripts/__tests__/fecNameFuzz.test.mjs` — 17 passed
+- `node scripts/verify-data-integrity.mjs` — no duplicate people, missing reverse links, or invalid role links; only declared V2 forward refs remain
+- `npm run audit:aliases` — existing alias/FEC drift watchlist only
+
+**Backup snapshots:** `tools/data-backups/round3-2026-05-06/` (gitignored). Pre-Round-3 baseline + post-each-major-step snapshots. Reverting any single file: `cp tools/data-backups/round3-2026-05-06/<step>/<file> assets/data/<file>`.
+
+**Files changed this session:**
+- `scripts/data/people-entity-overrides.json` (+25 entries)
+- `scripts/lib/inherentlyPartisanSources.mjs` (Hole #1 FEC-fuzz refactor)
+- `scripts/sync-people-from-bulk-top.mjs` (Hole #2 curated merge application)
+- `scripts/hydrate-people-from-bulk.mjs` (same-person row de-dupe during hydration)
+- `CLAUDE.md` (+2 Known Limitations entries)
+- `.gitignore` (+ tools/data-backups/ and local `/data` symlink/archive ignore)
+- `assets/data/people.json`, `assets/data/entities.json`, `assets/data/people.bundle.json`
+- New 2026-05-07 reports in `tools/fec-bulk/reports/`: inherent-partisan staging, committee-beneficiary classification, people classification preview, discovered committees, review queue, deferred entity links, and top-donor merge summary
+
+---
+
 ### Session: May 5, 2026 ET — #151 Track/Scan sizing-glitch fix
 
 **Focus:** Deep dive on TestFlight #151 phantom half-second fill/size animation seen on Track AVOID buttons, Map card AVOID button, and the Scan standby panel.

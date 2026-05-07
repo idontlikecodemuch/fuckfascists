@@ -7,6 +7,14 @@ import path from 'node:path';
 import readline from 'node:readline';
 import { fileURLToPath } from 'node:url';
 
+// FEC contributor-name matching uses the openFEC parse_fulltext port so
+// our coverage matches FEC's web UI exactly. Earlier exact-string matching
+// missed contributors whose filing CSV row had a full middle name (e.g.
+// Sam Altman → "ALTMAN, SAMUEL HARRIS") while our search names used
+// last+first or last+first+initial only. See CLAUDE.md "Modern Code
+// Standards — FEC contributor name matching" for the canonical rule.
+import { tokenize, matchesQueryAgainst } from './fecNameFuzz.mjs';
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export const BULK_ROOT = path.join(__dirname, '../../tools/fec-bulk');
@@ -345,34 +353,91 @@ export async function loadCommitteeMasterMetadata() {
   };
 }
 
+/**
+ * Build a FEC-fuzz query index for matching CSV/bulk contributor names back
+ * to people in our local data. Uses scripts/lib/fecNameFuzz.mjs (the
+ * openFEC parse_fulltext port) so coverage matches FEC's web UI exactly.
+ *
+ * Each person can have multiple search names (canonicalName +
+ * fecSearchNames). Each is pre-tokenized once into an FEC-fuzz query
+ * token list. At match time, a contributor field token list is checked
+ * against every person's token sets via matchesQueryAgainst — every
+ * query token must be a token-prefix of some field token (Postgres
+ * tsquery `:*` AND semantics).
+ *
+ * Ambiguity handling: a contributor field can satisfy multiple persons'
+ * queries. The matcher prefers the MOST SPECIFIC match (longest matching
+ * query token list), and skips the row entirely if two persons tie at
+ * the most-specific level. This keeps short canonicals like
+ * "SMITH, JOHN" from absorbing donations belonging to "SMITH, JOHN A".
+ */
 export function buildPeopleSearchIndex(people) {
-  const byName = new Map();
-  const ambiguous = new Set();
-
+  const queries = [];
   for (const person of people) {
-    const rawNames = [person?.canonicalName, ...(person?.fecSearchNames ?? [])]
+    if (!person?.id) continue;
+    const rawNames = [person.canonicalName, ...(person.fecSearchNames ?? [])]
       .map(normalizeWhitespace)
       .filter(Boolean);
-
+    const seenKeys = new Set();
+    const tokenSets = [];
     for (const rawName of rawNames) {
-      const normalized = normalizePersonName(rawName);
-      if (!normalized) continue;
-      if (byName.has(normalized) && byName.get(normalized) !== person.id) {
-        ambiguous.add(normalized);
-        continue;
-      }
-      byName.set(normalized, person.id);
+      const tokens = tokenize(rawName);
+      if (tokens.length === 0) continue;
+      const key = tokens.join('|');
+      if (seenKeys.has(key)) continue;
+      seenKeys.add(key);
+      tokenSets.push(tokens);
+    }
+    if (tokenSets.length === 0) continue;
+    queries.push({ personId: person.id, tokenSets });
+  }
+  return { queries };
+}
+
+/**
+ * Match a CSV/bulk contributor row to a person via FEC-fuzz semantics.
+ * Returns the personId of the most-specific match, or null if none / ambiguous.
+ *
+ * For IND rows, builds the field text from organizationOrLastName +
+ * firstName + middleName + suffix and tokenizes it. Each person's
+ * pre-tokenized query sets are tested via matchesQueryAgainst.
+ */
+function findPersonForContributor(row, peopleIndex) {
+  const fieldText = normalizeWhitespace(
+    [
+      row.organizationOrLastName,
+      row.firstName,
+      row.middleName,
+      row.suffix,
+    ]
+      .filter(Boolean)
+      .join(' ')
+  );
+  const fieldTokens = tokenize(fieldText);
+  if (fieldTokens.length === 0) return null;
+
+  let bestPersonId = null;
+  let bestSpecificity = 0;
+  let tied = false;
+
+  for (const { personId, tokenSets } of peopleIndex.queries) {
+    let personBest = 0;
+    for (const queryTokens of tokenSets) {
+      if (queryTokens.length <= personBest) continue;
+      if (!matchesQueryAgainst(fieldTokens, queryTokens)) continue;
+      personBest = queryTokens.length;
+    }
+    if (personBest === 0) continue;
+    if (personBest > bestSpecificity) {
+      bestPersonId = personId;
+      bestSpecificity = personBest;
+      tied = false;
+    } else if (personBest === bestSpecificity && personId !== bestPersonId) {
+      tied = true;
     }
   }
 
-  for (const key of ambiguous) {
-    byName.delete(key);
-  }
-
-  return {
-    byName,
-    ambiguous,
-  };
+  return tied ? null : bestPersonId;
 }
 
 export function buildEntitySearchIndex(entities) {
@@ -863,7 +928,6 @@ export async function collectInauguralRows(people, entities) {
 
   const applyReceiptRow = (committee, row) => {
     const amount = parseAmount(row.amount);
-    const contributorVariants = buildContributorNameVariants(row);
     const contributionDate =
       row.source === 'filing_csv' ? csvDateToIso(row.transactionDate) : bulkDateToIso(row.transactionDate);
     const cycle = committee.cycle || dateToCycle(row.transactionDate);
@@ -873,9 +937,10 @@ export async function collectInauguralRows(people, entities) {
     if (normalizeWhitespace(row.memoCode).toUpperCase() === 'X') return;
 
     if (row.entityType === 'IND') {
-      const personId = contributorVariants
-        .map((variant) => peopleIndex.byName.get(variant) ?? null)
-        .find(Boolean);
+      // FEC-fuzz match against people.json — handles full-middle-name
+      // CSV rows ("ALTMAN, SAMUEL HARRIS") matching short search names
+      // ("ALTMAN, SAMUEL"). See buildPeopleSearchIndex doc comment.
+      const personId = findPersonForContributor(row, peopleIndex);
 
       if (!personId) return;
 
@@ -899,6 +964,12 @@ export async function collectInauguralRows(people, entities) {
       return;
     }
 
+    // Entity (organization / corporate) matching keeps the prior
+    // exact-string-with-corporate-suffix-stripping approach. Entity names
+    // don't have the same first/middle-name variant problem as people, and
+    // entity matching is a separate concern from the FEC contributor-name
+    // matching standard (people.json fecSearchNames).
+    const contributorVariants = buildContributorNameVariants(row);
     const entityId = contributorVariants
       .map((variant) => entityIndex.byName.get(variant) ?? null)
       .find(Boolean);

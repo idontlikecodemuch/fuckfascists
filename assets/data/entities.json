@@ -1,7 +1,7 @@
 {
   "_meta": {
     "totalEntities": 729,
-    "updatedAt": "2026-04-29",
+    "updatedAt": "2026-05-07",
     "formatVersion": "1.0",
     "entityDonationHydrationSource": "FEC bulk PAS2/OTH files",
     "entityDonationHydrationCycles": [
@@ -114,8 +114,13 @@
       },
       "verificationStatus": "pipeline",
       "associatedPersonIds": [
+        "alice-l-walton",
+        "christy-walton",
+        "doug-mcmillon",
         "jim-c-walton",
-        "rob-walton"
+        "lukas-t-walton",
+        "rob-walton",
+        "sam-rawlings-walton"
       ]
     },
     {
@@ -209,6 +214,7 @@
       },
       "verificationStatus": "pipeline",
       "associatedPersonIds": [
+        "andy-jassy",
         "jeff-bezos"
       ]
     },
@@ -301,6 +307,7 @@
       "notes": "C00502906 confirmed correct. Active through 2025-2026 cycle. Prior no-activity flag was incorrect.",
       "associatedPersonIds": [
         "jan-koum",
+        "mark-zuckerberg",
         "sheryl-sandberg"
       ]
     },
@@ -7068,7 +7075,11 @@
           }
         ]
       },
-      "verificationStatus": "pipeline"
+      "verificationStatus": "pipeline",
+      "associatedPersonIds": [
+        "alex-chriss",
+        "enrique-lores"
+      ]
     },
     {
       "id": "block",
@@ -7657,6 +7668,7 @@
         "connie-ballmer",
         "james-kevin-scott",
         "john-thompson",
+        "satya-nadella",
         "steve-ballmer"
       ]
     },
@@ -7767,7 +7779,8 @@
       "associatedPersonIds": [
         "eric-schmidt",
         "larry-page",
-        "sergey-brin"
+        "sergey-brin",
+        "sundar-pichai"
       ]
     },
     {
@@ -7806,7 +7819,8 @@
       "verificationStatus": "pipeline",
       "associatedPersonIds": [
         "patty-quillin",
-        "reed-hastings"
+        "reed-hastings",
+        "ted-sarandos"
       ]
     },
     {
@@ -7848,7 +7862,10 @@
         "raw": []
       },
       "verificationStatus": "pipeline",
-      "notes": "C00907683 reported no activity in 2023-2024 per prior research."
+      "notes": "C00907683 reported no activity in 2023-2024 per prior research.",
+      "associatedPersonIds": [
+        "dara-khosrowshahi"
+      ]
     },
     {
       "id": "lyft",
@@ -15019,7 +15036,10 @@
       "ceoName": "Spencer Rascoff",
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-04-20",
-      "verificationStatus": "manual"
+      "verificationStatus": "manual",
+      "associatedPersonIds": [
+        "bernard-kim"
+      ]
     },
     {
       "id": "grindr",
@@ -19212,7 +19232,10 @@
       "ceoName": "Daniel Ek",
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "manual"
+      "verificationStatus": "manual",
+      "associatedPersonIds": [
+        "daniel-ek"
+      ]
     },
     {
       "id": "twitch",
@@ -21513,7 +21536,10 @@
       "publicFigureName": "Steve Huffman",
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "manual"
+      "verificationStatus": "manual",
+      "associatedPersonIds": [
+        "steve-huffman"
+      ]
     },
     {
       "id": "tiktok",
@@ -21536,7 +21562,10 @@
       "parentEntityId": "bytedance",
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "manual"
+      "verificationStatus": "manual",
+      "associatedPersonIds": [
+        "shou-chew"
+      ]
     },
     {
       "id": "pinterest",
@@ -21556,7 +21585,11 @@
       "ceoName": "Bill Ready",
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "manual"
+      "verificationStatus": "manual",
+      "associatedPersonIds": [
+        "ben-silbermann",
+        "bill-ready"
+      ]
     },
     {
       "id": "snap",
@@ -21580,7 +21613,11 @@
       "publicFigureName": "Evan Spiegel",
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "manual"
+      "verificationStatus": "manual",
+      "associatedPersonIds": [
+        "bobby-murphy",
+        "evan-spiegel"
+      ]
     },
     {
       "id": "discord",
@@ -21604,7 +21641,10 @@
       "publicFigureName": "Jason Citron",
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "manual"
+      "verificationStatus": "manual",
+      "associatedPersonIds": [
+        "jason-citron"
+      ]
     },
     {
       "id": "openai",
@@ -21632,7 +21672,8 @@
       "lastVerifiedDate": "2026-03-05",
       "verificationStatus": "manual",
       "associatedPersonIds": [
-        "greg-brockman"
+        "greg-brockman",
+        "sam-altman"
       ]
     },
     {
@@ -22023,7 +22064,11 @@
       "publicFigureName": "Dario Amodei",
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-03-05",
-      "verificationStatus": "manual"
+      "verificationStatus": "manual",
+      "associatedPersonIds": [
+        "daniela-amodei",
+        "dario-amodei"
+      ]
     },
     {
       "id": "xai",
@@ -22708,7 +22753,6 @@
       "verificationStatus": "pipeline",
       "lastVerifiedDate": "2026-04-20",
       "associatedPersonIds": [
-        "ken-griffin",
         "kenneth-c-griffin"
       ],
       "donationSummary": {
@@ -22749,8 +22793,7 @@
       "verificationStatus": "unverified",
       "lastVerifiedDate": "2026-03-23",
       "associatedPersonIds": [
-        "thomas-f-steyer",
-        "tom-steyer"
+        "thomas-f-steyer"
       ]
     },
     {
@@ -26827,7 +26870,6 @@
       "lastVerifiedDate": "2026-04-20",
       "verificationStatus": "unverified",
       "associatedPersonIds": [
-        "thomas-campion",
         "tom-campion"
       ]
     },

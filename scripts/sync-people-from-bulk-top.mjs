@@ -948,6 +948,114 @@ function mergeRoleMaps(left = {}, right = {}) {
   return merged;
 }
 
+function verificationRank(status) {
+  if (status === 'manual') return 3;
+  if (status === 'pipeline') return 2;
+  if (status === 'verified') return 1;
+  return 0;
+}
+
+function mergeVerificationStatus(left, right) {
+  return verificationRank(right) > verificationRank(left) ? right : left;
+}
+
+function mergePeopleRecords(primary, extras, mergeNotes) {
+  const next = { ...primary };
+
+  for (const extra of extras) {
+    next.commonName =
+      normalizeCommonName(next.commonName, next.displayName) ??
+      normalizeCommonName(extra.commonName, next.displayName);
+    next.aliases = unique([
+      ...(next.aliases ?? []),
+      next.displayName,
+      extra.displayName,
+      toDisplayName(extra.canonicalName),
+      ...(extra.aliases ?? []),
+    ]);
+    next.fecSearchNames = unique([
+      next.canonicalName,
+      ...(next.fecSearchNames ?? []),
+      extra.canonicalName,
+      ...(extra.fecSearchNames ?? []),
+    ]);
+    next.associatedEntityIds = unique([...(next.associatedEntityIds ?? []), ...(extra.associatedEntityIds ?? [])]);
+    next.rolesByEntity = mergeRoleMaps(next.rolesByEntity, extra.rolesByEntity);
+    next.primaryState = next.primaryState || extra.primaryState;
+    next.primaryEmployer = next.primaryEmployer || extra.primaryEmployer;
+    next.primaryOccupation = next.primaryOccupation || extra.primaryOccupation;
+    next.donationSummary = next.donationSummary ?? extra.donationSummary;
+    next.verificationStatus = mergeVerificationStatus(next.verificationStatus, extra.verificationStatus);
+    next.lastVerifiedDate = next.lastVerifiedDate || extra.lastVerifiedDate;
+    next.notes = unique([next.notes ?? '', extra.notes ?? '', mergeNotes ? `Manual donor merge: ${mergeNotes}` : '']).join(' | ');
+  }
+
+  return next;
+}
+
+function normalizeManualMergePairs(rawOverrides) {
+  const rawPairs = Array.isArray(rawOverrides?.manualMergePairs) ? rawOverrides.manualMergePairs : [];
+  const pairs = [];
+
+  for (const rawPair of rawPairs) {
+    if (typeof rawPair !== 'object' || rawPair === null) continue;
+    const keep = normalizeWhitespace(rawPair.keep);
+    const merge = unique(Array.isArray(rawPair.merge) ? rawPair.merge : []);
+    if (!keep || merge.length === 0) continue;
+    pairs.push({
+      keep,
+      merge: merge.filter((personId) => personId !== keep),
+      notes: normalizeWhitespace(rawPair.notes),
+    });
+  }
+
+  return pairs.filter((pair) => pair.merge.length > 0);
+}
+
+function applyManualMerges(people, rawOverrides) {
+  const pairs = normalizeManualMergePairs(rawOverrides);
+  if (pairs.length === 0) return { people, summaries: [] };
+
+  const byId = new Map(people.map((person) => [person.id, person]));
+  const mergeIds = new Set();
+  const summaries = [];
+
+  for (const pair of pairs) {
+    const primary = byId.get(pair.keep);
+    const extras = pair.merge.map((personId) => byId.get(personId)).filter(Boolean);
+
+    if (!primary || extras.length === 0) {
+      summaries.push({
+        keep: pair.keep,
+        merge: pair.merge,
+        status: 'skipped',
+        reason: primary ? 'no merge ids present' : 'keep id missing',
+      });
+      continue;
+    }
+
+    byId.set(pair.keep, mergePeopleRecords(primary, extras, pair.notes));
+    for (const extra of extras) mergeIds.add(extra.id);
+
+    summaries.push({
+      keep: pair.keep,
+      mergedIds: extras.map((person) => person.id),
+      notes: pair.notes,
+      status: 'applied',
+    });
+  }
+
+  const nextPeople = people
+    .filter((person) => !mergeIds.has(person.id))
+    .map((person) => byId.get(person.id) ?? person);
+  nextPeople.forEach((person, index) => {
+    person.donorRank = index + 1;
+    person.tier = inferTier(index + 1);
+  });
+
+  return { people: nextPeople, summaries };
+}
+
 function collapseDuplicateDisplayNames(people) {
   const byDisplay = new Map();
 
@@ -1048,6 +1156,10 @@ async function main() {
 
   const manualOverridePeople = manualPeopleFromOverrides(loadedOverrides.raw, mergedPeople, usedIds);
   mergedPeople = mergedPeople.concat(manualOverridePeople);
+  const manualMergeResult = applyManualMerges(mergedPeople, loadedOverrides.raw);
+  mergedPeople = manualMergeResult.people;
+  const postMergeCollapsedDisplayNames = collapseDuplicateDisplayNames(mergedPeople);
+  mergedPeople = postMergeCollapsedDisplayNames.people;
 
   const nextPeopleFile = {
     _meta: buildMeta(
@@ -1055,12 +1167,13 @@ async function main() {
       bulkRaw._meta ?? {},
       mergedPeople,
       duplicateKeysCollapsed,
-      collapsedDisplayNames.duplicateSummaries.length,
+      collapsedDisplayNames.duplicateSummaries.length + postMergeCollapsedDisplayNames.duplicateSummaries.length,
       hadExistingPeople,
       currentEntityIds
     ),
     people: mergedPeople,
   };
+  nextPeopleFile._meta.manualMergePairsApplied = manualMergeResult.summaries.filter((summary) => summary.status === 'applied').length;
 
   const mergeSummary = {
     generatedAt: today(),
@@ -1069,7 +1182,10 @@ async function main() {
     donorCount: donors.length,
     mergedPeopleCount: mergedPeople.length,
     duplicateKeysCollapsed,
-    duplicateDisplayNamesCollapsed: collapsedDisplayNames.duplicateSummaries.length,
+    duplicateDisplayNamesCollapsed: collapsedDisplayNames.duplicateSummaries.length + postMergeCollapsedDisplayNames.duplicateSummaries.length,
+    preMergeDuplicateDisplayNamesCollapsed: collapsedDisplayNames.duplicateSummaries.length,
+    postMergeDuplicateDisplayNamesCollapsed: postMergeCollapsedDisplayNames.duplicateSummaries.length,
+    manualMergePairsApplied: nextPeopleFile._meta.manualMergePairsApplied,
     matchedDonors: donors.filter((donor) => donor.validation?.status === 'matched').length,
     ambiguousDonors: donors.filter((donor) => donor.validation?.status === 'ambiguous').length,
     missingDonors: donors.filter((donor) => donor.validation?.status === 'missing').length,
@@ -1079,7 +1195,11 @@ async function main() {
     uniqueEntityIds: nextPeopleFile._meta.uniqueEntityIds,
     forwardReferencedEntityIds: nextPeopleFile._meta.forwardReferencedEntityIds,
     keptExtraPeople: args.keepExtra ? mergedPeople.length - donors.length : 0,
-    collapsedDisplayNames: collapsedDisplayNames.duplicateSummaries,
+    collapsedDisplayNames: [
+      ...collapsedDisplayNames.duplicateSummaries,
+      ...postMergeCollapsedDisplayNames.duplicateSummaries,
+    ],
+    manualMerges: manualMergeResult.summaries,
     sampleCollapsedDuplicates: donors
       .map((donor) => ({
         donorKey: donor.donorKey,
