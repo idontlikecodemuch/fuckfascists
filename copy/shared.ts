@@ -5,8 +5,13 @@ const SITE_ORIGIN = `https://${SITE_DOMAIN}`;
 
 export const sharedCopy = {
   appName: "FCK FASCISTS",
-  brandTagline: "The fascists won\u2019t FCK themselves.",
-  brandTaglineStacked: "The fascists won\u2019t\nFCK themselves.",
+  // Apostrophe is straight ASCII (U+0027), not curly (U+2019). The curly
+  // apostrophe was dropped entirely during react-native-view-shot capture
+  // of the rendered scorecard image \u2014 the rendered "won't" read as "wont"
+  // on device. Straight apostrophe renders as a tall thin vertical line
+  // that survives both font-render quirks and JPG compression at q=0.88.
+  brandTagline: "The fascists won't FCK themselves.",
+  brandTaglineStacked: "The fascists won't\nFCK themselves.",
   siteUrl: SITE_DOMAIN,
   repoUrl: "https://github.com/idontlikecodemuch/fuckfascists",
   dataRepoUrl: "https://github.com/idontlikecodemuch/fckfascists-data",
