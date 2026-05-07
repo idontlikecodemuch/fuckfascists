@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { mapCopy } from '../../../copy/map';
 import { theme } from '../../../design/tokens';
 import { bevelFocusRaised } from '../../../design/bevel';
@@ -8,6 +9,7 @@ export { resolveCardMode } from './cardMode';
 export type { BannerVariant } from './cardMode';
 
 const BANNER_AUTO_DISMISS_MS = 5000;
+const GLYPH_SIZE = 14;
 
 export interface BusinessBannerProps {
   /** The search text or entity name that produced this banner. */
@@ -16,18 +18,24 @@ export interface BusinessBannerProps {
   onDismiss: () => void;
 }
 
-/** Left accent bar color per banner variant. */
-function accentColor(variant: BannerVariant): string {
+/** Glyph per banner variant — folder for no_pac/no_match, alert for errors. */
+function glyphForVariant(variant: BannerVariant): keyof typeof Ionicons.glyphMap {
   switch (variant) {
-    case 'dissolved': return theme.colors.amberActionLight;
-    case 'lookup_failed': return theme.colors.dangerRed;
-    default: return theme.colors.panelBorder;
+    case 'lookup_failed': return 'warning-outline';
+    case 'dissolved': return 'archive-outline';
+    default: return 'folder-outline';
   }
 }
 
 /**
- * Lightweight dismissible bar for non-card results.
- * No avatar, no AVOID button — informational only.
+ * Bottom-anchored cockpit-cyan HUD pill for non-card scan/tap results.
+ * Mirrors `NoMatchToast` styling so all "no actionable signal here"
+ * messages share one visual language: thin pill, brief text, auto-dismiss.
+ * Card overlays are reserved for entities with real donation data.
+ *
+ * The pill positions itself (absolute, bottom-center) — parents don't
+ * need a wrapper. No avatar, no AVOID button, no tap-outside backdrop;
+ * auto-dismisses after BANNER_AUTO_DISMISS_MS via the supplied callback.
  */
 export function BusinessBanner({ displayName, variant, onDismiss }: BusinessBannerProps) {
   const onDismissRef = useRef(onDismiss);
@@ -47,40 +55,55 @@ export function BusinessBanner({ displayName, variant, onDismiss }: BusinessBann
     }
   })();
 
-  // No inline × dismiss control (#105) — the parent renders a tap-outside
-  // backdrop and an auto-dismiss timer fires after BANNER_AUTO_DISMISS_MS.
   return (
-    <View
-      style={styles.banner}
-      accessibilityRole="alert"
-      accessibilityLabel={message}
-    >
-      <View style={[styles.accentBar, { backgroundColor: accentColor(variant) }]} />
-      <Text style={styles.bannerText} allowFontScaling>{message}</Text>
+    <View style={styles.outer} pointerEvents="none">
+      <View
+        style={styles.pill}
+        accessibilityRole="alert"
+        accessibilityLabel={message}
+      >
+        <Ionicons
+          name={glyphForVariant(variant)}
+          size={GLYPH_SIZE}
+          color={theme.colors.focusAccent}
+          style={styles.glyph}
+        />
+        <Text style={styles.text} allowFontScaling numberOfLines={2}>
+          {message}
+        </Text>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  banner: {
+  outer: {
+    position: 'absolute',
+    bottom: 80,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+    shadowColor: theme.colors.focusAccent,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    elevation: 6,
+  },
+  pill: {
     ...bevelFocusRaised,
     backgroundColor: theme.colors.panelInner,
-    borderRadius: theme.radii.sharp,
-    marginHorizontal: theme.space.lg,
-    overflow: 'hidden',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: theme.space.xs,
+    paddingHorizontal: theme.space.md,
+    maxWidth: '88%',
   },
-  accentBar: {
-    width: '100%',
-    height: 3,
+  glyph: {
+    marginRight: theme.space.xs,
   },
-  bannerText: {
+  text: {
     ...theme.type.bodyS,
     color: theme.colors.textPrimary,
-    // Center-aligned per #105. Banner text is brief and reads better
-    // centered in a narrow strip than left-ragged. Vertical padding gives
-    // the message body breathing room now that the inline × button is gone.
-    textAlign: 'center',
-    paddingHorizontal: theme.space.md,
-    paddingVertical: theme.space.md,
+    flexShrink: 1,
   },
 });

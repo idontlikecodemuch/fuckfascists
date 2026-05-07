@@ -409,12 +409,7 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
       )}
 
       {activeResult && bannerVariant && (
-        <>
-          <Pressable style={styles.backdrop} onPress={handleDismiss} accessibilityRole="button" accessibilityLabel={sharedCopy.dismissLabel} />
-          <View style={styles.bannerContainer}>
-            <BusinessBanner displayName={activeResult.matchedAlias || activeResult.canonicalName} variant={bannerVariant} onDismiss={handleDismiss} />
-          </View>
-        </>
+        <BusinessBanner displayName={activeResult.matchedAlias || activeResult.canonicalName} variant={bannerVariant} onDismiss={handleDismiss} />
       )}
 
       {(status === 'unmatched' || status === 'lookup_unavailable') && <UnmatchedBanner searchText={searchText} onOpenSearch={handleOpenSearch} variant={status === 'lookup_unavailable' ? 'lookup_unavailable' : 'no_match'} />}
@@ -441,6 +436,5 @@ const styles = StyleSheet.create({
   // overlay; hint/banner backdrops keep using the plain `backdrop`.
   dimBackdrop:    { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#000' },
   cardContainer:  { position: 'absolute', bottom: 0, left: 0, right: 0, overflow: 'visible' as const, maxHeight: '65%', paddingTop: theme.space['3xl'] },
-  bannerContainer:{ position: 'absolute', bottom: 80, left: 0, right: 0 },
   amberPulse:     { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: theme.colors.amberPulse },
 });

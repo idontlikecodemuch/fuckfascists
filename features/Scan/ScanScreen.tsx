@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Animated, Pressable, SafeAreaView, StyleSheet } from 'react-native';
 import type { Entity, PoliticalPerson } from '../../core/models';
 import { getAssociatedPeople } from '../../core/models';
 import type { MatchingDeps } from '../../core/matching';
@@ -12,6 +12,8 @@ import { BusinessCard, BusinessBanner, resolveCardMode } from '../Map/components
 import { BarcodeScannerSheet } from '../Map/components/BarcodeScannerSheet';
 import { BarcodeLookupBanner } from '../Map/components/BarcodeLookupBanner';
 import { StarField } from '../Info/components/InfoDecorations';
+import { useCardOverlayAnimation } from '../../core/ui/useCardOverlayAnimation';
+import { sharedCopy } from '../../copy/shared';
 import type { ScanResult } from '../Map/types';
 import { theme } from '../../design/tokens';
 import { ScanStandbyPanel } from './ScanDecorations';
@@ -102,43 +104,76 @@ export function ScanScreen({ entities, people, adapter, fetchOrgs, fetchOrgSumma
     ? getAssociatedPeople(activeResult.entity, people, entities)
     : [];
   const cardMode = activeResult ? resolveCardMode(activeResult, activeAssociatedPeople) : null;
+  const showFullCard = cardMode === 'card';
   const bannerVariant = cardMode && typeof cardMode === 'object' ? cardMode.banner : null;
   const activeEntityId = activeResult ? activeResult.entityId ?? activeResult.fecCommitteeId : null;
   const isAvoided = !!activeEntityId && avoidedIds.includes(activeEntityId);
   const isBusy = isResolving || status === 'scanning';
 
+  // Persistent-mount + slide-up overlay pattern, mirroring MapScreen + Track.
+  // Keeps the card subtree mounted across open/close cycles so the
+  // SpriteView crop region survives Fabric native-view recycling
+  // (see Apr 27 sprite-clip fix in CLAUDE.md).
+  const lastFullCardResultRef = useRef<ScanResult | null>(null);
+  if (activeResult && showFullCard) {
+    lastFullCardResultRef.current = activeResult;
+  }
+  const persistentCardResult = activeResult && showFullCard
+    ? activeResult
+    : lastFullCardResultRef.current;
+  const cardVisible = activeResult !== null && showFullCard;
+  const { slideY, dimOpacity } = useCardOverlayAnimation(cardVisible);
+
   return (
     <SafeAreaView style={styles.container}>
       <StarField seed="scan" />
 
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <ScanStandbyPanel busy={isBusy} onOpenScanner={handleOpenScanner} />
+      <ScanStandbyPanel busy={isBusy} onOpenScanner={handleOpenScanner} />
 
-        {activeResult && cardMode === 'card' && (
-          <View style={styles.resultWrap}>
+      {/* SEE FILE business-card overlay, mirroring Track. Persistent mount
+          after first open so Fabric doesn't recycle the sprite's clipped
+          native view between shows. Single fragment under one guard so the
+          dim layer and card transform animate as a unit. */}
+      {persistentCardResult && (
+        <>
+          <Animated.View
+            style={[styles.dimBackdrop, { opacity: dimOpacity }]}
+            pointerEvents={cardVisible ? 'auto' : 'none'}
+          >
+            <Pressable
+              style={StyleSheet.absoluteFill}
+              onPress={handleDismiss}
+              accessibilityRole="button"
+              accessibilityLabel={sharedCopy.dismissLabel}
+            />
+          </Animated.View>
+          <Animated.View
+            style={[styles.cardContainer, { transform: [{ translateY: slideY }] }]}
+            pointerEvents={cardVisible ? 'auto' : 'none'}
+            accessibilityElementsHidden={!cardVisible}
+            importantForAccessibility={cardVisible ? 'auto' : 'no-hide-descendants'}
+          >
             <BusinessCard
-              result={activeResult}
+              result={persistentCardResult}
               onAvoid={handleAvoid}
-              avoidDisabled={!activeResult.entity}
+              avoidDisabled={!persistentCardResult.entity}
               avoided={isAvoided}
               onDismiss={handleDismiss}
               allEntities={entities}
               people={people}
-              modal={false}
+              visible={cardVisible}
             />
-          </View>
-        )}
+          </Animated.View>
+        </>
+      )}
 
-        {activeResult && bannerVariant && (
-          <View style={styles.bannerWrap}>
-            <BusinessBanner
-              displayName={activeResult.matchedAlias || activeResult.canonicalName}
-              variant={bannerVariant}
-              onDismiss={handleDismiss}
-            />
-          </View>
-        )}
-      </ScrollView>
+      {activeResult && bannerVariant && (
+        <BusinessBanner
+          displayName={activeResult.matchedAlias || activeResult.canonicalName}
+          variant={bannerVariant}
+          onDismiss={handleDismiss}
+        />
+      )}
 
       {derivedNotice && !activeResult && (
         <BarcodeLookupBanner notice={derivedNotice} onDismiss={handleDismissNotice} />
@@ -161,18 +196,21 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.bgVoid,
   },
-  scrollContent: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'stretch',
-    paddingBottom: theme.space['4xl'] * 2,
+  dimBackdrop: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: '#000',
   },
-  resultWrap: {
-    marginTop: theme.space.xl,
-    paddingHorizontal: theme.space.lg,
-  },
-  bannerWrap: {
-    marginTop: theme.space.lg,
-    paddingHorizontal: theme.space.lg,
+  cardContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    overflow: 'visible' as const,
+    maxHeight: '65%',
+    paddingTop: theme.space['3xl'],
   },
 });
