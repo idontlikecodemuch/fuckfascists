@@ -100,6 +100,18 @@ export function ScorecardScreen({
   React.useEffect(() => {
     if (!hasDropped || !dropData || dropDataLoading) return;
 
+    if (__DEV__) {
+      console.log('[Scorecard] post-drop effect firing', {
+        nowMs: Date.now(),
+        dropAt: schedule.dropAt,
+        dropAtIso: new Date(schedule.dropAt).toISOString(),
+        diffHours: (Date.now() - schedule.dropAt) / 3_600_000,
+        scoredWeekOf,
+        grandTotal: dropData.grandTotal,
+        inPresentationWindow,
+      });
+    }
+
     if (dropData.grandTotal < MIN_AVOIDS_FOR_DROP) {
       setScreenState(inPresentationWindow ? 'empty' : 'preview');
       // Spec: no notification fires for empty weeks. Cancel the scorecard
@@ -206,9 +218,19 @@ export function ScorecardScreen({
     setScreenState('preview');
   }, []);
 
+  // Defensive: presentation can only render when an actual drop is active and
+  // we're inside the 48h presentation window. Even if `screenState` somehow
+  // landed on 'presentation' from a stale lifecycle (hot reload state survived
+  // a BETA constant flip, persisted card-on-disk re-presented after a code
+  // path we haven't identified, etc.), this guard refuses to render the
+  // takeover outside the real drop window. Dev tools (`handleGenerateCard`)
+  // bypass via __DEV__ so pre-drop preview captures still work in development.
+  const validPresentation = __DEV__ || (hasDropped && inPresentationWindow);
+
   const effectiveState: ScreenState =
     liveDataLoading ? 'loading' :
     screenState === 'loading' || capturing ? 'loading' :
+    screenState === 'presentation' && !validPresentation ? 'preview' :
     screenState;
   const presentationActive = effectiveState === 'presentation' && Boolean(cardUri);
   const captureTargetData =
