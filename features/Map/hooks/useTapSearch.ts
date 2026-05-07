@@ -207,9 +207,13 @@ export function useTapSearch(
         }
 
         if (newPins.length > 0) {
+          // Dedupe by id + rounded coords so the same entity (e.g. Apple) can
+          // pin at every distinct location the user taps. Earlier id-only
+          // dedup silently dropped the second Apple Store onward (#141).
+          const pinKey = (p: MapPin) => `${p.id}-${ghostKey(p.coords)}`;
           setTapPins((prev) => {
-            const existingIds = new Set(prev.map((p) => p.id));
-            const deduped = newPins.filter((p) => !existingIds.has(p.id));
+            const existing = new Set(prev.map(pinKey));
+            const deduped = newPins.filter((p) => !existing.has(pinKey(p)));
             return [...prev, ...deduped];
           });
         }
