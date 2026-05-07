@@ -30,6 +30,7 @@ export const mapCopy = {
   markerAvoided: (name: string) => `Avoided: ${name}`,
   markerFlagged: (name: string, confidenceLabel: string) =>
     `Business with political funding on file: ${name}. Confidence: ${confidenceLabel}. Tap for details.`,
+  markerNoSignal: (name: string) => `${name}: no donations on file. Tap for details.`,
   tapLoading: "Searching nearby businesses",
   tapNoMatch: "Not on file.",
   tapNoMatchA11y: "Not on file",
@@ -37,7 +38,7 @@ export const mapCopy = {
   lookupFailed: (text: string) => `Couldn\u2019t reach FEC.gov for \u201C${text}\u201D. Try again later.`,
   fecSearch: "Search FEC.gov \u2197",
   fecSearchLabel: "Search FEC.gov directly",
-  chooserHeading: "SEVERAL ON FILE",
+  chooserHeading: "SEVERAL HERE",
   chooserSubhead: "Which one?",
   chooserRow: (name: string) => `View ${name}`,
   chooserDismiss: "Dismiss match chooser",
@@ -69,7 +70,7 @@ export const mapCopy = {
   // Banner states
   bannerNoMatch: (text: string) => `No FEC record for \u201C${text}\u201D.`,
   bannerLookupFailed: (text: string) => `Couldn\u2019t reach FEC.gov for \u201C${text}\u201D. Try again later.`,
-  bannerNoPac: (name: string) => `${name} has no corporate PAC on file.`,
+  bannerNoPac: (name: string) => `${name} has no donations on file.`,
   bannerDissolved: (name: string) => `${name}\u2019s PAC is dissolved. No recorded activity.`,
   bannerDismissLabel: "Dismiss banner",
   // DataZone

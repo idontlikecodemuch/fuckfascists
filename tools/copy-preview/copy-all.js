@@ -66,7 +66,7 @@ var COPY_ALL_DATA = {
     "lookupFailed": "Couldn't reach FEC.gov for \"{text}\". Try again later.",
     "fecSearch": "Search FEC.gov ↗",
     "fecSearchLabel": "Search FEC.gov directly",
-    "chooserHeading": "SEVERAL ON FILE",
+    "chooserHeading": "SEVERAL HERE",
     "chooserSubhead": "Which one?",
     "chooserRow": "View {name}",
     "chooserDismiss": "Dismiss match chooser",
@@ -92,7 +92,7 @@ var COPY_ALL_DATA = {
     "barcodeContextLine": "{label} · BARCODE {barcode}",
     "bannerNoMatch": "No FEC record for \"{text}\".",
     "bannerLookupFailed": "Couldn't reach FEC.gov for \"{text}\". Try again later.",
-    "bannerNoPac": "{name} has no corporate PAC on file.",
+    "bannerNoPac": "{name} has no donations on file.",
     "bannerDissolved": "{name}'s PAC is dissolved. No recorded activity.",
     "bannerDismissLabel": "Dismiss banner",
     "dataZoneDetail": "See full breakdown →",
@@ -117,7 +117,8 @@ var COPY_ALL_DATA = {
     "totalRowLabel": "Total",
     "basedOnLabel": "Based on",
     "sourcePrefix": "PAC:",
-    "avoidedStamp": "AVOIDED"
+    "avoidedStamp": "AVOIDED",
+    "markerNoSignal": "{name}: no donations on file. Tap for details."
   },
   "platforms": {
     "tabLabel": "TRACK",

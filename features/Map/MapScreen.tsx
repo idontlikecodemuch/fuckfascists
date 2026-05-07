@@ -224,9 +224,34 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
     searchBarRef.current?.blur();
   }, []);
 
+  // Filter chooser candidates to entities that would render an actionable card.
+  // Entities matched-but-with-no-signal (no PAC + no linked donor people, or
+  // dissolved with all-zero data) still drop pins on the map for visual context,
+  // but don't surface as picks — picking them would land on a banner, not a
+  // card, which reads as a wasted tap (#138).
+  const chooserCandidates = useMemo(() => latestTapBatch.filter((r) => {
+    const ppl = r.entity ? getAssociatedPeople(r.entity, people, entities) : [];
+    return resolveCardMode(r, ppl) === 'card';
+  }), [latestTapBatch, people, entities]);
+
   useEffect(() => {
-    if (latestTapBatch.length === 1) { handleNewResult(latestTapBatch[0]); clearLatestTapBatch(); }
-  }, [latestTapBatch, clearLatestTapBatch, handleNewResult]);
+    if (latestTapBatch.length === 1) {
+      handleNewResult(latestTapBatch[0]);
+      clearLatestTapBatch();
+      return;
+    }
+    if (latestTapBatch.length >= 2) {
+      if (chooserCandidates.length === 1) {
+        // Only one of the matches is actionable — skip the disambiguation step.
+        handleNewResult(chooserCandidates[0]);
+        clearLatestTapBatch();
+      } else if (chooserCandidates.length === 0) {
+        // All matches are no-signal (e.g. all confirmed no-PAC). Pins are
+        // already visible; clear the batch so we don't leak a stuck state.
+        clearLatestTapBatch();
+      }
+    }
+  }, [latestTapBatch, chooserCandidates, clearLatestTapBatch, handleNewResult]);
 
   const handleChooserSelect = useCallback((s: ScanResult) => { handleNewResult(s); clearLatestTapBatch(); }, [clearLatestTapBatch, handleNewResult]);
   const handleChooserDismiss = useCallback(() => { clearLatestTapBatch(); }, [clearLatestTapBatch]);
@@ -282,8 +307,12 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
       >
         {allPins.map((pin) => {
           const pinResult = pin.result;
+          // hasSignal mirrors resolveCardMode — pins matched but with no
+          // PAC/people activity render as muted ghost flags (#138).
+          const ppl = pinResult?.entity ? getAssociatedPeople(pinResult.entity, people, entities) : [];
+          const hasSignal = pinResult ? resolveCardMode(pinResult, ppl) === 'card' : true;
           return (
-            <FlagMarker key={`${pin.id}-${pin.coords.latitude}-${pin.coords.longitude}`} coordinate={pin.coords} name={pin.name} confidence={pinResult?.confidence ?? 1} avoided={pin.avoided}
+            <FlagMarker key={`${pin.id}-${pin.coords.latitude}-${pin.coords.longitude}`} coordinate={pin.coords} name={pin.name} confidence={pinResult?.confidence ?? 1} avoided={pin.avoided} hasSignal={hasSignal}
               onPress={pinResult ? () => {
                 const co = allPins.filter((p): p is MapPin & { result: ScanResult } => p.coords.latitude === pin.coords.latitude && p.coords.longitude === pin.coords.longitude && p.result !== null);
                 co.length >= 2 ? setLatestTapBatch(co.map((p) => p.result)) : handleNewResult(pinResult);
@@ -333,7 +362,7 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
       )}
       <MapControls onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} onLocation={handleLocationPress} locationLoading={location.loading} />
 
-      {latestTapBatch.length >= 2 && !activeResult && <MatchChooser results={latestTapBatch} onSelect={handleChooserSelect} onDismiss={handleChooserDismiss} />}
+      {chooserCandidates.length >= 2 && !activeResult && <MatchChooser results={chooserCandidates} onSelect={handleChooserSelect} onDismiss={handleChooserDismiss} />}
 
       {/* Persistent dim backdrop + tap-to-dismiss. Stays mounted across
           open/close cycles so the dim-fade animation runs cleanly. */}
