@@ -12,6 +12,26 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: May 7, 2026 ET — MIN_AVOIDS_FOR_DROP decision + beta-mode prelaunch note
+
+**Branch:** `claude/awesome-vaughan-ebeb34` → committed directly to `main`.
+
+**Focus:** Two small follow-ups to the Batch A submission prep — close one open V1 launch decision and document a beta-mode footgun discovered while smoke-testing the new-user onboarding flow.
+
+**Decisions:**
+
+- **`MIN_AVOIDS_FOR_DROP` stays at `1`.** Verified on physical device that a single-avoid card reads cleaner than expected — the single-focus framing arguably reads stronger than a denser card with multiple avoids. CLAUDE.md "Known Limitations" entry marked resolved.
+
+**Documentation:**
+
+- Added a new bullet to CLAUDE.md's "Before any public update" checklist: confirm beta mode is off on any device used to smoke-test onboarding. The version label's triple-tap toggle persists `ff_beta_mode` in SecureStore and survives Xcode reinstalls on iOS. With beta on, [features/Onboarding/screens/PermissionsScreen.tsx](features/Onboarding/screens/PermissionsScreen.tsx) short-circuits OS prompts, fakes the grant, and suppresses auto-advance — masking the real new-user flow.
+
+**Investigated but intentionally not changed:** the `if (isBeta) return;` in PermissionsScreen's auto-advance effect (line 76). It is the *intended* beta-mode behavior so testers can manually navigate without auto-advance triggering between simulated grants. The user-reported "auto-advance not firing on my device" was caused by a stale `ff_beta_mode='true'` SecureStore entry from earlier testing, not a production bug. App Store users (no triple-tap → no BETA_KEY → never beta) are unaffected. The new pre-public-update checklist bullet captures the device-side toggle-off step.
+
+**Verification:** `tsc --noEmit` clean. `jest --silent features/Onboarding/` 7/7 tests pass. No app-code changes shipped.
+
+---
+
 ### Session: May 7, 2026 ET — Pre-submission cleanup (Batch A)
 
 **Branch:** `claude/awesome-vaughan-ebeb34` → committed directly to `main`.

@@ -631,6 +631,7 @@ Run this checklist before uploading any App Store, TestFlight, public APK, exten
 - **Confirm the archived/uploaded build was created after the intended commit.** Check Xcode Organizer archive time and, for App Store/TestFlight, the uploaded build number. If a fix landed after the archive timestamp, rebuild and upload again.
 - **Confirm the public URL set is launch-correct.** `copy/shared.ts` should point user-facing site/privacy/support/extension URLs at the intended public domains before upload.
 - **Run the release verification set.** At minimum: `npm run typecheck`, full Jest with `.claude` ignored, and one physical-device smoke test of Map, Scan, Track, Scorecard, and Info.
+- **Confirm beta mode is off on any device used to smoke-test the onboarding flow.** The version label's triple-tap toggle persists `ff_beta_mode` in SecureStore and survives Xcode reinstalls on iOS (Android Keystore clears on uninstall). With beta on, the Permissions screen short-circuits OS prompts, fakes the grant, and suppresses auto-advance — masking the real new-user flow. Toggle off via triple-tap → BetaOverlay before testing onboarding.
 
 ### What NOT to do
 - Do not squash-merge a subset of a branch's changes to main and then continue working on the original branch. This creates diverged histories that are painful to reconcile.
@@ -1049,8 +1050,8 @@ Schedule E (independent expenditures) is not tracked. IEs are spending by outsid
 ### BETA_SCORECARD_INTERVAL_HOURS pre-launch flip (Priority: V1 launch blocker)
 `BETA_SCORECARD_INTERVAL_HOURS = 48` in `config/constants.ts` overrides the weekly schedule whenever the value is positive. This is intentionally useful for release-mode device testing, so do not rely on `__DEV__` as the safety net. Must be explicitly checked and flipped to `0` before any public update (App Store, TestFlight, public APK, extension store, or other externally distributed build). To remove the override entirely, delete the constant, delete `core/dropSchedule/betaDropSchedule.ts`, and remove the conditional in `useDropSchedule.ts`.
 
-### MIN_AVOIDS_FOR_DROP threshold tuning (Priority: V1.5)
-`MIN_AVOIDS_FOR_DROP = 1` in `config/constants.ts` means a single avoid generates a card + notification. Decide whether this is the right floor for "card-worthy" before V1 launch. Raising it (e.g. to 3) also implies updating the `EmptyWeek` copy and any marketing referencing "any avoid counts."
+### MIN_AVOIDS_FOR_DROP threshold — ✅ Resolved (stays at 1)
+**Decided 2026-05-07.** `MIN_AVOIDS_FOR_DROP = 1` is the V1 launch value. Verified on physical device: a single-avoid card reads cleaner than expected — the single-focus framing arguably reads stronger than a denser card with multiple avoids. Any future change should also update the `EmptyWeek` copy and any marketing referencing "any avoid counts."
 
 ### Android scorecard screenshot parity (Priority: V1.5)
 Android currently keeps scorecard screenshot parity post-capture: `expo-screen-capture` detects the screenshot after it lands, then opens share with the clean cached PNG. This is intentionally lighter than rendering an Android-only hidden clean-card base, and avoids `FLAG_SECURE` because that would block screenshots rather than produce the clean card. V1.5: revisit whether a native Android implementation can approximate the iOS secure-overlay sandwich without new dependencies or heavy background rendering. If no clean path exists, keep Android on the post-capture share fallback.
