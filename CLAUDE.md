@@ -624,6 +624,14 @@ These rules prevent the branch sprawl, orphaned worktrees, and build-state drift
 - **Prune remote tracking refs** — `git remote prune origin` after deleting remote branches.
 - **Verify `main` is current** — `git pull origin main` in the main worktree.
 
+### Before any public update
+Run this checklist before uploading any App Store, TestFlight, public APK, extension store, or other externally distributed build. This applies even when the build is not a dev build, because real testing sometimes uses release archives.
+
+- **Confirm scorecard beta cadence is disabled.** In `config/constants.ts`, `BETA_SCORECARD_INTERVAL_HOURS` must be `0`. If it is positive, the app uses the beta drop cycle and can present scorecards outside the real weekly drop period.
+- **Confirm the archived/uploaded build was created after the intended commit.** Check Xcode Organizer archive time and, for App Store/TestFlight, the uploaded build number. If a fix landed after the archive timestamp, rebuild and upload again.
+- **Confirm the public URL set is launch-correct.** `copy/shared.ts` should point user-facing site/privacy/support/extension URLs at the intended public domains before upload.
+- **Run the release verification set.** At minimum: `npm run typecheck`, full Jest with `.claude` ignored, and one physical-device smoke test of Map, Scan, Track, Scorecard, and Info.
+
 ### What NOT to do
 - Do not squash-merge a subset of a branch's changes to main and then continue working on the original branch. This creates diverged histories that are painful to reconcile.
 - Do not create worktrees from feature branches. Worktrees should branch from `main`.
@@ -1038,8 +1046,8 @@ Schedule E (independent expenditures) is not tracked. IEs are spending by outsid
 - Do not reintroduce `activeResult && showFullCard` unmounting for the full business-card subtree unless the sprite rendering strategy changes.
 - If the persistent-mount approach ever becomes untenable, the fallback architecture is to pre-slice sprite sheets into per-frame PNGs and stop relying on runtime `overflow: 'hidden'` cropping for the card sprite.
 
-### BETA_SCORECARD_INTERVAL_HOURS — ✅ Resolved (flipped); dev override mechanism preserved
-**Landed 2026-05-07.** Production constant now `BETA_SCORECARD_INTERVAL_HOURS = 0` so the standard weekly drop window (`DROP_WINDOW_*`) controls schedule. The constant + `core/dropSchedule/betaDropSchedule.ts` + the conditional in `useDropSchedule.ts` are intentionally retained so dev builds can still override to a short interval by flipping the value. To remove the mechanism entirely (V1.5+ if no longer needed): delete the constant, delete the file, remove the conditional.
+### BETA_SCORECARD_INTERVAL_HOURS pre-launch flip (Priority: V1 launch blocker)
+`BETA_SCORECARD_INTERVAL_HOURS = 48` in `config/constants.ts` overrides the weekly schedule whenever the value is positive. This is intentionally useful for release-mode device testing, so do not rely on `__DEV__` as the safety net. Must be explicitly checked and flipped to `0` before any public update (App Store, TestFlight, public APK, extension store, or other externally distributed build). To remove the override entirely, delete the constant, delete `core/dropSchedule/betaDropSchedule.ts`, and remove the conditional in `useDropSchedule.ts`.
 
 ### MIN_AVOIDS_FOR_DROP threshold tuning (Priority: V1.5)
 `MIN_AVOIDS_FOR_DROP = 1` in `config/constants.ts` means a single avoid generates a card + notification. Decide whether this is the right floor for "card-worthy" before V1 launch. Raising it (e.g. to 3) also implies updating the `EmptyWeek` copy and any marketing referencing "any avoid counts."
