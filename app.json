@@ -36,8 +36,12 @@
     ],
     "ios": {
       "bundleIdentifier": "com.fckapp.fck",
+      "config": {
+        "usesNonExemptEncryption": false
+      },
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "FCK uses your location to find nearby businesses and check their political donation records."
+        "NSLocationWhenInUseUsageDescription": "FCK uses your location to find nearby businesses and check their political donation records.",
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
