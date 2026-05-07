@@ -1,5 +1,6 @@
 import * as FileSystem from 'expo-file-system';
 import { SCORECARD_ARCHIVE_MAX } from '../../../config/constants';
+import { buildCardFilename } from '../utils/formatters';
 
 const ARCHIVE_DIR = `${FileSystem.documentDirectory}scorecards/`;
 
@@ -47,12 +48,27 @@ export async function listArchivedCards(): Promise<ArchivedCard[]> {
 
 /**
  * Returns the most recently captured scorecard image, or null if none exists.
- * Used by ScorecardScreen to resolve the "current drop" file without having
- * to compute the filename from a scored-week date.
+ * Used by the archive/gallery surface only. The drop flow must use
+ * findCardForWeek() so an older archive card cannot satisfy a new drop.
  */
 export async function findLatestCard(): Promise<ArchivedCard | null> {
   const cards = await listArchivedCards();
   return cards[0] ?? null;
+}
+
+/**
+ * Returns the archived scorecard for one scored week, or null if not captured.
+ * Exact filename matching is intentional: the post-drop privacy flow should
+ * only skip capture+purge when the card for this same Sat-Fri window exists.
+ */
+export async function findCardForWeek(weekOf: string): Promise<ArchivedCard | null> {
+  const currentFilename = buildCardFilename(weekOf);
+  const legacyPngFilename = currentFilename.replace(/\.jpg$/i, '.png');
+  const cards = await listArchivedCards();
+
+  return cards.find((card) =>
+    card.filename === currentFilename || card.filename === legacyPngFilename,
+  ) ?? null;
 }
 
 /** Prunes oldest cards when the archive exceeds SCORECARD_ARCHIVE_MAX. */

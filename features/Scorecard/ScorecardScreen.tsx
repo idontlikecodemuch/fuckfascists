@@ -16,7 +16,8 @@ import { EmptyWeek } from './components/EmptyWeek';
 import { ScorecardImage } from './components/ScorecardImage';
 import { PreviewStamp } from './components/PreviewStamp';
 import { CardArchive } from './components/CardArchive';
-import { findLatestCard } from './data/cardArchive';
+import { findCardForWeek } from './data/cardArchive';
+import { getScoredWeekOfDrop } from './utils/scoredWeek';
 import { StarField } from '../Info/components/InfoDecorations';
 import { scorecardCopy } from '../../copy/scorecard';
 import {
@@ -40,13 +41,13 @@ interface ScorecardScreenProps {
  *
  * Lifecycle:
  *   1. preview     — scrollable interactive breakdown (Sat → Fri drop)
- *   2. loading     — brief transition while PNG captures
+ *   2. loading     — brief transition while the card captures
  *   3. presentation — full-screen card takeover + SHARE
  *   4. empty       — zero avoids, motivational copy
  *   5. archive     — past scorecards thumbnail gallery
  *
  * Post-drop flow (aggregate → capture → purge → present):
- *   When hasDropped fires, we aggregate the scored week's events into a PNG,
+ *   When hasDropped fires, we aggregate the scored week's events into an image,
  *   save it to disk, and then purge the raw events scoped to that exact
  *   Sat–Fri window. The card persists; the source data does not. This is
  *   how the app keeps its "delete the data" promise while still letting the
@@ -70,6 +71,7 @@ export function ScorecardScreen({
   const insets = useSafeAreaInsets();
 
   const { schedule, hasDropped } = useDropSchedule();
+  const scoredWeekOf = getScoredWeekOfDrop(schedule.dropAt);
 
   // The drop's "presentation window" — Scorecard tab takes over full-screen
   // only while we're within this window of the drop moment. After, the card
@@ -77,14 +79,17 @@ export function ScorecardScreen({
   const inPresentationWindow =
     hasDropped && Date.now() - schedule.dropAt < SCORECARD_PRESENTATION_WINDOW_MS;
 
-  const { data, loading: dataLoading } = useScorecard(
+  const { data: liveData, loading: liveDataLoading } = useScorecard(
     adapter, entities, platforms, schedule.weekOf,
+  );
+  const { data: dropData, loading: dropDataLoading } = useScorecard(
+    adapter, entities, platforms, scoredWeekOf,
   );
   const { captureCard, capturing } = useCardCapture();
 
   // Post-drop: aggregate → capture → purge → (maybe) present.
   //
-  // Runs on mount, on drop-fire, and on every visit while the PNG is missing
+  // Runs on mount, on drop-fire, and on every visit while the card is missing
   // (launch-resilient retry if a previous attempt failed).
   //
   // Presentation takeover is gated by SCORECARD_PRESENTATION_WINDOW_MS. Past
@@ -93,10 +98,10 @@ export function ScorecardScreen({
   // user sees the LivePreview for the new week, and the card is reachable
   // via "Past scorecards."
   React.useEffect(() => {
-    if (!hasDropped || !data) return;
+    if (!hasDropped || !dropData || dropDataLoading) return;
 
-    if (data.grandTotal < MIN_AVOIDS_FOR_DROP) {
-      setScreenState('empty');
+    if (dropData.grandTotal < MIN_AVOIDS_FOR_DROP) {
+      setScreenState(inPresentationWindow ? 'empty' : 'preview');
       // Spec: no notification fires for empty weeks. Cancel the scorecard
       // drop identifier only — leaves the Thursday platform nudge intact.
       Notifications.cancelScheduledNotificationAsync(SCORECARD_DROP_NOTIFICATION_ID).catch(() => {});
@@ -106,23 +111,23 @@ export function ScorecardScreen({
     let cancelled = false;
 
     (async () => {
-      // Look up the latest captured card by mtime — robust to the weekOf
-      // rollover that happens at Saturday local midnight.
-      const latest = await findLatestCard();
+      // Look up the exact scored week's card. Older archived cards must not
+      // short-circuit this week's capture+purge flow.
+      const existing = await findCardForWeek(scoredWeekOf);
       if (cancelled) return;
 
       // A card already exists for this drop (captured earlier this session
       // or a previous launch). Present if we're still inside the window.
-      if (latest) {
+      if (existing) {
         if (inPresentationWindow) {
-          setCardUri(latest.uri);
+          setCardUri(existing.uri);
           setScreenState('presentation');
         }
         // Outside the window: fall through to preview (set by default).
         return;
       }
 
-      // No PNG yet — first open since drop. Capture, then purge.
+      // No card yet — first open since drop. Capture, then purge.
       // Hold 'loading' so the user sees the privacy-proving copy
       // ("Locking in my card. Shredding the data.") during the transition.
       setScreenState('loading');
@@ -133,7 +138,7 @@ export function ScorecardScreen({
       );
       if (cancelled) return;
 
-      const result = await captureCard(imageRef, schedule.weekOf);
+      const result = await captureCard(imageRef, scoredWeekOf);
       if (cancelled) return;
 
       if (!result) {
@@ -145,9 +150,9 @@ export function ScorecardScreen({
       // Capture succeeded → purge the scored week's events (scoped to
       // [weekOf, weekOf+7) so the live week can't be touched).
       try {
-        await purgeScoredWeekAvoidEvents(adapter, schedule.weekOf);
+        await purgeScoredWeekAvoidEvents(adapter, scoredWeekOf);
       } catch {
-        // Purge failure is non-fatal — the PNG is already saved. Next
+        // Purge failure is non-fatal — the card is already saved. Next
         // launch will purge on its normal schedule once the week rolls over.
       }
       if (cancelled) return;
@@ -161,12 +166,20 @@ export function ScorecardScreen({
     })();
 
     return () => { cancelled = true; };
-  }, [hasDropped, data, schedule.weekOf, adapter, captureCard, inPresentationWindow]);
+  }, [
+    hasDropped,
+    dropData,
+    dropDataLoading,
+    scoredWeekOf,
+    adapter,
+    captureCard,
+    inPresentationWindow,
+  ]);
 
   // Dev-tools: generate on-demand (pre-drop preview card). Does NOT purge —
   // the scored week hasn't ended yet.
   const handleGenerateCard = useCallback(async () => {
-    if (!data || data.grandTotal < MIN_AVOIDS_FOR_DROP) return;
+    if (!liveData || liveData.grandTotal < MIN_AVOIDS_FOR_DROP) return;
     setScreenState('loading');
 
     // Allow one frame for the off-screen ScorecardImage to mount.
@@ -182,7 +195,7 @@ export function ScorecardScreen({
     } else {
       setScreenState('preview');
     }
-  }, [data, captureCard, schedule.weekOf]);
+  }, [liveData, captureCard, schedule.weekOf]);
 
   const handleDismiss = useCallback(() => {
     setScreenState('preview');
@@ -194,10 +207,12 @@ export function ScorecardScreen({
   }, []);
 
   const effectiveState: ScreenState =
-    dataLoading ? 'loading' :
+    liveDataLoading ? 'loading' :
     screenState === 'loading' || capturing ? 'loading' :
     screenState;
   const presentationActive = effectiveState === 'presentation' && Boolean(cardUri);
+  const captureTargetData =
+    hasDropped && (screenState === 'loading' || capturing) && dropData ? dropData : liveData;
 
   React.useEffect(() => {
     onPresentationActiveChange?.(presentationActive);
@@ -207,7 +222,7 @@ export function ScorecardScreen({
   // PREVIEW stamp is a fixed viewport overlay in the in-app preview/empty
   // states (#100) — it must persist while the user scrolls LivePreview so
   // any screenshot makes the "this isn't the real drop" status explicit.
-  // The stamp never appears on the captured shareable PNG; the bitmap is
+  // The stamp never appears on the captured shareable card; the bitmap is
   // the shared artifact and must stay clean.
   const showPreviewStamp = effectiveState === 'preview' || effectiveState === 'empty';
 
@@ -220,17 +235,17 @@ export function ScorecardScreen({
           is intentionally NOT used here: on iOS view-shot has been observed
           to return a blank bitmap when capturing through an opacity:0
           ancestor. Keep the view opaque + off-screen. */}
-      {data && (
+      {captureTargetData && (
         <View style={styles.offscreen} pointerEvents="none" collapsable={false}>
-          <ScorecardImage ref={imageRef} data={data} />
+          <ScorecardImage ref={imageRef} data={captureTargetData} />
         </View>
       )}
 
       {effectiveState === 'loading' && <ScorecardLoader />}
       {effectiveState === 'empty' && <EmptyWeek onSwitchTab={onSwitchTab} />}
-      {effectiveState === 'preview' && data && (
+      {effectiveState === 'preview' && liveData && (
         <>
-          <LivePreview data={data} onSwitchTab={onSwitchTab} />
+          <LivePreview data={liveData} onSwitchTab={onSwitchTab} />
           <Pressable
             style={styles.archiveLink}
             onPress={() => setScreenState('archive')}
@@ -248,7 +263,7 @@ export function ScorecardScreen({
       )}
 
       {/* Dev tools — __DEV__ only, preview state only */}
-      {__DEV__ && data && effectiveState === 'preview' && (
+      {__DEV__ && liveData && effectiveState === 'preview' && (
         <DevToolsPanel
           onGenerateNow={handleGenerateCard}
           onResetCard={handleResetCard}

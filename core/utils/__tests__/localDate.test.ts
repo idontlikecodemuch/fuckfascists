@@ -1,4 +1,8 @@
-import { getLocalDateString, getLocalWeekStart } from '../localDate';
+import {
+  getLocalDateString,
+  getLocalWeekStart,
+  getLocalWeekStartForDate,
+} from '../localDate';
 
 describe('getLocalDateString', () => {
   it('returns a string matching YYYY-MM-DD format', () => {
@@ -36,5 +40,17 @@ describe('getLocalWeekStart', () => {
     const diffDays = Math.round((todayMidnight.getTime() - parsed.getTime()) / 86_400_000);
     expect(diffDays).toBeGreaterThanOrEqual(0);
     expect(diffDays).toBeLessThanOrEqual(6);
+  });
+});
+
+describe('getLocalWeekStartForDate', () => {
+  it('returns the same Saturday for every day in a Sat-Fri week', () => {
+    expect(getLocalWeekStartForDate(new Date(2026, 3, 11, 12))).toBe('2026-04-11');
+    expect(getLocalWeekStartForDate(new Date(2026, 3, 12, 12))).toBe('2026-04-11');
+    expect(getLocalWeekStartForDate(new Date(2026, 3, 17, 12))).toBe('2026-04-11');
+  });
+
+  it('rolls forward on local Saturday', () => {
+    expect(getLocalWeekStartForDate(new Date(2026, 3, 18, 0, 1))).toBe('2026-04-18');
   });
 });

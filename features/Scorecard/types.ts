@@ -19,5 +19,5 @@ export interface ScorecardViewData {
  */
 export interface DropSchedule {
   dropAt: number;  // Unix timestamp in ms
-  weekOf: string;  // YYYY-MM-DD local Monday of the week this schedule covers
+  weekOf: string;  // YYYY-MM-DD Saturday of the current live Sat-Fri week
 }
