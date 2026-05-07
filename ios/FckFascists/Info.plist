@@ -19,7 +19,7 @@
     <key>CFBundlePackageType</key>
     <string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
     <key>CFBundleShortVersionString</key>
-    <string>0.0.1</string>
+    <string>1.0.0</string>
     <key>CFBundleSignature</key>
     <string>????</string>
     <key>CFBundleURLTypes</key>
@@ -46,16 +46,10 @@
     </dict>
     <key>NSCameraUsageDescription</key>
     <string>FCK uses your camera to scan product barcodes and match brands to corporate donation records.</string>
-    <key>NSFaceIDUsageDescription</key>
-    <string>Allow $(PRODUCT_NAME) to access your Face ID biometric data.</string>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>FCK uses your location to find nearby businesses and check their political donation records.</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>Allow $(PRODUCT_NAME) to access your microphone</string>
     <key>NSPhotoLibraryAddUsageDescription</key>
-    <string>Allow $(PRODUCT_NAME) to save photos</string>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>Allow $(PRODUCT_NAME) to access your photos</string>
+    <string>FCK saves your weekly scorecard image to Photos so you can share it.</string>
     <key>UIAppFonts</key>
     <array>
       <string>Bungee-Regular.ttf</string>

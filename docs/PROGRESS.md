@@ -12,6 +12,38 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: May 7, 2026 ET — Pre-submission cleanup (Batch A)
+
+**Branch:** `claude/awesome-vaughan-ebeb34` → committed directly to `main`.
+
+**Focus:** Final pre-App-Store-submission code edits combining findings from a CC + Codex parallel audit. Mechanical hygiene only; the larger copy review is deferred to a separate instance.
+
+**Edits shipped:**
+
+- **`BETA_SCORECARD_INTERVAL_HOURS`: 48 → 0** ([config/constants.ts:123](config/constants.ts:123)). Dev override mechanism preserved (constant + `core/dropSchedule/betaDropSchedule.ts` + the `useDropSchedule.ts` conditional) — production now uses the standard weekly drop window. CLAUDE.md "Known Limitations" entry marked resolved.
+
+- **`ios/FckFascists/Info.plist` permission cleanup.** Dropped three unused keys (`NSFaceIDUsageDescription`, `NSMicrophoneUsageDescription`, `NSPhotoLibraryUsageDescription`) — the app does not request any of these. Rewrote `NSPhotoLibraryAddUsageDescription` from the boilerplate `"Allow $(PRODUCT_NAME) to save photos"` to `"FCK saves your weekly scorecard image to Photos so you can share it."` since `expo-media-library` is the only Photo permission actually needed (scorecard PNG share). Apple App Privacy review reads these verbatim — generic strings are a documented review-delay trigger.
+
+- **Version bump 0.0.1 → 1.0.0** in [app.json:5](app.json:5), [package.json:3](package.json:3), and `CFBundleShortVersionString` in [Info.plist:22](ios/FckFascists/Info.plist:22). `CFBundleVersion` stays an integer; Xcode increments per archive.
+
+- **`copy/shared.ts` URL consolidation.** Introduced module-level `SITE_DOMAIN = "FCKfascists.com"` and `SITE_ORIGIN = \`https://${SITE_DOMAIN}\``. `privacyUrl`, `extensionChromeUrl`, `extensionFirefoxUrl` are now template literals derived from `SITE_ORIGIN`; `contactEmail` swapped from `info@fckapp.com` to `info@fckfascists.com`. The previous canonical/alias domain split (`siteUrl: FCKfascists.com` while privacy/email/extension lived on `fckapp.com`) is gone — single source of truth, change the constant once.
+
+- **`tools/copy-preview/copy-all.{json,js}` synced** so the standalone HTML review tool sees the new URLs.
+
+**Verification:** `tsc --noEmit` clean. `jest --silent` 35 suites / 425 tests pass. `plutil -lint Info.plist` OK. `audit-copy.sh` shows only pre-existing accepted hits (Permissions ONLINE/OFFLINE, Scorecard formatters, Dev harness — all documented as accepted).
+
+**CLAUDE.md updates:** "Placeholder URLs and email" and "BETA_SCORECARD_INTERVAL_HOURS pre-launch flip" entries marked resolved.
+
+**Outstanding before submission (out-of-band, owner = chris):**
+
+- Real privacy policy hosted at `FCKfascists.com/privacy`.
+- Working `info@fckfascists.com` mailbox (DNS propagating).
+- App Store Connect listing setup: description, keywords, screenshots, App Privacy questionnaire, Support URL (`FCKfascists.com/support` if live, else GitHub Issues).
+- Full copy review pass (separate CC instance — covers Info screen, onboarding, scorecard share copy, Map empty/error states, Scan toasts, accessibility labels).
+- README rewrite (separate session) — at minimum: drop "iOS + Android + extension launch together" framing, fix "No location data stored" line (avoided-pin coords now persist locally encrypted), apply FCK substitution rule, decide whether the rewards-pool model framing belongs in launch-day README.
+
+---
+
 ### Session: May 5–6, 2026 ET — Pre-launch TestFlight cleanup (8 items)
 
 **Branch:** `claude/epic-boyd-26b705` (merged ff to main `98b6085`, branch deleted).

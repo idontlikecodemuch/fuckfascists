@@ -120,7 +120,7 @@ export const PEOPLE_LIST_UPDATE_URL = 'https://raw.githubusercontent.com/idontli
 // Flip to 0 before shipping to production.
 // To remove entirely: delete this constant, delete core/dropSchedule/betaDropSchedule.ts,
 // and remove the conditional in useDropSchedule.ts.
-export const BETA_SCORECARD_INTERVAL_HOURS = 48;
+export const BETA_SCORECARD_INTERVAL_HOURS = 0;
 
 // Info / FAQ / transparency content — editable in the data repo without an app release
 export const INFO_CONTENT_URL = 'https://raw.githubusercontent.com/idontlikecodemuch/fckfascists-data/main/info.json';

@@ -1005,8 +1005,10 @@ Single-word aliases (e.g. "Apple", "American", "Delta") cannot prefix-match in `
 ### service-worker.ts over 250 lines (Priority: V1 cleanup)
 `extension/background/service-worker.ts` is 389 lines — over the 250-line file limit. Pre-existing violation; was 361 lines before the API key removal session. Refactor plan: extract `handleCheckDomain`, `isBundledDataFresh`, and related data-fetch logic into `extension/background/domainCheck.ts`. The message router, tab lifecycle listeners, and alarm handler stay in `service-worker.ts`.
 
-### Placeholder URLs and email in copy/shared.ts (Priority: V1 launch blocker)
-`contactEmail`, `extensionChromeUrl`, and `extensionFirefoxUrl` in `copy/shared.ts` are temporary placeholders (GitHub repo links and `hello@fckfascists.com`). Before launch: replace `extensionChromeUrl` and `extensionFirefoxUrl` with real Chrome Web Store / Firefox Add-ons URLs once the extensions are published, and confirm `contactEmail` is a real monitored address. Search for `"[need to change"` across the codebase to catch any other placeholders that may have been missed.
+### URL consolidation in copy/shared.ts — ✅ Resolved (URL split); 🔄 Pending (hosted assets)
+**Landed 2026-05-07.** All site-derived URLs now build from `SITE_DOMAIN = "FCKfascists.com"` + `SITE_ORIGIN = \`https://${SITE_DOMAIN}\``. `privacyUrl`, `extensionChromeUrl`, `extensionFirefoxUrl` are template literals; `contactEmail` is `info@fckfascists.com`. The previous canonical/alias split with `fckapp.com` is gone — the domain is one constant, change once.
+
+**Still pending before submission:** real privacy policy hosted at `FCKfascists.com/privacy`, working `info@fckfascists.com` mailbox (propagating), and real Chrome Web Store / Firefox Add-ons URLs once the extensions are published (interim values resolve into the live brand site).
 
 ### CYCLES_SINCE_2016 — cycle constant update (Priority: V1.5)
 `CYCLES_SINCE_2016` in `scripts/fetch-donation-data.mjs` and `core/api/FECClient.ts` must be updated manually when a new election cycle begins. Both are candidates for renaming to `CYCLES_TO_FETCH` (more accurate now that 2026 is included) — not blocking for MVP but should be done alongside the next cycle update.
@@ -1036,8 +1038,8 @@ Schedule E (independent expenditures) is not tracked. IEs are spending by outsid
 - Do not reintroduce `activeResult && showFullCard` unmounting for the full business-card subtree unless the sprite rendering strategy changes.
 - If the persistent-mount approach ever becomes untenable, the fallback architecture is to pre-slice sprite sheets into per-frame PNGs and stop relying on runtime `overflow: 'hidden'` cropping for the card sprite.
 
-### BETA_SCORECARD_INTERVAL_HOURS pre-launch flip (Priority: V1 launch blocker)
-`BETA_SCORECARD_INTERVAL_HOURS = 48` in `config/constants.ts` overrides the weekly schedule for dev builds. Must be flipped to `0` before shipping to production. To remove the override entirely, delete the constant, delete `core/dropSchedule/betaDropSchedule.ts`, and remove the conditional in `useDropSchedule.ts`.
+### BETA_SCORECARD_INTERVAL_HOURS — ✅ Resolved (flipped); dev override mechanism preserved
+**Landed 2026-05-07.** Production constant now `BETA_SCORECARD_INTERVAL_HOURS = 0` so the standard weekly drop window (`DROP_WINDOW_*`) controls schedule. The constant + `core/dropSchedule/betaDropSchedule.ts` + the conditional in `useDropSchedule.ts` are intentionally retained so dev builds can still override to a short interval by flipping the value. To remove the mechanism entirely (V1.5+ if no longer needed): delete the constant, delete the file, remove the conditional.
 
 ### MIN_AVOIDS_FOR_DROP threshold tuning (Priority: V1.5)
 `MIN_AVOIDS_FOR_DROP = 1` in `config/constants.ts` means a single avoid generates a card + notification. Decide whether this is the right floor for "card-worthy" before V1 launch. Raising it (e.g. to 3) also implies updating the `EmptyWeek` copy and any marketing referencing "any avoid counts."

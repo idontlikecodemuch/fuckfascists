@@ -1,15 +1,20 @@
+// Single source of truth for the brand domain. All site-derived URLs build
+// from SITE_ORIGIN; consumers should never hardcode the domain.
+const SITE_DOMAIN = "FCKfascists.com";
+const SITE_ORIGIN = `https://${SITE_DOMAIN}`;
+
 export const sharedCopy = {
   appName: "FCK FASCISTS",
   brandTagline: "The fascists won\u2019t FCK themselves.",
   brandTaglineStacked: "The fascists won\u2019t\nFCK themselves.",
-  siteUrl: "FCKfascists.com",
+  siteUrl: SITE_DOMAIN,
   repoUrl: "https://github.com/idontlikecodemuch/fuckfascists",
   dataRepoUrl: "https://github.com/idontlikecodemuch/fckfascists-data",
   issuesUrl: "https://github.com/idontlikecodemuch/fuckfascists/issues",
-  privacyUrl: "https://fckapp.com/privacy",
-  contactEmail: "info@fckapp.com",
-  extensionChromeUrl: "https://fckapp.com/extension/chrome",
-  extensionFirefoxUrl: "https://fckapp.com/extension/firefox",
+  privacyUrl: `${SITE_ORIGIN}/privacy`,
+  contactEmail: "info@fckfascists.com",
+  extensionChromeUrl: `${SITE_ORIGIN}/extension/chrome`,
+  extensionFirefoxUrl: `${SITE_ORIGIN}/extension/firefox`,
   /** Close/cancel glyph (\u2715). Standardized across the app after the
    *  BusinessCard manila-folder reskin (#102/#105). Use for the visible
    *  control; dismissLabel stays as the spoken a11y label. */
