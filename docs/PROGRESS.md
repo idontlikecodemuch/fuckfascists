@@ -12,6 +12,70 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: May 5–6, 2026 ET — Pre-launch TestFlight cleanup (8 items)
+
+**Branch:** `claude/epic-boyd-26b705` (merged ff to main `98b6085`, branch deleted).
+
+**Focus:** Knock out the remaining open beta items before launch. Brand strings, sprite pipeline, map UX/data, scan UX, arena assets. Items shipped together as a coherent "honest map feedback + Track-style scan presentation + missing assets + missing entities" sprint.
+
+**Items resolved this session (status updates in `tools/review/TESTFLIGHT_REVIEW.md`):**
+
+- **#162** — `app.json` (`expo-camera.cameraPermission` + `ios.infoPlist.NSLocationWhenInUseUsageDescription`) and committed `ios/FckFascists/Info.plist` (`NSCameraUsageDescription` + `NSLocationWhenInUseUsageDescription`) updated from "F*ck Fascists uses ..." to "FCK uses ..." per the FCK substitution rule (#158). Both files updated so the change is picked up regardless of build path.
+
+- **#134 / #137 / #164** — Three missing CEO sprites shipped: `george-arison` (Grindr), `spencer-rascoff` (Match Group), `zhang-yiming` (ByteDance/TikTok parent). Likenesses verified against current Wikipedia + PR Newswire photos before generation; first-pass drafts were corrected on Arison (full beard → 5 o'clock stubble, no glasses, medium-heavy build) and Zhang (dropped "youthful" descriptor, hoodie variant → plain black tee + chinos to match his actual conservative style). Pipeline blocked overnight on `403 PERMISSION_DENIED` from Gemini for `gemini-3.1-flash-image-preview` (project access issue, resolved next morning after billing updates propagated). Final body fill 86% across all three, matching the existing reference set (Citron 85.6%, Pichai 85.8%, Johnson 86.7%).
+
+- **Sprite pipeline fix (`0b7fcc6`)** — `analyze_sprites.py` and `normalize_sprites.py` were dividing body heights by hardcoded `CELL_HEIGHT = 720`. The optimize pipeline (`84d701e`) cut deployed cells from 720 to 360 tall, but the analyzer kept the old constant — so it reported every ~309 px body as `42.92%` and recommended that as the normalize target, then `normalize` faithfully shrank new sprites' bodies to 309 px in a 720 cell (43% fill) which then survived 2× downscale into the deployed sheet. Both scripts now derive cell dims per sprite from the input PNG. `normalize` also gained `--source hires|deployed` so the canonical 86%/5% targets land exactly once instead of being approximated through a 2× downscale. `tools/img-gen/USAGE.md` updated to cover the post-`84d701e` flow including `optimize_sprites.py`, the hires source-of-truth, and the `--source hires` step. `docs/SPRITE_GENERATION_HANDOFF.md` banner-flagged as historical with a pointer to USAGE.md.
+
+- **#138** — Match Chooser flow ("Asking if I want to check then subway says not on file? Weird user flow"). Three changes that share one root: stop pretending no-signal entities are actionable. (1) `MatchChooser` now filters to candidates where `resolveCardMode === 'card'`; auto-opens when one is actionable, silently clears when none are, only shows the chooser when ≥2 actionable. (2) `FlagMarker` got a `hasSignal` prop and renders no-signal pins as a grey ghost flag (mirrors `NoMatchMarker`'s exact `tintColor: textSecondary` + `opacity: 0.8`). (3) `bannerNoPac` copy "{name} has no corporate PAC on file." → "{name} has no donations on file." — more accurate (the banner already requires both PAC AND linked-donor activity to be empty), parallel to "Not on file." without conflation. Plus `chooserHeading: "SEVERAL ON FILE"` → `"SEVERAL HERE"`. New `mapCopy.markerNoSignal` a11y string. copy-preview tool synced.
+
+- **#141** — Apple Clarendon flag not dropping when crowded. Pin dedupe in `processTapResults` was id-only (`new Set(prev.map(p => p.id))`), so once any Apple Store had been tapped and pinned, every subsequent Apple location dropped because the entity ID `apple` was already in `tapPins`. Same root affected every chain (Subway, Walmart, etc). Switched to a composite key `${id}-${ghostKey(coords)}` (rounded ~11m so GPS jitter at the same spot still collapses, but distinct locations get distinct pins). Append-only invariant for Fabric stability preserved.
+
+- **#161** — Scan card-toast UX cleanup (the bigger refactor). The remaining wart from #138 was that `BusinessBanner` was a full-width bevel-framed strip mounted inside the same overlay that hosted the `BusinessCard`, so a no-signal result like Subway visually read as a card-with-banner — wasted ceremony. And on Scan, results were rendered inline in a `ScrollView` with `modal={false}` — no slide-up, no dim. **Single rule across all three surfaces (Map, Track, Scan):** `resolveCardMode === 'card'` → slide-up card overlay; any banner variant → HUD-pill toast (bottom-anchored, auto-dismiss); no entity → existing barcode/search lookup toast. Implementation: (a) `BusinessBanner` restyled to match `NoMatchToast`'s cockpit-cyan pill — self-positions absolute bottom-center, Ionicons glyph (folder for `no_pac`/`no_match`, warning for `lookup_failed`, archive for `dissolved`), brief one-line message, pointer-transparent, auto-dismiss preserved (5s); accent-bar dropped. (b) `MapScreen` drops the `bannerContainer` wrap + tap-outside `Pressable` backdrop. (c) `ScanScreen` lifted result rendering out of the `ScrollView`, mounts `BusinessCard` in the persistent slide-up overlay pattern from `MapScreen` + Track (`useCardOverlayAnimation`, persistent-mount via `lastFullCardResultRef`, dim backdrop with tap-to-dismiss, `Animated.View` transform). Card overlay structure mirrors Track exactly (single fragment under one guard, no Map-specific amber-pulse). `BusinessBanner` mounts as the bottom toast.
+
+- **#163** — Three GPT-generated arena scenes deployed: `arena_dc_mall.jpg` (DC National Mall — Capitol + Washington Monument + Lincoln Memorial), `arena_la_rodeo.jpg` (Beverly Hills / Rodeo Drive — Gucci, LV, Cartier), `arena_la_mansion.jpg` (Hollywood Hills mansion — infinity pool, LA skyline, Hollywood sign). Pipeline: source PNGs in `tools/img-gen/reference/` resized to 1536px wide preserving aspect, converted to JPEG q=85 progressive, dropped into `assets/pixel/arena/`, `core/arena/arenaAssets.ts` regenerated via `scripts/generate-arena-assets.mjs`. All under 450KB; pool grew from 4 → 7 backgrounds for `GameArena` randomization.
+
+- **#123 (partial)** — `one-medical` entity added with `parentEntityId: amazon` so One Medical clinics ladder up to Amazon's PAC + linked-donor signal (Bezos et al.) via `getAssociatedPeople`. Mirrors the Whole Foods / Twitch / Ring pattern. University-affiliated and standalone hospitals (GW Hospital etc.) intentionally deferred — consumer-avoidance frame doesn't fit non-profit health systems for V1.
+
+**Items closed as WONTFIX (per session decision):**
+
+- **#116** — Independent hotels (Washington Plaza). Hilton itself is well covered (35 aliases incl. DoubleTree, Hampton, Embassy Suites, Waldorf Astoria, etc.); specific local hotel POI names like "Capital Hilton" not aliased and would hit the documented single-word-alias prefix limitation.
+- **#118** — Hotel AKA Washington — boutique chain, outside chain coverage scope for V1.
+- **#139** — Navy Federal Credit Union — credit unions sit outside the consumer-corporate avoidance frame for V1.
+
+**Items deferred / needs reproduction:**
+
+- **#152** — Goslings Ginger Beer scan — barcode `7210942005577` is a Bermuda EAN-13 (`721` country prefix), not in our bundled `products.json` exact-product list (1,000 rows, OFF coverage skews US/EU). Marked WONTFIX for V1; Goslings is a niche scan not worth bundling.
+- **#161 (UX half)** — TikTok-style scan card UX — intentionally deferred to V1.5; the slide-up overlay refactor in this session is the V1 version of "more of an experience."
+- **#161 (data half)** — Peanut M&Ms reported attributing to Unilever. Audit of `products.json` shows the only exact M&M row (`0040000494836`) correctly maps to Mars; the user-reported Unilever attribution can't be reproduced without the actual barcode. Re-test with Beta overlay screenshot capturing the UPC.
+
+**Files touched (~ chronological, per commit):**
+
+- `app.json`, `ios/FckFascists/Info.plist` (#162)
+- `tools/img-gen/characters.json` (3 character entries)
+- `tools/img-gen/scripts/analyze_sprites.py`, `normalize_sprites.py` (sprite pipeline fix)
+- `tools/img-gen/USAGE.md` (modern flow docs)
+- `docs/SPRITE_GENERATION_HANDOFF.md` (historical banner)
+- `assets/pixel/sprites/{george-arison,spencer-rascoff,zhang-yiming}.png` (3 sprites)
+- `assets/pixel/sprites/manifest.json`, `core/sprites/spriteAssets.ts` (regenerated)
+- `CLAUDE.md` (non-corporate-entities expansion note)
+- `copy/map.ts` (chooser heading, banner copy, marker a11y)
+- `tools/copy-preview/copy-all.{json,js}` (synced)
+- `features/Map/MapScreen.tsx` (chooser filter, hasSignal pin compute, banner overlay drop)
+- `features/Map/components/MapMarker.tsx` (`hasSignal` prop + muted style)
+- `features/Map/components/BusinessBanner.tsx` (HUD-pill restyle)
+- `features/Map/hooks/useTapSearch.ts` (id+coords dedup)
+- `features/Scan/ScanScreen.tsx` (Track-style overlay)
+- `assets/data/entities.json` (one-medical entity)
+- `assets/pixel/arena/{arena_dc_mall,arena_la_mansion,arena_la_rodeo}.jpg` (3 backgrounds)
+- `core/arena/arenaAssets.ts` (regenerated, 4→7 entries)
+- `tools/review/TESTFLIGHT_REVIEW.md` (status updates for ~12 items)
+
+**Verification:** `npx tsc --noEmit` clean throughout. `npx jest --silent` 33/33 suites + 418/418 tests pass after each commit. `bash scripts/audit-copy.sh` shows only pre-existing hits (Scorecard formatters, Permissions ONLINE/OFFLINE).
+
+**Branch shipped:** `git merge --ff-only claude/epic-boyd-26b705` into main, pushed to origin, remote branch deleted, remote tracking refs pruned. Local main and `origin/main` both at `98b6085`. Final review-doc state: 0 OPEN, 4 WONTFIX, 3 PARTIAL, 62 RESOLVED, 1 REMOVED.
+
+---
+
 ### Session: May 5, 2026 ET — #151 Track/Scan sizing-glitch fix
 
 **Focus:** Deep dive on TestFlight #151 phantom half-second fill/size animation seen on Track AVOID buttons, Map card AVOID button, and the Scan standby panel.
