@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, Text, Pressable, StyleSheet, Linking } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import type { BarcodeScanningResult } from 'expo-camera';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { sharedCopy } from '../../../copy/shared';
 import { mapCopy } from '../../../copy/map';
 import { scanCopy } from '../../../copy/scan';
@@ -13,6 +14,7 @@ import { StarField } from '../../../features/Info/components/InfoDecorations';
 import {
   BARCODE_SCAN_GUIDE_HEIGHT,
   BARCODE_SCAN_GUIDE_SIDE_INSET_PERCENT,
+  SAFE_AREA_TOP_MIN,
   SCAN_CAMERA_MARGIN,
 } from '../../../config/constants';
 
@@ -31,9 +33,11 @@ export function BarcodeScannerSheet({
   onClose,
   onScanned,
 }: BarcodeScannerSheetProps) {
+  const insets = useSafeAreaInsets();
   const [permission, requestPermission] = useCameraPermissions();
   const [mountError, setMountError] = useState(false);
   const scanLock = useRef(false);
+  const topPadding = Math.max(insets.top + theme.space.sm, SAFE_AREA_TOP_MIN);
 
   useEffect(() => {
     if (!visible) {
@@ -145,7 +149,7 @@ export function BarcodeScannerSheet({
   if (!visible) return null;
 
   return (
-    <View style={styles.root} accessibilityViewIsModal>
+    <View style={[styles.root, { paddingTop: topPadding }]} accessibilityViewIsModal>
       <StarField seed="barcode-scanner" />
       <View style={styles.header}>
         <Text style={styles.title} accessibilityRole="header">{scanCopy.scanTitle}</Text>
@@ -168,7 +172,6 @@ const styles = StyleSheet.create({
   root: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: theme.colors.bgVoid,
-    paddingTop: theme.space['3xl'],
     paddingHorizontal: theme.space.lg,
     paddingBottom: theme.space.xl,
     zIndex: 20,

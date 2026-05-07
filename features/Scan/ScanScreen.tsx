@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Animated, Pressable, SafeAreaView, StyleSheet } from 'react-native';
+import { Animated, Pressable, SafeAreaView, StyleSheet, View } from 'react-native';
 import type { Entity, PoliticalPerson } from '../../core/models';
 import { getAssociatedPeople } from '../../core/models';
 import type { MatchingDeps } from '../../core/matching';
@@ -128,7 +128,9 @@ export function ScanScreen({ entities, people, adapter, fetchOrgs, fetchOrgSumma
     <SafeAreaView style={styles.container}>
       <StarField seed="scan" />
 
-      <ScanStandbyPanel busy={isBusy} onOpenScanner={handleOpenScanner} />
+      <View style={styles.standbyHost}>
+        <ScanStandbyPanel busy={isBusy} onOpenScanner={handleOpenScanner} />
+      </View>
 
       {/* SEE FILE business-card overlay, mirroring Track. Persistent mount
           after first open so Fabric doesn't recycle the sprite's clipped
@@ -195,6 +197,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.bgVoid,
+  },
+  standbyHost: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'stretch',
+    paddingBottom: theme.space['4xl'] * 2,
   },
   dimBackdrop: {
     position: 'absolute',
