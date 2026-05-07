@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "F*ck Fascists",
-  "short_name": "FckFascists",
+  "name": "FCK FASCISTS",
+  "short_name": "FCK",
   "version": "1.0.0",
   "description": "Amber-flag businesses that donate to authoritarian political movements. One tap avoided.",
   "icons": {
@@ -18,7 +18,7 @@
       "48":  "icons/icon48.png",
       "128": "icons/icon128.png"
     },
-    "default_title": "F*ck Fascists"
+    "default_title": "FCK FASCISTS"
   },
   "background": {
     "service_worker": "background/service-worker.js",

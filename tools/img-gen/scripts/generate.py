@@ -1,5 +1,5 @@
 """
-generate.py — Gemini sprite generator for F*ck Fascists pixel art characters.
+generate.py — Gemini sprite generator for FCK Fascists pixel art characters.
 
 Makes one API call per variant (outfit), generating neutral + defeated states
 side by side on a single canvas. This keeps proportions consistent between states.

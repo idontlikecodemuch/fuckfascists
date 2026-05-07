@@ -1,7 +1,7 @@
 # FCK — Voice & Ethos Framework
 
-**Version:** 2.2
-**Date:** March 27, 2026
+**Version:** 2.3
+**Date:** May 7, 2026
 **Status:** Canonical reference for all copy, content, and communication across mobile app, browser extension, App Store listings, marketing, and social.
 
 ---
@@ -12,7 +12,7 @@ This is the voice framework for FCK — a privacy-first app that empowers users 
 
 Every agent, writer, or contributor who touches user-facing copy should read this before writing anything.
 
-Here's the short version: FCK has two voices. **Clark the Clerk** hands you the data — neutral, helpful, zero editorial. **The Sh\*tposter** is what happens after you act on it — "I f\*cked Zuckerberg 8×." If you only remember one thing from this doc: Clark earns the credibility. The Sh\*tposter spends it. Neither works without the other.
+Here's the short version: FCK has two voices. **Clark the Clerk** hands you the data — neutral, helpful, zero editorial. **The Sh\*tposter** is what happens after you act on it — "I FCK'd Zuckerberg 8×." If you only remember one thing from this doc: Clark earns the credibility. The Sh\*tposter spends it. Neither works without the other.
 
 ---
 
@@ -37,15 +37,27 @@ CamelCase visually shows where F, C, and K come from. The comma reads like a nam
 
 "FCK!" at the end works as both the acronym and the user's reaction to what they just found out.
 
+### Google Play Listing Title
+
+`FCK, Financial Contribution Kit`
+
+Android's title field allows the longer spaced form (50-character limit on Play Store). Same comma-as-business-card pattern; the spelled-out subtitle reads more naturally with the extra room.
+
 ### Google Play Short Description
 
 TBD — 80 character limit. Will be written after framework is finalized.
 
 ### Brand Name (everywhere else)
 
-**FCK FASCISTS**
+**FCK FASCISTS** / **FCK Fascists**
 
 Inside the app, on the website, in social, on the scorecard share image. Never fully spelled out — always FCK. Once someone downloads it, the gloves come off.
+
+### Casing in Prose
+
+- **Alone / intentionally yelling** (titles, headlines, brand mark on launch screen, scorecard, posters, share image): `FCK FASCISTS`
+- **In a sentence** (body prose, README, technical docs, FAQ explanations): `FCK Fascists`
+- The brand mark is `FCK Fascists` — the app name on the store is `FCK, Financial Contribution Kit`. Don't conflate them.
 
 ### Why Two Names
 
@@ -114,11 +126,11 @@ In both cases the energy is the same: unhinged, edgelord, troll energy. 8-bit vi
 
 **Where The Sh\*tposter lives:** Scorecard, share images, avoid celebrations, sprite animations (defeated state), achievement moments, launch screen, onboarding welcome, about/mission in the info section, business card (after avoid tap), the app name itself.
 
-**What The Sh\*tposter sounds like:** "I f\*cked Zuckerberg 8×."
+**What The Sh\*tposter sounds like:** "I FCK'd Zuckerberg 8×."
 
 **The Sh\*tposter's principles:**
 
-- First person on output surfaces. "I f\*cked Zuckerberg 8×" — not "you f\*cked Zuckerberg."
+- First person on output surfaces. "I FCK'd Zuckerberg 8×" — not "you FCK'd Zuckerberg."
 - CEO names in confrontational context live here. The scorecard rolls up avoids to the publicFigureName. It's personal.
 - Defeated sprites, celebration animations, weekly drops — this is a game, it should feel like one.
 - Humor is audacious and crafted. Not mean-spirited — audacious. The difference between bullying and trolling is craft.
@@ -126,15 +138,40 @@ In both cases the energy is the same: unhinged, edgelord, troll energy. 8-bit vi
 - Humor never undermines the data.
 - The energy is empowerment, not protest. This is not an activist rally. It's an act of defiance that feels good and looks even better when you share it.
 
-**Why The Sh\*tposter matters:** This is what gets shared. This is what generates earned media. Nobody screenshots a data table. They screenshot and share "I f\*cked Zuckerberg 8×" and everyone who sees it goes through the same arc: shock, curiosity, empowerment.
+**Why The Sh\*tposter matters:** This is what gets shared. This is what generates earned media. Nobody screenshots a data table. They screenshot and share "I FCK'd Zuckerberg 8×" and everyone who sees it goes through the same arc: shock, curiosity, empowerment.
 
-**The Sh\*tposter's tagline:** "The fascists won't f\*ck themselves. 🤘🏽"
+**The Sh\*tposter's tagline:** "The fascists won't FCK themselves. 🤘🏽"
 
 ### The Toggle: The Avoid Tap
 
-The avoid tap is where Clark hands off to The Sh\*tposter. Before the tap, you're looking at a public record. After the tap, you are f\*cking "the man." The sprite flips to its defeated state, the celebration fires, you're in the game. This transition is environmental — the whole surface shifts — not a gentle gradient.
+The avoid tap is where Clark hands off to The Sh\*tposter. Before the tap, you're looking at a public record. After the tap, you are FCKing "the man." The sprite flips to its defeated state, the celebration fires, you're in the game. This transition is environmental — the whole surface shifts — not a gentle gradient.
 
 Clark gives you the information. The Sh\*tposter destroys you with it.
+
+### The Creator Voice (used sparingly)
+
+There is a third voice that shows up sparingly and intentionally. Only once per surface if at all. It is the person who built this — speaking briefly, sincerely, in their own voice. Not Clark. Not the Sh\*tposter. Just the human behind the project, telling you who's on the other side of the screen.
+
+It exists because at some point a user is going to think "who built this?" and the credibility chain — Clark earns it, the Sh\*tposter spends it — needs a visible author. Without that, the project reads as either institutional (it isn't) or anonymous (it isn't either).
+
+The creator voice should rarely be used unless requested and if its use is ever suggested, it must be reviewed and approved by the creator (me).
+
+**Where the Creator lives:** `infoContent.about.organization` — *"An open-source project. One person trying to make a difference by doing what they're good at."* The CLAUDE.md project overview second line.
+
+**What the Creator sounds like:** Quiet. First-person or implied first-person. No horns, no audacity, no clerk. Owns the work without performing it. The audience is a stranger who has decided to care enough to read.
+
+**The Creator's principles:**
+
+- One line per surface. Two is one too many.
+- Never on Clark surfaces (data, FAQ, error states, banners). Never on Sh\*tposter surfaces (scorecard, share image, celebrations).
+- Never explains the project's politics or pitches the user. The Sh\*tposter and Clark already did that work.
+- Never names other people, partners, or organizations — it's a single voice, not a credit roll.
+- The form is the substance: small, plain, slightly under-edited. Anything more polished reads like a corporate "About Us."
+- If you find yourself writing two Creator lines on the same surface, you're not writing the Creator anymore — you're writing brand copy. Stop.
+
+**Why the Creator matters:** It's the only place in the entire product where the wall between user and maker comes down. It earns its presence by being rare. If it shows up everywhere, it loses force. Protect its rarity.
+
+**The Creator's tagline:** none. The Creator does not have a tagline. That would defeat the point.
 
 ---
 
@@ -148,7 +185,7 @@ CLERK                                     SH*TPOSTER
 neutral                                   unhinged
 factual                                   confrontational
 both parties                              CEO names (defeated)
-"here's the file"                         "I f*cked Zuckerberg 8×"
+"here's the file"                         "I FCK'd Zuckerberg 8×"
 ```
 
 If you're writing copy and aren't sure which voice to use, ask: has the user made a choice yet? If no → Clark. If yes → The Sh\*tposter.
@@ -206,7 +243,7 @@ This applies everywhere: business card, extension popup, scorecard, shared const
 ### The F-word
 
 - **App Store metadata:** Never. The store listing is `FCK, FinancialContributionKit`.
-- **In-app branded surfaces** (scorecard, share image, launch screen, onboarding welcome): FCK and FCKED — always abbreviated. Asterisk optional and has visual design potential (yellow sparkle elements).
+- **In-app branded surfaces** (scorecard, share image, launch screen, onboarding welcome): always abbreviated, never asterisked. Use **FCK** as the noun/expletive, **FCK'd** as past tense, **FCKing** as the gerund (e.g. "Who are you FCKing today?"), **FCKs** as the plural, **FCK!** as the standalone exclamation/reaction. The `!` is reserved for standalone use only — compound forms drop the bang. The pixel-art logo and specific marketing surfaces are the only place the F\*CK styling is preserved — it's an asset, not text. Consider its use intentionally.
 - **Website, social, organic marketing:** FCK FASCISTS. Still abbreviated — never fully spelled out.
 - **Clark's surfaces** (business card, extension popup, info FAQ/data sections): Never. These are data surfaces.
 
@@ -218,7 +255,7 @@ This applies everywhere: business card, extension popup, scorecard, shared const
 2. **Short sentences. Plain language.** Talk the way you'd talk to a friend. Not overeducated, not dumbed down. Understandable.
 3. **The user is the hero.** The app is a tool. It empowers the user to do something.
 4. **Never preach.** The app is not an activist rally. It assumes you already care and gives you something to do about it.
-5. **Never explain the joke.** "I f\*cked Zuckerberg 8×" does not need a footnote.
+5. **Never explain the joke.** "I FCK'd Zuckerberg 8×" does not need a footnote.
 6. **When you're right, you can be loud.** Every confrontational line from The Sh\*tposter is backed by a verifiable number from Clark.
 7. **Accessible always.** Dynamic Type, VoiceOver/TalkBack labels, high-contrast mode. The 8-bit aesthetic is the design language, not a barrier. Every edgy line needs an a11y label that's clear and functional.
 8. **Write for the screenshot.** The scorecard will be screenshotted, cropped, and shared with zero context. It needs to work as a standalone image. Every share surface should make sense to someone who has never heard of the app.
@@ -237,7 +274,7 @@ This applies everywhere: business card, extension popup, scorecard, shared const
 | Barcode result | Clark | No | R: / D: | No | None |
 | Map markers / search | Clark | No | N/A | No | None |
 | Info — FAQ / transparency / data | Clark | No | R: / D: where needed | No | None |
-| Info — About / mission | Sh\*tposter (brand) | No | No | Yes | None |
+| Info — About / mission | Sh\*tposter (brand) — closing line is the Creator | No | No | Yes (Sh\*tposter only) | None |
 | Avoid tap + celebration | Sh\*tposter | Yes — defeated sprite | No | Yes | None (environmental) |
 | Scorecard | Sh\*tposter (user) | Yes (primary) | No | Yes | "I" |
 | Share image | Sh\*tposter (user) | Yes (primary) | No | Yes | "I" |
@@ -295,7 +332,7 @@ Financial contributions, on file. 🤘🏽
 - **Don't editorialize on data surfaces.** "This company donated a shocking $2.4M" — no. Show the number. The user decides if it's shocking.
 - **Don't use "boycott."** It's prescriptive and loaded. "Avoid" is the verb.
 - **Don't explain why fascism is bad.** The app assumes the user already knows. Preaching is the fastest way to lose the audience.
-- **Don't soften the scorecard.** "I f\*cked Zuckerberg 8×" does not need "based on your avoidance tracking data." Clark already did that work.
+- **Don't soften the scorecard.** "I FCK'd Zuckerberg 8×" does not need "based on your avoidance tracking data." Clark already did that work.
 - **Don't put humor in Clark's surfaces.** A funny empty state on the scorecard is fine. A funny confidence label on a business card is not.
 
 ---
@@ -307,4 +344,5 @@ Financial contributions, on file. 🤘🏽
 | 1.0 | 2026-03-25 | Initial framework |
 | 2.0 | 2026-03-26 | Full revision: voice names, CEO sprite states, R:/D:, App Store listing, taglines, ethos, product description, transcript feedback |
 | 2.1 | 2026-03-26 | Self-review fixes: removed "gamified" from intro, fixed "surfaces" as verb, removed "megaphone" and "intervention" jargon, clarified Sh\*tposter as user voice vs brand voice, added behavior loop to differentiator section, noted extension popup config, added pending items section, fixed R-aligned language in ethos, added both-voices example to intro |
-| 2.2 | 2026-03-27 | Christopher's review: "The App Never Has To" → "The Data and the User Define the Bad Guy," attitude gradient → two modes (binary switch not spectrum), "weapon" → "gives you something to do about it," Clark's line → "here's the file," added "He can never be political," added "the user's frustration personified" to Sh\*tposter, added business card (after avoid tap) to Sh\*tposter surfaces, updated toggle language, updated share arc reactions, refined What Only FCK Does section, added "campaigns/donors" to editorial usage, typo fixes |
+| 2.2 | 2026-03-27 | Creator's review: "The App Never Has To" → "The Data and the User Define the Bad Guy," attitude gradient → two modes (binary switch not spectrum), "weapon" → "gives you something to do about it," Clark's line → "here's the file," added "He can never be political," added "the user's frustration personified" to Sh\*tposter, added business card (after avoid tap) to Sh\*tposter surfaces, updated toggle language, updated share arc reactions, refined What Only FCK Does section, added "campaigns/donors" to editorial usage, typo fixes |
+| 2.3 | 2026-05-07 | Launch-day cleanup: asterisks dropped on user-facing surfaces (only the pixel-art logo and intentional marketing surfaces retain F\*CK styling); canonical forms documented as **FCK / FCK'd / FCKing / FCKs / FCK!** with the bang reserved for standalone use only; **casing rule**: `FCK FASCISTS` alone or intentionally yelling, `FCK Fascists` in body prose; brand mark vs. App Store name distinction clarified; Android Play Store title `FCK, Financial Contribution Kit` added (50-char limit allows the spaced form); all f\*cked example sentences updated to FCK'd; framework's brand-tagline example aligned to the live `sharedCopy.brandTagline`; **added the Creator voice** as a third recognized voice — used sparingly, once per surface, to puncture the wall between user and maker (currently lives in `infoContent.about.organization`); creator's directive on launch day. |

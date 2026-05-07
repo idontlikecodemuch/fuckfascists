@@ -6,11 +6,13 @@
 
 ## Project Overview
 
-**F*ck Fascists** is a privacy-first, gamified app that empowers people to exercise their autonomous economic power by avoiding businesses, platforms, and corporations that donate to Republican campaigns and authoritarian political movements.
+**FCK Fascists** is a privacy-first app that empowers people to exercise their autonomous economic power by avoiding businesses, platforms, and corporations that contribute to Republican campaigns and authoritarian political movements.
 
-It is organized as a **nonprofit**. The codebase is **open-source**. The product is **positive-only** — it celebrates avoidance, never logs or surfaces "support" events.
+This is a project by one person trying to empower others and make change.
 
-### The Three Products (all launch together at v1.0)
+The codebase is **open-source**. The product is **positive-only** — it celebrates avoidance, never logs or surfaces "support" events.
+
+### The Three Products
 1. **Mobile app** — iOS + Android (React Native + Expo)
 2. **Browser extension** — Chrome + Firefox (Manifest V3, vanilla JS)
 3. **Shared core** — TypeScript package used by both (entity matching, confidence scoring, caching)
@@ -1010,6 +1012,17 @@ Single-word aliases (e.g. "Apple", "American", "Delta") cannot prefix-match in `
 
 ### platforms.json — match-group entity (Priority: resolved in local data batch)
 `assets/data/platforms.json` references `entityId: "match-group"` for the Match Group parent (Tinder, Hinge, OkCupid). The April 20 data-cleaning batch adds `match-group` to `entities.json`, and the current integrity gate reports no platform orphan entity IDs. Broad donation hydration should use local FEC bulk when staged; flag the user before any fallback FEC API discovery.
+
+### Extension popup hardcoded HTML defaults — diverge from `extCopy` (Priority: V1.0.x)
+**Flagged 2026-05-07.** [extension/popup/popup.html](extension/popup/popup.html) ships several default text strings inside `<section hidden>` blocks that are never overwritten by `popup.ts` at runtime, so users see the HTML defaults — and several of them have drifted from `extCopy`:
+- L18 `"No flagged entities detected on this page."` vs `extCopy.cleanState: "No political funding on record for this site."`
+- L42 `"Donation data temporarily unavailable."` vs `extCopy.donationUnavail: "Contribution data not available."` (also still says "donation" after the 2026-05-07 contribution-vs-donation alignment)
+- L60 `"★ AVOIDED"` (default button text — the star prefix doesn't appear in any `extCopy` value)
+- L74 `"This one counts."` vs `extCopy.avoidedSub: "Nice!"` (completely different copy)
+
+**Recommendation:** route through `extCopy` from `popup.ts` at element-mount time so there's a single source of truth, OR update the HTML defaults to mirror `extCopy` exactly and treat them as static. Whichever route, audit-copy.sh should be extended to grep `extension/popup/*.html` for hardcoded copy too — currently it only checks `extension/popup/*.ts` and `*.html` is grep'd but exempts hardcoded text patterns. Tabled for a focused post-launch session.
+
+The Tier-1 brand fix did land 2026-05-07 — `<title>F*CK FASCISTS</title>` and `<span class="app-title">F*CK FASCISTS</span>` both → `FCK FASCISTS`. This deferred item covers the remaining four divergent default strings only.
 
 ### service-worker.ts over 250 lines (Priority: V1 cleanup)
 `extension/background/service-worker.ts` is 389 lines — over the 250-line file limit. Pre-existing violation; was 361 lines before the API key removal session. Refactor plan: extract `handleCheckDomain`, `isBundledDataFresh`, and related data-fetch logic into `extension/background/domainCheck.ts`. The message router, tab lifecycle listeners, and alarm handler stay in `service-worker.ts`.

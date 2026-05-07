@@ -1,4 +1,4 @@
-# F*ck Fascists — Progress & Current State
+# FCK FASCISTS — Progress & Current State
 
 This document is updated continuously. New instances should read this first — it tells you where we are, what was just done, and what needs to happen next.
 
@@ -11,6 +11,99 @@ This document is updated continuously. New instances should read this first — 
 ---
 
 ## Recent Sessions (most recent first)
+
+### Session: May 7, 2026 ET — Launch-day full copy review + voice framework v2.3
+
+**Branch:** `claude/sharp-hypatia-fe36c4` → committed and merged to `main`.
+
+**Focus:** Full copy review across the app, extension, documentation, and live website ahead of iOS launch. Started from a creator directive — "no F*ck (except in the pixel logo)" — which expanded into a voice-framework rev (v2.2 → v2.3), terminology alignment (`donation` → `contribution`), nonprofit-claim removal, README rewrite, scan-toast cleanup, and a casing rule (`FCK FASCISTS` standalone / `FCK Fascists` in body prose).
+
+**Voice framework — `docs/FCK_VOICE_FRAMEWORK.md` v2.2 → v2.3:**
+
+- **Asterisks dropped** on user-facing surfaces. The pixel-art logo and intentional marketing surfaces are the only places `F*CK` styling is preserved (asset, not text). Old "asterisk optional" rule rewritten — never asterisked elsewhere.
+- **Canonical FCK forms documented:** `FCK` (noun/expletive), `FCK'd` (past tense), `FCKing` (gerund), `FCKs` (plural), `FCK!` (standalone exclamation only — bang reserved, never in compound forms).
+- **Casing rule:** `FCK FASCISTS` standalone or intentionally yelling (titles, headlines, brand mark, share image). `FCK Fascists` in body prose (README, technical docs, FAQ, sentences).
+- **App-name vs. brand-mark distinction clarified:** `FCK, FinancialContributionKit` (iOS, 29 chars) and `FCK, Financial Contribution Kit` (Android, 50 chars) are the App Store names. `FCK Fascists` is the brand mark / joke / impetus — never confused.
+- **Creator voice added** as a third recognized voice. Used sparingly, only with explicit creator approval. Currently lives in `infoContent.about.organization` and the CLAUDE.md project overview second line. Section emphasizes the voice's rarity-by-design — if it shows up everywhere it loses force.
+- All `f\*cked Zuckerberg 8×` examples updated to `FCK'd Zuckerberg 8×`. Brand-tagline example aligned to live `sharedCopy.brandTagline`.
+
+**App copy edits (`copy/*.ts`, `extension/copy.ts`):**
+
+- `copy/infoContent.ts` — about-section tagline now derived from `sharedCopy.brandTagline` (single source of truth) instead of a literal `f*ck themselves` string.
+- `copy/launch.ts` — rotating launch-screen messages now import `sharedCopy.brandTagline`. `"What are you FCK!ing today?"` → `"Who are you FCKing today?"` per the new bang-only-standalone convention.
+- `copy/shared.ts` — `donationUnavail`, `donationNoneOnFile`, `donationsLinkSuffix` strings rewritten from `donation` → `contribution`. Aligns with FEC-official terminology and matches the FAQ + App Store description voice.
+- `copy/map.ts` — `bannerNoPac` rewritten to "{name} has no contributions on file." Cross-surface alignment with extension popup (which had previously diverged with "no corporate PAC on file").
+- `copy/map.ts` — **scan toast cleanup**. Four scan-related strings rewritten to drop the upstream-service mention ("Open Food Facts" leaking through) and to follow the bannerNoPac Clark cadence:
+  - `barcodeNoMatch` → "Found '{label}'. No parent company on file yet — coverage is growing."
+  - `barcodeNotInDatabase` → "No record for '{label}' yet. Coverage is growing." (dropped "try another" directive per creator preference: don't tell users what to do)
+  - `barcodeLookupFailed` → "Lookup failed for '{label}'. Check your connection and try again."
+  - `barcodeUnsupported` → "No barcode read. Try again." (dropped two-sentence "I failed + you do better" framing)
+  - `barcodePermissionDeniedBody` trimmed: "Camera access is off. Enable in Settings to scan barcodes."
+- `extension/copy.ts` — `donationsLinkSuffix` and `bannerNoPac` aligned with app-side terminology change.
+
+**Extension brand fixes:**
+
+- `extension/manifest.json` — `"name": "F*ck Fascists"` → `"FCK FASCISTS"`, `"short_name": "FckFascists"` → `"FCK"` (matches iOS `CFBundleDisplayName`), `"default_title": "F*ck Fascists"` → `"FCK FASCISTS"`. Affects Chrome extensions list, Firefox add-ons listing, and toolbar icon hover tooltip.
+- `extension/popup/popup.html` — `<title>F*CK FASCISTS</title>` and `<span class="app-title">F*CK FASCISTS</span>` brand strings → `FCK FASCISTS`. Other popup HTML default-string divergences from `extCopy` flagged in CLAUDE.md "Known Limitations" (Tabled for V1.0.x focused session — see [extension/popup/popup.html](extension/popup/popup.html) entry).
+
+**README rewrite (`README.md`):**
+
+Major rewrite. Dropped: `F*ck Fascists` (5 instances) → `FCK Fascists`/`FCK FASCISTS` (per casing rule); the word `gamified` (per voice framework v2.1+); the "connects you with a community" line (community features are out of scope); the entire `## The Model` rewards-pool section (50/25/15/10 split + transparency dashboard claim — all V3 not launch); the "all three launch together at v1.0" framing. Privacy section rewritten to accurately disclose avoided-pin behavior (encrypted, daily-purged, never transmitted) instead of the old "No location data stored" claim. Three Products section softened to "iOS first (live today). Android shortly after." + "Chrome extension rolling out within days of iOS launch. Firefox shortly after." Added link to `FCKfascists.com/privacy` for full privacy disclosure. Status section updated from "Currently in active development" to "Currently in launch (v1.0.0)."
+
+**CLAUDE.md cleanup:**
+
+- L1 title kept as `# F*CK FASCISTS — CLAUDE.md` (intentional Sh\*tposter leak — this doc is the project's spine; the asterisk-form here is creator-approved expression).
+- L9 lead claim rewritten with new casing + dropped `gamified` + `donate` → `contribute`.
+- L11 dropped "It is organized as a **nonprofit**." sentence per "we are not nonprofit (yet)" creator directive.
+- Added the creator's project-intent line to Project Overview as a standalone paragraph: *"This is a project by one person trying to empower others and make change."* — placed up front since CLAUDE.md is read by AI agents who need to understand the project's stake.
+- L13 "The Three Products (all launch together at v1.0)" → "The Three Products". Soft launch framing.
+- New "Known Limitations" entry added: extension popup HTML default-string divergences from `extCopy` (4 strings — `cleanState`, `donationUnavail`, default `★ AVOIDED` button text, `avoidedSub`). Tier-1 brand fix landed today; remaining four divergences tabled for a focused post-launch session.
+
+**SPEC_VS_CURRENT.md cleanup:**
+
+- Title: `F*ck Fascists` → `FCK FASCISTS`.
+- "App Store name" decision marked ✅ Resolved with full context (iOS/Android variants, voice framework reference).
+- Geolocation row updated to disclose the 2026-04-03 avoided-pin privacy relaxation (encrypted SQLite, daily-purged) — was incorrectly still claiming "session only, never persisted."
+- "Gamified scorecard" → "Weekly scorecard" (drops `gamified`).
+- All scorecard `.png` filename references → `.jpg` (matches CLAUDE.md current state; legacy `.png` accepted on read).
+
+**Doc title pass:**
+
+- `ARCHITECTURE.md`, `docs/PROGRESS.md`, `docs/PROGRESS_ARCHIVE.md` — `# F*ck Fascists` → `# FCK FASCISTS`. ARCHITECTURE.md inline `f*cked` examples → `FCK'd`. Historical session-log mentions of `F*ck Fascists` deliberately left alone (per "frozen records" rule in CLAUDE.md).
+- `docs/SCORECARD_IMAGE.md` design diagram footer text aligned to live render (`won't FCK`, `FCKfascists.com`).
+
+**Tooling cleanup:**
+
+- `tools/img-gen/scripts/composite_scorecard.py` (test compositor for scorecard image) — `"won't f*ck themselves."` → `"won't FCK themselves."`.
+- `tools/img-gen/scripts/{gpt_image,generate,generate_assets}.py` header docstrings — `F*ck Fascists` → `FCK Fascists`.
+- `tools/img-gen/asset-prompts.json` — `"project": "F*CK FASCISTS"` → `"FCK FASCISTS"` (asset metadata).
+- `features/Scorecard/components/ScorecardImageFooter.tsx` stale comment (mismatched the live render) — updated to reflect actual rendered text.
+
+**Dev fixtures (`features/Dev/`):**
+
+- `harnessFixtures.ts` and `catalogMocks.ts` — `'F*ck Fascists'` literals in `description` and `organization` strings → `'FCK Fascists'`. Dropped false `501(c)(4) nonprofit` claim from organization line. `donate` → `contribute`. These show up in dev catalog screenshots; flagged earlier as a leak risk into screenshots.
+
+**Website edits — `epic-bouman-ab0629/site/`:**
+
+Reviewed `index.html`, `privacy.html`, and `styles.css` cold. All `fckapp.com` URLs (10 across both files) → `FCKfascists.com`. All `info@fckapp.com` (8 across both files) → `info@fckfascists.com`. Dropped nonprofit framing from meta description, footer (`Nonprofit · Open source` → `Open source`), privacy policy lead paragraph (`open-source, nonprofit project` → `open-source project`), "Who we are" section (deleted "The project is organized as a nonprofit." sentence), and both privacy.html footer locations. PNG → JPG in privacy policy (table row + capture-then-purge paragraph). Five body-prose `FCK FASCISTS` → `FCK Fascists` per casing rule (alt text, aria-labels, headlines, footer brand badge intentionally kept all-caps). Fixed broken nav anchors — privacy.html nav linked to `index.html#what`/`#data`/`#get` but index.html had zero `id` attributes; added `id="get"`/`id="what"`/`id="data"` to the relevant sections. One `donation` → `contribution` cleanup in privacy.html outbound-calls table. styles.css header comment domain reference updated.
+
+**Verification gate before push:**
+
+- `tsc --noEmit` clean.
+- `jest --silent` 35 suites / 425 tests pass (run from worktree without `.claude` ignore pattern — see footnote on the `.claude` ignore-pattern collision when running from a worktree path).
+- `bash scripts/audit-copy.sh` clean — only pre-existing accepted hits remain (Permissions ONLINE/OFFLINE, Scorecard formatters, Dev harness — all documented as accepted).
+- Targeted `F*ck` sweep across the repo — only `CLAUDE.md:1` retains `F*CK` styling (intentional, confirmed).
+
+**Outstanding items deferred:**
+
+- **`'wont'` rendered-scorecard typo** — still open. Source code is clean (`won’t` curly apostrophe in `sharedCopy.brandTagline`); creator confirmed via screenshot that the rendered scorecard image shows `wont` with the apostrophe glyph entirely dropped. Most likely image-build phase issue (react-native-view-shot stripping U+2019 between inline `<Text>` siblings). Fix path next session: swap to straight ASCII apostrophe (U+0027) as low-risk first attempt; if still drops, flatten the footer's compound `<Text>` children into a single text node. **Next up after this commit lands.**
+- **Copy-preview snapshot** (`tools/copy-preview/copy-all.{json,js}`) — heavily drifted (wrong emoji 🤌🏽 instead of 🤘🏽, missing keys, old structures, contains `f*ck` literals + `[need to change!!]` placeholders). Per CLAUDE.md known drift-prone artifact. Regen deferred to a focused post-launch session.
+- **Extension popup HTML default-string divergences** — 4 strings in `extension/popup/popup.html` not routed through `extCopy` at runtime. Tier-1 brand strings landed today; remaining four flagged in CLAUDE.md "Known Limitations." Tabled for V1.0.x focused session.
+- **Website worktree** (`epic-bouman-ab0629`) — site files committed in this branch are *not* yet in main. Creator deferred website push until after handing new screenshots to the site agent. Worktree is 19 days stale; the modified PNG files in its working tree (`FF_logo.png`, `FF_logo_horizontal.png`) are orphan working-tree changes against an outdated branch base — `main` updated `FF_logo_horizontal.png` on May 4 (`475ed1a`) but the epic-bouman branch never received that commit. Cleanup recommendation: rebase epic-bouman onto current main when next active, OR delete the worktree if the website work is done.
+
+**Footnote on jest in worktree paths:** the CLAUDE.md "Before any public update" checklist says "full Jest with `.claude` ignored." When run from inside a worktree (path contains `.claude/worktrees/{name}/`), `--testPathIgnorePatterns=.claude` matches the entire worktree path and ignores all 35 test suites — the run reports `No tests found` and exits with code 1. The intent of the ignore pattern is to prevent jest *from the main worktree* recursing into nested worktree directories. Inside a worktree, run plain `npx jest --silent` instead.
+
+---
 
 ### Session: May 7, 2026 ET — MIN_AVOIDS_FOR_DROP decision + beta-mode prelaunch note
 

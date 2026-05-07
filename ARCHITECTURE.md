@@ -1,4 +1,4 @@
-# F*ck Fascists — Architecture Reference
+# FCK FASCISTS — Architecture Reference
 
 > **Purpose of this file:** A single document for any developer or AI agent to read
 > cold and fully understand the system — data flows, design decisions, privacy
@@ -409,10 +409,10 @@ stamp. Only the official weekly drop card is stamp-free.
 `ScorecardView` wraps its root `<View>` in `forwardRef` — this is a pre-wire
 for `react-native-view-shot` image capture in Phase 2 (sharing as an image).
 Phase 1 shares as text via the native Share sheet. The share format is
-CEO-centric: "I f*cked {Name} {N}× · {Name} {N}×" with tagline and CTA.
+CEO-centric: "I FCK'd {Name} {N}× · {Name} {N}×" with tagline and CTA.
 
 `ScorecardView` has two layout variants based on thresholds:
-- **Heavy** (grandTotal >= 4 AND persons >= 3): big total count, "I f*cked..."
+- **Heavy** (grandTotal >= 4 AND persons >= 3): big total count, "I FCK'd..."
   framing, top 3 persons, "+ N others" overflow line.
 - **Light** (below thresholds): all persons listed, no aggregate total.
 

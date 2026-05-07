@@ -1,5 +1,5 @@
 """
-generate_assets.py — Gemini asset generator for F*ck Fascists UI ornaments.
+generate_assets.py — Gemini asset generator for FCK Fascists UI ornaments.
 
 Generates raw PNG assets via the Gemini API using prompts from asset-prompts.json.
 Output images have a #FF00FF background — run process_assets.py afterward to key

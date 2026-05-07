@@ -17,7 +17,7 @@ export const BUNDLED_INFO_CONTENT: InfoContent = {
   version: '1.2.0',
 
   about: {
-    tagline: 'The fascists won\u2019t f*ck themselves. \uD83E\uDD18\uD83C\uDFFD',
+    tagline: `${sharedCopy.brandTagline} \uD83E\uDD18\uD83C\uDFFD`,
     description:
       'FCK puts political contribution data where it\u2019s useful \u2014 at the counter, ' +
       'in your browser, on your phone. Map a business. Scan a product. See where the ' +

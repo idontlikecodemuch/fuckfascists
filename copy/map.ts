@@ -49,7 +49,7 @@ export const mapCopy = {
   barcodeResolving: "Resolving brand\u2026",
   barcodePermissionTitle: "Camera access needed",
   barcodePermissionBody: "Allow camera access to scan product barcodes in-store.",
-  barcodePermissionDeniedBody: "Camera access is off for this app. Enable it in Settings to scan product barcodes.",
+  barcodePermissionDeniedBody: "Camera access is off. Enable in Settings to scan barcodes.",
   barcodePermissionAction: "Allow camera",
   barcodePermissionActionLabel: "Grant camera access to scan barcodes",
   barcodeSettingsAction: "Open settings",
@@ -61,16 +61,16 @@ export const mapCopy = {
   // showing these; copy now says so explicitly. barcodeNoMatch = OFF found
   // the product, we can't map it to a parent. barcodeNotInDatabase = OFF
   // has no record of the barcode. barcodeLookupFailed = OFF unreachable.
-  barcodeNoMatch: (label: string) => `Found \u201C${label}\u201D on Open Food Facts, but its parent company isn\u2019t in our database yet. Coverage is growing.`,
-  barcodeNotInDatabase: (label: string) => `\u201C${label}\u201D isn\u2019t in the Open Food Facts database yet. Coverage is growing \u2014 try another product.`,
-  barcodeLookupFailed: (label: string) => `Couldn\u2019t reach Open Food Facts for \u201C${label}\u201D. Check your connection and try again.`,
-  barcodeUnsupported: (label: string) => `Couldn\u2019t decode a valid barcode. Make sure a UPC or EAN code fills the frame and hold steady.`,
+  barcodeNoMatch: (label: string) => `Found \u201C${label}\u201D. No parent company on file yet \u2014 coverage is growing.`,
+  barcodeNotInDatabase: (label: string) => `No record for \u201C${label}\u201D yet. Coverage is growing.`,
+  barcodeLookupFailed: (label: string) => `Lookup failed for \u201C${label}\u201D. Check your connection and try again.`,
+  barcodeUnsupported: (_label: string) => `No barcode read. Try again.`,
   barcodeContextEyebrow: "SCANNED PRODUCT",
   barcodeContextLine: (label: string, barcode: string) => `${label} \u00b7 BARCODE ${barcode}`,
   // Banner states
   bannerNoMatch: (text: string) => `No FEC record for \u201C${text}\u201D.`,
   bannerLookupFailed: (text: string) => `Couldn\u2019t reach FEC.gov for \u201C${text}\u201D. Try again later.`,
-  bannerNoPac: (name: string) => `${name} has no donations on file.`,
+  bannerNoPac: (name: string) => `${name} has no contributions on file.`,
   bannerDissolved: (name: string) => `${name}\u2019s PAC is dissolved. No recorded activity.`,
   bannerDismissLabel: "Dismiss banner",
   // DataZone

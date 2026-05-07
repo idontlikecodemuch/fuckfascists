@@ -27,9 +27,9 @@ export const extCopy = {
   // document voice). Was "Based on"; "Source" reads more like a filed record.
   basedOnLabel: "Source",
   sourcePrefix: "PAC:",
-  donationsLinkSuffix: "donations",
+  donationsLinkSuffix: "contributions",
   // Banner-equivalent copy — matches copy/map.ts bannerNoPac / bannerDissolved
   // so the confidence label and availability handling stay in sync.
-  bannerNoPac: (name: string) => `${name} has no corporate PAC on file.`,
+  bannerNoPac: (name: string) => `${name} has no contributions on file.`,
   bannerDissolved: (name: string) => `${name}\u2019s PAC is dissolved. No recorded activity.`,
 } as const;

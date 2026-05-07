@@ -395,7 +395,7 @@ def render_footer(canvas: Image.Image) -> None:
                        glow=CYAN[:3] + (230,), glow_radius=20)
     cursor -= 16
     # Tagline (with horns)
-    horns_l, tag, horns_r = "🤘 ", "The fascists won't f*ck themselves.", " 🤘"
+    horns_l, tag, horns_r = "🤘 ", "The fascists won't FCK themselves.", " 🤘"
     full = horns_l + tag + horns_r
     fw = draw.textbbox((0, 0), full, font=f_tag)[2]
     cursor -= 32 + 8

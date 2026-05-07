@@ -1,5 +1,5 @@
 """
-gpt_image.py — GPT image pipeline for F*ck Fascists pixel art assets.
+gpt_image.py — GPT image pipeline for FCK Fascists pixel art assets.
 
 Two modes:
   --generate  Text prompt → PNG output (optionally with a reference image).

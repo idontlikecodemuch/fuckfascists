@@ -1,4 +1,4 @@
-# F*ck Fascists — Spec vs. Current State
+# FCK FASCISTS — Spec vs. Current State
 
 This document tracks where the current implementation aligns with, deviates from, or has deliberately evolved beyond the original product spec. It is a living document — update it when decisions are made.
 
@@ -9,7 +9,7 @@ This document tracks where the current implementation aligns with, deviates from
 | Feature | Spec | Current State |
 |---|---|---|
 | Avoids only — no "support" events | No support events in data model | `EntityAvoidEvent` only, no support equivalent |
-| No geolocation storage | Session only | Geolocation used in-session, never persisted |
+| Minimal geolocation storage | Session only | Geolocation used in-session and never transmitted. **Privacy relaxation (2026-04-03):** avoided-entity pin coordinates persisted locally in encrypted SQLite (`entity_avoid_pins`), auto-purged daily, so the map can rehydrate today's avoided markers on relaunch. Candidate for rewrite — see CLAUDE.md "Known Limitations." |
 | No browsing history in extension | Extension never logs URLs | Confirmed — no history stored |
 | No accounts in MVP | No backend, no server | Fully on-device, no backend |
 | Cross-platform (iOS + Android) | React Native + Expo | React Native + Expo SDK 52 |
@@ -20,7 +20,7 @@ This document tracks where the current implementation aligns with, deviates from
 | Confidence levels always shown | Never claim certainty data doesn't support | Confidence labels in UI |
 | Data links to source | All data cites FEC.gov | Attribution standardized to FEC.GOV |
 | Configurable variables in constants.ts | No hardcoded thresholds | All values in `config/constants.ts` |
-| Gamified scorecard | Weekly drop, shareable | Weekly scorecard implemented |
+| Weekly scorecard | Weekly drop, shareable | Weekly scorecard implemented |
 | Platform avoidance tracking | Daily checklist for social/streaming/delivery | Platform avoidance implemented |
 | 8-bit visual design system | Pixel art aesthetic, dark palette, chunky borders | `design/tokens.ts` + `design/bevel.ts` (bevel system). All components on blue chrome / amber action / dark panel design language. 35 pixel art assets + 107 CEO sprite sheets deployed. Track screen: beveled panels, blue focus chrome, amber AVOID, SparkleDecoration. BusinessCard: blue focus bevel, sprite-left layout (no frame), tappable confidence badge, post-avoid large sparkles. AvoidButton: amber raised / green inset bevel. BusinessBanner: blue chrome bevel + variant accent bars. GameArena, MatchChooser, InfoScreen, map controls all on same visual language. 4-step keying pipeline with 1px alpha erosion. shared FX system (`core/fx/`). |
 | Onboarding flow | Multi-screen first-run flow | 3 screens: Welcome, Privacy (WHAT WE DON'T DO), Permissions (BEFORE WE START) — with open-source tappable link and actual OS permission result checking |
@@ -38,7 +38,7 @@ This document tracks where the current implementation aligns with, deviates from
 | Scorecard timing | Random drop Friday 12PM–Sunday 8PM (BeReal model) | Friday 6PM–Saturday 4PM ET window (22 hours) | Narrowed window for consistency; BeReal model preserved. `DROP_WINDOW_START_HOUR/END_HOUR` in `config/constants.ts` |
 | Scorecard data lifecycle | Raw events persist until a week-rollover purge | **Capture-then-purge** — at drop, PNG is captured to disk and the scored week's raw events are purged immediately (scoped to `[weekOf, weekOf+7)`) | Net privacy upgrade: PNG is derivative (no timestamps/surfaces/per-day breakdown), raw event log cannot be reconstructed. Also fixes the "drop disappears at Saturday midnight" bug since presentation resolves the PNG by mtime, not by `weekOf` filename |
 | Scorecard presentation persistence | Drop shows indefinitely on tab | Drop takes over the Scorecard tab for 48h (`SCORECARD_PRESENTATION_WINDOW_MS`), then tab returns to LivePreview for the new week; card reachable via "Past scorecards" | Clear end to the celebration window; PNG archive preserves history |
-| Scorecard PNG filename | `{weekOf}.png` (ISO date) | `Those-I-FCKd-{Month}-{DD}-{YY}.png` — e.g. `Those-I-FCKd-April-11-26.png` | Sh*tposter voice on output surface; echoes card's hero sentence; reads like an inscription on share |
+| Scorecard image filename | `{weekOf}.png` (ISO date) | `Those-I-FCKd-{Month}-{DD}-{YY}.jpg` — e.g. `Those-I-FCKd-April-11-26.jpg` (legacy `.png` accepted on read) | Sh*tposter voice on output surface; echoes card's hero sentence; reads like an inscription on share |
 | Scorecard drop notification routing | Title string match (`'Your Scorecard Is Ready'`) | `content.data.type === 'scorecard-drop'`; title retained as one-release legacy fallback | Decouples routing from user-visible copy |
 | Donation data attribution | `openSecretsOrgId` | `fecCommitteeId` | Migration to FEC-native identifiers after OpenSecrets pivot |
 | Partisan attribution method | Committee-level party data | Schedule B disbursements by `candidate_party_affiliation` | Corporate SSF PACs have no party affiliation at committee level; per-disbursement attribution is accurate |
@@ -58,7 +58,7 @@ This document tracks where the current implementation aligns with, deviates from
 | Feature | Spec | Status |
 |---|---|---|
 | Map POI tap → entity matching | Tap a business on the map, get instant donation data | ✅ Built, linked, and running — Android ready (onPoiClick); iOS module linked via `file:./modules/mapkit-search`; app installed on iPhone 16 Pro simulator; iOS tap path pending interactive smoke test |
-| Scorecard sharing | Shareable card image, social-ready | ✅ Built — `ScorecardImage` renders to PNG via `react-native-view-shot`; `CardPresentation` is a runway-style trophy moment (card centered at native 9:16 with cyan/yellow halo + 4-corner MoneyParticles burst on reveal, ChevronRunway pulsing upward to a glowing cyan SHARE button). Two-path share: tap SHARE / swipe-up → OS share sheet with the cached PNG (iOS uses RN `Share.share`; Android uses `expo-sharing` since RN's `url` field is iOS-only). Privacy/screenshot behavior: iOS renders a full clean card under the full presentation and hides the presentation layer from capture via a scoped native secure overlay; `AppShell` hides tab/nudge/beta chrome during presentation so the base card centers in the full viewport; AppState swap still protects app-switcher/control-center snapshots. Android uses `expo-screen-capture`'s post-capture screenshot listener to auto-open the share sheet with the clean PNG (no Android pre-capture hook exists at the OS level), and does not render the hidden clean-card base during active presentation. Filename `Those-I-FCKd-April-11-26.png` for the share receiver. |
+| Scorecard sharing | Shareable card image, social-ready | ✅ Built — `ScorecardImage` renders to JPG via `react-native-view-shot`; `CardPresentation` is a runway-style trophy moment (card centered at native 9:16 with cyan/yellow halo + 4-corner MoneyParticles burst on reveal, ChevronRunway pulsing upward to a glowing cyan SHARE button). Two-path share: tap SHARE / swipe-up → OS share sheet with the cached JPG (iOS uses RN `Share.share`; Android uses `expo-sharing` since RN's `url` field is iOS-only). Privacy/screenshot behavior: iOS renders a full clean card under the full presentation and hides the presentation layer from capture via a scoped native secure overlay; `AppShell` hides tab/nudge/beta chrome during presentation so the base card centers in the full viewport; AppState swap still protects app-switcher/control-center snapshots. Android uses `expo-screen-capture`'s post-capture screenshot listener to auto-open the share sheet with the clean image (no Android pre-capture hook exists at the OS level), and does not render the hidden clean-card base during active presentation. Filename `Those-I-FCKd-April-11-26.jpg` for the share receiver (legacy `.png` accepted on read). |
 | Leaderboard / high scorers | Weekly top avoiders visible to community | Deferred — V2 |
 | People.json individual donor data | Executive/founder donation lookup (Musk, Bezos, Zuckerberg) | 🔄 In progress — `people.json` now contains 997 donor records with the current `PoliticalPerson` schema. The file remains V2-canonical, including declared forward refs for company IDs that are not live yet; `entities.json` is kept as the clean V1 source of truth, and the deferred forward-link set is mirrored in `tools/fec-bulk/reports/people-v2-deferred-entity-links.json`. Schedule A contributions are not yet surfaced in UI (V1.5/V2 target). |
 | Donation infrastructure | Phase 3 — ActBlue or equivalent, quarterly payouts | Not started — Phase 3 |
@@ -78,7 +78,7 @@ This document tracks where the current implementation aligns with, deviates from
 | Decision | Options | Status |
 |---|---|---|
 | Map POI tap scope | Full pipeline match vs. curated list only for V1 | ✅ **Resolved** — full pipeline match (alias first, FEC fuzzy fallback) |
-| App Store name | "F*ck Fascists" vs. clean public name | Not resolved — App Store submission will force this |
+| App Store name | Clean store-listing name vs. branded in-app name | ✅ **Resolved** — store listing is `FCK, FinancialContributionKit` (iOS) and `FCK, Financial Contribution Kit` (Android, longer character limit). In-app brand mark is `FCK FASCISTS` standalone (launch screen, scorecard, share image) / `FCK Fascists` in body prose. Per `docs/FCK_VOICE_FRAMEWORK.md` v2.3 — the clinical store name next to the actual product experience is the joke. |
 | Uber entity | No PAC found, name-based match failing | `fecCommitteeId: ""` — needs manual research |
 | ENTITY_LIST_UPDATE_URL | Data repo URL | ✅ **Resolved** — `idontlikecodemuch/fckfascists-data` |
 | Extension + scorecard unification | QR code bridge or keep separate forever | Deferred to V2 but needs a final answer |

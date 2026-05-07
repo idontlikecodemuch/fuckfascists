@@ -17,8 +17,8 @@ const ATTRIBUTION_LETTER_SPACING_DESIGN = 6;
 /**
  * Footer section of the rendered scorecard:
  *   Beam (full-width-ish cyan rule)
- *   🤘 The fascists won't f*ck themselves. 🤘   (gold horns)
- *   FCKFASCISTS.ORG   (Bungee cyan, strong glow)
+ *   🤘 The fascists won't FCK themselves. 🤘   (gold horns)
+ *   FCKfascists.com   (Bungee cyan, strong glow)
  *   DATA: FEC.GOV     (dim attribution)
  */
 export function ScorecardImageFooter() {

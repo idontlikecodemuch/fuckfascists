@@ -82,8 +82,8 @@ The card composes top → bottom inside the content insets:
 │                          THIS WEEK  │  ← Bungee 64, right-aligned
 │                                     │
 │       ━━━━━━━━━━━━━━━━━━━━━━        │  ← Footer beam (520 wide)
-│   🤘 The fascists won't f*ck… 🤘     │  ← Tagline, Plex 600 32, gold horns
-│       FCKFASCISTS.ORG               │  ← Bungee 58, cyan, strong glow
+│   🤘 The fascists won't FCK… 🤘     │  ← Tagline, Plex 600 32, gold horns
+│       FCKfascists.com               │  ← Bungee 58, cyan, strong glow
 │       DATA: FEC.GOV                 │  ← Plex 600 22, dim
 │                                     │
 │ [power bar]                         │  ← Left slot, anchored bottom 520

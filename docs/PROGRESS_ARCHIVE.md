@@ -1,4 +1,4 @@
-# F*ck Fascists — Progress Archive
+# FCK FASCISTS — Progress Archive
 
 Session logs older than one week, moved from `docs/PROGRESS.md` to keep the active document within AI context window limits. For current state, see `docs/PROGRESS.md`.
 
