@@ -34,6 +34,7 @@ This document is updated continuously. New instances should read this first — 
 - **Hydrator double-count fix.** Fixed `scripts/hydrate-people-from-bulk.mjs` so one FEC bulk line updates a given person at most once, even when multiple `fecSearchNames` for that same person match the line. This was the hidden rehydration bug after merging variants.
 - **Completed chain.** Re-ran sync + hydrate, generated `inherently-partisan-staging-2026-05-07`, `committee-beneficiary-classification-2026-05-07`, and `people-classification-preview-2026-05-07`, applied the preview to live `people.json`, rebuilt the entity review queue and discovered committees report, reconciled V1 entity reverse links, and regenerated `people.bundle.json`.
 - **Inherently partisan API fallback verified.** The May 7 staging run used filing CSVs where available and exercised `schedule_a_api` fallback for the 2018 `58TH PRESIDENTIAL INAUGURAL COMMITTEE` (`C00629584`, `90D/90S`). This is intentional: older F13 committee filings are not always available through the local bulk CSV path, so the targeted API hydration path remains part of the authoritative staging chain.
+- **Medium-term data-size follow-up.** `assets/data/people.json` is now a 71 MB public-review artifact. Do not move it straight to LFS unless review pain forces it; preferred next step is a boring alphabet split (`people-a-m.json` / `people-n-z.json` + `meta.json`) with an assembler that regenerates the monolith for existing scripts. Runtime already uses the stripped `people.bundle.json` file.
 
 **Naming-matching audit findings (across the pipeline):**
 
@@ -62,6 +63,7 @@ This document is updated continuously. New instances should read this first — 
 - `scripts/hydrate-people-from-bulk.mjs` (same-person row de-dupe during hydration)
 - `CLAUDE.md` (+2 Known Limitations entries)
 - `.gitignore` (+ tools/data-backups/ and local `/data` symlink/archive ignore)
+- `tools/review/TESTFLIGHT_REVIEW.md` (#155/#156/#160 statuses updated)
 - `assets/data/people.json`, `assets/data/entities.json`, `assets/data/people.bundle.json`
 - New 2026-05-07 reports in `tools/fec-bulk/reports/`: inherent-partisan staging, committee-beneficiary classification, people classification preview, discovered committees, review queue, deferred entity links, and top-donor merge summary
 
