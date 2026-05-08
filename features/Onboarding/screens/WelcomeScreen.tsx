@@ -42,6 +42,10 @@ export function WelcomeScreen({ stepIndex, onNext }: WelcomeScreenProps) {
           accessibilityLabel={sharedCopy.appName}
         />
 
+        <Text style={styles.productSubtitle} allowFontScaling={false}>
+          {sharedCopy.productSubtitle}
+        </Text>
+
         <Text style={styles.tagline} allowFontScaling>
           {onboardCopy.tagline}
         </Text>
@@ -74,7 +78,19 @@ export function WelcomeScreen({ stepIndex, onNext }: WelcomeScreenProps) {
 
 const styles = StyleSheet.create({
   content: { alignItems: 'center' },
-  heroLogo: { marginBottom: theme.space.xl },
+  heroLogo: { marginBottom: theme.space.sm },
+  productSubtitle: {
+    fontFamily: theme.fonts.bodySemiBold,
+    fontSize: 13,
+    letterSpacing: 3,
+    color: theme.colors.glowCyan,
+    opacity: 0.85,
+    textShadowColor: 'rgba(122,242,255,0.5)',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 8,
+    marginBottom: theme.space.xl,
+    textAlign: 'center',
+  },
   tagline: {
     ...theme.type.displayS,
     color: theme.colors.textPrimary,

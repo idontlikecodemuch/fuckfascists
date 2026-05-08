@@ -5,6 +5,11 @@ const SITE_ORIGIN = `https://${SITE_DOMAIN}`;
 
 export const sharedCopy = {
   appName: "FCK FASCISTS",
+  // Clinical product subtitle (the App Store name spelled out, in Clark
+  // voice). Renders under the brand mark on the welcome + launch screens
+  // — the clinical-name-meets-Sh*tposter-brand contrast is the joke
+  // surfaced inside the app, not just on the store listing.
+  productSubtitle: "Financial Contribution Kit",
   // Apostrophe is straight ASCII (U+0027), not curly (U+2019). The curly
   // apostrophe was dropped entirely during react-native-view-shot capture
   // of the rendered scorecard image \u2014 the rendered "won't" read as "wont"

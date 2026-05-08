@@ -99,6 +99,10 @@ export function LaunchScreen({ onDismiss }: { onDismiss: () => void }) {
           />
         </Animated.View>
 
+        <Text style={styles.productSubtitle} allowFontScaling={false}>
+          {sharedCopy.productSubtitle}
+        </Text>
+
         <View style={styles.divider} />
 
         <Text style={styles.message} allowFontScaling>
@@ -142,7 +146,18 @@ const styles = StyleSheet.create({
   },
   heroLogo: {
     alignSelf: 'center',
-    marginBottom: theme.space.md,
+    marginBottom: theme.space.sm,
+  },
+  productSubtitle: {
+    fontFamily: theme.fonts.bodySemiBold,
+    fontSize: 13,
+    letterSpacing: 3,
+    color: theme.colors.glowCyan,
+    opacity: 0.85,
+    textShadowColor: 'rgba(122,242,255,0.5)',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 8,
+    textAlign: 'center',
   },
   divider: {
     width: 48,
