@@ -6,6 +6,7 @@ import { onboardCopy } from '../../../copy/onboard';
 import { sharedCopy } from '../../../copy/shared';
 import { theme } from '../../../design/tokens';
 import { glowDividerLine } from '../../../design/bevel';
+import { SparkleDecoration } from '../../../core/fx';
 
 const FEATURE_ICON_SIZE = 28;
 const FEATURES: { name: string; icon: keyof typeof Ionicons.glyphMap }[] = [
@@ -35,68 +36,84 @@ export function WelcomeScreen({ stepIndex, onNext }: WelcomeScreenProps) {
   return (
     <OnboardingSlide stepIndex={stepIndex} title={onboardCopy.welcomeTitle} nextLabel={onboardCopy.letsGo} onNext={onNext}>
       <View style={styles.content}>
-        <Image
-          source={require('../../../assets/pixel/brand/FF_logo.png')}
-          style={[styles.heroLogo, { width: logoWidth, height: logoHeight }]}
-          resizeMode="contain"
-          accessibilityLabel={sharedCopy.appName}
-        />
+        <View style={styles.topGroup}>
+          <Image
+            source={require('../../../assets/pixel/brand/FF_logo.png')}
+            style={[styles.heroLogo, { width: logoWidth, height: logoHeight }]}
+            resizeMode="contain"
+            accessibilityLabel={sharedCopy.appName}
+          />
 
-        <Text style={styles.productSubtitle} allowFontScaling={false}>
-          {sharedCopy.productSubtitle}
-        </Text>
+          <Text style={styles.productSubtitle} allowFontScaling={false}>
+            {sharedCopy.productSubtitle}
+          </Text>
 
-        <Text style={styles.tagline} allowFontScaling>
-          {onboardCopy.tagline}
-        </Text>
+          {/* #157 — feature row paired with tab-bar icons (Map / Track / Scan)
+              so users see the three surfaces at a glance before getting into
+              the privacy/permissions screens. */}
+          <View
+            style={styles.featureRow}
+            accessibilityRole="text"
+            accessibilityLabel={`${onboardCopy.featureMap}, ${onboardCopy.featureTrack}, ${onboardCopy.featureScan}`}
+          >
+            {FEATURES.map(({ name, icon }) => (
+              <View key={name} style={styles.featureItem}>
+                <Ionicons name={icon} size={FEATURE_ICON_SIZE} color={theme.colors.glowCyan} />
+                <Text style={styles.featureLabel} allowFontScaling={false}>{name}</Text>
+              </View>
+            ))}
+          </View>
 
-        {/* #157 — feature row paired with tab-bar icons (Map / Track / Scan)
-            so users see the three surfaces at a glance before getting into
-            the privacy/permissions screens. */}
-        <View
-          style={styles.featureRow}
-          accessibilityRole="text"
-          accessibilityLabel={`${onboardCopy.featureMap}, ${onboardCopy.featureTrack}, ${onboardCopy.featureScan}`}
-        >
-          {FEATURES.map(({ name, icon }) => (
-            <View key={name} style={styles.featureItem}>
-              <Ionicons name={icon} size={FEATURE_ICON_SIZE} color={theme.colors.glowCyan} />
-              <Text style={styles.featureLabel} allowFontScaling={false}>{name}</Text>
-            </View>
-          ))}
+          <View style={styles.divider} />
+
+          <Text style={styles.body} allowFontScaling>
+            {onboardCopy.body}
+          </Text>
         </View>
 
-        <View style={styles.divider} />
-
-        <Text style={styles.body} allowFontScaling>
-          {onboardCopy.body}
-        </Text>
+        <View style={styles.taglineWrap}>
+          <Text style={styles.tagline} allowFontScaling>
+            {onboardCopy.tagline}
+          </Text>
+          <SparkleDecoration />
+        </View>
       </View>
     </OnboardingSlide>
   );
 }
 
 const styles = StyleSheet.create({
-  content: { alignItems: 'center' },
+  content: { flex: 1, alignSelf: 'stretch', alignItems: 'center' },
+  topGroup: {
+    flex: 1,
+    alignSelf: 'stretch',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   heroLogo: { marginBottom: theme.space.sm },
   productSubtitle: {
-    fontFamily: theme.fonts.bodySemiBold,
-    fontSize: 13,
-    letterSpacing: 3,
-    color: theme.colors.glowCyan,
-    opacity: 0.85,
-    textShadowColor: 'rgba(122,242,255,0.5)',
+    fontFamily: theme.fonts.headline,
+    fontSize: 18,
+    color: theme.colors.rewardYellow,
+    textTransform: 'uppercase',
+    textShadowColor: 'rgba(255,201,60,0.6)',
     textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 8,
-    marginBottom: theme.space.xl,
+    marginBottom: theme.space['2xl'],
     textAlign: 'center',
+  },
+  taglineWrap: {
+    overflow: 'visible',
+    paddingHorizontal: 24,
   },
   tagline: {
     ...theme.type.displayS,
-    color: theme.colors.textPrimary,
+    color: theme.colors.glowCyan,
     lineHeight: 28,
-    marginBottom: theme.space['2xl'],
     textAlign: 'center',
+    textShadowColor: 'rgba(122,242,255,0.6)',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 8,
   },
   featureRow: {
     flexDirection: 'row',

@@ -12,6 +12,39 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: May 8, 2026 ET — Welcome + Launch screen polish (post-launch refinements)
+
+**Branch:** committed directly to `main` from the main worktree (creator-directed: "lets work directly in the directory no need to keep committing and pushing cause we are refining").
+
+**Focus:** Iterate live in the running iOS simulator on the welcome (onboarding step 1) and launch (daily title-screen) surfaces — both display the FCK FASCISTS brand mark on first impression. Treatment converged to: clinical product subtitle in Bungee headline + Sh\*tposter brand-tagline rallying cry below the description.
+
+**Visual refinements landed:**
+
+- **`productSubtitle` token** ([copy/shared.ts](copy/shared.ts)) — `"Financial Contribution Kit"` rendered as a yellow-glowing Bungee headline directly under the brand logo on both welcome and launch. The clinical store-listing name now appears inside the app, not just on the App Store — the SH\*TPOSTER + clerk-name juxtaposition that's already the joke on the store listing is now visible on first impression. Treatment: Bungee 18pt, `theme.colors.rewardYellow`, `textTransform: 'uppercase'`, mid-strength yellow halo (`textShadowRadius: 8` at 60% alpha) — full glow but not aggressive, doesn't compete with the pixel logo above.
+- **Welcome tagline restructure** ([WelcomeScreen.tsx](features/Onboarding/screens/WelcomeScreen.tsx)) — the brand tagline (`The fascists won't FCK themselves.`) moved from its old position (right under the logo, sandwiched between subtitle and feature row) to the bottom of the content area, below the description body. New narrative flow on welcome: logo + clinical name → action verbs (Map / Track / Scan) → divider → product description → tagline rallying cry → PRESS START button. Reading order is now: identification → capabilities → call-to-arms → action.
+- **Cyan-glow tagline.** Tagline switched from `textPrimary` to `glowCyan` with mid-strength cyan halo (matching the subtitle's glow intensity but in cyan) — bookends the screen with two complementary glow ends (yellow header, cyan rallying cry).
+- **Top-group flex layout.** Wrapped logo / subtitle / feature row / divider / body in a new `topGroup` view (`flex: 1, justifyContent: 'center'`) so the main content stays vertically centered in the available space, while the tagline naturally pins to the bottom. The `OnboardingSlide` parent's `padding: 2xl` (32) provides comfortable breathing room between the tagline and the bottom `glowDividerLine` above the PRESS START button — no extra explicit margin needed.
+- **Sparkle on tagline** — standard `<SparkleDecoration />` (yellow `✦/✧` cluster, three sparks animating on a 1200ms cycle) anchored to the top-right of the tagline. Wrapper has `paddingHorizontal: 24` so the sparkle anchor sits 24px past the right edge of the longest tagline line — sparkles cluster over and to the right of the final character, not over the text. Visible text stays visually centered because the wrapper has equivalent left padding.
+
+**Launch screen scope:** subtitle treatment applied (same yellow-glow Bungee). The rest of the welcome polish (tagline restructure, sparkle, cyan glow) is not appropriate for the launch screen — it's a 3-second title screen with intentionally tighter, faster energy. Confirmed with creator: "it looks great" as-is.
+
+**Iteration notes (creator-driven):**
+
+- Subtitle started as cyan glow body Plex 13pt — too quiet. Iterated through: larger (18pt), brand yellow, all-caps, headline font, glow tuning down from heavy (0.85/14) to mid (0.6/8). Letter-spacing dropped to 0 (Bungee is already wide-set; added tracking made it sparse).
+- Tagline moved from "below subtitle / above feature row" → "below body" → "bottom-anchored with topGroup flex pattern."
+- Sparkle position iterated from default (over the apostrophe in `won't`) to `paddingHorizontal: 24` (clustering over and to the right of the final `t`).
+
+**Files touched (uncommitted at session end, batched into a single commit):**
+
+- [features/Onboarding/screens/WelcomeScreen.tsx](features/Onboarding/screens/WelcomeScreen.tsx) — full refinement set
+- [features/Launch/LaunchScreen.tsx](features/Launch/LaunchScreen.tsx) — subtitle styling iteration
+
+**Worktree note:** earlier in the session, edits made in the `claude/sharp-hypatia-fe36c4` worktree were not visible in the running simulator because Metro watches the main worktree directory, not arbitrary worktree paths. After the creator caught this, the rest of the session's edits were made directly in `/Users/christophershannon/fuckfascists/` so fast refresh would pick them up. Pattern noted for future sessions: when iterating live with Metro, edit in the directory Metro is watching, not in a feature-branch worktree.
+
+**Verification:** `tsc --noEmit` clean. `jest --silent --testPathIgnorePatterns=.claude` 35 suites / 425 tests pass.
+
+---
+
 ### Session: May 7, 2026 ET — Launch-day full copy review + voice framework v2.3
 
 **Branch:** `claude/sharp-hypatia-fe36c4` → committed and merged to `main`.
