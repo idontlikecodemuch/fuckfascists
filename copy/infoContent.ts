@@ -170,12 +170,6 @@ export const BUNDLED_INFO_CONTENT: InfoContent = {
       category: 'app',
     },
     {
-      id: 'free',
-      q: 'Is this free?',
-      a: 'Yes, always. No subscriptions, no ads, no in-app purchases.',
-      category: 'app',
-    },
-    {
       id: 'internet',
       q: 'Does the app need internet?',
       a:
