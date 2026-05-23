@@ -19,6 +19,12 @@ scripts/output/
 scripts/near-miss-entities.txt
 scripts/unverified-entities.txt
 
+# Store feedback imports and local store API credentials
+tools/review/store-feedback/
+AuthKey_*.p8
+google-play-service-account*.json
+service-account*.json
+
 # Image generation tool
 tools/img-gen/output/
 tools/img-gen/.env

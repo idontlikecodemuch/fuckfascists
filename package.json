@@ -23,7 +23,10 @@
     "build:people:bulk-top": "node scripts/build-bulk-top-donors.mjs",
     "sync:people:bulk-top": "node scripts/sync-people-from-bulk-top.mjs",
     "build:people:entity-review-queue": "node scripts/build-people-entity-review-queue.mjs",
-    "strip:people:raw": "node scripts/strip-people-raw.mjs"
+    "strip:people:raw": "node scripts/strip-people-raw.mjs",
+    "feedback:stores": "node scripts/pull-store-feedback.mjs --provider=all",
+    "feedback:apple": "node scripts/pull-store-feedback.mjs --provider=apple",
+    "feedback:google": "node scripts/pull-store-feedback.mjs --provider=google"
   },
   "dependencies": {
     "@expo/vector-icons": "~14.0.4",

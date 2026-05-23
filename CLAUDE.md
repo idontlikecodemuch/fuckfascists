@@ -34,6 +34,7 @@ These documents are the authoritative reference for the project. New instances s
 | Spec vs. Current State | /docs/SPEC_VS_CURRENT.md | Living document tracking alignment, deviations, and open decisions |
 | Voice & Ethos Framework | /docs/FCK_VOICE_FRAMEWORK.md | Canonical voice guide — two voices (Clark the Clerk + The Sh*tposter), tone rules, copy patterns |
 | Scorecard Image Spec | /docs/SCORECARD_IMAGE.md | Rendering spec for shareable scorecard image — test pipeline, layout, colors, fonts, translation to React Native |
+| Store Feedback Automation | /docs/STORE_FEEDBACK_AUTOMATION.md | Maintainer workflow for importing TestFlight feedback, crash feedback, Google Play production reviews, and Android beta-feedback constraints |
 | CLAUDE.md | /CLAUDE.md | Technical reference for AI agents — update continuously |
 
 **Update cadence:** PROGRESS.md after every session. CLAUDE.md continuously. README.md and SPEC_VS_CURRENT.md when features ship or decisions resolve. Never modify the original spec. When PROGRESS.md exceeds ~10K tokens, move sessions older than one week to PROGRESS_ARCHIVE.md.
@@ -67,6 +68,7 @@ API keys and credentials must **only ever be read from environment variables**. 
 - **`FEC_API_KEY` is required only for FEC API pipeline scripts** — `verify:entities`, `fetch:donations`, and `fetch:people` make live FEC API requests and must be flagged before running. Bulk-first scripts such as `hydrate:entities:bulk`, `build:people:bulk-top`, and `hydrate:people:bulk` use local `tools/fec-bulk/` files and do not require an API key.
 - **`OPENAI_API_KEY` is required for `gpt_image.py`** — the GPT image pipeline reads from `.env` via python-dotenv. Exits with a clear error if missing. Not used by any app or extension runtime code.
 - **`GEMINI_API_KEY` is required for Gemini generation scripts** — `generate.py` and `generate_assets.py` read from `.env`. Not used by any app or extension runtime code.
+- **Store feedback credentials are local maintainer-only secrets** — `APP_STORE_CONNECT_*` values and Google Play service-account keys are used only by `scripts/pull-store-feedback.mjs`. Never commit `.p8` files, service-account JSON, or generated `tools/review/store-feedback/` exports.
 
 ### Data Encryption at Rest
 
