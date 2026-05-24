@@ -14,11 +14,17 @@ export async function pullAppleFeedback({ env, args, outDir }) {
   const records = [];
 
   if (args['apple-screenshots'] !== false) {
-    const screenshots = await listScreenshotFeedback(appId, token, args);
+    const screenshots = filterResponseSince(
+      await listScreenshotFeedback(appId, token, args),
+      args.since,
+    );
     records.push(...await normalizeScreenshotFeedback(screenshots, token, outDir, args));
   }
   if (args['apple-crashes'] !== false) {
-    const crashes = await listCrashFeedback(appId, token, args);
+    const crashes = filterResponseSince(
+      await listCrashFeedback(appId, token, args),
+      args.since,
+    );
     records.push(...await normalizeCrashFeedback(crashes, token, outDir, args));
   }
 
@@ -153,6 +159,20 @@ function baseAppleRecord({ item, attrs, build, tester, kind, attachments, includ
     },
     attachments,
     raw: includeRaw ? item : undefined,
+  };
+}
+
+function filterResponseSince(response, since) {
+  if (!since) return response;
+  const cutoff = new Date(since).getTime();
+  if (Number.isNaN(cutoff)) throw new Error(`Invalid --since value: ${since}`);
+  return {
+    ...response,
+    data: (response.data || []).filter((item) => {
+      const createdDate = item.attributes?.createdDate;
+      if (!createdDate) return true;
+      return new Date(createdDate).getTime() >= cutoff;
+    }),
   };
 }
 
