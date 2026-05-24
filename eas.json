@@ -5,9 +5,18 @@
   "build": {
     "device": {
       "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
       "ios": {
         "buildConfiguration": "Release",
         "resourceClass": "m-medium"
+      }
+    },
+    "android-preview": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
       }
     }
   }

@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
-import { View, Image, Pressable, Animated, StyleSheet, SafeAreaView, Linking, Platform, Keyboard, useWindowDimensions } from 'react-native';
+import { View, Image, Pressable, Animated, StyleSheet, SafeAreaView, Linking, Platform, Keyboard, useWindowDimensions, Text } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import type { Entity, PoliticalPerson } from '../../core/models';
 import { getAssociatedPeople } from '../../core/models';
@@ -37,6 +37,7 @@ import { mapCopy } from '../../copy/map';
 import { sharedCopy } from '../../copy/shared';
 import { theme } from '../../design/tokens';
 import { headerBar as HEADER_BAR_ASSET } from '../../core/ui/uiAssets';
+import { runtimeConfig } from '../../config/runtime';
 
 interface MapScreenProps {
   entities: Entity[];
@@ -114,7 +115,8 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
     return () => { cancelled = true; };
   }, [adapter]);
 
-  const location = useLocation();
+  const nativeMapEnabled = Platform.OS !== 'android' || runtimeConfig.hasAndroidGoogleMapsApiKey;
+  const location = useLocation({ autoRequest: nativeMapEnabled });
   const deps = useMemo<MatchingDeps>(
     () => ({ entities, fetchOrgs, fetchOrgSummary, ...makeCacheDeps(adapter) }),
     [entities, fetchOrgs, fetchOrgSummary, adapter]
@@ -136,10 +138,11 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
   // ghost markers and "No match found" toast on the initial load.
   const hasAutoScannedRef = useRef(false);
   useEffect(() => {
+    if (!nativeMapEnabled) return;
     if (hasAutoScannedRef.current || !location.coords) return;
     hasAutoScannedRef.current = true;
     autoScan(location.coords);
-  }, [location.coords, autoScan]);
+  }, [nativeMapEnabled, location.coords, autoScan]);
 
   const hints = useMapHints();
   const [avoidedResult, setAvoidedResult] = useState<ScanResult | null>(null);
@@ -293,36 +296,40 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
 
   return (
     <SafeAreaView style={styles.container}>
-      <MapView
-        ref={mapRef} style={styles.map}
-        provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : undefined}
-        initialRegion={defaultRegion} onRegionChangeComplete={handleRegionChange}
-        // iOS: handleMapPress runs MKLocalSearch (and Keyboard.dismiss inside).
-        // Android: empty-map tap doesn't fire a search, but it IS the natural
-        // "tap outside" gesture, so wire a lightweight keyboard dismiss there
-        // too (#111/#112). POI taps on Android go through onPoiClick.
-        onPress={Platform.OS === 'ios' ? handleMapPress : () => Keyboard.dismiss()}
-        onPoiClick={handlePoiClick}
-        showsUserLocation showsMyLocationButton={false} accessibilityLabel={mapCopy.mapLabel}
-      >
-        {allPins.map((pin) => {
-          const pinResult = pin.result;
-          // hasSignal mirrors resolveCardMode — pins matched but with no
-          // PAC/people activity render as muted ghost flags (#138).
-          const ppl = pinResult?.entity ? getAssociatedPeople(pinResult.entity, people, entities) : [];
-          const hasSignal = pinResult ? resolveCardMode(pinResult, ppl) === 'card' : true;
-          return (
-            <FlagMarker key={`${pin.id}-${pin.coords.latitude}-${pin.coords.longitude}`} coordinate={pin.coords} name={pin.name} confidence={pinResult?.confidence ?? 1} avoided={pin.avoided} hasSignal={hasSignal}
-              onPress={pinResult ? () => {
-                const co = allPins.filter((p): p is MapPin & { result: ScanResult } => p.coords.latitude === pin.coords.latitude && p.coords.longitude === pin.coords.longitude && p.result !== null);
-                co.length >= 2 ? setLatestTapBatch(co.map((p) => p.result)) : handleNewResult(pinResult);
-              } : undefined} />
-          );
-        })}
-        {tapNoMatchCoords.map((coord, i) => (
-          <NoMatchMarker key={`ghost-${coord.latitude}-${coord.longitude}-${i}`} coordinate={coord} />
-        ))}
-      </MapView>
+      {nativeMapEnabled ? (
+        <MapView
+          ref={mapRef} style={styles.map}
+          provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : undefined}
+          initialRegion={defaultRegion} onRegionChangeComplete={handleRegionChange}
+          // iOS: handleMapPress runs MKLocalSearch (and Keyboard.dismiss inside).
+          // Android: empty-map tap doesn't fire a search, but it IS the natural
+          // "tap outside" gesture, so wire a lightweight keyboard dismiss there
+          // too (#111/#112). POI taps on Android go through onPoiClick.
+          onPress={Platform.OS === 'ios' ? handleMapPress : () => Keyboard.dismiss()}
+          onPoiClick={handlePoiClick}
+          showsUserLocation showsMyLocationButton={false} accessibilityLabel={mapCopy.mapLabel}
+        >
+          {allPins.map((pin) => {
+            const pinResult = pin.result;
+            // hasSignal mirrors resolveCardMode — pins matched but with no
+            // PAC/people activity render as muted ghost flags (#138).
+            const ppl = pinResult?.entity ? getAssociatedPeople(pinResult.entity, people, entities) : [];
+            const hasSignal = pinResult ? resolveCardMode(pinResult, ppl) === 'card' : true;
+            return (
+              <FlagMarker key={`${pin.id}-${pin.coords.latitude}-${pin.coords.longitude}`} coordinate={pin.coords} name={pin.name} confidence={pinResult?.confidence ?? 1} avoided={pin.avoided} hasSignal={hasSignal}
+                onPress={pinResult ? () => {
+                  const co = allPins.filter((p): p is MapPin & { result: ScanResult } => p.coords.latitude === pin.coords.latitude && p.coords.longitude === pin.coords.longitude && p.result !== null);
+                  co.length >= 2 ? setLatestTapBatch(co.map((p) => p.result)) : handleNewResult(pinResult);
+                } : undefined} />
+            );
+          })}
+          {tapNoMatchCoords.map((coord, i) => (
+            <NoMatchMarker key={`ghost-${coord.latitude}-${coord.longitude}-${i}`} coordinate={coord} />
+          ))}
+        </MapView>
+      ) : (
+        <MapUnavailableFallback searchTop={SEARCH_TOP} />
+      )}
 
       <View style={[styles.headerBar, { height: insets.top + headerBarHeight }]} pointerEvents="none">
         <View style={[styles.headerBgStrip, { height: insets.top + Math.round(headerBarHeight * 0.15) }]}>
@@ -336,7 +343,7 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
       </View>
 
       <MapSearchBar ref={searchBarRef} value={searchText} onChangeText={setSearchText} onSubmit={handleSearch} isScanning={status === 'scanning'} topOffset={SEARCH_TOP} />
-      {hints.activeHint && !activeResult && (
+      {nativeMapEnabled && hints.activeHint && !activeResult && (
         <>
           <Pressable
             style={styles.backdrop}
@@ -360,7 +367,7 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
           />
         </>
       )}
-      <MapControls onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} onLocation={handleLocationPress} locationLoading={location.loading} />
+      {nativeMapEnabled && <MapControls onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} onLocation={handleLocationPress} locationLoading={location.loading} />}
 
       {chooserCandidates.length >= 2 && !activeResult && <MatchChooser results={chooserCandidates} onSelect={handleChooserSelect} onDismiss={handleChooserDismiss} />}
 
@@ -418,6 +425,22 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
   );
 }
 
+function MapUnavailableFallback({ searchTop }: { searchTop: number }) {
+  return (
+    <View style={styles.mapFallback} accessibilityLabel={mapCopy.mapUnavailableLabel}>
+      <Image source={require('../../assets/pixel/bg_tile_dark_stone.png')} style={styles.mapFallbackTile} resizeMode="repeat" />
+      <View style={[styles.mapFallbackPanel, { marginTop: searchTop + theme.a11y.minTapTarget + theme.space.xl }]}>
+        <Text style={styles.mapFallbackTitle} allowFontScaling>
+          {mapCopy.mapUnavailableTitle}
+        </Text>
+        <Text style={styles.mapFallbackBody} allowFontScaling>
+          {mapCopy.mapUnavailableBody}
+        </Text>
+      </View>
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   // overflow:hidden clips Map's absolute-positioned header subtree to this
   // root so it can't paint outside Map's frame during or after tab unmount.
@@ -425,6 +448,11 @@ const styles = StyleSheet.create({
   // ghosted Map's header into Scorecard on cold-start notification deep links.
   container:      { flex: 1, backgroundColor: theme.colors.bgVoid, overflow: 'hidden' },
   map:            { flex: 1 },
+  mapFallback:    { flex: 1, backgroundColor: theme.colors.bgVoid, alignItems: 'center', overflow: 'hidden' },
+  mapFallbackTile: { ...StyleSheet.absoluteFillObject, width: '100%', height: '100%', opacity: 0.35, transform: [{ scale: 2.5 }] },
+  mapFallbackPanel: { width: '100%', maxWidth: 340, paddingHorizontal: theme.space.xl, alignItems: 'center' },
+  mapFallbackTitle: { ...theme.type.displayS, color: theme.colors.rewardYellow, textAlign: 'center', marginBottom: theme.space.sm },
+  mapFallbackBody: { ...theme.type.bodyS, color: theme.colors.textSecondary, textAlign: 'center' },
   headerBar:      { position: 'absolute', top: 0, left: 0, right: 0, zIndex: 2, alignItems: 'center', overflow: 'visible' as const },
   headerBgStrip:  { position: 'absolute', top: 0, left: 0, width: '100%', overflow: 'hidden' },
   headerBgTile:   { width: '100%', height: '100%', transform: [{ scale: 2.5 }] },

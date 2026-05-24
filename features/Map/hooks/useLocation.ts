@@ -31,7 +31,12 @@ const INITIAL: LocationState = {
  * Exposes `areaHash` (a ~1km grid token) for cache key use.
  * Exposes `coords` for map centering only — do not persist or pass downstream.
  */
-export function useLocation() {
+interface UseLocationOptions {
+  autoRequest?: boolean;
+}
+
+export function useLocation(options: UseLocationOptions = {}) {
+  const { autoRequest = true } = options;
   const [state, setState] = useState<LocationState>(INITIAL);
 
   const requestLocation = useCallback(async () => {
@@ -72,10 +77,11 @@ export function useLocation() {
   // Auto-request location once on mount so the map centers on the user.
   const didAutoRequest = useRef(false);
   useEffect(() => {
+    if (!autoRequest) return;
     if (didAutoRequest.current) return;
     didAutoRequest.current = true;
     requestLocation();
-  }, [requestLocation]);
+  }, [autoRequest, requestLocation]);
 
   return { ...state, requestLocation };
 }

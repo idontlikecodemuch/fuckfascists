@@ -16,6 +16,25 @@
       "expo-asset",
       "expo-secure-store",
       [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": false,
+          "locationAlwaysPermission": false,
+          "locationWhenInUsePermission": "FCK uses your location to find nearby businesses and check their political donation records.",
+          "isAndroidBackgroundLocationEnabled": false,
+          "isAndroidForegroundServiceEnabled": false
+        }
+      ],
+      "expo-notifications",
+      [
+        "expo-media-library",
+        {
+          "photosPermission": false,
+          "savePhotosPermission": "FCK saves beta screenshots and scorecards to Photos so you can share them.",
+          "isAccessMediaLocationEnabled": false
+        }
+      ],
+      [
         "expo-camera",
         {
           "cameraPermission": "FCK uses your camera to scan product barcodes and match brands to corporate donation records.",
@@ -46,7 +65,11 @@
     },
     "android": {
       "package": "com.fckapp.fck",
-      "minSdkVersion": 29
+      "minSdkVersion": 29,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/pixel/brand/icon.png",
+        "backgroundColor": "#070B12"
+      }
     }
   }
 }

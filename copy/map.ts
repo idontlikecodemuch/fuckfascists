@@ -1,6 +1,9 @@
 export const mapCopy = {
   tabLabel: "MAP",
   mapLabel: "Map showing nearby businesses with political funding on file",
+  mapUnavailableLabel: "Map disabled in this Android build",
+  mapUnavailableTitle: "Map off in this build",
+  mapUnavailableBody: "Search by business name still works without the Google Maps key.",
   searchPlaceholder: "Search a business name...",
   searchLabel: "Search for a business",
   searchHint: "Search a business to see its political funding record",

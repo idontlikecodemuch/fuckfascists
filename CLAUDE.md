@@ -66,6 +66,7 @@ API keys and credentials must **only ever be read from environment variables**. 
 - **Never hardcode any key, token, or credential** in source files, config files, or comments. `.env` is gitignored; `.env.example` shows placeholders only. Hardcoded keys are bugs — remove immediately and rotate.
 - **`FECClient` supports anonymous mode** — runs without `FEC_API_KEY`, making requests with no `api_key` param (lower rate limits). `console.warn` in non-prod when key is absent.
 - **`FEC_API_KEY` is required only for FEC API pipeline scripts** — `verify:entities`, `fetch:donations`, and `fetch:people` make live FEC API requests and must be flagged before running. Bulk-first scripts such as `hydrate:entities:bulk`, `build:people:bulk-top`, and `hydrate:people:bulk` use local `tools/fec-bulk/` files and do not require an API key.
+- **Android map key is not the FEC key** — native Android map rendering uses Google Maps SDK and reads `GOOGLE_MAPS_ANDROID_API_KEY` from `.env` via `app.config.js`. No-key Android builds intentionally render a mapless search fallback. Restrict any map key in Google Cloud to package `com.fckapp.fck` plus the signing certificate SHA. FEC app traffic can still run anonymously.
 - **`OPENAI_API_KEY` is required for `gpt_image.py`** — the GPT image pipeline reads from `.env` via python-dotenv. Exits with a clear error if missing. Not used by any app or extension runtime code.
 - **`GEMINI_API_KEY` is required for Gemini generation scripts** — `generate.py` and `generate_assets.py` read from `.env`. Not used by any app or extension runtime code.
 - **Store feedback credentials are local maintainer-only secrets** — `APP_STORE_CONNECT_*` values and Google Play service-account keys are used only by `scripts/pull-store-feedback.mjs`. Never commit `.p8` files, service-account JSON, or generated `tools/review/store-feedback/` exports.
@@ -89,7 +90,7 @@ All tables in `fuckfascists.db` share the same database file and receive identic
 |---|---|
 | Mobile framework | React Native + Expo (managed workflow) |
 | Mobile targets | iOS + Android |
-| Maps | React Native Maps (MapKit/iOS, Google Maps SDK/Android) |
+| Maps | React Native Maps (MapKit/iOS, Google Maps SDK/Android via `GOOGLE_MAPS_ANDROID_API_KEY`; no-key Android builds use search fallback) |
 | Location | Expo Location — session-only |
 | Mobile storage | Expo SecureStore + expo-sqlite |
 | Notifications | Expo Notifications — local scheduling only |
@@ -632,6 +633,7 @@ These rules prevent the branch sprawl, orphaned worktrees, and build-state drift
 Run this checklist before uploading any App Store, TestFlight, public APK, extension store, or other externally distributed build. This applies even when the build is not a dev build, because real testing sometimes uses release archives.
 
 - **Confirm scorecard beta cadence is disabled.** In `config/constants.ts`, `BETA_SCORECARD_INTERVAL_HOURS` must be `0`. If it is positive, the app uses the beta drop cycle and can present scorecards outside the real weekly drop period.
+- **For Android native map QA or release builds, confirm `GOOGLE_MAPS_ANDROID_API_KEY` is set.** This is separate from FEC/OpenFEC. No-key Android builds can run FEC anonymously and show the Map tab search fallback, but native map tiles/POI taps require the key.
 - **Confirm the archived/uploaded build was created after the intended commit.** Check Xcode Organizer archive time and, for App Store/TestFlight, the uploaded build number. If a fix landed after the archive timestamp, rebuild and upload again.
 - **Confirm the public URL set is launch-correct.** `copy/shared.ts` should point user-facing site/privacy/support/extension URLs at the intended public domains before upload.
 - **Run the release verification set.** At minimum: `npm run typecheck`, full Jest with `.claude` ignored, and one physical-device smoke test of Map, Scan, Track, Scorecard, and Info.

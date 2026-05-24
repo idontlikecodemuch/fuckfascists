@@ -12,6 +12,40 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: May 24, 2026 ET — Android readiness pass
+
+**Branch:** main worktree, direct local edits. Existing dirty worktree preserved.
+
+**Focus:** Prepare Android for simulator testing and friend APK testing while running without FEC or Google Maps API keys.
+
+**Findings:**
+
+- FEC/OpenFEC remains optional at app runtime. `FECClient` supports anonymous mode and tests cover construction without `FEC_API_KEY`.
+- No `android/` directory is committed yet; Android native files will be generated locally by `npm run android` / `expo prebuild --platform android`.
+- The main native Android blocker is Google Maps SDK configuration. This is separate from FEC; no-key Android builds should stay usable through a mapless search fallback, while native map QA still needs `GOOGLE_MAPS_ANDROID_API_KEY`.
+- `MapKitSearch` is iOS-only and safe on Android. Android uses `react-native-maps` `onPoiClick` with POI name matching.
+
+**Shipped:**
+
+- Added `app.config.js` to inject `android.config.googleMaps.apiKey` from `GOOGLE_MAPS_ANDROID_API_KEY` only when present and expose a boolean runtime flag. No key is committed.
+- Added Android no-map-key fallback behavior: Map tab does not mount native Google Maps without a key, avoids the automatic location prompt, and keeps manual business search/card flows usable.
+- Added explicit Expo plugins/config for location, notifications, media-library save permission, and Android adaptive icon metadata.
+- Added Android APK build profiles in `eas.json` (`device` now includes Android APK; `android-preview` is Android-only internal APK).
+- Updated `.env.example` so `FEC_API_KEY` defaults blank for anonymous runtime testing and added `GOOGLE_MAPS_ANDROID_API_KEY`.
+- Added `docs/ANDROID_READINESS.md` with local simulator steps, friend APK command, smoke checklist, and iOS/Android behavior differences.
+- Updated `CLAUDE.md` to distinguish FEC anonymous mode from Android Google Maps SDK configuration.
+
+**Verification:**
+
+- `npx expo config --type public` clean; Android config now includes explicit location/media/camera permissions and adaptive icon.
+- No-key `npx expo config --type public` exposes `extra.hasAndroidGoogleMapsApiKey: false`.
+- `env GOOGLE_MAPS_ANDROID_API_KEY=FAKE_ANDROID_MAPS_KEY npx expo config --type introspect` clean; Android manifest introspection includes `com.google.android.geo.API_KEY` and `extra.hasAndroidGoogleMapsApiKey: true`.
+- `npm run typecheck` clean.
+- `npm test -- --runInBand --silent` clean: 38 suites / 439 tests.
+- `npx expo install --check` still flags existing SDK-compat version drift (`expo-sqlite`, `react-native`, `react-native-safe-area-context`). I did not change runtime dependencies in this pass because iOS is already working and the Android native build has not yet produced a concrete dependency error.
+
+---
+
 ### Session: May 24, 2026 ET — Browser extension popup QA
 
 **Branch:** main worktree, direct local edits. Existing dirty worktree preserved.
