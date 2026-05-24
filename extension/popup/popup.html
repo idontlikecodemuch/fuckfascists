@@ -15,7 +15,7 @@
   <!-- ── No-flag state ──────────────────────────────────────── -->
   <section id="state-clean" class="state" hidden>
     <div class="clean-icon" aria-hidden="true">✓</div>
-    <p class="clean-msg">No flagged entities detected on this page.</p>
+    <p class="clean-msg">No political funding on record for this site.</p>
   </section>
 
   <!-- ── Flagged state ──────────────────────────────────────── -->
@@ -39,7 +39,7 @@
         <p id="total-since-2016" class="total-since-2016"></p>
         <p id="active-cycles" class="active-cycles" hidden></p>
         <p id="data-unavailable" class="data-unavailable" hidden>
-          Donation data temporarily unavailable.
+          Contribution data not available.
         </p>
 
         <!-- "Based on" row — inline comma-separated source links for the
@@ -57,7 +57,7 @@
     <!-- Actions -->
     <div class="action-row">
       <button id="btn-avoided" class="btn-avoided" aria-label="Mark as avoided">
-        ★ AVOIDED
+        AVOID
       </button>
     </div>
     <div class="action-row secondary-actions">
@@ -71,15 +71,15 @@
   <section id="state-avoided" class="state" hidden>
     <div class="avoided-pixel" aria-hidden="true">★</div>
     <p class="avoided-msg">AVOIDED!</p>
-    <p class="avoided-sub">This one counts.</p>
+    <p class="avoided-sub">Nice!</p>
   </section>
 
   <!-- ── Weekly summary (always visible at bottom) ───────────── -->
   <footer class="weekly-summary" aria-label="This week's avoidance summary">
-    <div class="summary-title">THIS WEEK</div>
+    <div id="summary-title" class="summary-title">THIS WEEK</div>
     <div class="summary-stats">
-      <span>BUSINESSES: <strong id="stat-entity">–</strong></span>
-      <span>PLATFORMS: <strong id="stat-platform">–</strong></span>
+      <span><span id="stat-entity-label">BUSINESSES: </span><strong id="stat-entity">–</strong></span>
+      <span><span id="stat-platform-label">PLATFORMS: </span><strong id="stat-platform">–</strong></span>
     </div>
     <p id="stat-top" class="summary-top" hidden></p>
   </footer>

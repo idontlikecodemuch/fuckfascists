@@ -12,6 +12,29 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: May 24, 2026 ET — Browser extension popup QA
+
+**Branch:** main worktree, direct local edits. Existing dirty worktree preserved.
+
+**Focus:** Verify the MV3 browser extension build/test path and clean up popup copy/polish before store submission.
+
+**Shipped:**
+
+- `extension/popup/popup.ts` now hydrates static popup labels from `extCopy` on load, including title, clean state, unavailable copy, CTA labels, avoided confirmation copy, a11y labels, and weekly-summary labels.
+- `extension/popup/popup.html` fallbacks now mirror `extCopy`; removed stale pre-click `★ AVOIDED` CTA and old "Donation data temporarily unavailable" wording.
+- `extension/copy.ts` now owns popup a11y labels that were previously hardcoded in HTML.
+- Added `extension/popup/__tests__/popupStaticCopy.test.ts` so the old drift strings cannot silently return.
+- Updated `CLAUDE.md` Known Limitations to mark the popup HTML/default-copy issue resolved.
+
+**Verification:**
+
+- `npm run build:ext` clean.
+- `npm test -- --runInBand --silent extension` clean: 4 suites / 34 tests.
+- `npm run typecheck` clean.
+- In-app browser inspection was attempted, but the Codex browser policy blocked both generated `data:` previews and local `file:` popup pages. No screenshot verification was completed in this pass; use Chrome/Firefox unpacked-extension loading for the final visual check.
+
+---
+
 ### Session: May 24, 2026 ET — TestFlight import + Scorecard empty-week regression
 
 **Branch:** main worktree, direct local edits. Existing dirty worktree preserved; commits kept to local tooling first (`798fa35`, `f0877b8`) before this app-code pass.

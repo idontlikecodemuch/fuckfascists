@@ -1015,16 +1015,14 @@ Single-word aliases (e.g. "Apple", "American", "Delta") cannot prefix-match in `
 ### platforms.json — match-group entity (Priority: resolved in local data batch)
 `assets/data/platforms.json` references `entityId: "match-group"` for the Match Group parent (Tinder, Hinge, OkCupid). The April 20 data-cleaning batch adds `match-group` to `entities.json`, and the current integrity gate reports no platform orphan entity IDs. Broad donation hydration should use local FEC bulk when staged; flag the user before any fallback FEC API discovery.
 
-### Extension popup hardcoded HTML defaults — diverge from `extCopy` (Priority: V1.0.x)
-**Flagged 2026-05-07.** [extension/popup/popup.html](extension/popup/popup.html) ships several default text strings inside `<section hidden>` blocks that are never overwritten by `popup.ts` at runtime, so users see the HTML defaults — and several of them have drifted from `extCopy`:
-- L18 `"No flagged entities detected on this page."` vs `extCopy.cleanState: "No political funding on record for this site."`
-- L42 `"Donation data temporarily unavailable."` vs `extCopy.donationUnavail: "Contribution data not available."` (also still says "donation" after the 2026-05-07 contribution-vs-donation alignment)
-- L60 `"★ AVOIDED"` (default button text — the star prefix doesn't appear in any `extCopy` value)
-- L74 `"This one counts."` vs `extCopy.avoidedSub: "Nice!"` (completely different copy)
+### Extension popup HTML defaults — aligned with `extCopy` (Resolved 2026-05-24)
+**Flagged 2026-05-07; resolved 2026-05-24.** [extension/popup/popup.html](extension/popup/popup.html) now mirrors `extCopy` for its static fallbacks, and [extension/popup/popup.ts](extension/popup/popup.ts) hydrates the static labels from `extCopy` at load time. This clears the previous drift:
+- clean state now uses `extCopy.cleanState`
+- unavailable copy now uses `extCopy.donationUnavail`
+- CTA default now uses `extCopy.avoidBtn` (`AVOID`, not pre-click `AVOIDED`)
+- avoided subcopy now uses `extCopy.avoidedSub`
 
-**Recommendation:** route through `extCopy` from `popup.ts` at element-mount time so there's a single source of truth, OR update the HTML defaults to mirror `extCopy` exactly and treat them as static. Whichever route, audit-copy.sh should be extended to grep `extension/popup/*.html` for hardcoded copy too — currently it only checks `extension/popup/*.ts` and `*.html` is grep'd but exempts hardcoded text patterns. Tabled for a focused post-launch session.
-
-The Tier-1 brand fix did land 2026-05-07 — `<title>F*CK FASCISTS</title>` and `<span class="app-title">F*CK FASCISTS</span>` both → `FCK FASCISTS`. This deferred item covers the remaining four divergent default strings only.
+Regression coverage lives in `extension/popup/__tests__/popupStaticCopy.test.ts`.
 
 ### service-worker.ts over 250 lines (Priority: V1 cleanup)
 `extension/background/service-worker.ts` is 389 lines — over the 250-line file limit. Pre-existing violation; was 361 lines before the API key removal session. Refactor plan: extract `handleCheckDomain`, `isBundledDataFresh`, and related data-fetch logic into `extension/background/domainCheck.ts`. The message router, tab lifecycle listeners, and alarm handler stay in `service-worker.ts`.

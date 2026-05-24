@@ -27,12 +27,23 @@ const stateClean   = document.getElementById('state-clean')!;
 const stateFlagged = document.getElementById('state-flagged')!;
 const stateAvoided = document.getElementById('state-avoided')!;
 
+const appTitle = document.querySelector('.app-title')!;
+const cleanMsg = document.querySelector('.clean-msg')!;
+const flaggedRegion = document.querySelector('.business-card')!;
+const dataUnavailable = document.getElementById('data-unavailable')!;
+const fecLink = document.getElementById('fec-link')!;
+const avoidedMsg = document.querySelector('.avoided-msg')!;
+const avoidedSub = document.querySelector('.avoided-sub')!;
+
 const btnAvoided = document.getElementById('btn-avoided') as HTMLButtonElement;
 const btnSnooze  = document.getElementById('btn-snooze')  as HTMLButtonElement;
 
 const statEntity   = document.getElementById('stat-entity')!;
 const statPlatform = document.getElementById('stat-platform')!;
 const statTop      = document.getElementById('stat-top')!;
+const summaryTitle = document.getElementById('summary-title')!;
+const statEntityLabel = document.getElementById('stat-entity-label')!;
+const statPlatformLabel = document.getElementById('stat-platform-label')!;
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
@@ -50,6 +61,29 @@ function getMondayOf(date: Date): string {
   return d.toISOString().slice(0, 10);
 }
 
+function hydrateStaticCopy(): void {
+  document.title = extCopy.appName;
+  appTitle.textContent = extCopy.appName;
+  cleanMsg.textContent = extCopy.cleanState;
+  flaggedRegion.setAttribute('aria-label', extCopy.flaggedRegionLabel);
+  dataUnavailable.textContent = extCopy.donationUnavail;
+  fecLink.textContent = extCopy.fecLink;
+
+  btnAvoided.textContent = extCopy.avoidBtn;
+  btnAvoided.setAttribute('aria-label', extCopy.avoidBtnA11y);
+  btnSnooze.textContent = extCopy.snoozeBtn;
+  btnSnooze.setAttribute('aria-label', extCopy.snoozeBtnA11y);
+
+  avoidedMsg.textContent = extCopy.avoidedTitle;
+  avoidedSub.textContent = extCopy.avoidedSub;
+
+  const weeklySummary = document.querySelector('.weekly-summary')!;
+  weeklySummary.setAttribute('aria-label', extCopy.weeklySummaryA11y);
+  summaryTitle.textContent = extCopy.weeklyTitle;
+  statEntityLabel.textContent = extCopy.weeklyBiz;
+  statPlatformLabel.textContent = extCopy.weeklyPlat;
+}
+
 // ── Weekly stats ───────────────────────────────────────────────────────────────
 
 async function loadWeeklyStats(weekOf: string): Promise<void> {
@@ -63,12 +97,16 @@ async function loadWeeklyStats(weekOf: string): Promise<void> {
   if (stats.topEntityName) {
     statTop.textContent = `${extCopy.weeklyTop}${stats.topEntityName.toUpperCase()}`;
     statTop.hidden = false;
+  } else {
+    statTop.hidden = true;
   }
 }
 
 // ── Main ───────────────────────────────────────────────────────────────────────
 
 async function main() {
+  hydrateStaticCopy();
+
   // Get the active tab
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   const tabId = tab?.id;
