@@ -1,45 +1,52 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { scorecardCopy } from '../../../copy/scorecard';
 import { theme } from '../../../design/tokens';
 
 interface EmptyWeekProps {
   onSwitchTab?: (tab: string) => void;
+  onOpenArchive?: () => void;
 }
 
 /**
  * State 4: Zero avoids at drop time — no card generated, no notification fired.
- * Amber motivational copy with links to Map and Track.
+ * Amber motivational copy with inline tappable {map}/{track} tokens.
+ *
+ * Token rendering matches LivePreview's EmptyHint so the same copy string
+ * (scorecardCopy.emptyState) renders identically in both surfaces.
  */
-export function EmptyWeek({ onSwitchTab }: EmptyWeekProps) {
+export function EmptyWeek({ onSwitchTab, onOpenArchive }: EmptyWeekProps) {
   return (
     <View style={styles.container}>
       <Text style={styles.text} allowFontScaling={false}>
-        {scorecardCopy.emptyState.split('\n').map((line, i) => (
-          <React.Fragment key={i}>
-            {i > 0 && '\n'}
-            {line}
-          </React.Fragment>
-        ))}
+        {scorecardCopy.emptyState.split(/\{(\w+)\}/).map((part, i) => {
+          if (part === 'map' || part === 'track') {
+            return (
+              <Text
+                key={i}
+                style={styles.link}
+                onPress={
+                  onSwitchTab
+                    ? () => onSwitchTab(part === 'map' ? 'map' : 'platforms')
+                    : undefined
+                }
+                accessibilityRole="link"
+              >
+                {part === 'map' ? 'Map' : 'Track'}
+              </Text>
+            );
+          }
+          return <React.Fragment key={i}>{part}</React.Fragment>;
+        })}
       </Text>
-      {onSwitchTab && (
-        <View style={styles.links}>
-          <Text
-            style={styles.link}
-            onPress={() => onSwitchTab('map')}
-            accessibilityRole="link"
-          >
-            Map
-          </Text>
-          <Text style={styles.dot}>{'\u00b7'}</Text>
-          <Text
-            style={styles.link}
-            onPress={() => onSwitchTab('platforms')}
-            accessibilityRole="link"
-          >
-            Track
-          </Text>
-        </View>
+      {onOpenArchive && (
+        <Pressable
+          style={styles.archiveLink}
+          onPress={onOpenArchive}
+          accessibilityRole="link"
+        >
+          <Text style={styles.archiveLinkText}>{scorecardCopy.pastCardsLabel}</Text>
+        </Pressable>
       )}
     </View>
   );
@@ -60,19 +67,20 @@ const styles = StyleSheet.create({
     lineHeight: 26,
     letterSpacing: 1,
   },
-  links: {
-    flexDirection: 'row',
-    marginTop: theme.space.lg,
-    gap: theme.space.sm,
-  },
   link: {
-    fontFamily: theme.fonts.headline,
-    fontSize: 14,
     color: theme.colors.rewardYellow,
     textDecorationLine: 'underline',
   },
-  dot: {
+  archiveLink: {
+    marginTop: theme.space.xl,
+    paddingVertical: theme.space.md,
+    paddingHorizontal: theme.space.lg,
+  },
+  archiveLinkText: {
+    fontFamily: theme.fonts.bodySemiBold,
+    fontSize: 12,
     color: theme.colors.textSecondary,
-    fontSize: 14,
+    letterSpacing: 1,
+    textDecorationLine: 'underline',
   },
 });
