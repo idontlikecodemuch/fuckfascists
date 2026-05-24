@@ -12,6 +12,61 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: May 24, 2026 ET — TestFlight import + Scorecard empty-week regression
+
+**Branch:** main worktree, direct local edits. Existing dirty worktree preserved; commits kept to local tooling first (`798fa35`, `f0877b8`) before this app-code pass.
+
+**Focus:** Use the new TestFlight importer against real App Store Connect credentials, document the newly imported feedback, and fix the critical Scorecard regression where a just-finished week's card could be hidden by the newly-started empty live week.
+
+**TestFlight import:**
+
+- Ran `npm run feedback:apple -- --since=2026-05-08 --download-screenshots --download-crash-logs` after adding local App Store Connect `.p8` credentials. First sandboxed run failed on network; approved network run succeeded.
+- Imported **11 feedback records** into gitignored local output: `tools/review/store-feedback/2026-05-24T18-05-37-554Z/`.
+- New feedback refs documented locally in `tools/review/TESTFLIGHT_REVIEW.md` as #165-#175. Important Scorecard items: #168 (4 tracked avoids but no preview/presentation), #173 (last week had avoids but current empty week hid the card), #174 (empty state needs Past scorecards access).
+- Found and fixed importer inefficiency: Apple screenshot/crash responses now apply `--since` before normalizing/downloading attachments, so future filtered pulls won't download historical assets first.
+
+**Scorecard fix:**
+
+- Added `features/Scorecard/utils/screenState.ts` with pure `deriveScorecardScreenState()` and `shouldShowPreviewStamp()` helpers.
+- Updated `ScorecardScreen` so Phase 1 only captures/saves/purges the scored-week card and Phase 2 derives display state from facts (`cardUri`, presentation window, live total, `userNav`). A card for the scored week now presents during the active presentation window even when the new live week has zero avoids.
+- PREVIEW stamp is now limited to non-empty live previews. Zero-avoid empty screens no longer show PREVIEW (#130/#168/#173).
+- `EmptyWeek` now gets `onOpenArchive` and renders the Past scorecards link, so empty states can reach archived cards (#174).
+- Added tests covering card-presentation precedence, empty-state fallback, dismissed-card behavior, archive override, and preview-stamp suppression.
+
+**Verification:**
+
+- `npm test -- --runInBand --silent features/Scorecard/utils/__tests__/screenState.test.ts features/Scorecard/utils/__tests__/scoredWeek.test.ts features/Scorecard/data/__tests__/aggregateScorecard.test.ts` clean: 3 suites / 36 tests.
+- `npm run typecheck` clean.
+- `node --check scripts/lib/storeFeedback/apple.mjs` clean.
+- Filter smoke: `npm run feedback:apple -- --since=2026-05-23 --no-apple-crashes --out=/private/tmp/store-feedback-filter-smoke --no-raw` pulled exactly 1 feedback record.
+
+**Still open from the imported batch:** #166 Hilton family donations, #167 OFF connectivity, #169 recent-cycle display, #170 Scorecard Incoming banner routing, #171 Track tap-point FX, #172 Scan background swipe, #175 multiple simultaneous toasts.
+
+---
+
+### Session: May 23, 2026 ET — Store feedback automation + review tooling cleanup
+
+**Branch:** main worktree, direct local edits.
+
+**Focus:** Replace manual TestFlight screenshot copy-paste with store-feedback ingestion tooling and document the Android equivalent clearly.
+
+**Shipped:**
+
+- **Store feedback importer** ([scripts/pull-store-feedback.mjs](scripts/pull-store-feedback.mjs)) — new maintainer script that normalizes store feedback into timestamped local artifacts under `tools/review/store-feedback/<timestamp>/`. Outputs `feedback.json`, `feedback.jsonl`, `feedback.md`, and `metadata.json`. Optional attachment downloads land under `screenshots/` and `crashlogs/`.
+- **Apple/TestFlight provider** ([scripts/lib/storeFeedback/apple.mjs](scripts/lib/storeFeedback/apple.mjs)) — pulls TestFlight screenshot feedback and crash feedback from App Store Connect API. Supports App Store Connect ES256 JWT auth, optional screenshot downloads, optional crash-log downloads, build/OS filtering, and date filtering.
+- **Google Play provider** ([scripts/lib/storeFeedback/google.mjs](scripts/lib/storeFeedback/google.mjs)) — pulls Google Play production reviews through the official Android Publisher reviews API and normalizes them into the same record shape.
+- **Shared store-feedback utilities** ([scripts/lib/storeFeedback/](scripts/lib/storeFeedback/)) — local-only auth helpers for App Store Connect and Google service-account JWT flows, output writers, email redaction, JSONL/Markdown generation, and argument parsing.
+- **NPM scripts** ([package.json](package.json)) — added `feedback:apple`, `feedback:google`, and `feedback:stores`.
+- **Credential/output hygiene** ([.env.example](.env.example), [.gitignore](.gitignore)) — documented required env placeholders and ignored local API keys plus generated store-feedback exports.
+- **Documentation** ([docs/STORE_FEEDBACK_AUTOMATION.md](docs/STORE_FEEDBACK_AUTOMATION.md)) — explains setup, command usage, output shape, and the Android beta limitation: Google exposes production reviews through API, but open/closed/internal testing feedback remains Play Console-only in the public API.
+- **Jest worktree ignore** ([jest.config.ts](jest.config.ts)) — added `<rootDir>/.claude/` to stop `npm test` from recursively running every historical worktree test suite.
+
+**Verification:** `npm run feedback:stores -- --out=/private/tmp/store-feedback-smoke --no-raw` cleanly generated an empty local run with both providers skipped due to missing credentials. `npm run typecheck` clean. `npm test -- --runInBand --silent` clean: 36 suites / 431 tests. Store-feedback scripts pass `node --check`.
+
+**Android note:** Do not build against unofficial Play Console scraping for beta feedback unless explicitly accepting brittle auth and policy risk. Better V1 paths are: route Play testing feedback to an owned email/form and ingest that mailbox/form, or add an in-app beta feedback export path.
+
+---
+
 ### Session: May 8, 2026 ET — Welcome + Launch screen polish (post-launch refinements)
 
 **Branch:** committed directly to `main` from the main worktree (creator-directed: "lets work directly in the directory no need to keep committing and pushing cause we are refining").
