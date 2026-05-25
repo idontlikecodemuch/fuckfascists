@@ -4,6 +4,8 @@ This is the audit packet for the April 20, 2026 data-cleaning pass. It covers en
 
 This work is local and uncommitted.
 
+May 25, 2026 scanner-coverage update: the OFF checkpoint was rebuilt with `--exact-product-limit 2000`, expanding runtime exact barcode rows from `1,000` to `2,000`. Runtime producer rows remain `87`; current `producerResearch` rows mapped to live entities are `88`.
+
 ## Executive Status
 
 The important correction from this pass is that hydration is now bulk-first.

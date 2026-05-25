@@ -68,11 +68,11 @@ Current state:
 - `206` `producerResearch` entries seeded from public producer/brand research
 - OFF bulk archive scanned locally and checkpointed
 - `4,403,001` OFF product documents processed with `0` parse errors
-- `1,000` exact barcode product rows exposed in `products`
+- `2,000` exact barcode product rows exposed in `products`
 - `5,000` exact barcode product candidates retained in the local checkpoint
 - exact product rows cover all `87` current runtime producer entity IDs
 - `87` runtime producer rows exposed in `producers` after the April 2026 entity cross-hydration pass
-- `89` `producerResearch` rows currently mapped to live entity IDs; `117` still need entity coverage before they can become runtime producers
+- `88` `producerResearch` rows currently mapped to live entity IDs; `117` still need entity coverage before they can become runtime producers
 - Philip Morris International and Altria now resolve to distinct runtime entity IDs
 - research entries now carry OFF-backed:
   - `dbObservedPrefixes`
@@ -221,7 +221,7 @@ Notes:
 - Open Food Facts coverage is good for grocery scanning, but not universal.
 - Brand strings returned by a product database will never perfectly align with parent-company aliases without continued curation.
 - The local OFF-derived producer layer is much stronger now, but runtime quality still depends on the current entity coverage in `entities.json`. Many strong producer candidates are still held in `producerResearch` until a separate entity pass lands.
-- The current data set now has `1,000` exact product barcodes, but those rows are OFF-derived coverage, not a verified "most-shopped" ranking.
+- The current data set now has `2,000` exact product barcodes, but those rows are OFF-derived coverage, not a verified "most-shopped" ranking.
 - The current repo has an existing Expo dependency mismatch: `@expo/vector-icons@15.1.1` expects a newer `expo-font` than this SDK 52 app currently pins. `expo-camera` was installed with legacy peer resolution to avoid rewriting unrelated dependencies during this feature pass.
 - Full iOS simulator build verification is still partially environment-sensitive in this repo right now because the local Xcode/CoreSimulator/CocoaPods setup can fail before app code is fully evaluated. The scan flow itself is covered by TypeScript, focused Jest tests, plist validation, and the native permission fix.
 
@@ -233,4 +233,4 @@ For V2, revisit a narrow fallback only when OFF supplies a clean owner-style ide
 
 ## Recommended next step
 
-Choose between three scan-coverage paths: increase the exact product limit from the current 1,000-row runtime set, add the remaining high-evidence OFF producer candidates to `entities.json`, or expand `producerResearch` from another ranked CPG source. Any entity/alias path should finish with a `--rebuild-from-checkpoint --exact-product-limit 1000` products sync so newly covered candidates can become runtime producers without rerunning the full archive scan.
+Choose between three scan-coverage paths: increase the exact product limit beyond the current 2,000-row runtime set, add the remaining high-evidence OFF producer candidates to `entities.json`, or expand `producerResearch` from another ranked CPG source. Any entity/alias path should finish with a `--rebuild-from-checkpoint --exact-product-limit 2000` products sync so newly covered candidates can become runtime producers without rerunning the full archive scan.

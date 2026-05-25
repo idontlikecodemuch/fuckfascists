@@ -34,6 +34,8 @@ The products pass was done under these constraints:
 
 ## Current `products.json` Shape
 
+May 25, 2026 update: the runtime exact-product layer was expanded from `1,000` to `2,000` rows using the saved OFF checkpoint. Runtime producers remain at `87`; `88` `producerResearch` rows currently map to live entities.
+
 `products.json` has three layers:
 
 ### 1. `products`
@@ -199,7 +201,7 @@ Exact product rows are accepted only when:
 
 Ambiguous rows that match multiple producer seeds are not added to the exact-product layer.
 
-The checkpoint keeps up to `5,000` exact-product candidates, capped per producer during collection so one large producer cannot consume the entire pool. The runtime `products` array ships a balanced subset, currently `1,000` rows across all `87` runtime producer entities. The app checks exact product barcodes before producer prefixes, so an exact product row wins over a broader prefix hit.
+The checkpoint keeps up to `5,000` exact-product candidates, capped per producer during collection so one large producer cannot consume the entire pool. The runtime `products` array ships a balanced subset, currently `2,000` rows across all `87` runtime producer entities. The app checks exact product barcodes before producer prefixes, so an exact product row wins over a broader prefix hit.
 
 ## Prefix Extraction
 
@@ -337,7 +339,7 @@ python3 scripts/sync-products-from-off.py --rebuild-from-checkpoint
 Checkpoint-only rebuild with the current exact-product runtime target:
 
 ```bash
-python3 scripts/sync-products-from-off.py --rebuild-from-checkpoint --exact-product-limit 1000
+python3 scripts/sync-products-from-off.py --rebuild-from-checkpoint --exact-product-limit 2000
 ```
 
 Limited dry run:
@@ -351,10 +353,10 @@ python3 scripts/sync-products-from-off.py --limit 100 --fresh --no-final-write
 ### Exact product coverage
 
 - `5,000` exact-product candidates retained in the local checkpoint
-- `1,000` exact product barcode rows shipped in runtime `products`
+- `2,000` exact product barcode rows shipped in runtime `products`
 - `87` entity IDs represented by exact product rows
 - `0` duplicate exact product barcodes
-- runtime exact product file size remains small enough for bundling: `assets/data/products.json` is about `668 KB`
+- runtime exact product file size remains small enough for bundling: `assets/data/products.json` is about `1.07 MB`
 
 ### Research coverage
 
@@ -366,7 +368,7 @@ python3 scripts/sync-products-from-off.py --limit 100 --fresh --no-final-write
 
 ### Entity coverage
 
-- `89` producerResearch entries currently map to existing entities
+- `88` producerResearch entries currently map to existing entities
 - `117` are still marked `missingEntityCandidate`
 - `85` missing-entity candidates already have OFF-derived prefixes
 
@@ -442,7 +444,7 @@ Result:
 2. OFF brand fields are useful but imperfect; even after cleanup, research-layer observations will remain broader than runtime brands.
 3. Some runtime brand lists still contain borderline labels if they behave like real shelf brands in OFF, for example `Conagra` or `Hormel`.
 4. Missing entity coverage, not OFF coverage, remains the largest structural limitation after the April entity batch.
-5. The current `1,000` exact products are a conservative OFF-derived barcode set, not a verified shopping-volume ranking.
+5. The current `2,000` exact products are a conservative OFF-derived barcode set, not a verified shopping-volume ranking.
 
 ## Recommended Next Pass
 
@@ -450,7 +452,7 @@ If product scan coverage needs to improve further without touching unrelated sys
 
 1. Decide whether to add more exact products, add the remaining high-value OFF-backed producers, or expand `producerResearch` with another ranked CPG source.
 2. Add new entities or seed rows in a separate data-quality pass.
-3. Re-run `scripts/sync-products-from-off.py --rebuild-from-checkpoint --exact-product-limit 1000`.
+3. Re-run `scripts/sync-products-from-off.py --rebuild-from-checkpoint --exact-product-limit 2000`.
 4. Run `npm run audit:aliases`.
 5. Review any newly activated runtime producers for alias cleanup.
 
