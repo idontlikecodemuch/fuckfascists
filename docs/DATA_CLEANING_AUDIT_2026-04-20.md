@@ -4,7 +4,7 @@ This is the audit packet for the April 20, 2026 data-cleaning pass. It covers en
 
 This work is local and uncommitted.
 
-May 25, 2026 scanner-coverage update: the OFF checkpoint was rebuilt with `--exact-product-limit 2000`, expanding runtime exact barcode rows from `1,000` to `2,000`. A high-evidence UPC-pool entity batch also activated eight more prefix-backed producers, bringing runtime producer rows to `95`; current `producerResearch` rows mapped to live entities are `97`.
+May 25, 2026 scanner-coverage update: the OFF checkpoint was rebuilt with `--exact-product-limit 2000`, expanding runtime exact barcode rows from `1,000` to `2,000`. A high-evidence UPC-pool entity batch and follow-up product-seed pass activated eleven more prefix-backed producers, bringing runtime producer rows to `98`; current `producerResearch` rows mapped to live entities are `100`.
 
 ## Executive Status
 
@@ -25,10 +25,10 @@ Current top-level state:
 - People linked to at least one entity: `91`
 - Bundled people: `1046`
 - Bundled people with `donationSummary`: `1027`
-- Runtime product producers: `95`
+- Runtime product producers: `98`
 - Runtime exact product barcode rows: `2000`
-- Product `producerResearch` rows: `206`
-- Product `producerResearch` rows mapped to live entity IDs: `97`
+- Product `producerResearch` rows: `209`
+- Product `producerResearch` rows mapped to live entity IDs: `100`
 
 This data is neutral by design. The pipeline classifies and presents evidence from public records; it does not optimize for a party, ideology, or desired outcome.
 
@@ -113,7 +113,7 @@ Current product checkpoint facts:
 - Parse errors: `0`
 - Exact product candidate pool retained in checkpoint: `5,000`
 - Exact product rows shipped in runtime `products`: `2,000`
-- Runtime producer rows: `95`
+- Runtime producer rows: `98`
 
 Useful commands:
 
@@ -347,12 +347,12 @@ Zero-cycle entity summaries retained for audit:
 
 - Exact runtime products: `2,000`
 - Exact product candidates retained in checkpoint: `5,000`
-- Runtime producers: `95`
-- Runtime producer entity IDs: `95`
+- Runtime producers: `98`
+- Runtime producer entity IDs: `98`
 - Duplicate exact product barcodes: `0`
-- `producerResearch` entries: `206`
-- `producerResearch` entries matched to at least one OFF product: `184`
-- `producerResearch` entries mapped to live entities: `97`
+- `producerResearch` entries: `209`
+- `producerResearch` entries matched to at least one OFF product: `187`
+- `producerResearch` entries mapped to live entities: `100`
 - Missing producer candidates remaining: `109`
 - Missing producer candidates with OFF prefixes: `77`
 
@@ -463,7 +463,7 @@ The exact duplicate alias count is zero. The warnings still deserve review becau
 
 ### Product scan ranking limitation
 
-The current runtime product file includes `2,000` exact barcode rows plus `95` producer-prefix rows. That satisfies the clarified goal that exact product count and parent-company entity count are separate scan-coverage levers.
+The current runtime product file includes `2,000` exact barcode rows plus `98` producer-prefix rows. That satisfies the clarified goal that exact product count and parent-company entity count are separate scan-coverage levers.
 
 This is not a verified "top 1000 most-shopped" ranking. The local OFF dump gives product records, brands, owners, and barcodes; it does not provide shopping volume. A true shopping-volume ranking needs a separate source.
 

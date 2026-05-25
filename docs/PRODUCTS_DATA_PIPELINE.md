@@ -34,7 +34,7 @@ The products pass was done under these constraints:
 
 ## Current `products.json` Shape
 
-May 25, 2026 update: the runtime exact-product layer was expanded from `1,000` to `2,000` rows using the saved OFF checkpoint. A high-evidence UPC-pool entity batch also activated eight more prefix-backed producers, bringing runtime producers to `95`; `97` `producerResearch` rows currently map to live entities.
+May 25, 2026 update: the runtime exact-product layer was expanded from `1,000` to `2,000` rows. A high-evidence UPC-pool entity batch activated eight more prefix-backed producers, and a follow-up reverse-audit seed pass activated Red Bull, Perdue Farms, and Florida's Natural Growers. Runtime producers are now `98`; `100` `producerResearch` rows currently map to live entities.
 
 `products.json` has three layers:
 
@@ -201,7 +201,7 @@ Exact product rows are accepted only when:
 
 Ambiguous rows that match multiple producer seeds are not added to the exact-product layer.
 
-The checkpoint keeps up to `5,000` exact-product candidates, capped per producer during collection so one large producer cannot consume the entire pool. The runtime `products` array ships a balanced subset, currently `2,000` rows across `88` entity IDs. The app checks exact product barcodes before producer prefixes, so an exact product row wins over a broader prefix hit. Newly added high-evidence UPC pools can still activate through the producer-prefix layer even when they do not yet have exact rows in the capped runtime subset.
+The checkpoint keeps up to `5,000` exact-product candidates, capped per producer during collection so one large producer cannot consume the entire pool. The runtime `products` array ships a balanced subset, currently `2,000` rows across `94` entity IDs. The app checks exact product barcodes before producer prefixes, so an exact product row wins over a broader prefix hit. Newly added high-evidence UPC pools can still activate through the producer-prefix layer even when they do not yet have exact rows in the capped runtime subset.
 
 ## Prefix Extraction
 
@@ -354,27 +354,27 @@ python3 scripts/sync-products-from-off.py --limit 100 --fresh --no-final-write
 
 - `5,000` exact-product candidates retained in the local checkpoint
 - `2,000` exact product barcode rows shipped in runtime `products`
-- `88` entity IDs represented by exact product rows
+- `94` entity IDs represented by exact product rows
 - `0` duplicate exact product barcodes
 - runtime exact product file size remains small enough for bundling: `assets/data/products.json` is about `1.03 MB`
 
 ### Research coverage
 
-- `206` total `producerResearch` entries
-- `184` matched at least one OFF product
-- `174` retained at least one OFF-derived prefix
-- `144` have at least one OFF-confirmed alias
-- `90` have cleaned suggested aliases
+- `209` total `producerResearch` entries
+- `187` matched at least one OFF product
+- `177` retained at least one OFF-derived prefix
+- `147` have at least one OFF-confirmed alias
+- `92` have cleaned suggested aliases
 
 ### Entity coverage
 
-- `97` producerResearch entries currently map to existing entities
+- `100` producerResearch entries currently map to existing entities
 - `109` are still marked `missingEntityCandidate`
 - `77` missing-entity candidates already have OFF-derived prefixes
 
 ### Runtime producer coverage
 
-`95` producers currently land in runtime `producers`.
+`98` producers currently land in runtime `producers`.
 
 The May 25 UPC-pool batch activated these additional prefix-backed runtime producers:
 
@@ -388,6 +388,14 @@ The May 25 UPC-pool batch activated these additional prefix-backed runtime produ
 - `Pernod Ricard` — `131` matched products, `14` kept prefixes
 
 Pernod Ricard matched a FEC committee and was hydrated from the local PAS2/OTH bulk files. The other seven had only false-positive FEC near misses in local bulk review and are recorded with `fecCommitteeId: null`.
+
+The follow-up reverse-audit product-seed pass activated these existing live entities:
+
+- `Perdue Farms Inc` — `904` matched products, `56` kept prefixes
+- `Red Bull GmbH` — `939` matched products, `8` kept prefixes
+- `Florida's Natural Growers` — `111` matched products, `2` kept prefixes
+
+`WW International Inc` / Weight Watchers was tested and left out. Its OFF matches included many co-branded or licensed foods from other producers, including Yoplait, Heinz, Marie, and Fiber One, so it is not clean enough for the runtime prefix layer.
 
 The earlier Altria / Philip Morris International duplicate runtime-entity caveat is resolved. Philip Morris International now resolves to `entityId: "philip-morris-international"` and Altria Group resolves to `entityId: "altria"`.
 
@@ -435,7 +443,7 @@ These are not runtime-active yet because they do not currently resolve to existi
 - `beverages` — `51` seeded, `43` matched, `42` with prefixes, `25` with current entity coverage
 - `food` — `96` seeded, `87` matched, `86` with prefixes, `51` with current entity coverage
 - `tobacco` — `12` seeded, `12` matched, `10` with prefixes, `3` with current entity coverage
-- `manual_priority` — `5` seeded, `4` matched, `4` with prefixes, `3` with current entity coverage
+- `manual_priority` — `8` seeded, `7` matched, `7` with prefixes, `6` with current entity coverage
 
 ## Verification
 

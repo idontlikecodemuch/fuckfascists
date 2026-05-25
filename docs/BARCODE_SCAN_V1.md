@@ -65,15 +65,16 @@ The local `products.json` file is no longer a tiny hand-curated placeholder.
 
 Current state:
 
-- `206` `producerResearch` entries seeded from public producer/brand research
+- `209` `producerResearch` entries seeded from public producer/brand research
 - OFF bulk archive scanned locally and checkpointed
 - `4,403,001` OFF product documents processed with `0` parse errors
 - `2,000` exact barcode product rows exposed in `products`
 - `5,000` exact barcode product candidates retained in the local checkpoint
-- exact product rows currently represent `88` entity IDs
-- `95` runtime producer rows exposed in `producers` after the May 25, 2026 high-evidence UPC-pool batch
-- `97` `producerResearch` rows currently mapped to live entity IDs; `109` still need entity coverage before they can become runtime producers
+- exact product rows currently represent `94` entity IDs
+- `98` runtime producer rows exposed in `producers` after the May 25, 2026 high-evidence UPC-pool and product-seed batches
+- `100` `producerResearch` rows currently mapped to live entity IDs; `109` still need entity coverage before they can become runtime producers
 - the May 25 batch activated Pernod Ricard, Lifeway Foods, Zevia, Fever-Tree Drinks, AG Barr, Tootsie Roll Industries, The Vita Coco Company, and High Liner Foods through producer-prefix matching
+- the follow-up product-seed pass activated Red Bull, Perdue Farms, and Florida's Natural Growers; WW/Weight Watchers was left out because the OFF reverse audit showed heavy co-brand contamination
 - Philip Morris International and Altria now resolve to distinct runtime entity IDs
 - research entries now carry OFF-backed:
   - `dbObservedPrefixes`
@@ -234,4 +235,4 @@ For V2, revisit a narrow fallback only when OFF supplies a clean owner-style ide
 
 ## Recommended next step
 
-Continue with the highest-value OFF producer pools that have clean brand or producer evidence. Current next candidates include Uni-President, ORION, Valsoia, Cloetta, Mayora, Thai Beverage, Royal Unibrew, and Seneca Foods, with extra review for brand contamination before adding aliases. Any entity/alias path should finish with a `--rebuild-from-checkpoint --exact-product-limit 2000` products sync so newly covered candidates can become runtime producers without rerunning the full archive scan.
+Continue with the highest-value OFF producer pools that have clean brand or producer evidence. Current next candidates include Uni-President, ORION, Valsoia, Cloetta, Mayora, Thai Beverage, Royal Unibrew, and Seneca Foods, with extra review for brand contamination before adding aliases. Any entity/alias path can use a checkpoint rebuild, but brand-new product seeds require a fresh OFF sync so their aggregates are actually collected.
