@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "totalEntities": 730,
-    "updatedAt": "2026-04-29",
+    "totalEntities": 738,
+    "updatedAt": "2026-05-25",
     "formatVersion": "1.0",
     "entityDonationHydrationSource": "FEC bulk PAS2/OTH files",
     "entityDonationHydrationCycles": [
@@ -13576,6 +13576,266 @@
           }
         ]
       }
+    },
+    {
+      "id": "pernod-ricard",
+      "canonicalName": "Pernod Ricard SA",
+      "aliases": [
+        "Pernod Ricard",
+        "Absolut",
+        "Jameson",
+        "Malibu",
+        "Chivas Regal",
+        "Martell",
+        "Beefeater",
+        "Kahlua",
+        "Ricard",
+        "Lillet"
+      ],
+      "domains": [
+        "pernod-ricard.com",
+        "absolut.com",
+        "jamesonwhiskey.com",
+        "maliburumdrinks.com"
+      ],
+      "categoryTags": [
+        "beverage",
+        "alcohol",
+        "consumer-goods"
+      ],
+      "ceoName": "Alexandre Ricard",
+      "fecCommitteeId": "C00380527",
+      "lastVerifiedDate": "2026-05-25",
+      "verificationStatus": "pipeline",
+      "notes": "Added from OFF scan pool: 131 matched products across 14 prefixes; dominant terms include Absolut, Malibu, Jameson, and Pernod Ricard.",
+      "donationSummary": {
+        "committeeId": "C00380527",
+        "committeeName": "PERNOD RICARD USA, LLC POLITICAL ACTION COMMITTEE",
+        "lastUpdated": "2026-05-25",
+        "fecCommitteeUrl": "https://www.fec.gov/data/committee/C00380527/",
+        "recentCycle": 2026,
+        "recentRepubs": 11500,
+        "recentDems": 2500,
+        "totalRepubs": 134200,
+        "totalDems": 49141,
+        "totalO": 62500,
+        "recentO": 0,
+        "activeCycles": [
+          2016,
+          2018,
+          2020,
+          2022,
+          2024,
+          2026
+        ],
+        "raw": [
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: WOMACK FOR CONGRESS",
+            "amount": 10000,
+            "cycle": 2024,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: DISTILLED SPIRITS COUNCIL OF THE UNITED STATES INC POLITICAL ACTION COMMITTEE",
+            "amount": 5000,
+            "cycle": 2022,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: MCCARTHY VICTORY FUND",
+            "amount": 30000,
+            "cycle": 2020,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: DISTILLED SPIRITS COUNCIL OF THE UNITED STATES INC POLITICAL ACTION COMMITTEE",
+            "amount": 12500,
+            "cycle": 2018,
+            "isReceipt": false
+          },
+          {
+            "lineNumber": "24K",
+            "description": "Bulk OTH 24K: DISPAC (DISTILLED SPIRITS COUNCIL OF THE UNITED STATES INC)",
+            "amount": 5000,
+            "cycle": 2016,
+            "isReceipt": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "lifeway-foods",
+      "canonicalName": "Lifeway Foods Inc",
+      "aliases": [
+        "Lifeway Foods",
+        "Lifeway",
+        "Lifeway Kefir",
+        "ProBugs"
+      ],
+      "domains": [
+        "lifewaykefir.com"
+      ],
+      "categoryTags": [
+        "food",
+        "beverage",
+        "consumer-goods"
+      ],
+      "ceoName": "Julie Smolyansky",
+      "fecCommitteeId": null,
+      "lastVerifiedDate": "2026-05-25",
+      "verificationStatus": "manual",
+      "notes": "Added from OFF scan pool: 263 matched products, led by UPC prefix 017077. Local FEC bulk review found only false-positive near misses, no corporate PAC match."
+    },
+    {
+      "id": "zevia",
+      "canonicalName": "Zevia PBC",
+      "aliases": [
+        "Zevia"
+      ],
+      "domains": [
+        "zevia.com",
+        "investors.zevia.com"
+      ],
+      "categoryTags": [
+        "beverage",
+        "consumer-goods"
+      ],
+      "ceoName": "Amy E. Taylor",
+      "fecCommitteeId": null,
+      "lastVerifiedDate": "2026-05-25",
+      "verificationStatus": "manual",
+      "notes": "Added from OFF scan pool: 234 matched products, led by UPC prefix 849429. Local FEC bulk review found only false-positive near misses, no corporate PAC match."
+    },
+    {
+      "id": "fever-tree-drinks",
+      "canonicalName": "Fevertree Drinks PLC",
+      "aliases": [
+        "Fever-Tree",
+        "Fever Tree",
+        "Fevertree"
+      ],
+      "domains": [
+        "fever-tree.com",
+        "investors.fever-tree.com"
+      ],
+      "categoryTags": [
+        "beverage",
+        "consumer-goods"
+      ],
+      "ceoName": "Tim Warrillow",
+      "fecCommitteeId": null,
+      "lastVerifiedDate": "2026-05-25",
+      "verificationStatus": "manual",
+      "notes": "Added from OFF scan pool: 255 matched products across 5 prefixes; dominant term is Fever-Tree. Local FEC bulk review found only false-positive near misses, no corporate PAC match."
+    },
+    {
+      "id": "ag-barr",
+      "canonicalName": "AG Barr PLC",
+      "aliases": [
+        "AG Barr",
+        "A.G. Barr",
+        "IRN-BRU",
+        "Irn Bru",
+        "Rubicon",
+        "Funkin"
+      ],
+      "domains": [
+        "agbarr.co.uk",
+        "irn-bru.co.uk",
+        "rubiconexotic.com"
+      ],
+      "categoryTags": [
+        "beverage",
+        "consumer-goods"
+      ],
+      "ceoName": "Euan Sutherland",
+      "fecCommitteeId": null,
+      "lastVerifiedDate": "2026-05-25",
+      "verificationStatus": "manual",
+      "notes": "Added from OFF scan pool: 216 matched products across 6 prefixes; dominant terms include Rubicon and IRN-BRU. Local FEC bulk review found only false-positive near misses, no corporate PAC match."
+    },
+    {
+      "id": "tootsie-roll-industries",
+      "canonicalName": "Tootsie Roll Industries Inc",
+      "aliases": [
+        "Tootsie Roll Industries",
+        "Tootsie Roll",
+        "Tootsie",
+        "Tootsie Pop",
+        "Tootsie Pops",
+        "Junior Mints",
+        "Charleston Chew",
+        "Blow Pop",
+        "Andes"
+      ],
+      "domains": [
+        "tootsie.com"
+      ],
+      "categoryTags": [
+        "food",
+        "candy",
+        "consumer-goods"
+      ],
+      "ceoName": "Ellen R. Gordon",
+      "fecCommitteeId": null,
+      "lastVerifiedDate": "2026-05-25",
+      "verificationStatus": "manual",
+      "notes": "Added from OFF scan pool: 171 matched products, led by UPC prefix 071720. Local FEC bulk review found only false-positive near misses, no corporate PAC match."
+    },
+    {
+      "id": "vita-coco",
+      "canonicalName": "The Vita Coco Company Inc",
+      "aliases": [
+        "Vita Coco",
+        "The Vita Coco Company",
+        "Runa",
+        "Ever & Ever"
+      ],
+      "domains": [
+        "thevitacococompany.com",
+        "vitacoco.com",
+        "runa.com"
+      ],
+      "categoryTags": [
+        "beverage",
+        "consumer-goods"
+      ],
+      "ceoName": "Martin Roper",
+      "fecCommitteeId": null,
+      "lastVerifiedDate": "2026-05-25",
+      "verificationStatus": "manual",
+      "notes": "Added from OFF scan pool: 146 matched products across 5 prefixes; dominant terms include Vita Coco and Runa. Local FEC bulk review found only false-positive near misses, no corporate PAC match."
+    },
+    {
+      "id": "high-liner-foods",
+      "canonicalName": "High Liner Foods Inc",
+      "aliases": [
+        "High Liner Foods",
+        "High Liner",
+        "Sea Cuisine",
+        "Fisher Boy",
+        "Icelandic Seafood",
+        "Mirabel"
+      ],
+      "domains": [
+        "highlinerfoods.com",
+        "seacuisine.com",
+        "fisherboy.com"
+      ],
+      "categoryTags": [
+        "food",
+        "seafood",
+        "consumer-goods"
+      ],
+      "ceoName": "Paul Jewer",
+      "fecCommitteeId": null,
+      "lastVerifiedDate": "2026-05-25",
+      "verificationStatus": "manual",
+      "notes": "Added from OFF scan pool: 146 matched products across 8 prefixes; dominant terms include High Liner and Sea Cuisine. Local FEC bulk review found only false-positive near misses, no corporate PAC match."
     },
     {
       "id": "post-holdings",

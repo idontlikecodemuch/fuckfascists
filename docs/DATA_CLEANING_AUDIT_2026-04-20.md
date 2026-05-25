@@ -4,7 +4,7 @@ This is the audit packet for the April 20, 2026 data-cleaning pass. It covers en
 
 This work is local and uncommitted.
 
-May 25, 2026 scanner-coverage update: the OFF checkpoint was rebuilt with `--exact-product-limit 2000`, expanding runtime exact barcode rows from `1,000` to `2,000`. Runtime producer rows remain `87`; current `producerResearch` rows mapped to live entities are `88`.
+May 25, 2026 scanner-coverage update: the OFF checkpoint was rebuilt with `--exact-product-limit 2000`, expanding runtime exact barcode rows from `1,000` to `2,000`. A high-evidence UPC-pool entity batch also activated eight more prefix-backed producers, bringing runtime producer rows to `95`; current `producerResearch` rows mapped to live entities are `97`.
 
 ## Executive Status
 
@@ -25,10 +25,10 @@ Current top-level state:
 - People linked to at least one entity: `91`
 - Bundled people: `1046`
 - Bundled people with `donationSummary`: `1027`
-- Runtime product producers: `87`
-- Runtime exact product barcode rows: `1000`
+- Runtime product producers: `95`
+- Runtime exact product barcode rows: `2000`
 - Product `producerResearch` rows: `206`
-- Product `producerResearch` rows mapped to live entity IDs: `89`
+- Product `producerResearch` rows mapped to live entity IDs: `97`
 
 This data is neutral by design. The pipeline classifies and presents evidence from public records; it does not optimize for a party, ideology, or desired outcome.
 
@@ -112,14 +112,14 @@ Current product checkpoint facts:
 - Documents scanned in the completed fresh scan: `4,403,001`
 - Parse errors: `0`
 - Exact product candidate pool retained in checkpoint: `5,000`
-- Exact product rows shipped in runtime `products`: `1,000`
-- Runtime producer rows: `87`
+- Exact product rows shipped in runtime `products`: `2,000`
+- Runtime producer rows: `95`
 
 Useful commands:
 
 ```bash
-python3 scripts/sync-products-from-off.py --fresh --checkpoint-every-docs 250000 --block-size-mb 16 --exact-product-limit 1000
-python3 scripts/sync-products-from-off.py --rebuild-from-checkpoint --exact-product-limit 1000
+python3 scripts/sync-products-from-off.py --fresh --checkpoint-every-docs 250000 --block-size-mb 16 --exact-product-limit 2000
+python3 scripts/sync-products-from-off.py --rebuild-from-checkpoint --exact-product-limit 2000
 ```
 
 The first command rescans the local OFF archive. The second command rebuilds `products.json` from saved aggregates and current `entities.json` without rescanning.
@@ -233,7 +233,7 @@ Product rebuilds now re-resolve `producerResearch` against current `entities.jso
 Current behavior:
 
 - Exact barcode product rows are checked before producer-prefix fallback.
-- `products.json` now ships `1,000` exact barcode rows.
+- `products.json` now ships `2,000` exact barcode rows.
 - Runtime producer rows remain conservative and entity-backed.
 - Philip Morris International and Altria now resolve to distinct entity IDs.
 - The previous Helen of Troy/OXO -> Premier Foods stale mapping was caught and removed by recomputing entity resolution from current aliases.
@@ -345,16 +345,16 @@ Zero-cycle entity summaries retained for audit:
 
 ### Product coverage
 
-- Exact runtime products: `1,000`
+- Exact runtime products: `2,000`
 - Exact product candidates retained in checkpoint: `5,000`
-- Runtime producers: `87`
-- Runtime producer entity IDs: `87`
+- Runtime producers: `95`
+- Runtime producer entity IDs: `95`
 - Duplicate exact product barcodes: `0`
 - `producerResearch` entries: `206`
 - `producerResearch` entries matched to at least one OFF product: `184`
-- `producerResearch` entries mapped to live entities: `89`
-- Missing producer candidates remaining: `117`
-- Missing producer candidates with OFF prefixes: `85`
+- `producerResearch` entries mapped to live entities: `97`
+- Missing producer candidates remaining: `109`
+- Missing producer candidates with OFF prefixes: `77`
 
 Top runtime producers by matched OFF products:
 
@@ -463,7 +463,7 @@ The exact duplicate alias count is zero. The warnings still deserve review becau
 
 ### Product scan ranking limitation
 
-The current runtime product file includes `1,000` exact barcode rows plus `87` producer-prefix rows. That satisfies the clarified goal that 1000 can mean exact products, not necessarily 1000 parent-company entities.
+The current runtime product file includes `2,000` exact barcode rows plus `95` producer-prefix rows. That satisfies the clarified goal that exact product count and parent-company entity count are separate scan-coverage levers.
 
 This is not a verified "top 1000 most-shopped" ranking. The local OFF dump gives product records, brands, owners, and barcodes; it does not provide shopping volume. A true shopping-volume ranking needs a separate source.
 
@@ -516,7 +516,7 @@ node scripts/build-committee-beneficiary-map.mjs --basename=committee-beneficiar
 Product rebuild from saved OFF aggregates:
 
 ```bash
-python3 scripts/sync-products-from-off.py --rebuild-from-checkpoint --exact-product-limit 1000
+python3 scripts/sync-products-from-off.py --rebuild-from-checkpoint --exact-product-limit 2000
 ```
 
 API scripts require explicit user flagging before use:

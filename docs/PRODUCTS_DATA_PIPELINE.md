@@ -34,7 +34,7 @@ The products pass was done under these constraints:
 
 ## Current `products.json` Shape
 
-May 25, 2026 update: the runtime exact-product layer was expanded from `1,000` to `2,000` rows using the saved OFF checkpoint. Runtime producers remain at `87`; `88` `producerResearch` rows currently map to live entities.
+May 25, 2026 update: the runtime exact-product layer was expanded from `1,000` to `2,000` rows using the saved OFF checkpoint. A high-evidence UPC-pool entity batch also activated eight more prefix-backed producers, bringing runtime producers to `95`; `97` `producerResearch` rows currently map to live entities.
 
 `products.json` has three layers:
 
@@ -201,7 +201,7 @@ Exact product rows are accepted only when:
 
 Ambiguous rows that match multiple producer seeds are not added to the exact-product layer.
 
-The checkpoint keeps up to `5,000` exact-product candidates, capped per producer during collection so one large producer cannot consume the entire pool. The runtime `products` array ships a balanced subset, currently `2,000` rows across all `87` runtime producer entities. The app checks exact product barcodes before producer prefixes, so an exact product row wins over a broader prefix hit.
+The checkpoint keeps up to `5,000` exact-product candidates, capped per producer during collection so one large producer cannot consume the entire pool. The runtime `products` array ships a balanced subset, currently `2,000` rows across `88` entity IDs. The app checks exact product barcodes before producer prefixes, so an exact product row wins over a broader prefix hit. Newly added high-evidence UPC pools can still activate through the producer-prefix layer even when they do not yet have exact rows in the capped runtime subset.
 
 ## Prefix Extraction
 
@@ -354,9 +354,9 @@ python3 scripts/sync-products-from-off.py --limit 100 --fresh --no-final-write
 
 - `5,000` exact-product candidates retained in the local checkpoint
 - `2,000` exact product barcode rows shipped in runtime `products`
-- `87` entity IDs represented by exact product rows
+- `88` entity IDs represented by exact product rows
 - `0` duplicate exact product barcodes
-- runtime exact product file size remains small enough for bundling: `assets/data/products.json` is about `1.07 MB`
+- runtime exact product file size remains small enough for bundling: `assets/data/products.json` is about `1.03 MB`
 
 ### Research coverage
 
@@ -368,13 +368,26 @@ python3 scripts/sync-products-from-off.py --limit 100 --fresh --no-final-write
 
 ### Entity coverage
 
-- `88` producerResearch entries currently map to existing entities
-- `117` are still marked `missingEntityCandidate`
-- `85` missing-entity candidates already have OFF-derived prefixes
+- `97` producerResearch entries currently map to existing entities
+- `109` are still marked `missingEntityCandidate`
+- `77` missing-entity candidates already have OFF-derived prefixes
 
 ### Runtime producer coverage
 
-`87` producers currently land in runtime `producers`.
+`95` producers currently land in runtime `producers`.
+
+The May 25 UPC-pool batch activated these additional prefix-backed runtime producers:
+
+- `Lifeway Foods` — `263` matched products, `1` kept prefix
+- `Fever-Tree Drinks` — `255` matched products, `5` kept prefixes
+- `Zevia` — `234` matched products, `3` kept prefixes
+- `AG Barr` — `216` matched products, `6` kept prefixes
+- `Tootsie Roll Industries` — `171` matched products, `1` kept prefix
+- `The Vita Coco Company` — `146` matched products, `5` kept prefixes
+- `High Liner Foods` — `146` matched products, `8` kept prefixes
+- `Pernod Ricard` — `131` matched products, `14` kept prefixes
+
+Pernod Ricard matched a FEC committee and was hydrated from the local PAS2/OTH bulk files. The other seven had only false-positive FEC near misses in local bulk review and are recorded with `fecCommitteeId: null`.
 
 The earlier Altria / Philip Morris International duplicate runtime-entity caveat is resolved. Philip Morris International now resolves to `entityId: "philip-morris-international"` and Altria Group resolves to `entityId: "altria"`.
 
@@ -407,21 +420,20 @@ These are not runtime-active yet because they do not currently resolve to existi
 - `Uni-President Enterprises` — `1,415` matched products, `36` prefixes
 - `ORION` — `402` matched products, `11` prefixes
 - `Valsoia S.p.A.` — `270` matched products, `4` prefixes
-- `Lifeway Foods` — `263` matched products, `1` prefix
 - `Cloetta` — `260` matched products, `8` prefixes
-- `Fever-Tree Drinks` — `255` matched products, `5` prefixes
 - `Mayora` — `242` matched products, `17` prefixes
 - `Thai Beverage` — `240` matched products, `15` prefixes
-- `Zevia` — `234` matched products, `3` prefixes
-- `AG Barr` — `216` matched products, `6` prefixes
 - `Royal Unibrew` — `205` matched products, `12` prefixes
 - `Seneca Foods` — `193` matched products, `6` prefixes
+- `Wawel` — `176` matched products, `3` prefixes
+- `Lion Corp` — `175` matched products, `14` prefixes
+- `Universal Robina Corporation` — `170` matched products, `5` prefixes
 
 ## Category Coverage
 
-- `consumer_goods` — `42` seeded, `38` matched, `32` with prefixes, `14` with current entity coverage
-- `beverages` — `51` seeded, `43` matched, `42` with prefixes, `20` with current entity coverage
-- `food` — `96` seeded, `87` matched, `86` with prefixes, `48` with current entity coverage
+- `consumer_goods` — `42` seeded, `38` matched, `32` with prefixes, `15` with current entity coverage
+- `beverages` — `51` seeded, `43` matched, `42` with prefixes, `25` with current entity coverage
+- `food` — `96` seeded, `87` matched, `86` with prefixes, `51` with current entity coverage
 - `tobacco` — `12` seeded, `12` matched, `10` with prefixes, `3` with current entity coverage
 - `manual_priority` — `5` seeded, `4` matched, `4` with prefixes, `3` with current entity coverage
 

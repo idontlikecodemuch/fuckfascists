@@ -42,14 +42,14 @@
         "accessedDate": "2026-03-24"
       }
     ],
-    "producerCount": 87,
+    "producerCount": 95,
     "producerSource": "Runtime producers come from OFF bulk DB prefix aggregation filtered to repeated UPC evidence.",
     "syncCheckpoint": {
       "partial": false,
       "archivePath": "/Users/christophershannon/fuckfascists/tools/off-bulk/openfoodfacts-mongodbdump",
       "scanOffset": 76657007358,
       "documentsScanned": 4403001,
-      "updatedAt": "2026-05-25T18:39:10Z"
+      "updatedAt": "2026-05-25T18:51:51Z"
     },
     "productCount": 2000,
     "productSource": "Runtime exact products come from OFF bulk DB product rows that match one existing producer seed and current entity ID."
@@ -2023,7 +2023,7 @@
     {
       "canonicalProducerName": "Calbee, Inc.",
       "entityId": "calbee",
-      "entityMatchType": "alias",
+      "entityMatchType": "canonical",
       "matchedProductCount": 492,
       "prefixThreshold": 3,
       "prefixes": [
@@ -2721,6 +2721,40 @@
       "source": "off-bulk"
     },
     {
+      "canonicalProducerName": "Lifeway Foods",
+      "entityId": "lifeway-foods",
+      "entityMatchType": "alias",
+      "matchedProductCount": 263,
+      "prefixThreshold": 3,
+      "prefixes": [
+        "017077"
+      ],
+      "observedBrands": [
+        "Lifeway",
+        "Farmer Cheese",
+        "ProBugs"
+      ],
+      "source": "off-bulk"
+    },
+    {
+      "canonicalProducerName": "Fever-Tree Drinks",
+      "entityId": "fever-tree-drinks",
+      "entityMatchType": "alias",
+      "matchedProductCount": 255,
+      "prefixThreshold": 3,
+      "prefixes": [
+        "506010",
+        "812136",
+        "898195",
+        "506060",
+        "475101"
+      ],
+      "observedBrands": [
+        "Fever-Tree"
+      ],
+      "source": "off-bulk"
+    },
+    {
       "canonicalProducerName": "Henkel",
       "entityId": "henkel",
       "entityMatchType": "alias",
@@ -2806,6 +2840,42 @@
         "605021"
       ],
       "observedBrands": [],
+      "source": "off-bulk"
+    },
+    {
+      "canonicalProducerName": "Zevia",
+      "entityId": "zevia",
+      "entityMatchType": "alias",
+      "matchedProductCount": 234,
+      "prefixThreshold": 2,
+      "prefixes": [
+        "849429",
+        "894773",
+        "894473"
+      ],
+      "observedBrands": [],
+      "source": "off-bulk"
+    },
+    {
+      "canonicalProducerName": "AG Barr",
+      "entityId": "ag-barr",
+      "entityMatchType": "alias",
+      "matchedProductCount": 216,
+      "prefixThreshold": 2,
+      "prefixes": [
+        "500038",
+        "501189",
+        "064579",
+        "506006",
+        "631782",
+        "570752"
+      ],
+      "observedBrands": [
+        "IRN-BRU",
+        "Rubicon",
+        "Funkin",
+        "Barr"
+      ],
       "source": "off-bulk"
     },
     {
@@ -2922,6 +2992,24 @@
       "source": "off-bulk"
     },
     {
+      "canonicalProducerName": "Tootsie Roll Industries",
+      "entityId": "tootsie-roll-industries",
+      "entityMatchType": "alias",
+      "matchedProductCount": 171,
+      "prefixThreshold": 2,
+      "prefixes": [
+        "071720"
+      ],
+      "observedBrands": [
+        "Tootsie Roll",
+        "Tootsie",
+        "Junior Mints",
+        "Charleston Chew",
+        "Charleston Chews"
+      ],
+      "source": "off-bulk"
+    },
+    {
       "canonicalProducerName": "Kenvue",
       "entityId": "johnson-and-johnson",
       "entityMatchType": "alias",
@@ -3027,6 +3115,83 @@
         "P&G",
         "Ace",
         "Metamucil"
+      ],
+      "source": "off-bulk"
+    },
+    {
+      "canonicalProducerName": "High Liner Foods",
+      "entityId": "high-liner-foods",
+      "entityMatchType": "alias",
+      "matchedProductCount": 146,
+      "prefixThreshold": 2,
+      "prefixes": [
+        "035493",
+        "061763",
+        "079300",
+        "041600",
+        "941411",
+        "070737",
+        "999995",
+        "073538"
+      ],
+      "observedBrands": [
+        "High Liner",
+        "Sea Cuisine",
+        "Fisher Boy",
+        "Fisher"
+      ],
+      "source": "off-bulk"
+    },
+    {
+      "canonicalProducerName": "The Vita Coco Company",
+      "entityId": "vita-coco",
+      "entityMatchType": "alias",
+      "matchedProductCount": 146,
+      "prefixThreshold": 2,
+      "prefixes": [
+        "898999",
+        "506023",
+        "857732",
+        "856496",
+        "482001"
+      ],
+      "observedBrands": [
+        "Vita Coco",
+        "Runa",
+        "Ever& Ever",
+        "Vita Coco Coco Creations"
+      ],
+      "source": "off-bulk"
+    },
+    {
+      "canonicalProducerName": "Pernod Ricard",
+      "entityId": "pernod-ricard",
+      "entityMatchType": "alias",
+      "matchedProductCount": 131,
+      "prefixThreshold": 2,
+      "prefixes": [
+        "731204",
+        "501100",
+        "841002",
+        "400597",
+        "089540",
+        "304710",
+        "316393",
+        "501246",
+        "835229",
+        "080432",
+        "501028",
+        "930072",
+        "502513",
+        "761059"
+      ],
+      "observedBrands": [
+        "Absolut",
+        "Jameson",
+        "Malibu",
+        "Pastis 51",
+        "Lillet",
+        "Ricard"
       ],
       "source": "off-bulk"
     },
@@ -5717,10 +5882,10 @@
         "Jameson",
         "Malibu"
       ],
-      "entityIdExists": false,
-      "entityId": null,
-      "entityMatchType": null,
-      "missingEntityCandidate": true,
+      "entityIdExists": true,
+      "entityId": "pernod-ricard",
+      "entityMatchType": "alias",
+      "missingEntityCandidate": false,
       "dbMatchedProductCount": 131,
       "dbObservedPrefixes": [
         "731204",
@@ -6678,10 +6843,10 @@
         "Runa",
         "Ever & Ever"
       ],
-      "entityIdExists": false,
-      "entityId": null,
-      "entityMatchType": null,
-      "missingEntityCandidate": true,
+      "entityIdExists": true,
+      "entityId": "vita-coco",
+      "entityMatchType": "alias",
+      "missingEntityCandidate": false,
       "dbMatchedProductCount": 146,
       "dbObservedPrefixes": [
         "898999",
@@ -6913,10 +7078,10 @@
       "observedBrands": [
         "Fever-Tree"
       ],
-      "entityIdExists": false,
-      "entityId": null,
-      "entityMatchType": null,
-      "missingEntityCandidate": true,
+      "entityIdExists": true,
+      "entityId": "fever-tree-drinks",
+      "entityMatchType": "alias",
+      "missingEntityCandidate": false,
       "dbMatchedProductCount": 255,
       "dbObservedPrefixes": [
         "506010",
@@ -6949,10 +7114,10 @@
         "Rubicon",
         "Funkin"
       ],
-      "entityIdExists": false,
-      "entityId": null,
-      "entityMatchType": null,
-      "missingEntityCandidate": true,
+      "entityIdExists": true,
+      "entityId": "ag-barr",
+      "entityMatchType": "alias",
+      "missingEntityCandidate": false,
       "dbMatchedProductCount": 216,
       "dbObservedPrefixes": [
         "500038",
@@ -7135,10 +7300,10 @@
       "observedBrands": [
         "Zevia"
       ],
-      "entityIdExists": false,
-      "entityId": null,
-      "entityMatchType": null,
-      "missingEntityCandidate": true,
+      "entityIdExists": true,
+      "entityId": "zevia",
+      "entityMatchType": "alias",
+      "missingEntityCandidate": false,
       "dbMatchedProductCount": 234,
       "dbObservedPrefixes": [
         "849429",
@@ -9400,10 +9565,10 @@
       "observedBrands": [
         "Tootsie Roll"
       ],
-      "entityIdExists": false,
-      "entityId": null,
-      "entityMatchType": null,
-      "missingEntityCandidate": true,
+      "entityIdExists": true,
+      "entityId": "tootsie-roll-industries",
+      "entityMatchType": "alias",
+      "missingEntityCandidate": false,
       "dbMatchedProductCount": 171,
       "dbObservedPrefixes": [
         "071720"
@@ -9736,7 +9901,7 @@
       ],
       "entityIdExists": true,
       "entityId": "calbee",
-      "entityMatchType": "alias",
+      "entityMatchType": "canonical",
       "missingEntityCandidate": false,
       "dbMatchedProductCount": 492,
       "dbObservedPrefixes": [
@@ -10818,10 +10983,10 @@
         "Sea Cuisine",
         "Fisher Boy"
       ],
-      "entityIdExists": false,
-      "entityId": null,
-      "entityMatchType": null,
-      "missingEntityCandidate": true,
+      "entityIdExists": true,
+      "entityId": "high-liner-foods",
+      "entityMatchType": "alias",
+      "missingEntityCandidate": false,
       "dbMatchedProductCount": 146,
       "dbObservedPrefixes": [
         "035493",
@@ -10947,10 +11112,10 @@
         "ProBugs",
         "Farmer Cheese"
       ],
-      "entityIdExists": false,
-      "entityId": null,
-      "entityMatchType": null,
-      "missingEntityCandidate": true,
+      "entityIdExists": true,
+      "entityId": "lifeway-foods",
+      "entityMatchType": "alias",
+      "missingEntityCandidate": false,
       "dbMatchedProductCount": 263,
       "dbObservedPrefixes": [
         "017077"
@@ -12582,7 +12747,7 @@
       "productName": "Baked Green Pea Snacks Black Pepper",
       "canonicalProducerName": "Calbee, Inc.",
       "entityId": "calbee",
-      "entityMatchType": "alias",
+      "entityMatchType": "canonical",
       "matchedProducerProductCount": 492,
       "source": "off-bulk-exact",
       "brandName": "Calbee North America Llc",
@@ -13638,7 +13803,7 @@
       "productName": "Baked Green Pea Snacks Lightly Salted",
       "canonicalProducerName": "Calbee, Inc.",
       "entityId": "calbee",
-      "entityMatchType": "alias",
+      "entityMatchType": "canonical",
       "matchedProducerProductCount": 492,
       "source": "off-bulk-exact",
       "brandName": "Calbee",
@@ -14694,7 +14859,7 @@
       "productName": "Baked pea snacks",
       "canonicalProducerName": "Calbee, Inc.",
       "entityId": "calbee",
-      "entityMatchType": "alias",
+      "entityMatchType": "canonical",
       "matchedProducerProductCount": 492,
       "source": "off-bulk-exact",
       "brandName": "Harvest Snaps",
@@ -15750,7 +15915,7 @@
       "productName": "Biscuits Au Caramel Et à La Pomme Confite, Façon Tatin",
       "canonicalProducerName": "Calbee, Inc.",
       "entityId": "calbee",
-      "entityMatchType": "alias",
+      "entityMatchType": "canonical",
       "matchedProducerProductCount": 492,
       "source": "off-bulk-exact",
       "brandName": "Calbee",
@@ -16806,7 +16971,7 @@
       "productName": "CAESAR Crispy Baked Veggie Snacks",
       "canonicalProducerName": "Calbee, Inc.",
       "entityId": "calbee",
-      "entityMatchType": "alias",
+      "entityMatchType": "canonical",
       "matchedProducerProductCount": 492,
       "source": "off-bulk-exact",
       "brandName": "HARVEST SNAPS",
@@ -17862,7 +18027,7 @@
       "productName": "Calbee Potato Chips - Barbecue",
       "canonicalProducerName": "Calbee, Inc.",
       "entityId": "calbee",
-      "entityMatchType": "alias",
+      "entityMatchType": "canonical",
       "matchedProducerProductCount": 492,
       "source": "off-bulk-exact",
       "brandName": "Calbee",
@@ -18918,7 +19083,7 @@
       "productName": "Calbee Vegetable Fries",
       "canonicalProducerName": "Calbee, Inc.",
       "entityId": "calbee",
-      "entityMatchType": "alias",
+      "entityMatchType": "canonical",
       "matchedProducerProductCount": 492,
       "source": "off-bulk-exact",
       "brandName": "Calbee",
@@ -19974,7 +20139,7 @@
       "productName": "Calbee Vegetable Fries barbecue flavour",
       "canonicalProducerName": "Calbee, Inc.",
       "entityId": "calbee",
-      "entityMatchType": "alias",
+      "entityMatchType": "canonical",
       "matchedProducerProductCount": 492,
       "source": "off-bulk-exact",
       "brandName": "Calbee",
@@ -21030,7 +21195,7 @@
       "productName": "Calbee prawn cracker",
       "canonicalProducerName": "Calbee, Inc.",
       "entityId": "calbee",
-      "entityMatchType": "alias",
+      "entityMatchType": "canonical",
       "matchedProducerProductCount": 492,
       "source": "off-bulk-exact",
       "brandName": "Calbee",
@@ -22086,7 +22251,7 @@
       "productName": "Calbee prawn cracker BBQ",
       "canonicalProducerName": "Calbee, Inc.",
       "entityId": "calbee",
-      "entityMatchType": "alias",
+      "entityMatchType": "canonical",
       "matchedProducerProductCount": 492,
       "source": "off-bulk-exact",
       "brandName": "Calbee",
@@ -23142,7 +23307,7 @@
       "productName": "Calbee prawn crackers Black pepper",
       "canonicalProducerName": "Calbee, Inc.",
       "entityId": "calbee",
-      "entityMatchType": "alias",
+      "entityMatchType": "canonical",
       "matchedProducerProductCount": 492,
       "source": "off-bulk-exact",
       "brandName": "Calbee",
@@ -24198,7 +24363,7 @@
       "productName": "Calbee seaweed flavoured Potato Chips",
       "canonicalProducerName": "Calbee, Inc.",
       "entityId": "calbee",
-      "entityMatchType": "alias",
+      "entityMatchType": "canonical",
       "matchedProducerProductCount": 492,
       "source": "off-bulk-exact",
       "brandName": "Calbee",
@@ -25242,7 +25407,7 @@
       "productName": "Calbee sour cream flavoured Potato Chips",
       "canonicalProducerName": "Calbee, Inc.",
       "entityId": "calbee",
-      "entityMatchType": "alias",
+      "entityMatchType": "canonical",
       "matchedProducerProductCount": 492,
       "source": "off-bulk-exact",
       "brandName": "Calbee",
@@ -26286,7 +26451,7 @@
       "productName": "Calibee フルグラ 大きめいちご",
       "canonicalProducerName": "Calbee, Inc.",
       "entityId": "calbee",
-      "entityMatchType": "alias",
+      "entityMatchType": "canonical",
       "matchedProducerProductCount": 492,
       "source": "off-bulk-exact",
       "brandName": "Calbee",
@@ -27330,7 +27495,7 @@
       "productName": "Crispy potato Hot and spicy",
       "canonicalProducerName": "Calbee, Inc.",
       "entityId": "calbee",
-      "entityMatchType": "alias",
+      "entityMatchType": "canonical",
       "matchedProducerProductCount": 492,
       "source": "off-bulk-exact",
       "brandName": "Calbee",
@@ -28374,7 +28539,7 @@
       "productName": "Crispy potato original",
       "canonicalProducerName": "Calbee, Inc.",
       "entityId": "calbee",
-      "entityMatchType": "alias",
+      "entityMatchType": "canonical",
       "matchedProducerProductCount": 492,
       "source": "off-bulk-exact",
       "brandName": "Calbee",
@@ -29418,7 +29583,7 @@
       "productName": "Croustilles de pois verts",
       "canonicalProducerName": "Calbee, Inc.",
       "entityId": "calbee",
-      "entityMatchType": "alias",
+      "entityMatchType": "canonical",
       "matchedProducerProductCount": 492,
       "source": "off-bulk-exact",
       "brandName": "Calbee",
@@ -30462,7 +30627,7 @@
       "productName": "Flavored black bean crisps",
       "canonicalProducerName": "Calbee, Inc.",
       "entityId": "calbee",
-      "entityMatchType": "alias",
+      "entityMatchType": "canonical",
       "matchedProducerProductCount": 492,
       "source": "off-bulk-exact",
       "brandName": "Calbee",
@@ -31506,7 +31671,7 @@
       "productName": "Green Pea Snacks Black Pepper",
       "canonicalProducerName": "Calbee, Inc.",
       "entityId": "calbee",
-      "entityMatchType": "alias",
+      "entityMatchType": "canonical",
       "matchedProducerProductCount": 492,
       "source": "off-bulk-exact",
       "brandName": "Harvest Snaps",
@@ -32550,7 +32715,7 @@
       "productName": "Green pea crisps",
       "canonicalProducerName": "Calbee, Inc.",
       "entityId": "calbee",
-      "entityMatchType": "alias",
+      "entityMatchType": "canonical",
       "matchedProducerProductCount": 492,
       "source": "off-bulk-exact",
       "brandName": "Harvest snaps",
@@ -33594,7 +33759,7 @@
       "productName": "Green peas",
       "canonicalProducerName": "Calbee, Inc.",
       "entityId": "calbee",
-      "entityMatchType": "alias",
+      "entityMatchType": "canonical",
       "matchedProducerProductCount": 492,
       "source": "off-bulk-exact",
       "brandName": "Calbee",
@@ -34638,7 +34803,7 @@
       "productName": "Grill-A-Corn BBQ Flavour",
       "canonicalProducerName": "Calbee, Inc.",
       "entityId": "calbee",
-      "entityMatchType": "alias",
+      "entityMatchType": "canonical",
       "matchedProducerProductCount": 492,
       "source": "off-bulk-exact",
       "brandName": "Calbee",
@@ -35682,7 +35847,7 @@
       "productName": "Grill-a-Corn Barbecue Flavored",
       "canonicalProducerName": "Calbee, Inc.",
       "entityId": "calbee",
-      "entityMatchType": "alias",
+      "entityMatchType": "canonical",
       "matchedProducerProductCount": 492,
       "source": "off-bulk-exact",
       "brandName": "Calbee",

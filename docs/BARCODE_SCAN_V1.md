@@ -70,9 +70,10 @@ Current state:
 - `4,403,001` OFF product documents processed with `0` parse errors
 - `2,000` exact barcode product rows exposed in `products`
 - `5,000` exact barcode product candidates retained in the local checkpoint
-- exact product rows cover all `87` current runtime producer entity IDs
-- `87` runtime producer rows exposed in `producers` after the April 2026 entity cross-hydration pass
-- `88` `producerResearch` rows currently mapped to live entity IDs; `117` still need entity coverage before they can become runtime producers
+- exact product rows currently represent `88` entity IDs
+- `95` runtime producer rows exposed in `producers` after the May 25, 2026 high-evidence UPC-pool batch
+- `97` `producerResearch` rows currently mapped to live entity IDs; `109` still need entity coverage before they can become runtime producers
+- the May 25 batch activated Pernod Ricard, Lifeway Foods, Zevia, Fever-Tree Drinks, AG Barr, Tootsie Roll Industries, The Vita Coco Company, and High Liner Foods through producer-prefix matching
 - Philip Morris International and Altria now resolve to distinct runtime entity IDs
 - research entries now carry OFF-backed:
   - `dbObservedPrefixes`
@@ -220,7 +221,7 @@ Notes:
 
 - Open Food Facts coverage is good for grocery scanning, but not universal.
 - Brand strings returned by a product database will never perfectly align with parent-company aliases without continued curation.
-- The local OFF-derived producer layer is much stronger now, but runtime quality still depends on the current entity coverage in `entities.json`. Many strong producer candidates are still held in `producerResearch` until a separate entity pass lands.
+- The local OFF-derived producer layer is much stronger now, but runtime quality still depends on the current entity coverage in `entities.json`. The biggest remaining gains are still large UPC pools with clean brand/producer evidence.
 - The current data set now has `2,000` exact product barcodes, but those rows are OFF-derived coverage, not a verified "most-shopped" ranking.
 - The current repo has an existing Expo dependency mismatch: `@expo/vector-icons@15.1.1` expects a newer `expo-font` than this SDK 52 app currently pins. `expo-camera` was installed with legacy peer resolution to avoid rewriting unrelated dependencies during this feature pass.
 - Full iOS simulator build verification is still partially environment-sensitive in this repo right now because the local Xcode/CoreSimulator/CocoaPods setup can fail before app code is fully evaluated. The scan flow itself is covered by TypeScript, focused Jest tests, plist validation, and the native permission fix.
@@ -233,4 +234,4 @@ For V2, revisit a narrow fallback only when OFF supplies a clean owner-style ide
 
 ## Recommended next step
 
-Choose between three scan-coverage paths: increase the exact product limit beyond the current 2,000-row runtime set, add the remaining high-evidence OFF producer candidates to `entities.json`, or expand `producerResearch` from another ranked CPG source. Any entity/alias path should finish with a `--rebuild-from-checkpoint --exact-product-limit 2000` products sync so newly covered candidates can become runtime producers without rerunning the full archive scan.
+Continue with the highest-value OFF producer pools that have clean brand or producer evidence. Current next candidates include Uni-President, ORION, Valsoia, Cloetta, Mayora, Thai Beverage, Royal Unibrew, and Seneca Foods, with extra review for brand contamination before adding aliases. Any entity/alias path should finish with a `--rebuild-from-checkpoint --exact-product-limit 2000` products sync so newly covered candidates can become runtime producers without rerunning the full archive scan.
