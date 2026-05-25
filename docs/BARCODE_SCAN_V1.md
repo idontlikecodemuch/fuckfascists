@@ -225,6 +225,12 @@ Notes:
 - The current repo has an existing Expo dependency mismatch: `@expo/vector-icons@15.1.1` expects a newer `expo-font` than this SDK 52 app currently pins. `expo-camera` was installed with legacy peer resolution to avoid rewriting unrelated dependencies during this feature pass.
 - Full iOS simulator build verification is still partially environment-sensitive in this repo right now because the local Xcode/CoreSimulator/CocoaPods setup can fail before app code is fully evaluated. The scan flow itself is covered by TypeScript, focused Jest tests, plist validation, and the native permission fix.
 
+## V2 expansion: barcode FEC fallback
+
+V1 keeps FEC fuzzy fallback disabled for barcode-derived scans. OFF product strings can be product labels, importers, distributors, co-packers, or sub-brands, and sending those directly into FEC committee search is likely to create noisy or false parent-company matches.
+
+For V2, revisit a narrow fallback only when OFF supplies a clean owner-style identity. The promising fields are `brand_owner`, `brand_owner_imported`, and the live API `owner` field. Do not use `product_name` or raw `brands` alone as FEC fallback input. A safe version should require an unambiguous normalized owner term, avoid generic brand labels, and prefer adding reviewed entity/alias/product coverage over making live FEC guesses during scan.
+
 ## Recommended next step
 
 Choose between three scan-coverage paths: increase the exact product limit from the current 1,000-row runtime set, add the remaining high-evidence OFF producer candidates to `entities.json`, or expand `producerResearch` from another ranked CPG source. Any entity/alias path should finish with a `--rebuild-from-checkpoint --exact-product-limit 1000` products sync so newly covered candidates can become runtime producers without rerunning the full archive scan.
