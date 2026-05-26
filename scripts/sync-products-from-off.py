@@ -541,10 +541,9 @@ def build_seed_index(payload: dict[str, Any]) -> tuple[list[ProducerSeed], dict[
             entry["missingEntityCandidate"] = False
         else:
             entry["entityIdExists"] = False
-            if not isinstance(entry.get("entityId"), str):
-                entry["entityId"] = None
-            if not isinstance(entry.get("entityMatchType"), str):
-                entry["entityMatchType"] = None
+            entry["entityId"] = None
+            entry["entityMatchType"] = None
+            entry["missingEntityCandidate"] = True
 
         seed_brands = [brand.strip() for brand in entry.get("observedBrands") or [] if isinstance(brand, str) and brand.strip()]
         canonical_variants = producer_term_variants(canonical_name, strip_suffixes=True)

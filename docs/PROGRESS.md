@@ -12,6 +12,35 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: May 26, 2026 ET — Product entity coverage batch
+
+**Branch:** main worktree, direct local edits. Existing dirty worktree preserved.
+
+**Focus:** Add the next product-coverage entity shells so the upcoming fresh product rehydration has live IDs to attach to, then rebuild the current OFF checkpoint to pick up every safe alias match already available.
+
+**Shipped:**
+
+- Added 15 unverified product-coverage entities: The Honest Company, Japan Tobacco, Universal Robina, Premium Brands, Marico, Patanjali Foods, Gruma, Imperial Brands, Rémy Cointreau, Church & Dwight, Clorox, BIC, Newell Brands, Kao, and Seneca Foods.
+- Added Ambev/Skol/Brahma/Antarctica aliases to the existing Anheuser-Busch InBev entity instead of creating a child entity, so Ambev products inherit the existing parent donation data.
+- Removed newly added broad single-word entity aliases (`Honest`, `blu`, `Coleman`) after alias audit flagged avoidable substring collisions.
+- Rebuilt `assets/data/products.json` from the local OFF checkpoint with `--exact-product-limit 2000`.
+- Tightened `scripts/sync-products-from-off.py` so checkpoint rebuilds clear stale product-side `entityId` / `entityMatchType` values when current `entities.json` no longer resolves them.
+
+**Current product coverage:**
+
+- Exact runtime barcode rows: `2,000` across `94` entity IDs.
+- Runtime producer rows: `111`.
+- `producerResearch` rows: `209`; `115` currently map to live entities and `94` remain missing-entity candidates.
+- May 26 entity additions activated `13` more runtime producer rows from the existing checkpoint: Seneca Foods, Universal Robina, Japan Tobacco, The Honest Company, Premium Brands, Marico, Patanjali Foods, Gruma/Maseca, Ambev, Imperial Brands, Rémy Cointreau, BIC, and Kao.
+- Church & Dwight, Clorox, and Newell Brands are now live entity coverage, but remain research-only in the current runtime bundle because the checkpoint evidence is below runtime threshold or lacks retained prefixes.
+
+**Verification:**
+
+- `npm run audit:aliases` -> exit 0. Exact alias duplicates: `0`; parent/child overlap: `0`; remaining single-word warnings are pre-existing broad aliases.
+- `node scripts/verify-data-integrity.mjs` -> exit 0. Live entities: `753`; no duplicate IDs or invalid role links.
+- `python3 -m py_compile scripts/sync-products-from-off.py` -> exit 0.
+- `npm test -- --runInBand --silent features/Map/__tests__/productIndex.test.ts features/Map/__tests__/barcodeHelpers.test.ts features/Map/barcode/__tests__/buildBarcodeLabel.test.ts` -> 3 suites / 21 tests passed.
+
 ### Session: May 24, 2026 ET — Android readiness pass
 
 **Branch:** main worktree, direct local edits. Existing dirty worktree preserved.

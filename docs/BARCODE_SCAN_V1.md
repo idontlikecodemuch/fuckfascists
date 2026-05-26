@@ -1,6 +1,6 @@
 # Barcode Scan V1
 
-Last updated: March 24, 2026 (OFF-backed products data layer)
+Last updated: May 26, 2026 (OFF-backed products data layer)
 
 ## Why this exists
 
@@ -71,10 +71,12 @@ Current state:
 - `2,000` exact barcode product rows exposed in `products`
 - `5,000` exact barcode product candidates retained in the local checkpoint
 - exact product rows currently represent `94` entity IDs
-- `98` runtime producer rows exposed in `producers` after the May 25, 2026 high-evidence UPC-pool and product-seed batches
-- `100` `producerResearch` rows currently mapped to live entity IDs; `109` still need entity coverage before they can become runtime producers
+- `111` runtime producer rows exposed in `producers` after the May 26, 2026 product entity-coverage batch
+- `115` `producerResearch` rows currently mapped to live entity IDs; `94` still need entity coverage before they can become runtime producers
 - the May 25 batch activated Pernod Ricard, Lifeway Foods, Zevia, Fever-Tree Drinks, AG Barr, Tootsie Roll Industries, The Vita Coco Company, and High Liner Foods through producer-prefix matching
 - the follow-up product-seed pass activated Red Bull, Perdue Farms, and Florida's Natural Growers; WW/Weight Watchers was left out because the OFF reverse audit showed heavy co-brand contamination
+- the May 26 entity batch activated Seneca Foods, Universal Robina, Japan Tobacco, The Honest Company, Premium Brands, Marico, Patanjali Foods, Gruma/Maseca, Ambev, Imperial Brands, Rémy Cointreau, BIC, and Kao through producer-prefix matching
+- Church & Dwight, Clorox, and Newell Brands now have live entity shells but remain research-only in the current runtime bundle pending stronger retained-prefix evidence or fresh rehydration
 - Philip Morris International and Altria now resolve to distinct runtime entity IDs
 - research entries now carry OFF-backed:
   - `dbObservedPrefixes`
@@ -94,7 +96,7 @@ The runtime `producers` layer is the conservative fallback:
 - only existing entity IDs are activated
 - prefixes must survive repeated-evidence thresholds
 - runtime `observedBrands` are cleaned to remove producer self-labels, legal-entity strings, obvious descriptor junk, and partner-company contamination
-- product-side `entityIdExists`, `entityId`, `entityMatchType`, and `missingEntityCandidate` fields are refreshed against current `entities.json` during checkpoint rebuilds
+- product-side `entityIdExists`, `entityId`, `entityMatchType`, and `missingEntityCandidate` fields are refreshed against current `entities.json` during checkpoint rebuilds; stale product-side entity IDs are cleared when aliases no longer resolve
 
 Deep reference:
 
@@ -235,6 +237,6 @@ For V2, revisit a narrow fallback only when OFF supplies a clean owner-style ide
 
 ## Recommended next step
 
-Continue with the highest-value OFF producer pools that have clean brand or producer evidence. Current next candidates include Uni-President, ORION, Valsoia, Cloetta, Mayora, Thai Beverage, Royal Unibrew, and Seneca Foods, with extra review for brand contamination before adding aliases. Any entity/alias path can use a checkpoint rebuild, but brand-new product seeds require a fresh OFF sync so their aggregates are actually collected.
+Continue with the highest-value OFF producer pools that have clean brand or producer evidence. Current next candidates include Uni-President, ORION, Valsoia, Cloetta, Mayora, Thai Beverage, Royal Unibrew, Wawel, Lion Corp, Kirin, HiteJinro, Yakult, and Baladna, with extra review for brand contamination before adding aliases. Any entity/alias path can use a checkpoint rebuild, but brand-new product seeds require a fresh OFF sync so their aggregates are actually collected.
 
 Before adding many more bundled rows, split the product payload into a runtime-only file. The app only needs exact `products` and runtime `producers`; `producerResearch` should remain available for data work and docs, but it does not need to ship with the scanner.

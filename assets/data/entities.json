@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "totalEntities": 738,
-    "updatedAt": "2026-05-25",
+    "totalEntities": 753,
+    "updatedAt": "2026-05-26",
     "formatVersion": "1.0",
     "entityDonationHydrationSource": "FEC bulk PAS2/OTH files",
     "entityDonationHydrationCycles": [
@@ -13838,6 +13838,408 @@
       "notes": "Added from OFF scan pool: 146 matched products across 8 prefixes; dominant terms include High Liner and Sea Cuisine. Local FEC bulk review found only false-positive near misses, no corporate PAC match."
     },
     {
+      "id": "honest-company",
+      "canonicalName": "The Honest Company Inc",
+      "aliases": [
+        "The Honest Company",
+        "Honest Beauty",
+        "Honest Baby"
+      ],
+      "domains": [
+        "honest.com",
+        "investors.honest.com"
+      ],
+      "categoryTags": [
+        "consumer-goods",
+        "personal-care",
+        "household",
+        "baby"
+      ],
+      "ceoName": "Carla Vernón",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-05-26",
+      "verificationStatus": "unverified",
+      "notes": "Added from product coverage gap: 129 OFF matched products across 7 prefixes. FEC committee hydration pending."
+    },
+    {
+      "id": "japan-tobacco",
+      "canonicalName": "Japan Tobacco Inc",
+      "aliases": [
+        "Japan Tobacco",
+        "JT",
+        "JTI",
+        "Japan Tobacco International",
+        "Camel",
+        "Winston",
+        "Mevius"
+      ],
+      "domains": [
+        "jt.com",
+        "jti.com"
+      ],
+      "categoryTags": [
+        "tobacco",
+        "consumer-goods"
+      ],
+      "ceoName": "Takehiko Tsutsui",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-05-26",
+      "verificationStatus": "unverified",
+      "notes": "Added from product coverage gap: 149 OFF matched products across 11 prefixes. Brand ownership can vary by market; FEC committee hydration pending."
+    },
+    {
+      "id": "universal-robina",
+      "canonicalName": "Universal Robina Corporation",
+      "aliases": [
+        "Universal Robina",
+        "URC",
+        "Jack 'n Jill",
+        "Jack n Jill",
+        "Great Taste",
+        "Cream-O",
+        "Dewberry",
+        "Presto"
+      ],
+      "domains": [
+        "urc.com.ph",
+        "jacknjill.com.ph"
+      ],
+      "categoryTags": [
+        "food",
+        "beverage",
+        "consumer-goods"
+      ],
+      "ceoName": "Irwin C. Lee",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-05-26",
+      "verificationStatus": "unverified",
+      "notes": "Added from product coverage gap: 170 OFF matched products across 5 prefixes. FEC committee hydration pending."
+    },
+    {
+      "id": "premium-brands",
+      "canonicalName": "Premium Brands Holdings Corporation",
+      "aliases": [
+        "Premium Brands",
+        "Premium Brands Holdings",
+        "Grimm's",
+        "Harvest Meats",
+        "Hempler's"
+      ],
+      "domains": [
+        "premiumbrandsholdings.com",
+        "grimmsfinefoods.com",
+        "harvestmeats.ca",
+        "hemplers.com"
+      ],
+      "categoryTags": [
+        "food",
+        "consumer-goods"
+      ],
+      "ceoName": "George Paleologou",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-05-26",
+      "verificationStatus": "unverified",
+      "notes": "Added from product coverage gap: 113 OFF matched products across 4 prefixes. FEC committee hydration pending."
+    },
+    {
+      "id": "marico",
+      "canonicalName": "Marico Limited",
+      "aliases": [
+        "Marico",
+        "Parachute",
+        "Saffola",
+        "Livon"
+      ],
+      "domains": [
+        "marico.com",
+        "saffola.in"
+      ],
+      "categoryTags": [
+        "consumer-goods",
+        "personal-care",
+        "food"
+      ],
+      "ceoName": "Saugata Gupta",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-05-26",
+      "verificationStatus": "unverified",
+      "notes": "Added from product coverage gap: 88 OFF matched products across 4 prefixes. FEC committee hydration pending."
+    },
+    {
+      "id": "patanjali-foods",
+      "canonicalName": "Patanjali Foods Limited",
+      "aliases": [
+        "Patanjali Foods",
+        "Patanjali",
+        "Nutrela",
+        "Ruchi Gold"
+      ],
+      "domains": [
+        "patanjalifoods.com",
+        "nutrelahealth.com"
+      ],
+      "categoryTags": [
+        "food",
+        "consumer-goods"
+      ],
+      "ceoName": "Sanjeev Asthana",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-05-26",
+      "verificationStatus": "unverified",
+      "notes": "Added from product coverage gap: 88 OFF matched products across 3 prefixes. FEC committee hydration pending."
+    },
+    {
+      "id": "gruma",
+      "canonicalName": "Gruma S.A.B. de C.V.",
+      "aliases": [
+        "Gruma",
+        "Maseca",
+        "Guerrero",
+        "Mission Foods"
+      ],
+      "domains": [
+        "gruma.com",
+        "maseca.com",
+        "missionfoods.com"
+      ],
+      "categoryTags": [
+        "food",
+        "consumer-goods"
+      ],
+      "ceoName": "Juan Antonio González Moreno",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-05-26",
+      "verificationStatus": "unverified",
+      "notes": "Added from product coverage gap: 82 OFF matched products across 6 prefixes. FEC committee hydration pending."
+    },
+    {
+      "id": "imperial-brands",
+      "canonicalName": "Imperial Brands PLC",
+      "aliases": [
+        "Imperial Brands",
+        "Imperial Tobacco",
+        "Davidoff",
+        "Golden Virginia"
+      ],
+      "domains": [
+        "imperialbrandsplc.com"
+      ],
+      "categoryTags": [
+        "tobacco",
+        "consumer-goods"
+      ],
+      "ceoName": "Lukas Paravicini",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-05-26",
+      "verificationStatus": "unverified",
+      "notes": "Added from product coverage gap: 29 OFF matched products across 7 prefixes. FEC committee hydration pending."
+    },
+    {
+      "id": "remy-cointreau",
+      "canonicalName": "Rémy Cointreau SA",
+      "aliases": [
+        "Rémy Cointreau",
+        "Remy Cointreau",
+        "Rémy Martin",
+        "Remy Martin",
+        "Cointreau",
+        "Bruichladdich"
+      ],
+      "domains": [
+        "remy-cointreau.com",
+        "remymartin.com",
+        "cointreau.com",
+        "bruichladdich.com"
+      ],
+      "categoryTags": [
+        "beverage",
+        "alcohol",
+        "consumer-goods"
+      ],
+      "ceoName": "Franck Marilly",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-05-26",
+      "verificationStatus": "unverified",
+      "notes": "Added from product coverage gap: 25 OFF matched products across 4 prefixes. FEC committee hydration pending."
+    },
+    {
+      "id": "church-dwight",
+      "canonicalName": "Church & Dwight Co Inc",
+      "aliases": [
+        "Church & Dwight",
+        "Church and Dwight",
+        "Arm & Hammer",
+        "Arm and Hammer",
+        "OxiClean",
+        "Trojan",
+        "Nair",
+        "Orajel",
+        "TheraBreath"
+      ],
+      "domains": [
+        "churchdwight.com",
+        "armandhammer.com",
+        "oxiclean.com",
+        "trojanbrands.com",
+        "therabreath.com"
+      ],
+      "categoryTags": [
+        "consumer-goods",
+        "household",
+        "personal-care"
+      ],
+      "ceoName": "Rick Dierker",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-05-26",
+      "verificationStatus": "unverified",
+      "notes": "Added from product coverage gap: 5 OFF matched products, led by Arm & Hammer. FEC committee hydration pending."
+    },
+    {
+      "id": "clorox",
+      "canonicalName": "The Clorox Company",
+      "aliases": [
+        "Clorox",
+        "Clorox Company",
+        "Pine-Sol",
+        "Liquid-Plumr",
+        "Brita",
+        "Glad",
+        "Hidden Valley",
+        "Burt's Bees"
+      ],
+      "domains": [
+        "thecloroxcompany.com",
+        "clorox.com",
+        "pinesol.com",
+        "brita.com",
+        "glad.com",
+        "hiddenvalley.com",
+        "burtsbees.com"
+      ],
+      "categoryTags": [
+        "consumer-goods",
+        "household",
+        "personal-care",
+        "food"
+      ],
+      "ceoName": "Linda Rendle",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-05-26",
+      "verificationStatus": "unverified",
+      "notes": "Added from product coverage gap: 19 OFF matched products across 3 prefixes. FEC committee hydration pending."
+    },
+    {
+      "id": "bic",
+      "canonicalName": "Société BIC SA",
+      "aliases": [
+        "BIC",
+        "Bic",
+        "Wite-Out",
+        "BodyMark"
+      ],
+      "domains": [
+        "bic.com",
+        "us.bic.com"
+      ],
+      "categoryTags": [
+        "consumer-goods",
+        "office-supplies",
+        "personal-care"
+      ],
+      "ceoName": "Rob Versloot",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-05-26",
+      "verificationStatus": "unverified",
+      "notes": "Added from product coverage gap: 24 OFF matched products across 3 prefixes. FEC committee hydration pending."
+    },
+    {
+      "id": "newell-brands",
+      "canonicalName": "Newell Brands Inc",
+      "aliases": [
+        "Newell Brands",
+        "Newell",
+        "Sharpie",
+        "Paper Mate",
+        "Rubbermaid",
+        "Graco",
+        "Yankee Candle",
+        "Elmer's"
+      ],
+      "domains": [
+        "newellbrands.com",
+        "sharpie.com",
+        "papermate.com",
+        "rubbermaid.com",
+        "gracobaby.com",
+        "yankeecandle.com",
+        "coleman.com",
+        "elmers.com"
+      ],
+      "categoryTags": [
+        "consumer-goods",
+        "household",
+        "office-supplies",
+        "outdoor"
+      ],
+      "ceoName": "Chris Peterson",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-05-26",
+      "verificationStatus": "unverified",
+      "notes": "Added from product coverage gap/common shelf-brand pass. FEC committee hydration pending."
+    },
+    {
+      "id": "kao",
+      "canonicalName": "Kao Corporation",
+      "aliases": [
+        "Kao",
+        "Biore",
+        "Bioré",
+        "Jergens",
+        "Merries"
+      ],
+      "domains": [
+        "kao.com",
+        "biore.com",
+        "jergens.com"
+      ],
+      "categoryTags": [
+        "consumer-goods",
+        "personal-care",
+        "household"
+      ],
+      "ceoName": "Yoshihiro Hasebe",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-05-26",
+      "verificationStatus": "unverified",
+      "notes": "Added from product coverage gap: 21 OFF matched products across 4 prefixes. FEC committee hydration pending."
+    },
+    {
+      "id": "seneca-foods",
+      "canonicalName": "Seneca Foods Corporation",
+      "aliases": [
+        "Seneca Foods",
+        "Seneca",
+        "Libby's",
+        "Stokely's",
+        "Green Valley",
+        "Read",
+        "Seneca Farms"
+      ],
+      "domains": [
+        "senecafoods.com",
+        "libbysvegetables.com"
+      ],
+      "categoryTags": [
+        "food",
+        "consumer-goods"
+      ],
+      "ceoName": "Paul L. Palmby",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-05-26",
+      "verificationStatus": "unverified",
+      "notes": "Added from product coverage gap: 193 OFF matched products across 6 prefixes. FEC committee hydration pending; brand labels need review after product rebuild."
+    },
+    {
       "id": "post-holdings",
       "canonicalName": "Post Holdings Inc",
       "aliases": [
@@ -15561,12 +15963,17 @@
         "Beck's",
         "Goose Island",
         "Hoegaarden",
-        "Leffe"
+        "Leffe",
+        "Ambev",
+        "Skol",
+        "Brahma",
+        "Antarctica"
       ],
       "domains": [
         "ab-inbev.com",
         "budweiser.com",
-        "budlight.com"
+        "budlight.com",
+        "ambev.com.br"
       ],
       "categoryTags": [
         "food",
@@ -15576,7 +15983,7 @@
       "fecCommitteeId": "C00034488",
       "lastVerifiedDate": "2026-04-20",
       "verificationStatus": "pipeline",
-      "notes": "US subsidiary Anheuser-Busch LLC PAC ($504,631 in 2023-2024).",
+      "notes": "US subsidiary Anheuser-Busch LLC PAC ($504,631 in 2023-2024). Added Ambev/Skol/Brahma/Antarctica aliases from the May 2026 product coverage gap so Ambev products resolve to AB InBev.",
       "donationSummary": {
         "committeeId": "C00034488",
         "committeeName": "ANHEUSER-BUSCH COMPANIES LLC POLITICAL ACTION COMMITTEE",

@@ -1,6 +1,6 @@
 # Products Data Pipeline
 
-Last updated: April 20, 2026
+Last updated: May 26, 2026
 
 ## Purpose
 
@@ -34,7 +34,7 @@ The products pass was done under these constraints:
 
 ## Current `products.json` Shape
 
-May 25, 2026 update: the runtime exact-product layer was expanded from `1,000` to `2,000` rows. A high-evidence UPC-pool entity batch activated eight more prefix-backed producers, and a follow-up reverse-audit seed pass activated Red Bull, Perdue Farms, and Florida's Natural Growers. Runtime producers are now `98`; `100` `producerResearch` rows currently map to live entities.
+May 26, 2026 update: the runtime exact-product layer remains `2,000` rows. A product entity-coverage batch added 15 live entity shells, added Ambev aliases to Anheuser-Busch InBev, rebuilt the OFF checkpoint, and activated 13 more prefix-backed runtime producer rows. Runtime producers are now `111`; `115` `producerResearch` rows currently map to live entities.
 
 `products.json` has three layers:
 
@@ -368,13 +368,13 @@ python3 scripts/sync-products-from-off.py --limit 100 --fresh --no-final-write
 
 ### Entity coverage
 
-- `100` producerResearch entries currently map to existing entities
-- `109` are still marked `missingEntityCandidate`
-- `77` missing-entity candidates already have OFF-derived prefixes
+- `115` producerResearch entries currently map to existing entities
+- `94` are still marked `missingEntityCandidate`
+- `63` missing-entity candidates already have OFF-derived prefixes
 
 ### Runtime producer coverage
 
-`98` producers currently land in runtime `producers`.
+`111` producers currently land in runtime `producers`.
 
 The May 25 UPC-pool batch activated these additional prefix-backed runtime producers:
 
@@ -396,6 +396,24 @@ The follow-up reverse-audit product-seed pass activated these existing live enti
 - `Florida's Natural Growers` — `111` matched products, `2` kept prefixes
 
 `WW International Inc` / Weight Watchers was tested and left out. Its OFF matches included many co-branded or licensed foods from other producers, including Yoplait, Heinz, Marie, and Fiber One, so it is not clean enough for the runtime prefix layer.
+
+The May 26 product entity-coverage batch activated these additional prefix-backed runtime producers:
+
+- `Seneca Foods` — `193` matched products, `6` kept prefixes
+- `Universal Robina Corporation` — `170` matched products, `5` kept prefixes
+- `Japan Tobacco` — `149` matched products, `11` kept prefixes
+- `The Honest Company` — `129` matched products, `7` kept prefixes
+- `Premium Brands` — `113` matched products, `4` kept prefixes
+- `Marico` — `88` matched products, `4` kept prefixes
+- `Patanjali Foods` — `88` matched products, `3` kept prefixes
+- `Gruma (Maseca)` — `82` matched products, `6` kept prefixes
+- `Ambev` — `42` matched products, `4` kept prefixes, mapped to `anheuser-busch-inbev`
+- `Imperial Brands` — `29` matched products, `7` kept prefixes
+- `Rémy Cointreau` — `25` matched products, `4` kept prefixes
+- `BIC` — `24` matched products, `3` kept prefixes
+- `Kaō` — `21` matched products, `4` kept prefixes
+
+The same batch also added live entity shells for `Church & Dwight`, `Clorox`, and `Newell Brands`. Those rows are now ready for product rehydration but remain research-only in the current runtime bundle because the checkpoint evidence is below runtime threshold or lacks retained prefixes.
 
 The earlier Altria / Philip Morris International duplicate runtime-entity caveat is resolved. Philip Morris International now resolves to `entityId: "philip-morris-international"` and Altria Group resolves to `entityId: "altria"`.
 
@@ -432,17 +450,19 @@ These are not runtime-active yet because they do not currently resolve to existi
 - `Mayora` — `242` matched products, `17` prefixes
 - `Thai Beverage` — `240` matched products, `15` prefixes
 - `Royal Unibrew` — `205` matched products, `12` prefixes
-- `Seneca Foods` — `193` matched products, `6` prefixes
 - `Wawel` — `176` matched products, `3` prefixes
 - `Lion Corp` — `175` matched products, `14` prefixes
-- `Universal Robina Corporation` — `170` matched products, `5` prefixes
+- `Kirin Holdings` — `156` matched products, `13` prefixes
+- `HiteJinro` — `148` matched products, `12` prefixes
+- `Yakult` — `127` matched products, `15` prefixes
+- `Baladna` — `124` matched products, `6` prefixes
 
 ## Category Coverage
 
-- `consumer_goods` — `42` seeded, `38` matched, `32` with prefixes, `15` with current entity coverage
-- `beverages` — `51` seeded, `43` matched, `42` with prefixes, `25` with current entity coverage
-- `food` — `96` seeded, `87` matched, `86` with prefixes, `51` with current entity coverage
-- `tobacco` — `12` seeded, `12` matched, `10` with prefixes, `3` with current entity coverage
+- `consumer_goods` — `42` seeded, `38` matched, `32` with prefixes, `21` with current entity coverage
+- `beverages` — `51` seeded, `43` matched, `42` with prefixes, `27` with current entity coverage
+- `food` — `96` seeded, `87` matched, `86` with prefixes, `56` with current entity coverage
+- `tobacco` — `12` seeded, `12` matched, `10` with prefixes, `5` with current entity coverage
 - `manual_priority` — `8` seeded, `7` matched, `7` with prefixes, `6` with current entity coverage
 
 ## Verification
@@ -450,20 +470,26 @@ These are not runtime-active yet because they do not currently resolve to existi
 After the products rebuild and cleanup passes:
 
 ```bash
-npm test -- --runTestsByPath features/Map/__tests__/productIndex.test.ts features/Map/__tests__/barcodeHelpers.test.ts
+npm run audit:aliases
+node scripts/verify-data-integrity.mjs
+python3 -m py_compile scripts/sync-products-from-off.py
+npm test -- --runInBand --silent features/Map/__tests__/productIndex.test.ts features/Map/__tests__/barcodeHelpers.test.ts features/Map/barcode/__tests__/buildBarcodeLabel.test.ts
 ```
 
 Result:
 
-- `2` suites passed
-- `15` tests passed
+- alias audit exited `0` with `0` exact alias duplicates and `0` parent/child overlap
+- data integrity exited `0`; live entities now total `753`
+- Python compile exited `0`
+- `3` barcode/product suites passed
+- `21` tests passed
 
 ## Known Caveats
 
 1. Prefixes are OFF-derived heuristics for runtime producer matching, not a global GS1-ownership truth table.
 2. OFF brand fields are useful but imperfect; even after cleanup, research-layer observations will remain broader than runtime brands.
 3. Some runtime brand lists still contain borderline labels if they behave like real shelf brands in OFF, for example `Conagra` or `Hormel`.
-4. Missing entity coverage, not OFF coverage, remains the largest structural limitation after the April entity batch.
+4. Missing entity coverage, not OFF coverage, remains the largest structural limitation after the May entity batch.
 5. The current `2,000` exact products are a conservative OFF-derived barcode set, not a verified shopping-volume ranking.
 
 ## Recommended Next Pass
@@ -472,7 +498,7 @@ If product scan coverage needs to improve further without touching unrelated sys
 
 1. Split the generated data into a scanner runtime payload and a research/build artifact. Runtime only needs exact `products` and runtime `producers`; `producerResearch` should stay out of the app bundle.
 2. Decide whether to add more exact products, add the remaining high-value OFF-backed producers, or expand `producerResearch` with another ranked CPG source.
-3. Add new entities or seed rows in a separate data-quality pass.
+3. Add new entities or seed rows in a separate data-quality pass. Current high-value missing leads include Uni-President, ORION, Valsoia, Cloetta, Mayora, Thai Beverage, Royal Unibrew, Wawel, Lion Corp, Kirin, HiteJinro, Yakult, and Baladna.
 4. Re-run `scripts/sync-products-from-off.py --rebuild-from-checkpoint --exact-product-limit 2000` for entity/alias changes, or a fresh OFF sync for new product seed rows.
 5. Run `npm run audit:aliases`.
 6. Review any newly activated runtime producers for alias cleanup.
