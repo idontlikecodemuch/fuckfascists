@@ -470,10 +470,11 @@ Result:
 
 If product scan coverage needs to improve further without touching unrelated systems:
 
-1. Decide whether to add more exact products, add the remaining high-value OFF-backed producers, or expand `producerResearch` with another ranked CPG source.
-2. Add new entities or seed rows in a separate data-quality pass.
-3. Re-run `scripts/sync-products-from-off.py --rebuild-from-checkpoint --exact-product-limit 2000`.
-4. Run `npm run audit:aliases`.
-5. Review any newly activated runtime producers for alias cleanup.
+1. Split the generated data into a scanner runtime payload and a research/build artifact. Runtime only needs exact `products` and runtime `producers`; `producerResearch` should stay out of the app bundle.
+2. Decide whether to add more exact products, add the remaining high-value OFF-backed producers, or expand `producerResearch` with another ranked CPG source.
+3. Add new entities or seed rows in a separate data-quality pass.
+4. Re-run `scripts/sync-products-from-off.py --rebuild-from-checkpoint --exact-product-limit 2000` for entity/alias changes, or a fresh OFF sync for new product seed rows.
+5. Run `npm run audit:aliases`.
+6. Review any newly activated runtime producers for alias cleanup.
 
 This keeps product expansion incremental, reversible, and isolated from unrelated entity/people cleanup work.

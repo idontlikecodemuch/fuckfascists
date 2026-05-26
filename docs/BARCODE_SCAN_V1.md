@@ -236,3 +236,5 @@ For V2, revisit a narrow fallback only when OFF supplies a clean owner-style ide
 ## Recommended next step
 
 Continue with the highest-value OFF producer pools that have clean brand or producer evidence. Current next candidates include Uni-President, ORION, Valsoia, Cloetta, Mayora, Thai Beverage, Royal Unibrew, and Seneca Foods, with extra review for brand contamination before adding aliases. Any entity/alias path can use a checkpoint rebuild, but brand-new product seeds require a fresh OFF sync so their aggregates are actually collected.
+
+Before adding many more bundled rows, split the product payload into a runtime-only file. The app only needs exact `products` and runtime `producers`; `producerResearch` should remain available for data work and docs, but it does not need to ship with the scanner.
