@@ -2,7 +2,9 @@
 
 This is the audit packet for the April 20, 2026 data-cleaning pass. It covers entity coverage, aliases, product scan coverage, POI matching, local FEC bulk hydration, the OpenStates state/local classifier, people hydration, and remaining audit findings.
 
-This work is local and uncommitted.
+This started as the April 20 audit packet. Later dated addenda update the current local data state and should be read before relying on the older April measurements.
+
+May 27, 2026 FEC refresh addendum: refreshed the 2026 FEC bulk archives for committee master, candidate master, committee-candidate linkage, PAS2, OTH, and individual contributions; refreshed OpenStates; rebuilt beneficiary classification; rehydrated entities and people from local bulk; and rebuilt the slim people bundle. Current live counts are now `753` entities, `239` entity donation summaries, `1,071` people, `1,070` people donation summaries, and `111` people linked to at least one live entity. See `docs/FEC_BULK_REFRESH_2026-05-27.md` for archive metadata, hashes, row counts, commands, validation, and the future rolling-window refresh policy.
 
 May 25, 2026 scanner-coverage update: the OFF checkpoint was rebuilt with `--exact-product-limit 2000`, expanding runtime exact barcode rows from `1,000` to `2,000`. A high-evidence UPC-pool entity batch and follow-up product-seed pass activated eleven more prefix-backed producers, bringing runtime producer rows to `98`; current `producerResearch` rows mapped to live entities are `100`.
 
@@ -14,21 +16,21 @@ The old API-oriented plan was useful when raw data was not staged, but it is no 
 
 Current top-level state:
 
-- Live entities: `557`
-- Entities with `fecCommitteeId`: `190`
-- Entities with `donationSummary`: `190`
-- Entities with non-empty `activeCycles`: `180`
-- Zero-cycle entity summaries retained for known committee IDs: `10`
-- Entities with `associatedPersonIds`: `72`
-- Live people: `1046`
-- People with `donationSummary`: `1027`
-- People linked to at least one entity: `91`
-- Bundled people: `1046`
-- Bundled people with `donationSummary`: `1027`
-- Runtime product producers: `98`
+- Live entities: `753`
+- Entities with `fecCommitteeId`: `239`
+- Entities with `donationSummary`: `239`
+- Entities with non-empty `activeCycles`: `227`
+- Zero-cycle entity summaries retained for known committee IDs: `12`
+- Entities with `associatedPersonIds`: `76`
+- Live people: `1071`
+- People with `donationSummary`: `1070`
+- People linked to at least one entity: `111`
+- Bundled people: `1071`
+- Bundled people with `donationSummary`: `1070`
+- Runtime product producers: `111`
 - Runtime exact product barcode rows: `2000`
 - Product `producerResearch` rows: `209`
-- Product `producerResearch` rows mapped to live entity IDs: `100`
+- Product `producerResearch` rows mapped to live entity IDs: `115`
 
 This data is neutral by design. The pipeline classifies and presents evidence from public records; it does not optimize for a party, ideology, or desired outcome.
 

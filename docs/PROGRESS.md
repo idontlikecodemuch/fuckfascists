@@ -12,6 +12,33 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: May 27, 2026 ET — FEC bulk refresh and hydration
+
+**Branch:** main worktree, direct local edits. Existing dirty worktree preserved.
+
+**Focus:** Freshen local FEC bulk inputs, rehydrate entity and people donation data from bulk, and document a safer future refresh policy.
+
+**Shipped:**
+
+- Downloaded refreshed 2026 FEC bulk archives for committee master, candidate master, committee-candidate linkage, PAS2, OTH, and individual contributions. The 2026 individual `by_date` shards were replaced so stale shards do not double-count.
+- Refreshed OpenStates legislator CSVs for Line 29 classification: `52` succeeded, `0` failed, `7,449` legislators plus header.
+- Rebuilt `committee-beneficiary-classification-2026-05-27` and hydrated `assets/data/entities.json` from local PAS2/OTH bulk. Current entity state: `753` live entities, `239` with FEC committee IDs and donation summaries, `227` with non-empty active cycles.
+- Rebuilt the people top-donor report from `137` individual-contribution shards across `2016-2026`, synced `people.json`, bulk-hydrated `1,070/1,071` people, applied the May 27 people classification preview, reconciled V1 entity links, and rebuilt `people.bundle.json`.
+- Added `docs/FEC_BULK_REFRESH_2026-05-27.md` with archive metadata, hashes, row counts, hydration results, verification, and the future refresh policy.
+
+**Future FEC refresh policy:**
+
+- FEC can amend/backfill older records, so future updates should be file-version aware rather than append-only by transaction date.
+- Routine app refreshes should redownload only changed bulk archives, then rehydrate a rolling window from scratch. In 2026, the default app window should be `2020, 2022, 2024, 2026`; older cycles are for explicit deep audits.
+
+**Verification:**
+
+- `npm run audit:aliases` -> exit 0. Exact alias duplicates: `0`; parent/child overlap: `0`; remaining warnings are known single-word/canonical-drift classes.
+- `node scripts/verify-data-integrity.mjs` -> exit 0. Live entities: `753`; live people: `1071`; declared V2 forward refs are preserved.
+- `npm run typecheck` -> exit 0.
+- `npm test -- --runInBand --silent features/Scorecard/data/__tests__/aggregateScorecard.test.ts` -> 1 suite / 28 tests passed.
+- `node --test scripts/__tests__/fecNameFuzz.test.mjs` -> 17 tests passed.
+
 ### Session: May 26, 2026 ET — Product entity coverage batch
 
 **Branch:** main worktree, direct local edits. Existing dirty worktree preserved.

@@ -27,6 +27,7 @@ These documents are the authoritative reference for the project. New instances s
 |---|---|---|
 | Progress & Current State | /docs/PROGRESS.md | Read this first — current sprint status, recent sessions, immediate next steps |
 | Data Cleaning Audit Handoff | /docs/DATA_CLEANING_AUDIT_2026-04-20.md | Current April 2026 data-cleaning audit packet — local data inputs, changed files, verification commands, metrics, and known review findings |
+| FEC Bulk Refresh 2026-05-27 | /docs/FEC_BULK_REFRESH_2026-05-27.md | Latest local FEC refresh record — downloaded archive metadata, hydration results, verification, and future rolling-window policy |
 | Progress Archive | /docs/PROGRESS_ARCHIVE.md | Older session logs (pre-March 12, 2026) — reference only, not required reading |
 | Products Data Pipeline | /docs/PRODUCTS_DATA_PIPELINE.md | Deep reference for `products.json`, the OFF bulk sync process, checkpoints, cleanup heuristics, and current coverage |
 | App Spec (original) | /docs/FuckFascists_AppSpec_ORIGINAL.docx | Canonical product vision as originally written — do not modify |
@@ -429,7 +430,7 @@ Hydrates corporate/entity PAC donation summaries from local FEC PAS2 and OTH bul
 Run `npm run audit:aliases` and `node scripts/verify-data-integrity.mjs` after this script.
 
 ### People bulk scripts
-`npm run build:people:bulk-top`, `npm run sync:people:bulk-top`, `npm run hydrate:people:bulk`, `npm run build:people:entity-review-queue`, and `npm run strip:people:raw` maintain `people.json` and `people.bundle.json` from local FEC individual-contribution bulk files. Cycles include `2026`. `sync:people:bulk-top` keeps extra pre-existing people by default; `--drop-extra` intentionally discards people outside the top-donor merge and should be treated as destructive.
+`npm run build:people:bulk-top`, `npm run sync:people:bulk-top`, `npm run hydrate:people:bulk`, `npm run build:people:entity-review-queue`, and `npm run strip:people:raw` maintain `people.json` and `people.bundle.json` from local FEC individual-contribution bulk files. Cycles include `2026`. `sync:people:bulk-top` keeps extra pre-existing people by default; `--drop-extra` intentionally discards people outside the top-donor merge and should be treated as destructive. Routine future refreshes should use a rolling app window of the current even-year cycle plus the previous three even-year cycles (in 2026: `2020, 2022, 2024, 2026`) unless doing an explicit historical audit.
 
 The hydrator matches FEC contributor-name rows to our people using FEC-flavored fuzz (`scripts/lib/fecNameFuzz.mjs`, a verbatim port of openFEC's `parse_fulltext`). It tokenizes on `\W+`, strips non-ASCII via NFKD + ascii-ignore, and requires every query token to prefix-match some field token (Postgres tsquery `:*` AND semantics). This matches FEC's web UI coverage exactly — if FEC's site returns a row for a contributor_name query, ours does too. Name variants (`BEZOS, JEFF` ↔ `BEZOS, JEFFREY PRESTON`) no longer need to be pre-enumerated in `fecSearchNames`, though the field remains supported as an escape hatch for exotic filings.
 
@@ -897,6 +898,7 @@ After writing any file, scan it once for deprecated APIs, `.then()` chains, `var
 - `people.json` + `fecContributorId` (or `fecSearchNames`) -> individual Schedule A contributions. Preferred broad hydration is local bulk via `scripts/hydrate-people-from-bulk.mjs`.
 - Local bulk hydration for people uses downloaded FEC `indiv*/by_date/` files plus `cm*.txt` committee masters.
 - Do not conflate — different FEC endpoints, different data semantics, different query patterns.
+- Future routine FEC refreshes should be file-version aware: track each bulk archive's remote `Last-Modified`, byte size, and local SHA-256, redownload only changed archives, then rehydrate the rolling app window from scratch. FEC can backfill or amend old filings, so row-date-only append logic is not safe. Use older cycles only for explicit deep audits; see `docs/FEC_BULK_REFRESH_2026-05-27.md`.
 
 ### People ↔ entity maintenance workflow
 - Treat `assets/data/people.json` as a generated artifact, not the hand-edited source of truth for person↔entity relationship data.
