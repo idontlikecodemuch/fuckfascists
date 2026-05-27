@@ -107,12 +107,14 @@ Validation notes:
 
 FEC can change older years through amended filings, late filings, and metadata corrections. Future updates should therefore be file-version aware, not append-only by transaction date.
 
-Routine refreshes should:
+The project only needs this refresh quarterly for V1. Keep favoring correctness and auditability over shaving minutes from the local pipeline.
+
+Quarterly refreshes should:
 
 1. Track each downloaded archive's remote `Last-Modified`, byte size, and local SHA-256 in a generated manifest.
 2. Redownload and extract only archives whose metadata or hash changed.
-3. Rehydrate a rolling window from scratch rather than trying to append rows.
-4. Use the current even-year cycle plus the previous three even-year cycles as the default app window. In 2026, that is `2020, 2022, 2024, 2026`.
-5. Run older cycles only for explicit deep audits or historical-baseline refreshes.
+3. Rehydrate from scratch rather than trying to append rows.
 
 This May 27 pass used the deeper `2016-2026` continuity window because it was the first full pull from freshly downloaded 2026 archives.
+
+Potential V1.5 optimization: add an explicit rolling app window of the current even-year cycle plus the previous three even-year cycles. In 2026, that would be `2020, 2022, 2024, 2026`. Older cycles can remain available for explicit deep audits or historical-baseline refreshes.

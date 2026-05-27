@@ -29,7 +29,8 @@ This document is updated continuously. New instances should read this first — 
 **Future FEC refresh policy:**
 
 - FEC can amend/backfill older records, so future updates should be file-version aware rather than append-only by transaction date.
-- Routine app refreshes should redownload only changed bulk archives, then rehydrate a rolling window from scratch. In 2026, the default app window should be `2020, 2022, 2024, 2026`; older cycles are for explicit deep audits.
+- V1 only needs quarterly FEC refreshes. Keep the default path correctness-first: redownload changed archives, then rehydrate from scratch.
+- Limited rolling-window rehydration is a potential V1.5 optimization, not urgent. In 2026, that window would be `2020, 2022, 2024, 2026`; older cycles remain available for explicit deep audits.
 
 **Verification:**
 
