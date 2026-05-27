@@ -3,6 +3,7 @@ import { Keyboard } from 'react-native';
 import type { MatchingDeps } from '../../../core/matching';
 import { matchEntity } from '../../../core/matching';
 import { normalizeHost } from '../../../core/matching';
+import { haptics } from '../../../core/fx/haptics';
 import { buildScanResult } from '../utils/buildScanResult';
 import { MapKitSearch } from '../nativeModules/MapKitSearch';
 import type { MapKitPOI } from '../nativeModules/MapKitSearch';
@@ -180,6 +181,9 @@ export function useTapSearch(
         }
 
         setLatestTapBatch(batchResults);
+        if (batchResults.length > 0 && !suppressNoMatch) {
+          haptics.mapEntity();
+        }
 
         // Ghost marker: show when tap found POI names but none matched.
         // Append-only — once cap is reached, no new ghosts are added.
@@ -232,6 +236,7 @@ export function useTapSearch(
    */
   const handleMapPress = useCallback(
     async (e: { nativeEvent: { coordinate: LatLng } }) => {
+      haptics.tap();
       // Tap on the map is also the "get me out of here" gesture for a stuck
       // keyboard (#111/#112). Dismiss before any debounce-drop so a stuck
       // user still gets the keyboard closed even if the tap itself is a no-op.
@@ -289,6 +294,7 @@ export function useTapSearch(
    */
   const handlePoiClick = useCallback(
     async (e: PoiClickEvent) => {
+      haptics.tap();
       // Android counterpart to the iOS map-tap dismiss — close the keyboard
       // before any search work so a stuck user always gets out (#111/#112).
       Keyboard.dismiss();

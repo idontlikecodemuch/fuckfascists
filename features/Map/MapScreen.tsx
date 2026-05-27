@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import { View, Image, Pressable, Animated, StyleSheet, SafeAreaView, Linking, Platform, Keyboard, useWindowDimensions, Text } from 'react-native';
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, type MapStyleElement } from 'react-native-maps';
 import type { Entity, PoliticalPerson } from '../../core/models';
 import { getAssociatedPeople } from '../../core/models';
 import type { MatchingDeps } from '../../core/matching';
@@ -28,6 +28,7 @@ import { NoMatchToast } from './components/NoMatchToast';
 import { NoMatchMarker } from './components/NoMatchMarker';
 import { Tooltip } from '../../core/ui/Tooltip';
 import { useCardOverlayAnimation } from '../../core/ui/useCardOverlayAnimation';
+import { haptics } from '../../core/fx/haptics';
 import type { MapPin, ScanResult } from './types';
 import { MapControls } from './components/MapControls';
 import { useMapHints } from './hooks/useMapHints';
@@ -73,6 +74,27 @@ const HINT_TAIL: Record<HintId, { tailDirection: 'up' | 'down' | null; tailOffse
   tap: { tailDirection: null },
   barcode: { tailDirection: 'down', tailOffset: theme.space.xl, tailAlign: 'right' },
 };
+
+const DARK_MAP_STYLE: MapStyleElement[] = [
+  { elementType: 'geometry', stylers: [{ color: '#1f2328' }] },
+  { elementType: 'labels.icon', stylers: [{ visibility: 'off' }] },
+  { elementType: 'labels.text.fill', stylers: [{ color: '#d7dce2' }] },
+  { elementType: 'labels.text.stroke', stylers: [{ color: '#1f2328' }] },
+  { featureType: 'administrative', elementType: 'geometry', stylers: [{ color: '#4f5864' }] },
+  { featureType: 'administrative.locality', elementType: 'labels.text.fill', stylers: [{ color: '#f5d26b' }] },
+  { featureType: 'poi', elementType: 'geometry', stylers: [{ color: '#2b3138' }] },
+  { featureType: 'poi', elementType: 'labels.text.fill', stylers: [{ color: '#c5ccd4' }] },
+  { featureType: 'poi.business', elementType: 'labels.text.fill', stylers: [{ color: '#f0c75e' }] },
+  { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#343b44' }] },
+  { featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#15191e' }] },
+  { featureType: 'road', elementType: 'labels.text.fill', stylers: [{ color: '#b7bec7' }] },
+  { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#4b535f' }] },
+  { featureType: 'road.highway', elementType: 'geometry.stroke', stylers: [{ color: '#252b32' }] },
+  { featureType: 'transit', elementType: 'geometry', stylers: [{ color: '#2b3138' }] },
+  { featureType: 'transit.station', elementType: 'labels.text.fill', stylers: [{ color: '#d7dce2' }] },
+  { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#111820' }] },
+  { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#7f8a96' }] },
+];
 
 export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummary }: MapScreenProps) {
   const insets = useSafeAreaInsets();
@@ -132,6 +154,11 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
     tapPins, tapNoMatch, tapNoMatchCoords, latestTapBatch, setLatestTapBatch,
     handleMapPress, handlePoiClick, autoScan, resetTapPins, clearLatestTapBatch, markTapPinAvoided,
   } = useTapSearch(deps, location.areaHash ?? '', regionRef, avoidedTodayRef);
+
+  const handleAndroidMapPress = useCallback(() => {
+    haptics.tap();
+    Keyboard.dismiss();
+  }, []);
 
   // Auto-scan: when the map opens and location resolves, run a POI search at
   // the user's coordinates. Uses autoScan (not handleMapPress) to suppress
@@ -300,12 +327,14 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
         <MapView
           ref={mapRef} style={styles.map}
           provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : undefined}
+          customMapStyle={Platform.OS === 'android' ? DARK_MAP_STYLE : undefined}
+          userInterfaceStyle={Platform.OS === 'ios' ? 'dark' : undefined}
           initialRegion={defaultRegion} onRegionChangeComplete={handleRegionChange}
           // iOS: handleMapPress runs MKLocalSearch (and Keyboard.dismiss inside).
           // Android: empty-map tap doesn't fire a search, but it IS the natural
           // "tap outside" gesture, so wire a lightweight keyboard dismiss there
           // too (#111/#112). POI taps on Android go through onPoiClick.
-          onPress={Platform.OS === 'ios' ? handleMapPress : () => Keyboard.dismiss()}
+          onPress={Platform.OS === 'ios' ? handleMapPress : handleAndroidMapPress}
           onPoiClick={handlePoiClick}
           showsUserLocation showsMyLocationButton={false} accessibilityLabel={mapCopy.mapLabel}
         >
@@ -318,6 +347,7 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
             return (
               <FlagMarker key={`${pin.id}-${pin.coords.latitude}-${pin.coords.longitude}`} coordinate={pin.coords} name={pin.name} confidence={pinResult?.confidence ?? 1} avoided={pin.avoided} hasSignal={hasSignal}
                 onPress={pinResult ? () => {
+                  haptics.mapEntity();
                   const co = allPins.filter((p): p is MapPin & { result: ScanResult } => p.coords.latitude === pin.coords.latitude && p.coords.longitude === pin.coords.longitude && p.result !== null);
                   co.length >= 2 ? setLatestTapBatch(co.map((p) => p.result)) : handleNewResult(pinResult);
                 } : undefined} />
