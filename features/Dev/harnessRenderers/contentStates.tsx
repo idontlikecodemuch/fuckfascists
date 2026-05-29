@@ -193,6 +193,7 @@ export function renderNotificationThursday(): React.ReactElement {
         onDismiss={noop}
         dismissA11yLabel={platformsCopy.nudgeDismissA11y}
         style={s.nudgeBannerPos}
+        panelStyle={s.nudgeBannerPanel}
       />
       {/* Map placeholder below the banner */}
       <View style={s.notifMapPlaceholder} />
@@ -228,6 +229,7 @@ const s = StyleSheet.create({
   scanFootnote: { ...theme.type.bodyS, color: theme.colors.textSecondary, marginTop: md },
   scannerPlaceholder: { marginTop: lg, height: 200, backgroundColor: theme.colors.surface1, borderWidth: 2, borderColor: fb, alignItems: 'center', justifyContent: 'center' },
   scannerText: { ...theme.type.displayS, color: theme.colors.textSecondary, letterSpacing: 3 },
-  nudgeBannerPos: { marginHorizontal: sm, marginTop: sm },
+  nudgeBannerPos: { position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10 },
+  nudgeBannerPanel: { paddingTop: sm },
   notifMapPlaceholder: { flex: 1, backgroundColor: '#1a2744' },
 });

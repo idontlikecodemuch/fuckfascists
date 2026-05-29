@@ -162,7 +162,7 @@ export function AppShell({ adapter, entities, people }: AppShellProps) {
   };
 
   const handleNudgePress = useCallback(() => {
-    setActiveTab('platforms');
+    setActiveTab('report');
   }, []);
 
   const handleOpenHarness = useCallback(() => {

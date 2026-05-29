@@ -514,9 +514,9 @@ All exports are `ViewStyle` objects. Spread into component styles.
 
 ## 19. AlertBanner (core/ui)
 
-**Purpose:** Reusable cockpit-cyan alert banner for app-wide notices (Thursday nudge, future alerts). Purely presentational — the parent owns positioning, trigger logic, and dismiss state.
+**Purpose:** Reusable cockpit-cyan alert banner for app-wide notices (Thursday nudge, future alerts). Purely presentational — the parent owns positioning, trigger logic, dismiss state, and motion.
 
-**Location:** `core/ui/AlertBanner.tsx`. First consumer: `features/Platforms/components/NudgeBanner.tsx`.
+**Location:** `core/ui/AlertBanner.tsx`. Primary consumer: `features/Platforms/components/NudgeBanner.tsx`.
 
 | Property | Token |
 |---|---|
@@ -536,10 +536,15 @@ All exports are `ViewStyle` objects. Spread into component styles.
 - `bodyA11yLabel?: string` — overrides the auto-built a11y label (title + body).
 - `dismissA11yLabel?: string` — label for the × button. Defaults to "Dismiss".
 - `style?: StyleProp<ViewStyle>` — positioning/layout style applied by the parent.
+- `panelStyle?: StyleProp<ViewStyle>` — panel override for safe-area/full-bleed variants.
 
 **Layout:** Row layout with flex body + fixed-width × dismiss. `paddingHorizontal: space.lg`, `paddingVertical: space.sm`, `minHeight: a11y.minTapTarget`.
 
-**Animation:** Wiggle via `useWiggleAnimation()` (`translateY` / `rotate` / `scale`). Reduced motion disables the animation via the hook.
+**Animation:** `AlertBanner` has no built-in animation. Top-level alert motion belongs to the owning component. The Thursday `NudgeBanner` uses a one-time slide-down/settle on mount and swipe-up exit; reduced motion renders it static.
+
+**Thursday nudge placement:** Full-bleed top strip (`top: 0`, `left: 0`, `right: 0`) with blue extending behind the status/safe area. Content padding includes `insets.top` so text and the × stay below the notch/status bar. Do not scale the whole banner; container width must remain stable.
+
+**Dismissal:** Keep the × dismiss control and support swipe-up dismissal for top-origin alert banners. Tapping the Thursday nudge routes to the Scorecard tab and dismisses the banner for the session.
 
 **Accessibility:** Container has `accessibilityRole="alert"`. Body press (when `onPress`) uses `accessibilityRole="button"` and auto-builds label from `title` + `body` unless `bodyA11yLabel` overrides. × dismiss has `hitSlop: 8` and a button role.
 

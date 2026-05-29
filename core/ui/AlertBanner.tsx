@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { AccessibilityInfo, Animated, Pressable, StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
+import React from 'react';
+import { Pressable, StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
 import { bevelFocusRaised } from '../../design/bevel';
 import { theme } from '../../design/tokens';
 import { fillSelf, flexChild } from '../../design/layout';
-import { ALERT_BANNER_PULSE_MS } from '../../config/constants';
 
 interface AlertBannerProps {
   /** Short Bungee label shown above the body. Optional. */
@@ -20,19 +19,17 @@ interface AlertBannerProps {
   dismissA11yLabel?: string;
   /** Positioning style applied by the parent. */
   style?: StyleProp<ViewStyle>;
+  /** Panel style applied by the parent for safe-area/full-bleed variants. */
+  panelStyle?: StyleProp<ViewStyle>;
 }
 
 /**
  * Reusable alert banner — cockpit cyan surface with bevelFocusRaised frame,
- * outer cyan glow, and a slow scale pulse for "incoming" emphasis.
+ * outer cyan glow, and compact alert copy.
  *
- * Presentational component. The parent owns positioning, trigger logic, and
- * dismiss state. See NudgeBanner for the Thursday scorecard example.
- *
- * Reduced motion: pulse holds at scale 1, no animation.
- *
- * #154 — swapped the wiggle (translateY + rotate + scale) for a scale-only
- * pulse so the alert reads more authoritative. Tooltip keeps the wiggle.
+ * Presentational component. The parent owns positioning, trigger logic,
+ * dismiss state, and motion. See NudgeBanner for the Thursday scorecard
+ * example.
  */
 export function AlertBanner({
   title,
@@ -42,9 +39,8 @@ export function AlertBanner({
   bodyA11yLabel,
   dismissA11yLabel,
   style,
+  panelStyle,
 }: AlertBannerProps) {
-  const scale = useScalePulse();
-
   const content = (
     <View style={styles.content}>
       {title && (
@@ -59,11 +55,11 @@ export function AlertBanner({
   );
 
   return (
-    <Animated.View
-      style={[styles.outer, style, { transform: [{ scale }] }]}
+    <View
+      style={[styles.outer, style]}
       accessibilityRole="alert"
     >
-      <View style={styles.panel}>
+      <View style={[styles.panel, panelStyle]}>
         {onPress ? (
           <Pressable
             onPress={onPress}
@@ -91,40 +87,11 @@ export function AlertBanner({
           </Pressable>
         )}
       </View>
-    </Animated.View>
+    </View>
   );
 }
 
 const DISMISS_ICON_SIZE = 22;
-
-/**
- * Slow scale pulse — 1.0 → 1.04 → 1.0 — for an "incoming" alert. Local to
- * AlertBanner; Tooltip keeps `useWiggleAnimation` for its hint behavior.
- *
- * Reduced motion: returns Animated.Value(1), no loop.
- */
-function useScalePulse(): Animated.Value | Animated.AnimatedInterpolation<number> {
-  const anim = useRef(new Animated.Value(0)).current;
-  const [reducedMotion, setReducedMotion] = useState(false);
-
-  useEffect(() => {
-    let cancelled = false;
-    AccessibilityInfo.isReduceMotionEnabled().then((enabled) => {
-      if (cancelled) return;
-      if (enabled) { setReducedMotion(true); return; }
-      Animated.loop(
-        Animated.sequence([
-          Animated.timing(anim, { toValue: 1, duration: ALERT_BANNER_PULSE_MS / 2, useNativeDriver: true }),
-          Animated.timing(anim, { toValue: 0, duration: ALERT_BANNER_PULSE_MS / 2, useNativeDriver: true }),
-        ]),
-      ).start();
-    });
-    return () => { cancelled = true; anim.stopAnimation(); };
-  }, [anim]);
-
-  if (reducedMotion) return new Animated.Value(1);
-  return anim.interpolate({ inputRange: [0, 1], outputRange: [1, 1.04] });
-}
 
 const styles = StyleSheet.create({
   outer: {
