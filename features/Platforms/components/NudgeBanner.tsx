@@ -9,6 +9,8 @@ import { NUDGE_DAY } from '../../../config/constants';
 interface NudgeBannerProps {
   /** Called when the user taps the banner body (navigates to Scorecard tab). */
   onPress: () => void;
+  /** Called when the banner becomes visible/hidden so screens can avoid it. */
+  onVisibleChange?: (visible: boolean) => void;
 }
 
 const HIDDEN_OFFSET_Y = -180;
@@ -25,7 +27,7 @@ const SWIPE_DISMISS_VY = -0.65;
  * AlertBanner handles the visual surface; this file owns the trigger, motion,
  * dismiss gestures, and safe-area/full-bleed positioning.
  */
-export function NudgeBanner({ onPress }: NudgeBannerProps) {
+export function NudgeBanner({ onPress, onVisibleChange }: NudgeBannerProps) {
   const [dismissed, setDismissed] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const insets = useSafeAreaInsets();
@@ -34,6 +36,11 @@ export function NudgeBanner({ onPress }: NudgeBannerProps) {
 
   const today = new Date().getDay(); // 0=Sun
   const isNudgeDay = today === NUDGE_DAY;
+
+  useEffect(() => {
+    onVisibleChange?.(isNudgeDay && !dismissed);
+    return () => { onVisibleChange?.(false); };
+  }, [dismissed, isNudgeDay, onVisibleChange]);
 
   useEffect(() => {
     let cancelled = false;
@@ -54,16 +61,45 @@ export function NudgeBanner({ onPress }: NudgeBannerProps) {
     entryY.setValue(HIDDEN_OFFSET_Y);
     Animated.sequence([
       Animated.timing(entryY, {
-        toValue: 3,
+        toValue: 0,
         duration: 220,
         easing: Easing.out(Easing.cubic),
         useNativeDriver: true,
       }),
-      Animated.spring(entryY, {
+      Animated.timing(entryY, {
+        toValue: 5,
+        duration: 70,
+        easing: Easing.inOut(Easing.quad),
+        useNativeDriver: true,
+      }),
+      Animated.timing(entryY, {
+        toValue: -3,
+        duration: 70,
+        easing: Easing.inOut(Easing.quad),
+        useNativeDriver: true,
+      }),
+      Animated.timing(entryY, {
+        toValue: 4,
+        duration: 70,
+        easing: Easing.inOut(Easing.quad),
+        useNativeDriver: true,
+      }),
+      Animated.timing(entryY, {
+        toValue: -2,
+        duration: 70,
+        easing: Easing.inOut(Easing.quad),
+        useNativeDriver: true,
+      }),
+      Animated.timing(entryY, {
+        toValue: 2,
+        duration: 70,
+        easing: Easing.inOut(Easing.quad),
+        useNativeDriver: true,
+      }),
+      Animated.timing(entryY, {
         toValue: 0,
-        damping: 13,
-        stiffness: 180,
-        mass: 0.7,
+        duration: 70,
+        easing: Easing.inOut(Easing.quad),
         useNativeDriver: true,
       }),
     ]).start();
@@ -147,6 +183,7 @@ export function NudgeBanner({ onPress }: NudgeBannerProps) {
         onDismiss={handleDismiss}
         dismissA11yLabel={platformsCopy.nudgeDismissA11y}
         panelStyle={{ paddingTop: insets.top + theme.space.sm }}
+        showSparkles
       />
     </Animated.View>
   );

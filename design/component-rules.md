@@ -537,12 +537,15 @@ All exports are `ViewStyle` objects. Spread into component styles.
 - `dismissA11yLabel?: string` — label for the × button. Defaults to "Dismiss".
 - `style?: StyleProp<ViewStyle>` — positioning/layout style applied by the parent.
 - `panelStyle?: StyleProp<ViewStyle>` — panel override for safe-area/full-bleed variants.
+- `showSparkles?: boolean` — renders ambient reward-yellow sparkles inside the text area for high-salience alerts.
 
 **Layout:** Row layout with flex body + fixed-width × dismiss. `paddingHorizontal: space.lg`, `paddingVertical: space.sm`, `minHeight: a11y.minTapTarget`.
 
-**Animation:** `AlertBanner` has no built-in animation. Top-level alert motion belongs to the owning component. The Thursday `NudgeBanner` uses a one-time slide-down/settle on mount and swipe-up exit; reduced motion renders it static.
+**Animation:** `AlertBanner` has no built-in animation. Top-level alert motion belongs to the owning component. The Thursday `NudgeBanner` uses a one-time slide-down plus three small vertical jiggle beats on mount and swipe-up exit; reduced motion renders it static.
 
-**Thursday nudge placement:** Full-bleed top strip (`top: 0`, `left: 0`, `right: 0`) with blue extending behind the status/safe area. Content padding includes `insets.top` so text and the × stay below the notch/status bar. Do not scale the whole banner; container width must remain stable.
+**Thursday nudge placement:** Full-bleed top strip (`top: 0`, `left: 0`, `right: 0`) with blue extending behind the status/safe area. Content padding includes `insets.top` so text and the × stay below the notch/status bar. Do not scale the whole banner; container width must remain stable. When visible on Map, the shell passes a small `topContentOffset` so the search bar does not crowd the banner.
+
+**Color treatment:** Keep the panel in `colors.focusAccent` so it reads as an app-wide alert, not an error/reward state. Use `showSparkles` for Scorecard-related emphasis instead of changing the whole panel to amber/red.
 
 **Dismissal:** Keep the × dismiss control and support swipe-up dismissal for top-origin alert banners. Tapping the Thursday nudge routes to the Scorecard tab and dismisses the banner for the session.
 

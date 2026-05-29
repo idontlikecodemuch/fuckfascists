@@ -68,6 +68,7 @@ export function AppShell({ adapter, entities, people }: AppShellProps) {
   const [activeTab, setActiveTab] = useState<Tab | null>(null);
   const [harnessOpen, setHarnessOpen] = useState(false);
   const [scorecardPresentationActive, setScorecardPresentationActive] = useState(false);
+  const [nudgeVisible, setNudgeVisible] = useState(false);
   // Incrementing key forces screen remount after beta reset, clearing all
   // in-memory state (map pins, tap results, etc.).
   const [resetKey, setResetKey] = useState(0);
@@ -140,6 +141,7 @@ export function AppShell({ adapter, entities, people }: AppShellProps) {
             adapter={adapter}
             fetchOrgs={fetchOrgs}
             fetchOrgSummary={fetchOrgSummary}
+            topContentOffset={showShellChrome && nudgeVisible ? theme.space.lg : 0}
           />
         );
       case 'platforms':
@@ -195,7 +197,7 @@ export function AppShell({ adapter, entities, people }: AppShellProps) {
   return (
     <View style={styles.root}>
       <View key={resetKey} style={styles.content}>{renderScreen()}</View>
-      {showShellChrome && <NudgeBanner onPress={handleNudgePress} />}
+      {showShellChrome && <NudgeBanner onPress={handleNudgePress} onVisibleChange={setNudgeVisible} />}
       {showShellChrome && <TabBar activeTab={activeTab} onSelect={setActiveTab} />}
       {betaEnabled && showShellChrome && (
         <BetaOverlay

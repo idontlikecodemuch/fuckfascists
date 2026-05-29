@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, Text, View, type StyleProp, type ViewStyle } fro
 import { bevelFocusRaised } from '../../design/bevel';
 import { theme } from '../../design/tokens';
 import { fillSelf, flexChild } from '../../design/layout';
+import { SparkleDecoration } from '../fx';
 
 interface AlertBannerProps {
   /** Short Bungee label shown above the body. Optional. */
@@ -21,6 +22,8 @@ interface AlertBannerProps {
   style?: StyleProp<ViewStyle>;
   /** Panel style applied by the parent for safe-area/full-bleed variants. */
   panelStyle?: StyleProp<ViewStyle>;
+  /** Ambient reward-yellow sparkles for high-salience alerts. */
+  showSparkles?: boolean;
 }
 
 /**
@@ -40,6 +43,7 @@ export function AlertBanner({
   dismissA11yLabel,
   style,
   panelStyle,
+  showSparkles = false,
 }: AlertBannerProps) {
   const content = (
     <View style={styles.content}>
@@ -51,6 +55,7 @@ export function AlertBanner({
       <Text style={styles.bodyText} allowFontScaling numberOfLines={2}>
         {body}
       </Text>
+      {showSparkles ? <SparkleDecoration /> : null}
     </View>
   );
 
@@ -132,6 +137,7 @@ const styles = StyleSheet.create({
   content: {
     ...flexChild,
     justifyContent: 'center',
+    overflow: 'visible',
   },
   bodyPress: {
     flex: 1,

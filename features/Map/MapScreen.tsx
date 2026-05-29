@@ -46,6 +46,8 @@ interface MapScreenProps {
   adapter: StorageAdapter;
   fetchOrgs: MatchingDeps['fetchOrgs'];
   fetchOrgSummary: MatchingDeps['fetchOrgSummary'];
+  /** Additional top spacing reserved by shell-level overlays. */
+  topContentOffset?: number;
 }
 
 /**
@@ -96,7 +98,7 @@ const DARK_MAP_STYLE: MapStyleElement[] = [
   { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#7f8a96' }] },
 ];
 
-export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummary }: MapScreenProps) {
+export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummary, topContentOffset = 0 }: MapScreenProps) {
   const insets = useSafeAreaInsets();
   const { width: screenWidth } = useWindowDimensions();
   const [searchText, setSearchText] = useState('');
@@ -319,7 +321,7 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
   // swipe-dismiss PanResponder runs independently.
   const { slideY, dimOpacity } = useCardOverlayAnimation(cardVisible);
   const headerBarHeight = Math.round(screenWidth / HEADER_BAR_ASPECT);
-  const SEARCH_TOP = insets.top + headerBarHeight + theme.space.md;
+  const SEARCH_TOP = insets.top + headerBarHeight + theme.space.md + topContentOffset;
 
   return (
     <SafeAreaView style={styles.container}>

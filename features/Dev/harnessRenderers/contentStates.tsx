@@ -194,6 +194,7 @@ export function renderNotificationThursday(): React.ReactElement {
         dismissA11yLabel={platformsCopy.nudgeDismissA11y}
         style={s.nudgeBannerPos}
         panelStyle={s.nudgeBannerPanel}
+        showSparkles
       />
       {/* Map placeholder below the banner */}
       <View style={s.notifMapPlaceholder} />
