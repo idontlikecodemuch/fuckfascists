@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import * as Notifications from 'expo-notifications';
 import type { DropSchedule } from '../types';
-import { getCurrentDropTime } from '../../../core/dropSchedule/computeDropTime';
 import { getLocalWeekStart } from '../../../core/utils/localDate';
+import { getScorecardDropTimeForTimestamp } from '../utils/dropTime';
 import {
   isBetaScheduleActive,
   getBetaDropTime,
@@ -40,6 +40,7 @@ export interface DropScheduleState {
  * instead of the weekly schedule. See core/dropSchedule/betaDropSchedule.ts.
  */
 export function useDropSchedule(): DropScheduleState {
+  const nowMs = Date.now();
   // weekOf is always the current Sat–Fri week regardless of beta override.
   // Only the drop timing changes — aggregation window stays the same.
   const weekOf = getLocalWeekStart();
@@ -49,7 +50,7 @@ export function useDropSchedule(): DropScheduleState {
     const betaDrop = getBetaDropTime();
     dropAt = betaDrop.getTime();
   } else {
-    dropAt = getCurrentDropTime().getTime();
+    dropAt = getScorecardDropTimeForTimestamp(nowMs).getTime();
   }
 
   const schedule: DropSchedule = { dropAt, weekOf };

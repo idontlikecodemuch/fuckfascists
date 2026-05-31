@@ -272,12 +272,16 @@ The scorecard covers a **Saturday–Friday** week. `getLocalWeekStart()` in `cor
 
 The app-side runtime flow for a real weekly drop is:
 
+0. **Startup cleanup preserves the pending scored week.** `App.tsx` calls
+   `purgeOldAvoidEvents(adapter, getScorecardAvoidPurgeCutoff())` so the
+   just-finished Sat-Fri week is not deleted after Saturday local rollover
+   before capture can run.
 1. **Drop fires** (or first app open after a missed drop). Effect in `features/Scorecard/ScorecardScreen.tsx` runs.
 2. **Aggregate** the scored week's events via `useScorecard` → `ScorecardViewData`.
-3. **Check for existing PNG** via `findLatestCard()` (`features/Scorecard/data/cardArchive.ts`) — lists the scorecards directory, sorts by mtime descending, returns the top. Robust to `weekOf` rollover at Saturday local midnight; does NOT reconstruct the filename from `weekOf`.
-4. **If no PNG:** show loader (`"Locking in my card.\nShredding the data."`), mount `ScorecardImage` off-screen, capture via `react-native-view-shot` → PNG saved as `Those-I-FCKd-{Month}-{DD}-{YY}.png`.
+3. **Check for an existing card for this exact week** via `findCardForWeek()` (`features/Scorecard/data/cardArchive.ts`) so an older archive card cannot satisfy a new drop.
+4. **If no card:** show loader (`"Locking in my card.\nShredding the data."`), mount `ScorecardImage` off-screen, capture via `react-native-view-shot` → JPG saved as `Those-I-FCKd-{Month}-{DD}-{YY}.jpg`.
 5. **Purge scoped events** via `purgeScoredWeekAvoidEvents(adapter, weekOf)` (`core/data/eventStore.ts`). Scope is strictly `[weekOf, weekOf+7)` so the live week can never be touched. Runs ONLY if capture succeeded.
-6. **Present** if we're inside the 48h presentation window (`SCORECARD_PRESENTATION_WINDOW_MS` from drop moment). Past that, tab falls back to `LivePreview` for the new live week; PNG remains in archive.
+6. **Present** if we're inside the 48h presentation window (`SCORECARD_PRESENTATION_WINDOW_MS` from drop moment). Past that, tab falls back to `LivePreview` for the new live week; the saved card remains in archive.
 
 **Capture failure semantics:** if `captureCard` returns `null` (disk full, render error, app killed), the effect sets state back to `'preview'` and the raw events are retained. Purge never runs. Next Scorecard tab visit retries. Under no circumstance is purge reached when capture failed — the "delete the data" promise requires we also keep the "save the card" promise.
 
@@ -308,12 +312,12 @@ their archived cards visible. New captures only ever produce `.jpg`.
 
 ## PREVIEW Stamp Semantics
 
-The captured PNG **never** carries a PREVIEW stamp — the bitmap is the
+The captured card image **never** carries a PREVIEW stamp — the bitmap is the
 shareable artifact and the drop retains its specialness. Pre-drop "this
 isn't the real drop" signaling lives in-app:
 
-- `ScorecardScreen` shows `<PreviewStamp />` as a fixed overlay when
-  `effectiveState === 'preview' || 'empty'`.
+- `ScorecardScreen` shows `<PreviewStamp />` as a fixed overlay only for
+  non-empty in-app previews.
 - `LivePreview` renders the live week with the same chrome but does not
   invoke `<ScorecardImage>` (no capture happens until the real drop).
 

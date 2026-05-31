@@ -16,6 +16,7 @@ import { AppShell } from './app/gates/AppShell';
 import { sharedCopy } from './copy/shared';
 import { SqliteAdapter } from './app/storage/SqliteAdapter';
 import { fetchEntityList, parseEntityList, fetchPeopleList, parsePeopleList, purgeOldAvoidEvents } from './core/data';
+import { getScorecardAvoidPurgeCutoff } from './features/Scorecard/utils/avoidRetention';
 import type { StorageAdapter } from './core/data';
 import type { Entity, PoliticalPerson } from './core/models';
 import bundledEntitiesRaw from './assets/data/entities.json';
@@ -45,13 +46,14 @@ export default function App() {
     parsePeopleList(bundledPeopleRaw)
   );
 
-  // Open SQLite, run migrations, and purge old avoid events (privacy stance).
+  // Open SQLite, run migrations, and purge old avoid events. The cutoff keeps
+  // the just-finished scorecard week available until capture can save it.
   useEffect(() => {
     let cancelled = false;
     (async () => {
       try {
         const a = await SqliteAdapter.open();
-        await purgeOldAvoidEvents(a);
+        await purgeOldAvoidEvents(a, getScorecardAvoidPurgeCutoff());
         if (!cancelled) setAdapter(a);
       } catch (err) {
         console.error('[App] Failed to open SQLite:', err);

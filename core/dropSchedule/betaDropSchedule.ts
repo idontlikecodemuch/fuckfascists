@@ -43,9 +43,8 @@ export function isBetaScheduleActive(): boolean {
  * Divides time since epoch into fixed periods. Within each period, picks an
  * hour offset via hash. Returns the drop moment as a Date.
  */
-export function getBetaDropTime(): Date {
-  const now = Date.now();
-  const periodIndex = Math.floor((now - EPOCH_MS) / INTERVAL_MS);
+export function getBetaDropTimeForTimestamp(nowMs: number): Date {
+  const periodIndex = Math.floor((nowMs - EPOCH_MS) / INTERVAL_MS);
   const periodStart = EPOCH_MS + periodIndex * INTERVAL_MS;
 
   // Pick an hour offset within the period (leave first and last hour as buffer)
@@ -54,6 +53,10 @@ export function getBetaDropTime(): Date {
   const dropMs = periodStart + hourOffset * 3_600_000;
 
   return new Date(dropMs);
+}
+
+export function getBetaDropTime(): Date {
+  return getBetaDropTimeForTimestamp(Date.now());
 }
 
 /**

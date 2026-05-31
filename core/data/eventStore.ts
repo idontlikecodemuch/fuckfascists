@@ -64,17 +64,18 @@ export async function purgeOldAvoidPins(
 }
 
 /**
- * Purges entity and platform avoid events older than the current week.
- * Call on app launch. Only the current Sat–Fri week's data is retained —
- * previous weeks' avoidance data is not kept (privacy stance).
+ * Purges entity and platform avoid events older than `beforeDate`.
+ * Call on app launch. By default only the current Sat-Fri week's data is
+ * retained, but callers may pass an earlier cutoff while a just-finished
+ * scorecard week is still pending capture.
  */
 export async function purgeOldAvoidEvents(
-  adapter: StorageAdapter
+  adapter: StorageAdapter,
+  beforeDate: string = getLocalWeekStart(),
 ): Promise<void> {
-  const weekStart = getLocalWeekStart();
   await Promise.all([
-    adapter.clearOldEntityAvoids(weekStart),
-    adapter.clearOldPlatformAvoids(weekStart),
+    adapter.clearOldEntityAvoids(beforeDate),
+    adapter.clearOldPlatformAvoids(beforeDate),
   ]);
 }
 
