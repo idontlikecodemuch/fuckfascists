@@ -276,16 +276,30 @@ The app-side runtime flow for a real weekly drop is:
    `purgeOldAvoidEvents(adapter, getScorecardAvoidPurgeCutoff())` so the
    just-finished Sat-Fri week is not deleted after Saturday local rollover
    before capture can run.
-1. **Drop fires** (or first app open after a missed drop). Effect in `features/Scorecard/ScorecardScreen.tsx` runs.
-2. **Aggregate** the scored week's events via `useScorecard` → `ScorecardViewData`.
-3. **Check for an existing card for this exact week** via `findCardForWeek()` (`features/Scorecard/data/cardArchive.ts`) so an older archive card cannot satisfy a new drop.
-4. **If no card:** show loader (`"Locking in my card.\nShredding the data."`), mount `ScorecardImage` off-screen, capture via `react-native-view-shot` → JPG saved as `Those-I-FCKd-{Month}-{DD}-{YY}.jpg`.
-5. **Purge scoped events** via `purgeScoredWeekAvoidEvents(adapter, weekOf)` (`core/data/eventStore.ts`). Scope is strictly `[weekOf, weekOf+7)` so the live week can never be touched. Runs ONLY if capture succeeded.
-6. **Present** if we're inside the 48h presentation window (`SCORECARD_PRESENTATION_WINDOW_MS` from drop moment). Past that, tab falls back to `LivePreview` for the new live week; the saved card remains in archive.
+1. **Drop fires** (or first app open after a missed drop). `useDropSchedule()`
+   schedules a local re-check at the drop boundary, so a user already sitting
+   on the Scorecard tab still flips into the post-drop path without a tab
+   switch or relaunch.
+2. Effect in `features/Scorecard/ScorecardScreen.tsx` runs.
+3. **Aggregate** the scored week's events via `useScorecard` → `ScorecardViewData`.
+4. **Check for an existing card for this exact week** via `findCardForWeek()` (`features/Scorecard/data/cardArchive.ts`) so an older archive card cannot satisfy a new drop.
+5. **If no card:** show loader (`"Locking in my card.\nShredding the data."`), mount `ScorecardImage` off-screen, capture via `react-native-view-shot` → JPG saved as `Those-I-FCKd-{Month}-{DD}-{YY}.jpg`.
+6. **Purge scoped events** via `purgeScoredWeekAvoidEvents(adapter, weekOf)` (`core/data/eventStore.ts`). Scope is strictly `[weekOf, weekOf+7)` so the live week can never be touched. Runs ONLY if capture succeeded.
+7. **Present** if we're inside the 48h presentation window (`SCORECARD_PRESENTATION_WINDOW_MS` from drop moment). Past that, tab falls back to `LivePreview` for the new live week; the saved card remains in archive.
 
 **Capture failure semantics:** if `captureCard` returns `null` (disk full, render error, app killed), the effect sets state back to `'preview'` and the raw events are retained. Purge never runs. Next Scorecard tab visit retries. Under no circumstance is purge reached when capture failed — the "delete the data" promise requires we also keep the "save the card" promise.
 
 See CLAUDE.md § "Scorecard capture-then-purge — privacy upgrade" and § "Scorecard — Drop Mechanics" for the full non-negotiables.
+
+### Simulator smoke test
+
+Verified 2026-05-31 on iPhone 16 Pro Max simulator:
+
+- Seeded one scored-week event for `2026-05-29` in the simulator SQLite DB.
+- Launched inside the active 48h window for the `2026-05-23` scored week.
+- Confirmed `CardPresentation` mounted full-screen, `Those-I-FCKd-May-23-26.jpg`
+  was written under `Documents/scorecards/`, and the raw scored-week event was
+  purged from `entity_avoid_events`.
 
 ---
 

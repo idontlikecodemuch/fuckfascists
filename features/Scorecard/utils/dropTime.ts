@@ -35,3 +35,14 @@ export function getScorecardDropTimeForTimestamp(nowMs: number): Date {
 
   return currentDrop;
 }
+
+export function getScorecardDropRefreshDelayMs(nowMs: number, dropAtMs: number): number | null {
+  const nextBoundaryMs = nowMs < dropAtMs
+    ? dropAtMs
+    : dropAtMs + SCORECARD_PRESENTATION_WINDOW_MS;
+
+  if (nowMs >= nextBoundaryMs) return null;
+
+  // Re-check just after the boundary so Date.now()-based comparisons settle.
+  return nextBoundaryMs - nowMs + 1000;
+}

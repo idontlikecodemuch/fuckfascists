@@ -1,8 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import * as Notifications from 'expo-notifications';
 import type { DropSchedule } from '../types';
 import { getLocalWeekStart } from '../../../core/utils/localDate';
-import { getScorecardDropTimeForTimestamp } from '../utils/dropTime';
+import {
+  getScorecardDropRefreshDelayMs,
+  getScorecardDropTimeForTimestamp,
+} from '../utils/dropTime';
 import {
   isBetaScheduleActive,
   getBetaDropTime,
@@ -40,7 +43,7 @@ export interface DropScheduleState {
  * instead of the weekly schedule. See core/dropSchedule/betaDropSchedule.ts.
  */
 export function useDropSchedule(): DropScheduleState {
-  const nowMs = Date.now();
+  const [nowMs, setNowMs] = useState(() => Date.now());
   // weekOf is always the current Sat–Fri week regardless of beta override.
   // Only the drop timing changes — aggregation window stays the same.
   const weekOf = getLocalWeekStart();
@@ -54,7 +57,7 @@ export function useDropSchedule(): DropScheduleState {
   }
 
   const schedule: DropSchedule = { dropAt, weekOf };
-  const hasDropped = Date.now() >= dropAt;
+  const hasDropped = nowMs >= dropAt;
 
   useEffect(() => {
     const targetMs = isBetaScheduleActive() && hasDropped
@@ -66,6 +69,17 @@ export function useDropSchedule(): DropScheduleState {
         // Notification permission may be denied — silently skip
       });
     }
+  }, [dropAt, hasDropped]);
+
+  useEffect(() => {
+    const delayMs = getScorecardDropRefreshDelayMs(Date.now(), dropAt);
+    if (delayMs === null) return undefined;
+
+    const timer = setTimeout(() => {
+      setNowMs(Date.now());
+    }, delayMs);
+
+    return () => clearTimeout(timer);
   }, [dropAt, hasDropped]);
 
   return { schedule, loading: false, hasDropped };
