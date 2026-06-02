@@ -64,9 +64,9 @@ export const mapCopy = {
   // showing these; copy now says so explicitly. barcodeNoMatch = OFF found
   // the product, we can't map it to a parent. barcodeNotInDatabase = OFF
   // has no record of the barcode. barcodeLookupFailed = OFF unreachable.
-  barcodeNoMatch: (label: string) => `Found \u201C${label}\u201D. No parent company on file yet \u2014 coverage is growing.`,
+  barcodeNoMatch: (label: string) => `Found \u201C${label}\u201D. Not on file yet \u2014 coverage is growing.`,
   barcodeNotInDatabase: (label: string) => `No record for \u201C${label}\u201D yet. Coverage is growing.`,
-  barcodeLookupFailed: (label: string) => `Lookup failed for \u201C${label}\u201D. Check your connection and try again.`,
+  barcodeLookupFailed: (label: string) => `Couldn\u2019t pull a record for \u201C${label}\u201D. Try again shortly.`,
   barcodeUnsupported: (_label: string) => `No barcode read. Try again.`,
   barcodeContextEyebrow: "SCANNED PRODUCT",
   barcodeContextLine: (label: string, barcode: string) => `${label} \u00b7 BARCODE ${barcode}`,

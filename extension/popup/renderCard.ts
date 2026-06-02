@@ -139,6 +139,7 @@ export function renderCard(flag: TabFlag): void {
         totalDems: flag.totalDems,
         totalO: flag.totalO,
         activeCycles: flag.activeCycles,
+        cycleTotals: flag.cycleTotals,
         fecCommitteeUrl: flag.fecCommitteeUrl ?? '',
         raw: [],
         lastUpdated: '',

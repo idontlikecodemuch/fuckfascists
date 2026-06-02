@@ -245,6 +245,41 @@ function buildActiveCycles(summary, rawRows, movedByCycleR, movedByCycleD) {
   return Array.from(cycles).sort((a, b) => a - b);
 }
 
+function buildCycleTotals(summary, activeCycles, rawRows, addedRCentsByCycle, addedDCentsByCycle) {
+  const byCycle = new Map();
+
+  for (const entry of Array.isArray(summary.cycleTotals) ? summary.cycleTotals : []) {
+    const [cycle, r = 0, d = 0, o = 0] = Array.isArray(entry) ? entry : [];
+    const numericCycle = Number(cycle || 0);
+    if (!Number.isFinite(numericCycle) || numericCycle <= 0) continue;
+    byCycle.set(numericCycle, { r: toCents(r), d: toCents(d), o: toCents(o) });
+  }
+
+  if (byCycle.size === 0) {
+    const recentCycle = Number(summary.recentCycle || 0);
+    if (Number.isFinite(recentCycle) && recentCycle > 0) {
+      byCycle.set(recentCycle, {
+        r: toCents(summary.recentRepubs),
+        d: toCents(summary.recentDems),
+        o: toCents(summary.recentO),
+      });
+    }
+  }
+
+  for (const cycle of activeCycles) {
+    const current = byCycle.get(cycle) ?? { r: 0, d: 0, o: 0 };
+    current.r += addedRCentsByCycle.get(cycle) ?? 0;
+    current.d += addedDCentsByCycle.get(cycle) ?? 0;
+    current.o = sumDisplayOtherCents(rawRows, cycle);
+    byCycle.set(cycle, current);
+  }
+
+  return activeCycles.map((cycle) => {
+    const totals = byCycle.get(cycle) ?? { r: 0, d: 0, o: 0 };
+    return [cycle, fromCents(totals.r), fromCents(totals.d), fromCents(totals.o)];
+  });
+}
+
 function sumDisplayOtherCents(rows, cycle = null) {
   return rows.reduce((sum, row) => {
     if (isExcludedDisplayLine(row?.lineNumber)) return sum;
@@ -640,6 +675,7 @@ async function main() {
       totalO: fromCents(nextDisplayOtherCents),
       recentO: fromCents(previewRecentOtherCents),
       activeCycles: nextActiveCycles,
+      cycleTotals: buildCycleTotals(summary, nextActiveCycles, nextRaw, movedRCentsByCycle, movedDCentsByCycle),
       raw: nextRaw,
       lastUpdated: generatedAt,
     };
@@ -685,6 +721,13 @@ async function main() {
       recentDems: finalRecentDems,
       recentO: fromCents(finalRecentOtherCents),
       activeCycles: finalActiveCycles,
+      cycleTotals: buildCycleTotals(
+        previewSummary,
+        finalActiveCycles,
+        nextRaw,
+        inherentlyRCentsByCycle,
+        inherentlyDCentsByCycle
+      ),
     };
 
     const currentLine23Amount = currentLine23.reduce((sum, row) => sum + Number(row.amount || 0), 0);

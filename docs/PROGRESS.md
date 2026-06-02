@@ -12,6 +12,78 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: May 31, 2026 ET — Scorecard presentation startup retention
+
+**Branch:** main worktree, direct local edits. Existing dirty worktree preserved.
+
+**Focus:** Fix the real missing-presentation path: the rendered card was fine, but startup cleanup could delete the just-finished scored week before `ScorecardScreen` captured it.
+
+**Shipped:**
+
+- Added `getScorecardAvoidPurgeCutoff()` so app startup preserves the pending scored week after Saturday local rollover while still purging older avoid events.
+- Updated `purgeOldAvoidEvents()` to accept an explicit cutoff date, and wired `App.tsx` to pass the scorecard-aware cutoff.
+- Added pure drop-time helpers for timestamp-based retention tests.
+- Corrected scorecard docs: runtime flow now references `findCardForWeek()` / JPG capture, and PREVIEW stamp semantics now match the current code.
+
+**Verification:**
+
+- `npm test -- features/Scorecard/utils/__tests__/avoidRetention.test.ts core/data/__tests__/eventStore.test.ts core/dropSchedule/__tests__/computeDropTime.test.ts --runInBand` -> 3 suites / 32 tests passed.
+- `npm run typecheck` -> exit 0.
+
+### Session: May 29, 2026 ET — FEC cycle totals rehydrate
+
+**Branch:** main worktree, direct local edits. Existing dirty worktree preserved.
+
+**Focus:** Fix the Map/extension "recent cycle" display so it can show the latest completed major FEC cycle without shipping classified raw rows.
+
+**Shipped:**
+
+- Added compact per-cycle party totals to entity and person donation summaries as `cycleTotals: [[cycle, R, D, O], ...]`, keyed by FEC cycle rather than calendar year.
+- Updated entity hydration, people hydration, people classification preview, and entity classification preview paths so future refreshes preserve `cycleTotals`.
+- Rehydrated `assets/data/entities.json` from local PAS2/OTH bulk: `239` entity summaries now have `cycleTotals`; row counts remained `224,474` PAS2 and `65,490` OTH, with `12` zero-row known committee summaries retained.
+- Rehydrated `assets/data/people.json` from local individual bulk: `1,070/1,071` people hydrated. Applied the existing people classification preview directly to `people.json`, then rebuilt `assets/data/people.bundle.json` in linked-only mode (`21,958` retained raw rows, `234,460` stripped).
+- Updated `deriveDonationSummary()` for app and extension parity: when compact cycle totals exist, the visible cycle is the latest completed major cycle. During 2026 this displays `2023-24` when that cycle has data, with a fallback to current active cycle for entities that only have 2026 activity.
+- Runtime data-size impact across `entities.json`, `people.bundle.json`, and `products.json`: raw `6,411,036 -> 6,688,229` (`+277,193` bytes); minified `5,834,900 -> 6,018,712` (`+183,812`); gzip-minified `741,951 -> 810,584` (`+68,633`).
+
+**Verification:**
+
+- `npm run hydrate:entities:bulk` -> `227` hydrated with rows, `12` zero-row summaries, row counts unchanged from May 27.
+- `npm run hydrate:people:bulk` -> `1,070/1,071` hydrated.
+- `node scripts/build-people-classification-preview.mjs --basename=people-classification-preview-2026-05-29-cycle-totals --preview-output=assets/data/people.json` -> wrote preview report and updated `people.json`.
+- `npm run strip:people:raw` -> bundle regenerated.
+- `npm run typecheck` -> exit `0`.
+- `npm test -- features/Map/components/__tests__/dataZoneSummary.test.ts core/api/__tests__/FECClient.test.ts --runInBand` -> 2 suites / 26 tests passed.
+- `node scripts/verify-data-integrity.mjs` -> exit `0`; remaining missing entity links are declared V2 forward refs.
+- `npm run audit:aliases` -> exit `0`; warnings are the known single-word/canonical-drift classes.
+
+### Session: May 29, 2026 ET — Scorecard drop quiet-hours polish
+
+**Branch:** main worktree, direct local edits. Existing dirty worktree preserved.
+
+**Focus:** Keep the scorecard drop varied while reducing annoying early-morning alerts.
+
+**Shipped:**
+
+- Updated scorecard drop selection to use `SCORECARD_DROP_WEIGHTED_HOUR_OFFSETS`: every hour in the broad Friday-evening → Saturday-afternoon window remains possible, while Friday evening and Saturday daytime US slots are repeated to make them more likely.
+- Added quiet notification bounds: `SCORECARD_QUIET_NOTIFICATION_FROM_HOUR = 23` and `SCORECARD_QUIET_NOTIFICATION_BEFORE_HOUR = 9`. If a user's local device time is from 11pm through 8:59am when the card drops, the scorecard notification is scheduled quiet: no sound, iOS passive interruption level, Android low-priority quiet channel with vibration disabled.
+- Moved scorecard drop notification scheduling to `AppShell` via `useScorecardDropNotification`, so users do not need to open the Scorecard tab first. The scheduler runs on startup and after Map/Scan/Track avoid writes, and only schedules when the scored week has at least `MIN_AVOIDS_FOR_DROP`.
+- Moved the Thursday platform nudge notification scheduler to `AppShell` too. It remains unconditional weekly reminder behavior; the in-app Thursday banner was already shell-level.
+- Imported 8 new TestFlight screenshot feedback records from `2026-05-24` onward and catalogued them locally as #176-#183 in `tools/review/TESTFLIGHT_REVIEW.md`. Crash-feedback split pull returned 0 records after Apple's combined endpoint returned a server-side 500.
+- Resolved #178: Track row/group-header sprite faces moved up by about 2-3px via `TRACK_ROW_FACE_ANCHOR_Y: 0.42 → 0.37`; arena grid anchors and sprite assets unchanged.
+- Resolved #183: Track arena figures now reset to undefeated on a new local day unless avoided again that day. Weekly avoids still count in rows/scorecard, but defeated sprite state only uses today's avoid actions plus the short immediate post-tap feedback state.
+- Resolved #180/#181 first-paint sizing regression class: Track FlatList items now render inside a fixed-stretch shell, group headers/day strips stretch explicitly, and the Scan standby panel layers use fixed-stretch geometry so RN/Fabric does not briefly paint intrinsic-width fills beside row AVOID buttons or inside the Scan panel.
+- Partially addressed #182: barcode scanner already had the prior continuous-autofocus fix; Scan copy now tells testers to back up until the bars are sharp and hold 6-10 inches away, matching the actual minimum-focus limitation in Expo Camera SDK 52. Documented the fallback path in `docs/BARCODE_SCAN_V1.md`: try a small Expo Camera default zoom first, then move to VisionCamera/native scanner support if real-device close-focus remains poor.
+- Diagnosed #177 without rehydrating; the follow-up session above implements the compact per-cycle totals and rehydrates the bundle.
+- Updated scorecard timing docs in `CLAUDE.md`, `ARCHITECTURE.md`, `docs/scorecard-design-spec-updated.md`, and `docs/SPEC_VS_CURRENT.md`.
+
+**Current-week check:** ISO week `2026-W22` still drops at `2026-05-30T09:00:00Z` (`Saturday, May 30, 2026 at 5:00am EDT`), so it will use the quiet notification path.
+
+**Verification:**
+
+- `npm test -- core/dropSchedule/__tests__/computeDropTime.test.ts --runInBand` -> 1 suite / 13 tests passed.
+- `npm test -- features/Platforms/__tests__/trackHelpers.test.ts --runInBand` -> 1 suite / 2 tests passed.
+- `npm run typecheck` -> exit 0.
+
 ### Session: May 27, 2026 ET — FEC bulk refresh and hydration
 
 **Branch:** main worktree, direct local edits. Existing dirty worktree preserved.
@@ -354,7 +426,7 @@ The U+2019 curly apostrophe was being dropped during react-native-view-shot's JP
 **Outstanding before submission (out-of-band, owner = chris):**
 
 - Real privacy policy hosted at `FCKfascists.com/privacy`.
-- Working `info@fckfascists.com` mailbox (DNS propagating).
+- ~~Working `info@fckfascists.com` mailbox~~ — live as of 2026-05-10.
 - App Store Connect listing setup: description, keywords, screenshots, App Privacy questionnaire, Support URL (`FCKfascists.com/support` if live, else GitHub Issues).
 - Full copy review pass (separate CC instance — covers Info screen, onboarding, scorecard share copy, Map empty/error states, Scan toasts, accessibility labels).
 - README rewrite (separate session) — at minimum: drop "iOS + Android + extension launch together" framing, fix "No location data stored" line (avoided-pin coords now persist locally encrypted), apply FCK substitution rule, decide whether the rewards-pool model framing belongs in launch-day README.
@@ -381,7 +453,7 @@ The U+2019 curly apostrophe was being dropped during react-native-view-shot's JP
 
 - **#161** — Scan card-toast UX cleanup (the bigger refactor). The remaining wart from #138 was that `BusinessBanner` was a full-width bevel-framed strip mounted inside the same overlay that hosted the `BusinessCard`, so a no-signal result like Subway visually read as a card-with-banner — wasted ceremony. And on Scan, results were rendered inline in a `ScrollView` with `modal={false}` — no slide-up, no dim. **Single rule across all three surfaces (Map, Track, Scan):** `resolveCardMode === 'card'` → slide-up card overlay; any banner variant → HUD-pill toast (bottom-anchored, auto-dismiss); no entity → existing barcode/search lookup toast. Implementation: (a) `BusinessBanner` restyled to match `NoMatchToast`'s cockpit-cyan pill — self-positions absolute bottom-center, Ionicons glyph (folder for `no_pac`/`no_match`, warning for `lookup_failed`, archive for `dissolved`), brief one-line message, pointer-transparent, auto-dismiss preserved (5s); accent-bar dropped. (b) `MapScreen` drops the `bannerContainer` wrap + tap-outside `Pressable` backdrop. (c) `ScanScreen` lifted result rendering out of the `ScrollView`, mounts `BusinessCard` in the persistent slide-up overlay pattern from `MapScreen` + Track (`useCardOverlayAnimation`, persistent-mount via `lastFullCardResultRef`, dim backdrop with tap-to-dismiss, `Animated.View` transform). Card overlay structure mirrors Track exactly (single fragment under one guard, no Map-specific amber-pulse). `BusinessBanner` mounts as the bottom toast.
 
-- **#163** — Three GPT-generated arena scenes deployed: `arena_dc_mall.jpg` (DC National Mall — Capitol + Washington Monument + Lincoln Memorial), `arena_la_rodeo.jpg` (Beverly Hills / Rodeo Drive — Gucci, LV, Cartier), `arena_la_mansion.jpg` (Hollywood Hills mansion — infinity pool, LA skyline, Hollywood sign). Pipeline: source PNGs in `tools/img-gen/reference/` resized to 1536px wide preserving aspect, converted to JPEG q=85 progressive, dropped into `assets/pixel/arena/`, `core/arena/arenaAssets.ts` regenerated via `scripts/generate-arena-assets.mjs`. All under 450KB; pool grew from 4 → 7 backgrounds for `GameArena` randomization.
+- **#163** — Three GPT-generated arena scenes deployed: `arena_dc_mall.jpg` (DC National Mall — Capitol + Washington Monument + Lincoln Memorial), `arena_la_rodeo.jpg` (Beverly Hills / Rodeo Drive — Gucci, LV, Cartier), `arena_la_mansion.jpg` (Hollywood Hills mansion — infinity pool, LA skyline, Hollywood sign). Pipeline: source PNGs in `tools/img-gen/reference/` resized to 1536px wide preserving aspect, converted to JPEG q=85 progressive, dropped into `assets/pixel/arena/`, `core/arena/arenaAssets.ts` regenerated via `scripts/generate-arena-assets.mjs`. All under 450KB; pool grew from 4 → 7 backgrounds for `GameArena` randomization. Follow-up: added `arena_st_barts.jpg` from the Jun 2 St. Barts reference with the same pipeline; the arena pool is now 8 backgrounds.
 
 - **#123 (partial)** — `one-medical` entity added with `parentEntityId: amazon` so One Medical clinics ladder up to Amazon's PAC + linked-donor signal (Bezos et al.) via `getAssociatedPeople`. Mirrors the Whole Foods / Twitch / Ring pattern. University-affiliated and standalone hospitals (GW Hospital etc.) intentionally deferred — consumer-avoidance frame doesn't fit non-profit health systems for V1.
 

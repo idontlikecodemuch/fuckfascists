@@ -9,13 +9,12 @@ export const scanCopy = {
   busyAction: 'LOOKING UP...',
   busyActionLabel: 'Looking up scanned barcode',
   footnoteLine1: 'Works with UPC and EAN barcodes.',
-  footnoteLine2: 'Fill the frame and hold steady.',
+  footnoteLine2: 'Back up until the bars are sharp.',
   prefixMatchSource: 'MATCHED BY UPC',
   // Active scan state
   scanTitle: 'SCAN BARCODE',
-  // #103 — expo-camera SDK 52 doesn't expose a close-focus tuning knob;
-  // `autofocus="on"` is the only switch, and on most phones it can't
-  // resolve UPC codes closer than ~4 inches. Giving users a concrete
-  // distance range helps the lens land on the code.
-  scanHelper: 'Hold 4\u20138 inches away. Center the code, hold steady.',
+  // #103/#144/#182 — expo-camera SDK 52 does not expose a macro/near-focus
+  // knob. CameraView uses continuous AF via `autofocus="off"`, but UPCs
+  // held too close can still sit inside the lens' minimum focus distance.
+  scanHelper: 'Back up until bars are sharp. Hold 6\u201310 inches away.',
 } as const;

@@ -12,4 +12,5 @@ export const arenaAssets: Record<string, ImageSourcePropType> = {
   'arena-nyc-penthouse': require('../../assets/pixel/arena/arena_nyc_penthouse.jpg'),
   'arena-nyc-street': require('../../assets/pixel/arena/arena_nyc_street.jpg'),
   'arena-sf': require('../../assets/pixel/arena/arena_sf.jpg'),
+  'arena-st-barts': require('../../assets/pixel/arena/arena_st_barts.jpg'),
 };

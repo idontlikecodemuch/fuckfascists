@@ -1,4 +1,4 @@
-import React, { useRef, useMemo, useEffect } from 'react';
+import React, { useRef, useMemo, useEffect, useCallback } from 'react';
 import { View, Text, Image, Pressable, Animated, PanResponder, StyleSheet, AccessibilityInfo } from 'react-native';
 import type { ScanResult } from '../types';
 import type { Entity, PoliticalPerson } from '../../../core/models';
@@ -12,6 +12,7 @@ import { AvoidButton } from './AvoidButton';
 import { DataZone } from './DataZone';
 import { StampOverlay } from './StampOverlay';
 import { MoneyParticles } from './MoneyParticles';
+import { haptics } from '../../../core/fx/haptics';
 
 // Re-export banner + resolve for consumers that import from BusinessCard
 export { BusinessBanner, resolveCardMode } from './BusinessBanner';
@@ -48,6 +49,13 @@ export function BusinessCard({
   visible = true, hideAvoid = false,
 }: BusinessCardProps) {
   const { canonicalName, matchedAlias, committeeName, confidence, donationSummary, entity, fecFilingUrl } = result;
+
+  // Single haptic point — used by both the swipe-down dismiss and the
+  // folder-tab tap.
+  const handleDismiss = useCallback(() => {
+    haptics.tap();
+    onDismiss();
+  }, [onDismiss]);
 
   const fecUrl = donationSummary?.fecCommitteeUrl ?? fecFilingUrl;
   const displayName = matchedAlias || canonicalName;
@@ -94,12 +102,12 @@ export function BusinessCard({
     onPanResponderMove: (_, g) => { if (g.dy > 0) translateY.setValue(g.dy); },
     onPanResponderRelease: (_, g) => {
       if (g.dy > 80 || g.vy > 0.5) {
-        Animated.spring(translateY, { toValue: 600, useNativeDriver: true, friction: 8 }).start(onDismiss);
+        Animated.spring(translateY, { toValue: 600, useNativeDriver: true, friction: 8 }).start(handleDismiss);
       } else {
         Animated.spring(translateY, { toValue: 0, useNativeDriver: true }).start();
       }
     },
-  }), [onDismiss, translateY]);
+  }), [handleDismiss, translateY]);
 
   useEffect(() => {
     if (visible) {
@@ -123,7 +131,7 @@ export function BusinessCard({
       {/* Folder tab — dismiss target. Overlay mirrors folderGradTop so the
            tab matches the lightened top of the folder body at the seam. */}
       <Pressable
-        onPress={onDismiss}
+        onPress={handleDismiss}
         style={styles.folderTab}
         accessibilityRole="button"
         accessibilityLabel={mapCopy.closeReportA11y}

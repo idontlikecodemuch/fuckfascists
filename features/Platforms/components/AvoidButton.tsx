@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Pressable, Text, StyleSheet } from 'react-native';
 import { platformsCopy } from '../../../copy/platforms';
 import { theme } from '../../../design/tokens';
 import { bevelFocusRaised, bevelGreenInset } from '../../../design/bevel';
 import { noShrink } from '../../../design/layout';
 import { TRACK_BUTTON_WIDTH, TRACK_BUTTON_HEIGHT } from '../../../config/constants';
+import { haptics } from '../../../core/fx/haptics';
 
 interface AvoidButtonProps {
   /** Whether the platform has been avoided today. Drives label + color swap. */
@@ -22,9 +23,16 @@ interface AvoidButtonProps {
  * State B (avoided):     "✓"     — deep green bg, inset bevel, green text
  */
 export function AvoidButton({ avoidedToday, platformName, onPress }: AvoidButtonProps) {
+  // Avoid haptic only on the active→done transition, not on the no-op
+  // when the user re-taps an already-avoided button.
+  const handlePress = useCallback(() => {
+    if (!avoidedToday) haptics.avoid();
+    onPress();
+  }, [avoidedToday, onPress]);
+
   return (
     <Pressable
-      onPress={onPress}
+      onPress={handlePress}
       style={[styles.button, avoidedToday ? styles.buttonDone : styles.buttonActive]}
       accessibilityRole="button"
       accessibilityLabel={

@@ -8,17 +8,19 @@
  *
  * Algorithm:
  *  1. Hash the ISO week key ("ff-drop-{year}-W{week}") with djb2.
- *  2. Map hash mod WINDOW_HOURS to an hour offset within the drop window
- *     (Friday 4pm ET – Saturday 3pm ET, hardcoded as UTC-5/EST for MVP).
+ *  2. Map the hash into a weighted hour-offset table. Every hour in the
+ *     broad Friday-evening → Saturday-afternoon window remains possible, but
+ *     US-friendly evening/daytime hours are more likely.
  *  3. Avoid the previous week's hour: if collision, advance by 1 (mod WINDOW_HOURS).
  *  4. Return a UTC Date for Friday of the ISO week at (windowStart + offset) UTC.
  *
  * TODO (V2): Handle EDT (UTC-4). During DST the displayed drop time shifts 1 hour
- * (e.g. user sees "4pm" instead of "5pm ET") but all installs see the same absolute
+ * (e.g. user sees "7pm" instead of "6pm ET") but all installs see the same absolute
  * moment. This is acceptable for MVP.
  */
 
 import {
+  SCORECARD_DROP_WEIGHTED_HOUR_OFFSETS,
   SCORECARD_WINDOW_START_HOUR,
   SCORECARD_WINDOW_END_HOUR,
 } from '../../config/constants';
@@ -26,12 +28,12 @@ import {
 // EST = UTC-5 hardcoded for MVP. See TODO above for EDT handling.
 const ET_OFFSET_HOURS = 5;
 
-// Window size in hours: Friday 4pm ET through Saturday 3pm ET = 23 hours.
-// 24 - 16 (hours remaining on Friday) + 15 (hours on Saturday up to 3pm) = 23.
+// Window size in hours: Friday 6pm ET through Saturday 4pm ET = 22 hours.
+// 24 - 18 (hours remaining on Friday) + 16 (hours on Saturday up to 4pm) = 22.
 const WINDOW_HOURS =
   24 - SCORECARD_WINDOW_START_HOUR + SCORECARD_WINDOW_END_HOUR;
 
-// UTC hour at which the drop window opens (Friday 4pm ET = Friday 21:00 UTC at EST).
+// UTC hour at which the drop window opens (Friday 6pm ET = Friday 23:00 UTC at EST).
 const WINDOW_START_UTC_HOUR = SCORECARD_WINDOW_START_HOUR + ET_OFFSET_HOURS;
 
 // ── Hash ──────────────────────────────────────────────────────────────────────
@@ -54,7 +56,8 @@ function weekKey(year: number, week: number): string {
 }
 
 function rawHourOffset(year: number, week: number): number {
-  return djb2(weekKey(year, week)) % WINDOW_HOURS;
+  const weightedIndex = djb2(weekKey(year, week)) % SCORECARD_DROP_WEIGHTED_HOUR_OFFSETS.length;
+  return SCORECARD_DROP_WEIGHTED_HOUR_OFFSETS[weightedIndex];
 }
 
 // ── ISO week arithmetic ───────────────────────────────────────────────────────
@@ -102,7 +105,7 @@ function mondayOfISOWeek(year: number, week: number): Date {
  *                      in early January / late December).
  * @param isoWeekNumber ISO week number (1–52 or 1–53).
  * @returns UTC Date for the drop moment (Friday or Saturday of that ISO week,
- *          within the Friday 4pm ET – Saturday 3pm ET window).
+ *          within the Friday 6pm ET – Saturday 4pm ET broad window).
  */
 export function computeDropTime(isoWeekYear: number, isoWeekNumber: number): Date {
   let hourOffset = rawHourOffset(isoWeekYear, isoWeekNumber);

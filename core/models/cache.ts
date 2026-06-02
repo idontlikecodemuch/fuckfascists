@@ -8,6 +8,9 @@ export interface FECLineItem {
   isReceipt: boolean;   // true = Schedule A, false = Schedule B
 }
 
+/** Compact shipped party totals for a single FEC cycle: [cycle, R, D, O]. */
+export type DonationCycleTotals = [cycle: number, repubs: number, dems: number, other: number];
+
 export interface DonationSummary {
   committeeId: string;
   committeeName: string;
@@ -19,6 +22,7 @@ export interface DonationSummary {
   totalO?: number;               // total non-R non-D donations from 2016 onward (sum of raw[])
   recentO?: number;              // non-R non-D donations in most recent cycle only
   activeCycles: number[];        // all cycles with activity since 2016, ascending
+  cycleTotals?: DonationCycleTotals[]; // compact per-cycle party totals, sorted ascending
   raw: FECLineItem[];            // non-Republican non-Democrat line items; stored for future use
   lastUpdated: string;           // YYYY-MM-DD
   fecCommitteeUrl: string;       // https://www.fec.gov/data/committee/{committeeId}/

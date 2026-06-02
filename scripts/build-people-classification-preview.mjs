@@ -262,6 +262,10 @@ function rebuildSummaryFromRaw(summary, rawRows, generatedAt) {
   const nextActiveCycles = Array.from(activeCycles).sort((a, b) => a - b);
   const recentCycleNumber = getRecentCycle(nextRaw);
   const recentCycleTotals = cycleTotals.get(recentCycleNumber) ?? { totalR: 0, totalD: 0, totalO: 0 };
+  const nextCycleTotals = nextActiveCycles.map((cycle) => {
+    const totals = cycleTotals.get(cycle) ?? { totalR: 0, totalD: 0, totalO: 0 };
+    return [cycle, roundCurrency(totals.totalR), roundCurrency(totals.totalD), roundCurrency(totals.totalO)];
+  });
 
   return {
     ...summary,
@@ -273,6 +277,7 @@ function rebuildSummaryFromRaw(summary, rawRows, generatedAt) {
     recentCycleO: roundCurrency(recentCycleTotals.totalO),
     recentCycle: cycleLabel(recentCycleNumber),
     activeCycles: nextActiveCycles,
+    cycleTotals: nextCycleTotals,
     raw: nextRaw,
     lastUpdated: generatedAt,
   };

@@ -5,12 +5,20 @@ import { getCachedBarcodeLookup, setCachedBarcodeLookup } from '../barcode/barco
 import { lookupBarcodeViaOpenFoodFacts } from '../barcode/openFoodFacts';
 import { normalizeBarcode } from '../barcode/normalizeBarcode';
 import { findBundledProductByBarcode } from '../barcode/productIndex';
+import { buildBarcodeLabel } from '../barcode/buildBarcodeLabel';
 import type { ScanContext } from '../types';
 import { mapCopy } from '../../../copy/map';
 
 export interface BarcodeNotice {
   kind: 'unsupported' | 'no_match' | 'not_in_database' | 'lookup_unavailable';
   label: string;
+  /**
+   * __DEV__-only diagnostic detail. Surfaced under the user-facing toast
+   * message in dev builds so the actual failure (HTTP 403, cooldown, etc.)
+   * is visible on-device without needing Metro/Xcode console access.
+   * Never rendered in production builds.
+   */
+  reason?: string;
 }
 
 export interface BarcodeSearchTarget {
@@ -89,7 +97,7 @@ export function useBarcodeSearch(entities: Entity[]) {
 
           setNotice({
             kind: 'no_match',
-            label: cached.productName ?? cached.brandName ?? normalized.displayCode,
+            label: buildBarcodeLabel(cached.productName, cached.brandName, normalized.displayCode),
           });
           return null;
         }
@@ -149,7 +157,7 @@ export function useBarcodeSearch(entities: Entity[]) {
 
           setNotice({
             kind: 'no_match',
-            label: live.productName ?? live.brandName ?? live.barcode,
+            label: buildBarcodeLabel(live.productName, live.brandName, live.barcode),
           });
           return null;
         }
@@ -157,6 +165,7 @@ export function useBarcodeSearch(entities: Entity[]) {
         setNotice({
           kind: 'lookup_unavailable',
           label: live.barcode,
+          reason: live.kind === 'lookup_unavailable' ? live.reason : undefined,
         });
         return null;
       } finally {

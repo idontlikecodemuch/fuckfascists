@@ -98,13 +98,13 @@ const styles = StyleSheet.create({
     opacity: SCAN_PANEL_WASH_OPACITY,
   },
   panelOuter: {
-    ...fillSelf,
+    ...fixedFillSelf,
     marginHorizontal: SCAN_PANEL_HORIZONTAL_MARGIN,
     shadowColor: theme.colors.focusAccent, shadowOffset: { width: 0, height: 0 },
     shadowOpacity: SCAN_PANEL_SHADOW_OPACITY, shadowRadius: SCAN_PANEL_SHADOW_RADIUS, elevation: 12,
   },
   panel: {
-    ...fillSelf, ...bevelFocusRaised, backgroundColor: theme.colors.panelInner, overflow: 'visible',
+    ...fixedFillSelf, ...bevelFocusRaised, backgroundColor: theme.colors.panelInner, overflow: 'visible',
     boxShadow: [
       { offsetX: 0, offsetY: 6, blurRadius: theme.glow.blurRadius, spreadDistance: theme.glow.spreadDistance, inset: true, color: theme.glow.color },
       { offsetX: 0, offsetY: -6, blurRadius: theme.glow.blurRadius, spreadDistance: theme.glow.spreadDistance, inset: true, color: theme.glow.color },
@@ -119,13 +119,13 @@ const styles = StyleSheet.create({
     height: 1, backgroundColor: theme.colors.focusAccent, opacity: SCAN_PANEL_SCAN_LINE_OPACITY,
   },
   panelContent: {
-    ...fillSelf,
+    ...fixedFillSelf,
     alignItems: 'center', paddingVertical: theme.space['3xl'], paddingHorizontal: theme.space.xl, zIndex: 2,
   },
   icon: { marginBottom: theme.space.md },
   heading: { ...theme.type.displayL, color: theme.colors.focusText, textAlign: 'center', marginBottom: theme.space.sm },
   body: { ...theme.type.bodyM, color: theme.colors.textSecondary, textAlign: 'center', lineHeight: 22 },
-  ctaWrapper: { ...fillSelf, marginTop: theme.space['2xl'], marginBottom: theme.space.lg, overflow: 'visible' },
+  ctaWrapper: { ...fixedFillSelf, marginTop: theme.space['2xl'], marginBottom: theme.space.lg, overflow: 'visible' },
   cta: {
     ...fixedFillSelf,
     minHeight: theme.a11y.minTapTarget, paddingHorizontal: theme.space['3xl'],

@@ -85,6 +85,7 @@ export interface TabFlag {
   totalDems: number;
   totalO: number;
   activeCycles: number[];
+  cycleTotals?: Array<[number, number, number, number]>;
   fecCommitteeUrl: string | null;
   confidence: number; // 0–1 score; compare against CONFIDENCE_THRESHOLD_HIGH/MEDIUM for display
   avoided: boolean;

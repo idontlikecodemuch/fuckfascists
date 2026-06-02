@@ -1,4 +1,5 @@
 import { computeDropTime, getISOWeek, getCurrentDropTime } from '../computeDropTime';
+import { SCORECARD_DROP_WEIGHTED_HOUR_OFFSETS } from '../../../config/constants';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -23,6 +24,24 @@ describe('computeDropTime', () => {
     expect(computeDropTime(2024, 11).getTime()).toBe(computeDropTime(2024, 11).getTime());
     expect(computeDropTime(2025, 1).getTime()).toBe(computeDropTime(2025, 1).getTime());
     expect(computeDropTime(2024, 52).getTime()).toBe(computeDropTime(2024, 52).getTime());
+  });
+
+  it('keeps every broad-window hour possible while biasing US-friendly hours', () => {
+    const weightedOffsets: readonly number[] = SCORECARD_DROP_WEIGHTED_HOUR_OFFSETS;
+    const allOffsets = new Set<number>(weightedOffsets);
+    expect(allOffsets.size).toBe(22);
+    for (let offset = 0; offset < 22; offset++) {
+      expect(allOffsets.has(offset)).toBe(true);
+    }
+
+    // Friday evening / Saturday daytime slots are repeated by config to make
+    // them more likely, but the table still preserves overnight variety.
+    const counts = weightedOffsets.reduce<Record<number, number>>(
+      (acc, offset) => ({ ...acc, [offset]: (acc[offset] ?? 0) + 1 }),
+      {},
+    );
+    expect(counts[0]).toBeGreaterThan(counts[10]);
+    expect(counts[18]).toBeGreaterThan(counts[10]);
   });
 
   it('output falls within the Friday 6pm ET – Saturday 4pm ET window for all weeks in 2024', () => {

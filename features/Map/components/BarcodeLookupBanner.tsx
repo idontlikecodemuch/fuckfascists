@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import type { BarcodeNotice } from '../hooks/useBarcodeSearch';
 import { sharedCopy } from '../../../copy/shared';
 import { mapCopy } from '../../../copy/map';
 import { theme } from '../../../design/tokens';
+import { haptics } from '../../../core/fx/haptics';
 
 interface BarcodeLookupBannerProps {
   notice: BarcodeNotice;
@@ -20,6 +21,12 @@ interface BarcodeLookupBannerProps {
  *   - outside-tap dismisses via a transparent backdrop Pressable
  */
 export function BarcodeLookupBanner({ notice, onDismiss }: BarcodeLookupBannerProps) {
+  // Single haptic point — both backdrop and × call this handler.
+  const handleDismiss = useCallback(() => {
+    haptics.tap();
+    onDismiss();
+  }, [onDismiss]);
+
   const message = (() => {
     switch (notice.kind) {
       case 'unsupported':
@@ -38,13 +45,13 @@ export function BarcodeLookupBanner({ notice, onDismiss }: BarcodeLookupBannerPr
     <>
       <Pressable
         style={styles.backdrop}
-        onPress={onDismiss}
+        onPress={handleDismiss}
         accessibilityRole="button"
         accessibilityLabel={mapCopy.bannerDismissLabel}
       />
       <View style={styles.banner} accessibilityRole="alert" accessibilityLabel={message}>
         <Pressable
-          onPress={onDismiss}
+          onPress={handleDismiss}
           style={styles.dismissHit}
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
           accessibilityRole="button"
@@ -53,6 +60,15 @@ export function BarcodeLookupBanner({ notice, onDismiss }: BarcodeLookupBannerPr
           <Text style={styles.dismissIcon} allowFontScaling={false}>{sharedCopy.dismissIcon}</Text>
         </Pressable>
         <Text style={styles.text} allowFontScaling>{message}</Text>
+        {__DEV__ && notice.kind === 'lookup_unavailable' && notice.reason && (
+          <Text
+            style={styles.devReason}
+            allowFontScaling={false}
+            selectable
+          >
+            [DEV] {notice.reason}
+          </Text>
+        )}
       </View>
     </>
   );
@@ -79,6 +95,14 @@ const styles = StyleSheet.create({
     ...theme.type.bodyS,
     color: theme.colors.textPrimary,
     textAlign: 'center',
+  },
+  devReason: {
+    fontFamily: theme.fonts.bodyMedium,
+    fontSize: 11,
+    color: theme.colors.dangerRed,
+    textAlign: 'center',
+    marginTop: theme.space.xs,
+    letterSpacing: 0.5,
   },
   dismissHit: {
     position: 'absolute',

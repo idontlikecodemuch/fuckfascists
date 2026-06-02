@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { platformsCopy } from '../../../copy/platforms';
 import { theme } from '../../../design/tokens';
-import { flexChild } from '../../../design/layout';
+import { fillSelf, flexChild } from '../../../design/layout';
 import { SparkleDecoration } from '../../../core/fx';
 import { hasSprite } from '../../../core/sprites/spriteLoader';
 import { FigureBadge } from './FigureBadge';
@@ -115,6 +115,7 @@ export function PlatformGroupHeader({
 
 const styles = StyleSheet.create({
   container: {
+    ...fillSelf,
     flexDirection: 'row',
     alignItems: 'center',
     gap: theme.space.sm,

@@ -149,6 +149,10 @@ Reasoning:
 
 - Expo Camera docs (SDK 52): `CameraView`, `useCameraPermissions`, `barcodeScannerSettings`, `onBarcodeScanned`, `onMountError`, config plugin camera usage strings, and the note that only one camera preview should be active at a time.
 - Expo Camera docs (SDK 52): `CameraView.isAvailableAsync()` is documented as web-only, so it is not the right native availability gate here.
+- Expo Camera docs (SDK 52): `zoom` is available, but SDK 52 does not expose manual focus distance, macro lens selection, or tap-to-focus/focus-metering controls for this barcode sheet. Current code keeps `autofocus="off"` because in Expo Camera this is the continuous-autofocus path.
+- Expo Camera latest docs: newer Expo Camera versions add more native-scanner affordances, including iOS lens selection and `launchScanner()` support that routes to Apple DataScannerViewController on iOS and Google Code Scanner on Android.
+- VisionCamera docs: VisionCamera is the stronger fallback if close-range UPC focus remains a blocker. It exposes tap-to-focus/focus metering, native tap-to-focus gesture support, zoom/zoom gesture control, and barcode-scanner outputs on both iOS and Android through its barcode scanner package.
+- Google Code Scanner docs: Android native code scanning supports optional auto-zoom in the Play Services scanner API.
 - GS1 support/docs: GTIN/company-prefix structure is variable-length; the code is not meaningfully self-decoding without a database.
 - Open Food Facts API docs: product lookup by barcode is a normal public flow.
 - Google ML Kit barcode guidance: narrow supported formats and use a clear framing target for faster real-time scanning.
@@ -226,8 +230,21 @@ Notes:
 - Brand strings returned by a product database will never perfectly align with parent-company aliases without continued curation.
 - The local OFF-derived producer layer is much stronger now, but runtime quality still depends on the current entity coverage in `entities.json`. The biggest remaining gains are still large UPC pools with clean brand/producer evidence.
 - The current data set now has `2,000` exact product barcodes, but those rows are OFF-derived coverage, not a verified "most-shopped" ranking.
+- Close-up UPC blur is a physical minimum-focus problem more than a "focal length" setting. Expo Camera SDK 52 gives us continuous autofocus and zoom, but not macro/near-focus controls. V1 should first test backing the phone up, clearer copy, and a small default zoom so the barcode still fills the reticle from farther away.
 - The current repo has an existing Expo dependency mismatch: `@expo/vector-icons@15.1.1` expects a newer `expo-font` than this SDK 52 app currently pins. `expo-camera` was installed with legacy peer resolution to avoid rewriting unrelated dependencies during this feature pass.
 - Full iOS simulator build verification is still partially environment-sensitive in this repo right now because the local Xcode/CoreSimulator/CocoaPods setup can fail before app code is fully evaluated. The scan flow itself is covered by TypeScript, focused Jest tests, plist validation, and the native permission fix.
+
+## Close-focus fallback path
+
+Keep `expo-camera` for V1 unless device testing proves the blur is still a blocker. The least invasive next test is a small default `CameraView` zoom, roughly `0.08` to `0.12`, paired with the current instruction to back up until bars are sharp. This does not change native dependencies and works with the existing scanner sheet.
+
+If that still fails on real devices, the preferred V1.5 direction is a native scanner path rather than more copy changes:
+
+- First option after an Expo SDK upgrade: try Expo Camera `launchScanner()` for the scan sheet. It delegates to platform-native scanner UI and may benefit from Apple/Google scanner behavior, but it gives us less custom HUD control.
+- Stronger custom-UI option: migrate the barcode sheet to VisionCamera plus its barcode scanner package. That keeps our custom reticle/sheet design while adding tap-to-focus, focus metering, native zoom gestures, explicit zoom bounds, and barcode scanning on both iOS and Android.
+- Android-specific native option: Google Code Scanner with auto-zoom is useful if we accept a platform scanner UI rather than our custom camera view.
+
+Do not rehydrate product or FEC data for this issue. This is scanner optics/native-camera capability work only.
 
 ## V2 expansion: barcode FEC fallback
 

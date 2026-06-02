@@ -151,8 +151,9 @@ export async function matchEntity(
   let candidates: FECCommittee[] = [];
   try {
     candidates = await deps.fetchOrgs(rawInput);
-  } catch {
-    return { matched: false, lookupStatus: 'lookup_unavailable', normalizedInput };
+  } catch (err) {
+    const lookupReason = err instanceof Error ? `FEC: ${err.name}: ${err.message}` : `FEC: ${String(err)}`;
+    return { matched: false, lookupStatus: 'lookup_unavailable', normalizedInput, lookupReason };
   }
   const best = pickBestMatch(normalizedInput, candidates);
 
@@ -231,8 +232,9 @@ async function resolveEntityMatch(
       (entity.fecCommitteeId != null && entity.fecCommitteeId !== '')
         ? entity.fecCommitteeId
         : await resolveOrgId(entity.canonicalName, deps);
-  } catch {
-    return { matched: false, lookupStatus: 'lookup_unavailable', normalizedInput };
+  } catch (err) {
+    const lookupReason = err instanceof Error ? `FEC: ${err.name}: ${err.message}` : `FEC: ${String(err)}`;
+    return { matched: false, lookupStatus: 'lookup_unavailable', normalizedInput, lookupReason };
   }
 
   if (!orgId) return null;

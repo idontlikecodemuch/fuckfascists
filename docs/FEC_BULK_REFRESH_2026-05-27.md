@@ -58,6 +58,13 @@ People classification preview applied:
 - Final preview `totalO`: `$889,105,232` (`6.54%`).
 - Summary-vs-raw drift: `$0`.
 
+Compact cycle-summary follow-up applied May 29, 2026:
+
+- `recentCycle` is still generated as the max active FEC cycle for backward compatibility, but each entity/person donation summary now also carries compact `cycleTotals: [[cycle, R, D, O], ...]`.
+- `cycleTotals` is keyed by FEC cycle, not calendar year. FEC cycles are the comparison unit: 2023 and 2024 transactions both belong to the `2024` cycle.
+- The app and extension card math now use those per-cycle totals to display the latest completed major cycle when available. During the 2026 cycle, that means the visible row is `2023-24` for entities/people with 2024 data.
+- Ship-size impact across the runtime data files (`entities.json`, `people.bundle.json`, `products.json`): raw bytes `6,411,036 -> 6,688,229` (`+277,193`), minified bytes `5,834,900 -> 6,018,712` (`+183,812`), gzip-minified bytes `741,951 -> 810,584` (`+68,633`).
+
 ## Review Outputs
 
 Generated local review reports:

@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { theme } from '../../design/tokens';
 import { glowDividerLine } from '../../design/bevel';
+import { haptics } from '../../core/fx/haptics';
 import { mapCopy } from '../../copy/map';
 import { platformsCopy } from '../../copy/platforms';
 import { scorecardCopy } from '../../copy/scorecard';
@@ -43,7 +44,7 @@ export function TabBar({ activeTab, onSelect }: { activeTab: Tab; onSelect: (t: 
           <Pressable
             key={id}
             style={[styles.tabItem, active && styles.tabItemActive]}
-            onPress={() => onSelect(id)}
+            onPress={() => { if (!active) haptics.tap(); onSelect(id); }}
             accessibilityRole="tab"
             accessibilityState={{ selected: active }}
             accessibilityLabel={label}

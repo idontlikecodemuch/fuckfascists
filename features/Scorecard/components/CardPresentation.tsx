@@ -35,6 +35,7 @@ import { ChevronRunway } from './ChevronRunway';
 import { CardHalo } from './CardHalo';
 import { ShareButton } from './ShareButton';
 import { useAppActive } from '../hooks/useAppActive';
+import { haptics } from '../../../core/fx/haptics';
 
 const DISMISS_THRESHOLD = 120;
 const RUNWAY_HEIGHT = 150;            // chevron stack (3 thin triangles) + small SHARE word
@@ -94,6 +95,11 @@ export function CardPresentation({ pngUri, onDismiss }: CardPresentationProps) {
   const shareTextWidth = Math.round(screenW * SHARE_TEXT_WIDTH_PCT);
 
   useEffect(() => {
+    // Fire the haptic jig synced to the reveal animation. ~700ms drumroll
+    // → ramp → success. Once-per-mount; CardPresentation only mounts when
+    // a card is actively being presented.
+    haptics.celebration();
+
     const pattern = [2, -2, 2, -2, 0];
     const step = SCREEN_SHAKE_MS / pattern.length;
     Animated.sequence(
@@ -131,8 +137,20 @@ export function CardPresentation({ pngUri, onDismiss }: CardPresentationProps) {
     };
   }, [activePresentationHint, dismissPresentationHint]);
 
+  // Single haptic point for all user-initiated dismissals (X button +
+  // swipe-down). The celebration() on mount is separate from this; this
+  // fires only on user gesture, not on auto-mount.
+  const handleDismiss = useCallback(() => {
+    haptics.tap();
+    onDismiss();
+  }, [onDismiss]);
+
   // iOS: RN Share. Android: expo-sharing (RN's `url` is iOS-only).
+  // Single haptic point for any path that opens the share sheet (SHARE
+  // tap, swipe-up, Android screenshot listener). Fires before the system
+  // share sheet appears so it feels like cause-and-effect.
   const handleShare = useCallback(async () => {
+    haptics.share();
     try {
       if (Platform.OS === 'ios') {
         await Share.share({ url: pngUri });
@@ -168,7 +186,7 @@ export function CardPresentation({ pngUri, onDismiss }: CardPresentationProps) {
               toValue: screenH,
               duration: 200,
               useNativeDriver: true,
-            }).start(onDismiss);
+            }).start(handleDismiss);
             return;
           }
           if (gs.dy < -SCORECARD_SHARE_SWIPE_UP_THRESHOLD) {
@@ -180,7 +198,7 @@ export function CardPresentation({ pngUri, onDismiss }: CardPresentationProps) {
           Animated.spring(translateY, { toValue: 0, useNativeDriver: true }).start();
         },
       }),
-    [translateY, screenH, onDismiss, handleShare],
+    [translateY, screenH, handleDismiss, handleShare],
   );
 
   if (!appActive) {
@@ -215,7 +233,7 @@ export function CardPresentation({ pngUri, onDismiss }: CardPresentationProps) {
 
         <Pressable
           style={[styles.dismissBtn, { top: insets.top + 12 }]}
-          onPress={onDismiss}
+          onPress={handleDismiss}
           accessibilityRole="button"
           accessibilityLabel={scorecardCopy.dismissLabel}
           hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}

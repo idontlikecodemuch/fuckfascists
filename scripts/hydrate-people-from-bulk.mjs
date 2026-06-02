@@ -159,6 +159,17 @@ function classifyParty(value) {
   return null;
 }
 
+function createCyclePartyTotals() {
+  return { R: 0, D: 0, O: 0 };
+}
+
+function buildCycleTotals(activeCycles, totalsByCycle) {
+  return activeCycles.map((cycle) => {
+    const totals = totalsByCycle.get(cycle) ?? createCyclePartyTotals();
+    return [cycle, roundCurrency(totals.R), roundCurrency(totals.D), roundCurrency(totals.O)];
+  });
+}
+
 function resolveCommitteeParty(committeeId, committeeName, committeeParty) {
   const explicitParty = normalizeCommitteeParty(committeeParty);
   if (explicitParty) return explicitParty;
@@ -357,17 +368,24 @@ function finalizeAggregate(person, aggregate, committeeLookup) {
   let recentCycleR = 0;
   let recentCycleD = 0;
   let recentCycleO = 0;
+  const totalsByCycle = new Map();
 
   for (const entry of raw) {
     const bucket = classifyParty(entry.committeeParty);
+    const cycleTotals = totalsByCycle.get(entry.cycle) ?? createCyclePartyTotals();
+    totalsByCycle.set(entry.cycle, cycleTotals);
+
     if (bucket === 'R') {
       totalR += entry.amount;
+      cycleTotals.R += entry.amount;
       if (entry.cycle === recentCycle) recentCycleR += entry.amount;
     } else if (bucket === 'D') {
       totalD += entry.amount;
+      cycleTotals.D += entry.amount;
       if (entry.cycle === recentCycle) recentCycleD += entry.amount;
     } else {
       totalO += entry.amount;
+      cycleTotals.O += entry.amount;
       if (entry.cycle === recentCycle) recentCycleO += entry.amount;
     }
   }
@@ -385,6 +403,7 @@ function finalizeAggregate(person, aggregate, committeeLookup) {
       recentCycleO: roundCurrency(recentCycleO),
       recentCycle: cycleLabel(recentCycle),
       activeCycles,
+      cycleTotals: buildCycleTotals(activeCycles, totalsByCycle),
       raw,
       lastUpdated: today(),
     },

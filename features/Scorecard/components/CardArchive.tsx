@@ -14,6 +14,7 @@ import { useCardArchive } from '../hooks/useCardArchive';
 import { CardPresentation } from './CardPresentation';
 import type { ArchivedCard } from '../data/cardArchive';
 import { formatCardLabel } from '../utils/formatters';
+import { haptics } from '../../../core/fx/haptics';
 
 const THUMB_COLS = 2;
 const THUMB_ASPECT = 1920 / 1080;
@@ -35,7 +36,7 @@ export function CardArchive({ onDismiss }: CardArchiveProps) {
     return (
       <Pressable
         style={styles.thumb}
-        onPress={() => setSelected(item)}
+        onPress={() => { haptics.tap(); setSelected(item); }}
         accessibilityRole="button"
         accessibilityLabel={`Scorecard: ${label}`}
       >
@@ -60,7 +61,7 @@ export function CardArchive({ onDismiss }: CardArchiveProps) {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Pressable
-          onPress={onDismiss}
+          onPress={() => { haptics.tap(); onDismiss(); }}
           accessibilityRole="button"
           accessibilityLabel="Back"
           hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}

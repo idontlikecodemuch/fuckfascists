@@ -96,5 +96,33 @@ target 'FckFascists' do
     else
       Pod::UI.puts "⚠️  AIRMap.m not found at #{airmap_path} — skipping nil guard patch"
     end
+
+    # ── expo-camera macro lens patch ────────────────────────────────────
+    # expo-camera 16 hardcodes .builtInWideAngleCamera, which on iPhone Pros
+    # has a ~10cm minimum focus distance and skips the macro-capable
+    # ultra-wide lens. Patch the device selector to prefer the multi-camera
+    # virtual devices (.builtInTripleCamera on Pros, .builtInDualWideCamera
+    # on recent non-Pros) so iOS auto-switches to ultra-wide for close
+    # subjects — critical for barcode scanning of small UPCs at close range.
+    # Falls back to .builtInWideAngleCamera for front-facing and older devices.
+    # Idempotent — safe to re-run.
+    expo_camera_utils_path = File.join(installer.sandbox.pod_dir('ExpoCamera'), 'ios', 'Common', 'ExpoCameraUtils.swift')
+    if File.exist?(expo_camera_utils_path)
+      content = File.read(expo_camera_utils_path)
+      unless content.include?('// FCK macro-lens patch')
+        original = "static func device(with mediaType: AVMediaType, preferring position: AVCaptureDevice.Position) -> AVCaptureDevice? {\n    return AVCaptureDevice.default(.builtInWideAngleCamera, for: mediaType, position: position)\n  }"
+        replacement = "static func device(with mediaType: AVMediaType, preferring position: AVCaptureDevice.Position) -> AVCaptureDevice? {\n    // FCK macro-lens patch — prefer virtual multi-camera devices on back-facing\n    // so iOS auto-switches to ultra-wide lens for close subjects (~2cm min focus\n    // vs ~10cm on single wide-angle). Critical for close-range barcode scanning.\n    if position == .back {\n      if let triple = AVCaptureDevice.default(.builtInTripleCamera, for: mediaType, position: position) {\n        return triple\n      }\n      if let dualWide = AVCaptureDevice.default(.builtInDualWideCamera, for: mediaType, position: position) {\n        return dualWide\n      }\n    }\n    return AVCaptureDevice.default(.builtInWideAngleCamera, for: mediaType, position: position)\n  }"
+        if content.include?(original)
+          File.write(expo_camera_utils_path, content.sub(original, replacement))
+          Pod::UI.puts "✅ ExpoCameraUtils.swift patched with macro-lens fallback chain"
+        else
+          Pod::UI.puts "⚠️  ExpoCameraUtils.swift patch pattern not found — check expo-camera version"
+        end
+      else
+        Pod::UI.puts "✅ ExpoCameraUtils.swift macro-lens patch already present"
+      end
+    else
+      Pod::UI.puts "⚠️  ExpoCameraUtils.swift not found at #{expo_camera_utils_path} — skipping macro-lens patch"
+    end
   end
 end

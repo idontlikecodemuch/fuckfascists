@@ -21,3 +21,11 @@ export function buildTodayActions(
 
   return actions;
 }
+
+export function isFigureDefeatedToday(
+  figureName: string,
+  todayActions: Set<string>,
+  recentlyDefeated: Set<string>,
+): boolean {
+  return todayActions.has(figureName) || recentlyDefeated.has(figureName);
+}

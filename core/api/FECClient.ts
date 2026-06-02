@@ -182,20 +182,33 @@ export class FECClient {
     let recentRepubs = 0;
     let recentDems   = 0;
     const rawMap = new Map<string, FECLineItem>();
+    const cycleTotals = new Map<number, [number, number, number]>();
+
+    const totalsForCycle = (cycle: number): [number, number, number] => {
+      const existing = cycleTotals.get(cycle);
+      if (existing) return existing;
+      const next: [number, number, number] = [0, 0, 0];
+      cycleTotals.set(cycle, next);
+      return next;
+    };
 
     for (const rec of sbRecords) {
       const amount     = rec.disbursement_amount ?? 0;
       const cycle      = rec.two_year_transaction_period ?? 0;
       const party      = (rec.candidate_party_affiliation || rec.recipient_committee?.party || '').toUpperCase();
       const lineNumber = rec.line_number ?? '';
+      const perCycle = cycle > 0 ? totalsForCycle(cycle) : null;
 
       if (party === 'REP') {
         totalRepubs += amount;
+        if (perCycle) perCycle[0] += amount;
         if (cycle === recentCycle) recentRepubs += amount;
       } else if (party === 'DEM') {
         totalDems += amount;
+        if (perCycle) perCycle[1] += amount;
         if (cycle === recentCycle) recentDems += amount;
       } else if (amount > 0) {
+        if (perCycle) perCycle[2] += amount;
         const key      = `${lineNumber}:${cycle}`;
         const existing = rawMap.get(key);
         if (existing) {
@@ -233,6 +246,10 @@ export class FECClient {
       totalO,
       recentO,
       activeCycles,
+      cycleTotals: activeCycles.map((cycle) => {
+        const totals = cycleTotals.get(cycle) ?? [0, 0, 0];
+        return [cycle, totals[0], totals[1], totals[2]];
+      }),
       raw,
       lastUpdated:     today,
       fecCommitteeUrl: makeFecCommitteeUrl(committeeId),

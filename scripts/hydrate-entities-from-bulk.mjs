@@ -428,6 +428,13 @@ function resolveCommitteeName(committeeLookup, committeeId, fallbackName) {
   return committeeId;
 }
 
+function buildCycleTotals(activeCycles, totalsByCycle) {
+  return activeCycles.map((cycle) => {
+    const totals = totalsByCycle.get(cycle) ?? { R: 0, D: 0, O: 0 };
+    return [cycle, roundCurrency(totals.R), roundCurrency(totals.D), roundCurrency(totals.O)];
+  });
+}
+
 function finalizeSummary(aggregate, committeeLookup, fallbackCommitteeName = '') {
   const activeCycles = Array.from(aggregate.activeCycles).sort((a, b) => a - b);
   const recentCycle = activeCycles[activeCycles.length - 1] ?? 0;
@@ -446,6 +453,7 @@ function finalizeSummary(aggregate, committeeLookup, fallbackCommitteeName = '')
     totalO: roundCurrency(aggregate.totalO),
     recentO: roundCurrency(recent.O),
     activeCycles,
+    cycleTotals: buildCycleTotals(activeCycles, aggregate.recentByCycle),
     raw: Array.from(aggregate.rawByKey.values()).sort((a, b) => {
       if (b.cycle !== a.cycle) return b.cycle - a.cycle;
       return a.lineNumber.localeCompare(b.lineNumber);
@@ -619,6 +627,7 @@ async function main() {
           totalO: 0,
           recentO: 0,
           activeCycles: [],
+          cycleTotals: [],
           raw: [],
         },
         lastVerifiedDate: today(),

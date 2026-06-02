@@ -7,8 +7,10 @@ import { TrackScreen } from '../../features/Platforms/TrackScreen';
 import { NudgeBanner } from '../../features/Platforms/components/NudgeBanner';
 import { ScorecardScreen } from '../../features/Scorecard/ScorecardScreen';
 import { SCORECARD_DROP_NOTIFICATION_TYPE } from '../../features/Scorecard/hooks/useDropSchedule';
+import { useScorecardDropNotification } from '../../features/Scorecard/hooks/useScorecardDropNotification';
 import { InfoScreen } from '../../features/Info/InfoScreen';
 import { TRACKED_PLATFORMS } from '../../features/Platforms/data/platformList';
+import { useNudgeNotification } from '../../features/Platforms/hooks/useNudgeNotification';
 import { useBetaMode } from '../../features/Beta/useBetaMode';
 import { BetaOverlay } from '../../features/Beta/BetaOverlay';
 import { TabBar, type Tab } from '../navigation/TabBar';
@@ -69,9 +71,13 @@ export function AppShell({ adapter, entities, people }: AppShellProps) {
   const [harnessOpen, setHarnessOpen] = useState(false);
   const [scorecardPresentationActive, setScorecardPresentationActive] = useState(false);
   const [nudgeVisible, setNudgeVisible] = useState(false);
+  const [avoidRefreshKey, setAvoidRefreshKey] = useState(0);
   // Incrementing key forces screen remount after beta reset, clearing all
   // in-memory state (map pins, tap results, etc.).
   const [resetKey, setResetKey] = useState(0);
+
+  useNudgeNotification();
+  useScorecardDropNotification(adapter, entities, TRACKED_PLATFORMS, avoidRefreshKey);
 
   // Cold-start routing: if the app was launched from the scorecard drop
   // notification, skip Map entirely and mount Scorecard directly.
@@ -119,6 +125,10 @@ export function AppShell({ adapter, entities, people }: AppShellProps) {
   const fetchOrgs = fecClient ? fecClient.fetchOrgs.bind(fecClient) : async () => [];
   const fetchOrgSummary = fecClient ? fecClient.fetchOrgSummary.bind(fecClient) : async () => null;
 
+  const handleAvoidRecorded = useCallback(() => {
+    setAvoidRefreshKey((key) => key + 1);
+  }, []);
+
   const renderScreen = () => {
     switch (activeTab) {
       case null:
@@ -131,6 +141,7 @@ export function AppShell({ adapter, entities, people }: AppShellProps) {
             adapter={adapter}
             fetchOrgs={fetchOrgs}
             fetchOrgSummary={fetchOrgSummary}
+            onAvoidRecorded={handleAvoidRecorded}
           />
         );
       case 'map':
@@ -142,10 +153,18 @@ export function AppShell({ adapter, entities, people }: AppShellProps) {
             fetchOrgs={fetchOrgs}
             fetchOrgSummary={fetchOrgSummary}
             topContentOffset={showShellChrome && nudgeVisible ? theme.space.lg : 0}
+            onAvoidRecorded={handleAvoidRecorded}
           />
         );
       case 'platforms':
-        return <TrackScreen adapter={adapter} entities={entities} people={people} />;
+        return (
+          <TrackScreen
+            adapter={adapter}
+            entities={entities}
+            people={people}
+            onAvoidRecorded={handleAvoidRecorded}
+          />
+        );
       case 'report':
         return (
           <ScorecardScreen

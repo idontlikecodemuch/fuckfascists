@@ -30,17 +30,16 @@ import { GameArena } from './components/GameArena';
 import { PlatformSetupScreen } from './components/PlatformSetupScreen';
 import { TrackHeader } from './components/TrackHeader';
 import { TrackList } from './components/TrackList';
-import { useNudgeNotification } from './hooks/useNudgeNotification';
 import { usePlatformRoster } from './hooks/usePlatformRoster';
 
 interface TrackScreenProps {
   adapter: StorageAdapter;
   entities?: Entity[];
   people?: PoliticalPerson[];
+  onAvoidRecorded?: () => void;
 }
 
-export function TrackScreen({ adapter, entities = [], people = [] }: TrackScreenProps) {
-  useNudgeNotification();
+export function TrackScreen({ adapter, entities = [], people = [], onAvoidRecorded }: TrackScreenProps) {
   const { saveSelection, selectedIds } = usePlatformRoster();
   const [editing, setEditing] = useState(false);
   const [cardEntityId, setCardEntityId] = useState<string | null>(null);
@@ -123,7 +122,7 @@ export function TrackScreen({ adapter, entities = [], people = [] }: TrackScreen
   }
 
   return (
-    <TrackProvider adapter={adapter} platforms={activePlatforms}>
+    <TrackProvider adapter={adapter} platforms={activePlatforms} onAvoidRecorded={onAvoidRecorded}>
       <SafeAreaView style={styles.root}>
         <StarField seed="track" />
         <View style={styles.arenaFrame}>

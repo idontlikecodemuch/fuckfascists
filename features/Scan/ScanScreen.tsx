@@ -8,6 +8,7 @@ import { makeCacheDeps, recordEntityAvoid } from '../../core/data';
 import { SURFACE_SCAN } from '../../config/constants';
 import { useEntityScan } from '../Map/hooks/useEntityScan';
 import { useBarcodeSearch } from '../Map/hooks/useBarcodeSearch';
+import { buildBarcodeLabel } from '../Map/barcode/buildBarcodeLabel';
 import { BusinessCard, BusinessBanner, resolveCardMode } from '../Map/components/BusinessCard';
 import { BarcodeScannerSheet } from '../Map/components/BarcodeScannerSheet';
 import { BarcodeLookupBanner } from '../Map/components/BarcodeLookupBanner';
@@ -24,15 +25,23 @@ interface ScanScreenProps {
   adapter: StorageAdapter;
   fetchOrgs: MatchingDeps['fetchOrgs'];
   fetchOrgSummary: MatchingDeps['fetchOrgSummary'];
+  onAvoidRecorded?: () => void;
 }
 
-export function ScanScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummary }: ScanScreenProps) {
+export function ScanScreen({
+  entities,
+  people,
+  adapter,
+  fetchOrgs,
+  fetchOrgSummary,
+  onAvoidRecorded,
+}: ScanScreenProps) {
   const deps = useMemo<MatchingDeps>(
     () => ({ entities, fetchOrgs, fetchOrgSummary, ...makeCacheDeps(adapter) }),
     [adapter, entities, fetchOrgs, fetchOrgSummary]
   );
 
-  const { status, result, scan, reset } = useEntityScan(deps, '');
+  const { status, result, lookupReason, scan, reset } = useEntityScan(deps, '');
   const { isResolving, notice, resolveBarcode, clearNotice } = useBarcodeSearch(entities);
   const [scannerOpen, setScannerOpen] = useState(false);
   const [activeResult, setActiveResult] = useState<ScanResult | null>(null);
@@ -62,7 +71,7 @@ export function ScanScreen({ entities, people, adapter, fetchOrgs, fetchOrgSumma
       if (!target) return;
 
       setLastLookupLabel(
-        target.context.productName ?? target.context.brandName ?? target.context.barcode
+        buildBarcodeLabel(target.context.productName, target.context.brandName, target.context.barcode),
       );
       await scan(target.searchTerm, target.context);
     },
@@ -73,8 +82,9 @@ export function ScanScreen({ entities, people, adapter, fetchOrgs, fetchOrgSumma
     if (!activeResult?.entity) return;
     const entityId = activeResult.entityId ?? activeResult.fecCommitteeId;
     await recordEntityAvoid(adapter, entityId, SURFACE_SCAN);
+    onAvoidRecorded?.();
     setAvoidedIds((prev) => (prev.includes(entityId) ? prev : [...prev, entityId]));
-  }, [activeResult, adapter]);
+  }, [activeResult, adapter, onAvoidRecorded]);
 
   const handleDismiss = useCallback(() => {
     setActiveResult(null);
@@ -95,10 +105,14 @@ export function ScanScreen({ entities, people, adapter, fetchOrgs, fetchOrgSumma
       return { kind: 'no_match' as const, label: lastLookupLabel };
     }
     if (status === 'lookup_unavailable' && lastLookupLabel) {
-      return { kind: 'lookup_unavailable' as const, label: lastLookupLabel };
+      return {
+        kind: 'lookup_unavailable' as const,
+        label: lastLookupLabel,
+        reason: lookupReason ?? undefined,
+      };
     }
     return null;
-  }, [lastLookupLabel, notice, status]);
+  }, [lastLookupLabel, notice, status, lookupReason]);
 
   const activeAssociatedPeople = activeResult?.entity
     ? getAssociatedPeople(activeResult.entity, people, entities)

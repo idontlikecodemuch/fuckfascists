@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Animated, Pressable, Text, View, StyleSheet, AccessibilityInfo } from 'react-native';
-import * as Haptics from 'expo-haptics';
 import { mapCopy } from '../../../copy/map';
 import { theme } from '../../../design/tokens';
 import { bevelFocusRaised, bevelGreenInset } from '../../../design/bevel';
 import { fillSelf, fixedFillSelf } from '../../../design/layout';
 import { SparkleDecoration } from '../../../core/fx';
+import { haptics } from '../../../core/fx/haptics';
 
 interface AvoidButtonProps {
   onPress: () => Promise<void>;
@@ -52,7 +52,7 @@ export function AvoidButton({ onPress, disabled = false, initialConfirmed = fals
     setError(false);
 
     if (!reducedMotion) {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
+      haptics.avoid();
 
       Animated.parallel([
         Animated.sequence([

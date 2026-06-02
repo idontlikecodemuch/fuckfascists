@@ -48,6 +48,8 @@ interface MapScreenProps {
   fetchOrgSummary: MatchingDeps['fetchOrgSummary'];
   /** Additional top spacing reserved by shell-level overlays. */
   topContentOffset?: number;
+  /** Notifies app-level schedulers after a new avoid is written. */
+  onAvoidRecorded?: () => void;
 }
 
 /**
@@ -98,7 +100,15 @@ const DARK_MAP_STYLE: MapStyleElement[] = [
   { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#7f8a96' }] },
 ];
 
-export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummary, topContentOffset = 0 }: MapScreenProps) {
+export function MapScreen({
+  entities,
+  people,
+  adapter,
+  fetchOrgs,
+  fetchOrgSummary,
+  topContentOffset = 0,
+  onAvoidRecorded,
+}: MapScreenProps) {
   const insets = useSafeAreaInsets();
   const { width: screenWidth } = useWindowDimensions();
   const [searchText, setSearchText] = useState('');
@@ -210,6 +220,7 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
     const entityId = activeResult.entityId ?? activeResult.fecCommitteeId;
     if (avoidedTodayRef.current.has(entityId)) return;
     await recordEntityAvoid(adapter, entityId, SURFACE_MAP);
+    onAvoidRecorded?.();
     avoidedTodayRef.current.add(entityId);
     // Persist pin coordinates for map hydration on next launch
     const pin = allPinsRef.current.find((p) => p.id === entityId);
@@ -234,7 +245,7 @@ export function MapScreen({ entities, people, adapter, fetchOrgs, fetchOrgSummar
       setAvoidAnimating(false);
       finishDismiss();
     }, FOLDER_AUTO_DISMISS_MS);
-  }, [activeResult, adapter, markTapPinAvoided, finishDismiss, amberPulseOpacity]);
+  }, [activeResult, adapter, markTapPinAvoided, finishDismiss, amberPulseOpacity, onAvoidRecorded]);
 
   useEffect(() => () => { if (avoidDismissTimer.current) clearTimeout(avoidDismissTimer.current); }, []);
 

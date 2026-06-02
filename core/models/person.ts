@@ -48,6 +48,9 @@ export interface PoliticalPersonContribution {
   contributionDate: string;
 }
 
+/** Compact shipped party totals for a single FEC cycle: [cycle, R, D, O]. */
+export type PoliticalPersonCycleTotals = [cycle: number, repubs: number, dems: number, other: number];
+
 export interface PoliticalPersonDonationSummary {
   totalR: number;
   totalD: number;
@@ -57,6 +60,7 @@ export interface PoliticalPersonDonationSummary {
   recentCycleO?: number;        // unclassified in most recent cycle only
   recentCycle: string;
   activeCycles: number[];
+  cycleTotals?: PoliticalPersonCycleTotals[]; // compact per-cycle party totals, sorted ascending
   raw: PoliticalPersonContribution[];
   lastUpdated: string;
 }

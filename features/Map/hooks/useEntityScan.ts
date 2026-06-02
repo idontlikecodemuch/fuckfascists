@@ -10,9 +10,11 @@ export interface EntityScanState {
   status: ScanStatus;
   result: ScanResult | null;
   error: string | null;
+  /** __DEV__-only diagnostic — propagated from matchEntity when lookup fails. */
+  lookupReason: string | null;
 }
 
-const INITIAL: EntityScanState = { status: 'idle', result: null, error: null };
+const INITIAL: EntityScanState = { status: 'idle', result: null, error: null, lookupReason: null };
 
 /**
  * Runs a business name through the entity matching pipeline.
@@ -29,16 +31,33 @@ export function useEntityScan(deps: MatchingDeps, areaHash: string) {
       const trimmed = businessName.trim();
       if (!trimmed) return;
 
-      setState({ status: 'scanning', result: null, error: null });
+      setState({ status: 'scanning', result: null, error: null, lookupReason: null });
 
       try {
-        const matchResult = await matchEntity(trimmed, deps, areaHash);
+        // Barcode-derived scans skip the FEC fuzzy fallback. The brand
+        // strings OFF returns (wine labels, product names, sub-brands)
+        // rarely map cleanly to FEC committees, and anonymous FEC traffic
+        // gets 403'd on most networks. Better to surface a clean "Found
+        // X — coverage growing" no-match toast than chase a doomed FEC call.
+        const allowFecFallback = context?.kind !== 'barcode';
+        const matchResult = await matchEntity(
+          trimmed,
+          deps,
+          areaHash,
+          undefined,
+          { allowFecFallback },
+        );
 
         if (!matchResult.matched) {
           const status = matchResult.lookupStatus === 'lookup_unavailable'
             ? 'lookup_unavailable'
             : 'unmatched';
-          setState({ status, result: null, error: null });
+          setState({
+            status,
+            result: null,
+            error: null,
+            lookupReason: matchResult.lookupReason ?? null,
+          });
           return;
         }
 
@@ -46,6 +65,7 @@ export function useEntityScan(deps: MatchingDeps, areaHash: string) {
           status: 'matched',
           result: buildScanResult(matchResult, context),
           error: null,
+          lookupReason: null,
         });
       } catch (err) {
         // DIAGNOSTIC — remove before ship
@@ -54,6 +74,7 @@ export function useEntityScan(deps: MatchingDeps, areaHash: string) {
           status: 'error',
           result: null,
           error: (err as Error).message,
+          lookupReason: null,
         });
       }
     },

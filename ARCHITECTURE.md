@@ -518,14 +518,13 @@ SW restart.
 ## 9. Scorecard Drop Mechanics
 
 ```
-Start of week (GitHub Action — not yet built):
-    ├─ generates random drop time within SCORECARD_WINDOW (Fri 4pm–Sat 3pm ET)
-    ├─ avoids the previous week's drop hour
-    └─ publishes { dropAt: epoch, weekOf: 'YYYY-MM-DD' } to DROP_SCHEDULE_URL
-
 Mobile app (useDropSchedule):
-    ├─ fetches DROP_SCHEDULE_URL on mount
-    ├─ if dropAt is in the future → schedules Expo local notification
+    ├─ computes deterministic weekly drop time on-device
+    │  └─ weighted toward US-friendly Friday evening / Saturday daytime slots
+    ├─ avoids the previous week's drop hour
+    ├─ AppShell schedules Expo local notification at startup / after avoid writes
+    │  ├─ only if scored week has enough avoids to render a card
+    │  └─ quiet if local drop time is from 11pm through 8:59am
     └─ hasDropped = Date.now() >= dropAt (re-evaluated on each render)
 
 ScorecardScreen states:

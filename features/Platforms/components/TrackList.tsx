@@ -8,7 +8,7 @@ import * as SecureStore from 'expo-secure-store';
 import { getLocalDateString } from '../../../core/utils/localDate';
 import { platformsCopy } from '../../../copy/platforms';
 import { theme } from '../../../design/tokens';
-import { fillSelf } from '../../../design/layout';
+import { fillSelf, fixedFillSelf } from '../../../design/layout';
 import {
   ARENA_TRANSITION_MS,
   DAY_CIRCLES_AUTO_COLLAPSE_DELAY_MS,
@@ -29,6 +29,10 @@ interface TrackListProps {
    *  parent owns the BusinessCard overlay state — this just forwards
    *  the entityId to look up. */
   onShowCard?: (entityId: string | null) => void;
+}
+
+function TrackListItemShell({ children }: { children: React.ReactNode }) {
+  return <View style={styles.itemShell}>{children}</View>;
 }
 
 export function TrackList({ onShowCard }: TrackListProps = {}) {
@@ -172,13 +176,25 @@ export function TrackList({ onShowCard }: TrackListProps = {}) {
     const sidesStyle = panelFocused ? styles.panelSidesFocused : styles.panelSides;
 
     if (item.type === 'panelStart') {
-      return <View style={panelFocused ? styles.panelTopCapFocused : styles.panelTopCap} />;
+      return (
+        <TrackListItemShell>
+          <View style={panelFocused ? styles.panelTopCapFocused : styles.panelTopCap} />
+        </TrackListItemShell>
+      );
     }
     if (item.type === 'panelEnd') {
-      return <View style={panelFocused ? styles.panelBottomCapFocused : styles.panelBottomCap} />;
+      return (
+        <TrackListItemShell>
+          <View style={panelFocused ? styles.panelBottomCapFocused : styles.panelBottomCap} />
+        </TrackListItemShell>
+      );
     }
     if (item.type === 'separator') {
-      return <View style={styles.separator} />;
+      return (
+        <TrackListItemShell>
+          <View style={styles.separator} />
+        </TrackListItemShell>
+      );
     }
 
     if (item.type === 'groupHeader') {
@@ -188,29 +204,31 @@ export function TrackList({ onShowCard }: TrackListProps = {}) {
       const firstChild = platforms.find((p) => p.id === firstChildId);
       const groupEntityId = firstChild?.entityId ?? null;
       return (
-        <View style={sidesStyle}>
-          <PlatformGroupHeader
-            figureName={item.figureName}
-            shortName={item.shortName}
-            totalAvoids={personWeeklyAvoids(item.figureName)}
-            focused={selectedPlatformId === null && focusedFigureName === item.figureName}
-            panelFocused={panelFocused}
-            onPress={() => {
-              dismissDailyPreview();
-              focusGroup(item.figureName);
-            }}
-            onSeeFile={onShowCard && groupEntityId
-              ? () => {
-                // Focus the group as well so the cyan-bevel panel reads
-                // as active when the user dismisses the card and lands
-                // back on the list.
+        <TrackListItemShell>
+          <View style={sidesStyle}>
+            <PlatformGroupHeader
+              figureName={item.figureName}
+              shortName={item.shortName}
+              totalAvoids={personWeeklyAvoids(item.figureName)}
+              focused={selectedPlatformId === null && focusedFigureName === item.figureName}
+              panelFocused={panelFocused}
+              onPress={() => {
                 dismissDailyPreview();
                 focusGroup(item.figureName);
-                onShowCard(groupEntityId);
-              }
-              : undefined}
-          />
-        </View>
+              }}
+              onSeeFile={onShowCard && groupEntityId
+                ? () => {
+                  // Focus the group as well so the cyan-bevel panel reads
+                  // as active when the user dismisses the card and lands
+                  // back on the list.
+                  dismissDailyPreview();
+                  focusGroup(item.figureName);
+                  onShowCard(groupEntityId);
+                }
+                : undefined}
+            />
+          </View>
+        </TrackListItemShell>
       );
     }
 
@@ -225,23 +243,25 @@ export function TrackList({ onShowCard }: TrackListProps = {}) {
 
     if (item.type === 'dayCircles') {
       return (
-        <Animated.View
-          entering={FadeIn.duration(DAY_CIRCLES_ANIMATE_MS)}
-          style={[styles.animatedDetailRow, sidesStyle]}
-        >
-          <DayCircles
-            weekOf={weekOf}
-            platformName={platformItem.platform.name}
-            dayCounts={platformItem.dayCounts}
-            onAvoidDate={async (date) => {
-              dismissDailyPreview();
-              openPlatformDetails(platformId);
-              const delay = getArenaDelay(figureName);
-              const recorded = await avoidForDate(platformId, date);
-              if (recorded) queueArenaHit(figureName, delay);
-            }}
-          />
-        </Animated.View>
+        <TrackListItemShell>
+          <Animated.View
+            entering={FadeIn.duration(DAY_CIRCLES_ANIMATE_MS)}
+            style={[styles.animatedDetailRow, sidesStyle]}
+          >
+            <DayCircles
+              weekOf={weekOf}
+              platformName={platformItem.platform.name}
+              dayCounts={platformItem.dayCounts}
+              onAvoidDate={async (date) => {
+                dismissDailyPreview();
+                openPlatformDetails(platformId);
+                const delay = getArenaDelay(figureName);
+                const recorded = await avoidForDate(platformId, date);
+                if (recorded) queueArenaHit(figureName, delay);
+              }}
+            />
+          </Animated.View>
+        </TrackListItemShell>
       );
     }
 
@@ -253,45 +273,47 @@ export function TrackList({ onShowCard }: TrackListProps = {}) {
 
     const isTopLevel = item.type === 'platformRow';
     return (
-      <View style={sidesStyle}>
-        <PlatformRow
-          item={platformItem}
-          isChild={item.type === 'childRow'}
-          focused={focused}
-          panelFocused={panelFocused}
-          isLastInGroup={isLastInGroup}
-          expanded={expanded}
-          dimmed={focusedFigureName !== null && !focused}
-          onRowPress={() => {
-            dismissDailyPreview();
-            togglePlatformDetails(platformId);
-          }}
-          onSeeFile={isTopLevel && onShowCard
-            ? () => {
-              // Focus the row so it stays active when the card is dismissed
-              // — prevents accidentally tapping a different row's SEE FILE
-              // and ending up with focus elsewhere.
+      <TrackListItemShell>
+        <View style={sidesStyle}>
+          <PlatformRow
+            item={platformItem}
+            isChild={item.type === 'childRow'}
+            focused={focused}
+            panelFocused={panelFocused}
+            isLastInGroup={isLastInGroup}
+            expanded={expanded}
+            dimmed={focusedFigureName !== null && !focused}
+            onRowPress={() => {
               dismissDailyPreview();
-              focusPlatform(platformId);
-              onShowCard(platformItem.platform.entityId ?? null);
-            }
-            : undefined}
-          onAvoidPress={async () => {
-            dismissDailyPreview();
-            const delay = getArenaDelay(figureName);
+              togglePlatformDetails(platformId);
+            }}
+            onSeeFile={isTopLevel && onShowCard
+              ? () => {
+                // Focus the row so it stays active when the card is dismissed
+                // — prevents accidentally tapping a different row's SEE FILE
+                // and ending up with focus elsewhere.
+                dismissDailyPreview();
+                focusPlatform(platformId);
+                onShowCard(platformItem.platform.entityId ?? null);
+              }
+              : undefined}
+            onAvoidPress={async () => {
+              dismissDailyPreview();
+              const delay = getArenaDelay(figureName);
 
-            if (!todayAvoided) {
-              focusPlatform(platformId);
-              const recorded = await avoid(platformId);
-              if (recorded) queueArenaHit(figureName, delay);
-              return;
-            }
+              if (!todayAvoided) {
+                focusPlatform(platformId);
+                const recorded = await avoid(platformId);
+                if (recorded) queueArenaHit(figureName, delay);
+                return;
+              }
 
-            togglePlatformDetails(platformId);
-            queueArenaHit(figureName, delay);
-          }}
-        />
-      </View>
+              togglePlatformDetails(platformId);
+              queueArenaHit(figureName, delay);
+            }}
+          />
+        </View>
+      </TrackListItemShell>
     );
   }, [
     avoid,
@@ -345,6 +367,9 @@ const styles = StyleSheet.create({
   listContent: {
     paddingBottom: theme.space['3xl'],
     alignItems: 'stretch',
+  },
+  itemShell: {
+    ...fixedFillSelf,
   },
   animatedDetailRow: {
     ...fillSelf,

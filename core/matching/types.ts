@@ -32,6 +32,8 @@ export interface MatchFailure {
   matched: false;
   lookupStatus: 'no_match' | 'lookup_unavailable';
   normalizedInput: string;    // caller uses this to build the FEC search link
+  /** __DEV__-only diagnostic — populated when lookupStatus is 'lookup_unavailable' so the UI can surface the actual FEC failure (HTTP status, network error, etc.). */
+  lookupReason?: string;
 }
 
 export interface MatchEntityOptions {

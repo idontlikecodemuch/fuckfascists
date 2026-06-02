@@ -4,7 +4,7 @@ import { theme } from '../design/tokens';
 export const WEEK_START_DAY = 6;               // Saturday (0 = Sunday)
 export const WEEK_START_HOUR = 0;              // 12:00am local time
 
-// Scorecard drop window (times in ET)
+// Scorecard drop window (broad public copy; exact weighted slots below)
 export const DROP_WINDOW_START_DAY = 5;        // Friday (0 = Sunday)
 export const DROP_WINDOW_START_HOUR = 18;      // 6pm ET
 export const DROP_WINDOW_END_DAY = 6;          // Saturday (0 = Sunday)
@@ -14,6 +14,26 @@ export const DROP_WINDOW_END_HOUR = 16;        // 4pm ET
 export const SCORECARD_WINDOW_START_HOUR = DROP_WINDOW_START_HOUR;
 export const SCORECARD_WINDOW_END_HOUR = DROP_WINDOW_END_HOUR;
 export const SCORECARD_WINDOW_DAY = DROP_WINDOW_START_DAY;
+
+// Scorecard drop selection weights.
+// The full Fri-evening -> Sat-afternoon window appears once so occasional
+// overnight / early-morning drops still happen. US-friendly hours appear two
+// extra times, making Friday evening and Saturday daytime much more likely.
+// Offsets are hours after the computed Friday window start.
+export const SCORECARD_DROP_WEIGHTED_HOUR_OFFSETS = [
+  // Baseline: every hour in the broad window has a chance.
+  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+  11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
+  // US-friendly emphasis: Friday evening and Saturday daytime.
+  0, 1, 2, 3, 4, 16, 17, 18, 19, 20, 21,
+  0, 1, 2, 3, 4, 16, 17, 18, 19, 20, 21,
+] as const;
+
+// Scorecard drop notification — local quiet-hours guard.
+// If a user's local device time is at/after the evening hour or before the
+// morning hour when the card drops, schedule without sound/vibration.
+export const SCORECARD_QUIET_NOTIFICATION_FROM_HOUR = 23; // 11pm local
+export const SCORECARD_QUIET_NOTIFICATION_BEFORE_HOUR = 9;
 
 // Scorecard — suppress card + notification below this avoid count
 export const MIN_AVOIDS_FOR_DROP = 1;
@@ -105,6 +125,20 @@ export const CONFIDENCE_THRESHOLD_MEDIUM = 0.60;
 // OpenFEC API base URL — primary data source as of v1.1
 export const FEC_API_BASE_URL = 'https://api.open.fec.gov/v1';
 export const OPEN_FOOD_FACTS_API_BASE_URL = 'https://world.openfoodfacts.org/api/v2';
+// OFF requires a custom User-Agent identifying the app + a contact path
+// (email OR URL OR repo) in the form "AppName/Version (Contact)". Generic
+// UAs (no UA, default RN/Expo UA) are rate-limited or 403'd — this was
+// confirmed as the consistent-failure cause on physical devices. The URL
+// form is accepted per OFF's own SDK conventions and is preferred here so
+// we don't tie the UA to a specific mailbox. Update the version string
+// when bumping app.json's version.
+// Docs: https://openfoodfacts.github.io/openfoodfacts-server/api/
+// Read limit: 15 req/min per IP (or per user on mobile).
+export const OPEN_FOOD_FACTS_USER_AGENT = 'FCKFascists/1.0.0 (https://fckfascists.com)';
+// Abort the OFF fetch after this many ms so a hung connection on cellular
+// doesn't stall the scan flow indefinitely. ~8s leaves room for slow networks
+// while still failing fast enough to retry on the next scan.
+export const OPEN_FOOD_FACTS_TIMEOUT_MS = 8000;
 
 // Curated entity list update URL
 export const ENTITY_LIST_UPDATE_URL = 'https://raw.githubusercontent.com/idontlikecodemuch/fckfascists-data/main/entities.json';
@@ -340,7 +374,7 @@ export const TRACK_ROW_FACE_ANCHOR_X = 0.5;
 // Lower = face higher in the row's sprite-screen viewport. 0.5 centered the
 // face vertically, which read as "head sitting low" — bumped up so the eyes
 // land near the upper third of the screen.
-export const TRACK_ROW_FACE_ANCHOR_Y = 0.42;
+export const TRACK_ROW_FACE_ANCHOR_Y = 0.37;
 export const TRACK_ARENA_SINGLE_FACE_ANCHOR_X = 0.5;
 export const TRACK_ARENA_SINGLE_FACE_ANCHOR_Y = 0.3;
 export const TRACK_ARENA_GRID_FACE_ANCHOR_X = 0.5;

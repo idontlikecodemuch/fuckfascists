@@ -6,6 +6,8 @@ import { getWeekDates, isFutureDate } from '../utils/weekDates';
 import { getLocalDateString } from '../../../core/utils/localDate';
 import { theme } from '../../../design/tokens';
 import { bevelInset, bevelGreenInset } from '../../../design/bevel';
+import { fillSelf } from '../../../design/layout';
+import { haptics } from '../../../core/fx/haptics';
 import {
   TRACK_DAY_CIRCLE_SIZE,
   TRACK_DAY_CIRCLES_GAP,
@@ -56,7 +58,7 @@ export function DayCircles({ weekOf, platformName, dayCounts, onAvoidDate }: Day
                 {dayLabel}
               </Text>
               <Pressable
-                onPress={(!checked && !future) ? async () => { await onAvoidDate(date); } : undefined}
+                onPress={(!checked && !future) ? async () => { haptics.avoid(); await onAvoidDate(date); } : undefined}
                 disabled={checked || future}
                 style={[
                   styles.tile,
@@ -89,6 +91,7 @@ const styles = StyleSheet.create({
   // drops its bottom rule (focusedExpandedRow) so the band is continuous; the
   // strip carries the closing focusAccent rule on its bottom edge.
   wrapper: {
+    ...fillSelf,
     backgroundColor: TRACK_ROW_FOCUS_BG_COLOR,
     borderBottomWidth: 1,
     borderBottomColor: theme.colors.focusAccent,

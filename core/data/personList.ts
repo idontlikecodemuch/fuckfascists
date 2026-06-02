@@ -80,6 +80,14 @@ function isContribution(value: unknown): boolean {
   );
 }
 
+function isCycleTotals(value: unknown): boolean {
+  return (
+    Array.isArray(value) &&
+    value.length === 4 &&
+    value.every((item) => typeof item === 'number')
+  );
+}
+
 function isDonationSummary(value: unknown): boolean {
   if (typeof value !== 'object' || value === null) return false;
   const summary = value as Record<string, unknown>;
@@ -92,6 +100,8 @@ function isDonationSummary(value: unknown): boolean {
     typeof summary['recentCycle'] === 'string' &&
     Array.isArray(summary['activeCycles']) &&
     summary['activeCycles'].every((cycle) => typeof cycle === 'number') &&
+    (summary['cycleTotals'] === undefined ||
+      (Array.isArray(summary['cycleTotals']) && summary['cycleTotals'].every(isCycleTotals))) &&
     Array.isArray(summary['raw']) &&
     summary['raw'].every(isContribution) &&
     typeof summary['lastUpdated'] === 'string'

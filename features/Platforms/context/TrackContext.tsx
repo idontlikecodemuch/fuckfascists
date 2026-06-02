@@ -8,13 +8,14 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { AppState } from 'react-native';
 import type { ReactNode } from 'react';
 import type { StorageAdapter } from '../../../core/data';
 import type { Platform, PlatformItem } from '../types';
 import { usePlatformAvoidance } from '../hooks/usePlatformAvoidance';
 import { getLocalDateString } from '../../../core/utils/localDate';
 import type { ArenaHitRequest } from './trackHelpers';
-import { buildTodayActions } from './trackHelpers';
+import { buildTodayActions, isFigureDefeatedToday } from './trackHelpers';
 import { ARENA_HIT_FX_MS } from '../../../config/constants';
 import { initialTrackUIState, trackUIReducer } from './trackUIState';
 
@@ -67,20 +68,34 @@ export function useTrack(): TrackContextValue {
 interface TrackProviderProps {
   adapter: StorageAdapter;
   platforms: Platform[];
+  onAvoidRecorded?: () => void;
   children: ReactNode;
 }
 
-export function TrackProvider({ adapter, platforms, children }: TrackProviderProps) {
+export function TrackProvider({ adapter, platforms, onAvoidRecorded, children }: TrackProviderProps) {
   const [uiState, dispatch] = useReducer(trackUIReducer, initialTrackUIState);
   const [arenaHitRequest, setArenaHitRequest] = useState<ArenaHitRequest | null>(null);
   const [recentlyDefeated, setRecentlyDefeated] = useState<Set<string>>(new Set());
+  const [todayKey, setTodayKey] = useState(getLocalDateString);
   const recentlyDefeatedTimersRef = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
   const avoidance = usePlatformAvoidance(adapter, platforms);
 
-  // Cleanup timers on unmount
   useEffect(() => {
     const timers = recentlyDefeatedTimersRef.current;
     return () => { timers.forEach(clearTimeout); };
+  }, []);
+
+  useEffect(() => {
+    const refreshToday = () => setTodayKey(getLocalDateString());
+    const interval = setInterval(refreshToday, 60_000);
+    const sub = AppState.addEventListener('change', (state) => {
+      if (state === 'active') refreshToday();
+    });
+
+    return () => {
+      clearInterval(interval);
+      sub.remove();
+    };
   }, []);
 
   const getFigureName = useCallback((platformId: string) => {
@@ -122,15 +137,11 @@ export function TrackProvider({ adapter, platforms, children }: TrackProviderPro
     });
   }, []);
 
-  // todayActions is derived data — useMemo prevents the useState+useEffect
-  // pattern that caused an infinite loop: avoidance.items is now stable (memoized
-  // in usePlatformAvoidance), so this only recomputes when events actually change.
-  const sessionDateRef = useRef(getLocalDateString());
+  // todayActions is derived data. Figures reset to neutral when the local day
+  // changes unless they have an avoid logged for the new day.
   const todayActions = useMemo(() => {
-    const today = getLocalDateString();
-    sessionDateRef.current = today;
-    return buildTodayActions(avoidance.items, today, getDisplayFigure);
-  }, [avoidance.items]);
+    return buildTodayActions(avoidance.items, todayKey, getDisplayFigure);
+  }, [avoidance.items, todayKey]);
 
   const flashDefeated = useCallback((figureName: string) => {
     setRecentlyDefeated((prev) => {
@@ -155,20 +166,22 @@ export function TrackProvider({ adapter, platforms, children }: TrackProviderPro
   const avoid = useCallback(async (platformId: string) => {
     const recorded = await avoidance.avoid(platformId);
     if (recorded) {
+      onAvoidRecorded?.();
       const figureName = getFigureName(platformId);
       if (figureName) flashDefeated(figureName);
     }
     return recorded;
-  }, [avoidance, getFigureName, flashDefeated]);
+  }, [avoidance, getFigureName, flashDefeated, onAvoidRecorded]);
 
   const avoidForDate = useCallback(async (platformId: string, date: string) => {
     const recorded = await avoidance.avoidForDate(platformId, date);
     if (recorded) {
+      onAvoidRecorded?.();
       const figureName = getFigureName(platformId);
       if (figureName) flashDefeated(figureName);
     }
     return recorded;
-  }, [avoidance, getFigureName, flashDefeated]);
+  }, [avoidance, getFigureName, flashDefeated, onAvoidRecorded]);
 
   const personWeeklyAvoids = useCallback((figureName: string): number => {
     return avoidance.items
@@ -177,12 +190,8 @@ export function TrackProvider({ adapter, platforms, children }: TrackProviderPro
   }, [avoidance.items]);
 
   const isDefeated = useCallback((figureName: string): boolean => {
-    if (todayActions.has(figureName) || recentlyDefeated.has(figureName)) return true;
-    // Stay defeated if any avoids exist in the current week for this figure
-    return avoidance.items
-      .filter((item) => getDisplayFigure(item.platform) === figureName)
-      .some((item) => item.weeklyCount > 0);
-  }, [todayActions, recentlyDefeated, avoidance.items]);
+    return isFigureDefeatedToday(figureName, todayActions, recentlyDefeated);
+  }, [todayActions, recentlyDefeated]);
 
   const clearAll = useCallback(async () => {
     await avoidance.clearAll();

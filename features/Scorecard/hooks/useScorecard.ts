@@ -15,6 +15,7 @@ export function useScorecard(
   entities: Entity[],
   platforms: Platform[],
   weekOf: string,
+  refreshKey = 0,
 ): { data: ScorecardViewData | null; loading: boolean; error: string | null } {
   const [data, setData] = useState<ScorecardViewData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -51,7 +52,7 @@ export function useScorecard(
     })();
 
     return () => { cancelled = true; };
-  }, [adapter, weekOf]);
+  }, [adapter, weekOf, refreshKey]);
 
   return { data, loading, error };
 }

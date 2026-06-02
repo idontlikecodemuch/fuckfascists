@@ -205,6 +205,15 @@ export const DROP_WINDOW_START_DAY = 5;        // Friday
 export const DROP_WINDOW_START_HOUR = 18;      // 6pm ET
 export const DROP_WINDOW_END_DAY = 6;          // Saturday
 export const DROP_WINDOW_END_HOUR = 16;        // 4pm ET
+export const SCORECARD_DROP_WEIGHTED_HOUR_OFFSETS = [
+  // Full window once, US-friendly Friday evening / Saturday daytime twice more.
+  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+  11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
+  0, 1, 2, 3, 4, 16, 17, 18, 19, 20, 21,
+  0, 1, 2, 3, 4, 16, 17, 18, 19, 20, 21,
+];
+export const SCORECARD_QUIET_NOTIFICATION_FROM_HOUR = 23; // 11pm local
+export const SCORECARD_QUIET_NOTIFICATION_BEFORE_HOUR = 9;
 
 // Week boundary for event storage (scored week = Sat → Fri)
 export const WEEK_START_DAY = 6;               // Saturday
@@ -350,12 +359,13 @@ LocalCache {
 **Added 2026-04-03.** Map pin coordinates for avoided entities are stored locally in SQLite (`entity_avoid_pins` table). All data in `fuckfascists.db` is encrypted at rest (iOS: `NSFileProtectionComplete`, Android: FBE) — see "Data Encryption at Rest" in the Security section. Only coordinates for entities the user has actively avoided are stored — not scanned or tapped entities. Rows are auto-purged daily. This enables the map to show today's avoided markers on app relaunch. Copy updated 2026-04-16 to disclose this behavior. **This is a candidate for rewrite** — the team may decide to revert to session-only pin storage if any coordinate persistence is unacceptable. See Known Limitations.
 
 ### Scorecard capture-then-purge — privacy upgrade
-**Added 2026-04-18. Updated 2026-05-07.** When the weekly drop fires, the app aggregates the scored week's events into an image and then deletes those raw events scoped to `[weekOf, weekOf+7)`. After the transition:
+**Added 2026-04-18. Updated 2026-05-31.** When the weekly drop fires, the app aggregates the scored week's events into an image and then deletes those raw events scoped to `[weekOf, weekOf+7)`. After the transition:
 
 - **What persists:** the rendered card image (current format `.jpg`, legacy `.png` accepted) in `FileSystem.documentDirectory/scorecards/`. The image is a derivative — it shows aggregated per-CEO counts and a weekly total. It contains NO timestamps, NO surface indicators (map/scan/track), and NO per-day breakdown. The raw event log cannot be reconstructed from it.
 - **What's deleted:** all `EntityAvoidEvent` and `PlatformAvoidEvent` rows within `[weekOf, weekOf+7)`. Scoped purge only — the live week still in progress is never touched (`purgeScoredWeekAvoidEvents` in `core/data/eventStore.ts`).
 - **Gating:** purge runs ONLY after `captureCard` returns a successful result. If capture fails (disk full, render error, app killed), the raw events are retained and the next Scorecard tab visit retries. Never silently destroys data on failure.
-- **Empty weeks:** if `grandTotal < MIN_AVOIDS_FOR_DROP` at drop time, no card is captured, no purge runs, the drop notification is cancelled (`scorecard-drop` identifier only, Thursday nudge preserved), and the tab shows the empty state during the presentation window. Raw events for that empty week fall through to the normal `purgeOldAvoidEvents` weekly rollover (`App.tsx:54`).
+- **Startup cleanup:** `App.tsx` passes `getScorecardAvoidPurgeCutoff()` into `purgeOldAvoidEvents()`. This keeps the just-finished Sat-Fri scored week available after Saturday local rollover until `ScorecardScreen` can capture and purge it. Older weeks are still purged on launch.
+- **Empty weeks:** if `grandTotal < MIN_AVOIDS_FOR_DROP` at drop time, no card is captured, no purge runs, the drop notification is cancelled (`scorecard-drop` identifier only, Thursday nudge preserved), and the tab shows the empty state during the presentation window. Raw events for that empty week fall through to the startup cleanup cutoff.
 - **Launch-resilient:** if the user was offline when drop fired, the first app open after drop runs the same flow — aggregate → capture → purge → present.
 
 This is a privacy *upgrade* vs. the prior model, which kept raw events until the next Sat-midnight app launch. The card image replaces a multi-row SQL table with a single bitmap that is structurally less invasive.
@@ -427,10 +437,12 @@ Audits entity aliases for exact duplicates, single-word substring collisions, pa
 ### `npm run hydrate:entities:bulk`
 Hydrates corporate/entity PAC donation summaries from local FEC PAS2 and OTH bulk files. Uses cycles `2016, 2018, 2020, 2022, 2024, 2026`, the latest local Line 29 beneficiary classification report, local committee/candidate/linkage files, and Schedule-B-like OTH rows. This is the preferred broad entity hydration path when `tools/fec-bulk/` is staged. It makes no API calls, writes `assets/data/entities.json`, and creates `assets/data/entities.pre-bulk-hydration.json`.
 
+Entity summaries include compact `cycleTotals: [[cycle, R, D, O], ...]` keyed by FEC cycle, not calendar year. The app uses this to display the latest completed major cycle while keeping `recentCycle` as the max active FEC cycle for compatibility.
+
 Run `npm run audit:aliases` and `node scripts/verify-data-integrity.mjs` after this script.
 
 ### People bulk scripts
-`npm run build:people:bulk-top`, `npm run sync:people:bulk-top`, `npm run hydrate:people:bulk`, `npm run build:people:entity-review-queue`, and `npm run strip:people:raw` maintain `people.json` and `people.bundle.json` from local FEC individual-contribution bulk files. Cycles include `2026`. `sync:people:bulk-top` keeps extra pre-existing people by default; `--drop-extra` intentionally discards people outside the top-donor merge and should be treated as destructive. This is a quarterly maintainer workflow for V1. A rolling app window of the current even-year cycle plus the previous three even-year cycles (in 2026: `2020, 2022, 2024, 2026`) is a potential V1.5 optimization, not a V1 blocker.
+`npm run build:people:bulk-top`, `npm run sync:people:bulk-top`, `npm run hydrate:people:bulk`, `npm run build:people:entity-review-queue`, and `npm run strip:people:raw` maintain `people.json` and `people.bundle.json` from local FEC individual-contribution bulk files. Cycles include `2026`. `sync:people:bulk-top` keeps extra pre-existing people by default; `--drop-extra` intentionally discards people outside the top-donor merge and should be treated as destructive. People summaries include compact `cycleTotals: [[cycle, R, D, O], ...]` keyed by FEC cycle. This is a quarterly maintainer workflow for V1. A rolling app window of the current even-year cycle plus the previous three even-year cycles (in 2026: `2020, 2022, 2024, 2026`) is a potential V1.5 optimization, not a V1 blocker.
 
 The hydrator matches FEC contributor-name rows to our people using FEC-flavored fuzz (`scripts/lib/fecNameFuzz.mjs`, a verbatim port of openFEC's `parse_fulltext`). It tokenizes on `\W+`, strips non-ASCII via NFKD + ascii-ignore, and requires every query token to prefix-match some field token (Postgres tsquery `:*` AND semantics). This matches FEC's web UI coverage exactly — if FEC's site returns a row for a contributor_name query, ours does too. Name variants (`BEZOS, JEFF` ↔ `BEZOS, JEFFREY PRESTON`) no longer need to be pre-enumerated in `fecSearchNames`, though the field remains supported as an escape hatch for exotic filings.
 
@@ -468,10 +480,10 @@ The weekly scorecard is a synchronized global event. Every user with the same ap
 
 ### Drop timing
 - Drop time is computed deterministically via PRNG in `core/dropSchedule/computeDropTime.ts` — same ISO week year + week number always produces the same result on every install, forever.
-- Seed: djb2 hash of `"ff-drop-{year}-W{week}"` mod `WINDOW_HOURS` (22), mapped to an hour offset within the **Friday 6pm ET – Saturday 4pm ET window** (22 hours, EST = UTC-5 hardcoded for MVP). Window is controlled by `DROP_WINDOW_START_HOUR` / `DROP_WINDOW_END_HOUR` in `config/constants.ts` — `SCORECARD_WINDOW_*` aliases remain for backward compat with `computeDropTime.ts`.
+- Seed: djb2 hash of `"ff-drop-{year}-W{week}"` mod `SCORECARD_DROP_WEIGHTED_HOUR_OFFSETS.length`, mapped to a weighted hour offset inside the **Friday evening – Saturday afternoon US window**. Every hour in the broad window remains possible; Friday evening and Saturday daytime appear three times in the table, so they are more likely. The window is still EST = UTC-5 hardcoded for MVP, so displayed ET shifts one hour during DST.
 - Collision rule: if this week's hour matches last week's, advance by 1 hour (wrapping within the window) — fully deterministic.
 - No network fetch for the schedule — `useDropSchedule` calls `getCurrentDropTime()` synchronously, no loading state.
-- Push notification is scheduled locally at the computed drop moment via Expo Notifications. Identifier is `SCORECARD_DROP_NOTIFICATION_ID = 'scorecard-drop'` — scoped cancel-and-reschedule preserves the Thursday nudge (`platform-nudge-thursday`).
+- Push notification is scheduled from `AppShell` via `useScorecardDropNotification`, not from the Scorecard tab. It runs on app startup and after avoid writes, so users do not need to open Scorecard first. It only schedules when the scored week has at least `MIN_AVOIDS_FOR_DROP`; empty weeks cancel the `scorecard-drop` notification. Identifier is `SCORECARD_DROP_NOTIFICATION_ID = 'scorecard-drop'` — scoped cancel-and-reschedule preserves the Thursday nudge (`platform-nudge-thursday`). If the drop lands at/after `SCORECARD_QUIET_NOTIFICATION_FROM_HOUR` or before `SCORECARD_QUIET_NOTIFICATION_BEFORE_HOUR` in the user's local device time, the notification is scheduled quiet (`sound: false`, iOS passive interruption level, Android quiet channel).
 - Notification carries `content.data = { type: 'scorecard-drop' }`. `AppShell` routes on `data.type`, not the human-readable title, so copy edits don't break cold-start or warm-start routing.
 
 ### Post-drop flow (capture → purge → present)
@@ -561,7 +573,7 @@ V1 covers for-profit corporations and their PACs. Add foundations (e.g. Gates Fo
   fecCommitteeId?: string | null     // string=confirmed ID, null=confirmed no PAC, ""=unverified
   fecCommitteeRecords?: FecCommitteeRecord[] // dissolved+active PAC history; { id, status, registeredYear?, dissolvedYear? }
   verificationStatus: 'manual' | 'pipeline' | 'unverified'
-  donationSummary?: DonationSummary  // bundled by fetch-donation-data.mjs; used when fresh
+  donationSummary?: DonationSummary  // bundled by bulk hydration; includes compact cycleTotals [[cycle, R, D, O]]
   lastVerifiedDate: string           // YYYY-MM-DD
 }
 ```
@@ -959,6 +971,7 @@ After writing any file, scan it once for deprecated APIs, `.then()` chains, `var
     recentCycleD: number
     recentCycle: string
     activeCycles: number[]
+    cycleTotals?: [number, number, number, number][] // [cycle, R, D, O], keyed by FEC cycle
     raw: PoliticalPersonContribution[]
     lastUpdated: string
   }
@@ -1034,7 +1047,7 @@ Regression coverage lives in `extension/popup/__tests__/popupStaticCopy.test.ts`
 ### URL consolidation in copy/shared.ts — ✅ Resolved (URL split); 🔄 Pending (hosted assets)
 **Landed 2026-05-07.** All site-derived URLs now build from `SITE_DOMAIN = "FCKfascists.com"` + `SITE_ORIGIN = \`https://${SITE_DOMAIN}\``. `privacyUrl`, `extensionChromeUrl`, `extensionFirefoxUrl` are template literals; `contactEmail` is `info@fckfascists.com`. The previous canonical/alias split with `fckapp.com` is gone — the domain is one constant, change once.
 
-**Still pending before submission:** real privacy policy hosted at `FCKfascists.com/privacy`, working `info@fckfascists.com` mailbox (propagating), and real Chrome Web Store / Firefox Add-ons URLs once the extensions are published (interim values resolve into the live brand site).
+**Still pending before submission:** real privacy policy hosted at `FCKfascists.com/privacy` and real Chrome Web Store / Firefox Add-ons URLs once the extensions are published (interim values resolve into the live brand site). The `info@fckfascists.com` mailbox is live.
 
 ### CYCLES_SINCE_2016 — cycle constant update (Priority: V1.5)
 `CYCLES_SINCE_2016` in `scripts/fetch-donation-data.mjs` and `core/api/FECClient.ts` must be updated manually when a new election cycle begins. Both are candidates for renaming to `CYCLES_TO_FETCH` (more accurate now that 2026 is included) — not blocking for MVP but should be done alongside the next cycle update.
