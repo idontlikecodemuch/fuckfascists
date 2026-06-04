@@ -1079,3 +1079,46 @@ UPC scanner is still blurry when close up. Thought this was fixed?
 
 **Feedback:**
 Characters are supposed to reset back to undefeated each day. Only if that day is avoided.
+
+---
+
+# Round 14 — 2026-06-03
+
+Imported via `npm run feedback:apple -- --since=2026-05-29 --download-screenshots`.
+
+Local import directory: `tools/review/store-feedback/2026-06-04T03-05-50-828Z/` (gitignored; contains tester metadata and raw attachments).
+
+The import returned 11 records: 8 already-catalogued May 29 records plus 3 new records below.
+
+---
+
+## 184. App Shell — Randomize Initial Launch Tab
+**Screenshot:** `store-feedback/2026-06-04T03-05-50-828Z/screenshots/AAm9a9ZqvL3Ud0PPWRQFOPs-1.jpg`
+**Screen:** App shell / cold launch
+
+**Status:** RESOLVED IN CURRENT WORKTREE — non-notification cold starts now choose a weighted initial tab across Map, Track, Scorecard, and Scan. Scan is intentionally weighted lower. Scorecard-drop notification launches still override randomization and route directly to Scorecard.
+
+**Feedback:**
+Have the app open randomly on map, track, scan(weighted less), or scorecard when it launches
+
+---
+
+## 185. Scorecard — Alert Tap Opened Empty Archive Despite Multiple Avoids
+**Screenshot:** `store-feedback/2026-06-04T03-05-50-828Z/screenshots/AJve2_X3IaPh_NuaZEiXu_I-1.jpg`
+**Screen:** Scorecard / Past scorecards
+
+**Status:** RESOLVED IN CURRENT WORKTREE — paired with #186. Build 4 feedback predates the May 31 startup-retention fixes (`0b88e0c`, `c4d349d`). Current pass also fixes a remaining post-capture edge: `ScorecardScreen` now loads an existing archived card for the scored week before treating purged raw avoid data as an empty drop. This prevents a captured-and-purged card from disappearing on a later mount inside the presentation window.
+
+**Feedback:**
+I had multiple avoids logged
+
+---
+
+## 186. Scorecard — Notification Tap Did Not Present Card
+**Screenshot:** `store-feedback/2026-06-04T03-05-50-828Z/screenshots/ALS1-k2uZ14szFlXzuJ4XYY-1.jpg`
+**Screen:** Scorecard / empty state after notification tap
+
+**Status:** RESOLVED IN CURRENT WORKTREE — notification cold-start routing was already fixed after Build 4 by using the stable `scorecard-drop` notification data key and holding the shell blank until initial routing resolves. This pass adds the archived-card-first drop decision described in #185, so a saved scored-week card presents even after its raw avoid events have been purged.
+
+**Feedback:**
+I got an alert to see my scorecard and tapped it and got the start screen but when I went to scorecard it's empty. "Past scorecard" is also empty. The presentation of the card didn't happen

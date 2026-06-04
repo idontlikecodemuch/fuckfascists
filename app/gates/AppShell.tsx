@@ -14,6 +14,7 @@ import { useNudgeNotification } from '../../features/Platforms/hooks/useNudgeNot
 import { useBetaMode } from '../../features/Beta/useBetaMode';
 import { BetaOverlay } from '../../features/Beta/BetaOverlay';
 import { TabBar, type Tab } from '../navigation/TabBar';
+import { pickInitialTab } from '../navigation/initialTab';
 import { betaCopy } from '../../copy/beta';
 import { FECClient } from '../../core/api';
 import type { StorageAdapter } from '../../core/data';
@@ -88,10 +89,10 @@ export function AppShell({ adapter, entities, people }: AppShellProps) {
     Notifications.getLastNotificationResponseAsync()
       .then((resp) => {
         if (cancelled) return;
-        setActiveTab(isScorecardDrop(resp) ? 'report' : 'map');
+        setActiveTab(isScorecardDrop(resp) ? 'report' : pickInitialTab());
       })
       .catch(() => {
-        if (!cancelled) setActiveTab('map');
+        if (!cancelled) setActiveTab(pickInitialTab());
       });
     return () => { cancelled = true; };
   }, []);
