@@ -20,6 +20,7 @@ import { betaCopy } from '../../copy/beta';
 import { FECClient } from '../../core/api';
 import type { StorageAdapter } from '../../core/data';
 import type { Entity, PoliticalPerson } from '../../core/models';
+import { haptics } from '../../core/fx/haptics';
 import { theme } from '../../design/tokens';
 
 // Dev-only catalog — conditional import keeps it out of production bundles.
@@ -80,6 +81,10 @@ export function AppShell({ adapter, entities, people }: AppShellProps) {
 
   useNudgeNotification();
   useScorecardDropNotification(adapter, entities, TRACKED_PLATFORMS, avoidRefreshKey);
+
+  useEffect(() => {
+    haptics.launchJig();
+  }, []);
 
   // Cold-start routing: if the app was launched from the scorecard drop
   // notification, or if an unhandled drop is active, mount Scorecard directly.

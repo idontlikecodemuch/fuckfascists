@@ -23,6 +23,7 @@ This document is updated continuously. New instances should read this first — 
 - Added `shouldLaunchPendingScorecardDrop()`: during an active drop window, if the scored week has avoids and no exact scored-week archive card exists, AppShell mounts Scorecard first so the existing capture/presentation/purge flow can run.
 - Preserved #184 random launch behavior after handled drops: once the card is archived, cold starts return to weighted random Map / Track / Scorecard / Scan selection.
 - Simplified the stale #185/#186 follow-up by removing the extra `dropCardAction` model. `ScorecardScreen` now directly checks for an exact scored-week archive card before treating a post-drop week as empty.
+- Added a one-second app-open haptic jig via `haptics.launchJig()`, fired once when `AppShell` mounts.
 - Updated `tools/review/TESTFLIGHT_REVIEW.md` to mark #185/#186 as stale Build 4 feedback covered by the May 31 startup-retention fix plus this first-drop launch guard.
 
 **Verification:**

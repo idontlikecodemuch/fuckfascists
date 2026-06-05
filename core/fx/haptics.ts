@@ -66,6 +66,22 @@ export function share(): void {
 }
 
 /**
+ * Launch jig — a short, playful app-open pattern.
+ * ~1000ms, intentionally lighter than scorecard celebration.
+ */
+export function launchJig(): void {
+  const light = () => safe(Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light));
+  const medium = () => safe(Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium));
+
+  light();                       //    0
+  setTimeout(light,   140);      //  140
+  setTimeout(medium,  320);      //  320
+  setTimeout(light,   560);      //  560
+  setTimeout(medium,  780);      //  780
+  setTimeout(light,  1000);      // 1000
+}
+
+/**
  * Scorecard drop celebration — triumph pattern with breathing space.
  * ~1800ms, 8 beats, 4 deliberate pauses.
  *
@@ -101,4 +117,4 @@ export function celebration(): void {
   setTimeout(success, 1800);      // 1800 — grand finale
 }
 
-export const haptics = { tap, mapEntity, avoid, share, celebration };
+export const haptics = { tap, mapEntity, avoid, share, launchJig, celebration };
