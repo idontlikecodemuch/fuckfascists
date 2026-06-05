@@ -8,6 +8,7 @@ import { NudgeBanner } from '../../features/Platforms/components/NudgeBanner';
 import { ScorecardScreen } from '../../features/Scorecard/ScorecardScreen';
 import { SCORECARD_DROP_NOTIFICATION_TYPE } from '../../features/Scorecard/hooks/useDropSchedule';
 import { useScorecardDropNotification } from '../../features/Scorecard/hooks/useScorecardDropNotification';
+import { shouldLaunchPendingScorecardDrop } from '../../features/Scorecard/utils/pendingDropLaunch';
 import { InfoScreen } from '../../features/Info/InfoScreen';
 import { TRACKED_PLATFORMS } from '../../features/Platforms/data/platformList';
 import { useNudgeNotification } from '../../features/Platforms/hooks/useNudgeNotification';
@@ -81,19 +82,41 @@ export function AppShell({ adapter, entities, people }: AppShellProps) {
   useScorecardDropNotification(adapter, entities, TRACKED_PLATFORMS, avoidRefreshKey);
 
   // Cold-start routing: if the app was launched from the scorecard drop
-  // notification, skip Map entirely and mount Scorecard directly.
+  // notification, or if an unhandled drop is active, mount Scorecard directly.
   // Matches on content.data.type (stable routing key) rather than title
   // (human-readable copy that may change).
   useEffect(() => {
     let cancelled = false;
-    Notifications.getLastNotificationResponseAsync()
-      .then((resp) => {
-        if (cancelled) return;
-        setActiveTab(isScorecardDrop(resp) ? 'report' : pickInitialTab());
-      })
-      .catch(() => {
-        if (!cancelled) setActiveTab(pickInitialTab());
+
+    (async () => {
+      let resp: Notifications.NotificationResponse | null = null;
+      try {
+        resp = await Notifications.getLastNotificationResponseAsync();
+      } catch {
+        // Fall through to the drop-window check and then random launch.
+      }
+
+      if (cancelled) return;
+      if (isScorecardDrop(resp)) {
+        setActiveTab('report');
+        return;
+      }
+
+      const shouldOpenScorecard = await shouldLaunchPendingScorecardDrop({
+        adapter,
+        entities,
+        platforms: TRACKED_PLATFORMS,
       });
+
+      if (!cancelled) {
+        setActiveTab(shouldOpenScorecard ? 'report' : pickInitialTab());
+      }
+    })().catch(() => {
+      if (!cancelled) {
+        setActiveTab(pickInitialTab());
+      }
+    });
+
     return () => { cancelled = true; };
   }, []);
 

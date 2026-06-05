@@ -12,6 +12,24 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: June 5, 2026 ET — Scorecard drop launch simplification
+
+**Branch:** main worktree, direct local edits.
+
+**Focus:** Keep random cold launches, but make an active scorecard drop impossible to miss the first time the app opens during the presentation window.
+
+**Shipped:**
+
+- Added `shouldLaunchPendingScorecardDrop()`: during an active drop window, if the scored week has avoids and no exact scored-week archive card exists, AppShell mounts Scorecard first so the existing capture/presentation/purge flow can run.
+- Preserved #184 random launch behavior after handled drops: once the card is archived, cold starts return to weighted random Map / Track / Scorecard / Scan selection.
+- Simplified the stale #185/#186 follow-up by removing the extra `dropCardAction` model. `ScorecardScreen` now directly checks for an exact scored-week archive card before treating a post-drop week as empty.
+- Updated `tools/review/TESTFLIGHT_REVIEW.md` to mark #185/#186 as stale Build 4 feedback covered by the May 31 startup-retention fix plus this first-drop launch guard.
+
+**Verification:**
+
+- `npx jest app/navigation/__tests__/initialTab.test.ts features/Scorecard/utils/__tests__/pendingDropLaunch.test.ts features/Scorecard/utils/__tests__/screenState.test.ts features/Scorecard/utils/__tests__/avoidRetention.test.ts features/Scorecard/utils/__tests__/dropTime.test.ts features/Scorecard/data/__tests__/cardArchive.test.ts --runInBand` -> 6 suites / 24 tests passed.
+- `npm run typecheck` -> exit 0.
+
 ### Session: June 3, 2026 ET — TestFlight pull + scorecard archive/drop hardening
 
 **Branch:** main worktree, direct local edits. Existing untracked local reference/tester artifacts preserved.
@@ -22,7 +40,7 @@ This document is updated continuously. New instances should read this first — 
 
 - Pulled 11 TestFlight screenshot feedback records via `npm run feedback:apple -- --since=2026-05-29 --download-screenshots`. 8 were already-catalogued May 29 records; 3 new records are catalogued as #184-#186 in `tools/review/TESTFLIGHT_REVIEW.md`.
 - Resolved #184: non-notification cold starts now choose a weighted random first tab from Map, Track, Scorecard, and Scan, with Scan weighted lower. Scorecard-drop notification launches still route directly to Scorecard.
-- Resolved #185/#186: `ScorecardScreen` now checks for an existing archived card for the scored week before treating purged raw avoid data as an empty drop. This preserves presentation after a successful capture+purge cycle and complements the May 31 startup-retention fixes that landed after Build 4.
+- Initially addressed #185/#186 with an archive-first hardening pass, then simplified on June 5 after confirming these were stale Build 4 reports that predated the May 31 startup-retention fixes.
 
 **Verification:**
 

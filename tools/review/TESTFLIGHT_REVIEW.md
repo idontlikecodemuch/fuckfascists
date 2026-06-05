@@ -1096,7 +1096,7 @@ The import returned 11 records: 8 already-catalogued May 29 records plus 3 new r
 **Screenshot:** `store-feedback/2026-06-04T03-05-50-828Z/screenshots/AAm9a9ZqvL3Ud0PPWRQFOPs-1.jpg`
 **Screen:** App shell / cold launch
 
-**Status:** RESOLVED IN CURRENT WORKTREE — non-notification cold starts now choose a weighted initial tab across Map, Track, Scorecard, and Scan. Scan is intentionally weighted lower. Scorecard-drop notification launches still override randomization and route directly to Scorecard.
+**Status:** RESOLVED IN CURRENT WORKTREE — non-notification cold starts now choose a weighted initial tab across Map, Track, Scorecard, and Scan. Scan is intentionally weighted lower. Scorecard-drop notification launches still override randomization and route directly to Scorecard. If the app cold-starts during an active, unarchived drop window with scored-week avoids, Scorecard gets first launch so the capture/presentation flow can run; after the card is archived, launches return to weighted random.
 
 **Feedback:**
 Have the app open randomly on map, track, scan(weighted less), or scorecard when it launches
@@ -1107,7 +1107,7 @@ Have the app open randomly on map, track, scan(weighted less), or scorecard when
 **Screenshot:** `store-feedback/2026-06-04T03-05-50-828Z/screenshots/AJve2_X3IaPh_NuaZEiXu_I-1.jpg`
 **Screen:** Scorecard / Past scorecards
 
-**Status:** RESOLVED IN CURRENT WORKTREE — paired with #186. Build 4 feedback predates the May 31 startup-retention fixes (`0b88e0c`, `c4d349d`). Current pass also fixes a remaining post-capture edge: `ScorecardScreen` now loads an existing archived card for the scored week before treating purged raw avoid data as an empty drop. This prevents a captured-and-purged card from disappearing on a later mount inside the presentation window.
+**Status:** STALE BUILD 4 FEEDBACK / COVERED — paired with #186. This report predates the May 31 startup-retention fixes (`0b88e0c`, `c4d349d`) that preserve the just-finished scored week on launch until capture can save the card. Current pass keeps the solution simple: AppShell routes the first cold launch inside an active, unarchived drop window to Scorecard when scored-week avoids exist, and `ScorecardScreen` checks for the exact scored-week archived card before treating the drop as empty.
 
 **Feedback:**
 I had multiple avoids logged
@@ -1118,7 +1118,7 @@ I had multiple avoids logged
 **Screenshot:** `store-feedback/2026-06-04T03-05-50-828Z/screenshots/ALS1-k2uZ14szFlXzuJ4XYY-1.jpg`
 **Screen:** Scorecard / empty state after notification tap
 
-**Status:** RESOLVED IN CURRENT WORKTREE — notification cold-start routing was already fixed after Build 4 by using the stable `scorecard-drop` notification data key and holding the shell blank until initial routing resolves. This pass adds the archived-card-first drop decision described in #185, so a saved scored-week card presents even after its raw avoid events have been purged.
+**Status:** STALE BUILD 4 FEEDBACK / COVERED — notification cold-start routing was already fixed after Build 4 by using the stable `scorecard-drop` notification data key and holding the shell blank until initial routing resolves. Current pass adds the non-notification backup path described in #185: if the app opens during an active, unarchived drop window with scored-week avoids, Scorecard mounts first and runs the existing capture/presentation flow.
 
 **Feedback:**
 I got an alert to see my scorecard and tapped it and got the start screen but when I went to scorecard it's empty. "Past scorecard" is also empty. The presentation of the card didn't happen

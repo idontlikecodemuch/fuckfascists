@@ -23,7 +23,6 @@ import {
   shouldShowPreviewStamp,
   type ScorecardUserNav,
 } from './utils/screenState';
-import { getDropCardAction } from './utils/dropCardAction';
 import { StarField } from '../Info/components/InfoDecorations';
 import { scorecardCopy } from '../../copy/scorecard';
 import {
@@ -88,11 +87,6 @@ export function ScorecardScreen({
   );
   const { captureCard, capturing } = useCardCapture();
 
-  React.useEffect(() => {
-    setCardUri(null);
-    setUserNav('auto');
-  }, [scoredWeekOf]);
-
   // ── PHASE 1: capture side-effect ──────────────────────────────────────
   React.useEffect(() => {
     if (!hasDropped || dropDataLoading) return;
@@ -105,29 +99,19 @@ export function ScorecardScreen({
       const existing = await findCardForWeek(scoredWeekOf);
       if (cancelled) return;
 
-      const action = getDropCardAction({
-        hasDropped,
-        dropDataLoading,
-        existingCardUri: existing?.uri ?? null,
-        dropGrandTotal: dropData?.grandTotal ?? null,
-        minAvoids: MIN_AVOIDS_FOR_DROP,
-      });
-
-      if (action === 'load-existing' && existing) {
+      if (existing) {
         setCardUri(existing.uri);
         return;
       }
 
-      if (action === 'idle') return;
+      if (!dropData) return;
 
-      if (action === 'cancel-empty') {
+      if (dropData.grandTotal < MIN_AVOIDS_FOR_DROP) {
         // Nothing to capture. Cancel only the scorecard drop notification —
         // leaves the Thursday platform nudge ('platform-nudge-thursday') intact.
         Notifications.cancelScheduledNotificationAsync(SCORECARD_DROP_NOTIFICATION_ID).catch(() => {});
         return;
       }
-
-      if (action !== 'capture' || !dropData) return;
 
       // No card yet — capture, then purge. The off-screen ScorecardImage is
       // already rendering dropData (offscreenData below), so the ref is ready.
