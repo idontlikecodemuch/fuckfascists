@@ -12,6 +12,25 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: June 15, 2026 ET — Build 5 beta feedback: scorecard archive + product coverage
+
+**Branch:** main worktree, direct local edits. Existing Xcode signing project changes preserved.
+
+**Focus:** Pull the newest TestFlight feedback, fix the actionable scorecard/archive regressions and the reported Pepsi barcode coverage gap, then verify before commit.
+
+**Shipped in current worktree:**
+
+- Pulled 3 new TestFlight screenshot feedback records via `npm run feedback:apple -- --since=2026-06-04 --download-screenshots`; catalogued them as #187-#189 in `tools/review/TESTFLIGHT_REVIEW.md`.
+- Resolved #187: past scorecard presentations now notify `AppShell` when full-screen presentation is active, matching the live drop path so bottom chrome is hidden during screenshot/share moments.
+- Resolved #188: Past Scorecards now uses a compact dated list with small scorecard thumbnails, `Week of ...` row labels, a LATEST marker, a Newest/Oldest segmented sorter, and bottom clearance for the tab bar.
+- Resolved #189: barcode `5201156250881` now resolves through an exact Pepsico bundled-product override. The local OFF evidence had the `520115` Pepsico prefix below the runtime prefix threshold, so the narrow exact row avoids overmatching.
+- Best-practice direction for #188 came from official Apple list/table guidance plus Material list/segmented-control guidance: make the date metadata the primary scan target, keep thumbnails secondary, preserve stable tap rows, and expose sorting only as a compact control.
+
+**Verification:**
+
+- `npx jest features/Map/__tests__/productIndex.test.ts features/Scorecard/data/__tests__/cardArchive.test.ts --runInBand` -> 2 suites / 14 tests passed.
+- `npm run typecheck` -> exit 0.
+
 ### Session: June 5, 2026 ET — Scorecard drop launch simplification
 
 **Branch:** main worktree, direct local edits.

@@ -1122,3 +1122,50 @@ I had multiple avoids logged
 
 **Feedback:**
 I got an alert to see my scorecard and tapped it and got the start screen but when I went to scorecard it's empty. "Past scorecard" is also empty. The presentation of the card didn't happen
+
+---
+
+# Round 15 — 2026-06-15
+
+Imported via `npm run feedback:apple -- --since=2026-06-04 --download-screenshots`.
+
+Local import directory: `tools/review/store-feedback/2026-06-16T00-14-51-261Z/` (gitignored; contains tester metadata and raw attachments).
+
+The import returned 3 new records.
+
+---
+
+## 187. Scorecard — Past Card Screenshot Included App Chrome
+**Screenshot:** `store-feedback/2026-06-16T00-14-51-261Z/screenshots/ANu6s0FNgGtcAVpYG5ac6J8-1.jpg`
+**Screen:** Scorecard / Past scorecard presentation
+
+**Status:** RESOLVED IN CURRENT WORKTREE — archive-selected cards now report presentation-active state through `ScorecardScreen`, matching the live drop path. `AppShell` hides bottom chrome while a past card is open, so screenshots/share captures do not include the tab bar.
+
+**Feedback:**
+When tapping on past scorecard and screenshotting the menu is visible
+
+---
+
+## 188. Scorecard — Past Screen Needs Date Organization
+**Screenshot:** `store-feedback/2026-06-16T00-14-51-261Z/screenshots/AEe3wLZimjh6RbCa12A7HTE-1.jpg`
+**Screen:** Scorecard / Past scorecards archive
+
+**Status:** RESOLVED IN CURRENT WORKTREE — the archive now uses a compact dated list instead of a grid: each row has a small scorecard thumbnail, a `Week of ...` label, a LATEST tag on the newest card, enough bottom padding for the persistent tab bar, and a lightweight Newest/Oldest segmented sorter at the top.
+
+**Design notes:** Checked Apple HIG list/table guidance and Material list/segmented-control guidance. Because date is the primary scanning signal, the small archive is best treated as a metadata-first list with secondary thumbnails, stable tap rows, and an explicit sort control.
+
+**References:** `https://developer.apple.com/design/human-interface-guidelines/lists-and-tables`, `https://m3.material.io/components/lists/overview`, `https://m3.material.io/components/segmented-buttons/overview`
+
+**Feedback:**
+We should improve the past screen card moment. With dates and some kind of organization. Look at best practice
+
+---
+
+## 189. Scan — Pepsi Product Coverage Gap
+**Screenshot:** `store-feedback/2026-06-16T00-14-51-261Z/screenshots/AI4QvqOZoacSJWn_gFS9JhM-1.jpg`
+**Screen:** Scan / barcode result
+
+**Status:** RESOLVED IN CURRENT WORKTREE — added exact runtime product coverage for barcode `5201156250881` to resolve to Pepsico. This barcode appears in the local OFF checkpoint under Pepsico evidence, but the `520115` producer prefix only had 3 observed rows and stayed below the runtime prefix threshold of 5, so an exact override is safer than broadening the prefix.
+
+**Feedback:**
+Part of Pepsi family

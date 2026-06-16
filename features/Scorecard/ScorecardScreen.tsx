@@ -243,7 +243,10 @@ export function ScorecardScreen({
         <CardPresentation pngUri={cardUri} onDismiss={handleDismiss} />
       )}
       {effectiveState === 'archive' && (
-        <CardArchive onDismiss={() => setUserNav('auto')} />
+        <CardArchive
+          onDismiss={() => setUserNav('auto')}
+          onPresentationActiveChange={onPresentationActiveChange}
+        />
       )}
 
       {/* Dev tools — __DEV__ only, preview state only */}

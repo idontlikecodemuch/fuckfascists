@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   FlatList,
   Image,
@@ -16,37 +16,81 @@ import type { ArchivedCard } from '../data/cardArchive';
 import { formatCardLabel } from '../utils/formatters';
 import { haptics } from '../../../core/fx/haptics';
 
-const THUMB_COLS = 2;
 const THUMB_ASPECT = 1920 / 1080;
+const LIST_PADDING = theme.space.md;
+const ROW_THUMB_HEIGHT = 56;
+const ROW_THUMB_WIDTH = Math.round(ROW_THUMB_HEIGHT / THUMB_ASPECT);
+const TAB_BAR_CLEARANCE = 124;
+
+type SortOrder = 'newest' | 'oldest';
 
 interface CardArchiveProps {
   onDismiss: () => void;
+  onPresentationActiveChange?: (active: boolean) => void;
 }
 
 /**
- * Reverse-chronological thumbnail grid of past scorecards.
- * Tap a thumbnail → full-screen CardPresentation with active SHARE.
+ * Dated list of past scorecards.
+ * Tap a row → full-screen CardPresentation with active SHARE.
  */
-export function CardArchive({ onDismiss }: CardArchiveProps) {
+export function CardArchive({ onDismiss, onPresentationActiveChange }: CardArchiveProps) {
   const { cards, loading } = useCardArchive();
   const [selected, setSelected] = useState<ArchivedCard | null>(null);
+  const [sortOrder, setSortOrder] = useState<SortOrder>('newest');
+  const latestFilename = cards[0]?.filename;
+  const archiveCountLabel = cards.length === 1 ? '1 saved card' : `${cards.length} saved cards`;
+  const sortedCards = useMemo(
+    () => [...cards].sort((a, b) =>
+      sortOrder === 'newest'
+        ? b.modificationTime - a.modificationTime
+        : a.modificationTime - b.modificationTime,
+    ),
+    [cards, sortOrder],
+  );
 
-  const renderThumb = useCallback(({ item }: { item: ArchivedCard }) => {
+  useEffect(() => {
+    onPresentationActiveChange?.(Boolean(selected));
+  }, [onPresentationActiveChange, selected]);
+
+  useEffect(() => {
+    return () => onPresentationActiveChange?.(false);
+  }, [onPresentationActiveChange]);
+
+  const setSort = useCallback((next: SortOrder) => {
+    if (next === sortOrder) return;
+    haptics.tap();
+    setSortOrder(next);
+  }, [sortOrder]);
+
+  const renderRow = useCallback(({ item }: { item: ArchivedCard }) => {
     const label = formatCardLabel(item.filename);
+    const isLatest = item.filename === latestFilename;
     return (
       <Pressable
-        style={styles.thumb}
+        style={styles.row}
         onPress={() => { haptics.tap(); setSelected(item); }}
         accessibilityRole="button"
-        accessibilityLabel={`Scorecard: ${label}`}
+        accessibilityLabel={`Scorecard, week of ${label}`}
       >
-        <Image source={{ uri: item.uri }} style={styles.thumbImage} resizeMode="cover" />
-        <Text style={styles.thumbLabel} allowFontScaling={false}>
-          {label}
-        </Text>
+        <Image source={{ uri: item.uri }} style={styles.rowImage} resizeMode="cover" />
+        <View style={styles.rowText}>
+          <View style={styles.rowMeta}>
+            <Text
+              style={[styles.rowTag, isLatest && styles.rowTagLatest]}
+              allowFontScaling={false}
+            >
+              {isLatest ? 'LATEST' : 'SCORECARD'}
+            </Text>
+          </View>
+          <Text style={styles.rowTitle} allowFontScaling={false}>
+            Week of {label}
+          </Text>
+          <Text style={styles.rowHint} allowFontScaling={false}>Tap to view and share</Text>
+        </View>
+        <Text style={styles.chevron} allowFontScaling={false}>{'\u203a'}</Text>
       </Pressable>
     );
-  }, []);
+  }, [latestFilename]);
 
   if (selected) {
     return (
@@ -77,11 +121,49 @@ export function CardArchive({ onDismiss }: CardArchiveProps) {
         <Text style={styles.empty}>No past scorecards yet.</Text>
       ) : (
         <FlatList
-          data={cards}
+          data={sortedCards}
           keyExtractor={(c) => c.filename}
-          renderItem={renderThumb}
-          numColumns={THUMB_COLS}
-          contentContainerStyle={styles.grid}
+          renderItem={renderRow}
+          contentContainerStyle={styles.list}
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
+          ListHeaderComponent={(
+            <View style={styles.summary}>
+              <View>
+                <Text style={styles.summaryLabel} allowFontScaling={false}>PAST CARDS</Text>
+                <Text style={styles.summaryCount} allowFontScaling={false}>{archiveCountLabel}</Text>
+              </View>
+              <View style={styles.sortControl}>
+                <Pressable
+                  style={[styles.sortOption, sortOrder === 'newest' && styles.sortOptionActive]}
+                  onPress={() => setSort('newest')}
+                  accessibilityRole="button"
+                  accessibilityState={{ selected: sortOrder === 'newest' }}
+                  accessibilityLabel="Sort newest first"
+                >
+                  <Text
+                    style={[styles.sortText, sortOrder === 'newest' && styles.sortTextActive]}
+                    allowFontScaling={false}
+                  >
+                    Newest
+                  </Text>
+                </Pressable>
+                <Pressable
+                  style={[styles.sortOption, sortOrder === 'oldest' && styles.sortOptionActive]}
+                  onPress={() => setSort('oldest')}
+                  accessibilityRole="button"
+                  accessibilityState={{ selected: sortOrder === 'oldest' }}
+                  accessibilityLabel="Sort oldest first"
+                >
+                  <Text
+                    style={[styles.sortText, sortOrder === 'oldest' && styles.sortTextActive]}
+                    allowFontScaling={false}
+                  >
+                    Oldest
+                  </Text>
+                </Pressable>
+              </View>
+            </View>
+          )}
         />
       )}
     </SafeAreaView>
@@ -112,28 +194,109 @@ const styles = StyleSheet.create({
     color: theme.colors.textPrimary,
     letterSpacing: 2,
   },
-  grid: {
-    padding: theme.space.sm,
-    gap: theme.space.sm,
+  list: {
+    paddingTop: theme.space.md,
+    paddingHorizontal: LIST_PADDING,
+    paddingBottom: TAB_BAR_CLEARANCE,
   },
-  thumb: {
-    flex: 1,
-    margin: theme.space.xs,
+  summary: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: theme.space.md,
+    marginBottom: theme.space.md,
+  },
+  summaryLabel: {
+    fontFamily: theme.fonts.headline,
+    fontSize: 10,
+    color: theme.colors.rewardYellow,
+    letterSpacing: 2,
+  },
+  summaryCount: {
+    ...theme.type.caption,
+    marginTop: 2,
+    color: theme.colors.textSecondary,
+  },
+  sortControl: {
+    flexDirection: 'row',
+    minHeight: 36,
+    padding: 2,
     borderWidth: 1,
     borderColor: theme.colors.panelBorder,
-    overflow: 'hidden',
-  },
-  thumbImage: {
-    width: '100%',
-    aspectRatio: 1 / THUMB_ASPECT,
-  },
-  thumbLabel: {
-    fontFamily: theme.fonts.bodyMedium,
-    fontSize: 10,
-    color: theme.colors.textSecondary,
-    textAlign: 'center',
-    paddingVertical: 4,
     backgroundColor: theme.colors.panelOuter,
+  },
+  sortOption: {
+    minWidth: 68,
+    minHeight: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: theme.space.sm,
+    borderWidth: 1,
+    borderColor: 'transparent',
+  },
+  sortOptionActive: {
+    backgroundColor: theme.colors.surface1,
+    borderColor: theme.colors.rewardYellow,
+  },
+  sortText: {
+    fontFamily: theme.fonts.bodySemiBold,
+    fontSize: 11,
+    color: theme.colors.textSecondary,
+  },
+  sortTextActive: {
+    color: theme.colors.rewardYellow,
+  },
+  row: {
+    minHeight: 76,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: theme.space.md,
+    padding: theme.space.sm,
+    borderWidth: 1,
+    borderColor: theme.colors.panelBorder,
+    backgroundColor: theme.colors.panelOuter,
+  },
+  rowImage: {
+    width: ROW_THUMB_WIDTH,
+    height: ROW_THUMB_HEIGHT,
+    borderWidth: 1,
+    borderColor: theme.colors.panelBorder,
+  },
+  rowText: {
+    flex: 1,
+    minWidth: 0,
+  },
+  rowMeta: {
+    minHeight: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: theme.space.sm,
+  },
+  rowTag: {
+    fontFamily: theme.fonts.headline,
+    fontSize: 8,
+    color: theme.colors.textSecondary,
+    letterSpacing: 1.5,
+  },
+  rowTagLatest: {
+    color: theme.colors.rewardYellow,
+  },
+  rowTitle: {
+    ...theme.type.uiLabel,
+    color: theme.colors.textPrimary,
+  },
+  rowHint: {
+    ...theme.type.caption,
+    marginTop: 1,
+    color: theme.colors.textSecondary,
+  },
+  chevron: {
+    fontFamily: theme.fonts.bodySemiBold,
+    fontSize: 24,
+    color: theme.colors.highlightBlue,
+  },
+  separator: {
+    height: theme.space.sm,
   },
   empty: {
     fontFamily: theme.fonts.body,

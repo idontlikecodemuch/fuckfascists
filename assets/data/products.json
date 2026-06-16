@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Modular product-producer lookup index that resolves to existing entity IDs only.",
-    "lastUpdated": "2026-05-26",
+    "lastUpdated": "2026-06-15",
     "confidence": "heuristic + public research + off-bulk db aggregation",
     "researchFocus": "UPC-heavy parent producers and major shelf brands found in stores; keep brand aliases tied to parent-company candidates.",
     "researchNotes": [
@@ -51,8 +51,8 @@
       "documentsScanned": 4403001,
       "updatedAt": "2026-05-26T13:53:26Z"
     },
-    "productCount": 2000,
-    "productSource": "Runtime exact products come from OFF bulk DB product rows that match one existing producer seed and current entity ID."
+    "productCount": 2001,
+    "productSource": "Runtime exact products come from OFF bulk DB product rows that match one existing producer seed and current entity ID, plus narrow beta-feedback exact barcode overrides."
   },
   "producers": [
     {
@@ -12824,6 +12824,17 @@
       "source": "off-bulk-exact",
       "brandName": "Lay's",
       "matchedTerm": "lays"
+    },
+    {
+      "barcode": "5201156250881",
+      "productName": "PepsiCo product",
+      "canonicalProducerName": "Pepsico",
+      "entityId": "pepsico",
+      "entityMatchType": "beta-feedback-exact",
+      "matchedProducerProductCount": 7597,
+      "source": "beta-feedback-exact",
+      "brandName": "PepsiCo",
+      "matchedTerm": "pepsico"
     },
     {
       "barcode": "0036632026330",

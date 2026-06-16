@@ -1,4 +1,5 @@
 import {
+  findBundledProductByBarcode,
   findBundledProductByBarcodeInProducts,
   findProducerByBarcodePrefixInProducts,
   findProductByExactBarcodeInProducts,
@@ -166,5 +167,25 @@ describe('findBundledProductByBarcodeInProducts', () => {
     );
     expect(result).not.toBeNull();
     expect(result!.source).toBe('bundled_prefix');
+  });
+});
+
+describe('findBundledProductByBarcode', () => {
+  it('matches the beta-reported Pepsico EAN exact barcode', () => {
+    const result = findBundledProductByBarcode(
+      {
+        displayCode: '5201156250881',
+        gtin13: '5201156250881',
+        upcA: null,
+      },
+      entities,
+    );
+
+    expect(result).not.toBeNull();
+    expect(result!.source).toBe('bundled_product');
+    if (result?.source === 'bundled_product') {
+      expect(result.entity.id).toBe('pepsico');
+      expect(result.productName).toBe('PepsiCo product');
+    }
   });
 });
