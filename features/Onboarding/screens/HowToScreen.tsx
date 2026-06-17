@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, useWindowDimensions } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { OnboardingSlide } from '../components/OnboardingSlide';
 import { onboardCopy } from '../../../copy/onboard';
 import { theme } from '../../../design/tokens';
@@ -14,10 +13,10 @@ interface HowToScreenProps {
 const CLARK_ASPECT = 497 / 1191;
 
 const MEMO_SECTIONS = [
-  { title: onboardCopy.howToMapTitle, body: onboardCopy.howToMapBody, icon: 'map-outline' },
-  { title: onboardCopy.howToTrackTitle, body: onboardCopy.howToTrackBody, icon: 'checkbox-outline' },
-  { title: onboardCopy.howToScanTitle, body: onboardCopy.howToScanBody, icon: 'barcode-outline' },
-  { title: onboardCopy.howToScorecardTitle, body: onboardCopy.howToScorecardBody, icon: 'stats-chart-outline' },
+  { title: onboardCopy.howToMapTitle, body: onboardCopy.howToMapBody },
+  { title: onboardCopy.howToTrackTitle, body: onboardCopy.howToTrackBody },
+  { title: onboardCopy.howToScanTitle, body: onboardCopy.howToScanBody },
+  { title: onboardCopy.howToScorecardTitle, body: onboardCopy.howToScorecardBody },
 ] as const;
 
 /**
@@ -28,7 +27,7 @@ const MEMO_SECTIONS = [
 export function HowToScreen({ stepIndex, onNext }: HowToScreenProps) {
   const { height, width } = useWindowDimensions();
   const compact = height < 880 || width < 430;
-  const avatarHeight = compact ? 246 : 300;
+  const avatarHeight = compact ? 286 : 340;
   const avatarWidth = Math.round(avatarHeight * CLARK_ASPECT);
   const fileMinHeight = compact ? Math.max(570, height - 258) : Math.max(650, height - 294);
 
@@ -64,25 +63,20 @@ export function HowToScreen({ stepIndex, onNext }: HowToScreenProps) {
               <View style={styles.separator} />
 
               <View style={styles.memoBody}>
-                <Image
-                  source={require('../../../assets/pixel/guide/clark-portrait.png')}
-                  style={[styles.clark, { width: avatarWidth, height: avatarHeight }]}
-                  resizeMode="contain"
-                  accessibilityLabel="Clark the Clerk"
-                />
+                <View style={[styles.clarkSlot, { width: avatarWidth }]}>
+                  <Image
+                    source={require('../../../assets/pixel/guide/clark-portrait.png')}
+                    style={[styles.clark, { width: avatarWidth, height: avatarHeight }]}
+                    resizeMode="contain"
+                    accessibilityLabel="Clark the Clerk"
+                  />
+                </View>
                 <View style={styles.rightColumn}>
                   <View style={styles.sections}>
-                    {MEMO_SECTIONS.map(({ title, body, icon }, index) => (
+                    {MEMO_SECTIONS.map(({ title, body }, index) => (
                       <React.Fragment key={title}>
                         {index > 0 && <View style={styles.rowLine} />}
                         <View style={styles.memoSection}>
-                          <View style={styles.iconStamp}>
-                            <Ionicons
-                              name={icon as keyof typeof Ionicons.glyphMap}
-                              size={compact ? 13 : 15}
-                              color={c.sealRed}
-                            />
-                          </View>
                           <View style={styles.sectionCopy}>
                             <Text style={styles.sectionTitle} allowFontScaling={false}>{title}</Text>
                             <Text style={styles.sectionBody} allowFontScaling>{body}</Text>
@@ -231,16 +225,16 @@ const styles = StyleSheet.create({
   },
   lead: {
     fontFamily: theme.fonts.bodySemiBold,
-    fontSize: 12,
-    lineHeight: 16,
+    fontSize: 13,
+    lineHeight: 17,
     color: c.documentText,
     marginBottom: theme.space.xs,
   },
   body: {
     ...theme.type.bodyS,
-    fontSize: 12,
+    fontSize: 13,
     color: c.documentText,
-    lineHeight: 16,
+    lineHeight: 17,
   },
   memoBody: {
     flex: 1,
@@ -248,10 +242,13 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     gap: theme.space.sm,
   },
-  clark: {
+  clarkSlot: {
     alignSelf: 'flex-end',
-    marginLeft: -theme.space.sm,
-    marginTop: theme.space.xs,
+    justifyContent: 'flex-end',
+    overflow: 'visible',
+  },
+  clark: {
+    alignSelf: 'center',
   },
   rightColumn: {
     flex: 1,
@@ -261,26 +258,12 @@ const styles = StyleSheet.create({
     flexShrink: 1,
   },
   memoSection: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 6,
-    paddingVertical: 3,
+    paddingVertical: 4,
   },
   rowLine: {
     height: 1,
     backgroundColor: c.documentBorder,
-    marginLeft: 30,
-    marginVertical: 2,
-  },
-  iconStamp: {
-    width: 22,
-    height: 22,
-    borderWidth: 1,
-    borderColor: c.sealRed,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 1,
-    opacity: 0.9,
+    marginVertical: 3,
   },
   sectionCopy: {
     flex: 1,
@@ -301,14 +284,14 @@ const styles = StyleSheet.create({
   },
   privacy: {
     fontFamily: theme.fonts.bodyMedium,
-    fontSize: 10.5,
-    lineHeight: 14,
+    fontSize: 13,
+    lineHeight: 17,
     color: c.documentText,
   },
   signature: {
     fontFamily: theme.fonts.bodySemiBold,
-    fontSize: 10.5,
-    lineHeight: 14,
+    fontSize: 13,
+    lineHeight: 17,
     color: c.documentText,
     marginTop: theme.space.xs,
   },
