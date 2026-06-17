@@ -30,11 +30,12 @@ export function HowToScreen({ stepIndex, onNext }: HowToScreenProps) {
   const compact = height < 880 || width < 430;
   const avatarHeight = compact ? 246 : 300;
   const avatarWidth = Math.round(avatarHeight * CLARK_ASPECT);
+  const fileMinHeight = compact ? Math.max(570, height - 258) : Math.max(650, height - 294);
 
   return (
     <OnboardingSlide stepIndex={stepIndex} title={onboardCopy.howToTitle} onNext={onNext}>
       <View style={styles.container}>
-        <View style={styles.file}>
+        <View style={[styles.file, { minHeight: fileMinHeight }]}>
           <View style={styles.folderTop}>
             <View style={styles.folderGradTop} />
             <View style={styles.folderGradBot} />
@@ -60,10 +61,6 @@ export function HowToScreen({ stepIndex, onNext }: HowToScreenProps) {
                 {onboardCopy.clarkData}
               </Text>
 
-              <View style={styles.onFileStamp}>
-                <Text style={styles.onFileText} allowFontScaling={false}>ON FILE</Text>
-              </View>
-
               <View style={styles.separator} />
 
               <View style={styles.memoBody}>
@@ -73,35 +70,39 @@ export function HowToScreen({ stepIndex, onNext }: HowToScreenProps) {
                   resizeMode="contain"
                   accessibilityLabel="Clark the Clerk"
                 />
-                <View style={styles.sections}>
-                  {MEMO_SECTIONS.map(({ title, body, icon }, index) => (
-                    <React.Fragment key={title}>
-                      {index > 0 && <View style={styles.rowLine} />}
-                      <View style={styles.memoSection}>
-                        <View style={styles.iconStamp}>
-                          <Ionicons
-                            name={icon as keyof typeof Ionicons.glyphMap}
-                            size={compact ? 13 : 15}
-                            color={c.sealRed}
-                          />
+                <View style={styles.rightColumn}>
+                  <View style={styles.sections}>
+                    {MEMO_SECTIONS.map(({ title, body, icon }, index) => (
+                      <React.Fragment key={title}>
+                        {index > 0 && <View style={styles.rowLine} />}
+                        <View style={styles.memoSection}>
+                          <View style={styles.iconStamp}>
+                            <Ionicons
+                              name={icon as keyof typeof Ionicons.glyphMap}
+                              size={compact ? 13 : 15}
+                              color={c.sealRed}
+                            />
+                          </View>
+                          <View style={styles.sectionCopy}>
+                            <Text style={styles.sectionTitle} allowFontScaling={false}>{title}</Text>
+                            <Text style={styles.sectionBody} allowFontScaling>{body}</Text>
+                          </View>
                         </View>
-                        <View style={styles.sectionCopy}>
-                          <Text style={styles.sectionTitle} allowFontScaling={false}>{title}</Text>
-                          <Text style={styles.sectionBody} allowFontScaling>{body}</Text>
-                        </View>
-                      </View>
-                    </React.Fragment>
-                  ))}
+                      </React.Fragment>
+                    ))}
+                  </View>
+
+                  <View style={styles.footerBlock}>
+                    <View style={styles.separator} />
+                    <Text style={styles.privacy} allowFontScaling>
+                      {onboardCopy.howToPrivacy}
+                    </Text>
+                    <Text style={styles.signature} allowFontScaling>
+                      {onboardCopy.howToSignature}
+                    </Text>
+                  </View>
                 </View>
               </View>
-
-              <View style={styles.separator} />
-              <Text style={styles.privacy} allowFontScaling>
-                {onboardCopy.howToPrivacy}
-              </Text>
-              <Text style={styles.signature} allowFontScaling>
-                {onboardCopy.howToSignature}
-              </Text>
             </View>
           </View>
         </View>
@@ -121,6 +122,7 @@ const styles = StyleSheet.create({
   },
   file: {
     paddingTop: theme.space.xl,
+    flexGrow: 1,
   },
   folderTop: {
     backgroundColor: c.folderBg,
@@ -180,7 +182,8 @@ const styles = StyleSheet.create({
     opacity: 0.38,
   },
   documentShadow: {
-    marginHorizontal: theme.space.sm,
+    flex: 1,
+    marginHorizontal: 0,
     marginTop: -2,
     shadowColor: c.documentShadow,
     shadowOffset: { width: 2, height: 2 },
@@ -190,6 +193,7 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   documentPanel: {
+    flex: 1,
     backgroundColor: c.documentBg,
     paddingVertical: theme.space.sm,
     paddingHorizontal: theme.space.lg,
@@ -238,36 +242,23 @@ const styles = StyleSheet.create({
     color: c.documentText,
     lineHeight: 16,
   },
-  onFileStamp: {
-    alignSelf: 'flex-end',
-    borderWidth: 2,
-    borderColor: c.stampRed,
-    borderRadius: theme.radii.button,
-    paddingHorizontal: theme.space.sm,
-    paddingVertical: 2,
-    marginTop: 1,
-    marginRight: theme.space.xs,
-    opacity: 0.78,
-    transform: [{ rotate: '-5deg' }],
-  },
-  onFileText: {
-    fontFamily: theme.fonts.headline,
-    fontSize: 9,
-    lineHeight: 13,
-    letterSpacing: 1.5,
-    color: c.stampRed,
-  },
   memoBody: {
+    flex: 1,
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'stretch',
     gap: theme.space.sm,
   },
   clark: {
+    alignSelf: 'flex-end',
     marginLeft: -theme.space.sm,
     marginTop: theme.space.xs,
   },
-  sections: {
+  rightColumn: {
     flex: 1,
+    justifyContent: 'space-between',
+  },
+  sections: {
+    flexShrink: 1,
   },
   memoSection: {
     flexDirection: 'row',
@@ -310,15 +301,18 @@ const styles = StyleSheet.create({
   },
   privacy: {
     fontFamily: theme.fonts.bodyMedium,
-    fontSize: 11.5,
-    lineHeight: 15,
+    fontSize: 10.5,
+    lineHeight: 14,
     color: c.documentText,
   },
   signature: {
     fontFamily: theme.fonts.bodySemiBold,
-    fontSize: 11.5,
-    lineHeight: 15,
+    fontSize: 10.5,
+    lineHeight: 14,
     color: c.documentText,
+    marginTop: theme.space.xs,
+  },
+  footerBlock: {
     marginTop: theme.space.xs,
   },
 });

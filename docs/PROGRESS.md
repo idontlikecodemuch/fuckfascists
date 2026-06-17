@@ -21,7 +21,7 @@ This document is updated continuously. New instances should read this first — 
 **Shipped in current worktree:**
 
 - Added `HowToScreen` as onboarding step 2 (`welcome -> howTo -> permissions`) with the header `HOW TO: FCK`.
-- Styled the slide as a Clark memo using the company-file language: full-width folder tab/header, cream document, ruled lines, `ON FILE` stamp, and Clark portrait.
+- Styled the slide as a Clark memo using the company-file language: full-width folder tab/header, cream document, ruled lines, and a bottom-left Clark portrait with copy flowing to the right.
 - Added the transparent Clark portrait asset at `assets/pixel/guide/clark-portrait.png` from the image-generation reference.
 - Updated onboarding copy, dev catalog, screenshot harness step names, voice framework surface matrix, visual catalog, and spec-vs-current docs.
 
