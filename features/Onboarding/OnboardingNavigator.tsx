@@ -3,7 +3,7 @@ import { PanResponder, View, StyleSheet } from 'react-native';
 import { ONBOARDING_STEPS, type OnboardingStep } from './types';
 import { WelcomeScreen } from './screens/WelcomeScreen';
 import { PermissionsScreen } from './screens/PermissionsScreen';
-import { PrivacyScreen } from './screens/PrivacyScreen';
+import { HowToScreen } from './screens/HowToScreen';
 
 const SWIPE_THRESHOLD = 50;
 const SWIPE_VELOCITY_THRESHOLD = 0.3;
@@ -15,7 +15,7 @@ interface OnboardingNavigatorProps {
 /**
  * Manages the 3-step onboarding sequence:
  *  1. Welcome + How It Works (combined)
- *  2. Privacy commitments (YOUR DATA — privacy promise before permission request)
+ *  2. Clark's HOW TO memo (Map / Track / Scan / Scorecard + privacy promise)
  *  3. Permissions (location + notifications on one screen)
  *
  * Supports horizontal swipe gestures (left=advance, right=back)
@@ -58,8 +58,8 @@ export function OnboardingNavigator({ onComplete }: OnboardingNavigatorProps) {
     switch (currentStep) {
       case 'welcome':
         return <WelcomeScreen stepIndex={stepIndex} onNext={advance} />;
-      case 'privacy':
-        return <PrivacyScreen stepIndex={stepIndex} onNext={advance} />;
+      case 'howTo':
+        return <HowToScreen stepIndex={stepIndex} onNext={advance} />;
       case 'permissions':
         return <PermissionsScreen stepIndex={stepIndex} onNext={advance} />;
     }

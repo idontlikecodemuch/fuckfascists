@@ -12,6 +12,25 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: June 17, 2026 ET — Clark how-to onboarding memo
+
+**Branch:** main worktree, direct local edits. Existing dirty and untracked local artifacts preserved.
+
+**Focus:** Replace the old `WHAT WE DON'T DO` onboarding slide with a Clark-led memo that explicitly explains Map, Track, Scan, Scorecard, and the on-device privacy model.
+
+**Shipped in current worktree:**
+
+- Added `HowToScreen` as onboarding step 2 (`welcome -> howTo -> permissions`) with the header `HOW TO: FCK`.
+- Styled the slide as a Clark memo using the company-file language: full-width folder tab/header, cream document, ruled lines, `ON FILE` stamp, and Clark portrait.
+- Added the transparent Clark portrait asset at `assets/pixel/guide/clark-portrait.png` from the image-generation reference.
+- Updated onboarding copy, dev catalog, screenshot harness step names, voice framework surface matrix, visual catalog, and spec-vs-current docs.
+
+**Verification:**
+
+- `npm test -- --runTestsByPath features/Onboarding/__tests__/onboarding.test.ts` -> 1 suite / 7 tests passed.
+- `npm run typecheck` -> exit 0.
+- iOS simulator render verified on iPhone 17 Pro dev client after resetting simulator keychain onboarding state.
+
 ### Session: June 15, 2026 ET — Build 5 beta feedback: scorecard archive + product coverage
 
 **Branch:** main worktree, direct local edits. Existing Xcode signing project changes preserved.

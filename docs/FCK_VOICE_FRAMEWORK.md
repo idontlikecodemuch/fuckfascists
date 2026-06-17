@@ -280,7 +280,8 @@ This applies everywhere: business card, extension popup, scorecard, shared const
 | Share image | Sh\*tposter (user) | Yes (primary) | No | Yes | "I" |
 | Launch screen | Sh\*tposter (brand) | No | No | Yes | None |
 | Onboarding — welcome | Sh\*tposter (brand) | No | No | Light | None |
-| Onboarding — permissions/privacy | Clark | No | No | No | "Your" |
+| Onboarding — how-to memo | Clark | Clark avatar only | No | No | "I" / "Your" |
+| Onboarding — permissions | Clark | No | No | No | "Your" |
 | Track screen — list | Clark | Yes — neutral state | No | No | None |
 | Track screen — arena/celebrations | Sh\*tposter | Yes — defeated state | No | Yes (reactions) | None |
 | Empty states | Sh\*tposter | No | No | Yes | Varies |

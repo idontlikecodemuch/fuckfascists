@@ -23,7 +23,7 @@ This document tracks where the current implementation aligns with, deviates from
 | Weekly scorecard | Weekly drop, shareable | Weekly scorecard implemented |
 | Platform avoidance tracking | Daily checklist for social/streaming/delivery | Platform avoidance implemented |
 | 8-bit visual design system | Pixel art aesthetic, dark palette, chunky borders | `design/tokens.ts` + `design/bevel.ts` (bevel system). All components on blue chrome / amber action / dark panel design language. 35 pixel art assets + 107 CEO sprite sheets deployed. Track screen: beveled panels, blue focus chrome, amber AVOID, SparkleDecoration. BusinessCard: blue focus bevel, sprite-left layout (no frame), tappable confidence badge, post-avoid large sparkles. AvoidButton: amber raised / green inset bevel. BusinessBanner: blue chrome bevel + variant accent bars. GameArena, MatchChooser, InfoScreen, map controls all on same visual language. 4-step keying pipeline with 1px alpha erosion. shared FX system (`core/fx/`). |
-| Onboarding flow | Multi-screen first-run flow | 3 screens: Welcome, Privacy (WHAT WE DON'T DO), Permissions (BEFORE WE START) — with open-source tappable link and actual OS permission result checking |
+| Onboarding flow | Multi-screen first-run flow | 3 screens: Welcome, Clark how-to memo (HOW TO: FCK), Permissions (BEFORE WE START) — with explicit Map / Track / Scan / Scorecard instructions, on-device privacy promise, and actual OS permission result checking |
 | Map first-use hints | Onboarding tooltips for map features | Three-stage dismissable hints (search → tap → barcode) persisted via SecureStore |
 | Beta testing mode | Hidden dev tools | Triple-tap version label → BetaOverlay with screenshot tool |
 

@@ -50,7 +50,7 @@ export function WelcomeScreen({ stepIndex, onNext }: WelcomeScreenProps) {
 
           {/* #157 — feature row paired with tab-bar icons (Map / Track / Scan)
               so users see the three surfaces at a glance before getting into
-              the privacy/permissions screens. */}
+              the how-to/permissions screens. */}
           <View
             style={styles.featureRow}
             accessibilityRole="text"

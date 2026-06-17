@@ -44,11 +44,9 @@ Generated from `features/Dev/CatalogScreen.tsx`. Re-run after copy or design cha
 
 | # | State | Screenshot | Copy Source |
 |---|-------|-----------|-------------|
-| 24 | WelcomeScreen | ![](./catalog/24-onboard-welcome.png) | copy/onboard.ts |
-| 25 | HowItWorksScreen | ![](./catalog/25-onboard-howitworks.png) | copy/onboard.ts |
-| 26 | PrivacyScreen | ![](./catalog/26-onboard-privacy.png) | copy/onboard.ts |
-| 27 | PermissionScreen — location | ![](./catalog/27-onboard-permission-location.png) | copy/onboard.ts |
-| 28 | PermissionScreen — notifications | ![](./catalog/28-onboard-permission-notif.png) | copy/onboard.ts |
+| 21 | WelcomeScreen | ![](./catalog/21-onboard-welcome.png) | copy/onboard.ts |
+| 22 | HowToScreen | ![](./catalog/22-onboard-how-to.png) | copy/onboard.ts |
+| 23 | PermissionScreen | ![](./catalog/23-onboard-permissions.png) | copy/onboard.ts |
 
 ## Info
 

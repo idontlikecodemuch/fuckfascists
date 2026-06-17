@@ -1,6 +1,6 @@
 export const ONBOARDING_STEPS = [
   'welcome',
-  'privacy',
+  'howTo',
   'permissions',
 ] as const;
 

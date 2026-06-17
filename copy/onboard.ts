@@ -12,13 +12,26 @@ export const onboardCopy = {
   featureTrack: "Track",
   featureScan: "Scan",
 
-  // Screen 2: Privacy — WHAT WE DON'T DO (Clark)
-  privacyTitle: "WHAT WE DON\u2019T DO",
-  privacyBody:
-    "No accounts. No tracking. No servers.\n" +
-    "Everything is encrypted on your phone\n" +
-    "and cleared daily or weekly.",
-  openSourceLink: "Public, reviewable code. Take a look \u2192",
+  // Screen 2: How-to memo (Clark)
+  howToTitle: "HOW TO: FCK",
+  clarkIntro:
+    "Hi, I\u2019m Clark the Clerk. Your public records clerk. I\u2019m here to help.",
+  clarkData:
+    "I\u2019ve organized hundreds of gigabytes of FEC donations, state and local campaign data, and UPC codes to make the information useful.",
+  howToMapTitle: "MAP",
+  howToMapBody:
+    "Use the map to explore companies around you. Tap or search a business, and I\u2019ll pull the file and drop a flag so you can keep track.",
+  howToTrackTitle: "TRACK",
+  howToTrackBody:
+    "Set up the platforms you use regularly. Tap AVOID when you skip one, and track your avoids for the week.",
+  howToScanTitle: "SCAN",
+  howToScanBody:
+    "Check product UPCs. If we have the parent company on file, I\u2019ll show you the record.",
+  howToScorecardTitle: "SCORECARD",
+  howToScorecardBody: "Your avoids count toward this week\u2019s scorecard.",
+  howToPrivacy:
+    "No Accounts. No Tracking. No servers. Everything is encrypted on your phone, and cleared daily or weekly. Never transmitted. Never tracked.",
+  howToSignature: "Financial contributions, on file. \u2014 Clark",
 
   // Screen 3: Permissions — BEFORE WE START (Clark)
   permissionsTitle: "BEFORE WE START",

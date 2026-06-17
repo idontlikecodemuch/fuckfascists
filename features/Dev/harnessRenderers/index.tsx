@@ -6,7 +6,7 @@ import React from 'react';
 import {
   renderLaunchDefault,
   renderOnboardWelcome,
-  renderOnboardPrivacy,
+  renderOnboardHowTo,
   renderOnboardPermsPreGrant,
   renderOnboardPermsGranted,
 } from './gateStates';
@@ -43,7 +43,7 @@ const RENDERERS: Record<string, () => React.ReactElement> = {
   // Gates
   launch_default: renderLaunchDefault,
   onboard_welcome: renderOnboardWelcome,
-  onboard_privacy: renderOnboardPrivacy,
+  onboard_how_to: renderOnboardHowTo,
   onboard_perms_pregrant: renderOnboardPermsPreGrant,
   onboard_perms_granted: renderOnboardPermsGranted,
 

@@ -11,10 +11,10 @@ describe('ONBOARDING_STEPS', () => {
     expect(ONBOARDING_STEPS[ONBOARDING_STEPS.length - 1]).toBe('permissions');
   });
 
-  it('places privacy before permissions', () => {
-    const privacyIdx = ONBOARDING_STEPS.indexOf('privacy');
+  it('places how-to before permissions', () => {
+    const howToIdx = ONBOARDING_STEPS.indexOf('howTo');
     const permIdx = ONBOARDING_STEPS.indexOf('permissions');
-    expect(privacyIdx).toBeLessThan(permIdx);
+    expect(howToIdx).toBeLessThan(permIdx);
   });
 
   it('contains no duplicate steps', () => {
@@ -27,7 +27,7 @@ describe('ONBOARDING_STEPS', () => {
 
   it('contains all three expected steps', () => {
     const expected: OnboardingStep[] = [
-      'welcome', 'permissions', 'privacy',
+      'welcome', 'howTo', 'permissions',
     ];
     expected.forEach((step) => expect(ONBOARDING_STEPS).toContain(step));
   });

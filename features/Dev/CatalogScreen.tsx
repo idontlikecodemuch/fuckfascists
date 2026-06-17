@@ -33,7 +33,7 @@ import {
 
 // Onboarding sections
 import {
-  OnboardWelcome, OnboardPermissions, OnboardPrivacy,
+  OnboardWelcome, OnboardHowTo, OnboardPermissions,
 } from './sections/OnboardingSections';
 
 // Info sections
@@ -77,8 +77,8 @@ const SECTIONS: SectionDef[] = [
   { slug: '20-scorecard-rendered', Component: ScorecardRenderedCard },
   // Onboarding
   { slug: '21-onboard-welcome', Component: OnboardWelcome },
-  { slug: '22-onboard-permissions', Component: OnboardPermissions },
-  { slug: '23-onboard-privacy', Component: OnboardPrivacy },
+  { slug: '22-onboard-how-to', Component: OnboardHowTo },
+  { slug: '23-onboard-permissions', Component: OnboardPermissions },
   // Info
   { slug: '24-info-full', Component: InfoFullScreen },
   { slug: '25-faqitem-collapsed', Component: FaqCollapsed },

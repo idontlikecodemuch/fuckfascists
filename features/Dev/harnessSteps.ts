@@ -22,7 +22,7 @@ export const HARNESS_STEPS: HarnessStep[] = [
 
   // Onboarding
   { id: 'onboard_welcome', surface: 'onboard', state: 'welcome', label: 'Onboarding \u2014 welcome' },
-  { id: 'onboard_privacy', surface: 'onboard', state: 'privacy', label: 'Onboarding \u2014 your data' },
+  { id: 'onboard_how_to', surface: 'onboard', state: 'how_to', label: 'Onboarding \u2014 how to' },
   { id: 'onboard_perms_pregrant', surface: 'onboard', state: 'perms_pregrant', label: 'Onboarding \u2014 setup (pre-grant)' },
   { id: 'onboard_perms_granted', surface: 'onboard', state: 'perms_granted', label: 'Onboarding \u2014 setup (granted)' },
 

@@ -6,7 +6,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { LaunchScreen } from '../../Launch/LaunchScreen';
 import { WelcomeScreen } from '../../Onboarding/screens/WelcomeScreen';
-import { PrivacyScreen } from '../../Onboarding/screens/PrivacyScreen';
+import { HowToScreen } from '../../Onboarding/screens/HowToScreen';
 import { PermissionsScreen } from '../../Onboarding/screens/PermissionsScreen';
 import { theme } from '../../../design/tokens';
 
@@ -27,15 +27,15 @@ export function renderLaunchDefault(): React.ReactElement {
 export function renderOnboardWelcome(): React.ReactElement {
   return (
     <View style={styles.fullScreen}>
-      <WelcomeScreen onNext={noop} />
+      <WelcomeScreen stepIndex={0} onNext={noop} />
     </View>
   );
 }
 
-export function renderOnboardPrivacy(): React.ReactElement {
+export function renderOnboardHowTo(): React.ReactElement {
   return (
     <View style={styles.fullScreen}>
-      <PrivacyScreen onNext={noop} />
+      <HowToScreen stepIndex={1} onNext={noop} />
     </View>
   );
 }
@@ -43,7 +43,7 @@ export function renderOnboardPrivacy(): React.ReactElement {
 export function renderOnboardPermsPreGrant(): React.ReactElement {
   return (
     <View style={styles.fullScreen}>
-      <PermissionsScreen onNext={noop} />
+      <PermissionsScreen stepIndex={2} onNext={noop} />
     </View>
   );
 }
