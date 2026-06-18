@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
   documentShadow: {
     flex: 1,
     marginHorizontal: 0,
-    marginTop: -2,
+    marginTop: -10,
     shadowColor: c.documentShadow,
     shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 1,
