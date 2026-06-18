@@ -3,7 +3,7 @@ import { View, Text, Image, StyleSheet, useWindowDimensions } from 'react-native
 import { OnboardingSlide } from '../components/OnboardingSlide';
 import { onboardCopy } from '../../../copy/onboard';
 import { theme } from '../../../design/tokens';
-import { sealEagleSmall } from '../../../core/ui/uiAssets';
+import { sealEagle, sealEagleSmall } from '../../../core/ui/uiAssets';
 
 interface HowToScreenProps {
   stepIndex: number;
@@ -18,6 +18,9 @@ const MEMO_SECTIONS = [
   { title: onboardCopy.howToScanTitle, body: onboardCopy.howToScanBody },
   { title: onboardCopy.howToScorecardTitle, body: onboardCopy.howToScorecardBody },
 ] as const;
+
+const PRIVACY_LEAD = 'No Accounts. No Tracking. No servers.';
+const PRIVACY_REST = onboardCopy.howToPrivacy.replace(`${PRIVACY_LEAD} `, '');
 
 /**
  * Screen 2 — Clark memo.
@@ -42,8 +45,8 @@ export function HowToScreen({ stepIndex, onNext }: HowToScreenProps) {
               <View style={styles.folderTabOverlay} pointerEvents="none" />
               <Text style={styles.tabLabel} allowFontScaling={false}>MEMO</Text>
             </View>
-            <Image source={sealEagleSmall} style={styles.folderSeal} accessibilityElementsHidden />
           </View>
+          <Image source={sealEagle} style={styles.folderSeal} accessibilityElementsHidden />
 
           <View style={styles.documentShadow}>
             <View style={[styles.documentPanel, compact && styles.documentPanelCompact]}>
@@ -58,6 +61,13 @@ export function HowToScreen({ stepIndex, onNext }: HowToScreenProps) {
               </Text>
               <Text style={styles.body} allowFontScaling>
                 {onboardCopy.clarkData}
+              </Text>
+              <Text style={styles.introPrivacy} allowFontScaling>
+                <Text style={styles.introPrivacyLead}>{PRIVACY_LEAD}</Text>
+                <Text> {PRIVACY_REST}</Text>
+              </Text>
+              <Text style={styles.introSignature} allowFontScaling>
+                {onboardCopy.howToSignature}
               </Text>
 
               <View style={styles.separator} />
@@ -84,16 +94,6 @@ export function HowToScreen({ stepIndex, onNext }: HowToScreenProps) {
                         </View>
                       </React.Fragment>
                     ))}
-                  </View>
-
-                  <View style={styles.footerBlock}>
-                    <View style={styles.separator} />
-                    <Text style={styles.privacy} allowFontScaling>
-                      {onboardCopy.howToPrivacy}
-                    </Text>
-                    <Text style={styles.signature} allowFontScaling>
-                      {onboardCopy.howToSignature}
-                    </Text>
                   </View>
                 </View>
               </View>
@@ -143,11 +143,12 @@ const styles = StyleSheet.create({
   },
   folderTab: {
     position: 'absolute',
-    top: -22,
+    top: -28,
     left: theme.space['2xl'],
-    minHeight: 42,
-    minWidth: 112,
+    minHeight: 52,
+    minWidth: 148,
     paddingHorizontal: theme.space.lg,
+    alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: c.folderBg,
     borderTopLeftRadius: theme.radii.folderTab,
@@ -162,18 +163,21 @@ const styles = StyleSheet.create({
   },
   tabLabel: {
     fontFamily: theme.fonts.headline,
-    fontSize: 12,
+    fontSize: 16,
+    lineHeight: 20,
     color: c.documentText,
     letterSpacing: 2,
+    textAlign: 'center',
   },
   folderSeal: {
     position: 'absolute',
-    right: theme.space.xl,
-    top: theme.space.sm,
-    width: 24,
-    height: 24,
+    right: -78,
+    top: 14,
+    width: 112,
+    height: 112,
     tintColor: c.sealRed,
-    opacity: 0.38,
+    opacity: 0.22,
+    zIndex: 5,
   },
   documentShadow: {
     flex: 1,
@@ -225,22 +229,40 @@ const styles = StyleSheet.create({
   },
   lead: {
     fontFamily: theme.fonts.bodySemiBold,
-    fontSize: 13,
-    lineHeight: 17,
+    fontSize: 18,
+    lineHeight: 23,
     color: c.documentText,
-    marginBottom: theme.space.xs,
+    marginBottom: theme.space.sm,
   },
   body: {
     ...theme.type.bodyS,
-    fontSize: 13,
+    fontSize: 14,
     color: c.documentText,
-    lineHeight: 17,
+    lineHeight: 18,
+  },
+  introPrivacy: {
+    fontFamily: theme.fonts.body,
+    fontSize: 14,
+    lineHeight: 18,
+    color: c.documentText,
+    marginTop: theme.space.sm,
+  },
+  introPrivacyLead: {
+    fontFamily: theme.fonts.bodySemiBold,
+    color: c.documentText,
+  },
+  introSignature: {
+    fontFamily: theme.fonts.bodySemiBold,
+    fontSize: 14,
+    lineHeight: 18,
+    color: c.documentText,
+    marginTop: theme.space.sm,
   },
   memoBody: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'stretch',
-    gap: theme.space.sm,
+    gap: theme.space.lg,
   },
   clarkSlot: {
     alignSelf: 'flex-end',
@@ -249,10 +271,11 @@ const styles = StyleSheet.create({
   },
   clark: {
     alignSelf: 'center',
+    transform: [{ translateX: -8 }],
   },
   rightColumn: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'center',
   },
   sections: {
     flexShrink: 1,
@@ -281,21 +304,5 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: c.documentText,
     lineHeight: 14,
-  },
-  privacy: {
-    fontFamily: theme.fonts.bodyMedium,
-    fontSize: 13,
-    lineHeight: 17,
-    color: c.documentText,
-  },
-  signature: {
-    fontFamily: theme.fonts.bodySemiBold,
-    fontSize: 13,
-    lineHeight: 17,
-    color: c.documentText,
-    marginTop: theme.space.xs,
-  },
-  footerBlock: {
-    marginTop: theme.space.xs,
   },
 });
