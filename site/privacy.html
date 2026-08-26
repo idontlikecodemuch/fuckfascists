@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy policy — FCK FASCISTS</title>
+  <meta name="description" content="Privacy policy for FCK FASCISTS — mobile app and browser extension. What we store, what we don't, and where your data lives." />
+  <meta name="theme-color" content="#070B12" />
+
+  <link rel="icon" type="image/png" href="images/brand/icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bungee&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <nav class="site-nav" aria-label="Main">
+    <div class="site-nav-inner">
+      <a href="index.html" aria-label="FCK FASCISTS — home">
+        <img class="site-nav-logo pixel" src="images/brand/FF_logo_horizontal.png" alt="FCK FASCISTS" />
+      </a>
+      <div class="site-nav-links">
+        <a href="index.html#what">What</a>
+        <a href="index.html#data">Data</a>
+        <a href="index.html#get">Get it</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="doc-shell">
+
+    <h1>Privacy policy</h1>
+    <p class="doc-meta">Effective: April 20, 2026 &nbsp;&middot;&nbsp; Version 1.0</p>
+
+    <p>
+      This policy covers the <strong>FCK Fascists</strong> mobile app
+      (iOS and Android) and the <strong>FCK Fascists</strong> browser
+      extension (Chrome and Firefox). It is written plainly because
+      the answer is short: <strong>we don&rsquo;t collect your data.</strong>
+      There is no backend, no account system, and no analytics.
+    </p>
+
+    <p>
+      FCK Fascists is an open-source project. Everything below can be
+      verified by reading the source code at
+      <a href="https://github.com/idontlikecodemuch/fuckfascists" target="_blank" rel="noopener">github.com/idontlikecodemuch/fuckfascists</a>.
+    </p>
+
+    <!-- ─── The short version ─────────────────────────────────────── -->
+    <h2>The short version</h2>
+    <ul>
+      <li>No accounts. No sign-in. No servers we control.</li>
+      <li>No personal identifiers &mdash; not your name, not your email, not a user ID.</li>
+      <li>No location coordinates are transmitted. Ever.</li>
+      <li>No browsing history is stored by the extension.</li>
+      <li>No &ldquo;support&rdquo; events are recorded &mdash; the app can only count the things you <em>avoid</em>.</li>
+      <li>All local data is encrypted at rest using OS-native mechanisms (iOS Data Protection, Android File-Based Encryption).</li>
+      <li>The only outbound calls are to FEC.gov, Open Food Facts (barcode lookups), and GitHub (entity list updates).</li>
+      <li>We do not run analytics. We do not sell data. We have nothing to sell.</li>
+    </ul>
+
+    <!-- ─── 1. Who we are ─────────────────────────────────────────── -->
+    <h2>1. Who &ldquo;we&rdquo; are</h2>
+    <p>
+      &ldquo;We,&rdquo; &ldquo;our,&rdquo; and &ldquo;FCK Fascists&rdquo;
+      refer to the open-source project publishing the app and
+      extension. Source code and data are public. If you need to
+      reach a person, email
+      <a href="mailto:info@fckfascists.com">info@fckfascists.com</a> or open
+      an issue on
+      <a href="https://github.com/idontlikecodemuch/fuckfascists/issues" target="_blank" rel="noopener">GitHub</a>.
+    </p>
+
+    <!-- ─── 2. What the app saves ─────────────────────────────────── -->
+    <h2>2. What the mobile app saves &mdash; on your device</h2>
+    <p>
+      The app stores a small amount of data <em>on your phone</em> so
+      it can build your weekly scorecard and remember which places
+      you&rsquo;ve already checked. <strong>None of this data is transmitted to us or to any third party.</strong>
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>What</th>
+          <th>Why</th>
+          <th>Lifetime</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Avoid events <br /><code>entity_id, date, count</code></td>
+          <td>Builds the weekly scorecard.</td>
+          <td>Purged after the weekly scorecard image is saved.</td>
+        </tr>
+        <tr>
+          <td>Platform avoid events <br /><code>platform_id, date, count</code></td>
+          <td>Powers the Track tab and weekly streaks.</td>
+          <td>Purged after the weekly scorecard image is saved.</td>
+        </tr>
+        <tr>
+          <td>Map pin coordinates for businesses you avoided</td>
+          <td>Shows today&rsquo;s avoided markers on the map when you relaunch.</td>
+          <td>Auto-purged daily.</td>
+        </tr>
+        <tr>
+          <td>FEC API response cache</td>
+          <td>Avoids repeat lookups for places you&rsquo;ve already checked.</td>
+          <td>60 days maximum, then refetched.</td>
+        </tr>
+        <tr>
+          <td>Barcode lookup cache</td>
+          <td>Speeds up scans of products you&rsquo;ve already scanned.</td>
+          <td>30 days maximum.</td>
+        </tr>
+        <tr>
+          <td>Saved scorecard images</td>
+          <td>Your weekly scorecard JPG, for sharing or viewing later.</td>
+          <td>Kept locally until you delete the app or clear its data. Limited to the most recent 104 cards (about two years).</td>
+        </tr>
+        <tr>
+          <td>Onboarding and setup flags</td>
+          <td>Remembers that you&rsquo;ve finished onboarding, picked platforms, etc.</td>
+          <td>Until you delete the app or reset it from the beta menu.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Capture-then-purge &mdash; the scorecard flow</h3>
+    <p>
+      When the weekly scorecard drops, the app aggregates your week
+      into a single JPG image, saves that image to your device, and
+      then <strong>deletes the raw avoid events that produced it.</strong>
+      The image survives. The log that generated it does not. The JPG
+      contains per-CEO totals and a weekly grand total &mdash; no
+      timestamps, no surface (map / scan / track), and no per-day
+      breakdown. The raw record cannot be reconstructed from it.
+    </p>
+
+    <h3>Why coordinates are stored at all</h3>
+    <p>
+      When you tap &ldquo;avoid&rdquo; on a business on the map, the
+      map pin&rsquo;s coordinates are saved locally so the map can
+      show today&rsquo;s avoided markers when you reopen the app.
+      These rows are auto-purged daily and never leave your device.
+      Coordinates for businesses you <em>looked at</em> but did not
+      avoid are never stored &mdash; even temporarily.
+    </p>
+
+    <!-- ─── 3. What the app does NOT save ─────────────────────────── -->
+    <h2>3. What the mobile app does <em>not</em> save</h2>
+    <ul>
+      <li>We never record that you visited, bought from, or used a flagged business. There is no &ldquo;support&rdquo; event in the data model.</li>
+      <li>We never store a location coordinate for any business you didn&rsquo;t actively avoid.</li>
+      <li>We never transmit any coordinate to any server, including ours.</li>
+      <li>We do not store your name, email, phone number, device ID, advertising ID, or any identifier that can be tied to you.</li>
+      <li>We do not use any analytics SDK, crash reporter, or tracker.</li>
+    </ul>
+
+    <!-- ─── 4. Extension ──────────────────────────────────────────── -->
+    <h2>4. What the browser extension saves</h2>
+    <p>
+      The browser extension is even simpler than the app. It watches
+      the domain of the tab you&rsquo;re on, checks whether it&rsquo;s
+      on our entity list, and lights up its icon if so. That&rsquo;s it.
+    </p>
+    <ul>
+      <li>Domain matching happens <strong>in memory only</strong>. The extension does not write a list of sites you&rsquo;ve visited to disk.</li>
+      <li>When you tap &ldquo;avoid&rdquo; in the extension popup, it records an avoid event keyed by entity ID &mdash; not by URL or domain &mdash; in the browser&rsquo;s local extension storage.</li>
+      <li>The extension runs in anonymous mode against FEC.gov. It does not use an API key.</li>
+      <li>If you snooze a site for 7 days, the hostname of that site is stored in the browser&rsquo;s local extension storage for 7 days so we know not to light up the icon again. This is a known V2 item &mdash; we plan to move it to session-only storage.</li>
+    </ul>
+
+    <!-- ─── 5. Permissions ────────────────────────────────────────── -->
+    <h2>5. Permissions the mobile app asks for</h2>
+    <ul>
+      <li>
+        <strong>Location</strong> &mdash; used to center the map and
+        find nearby businesses when you open it. Coordinates are
+        used in the current session and never transmitted to us.
+        The only coordinates ever written to disk are the map pins
+        for businesses you actively <em>avoided</em>, and those are
+        purged daily.
+      </li>
+      <li>
+        <strong>Camera</strong> &mdash; only requested when you open
+        the barcode scanner. Used to decode UPC/EAN codes on
+        products. Frames are not recorded, saved, or transmitted.
+      </li>
+      <li>
+        <strong>Notifications</strong> &mdash; used locally to remind
+        you when your weekly scorecard is ready and once on Thursday
+        evening as a gentle &ldquo;scorecard is coming&rdquo; nudge.
+        Notifications are scheduled on your device. Nothing is sent
+        from a server.
+      </li>
+    </ul>
+    <p>
+      You can deny any or all of these. The app continues to work
+      with reduced functionality.
+    </p>
+
+    <!-- ─── 6. Outbound calls ─────────────────────────────────────── -->
+    <h2>6. Outbound calls &mdash; who we talk to</h2>
+    <p>
+      The app and extension make a small number of requests to
+      external services. None of these requests include any
+      personal data, any identifier, or any content from your
+      avoid log.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Service</th>
+          <th>When</th>
+          <th>What we send</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a href="https://api.open.fec.gov" target="_blank" rel="noopener">api.open.fec.gov</a></td>
+          <td>When the bundled entity data doesn&rsquo;t cover a lookup and we need live contribution data.</td>
+          <td>A committee name or committee ID. No identifier.</td>
+        </tr>
+        <tr>
+          <td><a href="https://world.openfoodfacts.org" target="_blank" rel="noopener">world.openfoodfacts.org</a></td>
+          <td>When a scanned barcode isn&rsquo;t in the bundled product index or local cache.</td>
+          <td>The barcode digits. No identifier.</td>
+        </tr>
+        <tr>
+          <td><a href="https://raw.githubusercontent.com" target="_blank" rel="noopener">raw.githubusercontent.com</a></td>
+          <td>When checking for an updated entity list or info content.</td>
+          <td>A standard HTTP GET for a public file. No identifier.</td>
+        </tr>
+        <tr>
+          <td>Apple Maps (iOS) / Google Maps SDK (Android)</td>
+          <td>When the map renders tiles or you tap a business point-of-interest.</td>
+          <td>Map tile and POI requests as defined by the OS vendor. See Apple&rsquo;s and Google&rsquo;s own privacy policies.</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      These services may log the IP address of the device making the
+      request, as any HTTPS service can. We do not receive that log
+      and we have no way to associate a request with a particular
+      user. If you want to eliminate these requests, the app
+      functions offline from the bundled data set.
+    </p>
+
+    <!-- ─── 7. Encryption ─────────────────────────────────────────── -->
+    <h2>7. How local data is protected</h2>
+    <p>
+      Everything the app stores on your device is encrypted at rest
+      by the operating system.
+    </p>
+    <ul>
+      <li>
+        <strong>iOS:</strong> The app requests Apple&rsquo;s
+        <code>NSFileProtectionComplete</code> data-protection
+        entitlement. All app files are AES-256 encrypted with a key
+        derived from your device passcode and are inaccessible when
+        the device is locked.
+      </li>
+      <li>
+        <strong>Android:</strong> The app targets Android 10 or
+        later, which enforces File-Based Encryption (FBE) across
+        the app&rsquo;s private storage using AES-256.
+      </li>
+      <li>
+        <strong>Secure preferences:</strong> A small set of flags
+        (e.g. &ldquo;onboarding completed&rdquo;) is stored in the
+        iOS Keychain / Android Keystore, both hardware-backed.
+      </li>
+      <li>
+        <strong>Extension storage:</strong> The browser extension
+        uses the browser&rsquo;s standard extension storage, which
+        is not encrypted at the filesystem level the same way. We
+        only store per-entity avoid counters and snooze hostnames
+        there &mdash; no location, no browsing history, no
+        identifier.
+      </li>
+    </ul>
+
+    <!-- ─── 8. Children ────────────────────────────────────────────── -->
+    <h2>8. Children</h2>
+    <p>
+      FCK Fascists is not directed at children under 13. Because we
+      don&rsquo;t collect personal data from anyone, we
+      don&rsquo;t knowingly collect it from children either. If you
+      believe a child has somehow disclosed data to us (we
+      don&rsquo;t see how they could), contact us and we&rsquo;ll
+      help you confirm.
+    </p>
+
+    <!-- ─── 9. Your choices ───────────────────────────────────────── -->
+    <h2>9. Your choices</h2>
+    <ul>
+      <li>
+        <strong>Delete the app</strong> &mdash; this clears every
+        avoid event, every cached lookup, every map pin, and every
+        scorecard image. Because nothing leaves your device, deleting
+        the app is a complete erasure.
+      </li>
+      <li>
+        <strong>Reset from the beta menu</strong> &mdash; triple-tap
+        the version label in the Info tab to reveal the beta tools,
+        then tap &ldquo;Reset.&rdquo; Same effect as reinstalling.
+      </li>
+      <li>
+        <strong>Revoke a permission</strong> &mdash; your phone&rsquo;s
+        system settings override everything. Removing location,
+        camera, or notifications in iOS/Android Settings takes effect
+        immediately.
+      </li>
+      <li>
+        <strong>Remove the extension</strong> &mdash; uninstall it
+        from your browser&rsquo;s extension page. That clears its
+        storage.
+      </li>
+    </ul>
+
+    <!-- ─── 10. Your rights ───────────────────────────────────────── -->
+    <h2>10. Your rights (GDPR, CCPA, and friends)</h2>
+    <p>
+      You have rights to access, correct, and delete personal data
+      under laws like the GDPR (EU/UK) and CCPA/CPRA (California).
+      These rights apply to the data a business holds about you.
+      FCK Fascists does not hold personal data about you &mdash;
+      everything is on your device &mdash; so in practice:
+    </p>
+    <ul>
+      <li><strong>Access:</strong> Open the app. You are looking at every bit of data the app has about you.</li>
+      <li><strong>Correct:</strong> Edit or delete any row by using the in-app tools.</li>
+      <li><strong>Delete:</strong> Delete the app. Nothing we hold survives.</li>
+      <li><strong>Portability:</strong> Your scorecard PNGs live in your device&rsquo;s file system; you can copy them anywhere.</li>
+      <li><strong>Opt out of sale:</strong> We have nothing to sell. Nothing is sold, shared, or licensed.</li>
+    </ul>
+    <p>
+      If you want to reach us about any of this, email
+      <a href="mailto:info@fckfascists.com">info@fckfascists.com</a>.
+    </p>
+
+    <!-- ─── 11. Changes ───────────────────────────────────────────── -->
+    <h2>11. Changes to this policy</h2>
+    <p>
+      If we change what data is stored or how it&rsquo;s handled, we
+      will update this page and bump the version at the top. Because
+      the source code is public, any such change is visible in the
+      project&rsquo;s git history before we publish a release.
+    </p>
+
+    <!-- ─── 12. Contact ───────────────────────────────────────────── -->
+    <h2>12. Contact</h2>
+    <p>
+      Questions, corrections, or just want to argue about a line in
+      the policy? We&rsquo;re reachable at:
+    </p>
+    <ul>
+      <li>Email: <a href="mailto:info@fckfascists.com">info@fckfascists.com</a></li>
+      <li>Bug tracker: <a href="https://github.com/idontlikecodemuch/fuckfascists/issues" target="_blank" rel="noopener">github.com/idontlikecodemuch/fuckfascists/issues</a></li>
+      <li>Source code: <a href="https://github.com/idontlikecodemuch/fuckfascists" target="_blank" rel="noopener">github.com/idontlikecodemuch/fuckfascists</a></li>
+    </ul>
+
+    <p class="small muted" style="margin-top: var(--space-2xl);">
+      Financial contributions, on file. 🤘🏽
+    </p>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-bottom">
+      <span>&copy; 2026 FCK FASCISTS &middot; Open source</span>
+      <span>
+        <a href="index.html">Home</a> &nbsp;&middot;&nbsp;
+        <a href="https://github.com/idontlikecodemuch/fuckfascists" target="_blank" rel="noopener">GitHub</a> &nbsp;&middot;&nbsp;
+        <a href="mailto:info@fckfascists.com">info@fckfascists.com</a>
+      </span>
+    </div>
+  </footer>
+
+</body>
+</html>
