@@ -14,6 +14,7 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import * as Sharing from 'expo-sharing';
+import { useAndroidBackHandler } from '../../../core/ui/useAndroidBackHandler';
 import { addScreenshotListener } from 'expo-screen-capture';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { scorecardCopy } from '../../../copy/scorecard';
@@ -146,6 +147,7 @@ export function CardPresentation({ pngUri, onDismiss }: CardPresentationProps) {
     haptics.tap();
     onDismiss();
   }, [onDismiss]);
+  useAndroidBackHandler(handleDismiss);
 
   // iOS: RN Share. Android: expo-sharing (RN's `url` is iOS-only).
   // Single haptic point for any path that opens the share sheet (SHARE
@@ -158,7 +160,7 @@ export function CardPresentation({ pngUri, onDismiss }: CardPresentationProps) {
         await Share.share({ url: pngUri });
       } else if (await Sharing.isAvailableAsync()) {
         await Sharing.shareAsync(pngUri, {
-          mimeType: 'image/png',
+          mimeType: pngUri.toLowerCase().endsWith('.png') ? 'image/png' : 'image/jpeg',
           dialogTitle: 'Share scorecard',
         });
       }

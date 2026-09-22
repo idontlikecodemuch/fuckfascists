@@ -27,7 +27,7 @@ function fileTimestamp(): string {
  * Returns the human-readable surface label for use in alert copy.
  */
 export async function captureBetaScreenshot(activeTab: Tab): Promise<string> {
-  const { status } = await MediaLibrary.requestPermissionsAsync();
+  const { status } = await MediaLibrary.requestPermissionsAsync(true);
   if (status !== 'granted') {
     throw new Error('permission-denied');
   }

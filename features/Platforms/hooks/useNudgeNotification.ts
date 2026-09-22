@@ -5,6 +5,9 @@ import { NUDGE_DAY, NUDGE_HOUR } from '../../../config/constants';
 import { platformsCopy } from '../../../copy/platforms';
 
 const NUDGE_IDENTIFIER = 'platform-nudge-thursday';
+// Android channel — without one, expo-notifications drops the nudge onto its
+// generic fallback channel, so users can't find or tune it in system settings.
+const NUDGE_CHANNEL_ID = 'platform-nudge';
 
 /**
  * Schedules a weekly local notification for Thursday evening (NUDGE_HOUR local)
@@ -22,6 +25,11 @@ export function useNudgeNotification(): void {
 }
 
 async function scheduleNudge(): Promise<void> {
+  await Notifications.setNotificationChannelAsync(NUDGE_CHANNEL_ID, {
+    name: platformsCopy.nudgeChannelName,
+    importance: Notifications.AndroidImportance.DEFAULT,
+  });
+
   // Cancel the previous nudge to prevent duplicates
   try {
     await Notifications.cancelScheduledNotificationAsync(NUDGE_IDENTIFIER);
@@ -41,6 +49,7 @@ async function scheduleNudge(): Promise<void> {
       weekday: NUDGE_DAY + 1, // expo-notifications: 1=Sunday; NUDGE_DAY: 0=Sunday → +1
       hour: NUDGE_HOUR,
       minute: 0,
-    },
+      channelId: NUDGE_CHANNEL_ID,
+    } as Notifications.WeeklyTriggerInput,
   });
 }

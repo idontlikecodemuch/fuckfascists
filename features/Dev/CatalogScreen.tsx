@@ -121,7 +121,7 @@ export function CatalogScreen() {
       Alert.alert('Nothing captured', 'Tap CAPTURE ALL first.');
       return;
     }
-    const { status } = await MediaLibrary.requestPermissionsAsync();
+    const { status } = await MediaLibrary.requestPermissionsAsync(true);
     if (status !== 'granted') {
       Alert.alert('Permission denied', 'Photos access is required to save catalog images.');
       return;

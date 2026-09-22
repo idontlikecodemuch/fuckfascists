@@ -59,6 +59,7 @@ export const platformsCopy = {
   // nudgeBannerTitle (Bungee uppercase) + nudgeBody.
   nudgeTitle: "Scorecard incoming",
   nudgeBody: "Any avoids on file?",
+  nudgeChannelName: "Thursday nudge",
   nudgeBannerTitle: "SCORECARD INCOMING",
   nudgeDismissA11y: "Dismiss nudge banner",
 

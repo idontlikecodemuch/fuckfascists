@@ -9,6 +9,7 @@ import {
   View,
 } from 'react-native';
 import { scorecardCopy } from '../../../copy/scorecard';
+import { useAndroidBackHandler } from '../../../core/ui/useAndroidBackHandler';
 import { theme } from '../../../design/tokens';
 import { useCardArchive } from '../hooks/useCardArchive';
 import { CardPresentation } from './CardPresentation';
@@ -34,6 +35,7 @@ interface CardArchiveProps {
  * Tap a row → full-screen CardPresentation with active SHARE.
  */
 export function CardArchive({ onDismiss, onPresentationActiveChange }: CardArchiveProps) {
+  useAndroidBackHandler(onDismiss);
   const { cards, loading } = useCardArchive();
   const [selected, setSelected] = useState<ArchivedCard | null>(null);
   const [sortOrder, setSortOrder] = useState<SortOrder>('newest');
