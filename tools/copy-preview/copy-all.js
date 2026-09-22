@@ -156,6 +156,7 @@ var COPY_ALL_DATA = {
     "clearDataConfirm": "All avoid data cleared.",
     "nudgeTitle": "Scorecard incoming",
     "nudgeBody": "Any avoids on file?",
+    "nudgeChannelName": "Thursday nudge",
     "nudgeBannerTitle": "SCORECARD INCOMING",
     "nudgeDismissA11y": "Dismiss nudge banner",
     "perfectWeekTitle": "PERFECT WEEK",

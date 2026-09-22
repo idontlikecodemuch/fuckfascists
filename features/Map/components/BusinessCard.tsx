@@ -2,6 +2,7 @@ import React, { useRef, useMemo, useEffect, useCallback } from 'react';
 import { View, Text, Image, Pressable, Animated, PanResponder, StyleSheet, AccessibilityInfo } from 'react-native';
 import type { ScanResult } from '../types';
 import type { Entity, PoliticalPerson } from '../../../core/models';
+import { useAndroidBackHandler } from '../../../core/ui/useAndroidBackHandler';
 import { getDisplayFigure, getAssociatedPeople, getParentEntity } from '../../../core/models';
 import { CONFIDENCE_THRESHOLD_HIGH, CONFIDENCE_THRESHOLD_MEDIUM, CARD_SPRITE_SIZE, SCREEN_SHAKE_MS } from '../../../config/constants';
 import { mapCopy } from '../../../copy/map';
@@ -116,6 +117,8 @@ export function BusinessCard({
       shakeY.setValue(0);
     }
   }, [visible, translateY, shakeX, shakeY]);
+
+  useAndroidBackHandler(handleDismiss, visible);
 
   return (
     <Animated.View

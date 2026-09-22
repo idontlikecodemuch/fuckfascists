@@ -12,6 +12,57 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: September 21, 2026 ET — First Android end-to-end pass (emulator)
+
+**Branch:** `claude/android-e2e-testing-975d7e` (worktree from `main` at `2d9ea4a`). `android/` generated locally, not committed.
+
+**Focus:** Stand up an Android emulator from a Mac with no Android tooling, run every user-facing flow on the current app without a Google Maps key, turn the results into a prioritized fix list, and fix what is unambiguously Android-scoped.
+
+**Environment:** JDK 17 + Android command-line tools via Homebrew (no sudo, no Android Studio), SDK into `~/Library/Android/sdk`, Pixel 8 AVD on `android-35 google_apis arm64-v8a`, debug build with Metro. Full steps, gotchas, and the Kotlin workaround are in `docs/ANDROID_READINESS.md`.
+
+**Verified working on Android 15 (emulator):** onboarding (Welcome, Clark memo, Permissions with real OS location + notification prompts, auto-advance); Map no-key fallback + manual search + business card + AVOID celebration + SQLite write; Track setup grid, arena, row avoid, day circles; Scan pre-prompt → OS camera prompt → scanner sheet (CameraX opens, ML Kit loads); Scorecard preview → dev Generate Card → JPEG capture → presentation → SHARE (Android chooser) → system-screenshot listener auto-share; Past scorecards list/present/back; Info; beta triple-tap, SHOTS harness, RESET/BUG overlay; scheduled local notification delivery (30 s test alarm posted on the new `platform-nudge` channel, 23 s late per inexact AlarmManager window). No JS errors, no native crashes across the pass.
+
+**Findings (prioritized):**
+
+*Blocking / broken*
+1. **Android build fails out of the box** — `expo-modules-core:compileDebugKotlin`: Compose compiler 1.5.15 needs Kotlin 1.9.25, `react-native@0.76.0` pins 1.9.24. Expo SDK 52 expects `react-native@0.76.9` (pins 1.9.25). Fix needs the RN patch bump (touches iOS Podfile.lock → owner sign-off). Local workaround documented; EAS Android builds will fail until then.
+2. **minSdk was 24, not 29** — `expo.android.minSdkVersion` in `app.json` is not an Expo config key and was ignored, so the FBE encryption-at-rest guarantee in `CLAUDE.md` did not hold. Fixed with `expo-build-properties` (`android.minSdkVersion: 29`); verified `minSdkVersion="29"` in the merged release manifest.
+3. **Android Back exited the app from every overlay** (business card, scanner sheet, scorecard presentation, archive) — no `BackHandler` anywhere. Fixed with `core/ui/useAndroidBackHandler.ts` wired into `BusinessCard` (gated on `visible`), `BarcodeScannerSheet` (gated on `visible`), `CardPresentation`, `CardArchive`. Verified on emulator.
+4. **Unused sensitive permissions shipped in the release manifest** — `RECORD_AUDIO` (expo-camera lib manifest despite `recordAudioAndroid: false`), `READ_MEDIA_IMAGES/VIDEO/AUDIO/VISUAL_USER_SELECTED`, `READ_EXTERNAL_STORAGE`, `SYSTEM_ALERT_WINDOW`. Play review risk (photo/video permission policy). Fixed via `android.blockedPermissions`; verified removed from the merged release manifest.
+5. **Beta/dev screenshot tools asked for full media read access** — on Android 13+ the default `MediaLibrary.requestPermissionsAsync()` produced two OS dialogs ("music and audio", then "photos and videos") for a write-only feature. Fixed with `requestPermissionsAsync(true)` in `betaScreenshot.ts`, `ScreenshotHarness.tsx`, `CatalogScreen.tsx` (needs no prompt on API 33+; iOS maps to the add-only permission the app already declares). Re-verify the BUG save on a device.
+
+*Functional but wrong*
+6. **Share MIME type** — Android share passed `image/png` for the `.jpg` card. Fixed: derived from the file extension in `CardPresentation.tsx`.
+7. **Thursday nudge had no Android channel** — landed on expo's generic fallback channel with no user-visible settings entry. Fixed: `platform-nudge` channel created before scheduling, `channelId` on the trigger, channel name in `copy/platforms.ts`.
+8. **Screenshot-to-share parity only works on API 34+** — below that `expo-screen-capture` needs `READ_MEDIA_IMAGES`, which is never requested (and now blocked). Documented; SHARE button remains the path there.
+
+*Cosmetic / informational*
+9. Camera preview in the emulator virtual scene renders as corrupted colour blocks under both `-gpu auto` and `-gpu swiftshader_indirect` on Apple Silicon (emulator artifact: frames flow, ML Kit loads). The `-virtualscene-poster` barcode trick therefore could not produce a decode; needs a device.
+13. Beta BETA badge overlaps the "SCAN BARCODE" title on the scanner sheet and floats over Track rows (cosmetic, beta-only).
+10. Track day-circle strips start expanded and auto-collapse after ~2 s, so the first paint shows gaps between panels for a moment (same as iOS by design, noted for testers).
+11. Debug builds fetch images from Metro lazily; the Clark memo and seals appear ~1-3 s after navigation. Not a bug.
+12. `versionCode`/`versionName` for Android are 1 / 1.0.0 (nothing sets them); iOS live is 1.1.0 (9) in the Xcode project and the in-app label reads 1.2.0 from `copy/infoContent.ts`. Align before any friend APK.
+
+*Cross-platform, noted not changed*
+- No `Notifications.setNotificationHandler` is registered, so foreground notifications never present on either OS (the dev harness "fire nudge now" shows nothing while the app is open).
+- `android:allowBackup="true"` means SQLite avoid data and scorecards go to Google Drive device backup; iOS has the equivalent iCloud exposure. Decide together (Principle #4 "local-only").
+- Pre-existing >250-line files touched minimally: `CardPresentation.tsx` (351), `BusinessCard.tsx` (284), `BarcodeScannerSheet.tsx` (277), `CardArchive.tsx` (308).
+
+**Open decisions for the owner:**
+- Approve `react-native@0.76.9` bump (+ `pod install`, iOS re-verify) so Android and EAS builds work without the local Gradle edit.
+- Gitignore `android/` (treat as generated) or commit it like `ios/`.
+- Map on Android without a Google key: research concluded the only literally key-free/$0 path is MapLibre + OpenFreeMap, Android-only, ~6 files; Google's SDK is $0 but still requires a billing account. Details in `docs/ANDROID_READINESS.md`.
+- `allowBackup` posture (see above).
+
+**Still needs a physical Android device:** haptics (all no-op on emulator), real barcode decode and close-focus behaviour, camera preview quality, Thursday 7 pm nudge and Friday drop timing under Doze/battery optimisation, beta BUG save to the media library after the permission change, share-sheet targets with real apps installed, Google Maps path (only if a key is ever added).
+
+**Verification:**
+- `npm run typecheck` -> exit 0.
+- `npx jest --runInBand --silent` -> 467 tests passed (full suite, `.claude` ignored).
+- `bash scripts/audit-copy.sh` -> no new hits from this session's changes.
+- `npx expo prebuild --platform android` + `./gradlew :app:processReleaseManifest` -> `minSdkVersion="29"`, blocked permissions absent from the merged release manifest.
+- Emulator re-verification after fixes: Back dismisses card / scanner / archive; 30 s test notification posted on `platform-nudge`.
+
 ### Session: June 17, 2026 ET — Clark how-to onboarding memo
 
 **Branch:** main worktree, direct local edits. Existing dirty and untracked local artifacts preserved.

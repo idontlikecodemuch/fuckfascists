@@ -75,7 +75,7 @@ export function ScreenshotHarness({ onClose }: ScreenshotHarnessProps) {
   }, []);
 
   const runSweep = useCallback(async (mode: HarnessMode) => {
-    const { status } = await MediaLibrary.requestPermissionsAsync();
+    const { status } = await MediaLibrary.requestPermissionsAsync(true);
     if (status !== 'granted') {
       Alert.alert('Camera roll permission required.');
       return;
@@ -119,7 +119,7 @@ export function ScreenshotHarness({ onClose }: ScreenshotHarnessProps) {
   }, [captureStep]);
 
   const runNotification = useCallback(async () => {
-    const { status } = await MediaLibrary.requestPermissionsAsync();
+    const { status } = await MediaLibrary.requestPermissionsAsync(true);
     if (status !== 'granted') {
       Alert.alert('Camera roll permission required.');
       return;

@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, Text, Pressable, StyleSheet, Linking } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import type { BarcodeScanningResult } from 'expo-camera';
+import { useAndroidBackHandler } from '../../../core/ui/useAndroidBackHandler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { sharedCopy } from '../../../copy/shared';
 import { mapCopy } from '../../../copy/map';
@@ -38,6 +39,7 @@ export function BarcodeScannerSheet({
   const [mountError, setMountError] = useState(false);
   const scanLock = useRef(false);
   const topPadding = Math.max(insets.top + theme.space.sm, SAFE_AREA_TOP_MIN);
+  useAndroidBackHandler(onClose, visible);
 
   useEffect(() => {
     if (!visible) {
