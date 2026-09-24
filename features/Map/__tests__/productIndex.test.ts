@@ -5,6 +5,7 @@ import {
   findProductByExactBarcodeInProducts,
 } from '../barcode/productIndex';
 import type { ProductEntry, ProductProducerEntry } from '../barcode/productIndex';
+import { normalizeBarcode } from '../barcode/normalizeBarcode';
 import type { NormalizedBarcode } from '../barcode/normalizeBarcode';
 import type { Entity } from '../../../core/models';
 
@@ -45,6 +46,16 @@ function barcode(upcA: string): NormalizedBarcode {
     upcA,
   };
 }
+
+describe('UPC-E scans', () => {
+  it('resolves a Sprite 20 oz UPC-E scan to Coca-Cola through the expanded prefix', () => {
+    const barcode = normalizeBarcode('04976400', 'upc_e');
+    expect(barcode).not.toBeNull();
+    const match = findProducerByBarcodePrefixInProducts(barcode!, entities, producers);
+    expect(match?.entity.id).toBe('coca-cola');
+    expect(match?.prefix).toBe('049000');
+  });
+});
 
 describe('findProducerByBarcodePrefixInProducts', () => {
   it('matches a known Pepsico prefix', () => {

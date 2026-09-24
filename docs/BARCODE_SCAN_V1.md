@@ -12,7 +12,7 @@ V1 closes that gap with a dedicated `SCAN BETA` tab.
 
 - A new top-level `SCAN BETA` section in the app tab bar.
 - Camera-based barcode scanning using `expo-camera`.
-- Support limited to retail product barcodes we actually care about: `UPC-A` and `EAN-13`.
+- Support limited to retail product barcodes we actually care about: `UPC-A`, `UPC-E` (expanded to UPC-A before lookup; added 2026-09-24 after a Sprite 20 oz bottle would not scan), and `EAN-13`.
 - A bundled `products.json` file that maps known producer-family prefixes to existing entity IDs before any network lookup happens.
 - Open Food Facts resolution on remaining misses after local cache + producer-prefix checks.
 - On-device persistent cache of barcode resolutions so repeat scans stop hitting the network.
@@ -111,7 +111,7 @@ Deep reference:
 4. If camera permission is not granted, the sheet shows an allow-camera action.
 5. If permission was denied earlier, the sheet offers `Open settings`.
 6. If the camera preview cannot start, the sheet shows a non-crashing unavailable state via `onMountError`.
-7. Camera reads `UPC-A` or `EAN-13`.
+7. Camera reads `UPC-A`, `UPC-E`, or `EAN-13`; `normalizeBarcode` expands UPC-E to its 12-digit UPC-A so exact/prefix lookups see one code shape.
 8. Barcode is normalized to GTIN-13 for lookup/caching.
 9. App checks local barcode cache in SQLite.
 10. On cache miss, app checks the bundled producer-prefix index for a likely parent-company hit.
