@@ -240,18 +240,24 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.folderBgLight,
     opacity: 0.5,
   },
+  // includeFontPadding is Android-only: Bungee's Windows font metrics are ~2x
+  // its hhea metrics, so Android pads each line to ~31dp (12pt) / ~41dp (16pt)
+  // where iOS renders ~16dp / ~21dp. Without this the tab grows past its 44dp
+  // minimum and hangs over the document instead of meeting the folder seam.
   tabLabel: {
     fontFamily: theme.fonts.headline,
     fontSize: 12,
     color: theme.colors.documentText,
     letterSpacing: 1,
     marginRight: theme.space.sm,
+    includeFontPadding: false,
   },
   tabClose: {
     fontFamily: theme.fonts.headline,
     fontSize: 16,
     color: theme.colors.documentText,
     opacity: 0.6,
+    includeFontPadding: false,
   },
   seal: {
     position: 'absolute',

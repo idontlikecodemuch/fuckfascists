@@ -117,12 +117,27 @@ Emulator gotchas learned the hard way:
 - Debug builds fetch every image from Metro on first display, so a screen can
   render for 1-3 s with images missing. Wait before judging a "missing asset".
 - `adb root` restarts adbd and silently drops `adb reverse`; re-run it.
+- If the debug app sits on a blank white screen and logcat shows `URL: 10.0.2.2:8081 ... Software caused connection abort`, the emulator's host-loopback alias is not reaching Metro (seen after emulator restarts on this Mac). Point React Native's dev server at localhost through `adb reverse` instead:
+
+  ```sh
+  adb shell am force-stop com.fckapp.fck
+  cat <<'XML' | adb shell run-as com.fckapp.fck sh -c 'cat > shared_prefs/com.fckapp.fck_preferences.xml'
+  <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+  <map>
+      <string name="debug_http_host">localhost:8081</string>
+  </map>
+  XML
+  adb reverse tcp:8081 tcp:8081 && adb shell am start -n com.fckapp.fck/.MainActivity
+  ```
+
+  (Same effect as Dev Menu → "Change bundle location" → `localhost:8081`.)
 - `adb shell am force-stop` also cancels the app's AlarmManager alarms, so
   scheduled notifications vanish until the app reschedules them on next launch.
 - Changing the clock with `adb shell date` does not fire RTC alarms; use
   `adb shell cmd alarm set-time <epoch-ms>` and restore afterwards. Backgrounding
   the debug app mid-bundle-load can trigger an ANR kill; wait for `Running "main"`
   in logcat first.
+- **Metro can serve a stale bundle to the app after an edit in this worktree.** A direct `curl` of the bundle URL showed the new code while the app's cached `files/BridgelessReactNativeDevBundle.js` (fetched with the app's own `lazy=true` query variant) still had the old code; Fast Refresh over the dev websocket also never fired. Metro's watcher does not appear to see file changes under `.claude/worktrees/...`. After editing, restart Metro with `npx expo start --port 8081 --clear`, then `adb shell am force-stop com.fckapp.fck` and relaunch, and confirm with `adb shell run-as com.fckapp.fck cat files/BridgelessReactNativeDevBundle.js | grep <marker>` before judging a screenshot.
 - Nothing vibrates on the emulator, so every haptic is a silent no-op.
 
 ## Friend APK
@@ -166,6 +181,7 @@ eas build --platform android --profile device
 - `SafeAreaView` from `react-native` is a no-op on Android; screens rely on the opaque `#070B12` status bar from the theme instead. Fine under Expo SDK 52 (targetSdk 34). Revisit when moving to SDK 53+, which forces edge-to-edge.
 - Local notifications never show while the app is foregrounded on either OS because no `Notifications.setNotificationHandler` is registered. The dev harness "fire nudge now" therefore shows nothing in the foreground. Cross-platform, not Android-specific.
 - `AlarmManager` delivers expo-notifications triggers inexactly (up to +1 h). iOS is exact. The "synchronized global drop moment" is up to an hour late on Android.
+- **Bungee text is taller on Android by default.** Android's `includeFontPadding` uses the font's Windows metrics, which for Bungee are roughly double the hhea metrics iOS uses (12pt: ~31dp vs ~16dp; 16pt: ~41dp vs ~21dp). Any Bungee `Text` without an explicit `lineHeight` or `includeFontPadding: false` sits in a taller box on Android. Fixed on the business-card folder tab 2026-09-24; the other ~25 Bungee styles still differ and are a candidate for a shared headline token.
 
 ## Map Without a Google Key — Decision Record (researched 2026-09-21)
 
