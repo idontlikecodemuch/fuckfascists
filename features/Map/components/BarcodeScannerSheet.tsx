@@ -25,7 +25,9 @@ interface BarcodeScannerSheetProps {
   onScanned: (result: Pick<BarcodeScanningResult, 'data' | 'type'>) => Promise<void>;
 }
 
-const PRODUCT_BARCODE_TYPES = ['upc_a', 'ean13'] as const;
+// UPC-E is the zero-suppressed 8-digit symbol on small packages (20 oz
+// bottles, travel sizes); normalizeBarcode expands it to UPC-A before lookup.
+const PRODUCT_BARCODE_TYPES = ['upc_a', 'upc_e', 'ean13'] as const;
 
 export function BarcodeScannerSheet({
   visible,

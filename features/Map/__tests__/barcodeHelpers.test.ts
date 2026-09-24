@@ -1,4 +1,4 @@
-import { normalizeBarcode } from '../barcode/normalizeBarcode';
+import { expandUpcE, normalizeBarcode } from '../barcode/normalizeBarcode';
 import { extractBrandCandidates, matchProductBrandsToEntity } from '../barcode/openFoodFacts';
 import type { Entity } from '../../../core/models';
 
@@ -34,6 +34,30 @@ describe('normalizeBarcode', () => {
   it('rejects unsupported barcode types and malformed payloads', () => {
     expect(normalizeBarcode('012345678905', 'qr')).toBeNull();
     expect(normalizeBarcode('abc', 'upc_a')).toBeNull();
+    expect(normalizeBarcode('12345670', 'ean8')).toBeNull();
+  });
+
+  it('expands an 8-digit UPC-E (Sprite 20 oz bottle) to its UPC-A equivalent', () => {
+    // 0 497640 0 on the bottle → Coca-Cola prefix 049000.
+    expect(normalizeBarcode('04976400', 'upc_e')).toEqual({
+      displayCode: '049000007640',
+      gtin13: '0049000007640',
+      upcA: '049000007640',
+    });
+  });
+
+  it('applies every UPC-E expansion rule', () => {
+    expect(expandUpcE('01234531')).toBe('012300000451'); // last digit 3
+    expect(expandUpcE('01234543')).toBe('012340000053'); // last digit 4
+    expect(expandUpcE('11234579')).toBe('112345000079'); // last digit 5-9, number system 1
+    expect(expandUpcE('497640')).toBe('049000007640');        // bare 6 data digits
+  });
+
+  it('rejects UPC-E payloads with a bad check digit, number system, or length', () => {
+    expect(normalizeBarcode('04976401', 'upc_e')).toBeNull();
+    expect(expandUpcE('24976400')).toBeNull();
+    expect(expandUpcE('0497640')).toBeNull();
+    expect(normalizeBarcode('049000007640', 'upc_e')).toBeNull();
   });
 });
 
