@@ -10,6 +10,7 @@
 import type { TabFlag, TabFlagPerson } from '../types';
 import type { DonationSummary, PoliticalPerson } from '../../core/models';
 import { formatActiveCycles, formatDonationAmount, getPersonDisplayName, makeFecIndividualUrl } from '../../core/models';
+import { getDisplaySurname } from '../../core/utils/surname';
 import { deriveDonationSummary } from '../../features/Map/components/dataZoneSummary';
 import { SHOW_FIGURE_NAME_IN_POPUP, CONFIDENCE_THRESHOLD_HIGH } from '../../config/constants';
 import { extCopy } from '../copy';
@@ -42,11 +43,6 @@ function shortPacName(entityName: string | undefined, committeeName: string): st
     .replace(/\s*(Political Action Committee|PAC|FEDERAL|FED)\s*/gi, '')
     .replace(/\s*(Inc\.?|Corp\.?)\s*/gi, '')
     .trim();
-}
-
-function extractLastName(fullName: string): string {
-  const parts = fullName.trim().split(/\s+/);
-  return parts[parts.length - 1] ?? fullName;
 }
 
 /** TabFlagPerson is structurally a PoliticalPerson (raw stripped) — safe to widen. */
@@ -110,7 +106,7 @@ function renderBasedOn(
 
   for (const person of people) {
     const widened = widenPerson(person);
-    const lastName = extractLastName(getPersonDisplayName(widened));
+    const lastName = getDisplaySurname(getPersonDisplayName(widened));
     const url = safeExternalUrl(makeFecIndividualUrl(widened));
     const label = `${lastName} ${extCopy.donationsLinkSuffix} \u2197`;
     if (url) sources.push({ label, url });
