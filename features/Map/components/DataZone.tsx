@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, Image, Linking, StyleSheet } from 'react-native';
 import type { DonationSummary, PoliticalPerson } from '../../../core/models';
 import { formatActiveCycles, getPersonDisplayName, makeFecIndividualUrl } from '../../../core/models';
+import { getDisplaySurname } from '../../../core/utils/surname';
 import { CountUpAmount } from './CountUpAmount';
 import { sharedCopy } from '../../../copy/shared';
 import { mapCopy } from '../../../copy/map';
@@ -28,12 +29,6 @@ interface DataZoneProps {
    * CEO-blaming.
    */
   parentName?: string;
-}
-
-/** Extract last name from a display name (e.g. "Jeff Bezos" → "Bezos"). */
-function extractLastName(fullName: string): string {
-  const parts = fullName.trim().split(/\s+/);
-  return parts[parts.length - 1] ?? fullName;
 }
 
 /** Derive short PAC name: prefer entity canonicalName stripped of suffixes, fall back to committee name. */
@@ -194,7 +189,7 @@ export function DataZone({ donationSummary, committeeName, fecUrl, onDetailPress
               </Text>
             )}
             {people.map((person, i) => {
-              const lastName = extractLastName(getPersonDisplayName(person));
+              const lastName = getDisplaySurname(getPersonDisplayName(person));
               const url = makeFecIndividualUrl(person);
               const needsSep = Boolean(pacFullName && fecUrl) || i > 0;
               return (

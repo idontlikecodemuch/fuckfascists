@@ -4,6 +4,7 @@ import type { ScorecardPerson } from '../data/aggregateScorecard';
 import { scorecardCopy } from '../../../copy/scorecard';
 import { theme } from '../../../design/tokens';
 import { SpriteView, nameToSpriteId } from '../../../core/sprites/spriteLoader';
+import { getDisplaySurname } from '../../../core/utils/surname';
 import { CollapsibleRow } from '../../../core/ui/CollapsibleRow';
 import { SurfaceIcons } from './SurfaceIcon';
 
@@ -17,7 +18,7 @@ interface PreviewPersonRowProps {
 
 export function PreviewPersonRow({ person, expanded, onToggle }: PreviewPersonRowProps) {
   const expandable = person.children.length > 1;
-  const lastName = extractLastName(person.figureName);
+  const lastName = getDisplaySurname(person.figureName);
   const spriteId = nameToSpriteId(person.figureName);
   const parentName = person.sources[0]?.name ?? '';
 
@@ -79,11 +80,6 @@ export function PreviewPersonRow({ person, expanded, onToggle }: PreviewPersonRo
       accessibilityLabel={`${lastName}, ${person.totalCount} avoids`}
     />
   );
-}
-
-function extractLastName(fullName: string): string {
-  const parts = fullName.trim().split(/\s+/);
-  return parts[parts.length - 1];
 }
 
 const styles = StyleSheet.create({

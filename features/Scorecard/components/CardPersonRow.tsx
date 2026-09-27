@@ -4,6 +4,7 @@ import type { ScorecardPerson } from '../data/aggregateScorecard';
 import { scorecardCopy } from '../../../copy/scorecard';
 import { theme } from '../../../design/tokens';
 import { SpriteView, nameToSpriteId } from '../../../core/sprites/spriteLoader';
+import { getDisplaySurname } from '../../../core/utils/surname';
 
 const SPRITE_SLOT_DESIGN = 200;
 const SPRITE_DESIGN = 180;
@@ -34,8 +35,7 @@ interface CardPersonRowProps {
  * Not interactive. collapsable={false} for view-shot capture.
  */
 export function CardPersonRow({ person, isLast }: CardPersonRowProps) {
-  const parts = person.figureName.trim().split(/\s+/);
-  const lastName = parts[parts.length - 1];
+  const lastName = getDisplaySurname(person.figureName);
   const spriteId = nameToSpriteId(person.figureName);
   const detail = scorecardCopy.platformList(person.sources.map((s) => s.name));
 
