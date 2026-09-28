@@ -2362,5 +2362,291 @@
         "outfit": "Plain black ByteDance t-shirt, dark slim chinos, white sneakers, visible company logo on chest"
       }
     }
+  },
+  {
+    "id": "sal-mancuso",
+    "name": "Sal Mancuso",
+    "tier": "standard",
+    "likeness": "Gray and brown hair, tanned skin, medium build, oval face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Dark gray suit, white dress shirt, Marlboro-red tie, black dress shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "jacek-olczak",
+    "name": "Jacek Olczak",
+    "tier": "standard",
+    "likeness": "Dark hair with gray, light tan skin, medium build, strong jaw, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Navy Philip Morris suit, white shirt, burgundy tie, black dress shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "joaquin-duato",
+    "name": "Joaquin Duato",
+    "tier": "standard",
+    "likeness": "Dark hair graying at temples, medium olive skin, medium build, square jaw, clean-shaven, alert expression",
+    "variants": {
+      "A": {
+        "outfit": "Charcoal suit, crisp white shirt, J&J-red tie, polished black shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "ramon-laguarta",
+    "name": "Ramon Laguarta",
+    "tier": "standard",
+    "likeness": "Dark hair graying at sides, olive skin, medium build, angular face, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Dark blue PepsiCo executive blazer, white button-down, navy tie, dress shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "henrique-braun",
+    "name": "Henrique Braun",
+    "tier": "standard",
+    "likeness": "Dark brown hair, warm olive skin, medium build, rounded face, clean-shaven, approachable expression",
+    "variants": {
+      "A": {
+        "outfit": "Coca-Cola red executive blazer, white dress shirt, red and gold tie, polished shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "steve-cahillane",
+    "name": "Steve Cahillane",
+    "tier": "standard",
+    "likeness": "Light brown hair graying, fair skin, medium build, rectangular face, clean-shaven, authoritative bearing",
+    "variants": {
+      "A": {
+        "outfit": "Kraft Heinz burgundy blazer, white button-down, dark tie, dress shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "dirk-van-de-put",
+    "name": "Dirk Van de Put",
+    "tier": "standard",
+    "likeness": "Light brown to blond hair, fair skin, medium build, angular face, clean-shaven, focused expression",
+    "variants": {
+      "A": {
+        "outfit": "Mondelez navy executive suit, white dress shirt, burgundy and gold tie, polished shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "jeff-harmening",
+    "name": "Jeff Harmening",
+    "tier": "standard",
+    "likeness": "Dark hair with gray, fair skin, medium build, broad face, clean-shaven, determined expression",
+    "variants": {
+      "A": {
+        "outfit": "General Mills gold and blue blazer, white button-down, navy tie, dress shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "mick-beekhuizen",
+    "name": "Mick Beekhuizen",
+    "tier": "standard",
+    "likeness": "Light brown hair graying, fair skin, medium build, rounded face, clean-shaven, approachable expression",
+    "variants": {
+      "A": {
+        "outfit": "Campbell's red blazer, white dress shirt, burgundy tie, polished shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "shailesh-jejurikar",
+    "name": "Shailesh Jejurikar",
+    "tier": "standard",
+    "likeness": "Dark hair, warm brown skin, medium build, rounded face, clean-shaven, warm expression",
+    "variants": {
+      "A": {
+        "outfit": "Procter & Gamble blue executive suit, white button-down, navy and gold tie, dress shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "kirk-tanner",
+    "name": "Kirk Tanner",
+    "tier": "standard",
+    "likeness": "Dark hair graying, fair skin, medium build, broad face, clean-shaven, commanding expression, athletic bearing",
+    "variants": {
+      "A": {
+        "outfit": "Hershey brown blazer, white button-down, brown and gold tie, dress shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "tim-cofer",
+    "name": "Tim Cofer",
+    "tier": "standard",
+    "likeness": "Light brown hair, fair skin, medium build, rectangular face, clean-shaven, professional expression",
+    "variants": {
+      "A": {
+        "outfit": "Keurig Dr Pepper burgundy and gray blazer, white dress shirt, burgundy tie, polished shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "rafael-oliveira",
+    "name": "Rafael Oliveira",
+    "tier": "standard",
+    "likeness": "Dark brown hair, warm olive skin, medium build, rounded face, clean-shaven, approachable smile",
+    "variants": {
+      "A": {
+        "outfit": "Heineken green executive blazer, white button-down, emerald tie, dress shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "nobuhiro-torii",
+    "name": "Nobuhiro Torii",
+    "tier": "standard",
+    "likeness": "Dark hair with gray, tan skin, medium build, oval face, clean-shaven, refined expression",
+    "variants": {
+      "A": {
+        "outfit": "Suntory navy and gold executive suit, white dress shirt, burgundy tie, polished shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "dave-lewis",
+    "name": "Dave Lewis",
+    "tier": "standard",
+    "likeness": "Gray and white hair, fair skin, medium to stocky build, round face, clean-shaven, friendly expression",
+    "variants": {
+      "A": {
+        "outfit": "Diageo black and gold blazer, white button-down, black and gold tie, dress shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "alexandre-ricard",
+    "name": "Alexandre Ricard",
+    "tier": "standard",
+    "likeness": "Dark hair with gray, fair skin, medium build, angular face, clean-shaven, distinguished expression",
+    "variants": {
+      "A": {
+        "outfit": "Pernod Ricard navy executive blazer, white dress shirt, gold and burgundy tie, polished shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "ryals-mcmullian",
+    "name": "Ryals McMullian",
+    "tier": "standard",
+    "likeness": "Brown hair with gray, fair skin, medium build, broad face, clean-shaven, professional expression",
+    "variants": {
+      "A": {
+        "outfit": "Flowers Foods beige and tan blazer, white button-down, tan tie, dress shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "brian-mcnamara",
+    "name": "Brian McNamara",
+    "tier": "standard",
+    "likeness": "Light brown hair, fair skin, medium to athletic build, rectangular face, clean-shaven, executive bearing",
+    "variants": {
+      "A": {
+        "outfit": "Haleon navy and white blazer, white dress shirt, blue tie, polished shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "sean-connolly",
+    "name": "Sean Connolly",
+    "tier": "standard",
+    "likeness": "Dark hair graying at temples, fair skin, medium build, strong jaw, clean-shaven, determined expression",
+    "variants": {
+      "A": {
+        "outfit": "Conagra burgundy and gray blazer, white button-down, burgundy tie, dress shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "john-ghingo",
+    "name": "John Ghingo",
+    "tier": "standard",
+    "likeness": "Dark hair, fair tan skin, medium build, oval face, clean-shaven, approachable expression",
+    "variants": {
+      "A": {
+        "outfit": "Hormel Foods red and gold blazer, white dress shirt, red tie, polished shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "shane-smith",
+    "name": "Shane Smith",
+    "tier": "standard",
+    "likeness": "Brown hair graying, fair skin, medium to stocky build, round face, clean-shaven, friendly expression",
+    "variants": {
+      "A": {
+        "outfit": "Smithfield Foods maroon and tan blazer, white button-down, maroon tie, dress shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "michel-doukeris",
+    "name": "Michel Doukeris",
+    "tier": "standard",
+    "likeness": "Dark brown hair with gray, warm olive skin, medium build, angular face, clean-shaven, confident expression",
+    "variants": {
+      "A": {
+        "outfit": "AB InBev red and gold blazer, white dress shirt, red and gold tie, polished shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "rahul-goyal",
+    "name": "Rahul Goyal",
+    "tier": "standard",
+    "likeness": "Dark hair, warm brown skin, medium build, rounded face, clean-shaven, approachable expression",
+    "variants": {
+      "A": {
+        "outfit": "Molson Coors blue and gold blazer, white button-down, navy tie, dress shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "nicholas-fink",
+    "name": "Nicholas Fink",
+    "tier": "standard",
+    "likeness": "Brown hair graying, fair skin, medium to athletic build, rectangular face, clean-shaven, executive bearing, focused expression",
+    "variants": {
+      "A": {
+        "outfit": "Constellation Brands gold and blue blazer, white dress shirt, gold tie, polished shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "lawson-whiting",
+    "name": "Lawson Whiting",
+    "tier": "standard",
+    "likeness": "Gray and white hair, fair skin, medium to stocky build, broad face, clean-shaven, distinguished expression",
+    "variants": {
+      "A": {
+        "outfit": "Brown-Forman brown and gold blazer, white button-down, brown and gold tie, polished shoes, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "jeff-schomburger",
+    "name": "Jeff Schomburger",
+    "tier": "standard",
+    "likeness": "Light brown hair, fair skin, medium build, broad face, clean-shaven, determined expression",
+    "variants": {
+      "A": {
+        "outfit": "Tyson Foods red and gold blazer, white dress shirt, burgundy tie, polished shoes, visible company logo on chest"
+      }
+    }
   }
 ]
