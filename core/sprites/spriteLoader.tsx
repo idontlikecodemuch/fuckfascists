@@ -18,6 +18,7 @@ import {
   SPRITE_FACE_DEFEATED_Y,
 } from '../../config/constants';
 import { spriteAssets } from './spriteAssets';
+import { nameToSpriteId } from './spriteId';
 
 // ── Manifest (bundled JSON) ──────────────────────────────────────────────────
 
@@ -59,10 +60,8 @@ export interface FrameInfo {
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
-/** Convert a display name like "Jeff Bezos" to sprite ID "jeff-bezos". */
-export function nameToSpriteId(name: string): string {
-  return name.trim().toLowerCase().replace(/\s+/g, '-');
-}
+/** Display name -> sprite ID; see spriteId.ts. */
+export { nameToSpriteId };
 
 /**
  * Deterministic variant selection seeded by a string key.
