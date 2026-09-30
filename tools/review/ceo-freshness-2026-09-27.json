@@ -3,10 +3,11 @@
   "checkedOn": "2026-09-27",
   "entitiesChecked": 756,
   "method": "Web research per entity. Sonnet agents for PAC-funded batches; Haiku agents for the rest, with every Haiku stale/uncertain result re-verified by a Sonnet agent. Applied only status=stale with a clean name; uncertain cases left unchanged.",
-  "changed": 184,
+  "changed": 183,
   "unresolved": 41,
   "upcomingSuccessions": 18,
-  "peopleRolesToReview": 3
+  "peopleRolesToReview": 3,
+  "held": 1
  },
  "changes": [
   {
@@ -380,18 +381,6 @@
    "sourceDate": "2026-09-27",
    "verifiedBy": "haiku+sonnet-review",
    "notes": "Confirmed. Kedia became CEO in mid-April 2025, succeeding Cecere, and additionally took the Board Chairman role effective April 2026."
-  },
-  {
-   "id": "apple",
-   "from": "Tim Cook",
-   "to": "John Ternus",
-   "title": "CEO",
-   "effectiveDate": "2026-09-01",
-   "upcoming": null,
-   "sourceUrl": "https://en.wikipedia.org/wiki/Tim_Cook",
-   "sourceDate": null,
-   "verifiedBy": "sonnet",
-   "notes": "Very recent change: announced 2026-04-20 that Cook would step down 2026-09-01 (just before today's date); Cook became Executive Chairman, John Ternus (former SVP Hardware Engineering) became CEO. Confirmed via two independent sources (Wikipedia + stockanalysis.com)."
   },
   {
    "id": "oracle",
@@ -2685,11 +2674,6 @@
    "to": "Enrique Lores"
   },
   {
-   "id": "apple",
-   "from": "Tim Cook",
-   "to": "John Ternus"
-  },
-  {
    "id": "workday",
    "from": "Carl Eschenbach",
    "to": "Aneel Bhusri"
@@ -2713,6 +2697,21 @@
    "id": "spotify",
    "from": "Daniel Ek",
    "to": "Alex Norström & Gustav Söderström"
+  }
+ ],
+ "held": [
+  {
+   "id": "apple",
+   "from": "Tim Cook",
+   "to": "John Ternus",
+   "title": "CEO",
+   "effectiveDate": "2026-09-01",
+   "upcoming": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/Tim_Cook",
+   "sourceDate": null,
+   "verifiedBy": "sonnet",
+   "notes": "Very recent change: announced 2026-04-20 that Cook would step down 2026-09-01 (just before today's date); Cook became Executive Chairman, John Ternus (former SVP Hardware Engineering) became CEO. Confirmed via two independent sources (Wikipedia + stockanalysis.com).",
+   "heldReason": "Owner decision 2026-09-30: hold Apple at Tim Cook for now. John Ternus has been CEO since 2026-09-01 (Cook is Executive Chairman). Sprite description for Ternus prepared."
   }
  ]
 }
