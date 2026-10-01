@@ -27,7 +27,8 @@ These documents are the authoritative reference for the project. New instances s
 |---|---|---|
 | Progress & Current State | /docs/PROGRESS.md | Read this first — current sprint status, recent sessions, immediate next steps |
 | Data Cleaning Audit Handoff | /docs/DATA_CLEANING_AUDIT_2026-04-20.md | Current April 2026 data-cleaning audit packet — local data inputs, changed files, verification commands, metrics, and known review findings |
-| FEC Bulk Refresh 2026-05-27 | /docs/FEC_BULK_REFRESH_2026-05-27.md | Latest local FEC refresh record — downloaded archive metadata, hydration results, verification, and future rolling-window policy |
+| FEC Bulk Refresh 2026-09-30 | /docs/FEC_BULK_REFRESH_2026-09-30.md | Latest FEC refresh (incremental, 15 changed archives) — manifest, hydration and classification results, product-index status, verification |
+| FEC Bulk Refresh 2026-05-27 | /docs/FEC_BULK_REFRESH_2026-05-27.md | Earlier full refresh record — archive metadata, hydration results, and future rolling-window policy |
 | Progress Archive | /docs/PROGRESS_ARCHIVE.md | Older session logs (pre-March 12, 2026) — reference only, not required reading |
 | Products Data Pipeline | /docs/PRODUCTS_DATA_PIPELINE.md | Deep reference for `products.json`, the OFF bulk sync process, checkpoints, cleanup heuristics, and current coverage |
 | App Spec (original) | /docs/FuckFascists_AppSpec_ORIGINAL.docx | Canonical product vision as originally written — do not modify |

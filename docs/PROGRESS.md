@@ -12,6 +12,30 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: September 21 – October 1, 2026 ET — Android pass, Build 9 feedback, CEO refresh, FEC refresh, release/1.2.0
+
+**Branches:** `release/1.1.0` (tag `v1.1.0`) records the shipped 1.1.0 (9) source, which had only existed as the main checkout's uncommitted working tree. `release/1.2.0` is built on it and carries everything below. `claude/android-e2e-testing-975d7e` holds the original history; `data/cleaning-products-wip` the pre-replay batch.
+
+**Android first pass (emulator):** setup, findings, and fixes in `docs/ANDROID_READINESS.md`. Fixed: minSdk 29 via `expo-build-properties` (the old `android.minSdkVersion` key was ignored, so builds shipped minSdk 24), blocked unused permissions, Back handling on every overlay (`core/ui/useAndroidBackHandler.ts`), share MIME type, Thursday nudge notification channel, write-only media permission, business-card folder tab font padding. Release builds still need `react-native@0.76.9` (Kotlin 1.9.24 vs 1.9.25 mismatch); owner decision.
+
+**TestFlight Build 9 feedback:** (1) Sprite 20 oz bottle would not scan: the scanner only read UPC-A/EAN-13; added UPC-E with GS1 expansion. (2) Scorecard showed "PUT" for Dirk Van de Put: new `core/utils/surname.ts` used by scorecard rows, card donor links, and the extension popup. (3) Arm & Hammer / Unilever / Everfresh "no contributions on file" are correct: no PACs exist. (4) Most scannable companies had no CEO sprite (108 of 111).
+
+**CEO names:** all entities re-verified 2026-09-27 (Sonnet agents; Haiku agents with Sonnet re-check of every claimed change). 182 updated on 1.1.0 data; Apple held at Tim Cook (John Ternus CEO since 2026-09-01). Record: `tools/review/ceo-freshness-2026-09-27.json`. Owner follow-ups there: 41 acquired/liquidated/ambiguous entities, 18 announced successions (Tyson Oct 4, Hormel Oct 26, Adobe Dec 1...), people.json still marks Tim Cook, John Hess, Warren Stephens as current CEOs.
+
+**Sprites:** 50 new descriptions in `tools/img-gen/characters.json` (26 PAC-funded scannable CEOs, 24 CEOs whose company lost its sprite in the refresh, incl. Ternus). Sprite ids are now file-safe (`core/sprites/spriteId.ts`). **Images not generated:** Gemini (`gemini-3.1-flash-image-preview`) now returns `IMAGE_OTHER` with no image for every named real person, including previously generated characters (tested Henrique Braun and Jeff Bezos). OpenAI `gpt-image-1.5` via `tools/img-gen/scripts/gpt_image.py` does generate; with an existing sprite (`donnie-king.png`) as the style reference the result is close to the roster style. Switching providers for ~58 calls is an owner decision. Pilots: `tools/img-gen/output/gpt-pilot/` (gitignored). Python deps now live in `tools/img-gen/.venv` (main checkout).
+
+**Household cleaning batch:** SC Johnson, 3M, Reynolds added; 31 brand aliases; Clorox linked to its PAC; Church & Dwight, Newell, Reynolds confirmed no PAC.
+
+**FEC refresh 2026-09-30:** 15 changed archives; details and figures in `docs/FEC_BULK_REFRESH_2026-09-30.md`. `products.json` not rescanned: the OFF dump needs ~80 GB free (66-70 GB available).
+
+**Release 1.2.0 (10):** version bumped everywhere (app, iOS, Android, OFF user-agent, extension manifest). Notes: `docs/releases/1.2.0.md`.
+
+**Repo hygiene:** main checkout moved from detached HEAD to `release/1.1.0`; `.gitignore` now excludes marketing media, phone screenshots, review crops, img-gen references/drafts, caches, venvs. Removed five stale worktrees with nothing beyond main; pushed `fix/sprite-expo-image` as an archive branch. Left for review: `clever-chandrasekhar` (24 uncommitted files, May 8) and `epic-bouman` (logo PNG edits + site/).
+
+**Open owner decisions:** merge `release/1.1.0` then `release/1.2.0` into main; RN 0.76.9 bump; sprite provider (OpenAI) and spend; Android map provider; gitignore vs commit `android/`; `allowBackup`; OFF rescan disk space.
+
+**Verification (release/1.2.0):** typecheck clean; Jest 51 suites / 523 tests; integrity live checks clean; `build:ext:all` OK.
+
 ### Session: September 1, 2026 ET — 1.1.0 simulator release QA
 
 **Focus:** Verify the release version, UPC notices, and every scorecard presentation trigger before App Store submission.
