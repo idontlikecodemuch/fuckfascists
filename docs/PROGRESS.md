@@ -25,6 +25,8 @@ This document is updated continuously. New instances should read this first — 
 
 **Sprite roster (`tools/img-gen/characters.json`):** 26 new standard-tier entries for the PAC-funded companies the scanner resolves (list in commit `e0d3e59`). Descriptions by a Haiku agent from web research, not photo review; national/ethnic labels removed. Six are low confidence (Beekhuizen, Cofer, McMullian, Ghingo, Smith, Schomburger). No images generated; `generate.py --dry-run` builds valid prompts. Owner decision (2026-09-27): no placeholder sprite for companies without one.
 
+**Sprite roster, batch 2 (2026-09-30):** 24 more entries for CEOs whose company lost its sprite in the refresh (Walmart Furner, Target Fiddelke, Kroger Foran, Walgreens Motz, Disney D'Amaro, PayPal Lores, T-Mobile Gopalan, ALDI/Winn-Dixie McGrath, Etsy, CarMax, REI, Workday, Instacart and others) plus John Ternus for Apple (data held at Tim Cook, so his sprite stays dormant until the flip). Written by an Opus agent from photos viewed in the browser pane via image search; 21 high / 3 medium confidence (Wlazlo, Potter, Miller medium). Household-name companies are `important` tier (two outfit variants, two Gemini calls each). Spotify skipped: two co-CEOs cannot share one sprite; setting `publicFigureName: "Daniel Ek"` would keep its existing sprite. Sprite ids now drop punctuation and accents (`core/sprites/spriteId.ts`), so `josh-damaro` and `michael-j-bender` resolve. No images generated.
+
 **Surname fix:** see Android finding #16 (`core/utils/surname.ts`).
 
 **Verification:** `node scripts/verify-data-integrity.mjs` live checks clean (0 duplicates, 0 broken links); `npm run typecheck` clean; Jest 46 suites / 479 tests pass.
