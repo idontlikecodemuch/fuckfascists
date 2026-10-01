@@ -81,13 +81,26 @@ def _variants_for_character(character: dict) -> list[dict]:
     ]
 
 
+# Set from --anonymous. Gemini's image model now declines prompts that name a
+# real person, so new sprites are generated from the description alone.
+_ANONYMOUS = False
+
+
 def _assemble_prompt(character: dict, variant: dict, templates: dict) -> str:
-    name = character["name"]
+    subject = "the same video game character" if _ANONYMOUS else character["name"]
     likeness = character.get("likeness", "")
     outfit = variant["outfit"]
     parts = [
         templates["style_and_layout"],
-        f"Both figures on this canvas are {name}, featuring {likeness}, wearing {outfit}. Both figures are the exact same person wearing the exact same clothes.",
+        f"Both figures on this canvas are {subject}, featuring {likeness}, wearing {outfit}.",
+    ]
+    # Explicit traits so the model does not guess them from the likeness text.
+    if character.get("skinTone"):
+        parts.append(f"Skin color: {character['skinTone']}. Use this exact skin color on the face, neck, and hands of both figures.")
+    if character.get("bodyType"):
+        parts.append(f"Body type: {character['bodyType']}. Keep this exact build and height on both figures.")
+    parts += [
+        "Both figures are the exact same person wearing the exact same clothes.",
         templates["state_neutral"],
         templates["state_defeated"],
     ]
@@ -258,7 +271,10 @@ def main() -> None:
     parser.add_argument("--dry-run", action="store_true", help="Print prompts without calling API")
     parser.add_argument("--force", action="store_true", help="Regenerate even if frames exist")
     parser.add_argument("--ids", metavar="ID,ID,...", help="Comma-separated character IDs to filter (works with --batch and --all)")
+    parser.add_argument("--anonymous", action="store_true", help="Leave the person's name out of the prompt (describe by likeness, skin color, body type only)")
     args = parser.parse_args()
+    global _ANONYMOUS
+    _ANONYMOUS = args.anonymous
 
     _load_env()
 

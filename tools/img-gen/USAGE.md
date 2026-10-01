@@ -80,6 +80,9 @@ Generate pixel-art CEO sprite variant pairs (neutral + defeated states side by s
 | `--batch` | Generate all pending variants with configurable delay, then auto-compose |
 | `--dry-run` | Print prompts without making API calls |
 | `--force` | Regenerate even if output frames already exist |
+| `--anonymous` | Leave the person's name out of the prompt. Required for Gemini since late 2026: `gemini-3.1-flash-image-preview` returns `IMAGE_OTHER` with no image for any prompt that names a real person (tested 2026-10-01). |
+
+**Character fields used in the prompt:** `likeness` (hair, face, glasses, facial hair; no skin or build words), optional `skinTone` (e.g. `light with a warm golden undertone`) and optional `bodyType` (e.g. `tall and lean, narrow shoulders`), and `variants.A/B.outfit`. `skinTone` and `bodyType` are emitted as their own `Skin color:` and `Body type:` sentences so the model does not infer them from the likeness text; without the name, these carry the resemblance.
 
 **Output:** `output/raw/frames/{id}_varA.png`, `{id}_varB.png` (important tier only)
 
