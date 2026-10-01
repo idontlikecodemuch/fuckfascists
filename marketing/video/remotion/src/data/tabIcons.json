@@ -1,0 +1,18 @@
+{
+ "MAP": {
+  "name": "map-outline",
+  "code": 60740
+ },
+ "TRACK": {
+  "name": "checkmark-done-outline",
+  "code": 60198
+ },
+ "SCAN": {
+  "name": "barcode-outline",
+  "code": 60023
+ },
+ "SCORECARD": {
+  "name": "trophy-outline",
+  "code": 61187
+ }
+}

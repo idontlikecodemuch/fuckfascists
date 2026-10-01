@@ -1,0 +1,33 @@
+{
+  "name": "fck-clark-explainer",
+  "version": "1.0.0",
+  "description": "FCK Fascists \u2014 Clark explainer video (Remotion)",
+  "scripts": {
+    "sync-script": "bash scripts/sync-script.sh",
+    "prep:clips": "bash scripts/prep-clips.sh",
+    "prep:clark": "bash scripts/prep-clark.sh",
+    "render": "bash scripts/render.sh",
+    "render:preview": "bash scripts/render.sh preview",
+    "render:60": "bash scripts/render.sh 60",
+    "render:30": "bash scripts/render.sh 30",
+    "render:15": "bash scripts/render.sh 15",
+    "render:wide": "bash scripts/render.sh wide",
+    "typecheck": "tsc --noEmit",
+    "render:shorts": "bash scripts/render.sh shorts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@remotion/cli": "^4.0.529",
+    "@remotion/media-utils": "^4.0.529",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "remotion": "^4.0.529",
+    "typescript": "^7.0.2"
+  },
+  "private": true
+}

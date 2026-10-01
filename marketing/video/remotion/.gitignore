@@ -1,0 +1,6 @@
+node_modules/
+out/
+# symlink to marketing/video (captures are multi-GB) — recreate with:
+#   ln -s ../../ public/media   (from remotion/public)
+public/media
+.DS_Store

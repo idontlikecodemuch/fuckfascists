@@ -1,0 +1,3 @@
+# lineId	source (in marketing/video/clark/generated video)	in_s	out_s	grade (R,G,B gains @ gamma; skin only, see grade-scene.py)   — 16:9 "in context" scene: full-frame on the wide intro, centre-cropped on the vertical, its own audio
+c60-02-1	clark_intro_office_1080p.mp4	0.90	10.0	1.05,0.95,0.76@0.91
+c30-02-1	clark_intro_office_1080p.mp4	0.90	3.55	1.05,0.95,0.76@0.91

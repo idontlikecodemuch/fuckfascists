@@ -1,0 +1,497 @@
+{
+  "source": "storyboard artifact db script/lines v3, exported 2026-09-27",
+  "cuts": {
+    "60": [
+      {
+        "panel": "01",
+        "title": "THE HOOK",
+        "kind": "hook",
+        "lines": []
+      },
+      {
+        "panel": "02",
+        "title": "MEET CLARK",
+        "kind": "clark",
+        "lines": [
+          {
+            "id": "c60-02-1",
+            "text": "Hi. I'm Clark. Your public records clerk. I've organized hundreds of gigabytes of FEC filings, state campaign data and UPC codes."
+          },
+          {
+            "id": "c60-02-2",
+            "text": "No accounts. No tracking. Financial contributions, on file."
+          },
+          {
+            "id": "c60-02-3",
+            "text": "That card? Here's how it happens."
+          }
+        ]
+      },
+      {
+        "panel": "03",
+        "title": "MAP · SCAN",
+        "kind": "feature",
+        "feature": "MAP",
+        "lines": [
+          {
+            "id": "c60-03-1",
+            "text": "Tap any business near you."
+          }
+        ]
+      },
+      {
+        "panel": "04",
+        "title": "MAP · THE FILE",
+        "kind": "feature",
+        "feature": "MAP",
+        "lines": [
+          {
+            "id": "c60-04-1",
+            "text": "I pull the file. Every dollar. Both parties. Straight from FEC.gov."
+          }
+        ]
+      },
+      {
+        "panel": "05",
+        "title": "MAP · AVOID",
+        "kind": "feature",
+        "feature": "MAP",
+        "lines": [
+          {
+            "id": "c60-05-1",
+            "text": "Don't want to support them? Tap avoid."
+          }
+        ]
+      },
+      {
+        "panel": "06",
+        "title": "TRACK · PICK YOUR PLATFORMS",
+        "kind": "feature",
+        "feature": "TRACK",
+        "lines": [
+          {
+            "id": "c60-06-1",
+            "text": "Pick the platforms you use. I'll log the days you skip them."
+          }
+        ]
+      },
+      {
+        "panel": "07",
+        "title": "TRACK · ALL WEEK",
+        "kind": "feature",
+        "feature": "TRACK",
+        "lines": [
+          {
+            "id": "c60-07-1",
+            "text": "Tap avoid when you skip one. Missed a day? Tap it in."
+          }
+        ]
+      },
+      {
+        "panel": "08",
+        "title": "TRACK · THE ARENA",
+        "kind": "feature",
+        "feature": "TRACK",
+        "lines": [
+          {
+            "id": "c60-08-1",
+            "text": "Every avoid counts toward your scorecard."
+          }
+        ]
+      },
+      {
+        "panel": "09",
+        "title": "SCAN · THE BARCODE",
+        "kind": "feature",
+        "feature": "SCAN",
+        "lines": [
+          {
+            "id": "c60-09-1",
+            "text": "At the store? Scan a barcode."
+          }
+        ]
+      },
+      {
+        "panel": "10",
+        "title": "SCAN · THE PARENT",
+        "kind": "feature",
+        "feature": "SCAN",
+        "lines": [
+          {
+            "id": "c60-10-1",
+            "text": "I find the parent company. Here's their file."
+          }
+        ]
+      },
+      {
+        "panel": "11",
+        "title": "SCORECARD · INCOMING",
+        "kind": "feature",
+        "feature": "SCORECARD",
+        "lines": [
+          {
+            "id": "c60-11-1",
+            "text": "Random drop between Friday and Saturday."
+          }
+        ]
+      },
+      {
+        "panel": "12",
+        "title": "THE DROP",
+        "kind": "drop",
+        "lines": [
+          {
+            "id": "c60-12-1",
+            "text": "Once it drops, I shred the data. The card is yours."
+          }
+        ]
+      },
+      {
+        "panel": "13",
+        "title": "SHARE",
+        "kind": "share",
+        "lines": [
+          {
+            "id": "c60-13-1",
+            "text": "Swipe up. Share it."
+          }
+        ]
+      },
+      {
+        "panel": "14",
+        "title": "OUTRO",
+        "kind": "outro",
+        "lines": [
+          {
+            "id": "c60-14-1",
+            "text": "I have the info. Now so do you. It's your move.",
+            "horns": true
+          }
+        ]
+      }
+    ],
+    "30": [
+      {
+        "panel": "01",
+        "title": "THE HOOK",
+        "kind": "hook",
+        "lines": []
+      },
+      {
+        "panel": "02",
+        "title": "MEET CLARK",
+        "kind": "clark",
+        "lines": [
+          {
+            "id": "c30-02-1",
+            "text": "Hi. I'm Clark. Your public records clerk."
+          },
+          {
+            "id": "c30-02-2",
+            "text": "No accounts. No tracking."
+          }
+        ]
+      },
+      {
+        "panel": "03",
+        "title": "MAP",
+        "kind": "feature",
+        "feature": "MAP",
+        "lines": [
+          {
+            "id": "c30-03-1",
+            "text": "Tap a business. Here's the file, pulled from FEC data. Don't want to support them? Tap avoid."
+          }
+        ]
+      },
+      {
+        "panel": "04",
+        "title": "TRACK",
+        "kind": "feature",
+        "feature": "TRACK",
+        "lines": [
+          {
+            "id": "c30-04-1",
+            "text": "Pick your platforms. Tap avoid when you skip one. It counts all week."
+          }
+        ]
+      },
+      {
+        "panel": "05",
+        "title": "SCAN",
+        "kind": "feature",
+        "feature": "SCAN",
+        "lines": [
+          {
+            "id": "c30-05-1",
+            "text": "Scan a barcode. I find the parent company and their file."
+          }
+        ]
+      },
+      {
+        "panel": "06",
+        "title": "THE DROP",
+        "kind": "drop",
+        "lines": [
+          {
+            "id": "c30-06-1",
+            "text": "Random drop between Friday and Saturday. I shred the data. The card is yours. Share it."
+          }
+        ]
+      },
+      {
+        "panel": "07",
+        "title": "OUTRO",
+        "kind": "outro",
+        "lines": [
+          {
+            "id": "c30-07-1",
+            "text": "Now you have the info. Your move.",
+            "horns": true
+          }
+        ]
+      }
+    ],
+    "15": [
+      {
+        "panel": "01",
+        "title": "THE HOOK",
+        "kind": "hook",
+        "lines": []
+      },
+      {
+        "panel": "02",
+        "title": "TAP",
+        "kind": "feature",
+        "feature": "MAP",
+        "lines": [
+          {
+            "id": "c15-02-1",
+            "text": "Tap a business. See the file."
+          }
+        ]
+      },
+      {
+        "panel": "03",
+        "title": "TRACK · SCAN",
+        "kind": "feature",
+        "feature": "TRACK",
+        "lines": [
+          {
+            "id": "c15-03-1",
+            "text": "Track it. Scan it."
+          }
+        ]
+      },
+      {
+        "panel": "04",
+        "title": "THE DROP",
+        "kind": "drop",
+        "lines": [
+          {
+            "id": "c15-04-1",
+            "text": "Random drop between Friday and Saturday."
+          }
+        ]
+      },
+      {
+        "panel": "05",
+        "title": "OUTRO",
+        "kind": "outro",
+        "lines": [
+          {
+            "id": "c15-05-1",
+            "text": "Your move.",
+            "horns": true
+          }
+        ]
+      }
+    ],
+    "map": [
+      {
+        "panel": "02",
+        "title": "MAP · TAP",
+        "kind": "feature",
+        "lines": [
+          {
+            "id": "cmap-02-1",
+            "text": "Tap any business near you."
+          }
+        ],
+        "feature": "MAP"
+      },
+      {
+        "panel": "03",
+        "title": "MAP · THE FILE",
+        "kind": "feature",
+        "lines": [
+          {
+            "id": "cmap-03-1",
+            "text": "I pull the file. Every dollar. Both parties."
+          }
+        ],
+        "feature": "MAP"
+      },
+      {
+        "panel": "04",
+        "title": "MAP · AVOID",
+        "kind": "feature",
+        "lines": [
+          {
+            "id": "cmap-04-1",
+            "text": "Don't want to support them? Tap avoid."
+          }
+        ],
+        "feature": "MAP"
+      },
+      {
+        "panel": "05",
+        "title": "OUTRO",
+        "kind": "outro",
+        "lines": [
+          {
+            "id": "cmap-05-1",
+            "text": "Your move.",
+            "horns": true
+          }
+        ]
+      }
+    ],
+    "track": [
+      {
+        "panel": "02",
+        "title": "TRACK · PICK",
+        "kind": "feature",
+        "lines": [
+          {
+            "id": "ctrack-02-1",
+            "text": "Pick your platforms. I log the days you skip them."
+          }
+        ],
+        "feature": "TRACK"
+      },
+      {
+        "panel": "03",
+        "title": "TRACK · ALL WEEK",
+        "kind": "feature",
+        "lines": [
+          {
+            "id": "ctrack-03-1",
+            "text": "Tap avoid when you skip one. Missed a day? Tap it in."
+          }
+        ],
+        "feature": "TRACK"
+      },
+      {
+        "panel": "04",
+        "title": "TRACK · THE ARENA",
+        "kind": "feature",
+        "lines": [
+          {
+            "id": "ctrack-04-1",
+            "text": "Every avoid counts toward your scorecard."
+          }
+        ],
+        "feature": "TRACK"
+      },
+      {
+        "panel": "05",
+        "title": "OUTRO",
+        "kind": "outro",
+        "lines": [
+          {
+            "id": "ctrack-05-1",
+            "text": "Your move.",
+            "horns": true
+          }
+        ]
+      }
+    ],
+    "scan": [
+      {
+        "panel": "02",
+        "title": "SCAN · THE BARCODE",
+        "kind": "feature",
+        "lines": [
+          {
+            "id": "cscan-02-1",
+            "text": "At the store? Scan a barcode."
+          }
+        ],
+        "feature": "SCAN"
+      },
+      {
+        "panel": "03",
+        "title": "SCAN · THE PARENT",
+        "kind": "feature",
+        "lines": [
+          {
+            "id": "cscan-03-1",
+            "text": "I find the parent company. Here's their file."
+          }
+        ],
+        "feature": "SCAN"
+      },
+      {
+        "panel": "04",
+        "title": "OUTRO",
+        "kind": "outro",
+        "lines": [
+          {
+            "id": "cscan-04-1",
+            "text": "Your move.",
+            "horns": true
+          }
+        ]
+      }
+    ],
+    "card": [
+      {
+        "panel": "02",
+        "title": "SCORECARD · INCOMING",
+        "kind": "feature",
+        "lines": [
+          {
+            "id": "ccard-02-1",
+            "text": "Random drop between Friday and Saturday."
+          }
+        ],
+        "feature": "SCORECARD"
+      },
+      {
+        "panel": "03",
+        "title": "THE DROP",
+        "kind": "drop",
+        "lines": [
+          {
+            "id": "ccard-03-1",
+            "text": "Once it drops, I shred the data. The card is yours."
+          }
+        ]
+      },
+      {
+        "panel": "04",
+        "title": "SHARE",
+        "kind": "share",
+        "lines": [
+          {
+            "id": "ccard-04-1",
+            "text": "Swipe up. Share it."
+          }
+        ]
+      },
+      {
+        "panel": "05",
+        "title": "OUTRO",
+        "kind": "outro",
+        "lines": [
+          {
+            "id": "ccard-05-1",
+            "text": "Your move.",
+            "horns": true
+          }
+        ]
+      }
+    ]
+  }
+}
