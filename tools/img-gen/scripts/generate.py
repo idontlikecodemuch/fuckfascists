@@ -87,19 +87,23 @@ _ANONYMOUS = False
 
 
 def _assemble_prompt(character: dict, variant: dict, templates: dict) -> str:
+    """Identity details are ordered by what survives at sprite size: head
+    shape, hair and features, skin, build, signature, then outfit."""
     subject = "the same video game character" if _ANONYMOUS else character["name"]
-    likeness = character.get("likeness", "")
     outfit = variant["outfit"]
-    parts = [
-        templates["style_and_layout"],
-        f"Both figures on this canvas are {subject}, featuring {likeness}, wearing {outfit}.",
-    ]
-    # Explicit traits so the model does not guess them from the likeness text.
+    parts = [templates["style_and_layout"], f"Both figures on this canvas are {subject}."]
+    if character.get("faceShape"):
+        parts.append(f"Face shape: {character['faceShape']}.")
+    if character.get("likeness"):
+        parts.append(f"Hair and features: {character['likeness']}.")
     if character.get("skinTone"):
         parts.append(f"Skin color: {character['skinTone']}. Use this exact skin color on the face, neck, and hands of both figures.")
     if character.get("bodyType"):
         parts.append(f"Body type: {character['bodyType']}. Keep this exact build and height on both figures.")
+    if character.get("signature"):
+        parts.append(f"Signature features, exaggerated slightly like a caricature so the character is recognizable at small size: {character['signature']}.")
     parts += [
+        f"Outfit: {outfit}.",
         "Both figures are the exact same person wearing the exact same clothes.",
         templates["state_neutral"],
         templates["state_defeated"],

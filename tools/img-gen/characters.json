@@ -2419,12 +2419,14 @@
     "id": "henrique-braun",
     "name": "Henrique Braun",
     "tier": "standard",
-    "likeness": "dark brown hair with gray streaks, side-parted and swept back with volume, thick dark brows, long face with strong chin, clean-shaven",
-    "skinTone": "light with a warm golden undertone",
-    "bodyType": "average to lean build, medium-broad shoulders",
+    "faceShape": "broad and round with full cheeks and a wide jaw, but firm and fit: no double chin, no jowls, not angular or chiseled",
+    "likeness": "thick dark brown hair with full volume on top, combed back, gray at the temples, slightly receding at the temples, thick dark brows, crinkled eyes, deep creases from nose to mouth, clean-shaven",
+    "skinTone": "light with a warm tan",
+    "bodyType": "fit and broad-shouldered, solid but not heavy or overweight, average height",
+    "signature": "broad round face with deep smile creases, thick dark hair combed back with gray temples",
     "variants": {
       "A": {
-        "outfit": "Coca-Cola red executive blazer, white dress shirt, red and gold tie, polished shoes, visible company logo on chest"
+        "outfit": "navy blazer, white open-collar dress shirt with no tie, dark navy trousers, black dress shoes, small red Coca-Cola lapel pin, visible company logo on chest"
       }
     }
   },

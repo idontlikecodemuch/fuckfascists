@@ -82,7 +82,9 @@ Generate pixel-art CEO sprite variant pairs (neutral + defeated states side by s
 | `--force` | Regenerate even if output frames already exist |
 | `--anonymous` | Leave the person's name out of the prompt. Required for Gemini since late 2026: `gemini-3.1-flash-image-preview` returns `IMAGE_OTHER` with no image for any prompt that names a real person (tested 2026-10-01). |
 
-**Character fields used in the prompt:** `likeness` (hair, face, glasses, facial hair; no skin or build words), optional `skinTone` (e.g. `light with a warm golden undertone`) and optional `bodyType` (e.g. `tall and lean, narrow shoulders`), and `variants.A/B.outfit`. `skinTone` and `bodyType` are emitted as their own `Skin color:` and `Body type:` sentences so the model does not infer them from the likeness text; without the name, these carry the resemblance.
+**Character fields used in the prompt, in this order:** optional `faceShape` (proportions plus negatives, e.g. `broad and round with full cheeks and a wide jaw, but firm and fit: no double chin`), `likeness` (hair and features; no skin, build, or expression words), optional `skinTone`, optional `bodyType`, optional `signature` (one or two features to exaggerate slightly), then `variants.A/B.outfit` (how the person actually dresses, plus a small brand cue). Each is its own sentence. Without the name, these carry the resemblance.
+
+Lessons from the Henrique Braun tests (2026-10-01): describe face shape in proportions (wider than long) and pair every push with a limit (round but fit, broad but not heavy), or the model overshoots; keep smile words out of `likeness` or they override the frown/defeat poses; the style reference (`reference/ref1.png`, a curly-haired figure with glasses) is now explicitly style-only so its face and glasses are not copied.
 
 **Output:** `output/raw/frames/{id}_varA.png`, `{id}_varB.png` (important tier only)
 
