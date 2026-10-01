@@ -50,7 +50,9 @@ The Form 13 step used `FEC_API_KEY` for the F13 filings list, as in August.
 
 ## Products
 
-`sync-products-from-off.py --rebuild-from-checkpoint` ran but was not kept: runtime producers were unchanged (111), the only gain was `sc-johnson` in the unused research layer, and the rebuild dropped a hand-added beta-feedback barcode (5201156250881, PepsiCo). Clorox (19 matched products), SC Johnson (17), and Church & Dwight (5) sit below the 20-product runtime threshold because the March scan seeded them with one brand each. Raising their coverage needs a fresh OFF scan with richer seed brands, which needs about 80 GB free. Until then, scans of these brands resolve online through the Open Food Facts lookup and the new aliases.
+`sync-products-from-off.py --rebuild-from-checkpoint` ran but was not kept: runtime producers were unchanged (111), the only gain was `sc-johnson` in the unused research layer, and the rebuild dropped a hand-added beta-feedback barcode (5201156250881, PepsiCo). Clorox (19 matched products), SC Johnson (17), and Church & Dwight (5) sit below the 20-product runtime threshold because the March scan seeded them with one brand each.
+
+A fresh OFF scan would not close this gap. Open Food Facts carries few household products (2026-10-01 API counts: Windex 1, Ziploc 6, Clorox 14, OxiClean 0, Hefty 0; Open Products Facts and Open Beauty Facts are similar). Online lookups depend on the same database, so most household scans return no match offline or online. Brand names still match in search, on the map, and in the extension. A curated GS1 company-prefix layer is planned for a later release; it is not in 1.2.0.
 
 ## Verification
 
