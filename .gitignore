@@ -87,3 +87,6 @@ tools/review/IMG_*
 assets/pixel/guide/*
 !assets/pixel/guide/clark-portrait.png
 assets/starbg/ChatGPT*
+
+# Python virtual environments (img-gen pipeline)
+.venv/

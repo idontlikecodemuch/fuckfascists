@@ -126,7 +126,7 @@ export const OPEN_FOOD_FACTS_API_BASE_URL = 'https://world.openfoodfacts.org/api
 // when bumping app.json's version.
 // Docs: https://openfoodfacts.github.io/openfoodfacts-server/api/
 // Read limit: 15 req/min per IP (or per user on mobile).
-export const OPEN_FOOD_FACTS_USER_AGENT = 'FCKFascists/1.1.0 (https://fckfascists.com)';
+export const OPEN_FOOD_FACTS_USER_AGENT = 'FCKFascists/1.2.0 (https://fckfascists.com)';
 // Abort the OFF fetch after this many ms so a hung connection on cellular
 // doesn't stall the scan flow indefinitely. ~8s leaves room for slow networks
 // while still failing fast enough to retry on the next scan.
