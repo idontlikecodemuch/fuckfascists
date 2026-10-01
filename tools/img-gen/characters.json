@@ -2648,5 +2648,293 @@
         "outfit": "Tyson Foods red and gold blazer, white dress shirt, burgundy tie, polished shoes, visible company logo on chest"
       }
     }
+  },
+  {
+    "id": "john-furner",
+    "name": "John Furner",
+    "tier": "important",
+    "likeness": "Short salt-and-pepper hair swept to the side, wide toothy grin, deep laugh lines, fair skin, oval face, lean build, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Navy blazer over open-collar light-blue oxford shirt, Walmart spark lapel pin, gray slacks, brown loafers, visible company logo on chest"
+      },
+      "B": {
+        "outfit": "Blue Walmart associate vest over light-blue shirt, JOHN name badge, garden-center work gloves in back pocket, khaki pants, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "michael-fiddelke",
+    "name": "Michael Fiddelke",
+    "tier": "important",
+    "likeness": "Short cropped light-brown hair, receding hairline, fair ruddy skin, broad rounded face, strong chin, clean-shaven, sturdy build",
+    "variants": {
+      "A": {
+        "outfit": "Navy suit, white shirt, Target-red tie, bullseye lapel pin, black dress shoes, visible company logo on chest"
+      },
+      "B": {
+        "outfit": "Red Target polo, khaki pants, team-member name badge, red shopping basket on one arm, white sneakers, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "greg-foran",
+    "name": "Greg Foran",
+    "tier": "important",
+    "likeness": "Thick silver-white hair brushed up and back, long face, prominent nose, dark brows, fair skin, clean-shaven, medium build",
+    "variants": {
+      "A": {
+        "outfit": "Charcoal suit, white shirt, Kroger-blue tie, black dress shoes, visible company logo on chest"
+      },
+      "B": {
+        "outfit": "Kroger-blue quarter-zip over white collared shirt, store name badge, gray slacks, aisle-walk clipboard, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "mike-motz",
+    "name": "Mike Motz",
+    "tier": "important",
+    "likeness": "Dark hair slicked back and graying at the sides, thick dark brows, tanned skin, long face, strong chin, smile lines, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Heather-mauve textured sport coat, open-collar white shirt, Walgreens-red pocket square, dark slacks, brown loafers, visible company logo on chest"
+      },
+      "B": {
+        "outfit": "Red Walgreens store vest over white button-down, name badge, navy slacks, red shopping basket, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "susan-morris",
+    "name": "Susan Morris",
+    "tier": "standard",
+    "likeness": "Shoulder-length voluminous dark brown hair, side part, dark brows, fair skin, oval face, bright wide smile, pearl stud earrings",
+    "variants": {
+      "A": {
+        "outfit": "Navy blazer over white open-collar blouse, Albertsons-blue silk scarf, customer-service-desk name badge, black pumps, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "michael-j-bender",
+    "name": "Michael J. Bender",
+    "tier": "standard",
+    "likeness": "Close-cropped graying hair thinning on top, black rectangular glasses, dark brown skin, rounded face, clean-shaven, medium build",
+    "variants": {
+      "A": {
+        "outfit": "Navy blazer over open-collar light-blue button-down, gray slacks, Kohl's Cash coupon in breast pocket, black loafers, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "michelle-wlazlo",
+    "name": "Michelle Wlazlo",
+    "tier": "standard",
+    "likeness": "Shoulder-length blonde hair with darker roots, center part, light eyes, fair skin, oval face, slim build, soft closed smile",
+    "variants": {
+      "A": {
+        "outfit": "Black cardigan over pale collared blouse, layered chain necklaces, JCPenney-red tailor's tape around neck, dark trousers, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "jason-potter",
+    "name": "Jason Potter",
+    "tier": "standard",
+    "likeness": "Gray hair swept back with volume, big toothy grin, full rounded face, fair rosy skin, dark brows, clean-shaven, sturdy build",
+    "variants": {
+      "A": {
+        "outfit": "Open-collar light-blue button-down, Grocery Outlet name badge, bowl of bargain strawberries in hand, khaki pants, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "david-boone",
+    "name": "David Boone",
+    "tier": "standard",
+    "likeness": "Brown hair swept back with light graying, thick black rectangular glasses, tanned skin, long face, broad smile, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Gray plaid sport coat, open-collar pink shirt, navy pocket square, dusting of craft glitter on the lapels, dark slacks, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "winnie-park",
+    "name": "Winnie Park",
+    "tier": "standard",
+    "likeness": "Chin-length dark brown bob with caramel highlights, deep side part, dark brows, dark eyes, light skin, oval face, drop earrings",
+    "variants": {
+      "A": {
+        "outfit": "Black leather jacket over Five Below-blue blouse, five-dollar price tag clipped to lapel, black trousers, black ankle boots, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "atty-mcgrath",
+    "name": "Atty McGrath",
+    "tier": "standard",
+    "likeness": "Long straight dark brown hair past shoulders, lighter auburn ends, dark brows, fair skin, oval face, warm closed smile, slim build",
+    "variants": {
+      "A": {
+        "outfit": "Navy blazer over black crew top, orange-and-yellow ALDI scarf, shopping-cart quarter in one hand, black trousers, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "alan-barry",
+    "name": "Alan Barry",
+    "tier": "standard",
+    "likeness": "Short dark brown hair side-parted and combed up, fair skin, full rounded face, friendly smile, clean-shaven, sturdy build",
+    "variants": {
+      "A": {
+        "outfit": "Navy suit, open-collar light-blue shirt, Lidl yellow-and-red lapel pin, fresh bakery baguette under one arm, black wristwatch, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "kruti-patel-goyal",
+    "name": "Kruti Patel Goyal",
+    "tier": "standard",
+    "likeness": "Shoulder-length straight black hair, center part, thick black rectangular glasses, medium-brown skin, oval face, wide smile",
+    "variants": {
+      "A": {
+        "outfit": "Etsy-orange blazer over white open-collar shirt, chunky gold chain necklace, handmade ceramic mug in one hand, black trousers, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "steve-vranes",
+    "name": "Steve Vranes",
+    "tier": "standard",
+    "likeness": "Short dark brown hair combed up, receding at temples, fair skin, long face, strong jaw, big smile, clean-shaven, tall lean build",
+    "variants": {
+      "A": {
+        "outfit": "Black crew-neck tee under dark navy blazer, rows of fandom enamel pins on lapel, Hot Topic red lanyard, dark jeans, black sneakers, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "keith-barr",
+    "name": "Keith Barr",
+    "tier": "standard",
+    "likeness": "Short brown hair side-swept and graying at the sides, high hairline, light eyes, fair skin, long face, faint smile, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Navy quilted CarMax vest over crisp white button-down, yellow price sticker on one shoulder, car key fob twirling on a finger, khaki slacks, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "mary-beth-laughton",
+    "name": "Mary Beth Laughton",
+    "tier": "standard",
+    "likeness": "Shoulder-length honey-blonde hair with side part, light eyes, fair skin, oval face, wide toothy smile, small earrings, slim build",
+    "variants": {
+      "A": {
+        "outfit": "Forest-green REI fleece vest over cream quarter-zip, carabiner clipped to belt loop, tan trail pants, hiking boots, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "bradley-s-paulsen",
+    "name": "Bradley S. Paulsen",
+    "tier": "standard",
+    "likeness": "Closely shaved bald head, fair skin, long face, brown brows, broad toothy grin, clean-shaven, lean athletic build",
+    "variants": {
+      "A": {
+        "outfit": "Navy suit, light-blue shirt, patterned light-blue tie, Floor & Decor-red lanyard, marble tile sample under one arm, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "cory-miller",
+    "name": "Cory Miller",
+    "tier": "standard",
+    "likeness": "Short sandy-brown hair, receding hairline, fair skin, long oval face, easy smile, clean-shaven, medium build",
+    "variants": {
+      "A": {
+        "outfit": "Navy suit, open-collar light-blue shirt, Aaron's-yellow lapel pin, tape measure clipped to belt, sofa fabric swatch in one hand, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "enrique-lores",
+    "name": "Enrique Lores",
+    "tier": "important",
+    "likeness": "Short cropped graying brown hair, receding temples, light skin, narrow long face, deep-set eyes, wry closed smile, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Charcoal suit, open-collar light-blue shirt, red pocket square, PayPal-blue lapel pin, black dress shoes, visible company logo on chest"
+      },
+      "B": {
+        "outfit": "PayPal-blue quarter-zip over white tee, phone glowing with a blue checkout button, dark jeans, white sneakers, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "john-ternus",
+    "name": "John Ternus",
+    "tier": "important",
+    "likeness": "Thick dark brown hair swept back, graying temples, salt-and-pepper stubble, tanned skin, strong jaw, broad grin, athletic build",
+    "variants": {
+      "A": {
+        "outfit": "Navy crew-neck tee, dark slim jeans, white sneakers, smartwatch on wrist, keynote clicker in hand, visible company logo on chest"
+      },
+      "B": {
+        "outfit": "Untucked slate-gray button-down with rolled sleeves, dark chinos, precision screwdriver in breast pocket, white sneakers, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "aneel-bhusri",
+    "name": "Aneel Bhusri",
+    "tier": "standard",
+    "likeness": "Thick short silver-gray hair combed up, dark rectangular glasses, tan-brown skin, rounded face, broad smile, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Navy Workday hoodie, Workday-orange conference lanyard, dark jeans, gray sneakers, timesheet tablet tucked under one arm, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "chris-rogers",
+    "name": "Chris Rogers",
+    "tier": "standard",
+    "likeness": "Short cropped dark brown hair graying at sides, receding temples, faint stubble shadow, fair skin, wide toothy grin, long face",
+    "variants": {
+      "A": {
+        "outfit": "Instacart-green zip vest over open-collar gray-blue shirt, paper grocery bag with carrot tops poking out, dark jeans, white sneakers, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "srini-gopalan",
+    "name": "Srini Gopalan",
+    "tier": "important",
+    "likeness": "Short cropped black hair graying at temples, dark brows, medium-brown skin, long narrow face, broad smile, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Navy blazer over open-collar denim-blue shirt, T-Mobile magenta pocket square, dark slacks, black loafers, visible company logo on chest"
+      },
+      "B": {
+        "outfit": "Black overshirt jacket over white tee, magenta T-Mobile lanyard, phone showing full signal bars, dark jeans, magenta sneakers, visible company logo on chest"
+      }
+    }
+  },
+  {
+    "id": "josh-damaro",
+    "name": "Josh D'Amaro",
+    "tier": "important",
+    "likeness": "Thick salt-and-pepper hair spiked up on top, darker short sides, dark brows, tanned skin, square jaw, toothy grin, clean-shaven",
+    "variants": {
+      "A": {
+        "outfit": "Charcoal suit, open-collar white shirt, oval JOSH cast-member name tag on lapel, black dress shoes, visible company logo on chest"
+      },
+      "B": {
+        "outfit": "Navy quarter-zip over white tee, mouse-ear headband, folded park map in back pocket, khaki chinos, white sneakers, visible company logo on chest"
+      }
+    }
   }
 ]
