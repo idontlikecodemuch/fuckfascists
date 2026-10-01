@@ -86,6 +86,8 @@ Generate pixel-art CEO sprite variant pairs (neutral + defeated states side by s
 
 Lessons from the Henrique Braun tests (2026-10-01): describe face shape in proportions (wider than long) and pair every push with a limit (round but fit, broad but not heavy), or the model overshoots; keep smile words out of `likeness` or they override the frown/defeat poses; the style reference (`reference/ref1.png`, a curly-haired figure with glasses) is now explicitly style-only so its face and glasses are not copied.
 
+Lessons from the 49-character pass (2026-10-01, not shipped): "faint beard shadow" is drawn as a visible beard, so write "clean-shaven with a smooth jaw: no beard, no stubble"; anything the model might add (glasses, beard) needs an explicit "no glasses" / "no beard" or it can appear on only one figure; pink or "warm" skin words drift to sunburnt red, so add "not red"; 2 of 57 frames came back with three figures. After two rounds of description fixes, the owner judged the results still not close enough to the photos. Text descriptions alone may not carry likeness without the name. Review files are in `output/sprite-review-2026-10-01/` (local only).
+
 **Output:** `output/raw/frames/{id}_varA.png`, `{id}_varB.png` (important tier only)
 
 **Examples:**
