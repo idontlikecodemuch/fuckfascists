@@ -14,7 +14,7 @@ Fresh files. Sharper scans.
 
 • The scanner now reads the short barcodes on small bottles and cans, like a 20 oz soda.
 
-• New household names on file: SC Johnson (Windex, Ziploc, Glade, Pledge), 3M (Scotch-Brite, Post-it, Command) and Reynolds (Reynolds Wrap, Hefty), plus about 30 more cleaning brands from Clorox, Church & Dwight, P&G, Unilever, Colgate, Henkel and Reckitt.
+• New household names on file: SC Johnson (Windex, Ziploc, Glade, Pledge), 3M (Scotch-Brite, Post-it, Command) and Reynolds (Reynolds Wrap, Hefty), plus about 30 more household brands from Clorox, Church & Dwight, P&G, Unilever, Colgate, Henkel and Reckitt.
 
 • Current CEO names for more than 180 companies.
 
@@ -26,6 +26,7 @@ No accounts. No tracking. Your activity stays on your device.
 
 ---
 
-Left out on purpose: new sprite art (none ships in 1.2.0), Android changes (no
+Fact-checked by the release session against the bundled data (29 aliases added;
+only ~19 are cleaning products, so "household brands"). Left out on purpose: new sprite art (none ships in 1.2.0), Android changes (no
 Play release), the Apple CEO hold. Screenshot tiles from 1.1 stand — Track and
 Scan UI are unchanged.
