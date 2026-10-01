@@ -1,0 +1,2717 @@
+{
+ "_meta": {
+  "checkedOn": "2026-09-27",
+  "entitiesChecked": 756,
+  "method": "Web research per entity. Sonnet agents for PAC-funded batches; Haiku agents for the rest, with every Haiku stale/uncertain result re-verified by a Sonnet agent. Applied only status=stale with a clean name; uncertain cases left unchanged.",
+  "changed": 183,
+  "unresolved": 41,
+  "upcomingSuccessions": 18,
+  "peopleRolesToReview": 3,
+  "held": 1
+ },
+ "changes": [
+  {
+   "id": "walmart",
+   "from": "Doug McMillon",
+   "to": "John Furner",
+   "title": "President and CEO",
+   "effectiveDate": "2026-02-01",
+   "upcoming": null,
+   "sourceUrl": "https://corporate.walmart.com/about/leadership",
+   "sourceDate": null,
+   "verifiedBy": "sonnet",
+   "notes": "Doug McMillon retired as Walmart CEO in January 2026 after nearly 12 years (since Feb 2014); John Furner (previously President/CEO of Walmart U.S.) was announced as successor Nov 14, 2025 and became President and CEO effective Feb 1, 2026. McMillon remains on Walmart's board. Confirmed on Walmart's "
+  },
+  {
+   "id": "target",
+   "from": "Brian Cornell",
+   "to": "Michael Fiddelke",
+   "title": "CEO",
+   "effectiveDate": "2026-02-01",
+   "upcoming": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/Brian_Cornell",
+   "sourceDate": null,
+   "verifiedBy": "sonnet",
+   "notes": "Succession announced Aug 20, 2025; Brian Cornell (CEO/Chairman since 2014) stepped down as CEO on Jan 31, 2026 and became Executive Chair of Target's board (reelected to the board at the 2026 annual meeting). Michael Fiddelke (former Target CFO/COO) became CEO effective Feb 1, 2026."
+  },
+  {
+   "id": "altria",
+   "from": "Billy Gifford",
+   "to": "Sal Mancuso",
+   "title": "CEO",
+   "effectiveDate": "2026-05-14",
+   "upcoming": null,
+   "sourceUrl": "https://nicotineinsider.com/2026/05/15/sal-mancuso-formally-takes-over-as-altria-ceo/",
+   "sourceDate": "2026-05-15",
+   "verifiedBy": "sonnet",
+   "notes": "Billy Gifford retired as CEO effective May 14, 2026 (announced Dec 2025). Successor is former EVP/CFO Salvatore \"Sal\" Mancuso."
+  },
+  {
+   "id": "uline",
+   "from": "Richard Uihlein",
+   "to": "Liz Uihlein",
+   "title": "CEO",
+   "effectiveDate": null,
+   "upcoming": null,
+   "sourceUrl": "https://www.uline.com/Corporate/About_History",
+   "sourceDate": "2026-09",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Corrected: multiple independent, current sources (Uline's own site, Biztimes, a KABA interview, company history page) consistently show Elizabeth 'Liz' Uihlein as CEO and Richard 'Dick' Uihlein as Chairman — not a genuine unresolved conflict, as the earlier agent framed it. Elizabeth Uihlein has hel"
+  },
+  {
+   "id": "kroger",
+   "from": "Rodney McMullen",
+   "to": "Greg Foran",
+   "title": "CEO",
+   "effectiveDate": "2026-02-10",
+   "upcoming": null,
+   "sourceUrl": "https://www.sec.gov/Archives/edgar/data/56873/000110465926012061/tm265602d1_8k.htm",
+   "sourceDate": "2026-02-09",
+   "verifiedBy": "sonnet",
+   "notes": "Kroger's proposed Albertsons merger was blocked by a federal judge in Dec 2024 and the deal was terminated -- Kroger remained independent, no merger occurred. Separately, Rodney McMullen abruptly resigned as Chairman and CEO in March 2025 after a board investigation found his personal conduct incons"
+  },
+  {
+   "id": "walgreens",
+   "from": "Tim Wentworth",
+   "to": "Mike Motz",
+   "title": "CEO",
+   "effectiveDate": "2025-08-28",
+   "upcoming": null,
+   "sourceUrl": "https://www.chiefhealthcareexecutive.com/view/walgreens-ceo-steps-down-what-s-next-",
+   "sourceDate": "2025-08",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed by fresh search. Mike Motz became CEO effective Aug 28, 2025, replacing Tim Wentworth, coinciding with Sycamore Partners' take-private acquisition. Walgreens is now a private company."
+  },
+  {
+   "id": "albertsons",
+   "from": "Vivek Sankaran",
+   "to": "Susan Morris",
+   "title": "CEO",
+   "effectiveDate": "2025-05",
+   "upcoming": null,
+   "sourceUrl": "https://www.grocerydive.com/news/albertsons-ceo-susan-morris-one-year-grocery-supermarkets/818900/",
+   "sourceDate": "2026-09",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed by fresh search. Susan Morris has been CEO since May 2025. As of Sept 9, 2026, Meg Whitman was named Executive Chair of the board to support Morris and her team; Morris remains CEO."
+  },
+  {
+   "id": "kohls",
+   "from": "Tom Kingsbury",
+   "to": "Michael J. Bender",
+   "title": "CEO",
+   "effectiveDate": "2025-11-23",
+   "upcoming": null,
+   "sourceUrl": "https://investors.kohls.com/news/news-details/2025/Kohls-Appoints-Michael-J--Bender-as-Chief-Executive-Officer/default.aspx",
+   "sourceDate": "2025-11-24",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Corrected: the earlier agent's verifiedCeo (Ashley Buchanan) is itself stale. Buchanan started Jan 15, 2025 but was fired for cause in May 2025 over an undisclosed vendor conflict of interest. Board member Michael Bender served as interim CEO from May 2025, then was named permanent CEO effective Nov"
+  },
+  {
+   "id": "jcpenney",
+   "from": "Marc Rosen",
+   "to": "Michelle Wlazlo",
+   "title": "Brand CEO, JCPenney (Catalyst Brands)",
+   "effectiveDate": "2025-01",
+   "upcoming": null,
+   "sourceUrl": "https://www.catalystbrands.com/leadership/michelle-wlazlo.html",
+   "sourceDate": "2026-02-27",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. JCPenney merged with SPARC Group in 2025 to form Catalyst Brands; Michelle Wlazlo is Brand CEO for JCPenney specifically, reporting to Marc Rosen, who is CEO of parent Catalyst Brands. This subsidiary-brand-CEO vs. parent-CEO distinction is correctly drawn by the earlier agent, not confla"
+  },
+  {
+   "id": "grocery-outlet",
+   "from": "RJ Sheedy",
+   "to": "Jason Potter",
+   "title": "President and Chief Executive Officer",
+   "effectiveDate": "2025-02-03",
+   "upcoming": null,
+   "sourceUrl": "https://investors.groceryoutlet.com/news-releases/news-release-details/grocery-outlet-holding-corp-announces-new-president-and-chief",
+   "sourceDate": "2026-09-27",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Sheedy departed abruptly end of October 2024 (interim: board chair Eric Lindberg); Jason Potter (ex-The Fresh Market CEO) named President & CEO effective February 3, 2025."
+  },
+  {
+   "id": "michaels",
+   "from": "Ashley Buchanan",
+   "to": "David Boone",
+   "title": "Chief Executive Officer",
+   "effectiveDate": "2025-02-28",
+   "upcoming": null,
+   "sourceUrl": "https://www.prnewswire.com/news-releases/the-michaels-companies-appoints-david-boone-as-chief-executive-officer-302379446.html",
+   "sourceDate": "2026-09-27",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Buchanan left for Kohl's Jan 15, 2025 (later terminated from Kohl's after ~4 months); a 3-person interim team ran Michaels until David Boone (ex-Staples Canada CEO) was appointed CEO effective Feb 28, 2025."
+  },
+  {
+   "id": "five-below",
+   "from": "Joel Anderson",
+   "to": "Winnie Park",
+   "title": "Chief Executive Officer",
+   "effectiveDate": "2024-12-16",
+   "upcoming": null,
+   "sourceUrl": "https://www.streetinsider.com/Corporate+News/Five+Below+(FIVE)+Appoints+Winnie+Park+as+CEO/24066552.html",
+   "sourceDate": "2026-09-27",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Anderson left for Petco in July 2024 (COO Kenneth Bull was interim); Winnie Park (former Forever 21 CEO) appointed Five Below CEO effective Dec 16, 2024."
+  },
+  {
+   "id": "aldi",
+   "from": "Jason Hart",
+   "to": "Atty McGrath",
+   "title": "Chief Executive Officer",
+   "effectiveDate": "2025-09-01",
+   "upcoming": null,
+   "sourceUrl": "https://www.prnewswire.com/news-releases/aldi-announces-promotion-of-atty-mcgrath-to-aldi-us-ceo-as-current-ceo-jason-hart-is-named-global-coo-of-aldi-south-group-302469137.html",
+   "sourceDate": "2026-09-27",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. McGrath promoted to ALDI U.S. CEO effective Sept 1, 2025; Hart moved to Global COO of ALDI South Group. Still current as of 2026."
+  },
+  {
+   "id": "lidl",
+   "from": "Joel Rampoldt",
+   "to": "Alan Barry",
+   "title": "Chief Executive Officer",
+   "effectiveDate": "2026-07",
+   "upcoming": null,
+   "sourceUrl": "https://www.grocerydive.com/news/lidl-us-appoints-alan-barry-ceo-discount-grocery/821103/",
+   "sourceDate": "2026-09-27",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed, with one gap filled in: Rampoldt actually departed in January 2026 (not immediately before Barry), and Chief Customer Officer Marco Giudici served as interim CEO in between before Alan Barry (promoted from COO) officially took over in July 2026."
+  },
+  {
+   "id": "sephora",
+   "from": "Guillaume Motte",
+   "to": "Artemis Patrick",
+   "title": "President & CEO, Sephora Americas (North America)",
+   "effectiveDate": "2024-04",
+   "upcoming": null,
+   "sourceUrl": "https://newsroom.sephora.com/sephora-americas-leadership/",
+   "sourceDate": "2026-09-27",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Artemis Patrick is President & CEO of Sephora Americas/North America (first female CEO of that unit) since April 2024; Guillaume Motte is CEO of Sephora globally, a distinct role from the 'Sephora USA Inc' entity in our data."
+  },
+  {
+   "id": "etsy",
+   "from": "Josh Silverman",
+   "to": "Kruti Patel Goyal",
+   "title": "Chief Executive Officer",
+   "effectiveDate": "2026-01-01",
+   "upcoming": null,
+   "sourceUrl": "https://investors.etsy.com/news-events/press-releases/detail/212/etsy-announces-leadership-transition-kruti-patel-goyal-to-become-chief-executive-officer-josh-silverman-transitions-to-executive-chair-effective-january-1-2026",
+   "sourceDate": "2026-09-27",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Silverman stepped down effective Dec 31, 2025; Kruti Patel Goyal (Etsy's President/Chief Growth Officer, ex-Depop CEO) became CEO Jan 1, 2026; Silverman remains Executive Chair."
+  },
+  {
+   "id": "hot-topic",
+   "from": "Kathryn Merrical",
+   "to": "Steve Vranes",
+   "title": "Chief Executive Officer",
+   "effectiveDate": "2016",
+   "upcoming": null,
+   "sourceUrl": "https://www.theofficialboard.com/biography/steve-vranes-dg184",
+   "sourceDate": "2026-09-27",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed that Steve Vranes has been Hot Topic's CEO since 2016 and remains so in 2026 (dataCeo Kathryn Merrical is not the current CEO). Could not independently corroborate the earlier agent's added claim that 'Spencer Spirit Holdings completed acquisition of Hot Topic Sept 2, 2026' — no source for"
+  },
+  {
+   "id": "food-lion",
+   "from": "Meg Ham",
+   "to": "Greg Finchum",
+   "title": "President",
+   "effectiveDate": null,
+   "upcoming": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/Food_Lion",
+   "sourceDate": null,
+   "verifiedBy": "sonnet",
+   "notes": "Single-source (Wikipedia infobox); could not independently confirm (foodlion.com blocked 403, Ahold Delhaize corporate page didn't mention Food Lion specifically). Moderate confidence only — recommend a follow-up check before updating data."
+  },
+  {
+   "id": "carmax",
+   "from": "Bill Nash",
+   "to": "Keith Barr",
+   "title": "President, CEO and Director",
+   "effectiveDate": "2026-03",
+   "upcoming": null,
+   "sourceUrl": "https://stockanalysis.com/stocks/kmx/company/",
+   "sourceDate": null,
+   "verifiedBy": "sonnet",
+   "notes": "Confirmed via two independent sources (Wikipedia + stockanalysis.com). Keith Barr succeeded Bill Nash as CEO in March 2026."
+  },
+  {
+   "id": "rei",
+   "from": "Eric Artz",
+   "to": "Mary Beth Laughton",
+   "title": "President and CEO",
+   "effectiveDate": "2025-03",
+   "upcoming": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/Recreational_Equipment,_Inc.",
+   "sourceDate": null,
+   "verifiedBy": "sonnet",
+   "notes": "Eric Artz announced retirement; Mary Beth Laughton (former REI board director) succeeded him as CEO effective March 2025."
+  },
+  {
+   "id": "floor-and-decor",
+   "from": "Tom Taylor",
+   "to": "Bradley S. Paulsen",
+   "title": "President, CEO and Director",
+   "effectiveDate": null,
+   "upcoming": null,
+   "sourceUrl": "https://stockanalysis.com/stocks/fnd/company/",
+   "sourceDate": null,
+   "verifiedBy": "sonnet",
+   "notes": "Confirmed via two independent sources (Wikipedia + stockanalysis.com). Exact transition date from Tom Taylor not established."
+  },
+  {
+   "id": "aarons",
+   "from": "Douglas Lindsay",
+   "to": "Cory Miller",
+   "title": "CEO",
+   "effectiveDate": null,
+   "upcoming": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/The_Aaron%27s_Company",
+   "sourceDate": null,
+   "verifiedBy": "sonnet",
+   "notes": "Single-source (Wikipedia); could not cross-verify (ir.aarons.com unreachable). Recommend a follow-up check before updating data."
+  },
+  {
+   "id": "petsmart",
+   "from": "J.K. Symancyk",
+   "to": "Ken Hicks",
+   "title": "President and CEO",
+   "effectiveDate": "2024",
+   "upcoming": null,
+   "sourceUrl": "https://www.prnewswire.com/news-releases/petsmart-appoints-jesica-duarte-as-executive-vice-president-and-chief-commercial-officer-302520931.html",
+   "sourceDate": "2025-08-04",
+   "verifiedBy": "sonnet",
+   "notes": "J.K. Symancyk was PetSmart CEO 2018-2024 (per Wikipedia's PetSmart article); the same Wikipedia article separately says his prior role was CEO of Academy Sports + Outdoors, which is likely a mixed-up bio blurb, so treat that detail with caution. Ken C. Hicks (full name form; a veteran retail exec pr"
+  },
+  {
+   "id": "ross-stores",
+   "from": "Barbara Rentler",
+   "to": "James Conroy",
+   "title": "CEO",
+   "effectiveDate": "2025-02-02",
+   "upcoming": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/Ross_Stores",
+   "sourceDate": null,
+   "verifiedBy": "sonnet",
+   "notes": "Board appointed Conroy (former Boot Barn CEO) on 2024-10-28, effective 2025-02-02, succeeding Barbara Rentler."
+  },
+  {
+   "id": "bath-body-works",
+   "from": "Gina Boswell",
+   "to": "Daniel Heaf",
+   "title": "CEO and Director",
+   "effectiveDate": null,
+   "upcoming": null,
+   "sourceUrl": "https://stockanalysis.com/stocks/bbwi/company/",
+   "sourceDate": null,
+   "verifiedBy": "sonnet",
+   "notes": "Confirmed via two independent sources (Wikipedia infobox + stockanalysis.com). Exact transition date from Gina Boswell not established from these sources."
+  },
+  {
+   "id": "conocophillips",
+   "from": "Ryan Lance",
+   "to": "Andy O'Brien",
+   "title": "President and Chief Executive Officer",
+   "effectiveDate": "2026-09-01",
+   "upcoming": null,
+   "sourceUrl": "https://www.conocophillips.com/news-media/story/conocophillips-announces-planned-leadership-succession-andy-obrien-named-president-and-ceo-ryan-lance-to-assume-transitional-executive-chair-role-konnie-haynes-welsh-appointed-cfo/",
+   "sourceDate": "2026-08-06",
+   "verifiedBy": "sonnet",
+   "notes": "Very recent change: announced Aug 6, 2026, effective Sept 1, 2026 (already in effect as of today, 2026-09-27). Ryan Lance moved to a transitional Executive Chair of the Board role (retired as President and CEO). Andy O'Brien succeeded him as President and CEO and joined the board. Konnie Haynes-Wels"
+  },
+  {
+   "id": "devon-energy",
+   "from": "Rick Muncrief",
+   "to": "Clay Gaspar",
+   "title": "President and CEO",
+   "effectiveDate": "2025-03-01",
+   "upcoming": null,
+   "sourceUrl": "https://www.devonenergy.com/news/2026/Devon-Energy-CEO-Clay-Gaspar-to-Participate-in-a-Fireside-Chat-at-the-J-P--Morgan-Energy-Power-Renewables--Mining-Conference",
+   "sourceDate": "2026",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed by fresh search. Gaspar remains President/CEO in 2026, including through Devon's merger activity with Coterra Energy."
+  },
+  {
+   "id": "berkshire-hathaway",
+   "from": "Warren Buffett",
+   "to": "Greg Abel",
+   "title": "Chief Executive Officer",
+   "effectiveDate": "2026-01-01",
+   "upcoming": null,
+   "sourceUrl": "https://www.npr.org/2026/09/18/nx-s1-5973852/warren-buffett-steps-down",
+   "sourceDate": "2026-09-27",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Greg Abel became CEO effective January 1, 2026 (earlier claim said Dec 31, 2025 — same transition point, immaterial difference). Buffett stepped down as Chairman on Sept 18, 2026; Howard Buffett is now non-executive Chairman; Warren Buffett remains a director as chairman emeritus."
+  },
+  {
+   "id": "paypal",
+   "from": "Alex Chriss",
+   "to": "Enrique Lores",
+   "title": "President and Chief Executive Officer",
+   "effectiveDate": "2026-03-01",
+   "upcoming": null,
+   "sourceUrl": "https://www.pymnts.com/personnel/2026/paypal-names-enrique-lores-ceo-starting-march-1-replacing-alex-chriss/",
+   "sourceDate": "2026-09-27",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Enrique Lores (former HP Inc. CEO, PayPal board chair since 2024) succeeded Alex Chriss as PayPal President & CEO effective March 1, 2026."
+  },
+  {
+   "id": "truist",
+   "from": "Bill Rogers",
+   "to": "Michael P. Lyons",
+   "title": "President and Chief Executive Officer",
+   "effectiveDate": "2026-09-01",
+   "upcoming": null,
+   "sourceUrl": "https://ir.truist.com/2026-06-15-Truist-announces-Michael-P-Lyons-as-incoming-CEO",
+   "sourceDate": "2026-09-27",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Lyons (former Fiserv CEO, former PNC President) became Truist CEO Sept 1, 2026; Rogers moved to Executive Chair until his planned retirement in April 2027."
+  },
+  {
+   "id": "us-bancorp",
+   "from": "Andy Cecere",
+   "to": "Gunjan Kedia",
+   "title": "Chairman, President and Chief Executive Officer",
+   "effectiveDate": "2025-04-15",
+   "upcoming": null,
+   "sourceUrl": "https://ir.usbank.com/news-events/news/news-details/2025/Gunjan-Kedia-to-Become-CEO-of-U.S.-Bancorp-in-Mid-April/default.aspx",
+   "sourceDate": "2026-09-27",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Kedia became CEO in mid-April 2025, succeeding Cecere, and additionally took the Board Chairman role effective April 2026."
+  },
+  {
+   "id": "oracle",
+   "from": "Safra Catz",
+   "to": "Clayton M. Magouyrk and Michael D. Sicilia",
+   "title": "Co-Chief Executive Officers",
+   "effectiveDate": "2025-09-22",
+   "upcoming": null,
+   "sourceUrl": "https://www.oracle.com/news/announcement/oracle-corporation-announces-promotion-of-clay-magouyrk-and-mike-scilia-2025-09-22/",
+   "sourceDate": "2026-09-27",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Magouyrk (ex-OCI President) and Sicilia (ex-Oracle Industries President) became co-CEOs effective September 22, 2025; Catz moved to Executive Vice Chair of the Board."
+  },
+  {
+   "id": "hp-inc",
+   "from": "Enrique Lores",
+   "to": "Bruce Broussard",
+   "title": "Interim Chief Executive Officer",
+   "effectiveDate": "2026-02-03",
+   "upcoming": null,
+   "sourceUrl": "https://investor.hp.com/news-events/news/news-details/2026/HP-Inc--Announces-Leadership-Transition/default.aspx",
+   "sourceDate": "2026-09-27",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Lores stepped down Feb 3, 2026 to become PayPal's CEO; board member Bruce Broussard (former Humana CEO) named Interim CEO while a permanent search continues."
+  },
+  {
+   "id": "workday",
+   "from": "Carl Eschenbach",
+   "to": "Aneel Bhusri",
+   "title": "CEO",
+   "effectiveDate": "2026-02",
+   "upcoming": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/Workday,_Inc.",
+   "sourceDate": null,
+   "verifiedBy": "sonnet",
+   "notes": "Eschenbach stepped down Feb 2026; co-founder Aneel Bhusri (previously executive chair) returned to the CEO role."
+  },
+  {
+   "id": "instacart",
+   "from": "Fidji Simo",
+   "to": "Chris Rogers",
+   "title": "CEO",
+   "effectiveDate": "2025-08-15",
+   "upcoming": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/Instacart",
+   "sourceDate": null,
+   "verifiedBy": "sonnet",
+   "notes": "Fidji Simo departed in May 2025 to join OpenAI; Chris Rogers (internal business chief) became CEO 2025-08-15."
+  },
+  {
+   "id": "verizon",
+   "from": "Hans Vestberg",
+   "to": "Dan Schulman",
+   "title": "CEO",
+   "effectiveDate": "2025-10-04",
+   "upcoming": null,
+   "sourceUrl": "https://www.verizon.com/about/our-company/executive-bios/dan-schulman",
+   "sourceDate": "2025-10",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed by fresh search. Dan Schulman (former PayPal CEO, Verizon board member since 2018) became CEO in October 2025."
+  },
+  {
+   "id": "t-mobile",
+   "from": "Mike Sievert",
+   "to": "Srini Gopalan",
+   "title": "President and CEO",
+   "effectiveDate": "2025-11-01",
+   "upcoming": null,
+   "sourceUrl": "https://www.t-mobile.com/news/business/srini-gopalan-new-ceo",
+   "sourceDate": "2025-09-22",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed by fresh search. Gopalan succeeded Sievert as CEO effective Nov 1, 2025, and remains CEO as of 2026."
+  },
+  {
+   "id": "las-vegas-sands",
+   "from": "Rob Goldstein",
+   "to": "Patrick Dumont",
+   "title": "Chairman and CEO",
+   "effectiveDate": "2026-03-01",
+   "upcoming": null,
+   "sourceUrl": "https://www.prnewswire.com/news-releases/las-vegas-sands-board-of-directors-appoints-patrick-dumont-as-chairman-and-chief-executive-officer-302687149.html",
+   "sourceDate": "2026-02-13",
+   "verifiedBy": "sonnet",
+   "notes": "Robert (Rob) Goldstein announced in March 2025 he'd step down; he transitioned to Senior Advisor (through March 2028) effective March 1, 2026, when Patrick Dumont (previously President/COO since 2021) became Chairman & CEO. Separately: publicFigureName 'Sheldon Adelson' died in January 2021 and has "
+  },
+  {
+   "id": "disney",
+   "from": "Bob Iger",
+   "to": "Josh D'Amaro",
+   "title": "CEO",
+   "effectiveDate": "2026-03-18",
+   "upcoming": null,
+   "sourceUrl": "https://thewaltdisneycompany.com/press-releases/josh-damaro-named-next-chief-executive-officer-of-the-walt-disney-company/",
+   "sourceDate": "2026-02-03",
+   "verifiedBy": "sonnet",
+   "notes": "Board announced Feb 3, 2026 that Josh D'Amaro (formerly Chairman, Disney Experiences) would succeed Bob Iger as CEO effective March 18, 2026 (Disney's Annual Meeting). Dana Walden became President & Chief Creative Officer same date. Iger remained a board member/Senior Advisor through Dec 31, 2026."
+  },
+  {
+   "id": "paramount",
+   "from": "George Cheeks",
+   "to": "David Ellison",
+   "title": "Chairman and CEO",
+   "effectiveDate": "2025-08-07",
+   "upcoming": null,
+   "sourceUrl": "https://www.hollywoodreporter.com/business/business-news/new-paramount-leadership-named-david-ellison-1236335698/",
+   "sourceDate": "2025-08",
+   "verifiedBy": "sonnet",
+   "notes": "Company is now legally Paramount Skydance Corp (Nasdaq: PSKY) following the Skydance Media–Paramount Global merger completed August 2025; canonicalName 'Paramount Global' is now outdated. David Ellison (Skydance) became Chairman & CEO; George Cheeks was retitled Chair of TV Media, overseeing CBS/cab"
+  },
+  {
+   "id": "unitedhealth-group",
+   "from": "Andrew Witty",
+   "to": "Stephen Hemsley",
+   "title": "CEO",
+   "effectiveDate": "2025-05-13",
+   "upcoming": null,
+   "sourceUrl": "https://www.cnn.com/2025/05/13/business/unitedhealth-ceo-steps-down-for-personal-reasons",
+   "sourceDate": "2025-05-13",
+   "verifiedBy": "sonnet",
+   "notes": "Andrew Witty resigned as CEO 'for personal reasons' on May 13, 2025. Stephen Hemsley — UNH's CEO from 2006–2017 and its sitting Board Chairman — immediately returned as CEO and remains in the role through 2026; Witty served briefly as a senior adviser."
+  },
+  {
+   "id": "cigna",
+   "from": "David Cordani",
+   "to": "Brian Evanko",
+   "title": "CEO",
+   "effectiveDate": "2026-07-01",
+   "upcoming": null,
+   "sourceUrl": "https://newsroom.thecignagroup.com/2026-03-03-The-Cigna-Group-Announces-President-COO-Brian-Evanko-to-Succeed-David-M-Cordani-as-Chief-Executive-Officer",
+   "sourceDate": "2026-03-03",
+   "verifiedBy": "sonnet",
+   "notes": "Succession announced March 3, 2026 and effective July 1, 2026: David Cordani (CEO since 2009) moved to Executive Chair of the Board; Brian Evanko (previously President & COO) became CEO."
+  },
+  {
+   "id": "cencora",
+   "from": "Steve Collis",
+   "to": "Robert Mauch",
+   "title": "President and CEO",
+   "effectiveDate": "2024-10-01",
+   "upcoming": null,
+   "sourceUrl": "https://www.cencora.com/newsroom/cencora-announces-leadership-succession-plan",
+   "sourceDate": "2024",
+   "verifiedBy": "sonnet",
+   "notes": "Steven H. Collis moved to Executive Chair of the Cencora board; COO Robert P. Mauch became President & CEO effective 2024-10-01. Confirmed still in place via FY2026 SEC filings/proxy. publicFigureName is null, nothing to flag there."
+  },
+  {
+   "id": "community-health-systems",
+   "from": "Tim Hingtgen",
+   "to": "Kevin Hammons",
+   "title": "CEO",
+   "effectiveDate": "2025-12-10",
+   "upcoming": null,
+   "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1108109/000119312525314292/cyh-ex99_1.htm",
+   "sourceDate": "2025-12-10",
+   "verifiedBy": "sonnet",
+   "notes": "Tim Hingtgen retired as CEO effective 2025-09-30 (personal reasons, entered a consulting agreement through 2026-09-30). Former CFO/President Kevin Hammons served as interim CEO from 2025-10-01, then was made permanent CEO and added to the board effective 2025-12-10."
+  },
+  {
+   "id": "coca-cola",
+   "from": "James Quincey",
+   "to": "Henrique Braun",
+   "title": "CEO",
+   "effectiveDate": "2026-03-31",
+   "upcoming": null,
+   "sourceUrl": "https://investors.coca-colacompany.com/news-events/press-releases/detail/1147/the-coca-cola-company-announces-ceo-succession-plan-chief-operating-officer-henrique-braun-to-succeed-james-quincey-as-ceo-in-2026",
+   "sourceDate": "2025-12-10",
+   "verifiedBy": "sonnet",
+   "notes": "James Quincey stepped down as CEO after 9 years, effective March 31, 2026, and moved to Executive Chairman. Successor Henrique Braun was previously EVP & COO."
+  },
+  {
+   "id": "kraft-heinz",
+   "from": "Carlos Abrams-Rivera",
+   "to": "Steve Cahillane",
+   "title": "CEO",
+   "effectiveDate": "2026-01-01",
+   "upcoming": null,
+   "sourceUrl": "https://news.kraftheinzcompany.com/press-releases-details/2025/The-Kraft-Heinz-Company-Names-Steve-Cahillane-Chief-Executive-Officer/default.aspx",
+   "sourceDate": "2025-12-16",
+   "verifiedBy": "sonnet",
+   "notes": "Carlos Abrams-Rivera left as CEO Dec 31, 2025 (advisor through Mar 6, 2026). Steve Cahillane (former Kellanova/Kellogg CEO) became CEO Jan 1, 2026. Kraft Heinz's planned split into two companies was announced alongside this change but was paused in Feb 2026 in favor of a $600M reinvestment plan — co"
+  },
+  {
+   "id": "campbell-soup",
+   "from": "Mark Clouse",
+   "to": "Mick Beekhuizen",
+   "title": "President and CEO",
+   "effectiveDate": "2025-02-01",
+   "upcoming": null,
+   "sourceUrl": "https://www.thecampbellscompany.com/newsroom/press-releases/the-campbells-company-board-of-directors-elects-mick-beekhuizen-chief-executive-officer-to-succeed-mark-clouse/",
+   "sourceDate": "2025-01",
+   "verifiedBy": "sonnet",
+   "notes": "Mark Clouse retired Jan 31, 2025 to become President of the NFL's Washington Commanders; Mick Beekhuizen (former CFO) became CEO Feb 1, 2025. Company was also renamed from Campbell Soup Company to \"The Campbell's Company\" in 2024."
+  },
+  {
+   "id": "procter-gamble",
+   "from": "Shailesh G. Jejurikar",
+   "to": "Shailesh Jejurikar",
+   "title": "Chairman, President and CEO",
+   "effectiveDate": "2026-01-01",
+   "upcoming": null,
+   "sourceUrl": "https://us.pg.com/leadership-team/shailesh-jejurikar/",
+   "sourceDate": "2026-07-29",
+   "verifiedBy": "sonnet",
+   "notes": "Data already reflects the current CEO. Jejurikar succeeded Jon Moeller as President & CEO effective Jan 1, 2026, and was additionally appointed Chairman of the Board effective Aug 1, 2026."
+  },
+  {
+   "id": "simply-good-foods",
+   "from": "Geoff Tanner",
+   "to": "Joe Scalzo",
+   "title": "President and CEO",
+   "effectiveDate": "2026-01-20",
+   "upcoming": null,
+   "sourceUrl": "https://www.thesimplygoodfoodscompany.com/news-releases/news-release-details/simply-good-foods-appoints-joe-scalzo-president-and-chief",
+   "sourceDate": "2026-01-20",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed by fresh search. Scalzo (a former Simply Good Foods/Atkins CEO) returned as President and CEO on Jan 20, 2026, succeeding Geoff Tanner."
+  },
+  {
+   "id": "monster-beverage",
+   "from": "Rodney Sacks and Hilton Schlosberg",
+   "to": "Hilton Schlosberg",
+   "title": "Vice Chairman and Sole CEO",
+   "effectiveDate": "2025-06-13",
+   "upcoming": null,
+   "sourceUrl": "https://www.fooddive.com/news/monster-beverage-rodney-sacks-CEO-stepping-down-retirement-hilton-schlosberg-energy-drink-departure/742167/",
+   "sourceDate": "2025-06",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed by fresh search. Schlosberg became sole CEO effective June 13, 2025; Sacks remains Chairman."
+  },
+  {
+   "id": "hershey",
+   "from": "Michele Buck",
+   "to": "Kirk Tanner",
+   "title": "President and CEO",
+   "effectiveDate": "2025-08-18",
+   "upcoming": null,
+   "sourceUrl": "https://local21news.com/news/local/once-in-a-lifetime-hershey-company-selects-former-wendys-executive-as-president-ceo",
+   "sourceDate": "2025-07",
+   "verifiedBy": "sonnet",
+   "notes": "Buck originally planned to retire June 30, 2026, but her retirement (and resignation from the Board) was accelerated to August 18, 2025, when successor Kirk Tanner (former Wendy's and PepsiCo Beverages North America CEO) took over as President and CEO."
+  },
+  {
+   "id": "heineken",
+   "from": "Dolf van den Brink",
+   "to": "Rafael Oliveira",
+   "title": "N/A — no single CEO currently in office",
+   "effectiveDate": "2026-05-31",
+   "upcoming": "Rafael Oliveira (currently CEO of JDE Peet's), CEO and Chairman effective 2026-10-01",
+   "sourceUrl": "https://www.theheinekencompany.com/newsroom/heineken-nv-announces-nomination-of-rafael-oliveira-as-chief-executive-officer/",
+   "sourceDate": "2026-06-23",
+   "verifiedBy": "sonnet",
+   "notes": "Van den Brink stepped down May 31, 2026. Heineken named no interim CEO; its press release states the Executive Team collectively steers the business until Rafael Oliveira starts Oct 1, 2026 — first external CEO hire in company history."
+  },
+  {
+   "id": "zevia",
+   "from": "Amy E. Taylor",
+   "to": "Alexandre Ruberti",
+   "title": "President and CEO",
+   "effectiveDate": "2026-06-15",
+   "upcoming": null,
+   "sourceUrl": "https://investors.zevia.com/news/news-details/2026/Alexandre-Ruberti-Seasoned-Beverage-Executive-and-Zevia-Board-Member-Appointed-Chief-Executive-Officer/default.aspx",
+   "sourceDate": "2026-06-15",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed by fresh search. Ruberti (a Zevia board member since 2024) was appointed President and CEO effective June 15, 2026, succeeding Amy Taylor."
+  },
+  {
+   "id": "flowers-foods",
+   "from": "A. Ryals McMullian",
+   "to": "Ryals McMullian",
+   "title": "Chairman and CEO",
+   "effectiveDate": "2019",
+   "upcoming": null,
+   "sourceUrl": "https://www.flowersfoods.com/about/leadership",
+   "sourceDate": "2026",
+   "verifiedBy": "sonnet",
+   "notes": "Elected CEO in 2019 and Chairman in 2023. Heeth Varnedoe is President and COO (not CEO)."
+  },
+  {
+   "id": "b-g-foods",
+   "from": "Kenneth C. Keller",
+   "to": "Robert D. Mills",
+   "title": "President and Chief Executive Officer",
+   "effectiveDate": "2026-08-10",
+   "upcoming": null,
+   "sourceUrl": "https://www.businesswire.com/news/home/20260810956603/en/BG-Foods-Appoints-Robert-D.-Mills-as-President-and-Chief-Executive-Officer",
+   "sourceDate": "2026-09-27",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Keller's retirement was effective Aug 7, 2026; Robert D. Mills (B&G board member since March 2018, ex-Tractor Supply EVP) became President & CEO effective Aug 10, 2026."
+  },
+  {
+   "id": "princes-group",
+   "from": "Simon Harrison",
+   "to": "Giuseppe Mastrolia",
+   "title": "Interim CEO",
+   "effectiveDate": "2026-07-01",
+   "upcoming": null,
+   "sourceUrl": "https://www.foodbev.com/news/princes-group-ceo-to-step-down-as-company-begins-succession-process",
+   "sourceDate": "2026-05",
+   "verifiedBy": "manual",
+   "notes": "Harrison left 2026-06-30 for Ultimate Products; permanent search ongoing."
+  },
+  {
+   "id": "hormel",
+   "from": "Jim Snee",
+   "to": "Jeff Ettinger",
+   "title": "Interim CEO",
+   "effectiveDate": "2025-07-14",
+   "upcoming": "John F. Ghingo, President and CEO effective 2026-10-26",
+   "sourceUrl": "https://www.sec.gov/Archives/edgar/data/48465/000110465925061357/tm2518560d1_8k.htm",
+   "sourceDate": "2025-06-23",
+   "verifiedBy": "sonnet",
+   "notes": "Jim Snee retired as President & CEO; Jeffrey M. Ettinger (a former Hormel CEO, 2006-2016) became Interim CEO effective July 14, 2025, term through Oct 25, 2026. John F. Ghingo became President on the same date and is confirmed (8-K filed 2026-07-28) to become permanent President and CEO effective Oc"
+  },
+  {
+   "id": "perdue-farms",
+   "from": "Randy Day",
+   "to": "Kevin McAdams",
+   "title": "CEO",
+   "effectiveDate": "2023-07",
+   "upcoming": null,
+   "sourceUrl": "https://corporate.perduefarms.com/news/press-releases/kevin-mcadams-succeeds-randy-day-as-ceo-of-perdue-farms/",
+   "sourceDate": "2026",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Kevin McAdams has been CEO of Perdue Farms since July 2023, succeeding retiree Randy Day."
+  },
+  {
+   "id": "molson-coors",
+   "from": "Gavin Hattersley",
+   "to": "Rahul Goyal",
+   "title": "President and CEO",
+   "effectiveDate": "2025-10-01",
+   "upcoming": null,
+   "sourceUrl": "https://www.sec.gov/Archives/edgar/data/24545/000110465925091900/tm2526551d1_8k.htm",
+   "sourceDate": "2025-09-22",
+   "verifiedBy": "sonnet",
+   "notes": "Gavin Hattersley retired as President & CEO effective October 1, 2025 (stayed on as a Special Advisor through Dec 31, 2025); Rahul Goyal (formerly Chief Strategy Officer) was appointed President & CEO effective the same date."
+  },
+  {
+   "id": "constellation-brands",
+   "from": "Bill Newlands",
+   "to": "Nicholas Fink",
+   "title": "President and CEO",
+   "effectiveDate": "2026-04-13",
+   "upcoming": null,
+   "sourceUrl": "https://www.cbrands.com/blogs/press-releases/constellation-brands-announces-ceo-succession-plan",
+   "sourceDate": "2026-02-12",
+   "verifiedBy": "sonnet",
+   "notes": "Fink, a board member since 2021, succeeded Newlands."
+  },
+  {
+   "id": "waffle-house",
+   "from": "Walt Ehmer",
+   "to": "Joe Rogers III",
+   "title": "President and CEO",
+   "effectiveDate": "2024-09",
+   "upcoming": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/Walter_G._Ehmer",
+   "sourceDate": "2024-09-08",
+   "verifiedBy": "sonnet",
+   "notes": "Walt Ehmer (CEO since 2012) died September 6, 2024 from complications of pancreatic cancer treatment. Wikipedia's infobox and several social-media posts identify Joe Rogers III (of the founding Rogers family) as his successor as CEO, but Waffle House is privately held and issues almost no public dis"
+  },
+  {
+   "id": "yum-brands",
+   "from": "David Gibbs",
+   "to": "Chris Turner",
+   "title": "CEO",
+   "effectiveDate": "2025-10-01",
+   "upcoming": null,
+   "sourceUrl": "https://www.businesswire.com/news/home/20250331870458/en/Yum-Brands-Announces-Leadership-Transition-Plans-David-Gibbs-to-Retire-in-2026",
+   "sourceDate": "2025-03-31",
+   "verifiedBy": "sonnet",
+   "notes": "David Gibbs retired as CEO effective September 30, 2025 after 37 years with the company; Chris Turner (former CFO & Franchise Officer) became CEO October 1, 2025. Gibbs stayed on as an adviser through end of 2026, but is not CEO."
+  },
+  {
+   "id": "wendys",
+   "from": "Kirk Tanner",
+   "to": "Bob Wright",
+   "title": "President and CEO",
+   "effectiveDate": "2026-05-21",
+   "upcoming": null,
+   "sourceUrl": "https://www.irwendys.com/news/news-details/2026/Wendys-Appoints-Robert-D--Bob-Wright-as-President-and-Chief-Executive-Officer/default.aspx",
+   "sourceDate": "2026-05-20",
+   "verifiedBy": "sonnet",
+   "notes": "Kirk Tanner left Wendy's on July 18, 2025 to become CEO of The Hershey Company; CFO Ken Cook served as Interim CEO in the interim. Robert D. 'Bob' Wright (formerly Potbelly Corp CEO) was appointed President and CEO effective May 21, 2026."
+  },
+  {
+   "id": "cracker-barrel",
+   "from": "Julie Masino",
+   "to": "David Deno",
+   "title": "President and CEO",
+   "effectiveDate": "2026-08-10",
+   "upcoming": null,
+   "sourceUrl": "https://www.sec.gov/Archives/edgar/data/0001067294/000110465926086902/tm2621310d1_ex99-1.htm",
+   "sourceDate": "2026-07-27",
+   "verifiedBy": "sonnet",
+   "notes": "Julie Masino stepped down as CEO in late July 2026 amid the logo-redesign backlash; former Bloomin' Brands CEO David Deno was named President and CEO effective August 10, 2026 and reported his first earnings as CEO in late September 2026."
+  },
+  {
+   "id": "dennys",
+   "from": "Kelli Valade",
+   "to": "Christopher Bode",
+   "title": "President and CEO",
+   "effectiveDate": "2026-04-13",
+   "upcoming": null,
+   "sourceUrl": "https://www.globenewswire.com/news-release/2026/04/13/3272781/23968/en/denny-s-names-christopher-bode-president-and-chief-executive-officer.html",
+   "sourceDate": "2026-04-13",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "The named successor is correct, but the date and context were wrong: Bode was named President & CEO in April 2026 (not January 2026), as part of Denny's own 'Project Grand Slam' turnaround plan — there is no evidence Denny's itself was acquired, contrary to the earlier agent's note."
+  },
+  {
+   "id": "stellantis",
+   "from": "Carlos Tavares",
+   "to": "Antonio Filosa",
+   "title": "CEO",
+   "effectiveDate": "2025-06-23",
+   "upcoming": null,
+   "sourceUrl": "https://www.stellantis.com/en/news/press-releases/2026/september/stellantis-ceo-antonio-filosa-to-participate-in-the-2026-jefferies-global-industrials-conference",
+   "sourceDate": "2026-09",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Antonio Filosa has been Stellantis CEO since June 2025 (Tavares resigned Dec 2024); a September 2026 Stellantis press release still refers to Filosa as CEO."
+  },
+  {
+   "id": "bridgestone-usa",
+   "from": "Paolo Ferrari",
+   "to": "Scott Damon",
+   "title": "CEO, Bridgestone West (Group President, Bridgestone Americas)",
+   "effectiveDate": "2024-11-01",
+   "upcoming": null,
+   "sourceUrl": "https://www.bridgestoneamericas.com/en/press-release-details.en.2026.bridgestone-announces-executive-leadership-changes",
+   "sourceDate": "2026",
+   "verifiedBy": "sonnet",
+   "notes": "Paolo Ferrari departed Bridgestone entirely effective October 31, 2024 (left CEO of Bridgestone Americas, Bridgestone West CEO, and all other Bridgestone roles). Scott Damon became CEO of Bridgestone West / Group President of Bridgestone Americas effective November 1, 2024, and continues in that rol"
+  },
+  {
+   "id": "michelin-usa",
+   "from": "Alexis Garcin",
+   "to": "Matthew Cabe",
+   "title": "President and CEO",
+   "effectiveDate": "2024-10-01",
+   "upcoming": null,
+   "sourceUrl": "https://www.tirereview.com/michelin-north-america-president-ceo/",
+   "sourceDate": null,
+   "verifiedBy": "manual",
+   "notes": ""
+  },
+  {
+   "id": "rtx",
+   "from": "Greg Hayes",
+   "to": "Christopher Calio",
+   "title": "President, CEO and Chairman",
+   "effectiveDate": "2024-05",
+   "upcoming": null,
+   "sourceUrl": "https://www.sec.gov/Archives/edgar/data/101829/000114036125002798/ef20042756_ex99-1.htm",
+   "sourceDate": "2025-02",
+   "verifiedBy": "sonnet",
+   "notes": "Christopher (Chris) Calio became President and CEO of RTX in May 2024, succeeding Greg Hayes (who moved to Executive Chairman at that time). Hayes then stepped down as Executive Chairman and from the RTX board effective April 30, 2025, transitioning to Special Advisor to the CEO through January 2, 2"
+  },
+  {
+   "id": "avis-budget",
+   "from": "Joe Ferraro",
+   "to": "Brian Choi",
+   "title": "CEO",
+   "effectiveDate": "2025-07-01",
+   "upcoming": null,
+   "sourceUrl": "https://www.avisbudgetgroup.com/home/our-leadership-team/brian-choi.html",
+   "sourceDate": "2026",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Brian Choi became CEO of Avis Budget Group effective July 1, 2025, after Joe Ferraro transitioned to a board advisor role."
+  },
+  {
+   "id": "jack-in-the-box",
+   "from": "Darin Harris",
+   "to": "Mark King",
+   "title": "Executive Chairman and Interim CEO",
+   "effectiveDate": "2026-05",
+   "upcoming": "Taylor Montgomery named President effective 2026-09-14; expected to become CEO within approximately 12 months",
+   "sourceUrl": "https://www.sec.gov/Archives/edgar/data/0000807882/000080788226000066/ex992-pressreleasexceoanno.htm",
+   "sourceDate": "2026-05",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Named officer happens to be right, but the earlier agent's sourcing/reasoning was wrong: it cited Wikipedia text about Lenny Comma stepping down in Dec 2019, which is six years stale and unrelated. The real current chain: Darin Harris was succeeded by CFO-turned-CEO Lance Tucker; Tucker was succeede"
+  },
+  {
+   "id": "carls-jr-hardees",
+   "from": "Ned Lyerly",
+   "to": "Max Wetzel",
+   "title": "CEO",
+   "effectiveDate": "2023-03-17",
+   "upcoming": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/CKE_Restaurants",
+   "sourceDate": "2026-08",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Max Wetzel has been CEO of CKE Restaurants (Carl's Jr./Hardee's parent) since March 17, 2023."
+  },
+  {
+   "id": "shake-shack",
+   "from": "Randy Garutti",
+   "to": "Rob Lynch",
+   "title": "CEO",
+   "effectiveDate": "2024-03",
+   "upcoming": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/Shake_Shack",
+   "sourceDate": "2026-09-27",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Rob Lynch (former Papa John's CEO) has been Shake Shack's CEO since he was announced for the role in March 2024, succeeding Randy Garutti."
+  },
+  {
+   "id": "panera-bread",
+   "from": "Jose Alberto Duenas",
+   "to": "Paul Carbone",
+   "title": "CEO",
+   "effectiveDate": "2025-03",
+   "upcoming": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/Panera_Bread",
+   "sourceDate": "2026-09-27",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Paul Carbone became Panera Bread/Panera Brands CEO in March 2025."
+  },
+  {
+   "id": "subway",
+   "from": "John Chidsey",
+   "to": "Jonathan Fitzpatrick",
+   "title": "President and CEO",
+   "effectiveDate": "2025-07",
+   "upcoming": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/Subway_(restaurant)",
+   "sourceDate": "2026-09-27",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed, with cleanup: Jonathan Fitzpatrick — described in coverage as a former Burger King executive — was hired as Subway's new CEO in July 2025, succeeding John Chidsey. This is an already-completed hire, so it belongs in effectiveDate/notes rather than the 'upcoming' field as the earlier agent"
+  },
+  {
+   "id": "jersey-mikes",
+   "from": "Peter Cancro",
+   "to": "Charlie Morrison",
+   "title": "CEO",
+   "effectiveDate": "2025-04-28",
+   "upcoming": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/Jersey_Mike%27s",
+   "sourceDate": "2026-09-27",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed, with cleanup: Peter Cancro sold his majority stake to Blackstone (announced Nov 2024, closed ~Jan 2025) and was succeeded as CEO by Charlie Morrison on April 28, 2025 — the first CEO change in the company's roughly 50-year history. The earlier agent's note ('Charlie Morrison...founded com"
+  },
+  {
+   "id": "red-robin",
+   "from": "G.J. Hart",
+   "to": "David A. Pace",
+   "title": "CEO",
+   "effectiveDate": "2025-04-24",
+   "upcoming": null,
+   "sourceUrl": "https://ir.redrobin.com/news-events/press-releases/detail/704/red-robin-gourmet-burgers-inc-announces-leadership",
+   "sourceDate": "2025",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Wikipedia independently corroborates David A. Pace as Red Robin's current CEO (without stating the exact date), consistent with the earlier agent's claim that Pace succeeded G.J. Hart on April 24, 2025."
+  },
+  {
+   "id": "jasons-deli",
+   "from": "Joe Tortorice Jr",
+   "to": "Troy Cormier",
+   "title": "CEO",
+   "effectiveDate": null,
+   "upcoming": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/Jason%27s_Deli",
+   "sourceDate": "2026-09",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Corrected: the death claim is accurate (Tortorice, co-founder, died in 2019 of cancer at age 70 — not a fabricated death), but the earlier agent stopped at 'Unknown/Deceased' for the successor. Wikipedia's infobox names Troy Cormier as current CEO, with Ragan Edgerly as President; the Tortorice fami"
+  },
+  {
+   "id": "corner-bakery",
+   "from": "Jodi Boyce",
+   "to": "Chris Dharod",
+   "title": "CEO (also President of parent SSCP Management)",
+   "effectiveDate": null,
+   "upcoming": null,
+   "sourceUrl": "https://www.nrn.com/fast-casual/corner-bakery-cafe-promotes-erin-hasselgren-to-company-president",
+   "sourceDate": "2026",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed by fresh fetch of the earlier agent's own cited source: Chris Dharod is CEO of Corner Bakery Cafe and President of parent SSCP Management. Erin Hasselgren was separately promoted to company president (not CEO) as part of the post-bankruptcy revitalization under SSCP (Cicis' parent). Jodi B"
+  },
+  {
+   "id": "7-eleven",
+   "from": "Joe DePinto",
+   "to": "Mauricio Leyva",
+   "title": "Chief Executive Officer",
+   "effectiveDate": "2026-08-01",
+   "upcoming": null,
+   "sourceUrl": "https://www.cstoredive.com/news/7-eleven-ceo-search-roundup/827704/",
+   "sourceDate": "2026-08-13",
+   "verifiedBy": "sonnet",
+   "notes": "Joe DePinto announced retirement in Dec 2025 after 20+ years; Stan Reynolds and Doug Rosencrans served as interim co-CEOs during the search. Mauricio Leyva (former Keurig Dr Pepper group president) was named CEO in July 2026 and officially took over Aug 1, 2026. Parent is Seven & I Holdings (parentE"
+  },
+  {
+   "id": "circle-k",
+   "from": "Brian Hannasch",
+   "to": "Alex Miller",
+   "title": "CEO, Alimentation Couche-Tard",
+   "effectiveDate": "2024-09-06",
+   "upcoming": null,
+   "sourceUrl": "https://ca.finance.yahoo.com/news/alimentation-couche-tard-ceo-hannasch-to-retire-chief-operating-officer-to-succeed-122959867.html",
+   "sourceDate": "2024",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed by fresh fetch. Alex Miller (former COO) succeeded Brian Hannasch as CEO effective Sept 6, 2024; Hannasch became a special advisor after a decade leading the company."
+  },
+  {
+   "id": "loves-travel-stops",
+   "from": "Tom Love",
+   "to": "Greg and Frank Love",
+   "title": "Co-CEOs (Tom Love was Founder/Executive Chairman, never CEO)",
+   "effectiveDate": "2023-03-07",
+   "upcoming": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/Love%27s_Travel_Stops_%26_Country_Stores",
+   "sourceDate": "2026-09",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Corrected on a title nuance: Tom Love was founder and Executive Chairman, not CEO, per Wikipedia — the earlier agent's framing of him as a 'Founder (Deceased)' CEO overstates his formal title. He passed away March 7, 2023 (this part is accurate, not a fabricated death). Current leadership is Greg Lo"
+  },
+  {
+   "id": "la-fitness",
+   "from": "Louis Welch",
+   "to": "Chinyol Yi",
+   "title": "Executive Chairman (leading Fitness International/LA Fitness after Welch's death)",
+   "effectiveDate": "2023-09-20",
+   "upcoming": null,
+   "sourceUrl": "https://athletechnews.com/louis-welch-of-la-fitness-dies-at-71/",
+   "sourceDate": "2026-09",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Louis Welch (co-founder, co-CEO) died 2023-09-20 confirmed via Health & Fitness Association/IHRSA statements. Trade press confirms Executive Chairman Chinyol Yi leads the company since. No distinct named 'CEO' successor is confirmed in credible sources; low-quality aggregators (LinkedIn/ZoomInfo/Roc"
+  },
+  {
+   "id": "anytime-fitness",
+   "from": "Chuck Runyon",
+   "to": "Tom Leverton",
+   "title": "CEO, Purpose Brands (parent of Self Esteem Brands/Anytime Fitness)",
+   "effectiveDate": "2024-11-21",
+   "upcoming": null,
+   "sourceUrl": "https://www.prnewswire.com/news-releases/purpose-brands-llc-poised-for-rapid-expansion-in-the-global-wellness-economy-names-experienced-services-leader-tom-leverton-as-chief-executive-officer-302312991.html",
+   "sourceDate": "2026-09",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Self Esteem Brands merged with Orangetheory to form Purpose Brands; Tom Leverton named CEO Nov 21, 2024, and still in role as of Sept 2026 per an independent Fitt Insider podcast interview."
+  },
+  {
+   "id": "hr-block",
+   "from": "Jeff Jones",
+   "to": "Curtis Campbell",
+   "title": "President and CEO",
+   "effectiveDate": "2026-01-01",
+   "upcoming": null,
+   "sourceUrl": "https://investors.hrblock.com/news-releases/news-release-details/hr-block-inc-announces-leadership-succession-plan",
+   "sourceDate": "2026-09",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed via H&R Block's own IR press release and SEC 8-K/DEF 14A filings. Campbell became CEO and joined the board Jan 1, 2026; Jones retired and remains a strategic advisor."
+  },
+  {
+   "id": "massage-envy",
+   "from": "Todd Leff",
+   "to": "Todd Schrader",
+   "title": "Chief Executive Officer",
+   "effectiveDate": "2024-03",
+   "upcoming": null,
+   "sourceUrl": "https://www.massageenvy.com/about-us/newsroom/press-releases/massage-envy-appoints-todd-schrader-as-chief-executive-officer",
+   "sourceDate": "2026-09-27",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Todd Schrader is Massage Envy's current CEO, succeeding Beth Stiller (CEO late 2019–early 2024); no evidence Todd Leff holds any current role. Effective date given (March 2024) matches the official appointment announcement."
+  },
+  {
+   "id": "great-clips",
+   "from": "Steve Hockett",
+   "to": "Rob Goggins",
+   "title": "President and Chief Executive Officer",
+   "effectiveDate": "2026-01-01",
+   "upcoming": null,
+   "sourceUrl": "https://www.greatclips.com/about-us/news-room/Rob-Goggins-Named-president-CEO",
+   "sourceDate": "2025-08",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed via Great Clips newsroom, Franchising.com, and Yahoo Finance. Goggins (18-year Great Clips veteran, prior COO/President) became President & CEO effective Jan 1, 2026, succeeding Steve Hockett, who retired at the end of 2025 after 35+ years with the company."
+  },
+  {
+   "id": "supercuts",
+   "from": "Matthew Doctor",
+   "to": "Susan Lintonsmith",
+   "title": "President and Chief Executive Officer",
+   "effectiveDate": "2026-03-16",
+   "upcoming": null,
+   "sourceUrl": "https://www.sec.gov/Archives/edgar/data/716643/000071664326000012/rgs031626pressrelease.htm",
+   "sourceDate": "2026-03",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed via Regis Corp SEC 8-K. Lintonsmith (Regis board director since Jan 2025; formerly COO of Sphinx Franchise Holdings/European Wax Center) was appointed President & CEO effective March 16, 2026."
+  },
+  {
+   "id": "jiffy-lube",
+   "from": "Patrick Southwell",
+   "to": "Mauricio Quezada",
+   "title": "President and Chief Executive Officer",
+   "effectiveDate": "2025-11-20",
+   "upcoming": null,
+   "sourceUrl": "https://www.jiffylube.com/news-and-press/mauricio-quezada-appointed-president-ceo",
+   "sourceDate": "2025-11",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed via Jiffy Lube's own newsroom and PRNewswire. Quezada appointed President & CEO Nov 20, 2025; previously Jiffy Lube Director of Operations (2015-2018) and most recently VP/GM US Direct Lubricants at Pennzoil-Quaker State (Shell)."
+  },
+  {
+   "id": "pep-boys",
+   "from": "Brian Kaner",
+   "to": "Joe Auriemma",
+   "title": "Chief Executive Officer",
+   "effectiveDate": "2025-02-27",
+   "upcoming": null,
+   "sourceUrl": "https://www.pepboys.com/corporate/about-pep-boys/media-center/press-releases/2025/pep-boys-names-joe-auriemma-as-chief-executive-officer",
+   "sourceDate": "2025-02",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed via Pep Boys corporate newsroom. Auriemma became interim CEO in Sept 2024 and was named permanent CEO Feb 27, 2025; still CEO as of 2026 per company/press coverage."
+  },
+  {
+   "id": "spotify",
+   "from": "Daniel Ek",
+   "to": "Alex Norström & Gustav Söderström",
+   "title": "Co-Chief Executive Officers",
+   "effectiveDate": "2026-01-01",
+   "upcoming": null,
+   "sourceUrl": "https://newsroom.spotify.com/2026-01-12/alex-norstrom-gustav-soderstrom-co-ceos-message/",
+   "sourceDate": "2026-01",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed via Spotify's own newsroom and SEC 6-K. Ek moved to Executive Chairman; Norström and Söderström (previously co-Presidents) became Co-CEOs effective Jan 1, 2026, reporting to Ek and the board."
+  },
+  {
+   "id": "buzzfeed",
+   "from": "Jonah Peretti",
+   "to": "Byron Allen",
+   "title": "Chairman and Chief Executive Officer",
+   "effectiveDate": "2026-05-27",
+   "upcoming": null,
+   "sourceUrl": "https://www.bloomberg.com/news/articles/2026-05-11/byron-allen-pays-120-million-for-52-of-buzzfeed-becomes-ceo",
+   "sourceDate": "2026-05",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed via Bloomberg and BusinessWire/SEC 8-K. Byron Allen's family office paid $120M for a 52% stake; deal closed May 27, 2026; Peretti moved to a newly created President of BuzzFeed AI role."
+  },
+  {
+   "id": "amtrak",
+   "from": "Stephen Gardner",
+   "to": "Byl Herrmann",
+   "title": "Interim President (permanent CEO search ongoing)",
+   "effectiveDate": "2026-08-01",
+   "upcoming": "Amtrak's Board of Directors is actively searching for a permanent CEO; position listed as vacant on Amtrak's official board page as of Sept 2026",
+   "sourceUrl": "https://railwaynews.net/amtrak-completes-interim-president-herrmann-appointment.html",
+   "sourceDate": "2026-08",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "The earlier agent's info (Gardner resigned March 19, 2025) was correct but incomplete/stale itself. Roger Harris (previously Amtrak President) subsequently served as CEO after Gardner, then also stepped down at the end of July 2026. Byl Herrmann became Interim President Aug 1, 2026, while the board "
+  },
+  {
+   "id": "lendingtree",
+   "from": "Doug Lebda",
+   "to": "Scott Peyree",
+   "title": "CEO and President",
+   "effectiveDate": "2025-10-13",
+   "upcoming": null,
+   "sourceUrl": "https://www.prnewswire.com/news-releases/lendingtree-announces-the-unexpected-passing-of-company-founder-chairman-and-ceo-doug-lebda-302582183.html",
+   "sourceDate": "2026-09",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed, with an important addition the earlier agent omitted: Lebda didn't simply leave the role, he died in an ATV accident on 2025-10-12/13. Peyree (then COO/President) was appointed CEO immediately after; Steve Ozonian became board chairman."
+  },
+  {
+   "id": "zelle",
+   "from": "Al Ko",
+   "to": "Cameron Fowler",
+   "title": "CEO, Early Warning Services",
+   "effectiveDate": "2023-08",
+   "upcoming": null,
+   "sourceUrl": "https://www.bankingdive.com/news/zelle-early-warning-services-ceo-bmo-cameron-fowler/690906/",
+   "sourceDate": "2026-09",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Fowler still CEO as of mid-2026 (fronted a June 2026 ZelleUSD/stablecoin product launch as CEO)."
+  },
+  {
+   "id": "ww-international",
+   "from": "Tara Comonte",
+   "to": "Stephen Bye",
+   "title": "Interim Office of the CEO",
+   "effectiveDate": "2026-03-31",
+   "upcoming": "Stephen J. Bye named President & CEO on 2026-09-09 (ex-Ookla CEO); start date 2026-10-01",
+   "sourceUrl": "https://www.globenewswire.com/news-release/2026/09/09/3358579/0/en/weight-watchers-appoints-stephen-bye-as-chief-executive-officer.html",
+   "sourceDate": "2026-09-09",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "The earlier agent's interim-office finding was accurate but stale itself: on 2026-09-09 (more than two weeks before this check, and before the agent's own 2026-09 sourceDate), WW International announced incoming CEO Stephen Bye, starting 2026-10-01. As of today (2026-09-27) the interim office is sti"
+  },
+  {
+   "id": "public-storage",
+   "from": "Joseph Russell",
+   "to": "H. Thomas Boyle",
+   "title": "CEO and Trustee",
+   "effectiveDate": "2026-04-01",
+   "upcoming": null,
+   "sourceUrl": "https://www.gurufocus.com/news/8612299/public-storage-psa-announces-leadership-changes-and-office-relocation",
+   "sourceDate": "2026-09",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed via Public Storage's own DEF 14A filing. Russell retired 2026-03-31; Boyle (former CFO/CIO) became CEO 2026-04-01."
+  },
+  {
+   "id": "angi",
+   "from": "Jeffrey Kip",
+   "to": "Michael Steib",
+   "title": "CEO",
+   "effectiveDate": "2026-09-22",
+   "upcoming": null,
+   "sourceUrl": "https://ir.angi.com/news-releases/news-release-details/angi-appoints-michael-steib-ceo",
+   "sourceDate": "2026-09-23",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed via Angi's own IR release and Bloomberg. Steib (ex-TEGNA CEO) succeeded Jeffrey Kip effective immediately, announced 2026-09-23 — five days before this check."
+  },
+  {
+   "id": "simplisafe",
+   "from": "Christian Cerda",
+   "to": "Hilary Schneider",
+   "title": "CEO",
+   "effectiveDate": "2025",
+   "upcoming": null,
+   "sourceUrl": "https://www.citybiz.co/article/770340/simplisafe-appoints-hilary-schneider-as-ceo/",
+   "sourceDate": "2026-09",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Schneider (ex-LifeLock CEO) took over as SimpliSafe CEO in late 2025 following GTCR's acquisition of the company, succeeding Cerda; her SimpliSafe role caused her to leave the Sleep Number board (announced March 2026), and she was still CEO expanding the leadership team in June 2026."
+  },
+  {
+   "id": "trugreen",
+   "from": "John Reardon",
+   "to": "Kurt Kane",
+   "title": "President and CEO",
+   "effectiveDate": "2023-11-06",
+   "upcoming": null,
+   "sourceUrl": "https://www.prnewswire.com/news-releases/trugreen-appoints-kurt-kane-as-president-and-chief-executive-officer-301978655.html",
+   "sourceDate": "2026-04",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Corrected from 'uncertain' to a confirmed answer. Kurt Kane has been TruGreen's President & CEO since 2023-11-06, succeeding John Cowles — not John Reardon, who does not appear in any source as a TruGreen executive at any point. Kane is confirmed still in the role via an April 2026 interview/podcast"
+  },
+  {
+   "id": "mercari",
+   "from": "John Lagerling",
+   "to": "Shintaro Yamada",
+   "title": "Representative Executive Officer and CEO",
+   "effectiveDate": "2025-01-01",
+   "upcoming": null,
+   "sourceUrl": "https://about.mercari.com/en/press/news/articles/20241105_newleadership/",
+   "sourceDate": "2026-09",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Founder Yamada resumed the CEO role 2025-01-01 after Lagerling's resignation; still CEO in 2026, leading the platform's global expansion push."
+  },
+  {
+   "id": "poshmark",
+   "from": "Manish Chandra",
+   "to": "Namsun Kim",
+   "title": "CEO",
+   "effectiveDate": "2025-10-01",
+   "upcoming": null,
+   "sourceUrl": "https://www.prnewswire.com/news-releases/poshmark-inc-announces-chief-executive-officer-transition-302525526.html",
+   "sourceDate": "2026-09",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Kim (from Naver Corp., Poshmark's owner) became CEO 2025-10-01, succeeding founder Chandra; still listed as current CEO in a 2026 Milken Institute Global Conference bio."
+  },
+  {
+   "id": "stockx",
+   "from": "Scott Cutler",
+   "to": "Greg Schwartz",
+   "title": "Chief Executive Officer",
+   "effectiveDate": "2025-01-01",
+   "upcoming": null,
+   "sourceUrl": "https://stockx.com/about/stockx-announces-ceo-transition/",
+   "sourceDate": "2025",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed via StockX's own announcement and multiple trade press outlets. Schwartz (co-founder, former President/COO) succeeded Cutler as CEO effective Jan 1, 2025; Cutler stayed on briefly as an advisor."
+  },
+  {
+   "id": "rakuten-us",
+   "from": "Stuart Soppe",
+   "to": "Amit Patel",
+   "title": "CEO",
+   "effectiveDate": null,
+   "upcoming": null,
+   "sourceUrl": "https://www.prnewswire.com/news-releases/rakuten-americas-appoints-amit-patel-as-chief-executive-officer-300887643.html",
+   "sourceDate": null,
+   "verifiedBy": "sonnet",
+   "notes": "No source connects a 'Stuart Soppe' to Rakuten Americas. The entity operates today as Rakuten International (parent of Rakuten Rewards, formerly Ebates), led by CEO Amit Patel, who has run the Rakuten Rewards/Americas business since 2017."
+  },
+  {
+   "id": "coursera",
+   "from": "Jeff Maggioncalda",
+   "to": "Greg Hart",
+   "title": "President and CEO",
+   "effectiveDate": "2025-02",
+   "upcoming": null,
+   "sourceUrl": "https://blog.coursera.org/leadership/",
+   "sourceDate": "2026",
+   "verifiedBy": "sonnet",
+   "notes": "Greg Hart succeeded Jeff Maggioncalda as Coursera's President and CEO in February 2025."
+  },
+  {
+   "id": "ring",
+   "from": "Liz Hamren",
+   "to": "Jamie Siminoff",
+   "title": "CEO",
+   "effectiveDate": "2025",
+   "upcoming": null,
+   "sourceUrl": "https://fortune.com/2026/03/07/ring-ceo-jamie-siminoff-founder-shark-tank-kevin-oleary-mr-wonderful-investments/",
+   "sourceDate": "2026-03-07",
+   "verifiedBy": "sonnet",
+   "notes": "Hamren left Ring (moved to AllTrails as CEO) around mid-2025. Ring founder Jamie Siminoff returned to Amazon in 2025 (initially reported as a VP role over Ring/Blink/Key/Sidewalk) and current 2026 press (Fortune, TechCrunch) again refers to him as 'Ring CEO.'"
+  },
+  {
+   "id": "mcgraw-hill",
+   "from": "Simon Allen",
+   "to": "Philip Moyer",
+   "title": "President and CEO",
+   "effectiveDate": "2026-02-09",
+   "upcoming": null,
+   "sourceUrl": "https://www.businesswire.com/news/home/20260106243653/en/McGraw-Hill-Inc.-Announces-CEO-Succession-Plan",
+   "sourceDate": "2026-01-06",
+   "verifiedBy": "sonnet",
+   "notes": "Simon Allen retired as CEO effective Feb 9, 2026 and remains Board Chair; successor Philip Moyer previously was CEO of Vimeo."
+  },
+  {
+   "id": "skillshare",
+   "from": "Matt Cooper",
+   "to": "Paul Slavin",
+   "title": "CEO",
+   "effectiveDate": "2025-08-19",
+   "upcoming": null,
+   "sourceUrl": "https://www.businesswire.com/news/home/20250811766802/en/Skillshare-Names-Paul-Slavin-as-Chief-Executive-Officer",
+   "sourceDate": "2025-08-11",
+   "verifiedBy": "sonnet",
+   "notes": "Slavin succeeded longtime CEO Matt Cooper (8+ years) in August 2025."
+  },
+  {
+   "id": "iac",
+   "from": "Barry Diller",
+   "to": "Neil Vogel",
+   "title": "Chief Executive Officer",
+   "effectiveDate": "2026-08-05",
+   "upcoming": null,
+   "sourceUrl": "https://www.hollywoodreporter.com/business/business-news/barry-diller-shakeup-iac-to-people-inc-neil-vogel-new-ceo-1236578906/",
+   "sourceDate": "2026-04-28",
+   "verifiedBy": "sonnet",
+   "notes": "Major structural change: IAC Inc. rebranded to People Incorporated (NASDAQ: PPLI) in 2026, consolidating with its People Inc. media business. Neil Vogel became CEO (interim from ~2026-06-30, formally effective 2026-08-05 per Q2 2026 filings); Barry Diller continues as Chairman (publicFigureName stil"
+  },
+  {
+   "id": "seven-and-i",
+   "from": "Ryuichi Isaka",
+   "to": "Stephen Dacus",
+   "title": "Representative Director, President and CEO",
+   "effectiveDate": "2025-05",
+   "upcoming": null,
+   "sourceUrl": "https://www.7andi.com/en/company/officer.html",
+   "sourceDate": null,
+   "verifiedBy": "sonnet",
+   "notes": "Dacus (also seen as 'Steve Dacus') succeeded Isaka in May 2025 as the first foreign-born CEO of Seven & i Holdings. Separately, Mauricio Leyva became CEO of the 7-Eleven, Inc. North American subsidiary in Aug 2026 — a different role from the parent-company CEO."
+  },
+  {
+   "id": "sunoco",
+   "from": "Karl Fails",
+   "to": "Joseph Kim",
+   "title": "President and CEO",
+   "effectiveDate": "2018-01-01",
+   "upcoming": null,
+   "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1552275/000155227526000021/sun-20251231.htm",
+   "sourceDate": "2026",
+   "verifiedBy": "sonnet",
+   "notes": "Joseph (Joe) Kim has been President & CEO of Sunoco LP's general partner since Jan 2018. Karl Fails is EVP & COO, not CEO — our on-file dataCeo appears to be a longstanding data error rather than a recent change."
+  },
+  {
+   "id": "discord",
+   "from": "Jason Citron",
+   "to": "Humam Sakhnini",
+   "title": "CEO",
+   "effectiveDate": "2025-04-28",
+   "upcoming": null,
+   "sourceUrl": "https://discord.com/press-releases/discord-appoints-new-ceo-humam-sakhnini",
+   "sourceDate": "2025-04-23",
+   "verifiedBy": "sonnet",
+   "notes": "Jason Citron (also publicFigureName) stepped down as CEO but remains on Discord's board as an Advisor to the CEO — not fully departed from the company."
+  },
+  {
+   "id": "linkedin",
+   "from": "Ryan Roslansky",
+   "to": "Daniel Shapero",
+   "title": "CEO",
+   "effectiveDate": "2026-04-22",
+   "upcoming": null,
+   "sourceUrl": "https://www.cnbc.com/2026/04/22/microsofts-linkedin-makes-executive-daniel-shapero-its-new-ceo.html",
+   "sourceDate": "2026-04-22",
+   "verifiedBy": "sonnet",
+   "notes": "Roslansky stepped down as LinkedIn CEO after 6 years (grew it from 700M to 1.3B members); he was elevated to EVP over both LinkedIn and Microsoft Office, with Shapero (LinkedIn COO for the prior 5 years) now reporting to him as CEO."
+  },
+  {
+   "id": "indeed",
+   "from": "Chris Hyams",
+   "to": "Hisayuki Idekoba",
+   "title": "CEO",
+   "effectiveDate": "2025-06",
+   "upcoming": null,
+   "sourceUrl": "https://www.statesman.com/story/business/technology/2025/06/04/indeed-ceo-chris-hyams-steps-down-handing-company-back-over-to-former-ceo/84026886007/",
+   "sourceDate": "2025-06-04",
+   "verifiedBy": "sonnet",
+   "notes": "Hyams stepped down in June 2025 after ~6 years to focus on AI-safety advocacy; succeeded by Hisayuki 'Deko' Idekoba, who is concurrently CEO of parent Recruit Holdings and previously led Indeed 2013-2019."
+  },
+  {
+   "id": "glassdoor",
+   "from": "Christian Sutherland-Wong",
+   "to": "Owen Humphries",
+   "title": "President",
+   "effectiveDate": "2025-10",
+   "upcoming": null,
+   "sourceUrl": "https://www.hrgrapevine.com/us/content/article/2025-07-15-indeed-owner-axes-1300-staff-glassdoor-folded-into-core-biz-ceo-departs",
+   "sourceDate": "2025-07-15",
+   "verifiedBy": "sonnet",
+   "notes": "Sutherland-Wong's exit was announced July 2025 as part of a ~1,300-job cut across Recruit's Indeed/Glassdoor HR-tech unit; sources gave slightly conflicting exact departure dates (Oct 2024 vs Oct 2025 appeared in different bios) but the restructuring itself is clearly 2025. Owen Humphries now runs G"
+  },
+  {
+   "id": "google-deepmind",
+   "from": "Demis Hassabis",
+   "to": "Koray Kavukcuoglu",
+   "title": "SVP, Google DeepMind (no standalone CEO title exists post-reshuffle)",
+   "effectiveDate": "2026-08-05",
+   "upcoming": null,
+   "sourceUrl": "https://www.cnbc.com/2026/08/06/demis-hassabis-google-reshuffle-deepmind-role.html",
+   "sourceDate": "2026-08-06",
+   "verifiedBy": "sonnet",
+   "notes": "Hassabis stepped down as Google DeepMind CEO on 2026-08-05, moving to Chairman of Google DeepMind + Chief Scientist of Alphabet. He has NOT departed Google/Alphabet — he also remains CEO of the separate Isomorphic Labs entity. Kavukcuoglu (formerly DeepMind CTO) now runs day-to-day operations as SVP"
+  },
+  {
+   "id": "washington-post",
+   "from": "Will Lewis",
+   "to": "Jeff D'Onofrio",
+   "title": "Acting Publisher and CEO",
+   "effectiveDate": "2026-02-07",
+   "upcoming": null,
+   "sourceUrl": "https://www.axios.com/2026/02/07/washington-post-new-publisher-ceo",
+   "sourceDate": "2026-02-07",
+   "verifiedBy": "sonnet",
+   "notes": "Will Lewis stepped down Feb 7, 2026, days after mass layoffs. Jeff D'Onofrio (formerly Post CFO, ex-Tumblr CEO) named acting publisher/CEO immediately. No permanent successor confirmed as of this search."
+  },
+  {
+   "id": "the-intercept",
+   "from": "Betsy Reed",
+   "to": "Annie Chabel",
+   "title": "CEO",
+   "effectiveDate": "2023-03",
+   "upcoming": null,
+   "sourceUrl": "https://theintercept.com/2023/03/14/intercept-ceo-board-of-directors/",
+   "sourceDate": "2023-03-14",
+   "verifiedBy": "sonnet",
+   "notes": "Betsy Reed left The Intercept in mid-2022 to become editor-in-chief of Guardian US and is no longer affiliated. The Intercept's actual CEO (business side) is Annie Chabel, inaugural CEO since March 2023 (survived a 2024 staff no-confidence push). Editorial lead (Editor-in-Chief) is Ben Muessig, made"
+  },
+  {
+   "id": "bloomberg",
+   "from": "",
+   "to": "Vlad Kliatchko",
+   "title": "CEO",
+   "effectiveDate": "2023",
+   "upcoming": null,
+   "sourceUrl": "https://www.bloomberg.com/company/values/tech-at-bloomberg/features/vlad-kliatchko/",
+   "sourceDate": "2026",
+   "verifiedBy": "sonnet",
+   "notes": "Data has no ceoName recorded. Bloomberg L.P.'s actual CEO since 2023 is Vlad Kliatchko, a long-time internal engineering/product executive. Michael Bloomberg (publicFigureName) is founder and majority/controlling owner, not CEO -- still alive and active."
+  },
+  {
+   "id": "farallon-capital",
+   "from": "",
+   "to": "Nicolas Giauque",
+   "title": "Managing Partner",
+   "effectiveDate": "2025",
+   "upcoming": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/Farallon_Capital_Management",
+   "sourceDate": "2026",
+   "verifiedBy": "sonnet",
+   "notes": "Data has no ceoName. Tom Steyer (publicFigureName) separated from Farallon in 2012 and has no current role -- he moved into climate advocacy/politics. Andrew Spokes led afterward; Nicolas Giauque became Managing Partner in 2025."
+  },
+  {
+   "id": "soros-fund-management",
+   "from": "",
+   "to": "Dawn Fitzpatrick",
+   "title": "CEO",
+   "effectiveDate": null,
+   "upcoming": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/Soros_Fund_Management",
+   "sourceDate": "2026",
+   "verifiedBy": "sonnet",
+   "notes": "Data has no ceoName. Dawn Fitzpatrick has been CEO/CIO of Soros Fund Management for several years. George Soros (publicFigureName) remains founder/Chairman and is alive. Alex Soros chairs the Open Society Foundations (since June 2023) and sits on the Soros Fund Management investment committee, but s"
+  },
+  {
+   "id": "renaissance-technologies",
+   "from": "",
+   "to": "Peter Brown",
+   "title": "CEO",
+   "effectiveDate": null,
+   "upcoming": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/Renaissance_Technologies",
+   "sourceDate": "2026",
+   "verifiedBy": "sonnet",
+   "notes": "James Simons (publicFigureName, founder) died May 10, 2024. Peter Brown has been sole CEO since Robert Mercer's departure years earlier and continued unaffected by Simons's death."
+  },
+  {
+   "id": "simon-property-group",
+   "from": "",
+   "to": "Eli Simon",
+   "title": "CEO",
+   "effectiveDate": "2026-03-22",
+   "upcoming": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/Simon_Property_Group",
+   "sourceDate": "2026-03-23",
+   "verifiedBy": "sonnet",
+   "notes": "Longtime CEO David Simon died of cancer on March 22, 2026, at age 64 (per Retail Dive and SeekingAlpha, March 23, 2026). Eli Simon (Simon family) succeeded him as CEO while remaining COO; Larry Glasscock was named non-executive Chairman. Deborah Simon (publicFigureName in our data) is a Simon family"
+  },
+  {
+   "id": "stephens-inc",
+   "from": "Warren Stephens",
+   "to": "Miles and John Stephens",
+   "title": "Co-CEO",
+   "effectiveDate": "2025-01",
+   "upcoming": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/Warren_Stephens",
+   "sourceDate": "2026",
+   "verifiedBy": "sonnet",
+   "notes": "Warren Stephens stepped down as CEO in Jan 2025 to become U.S. Ambassador to the United Kingdom (presented credentials to King Charles III May 21, 2025). Sons Miles and John Stephens became co-CEOs (third generation of family leadership); sister Laura Brookshire is SEVP and chair of the executive co"
+  },
+  {
+   "id": "ryan-specialty",
+   "from": "",
+   "to": "Timothy W. Turner",
+   "title": "CEO",
+   "effectiveDate": "2024-10-01",
+   "upcoming": null,
+   "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1849253/000184925326000013/ryan-20260317.htm",
+   "sourceDate": "2026-03-17",
+   "verifiedBy": "sonnet",
+   "notes": "Per Ryan Specialty Holdings' DEF 14A proxy filed March 17, 2026: Timothy W. Turner became CEO and Director effective Oct 1, 2024. Patrick G. Ryan (publicFigureName, founder) moved from Chairman/CEO to Executive Chairman of the Board on that date -- still with the company but no longer CEO."
+  },
+  {
+   "id": "marcus-millichap",
+   "from": "",
+   "to": "Hessam Nadji",
+   "title": "President and CEO",
+   "effectiveDate": null,
+   "upcoming": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/Marcus_%26_Millichap",
+   "sourceDate": "2026",
+   "verifiedBy": "sonnet",
+   "notes": "George Marcus (publicFigureName) founded the company in 1971; Hessam Nadji is the current President & CEO. Marcus's present-day title (e.g. Chairman) was not confirmed by the source, but he no longer holds the CEO title."
+  },
+  {
+   "id": "interactive-brokers",
+   "from": "",
+   "to": "Milan Galik",
+   "title": "CEO",
+   "effectiveDate": "2019",
+   "upcoming": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/Interactive_Brokers",
+   "sourceDate": "2026-02",
+   "verifiedBy": "sonnet",
+   "notes": "Thomas Peterffy (publicFigureName, founder) stepped down as CEO in 2019; Milan Galik has been CEO since. Peterffy remains Chairman and controls ~73.7% of voting power via Class B shares as of Feb 2026 -- still very much involved, just not CEO."
+  },
+  {
+   "id": "roivant-sciences",
+   "from": "",
+   "to": "Matt Gline",
+   "title": "CEO",
+   "effectiveDate": "2021-01",
+   "upcoming": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/Vivek_Ramaswamy",
+   "sourceDate": "2026",
+   "verifiedBy": "sonnet",
+   "notes": "Vivek Ramaswamy (publicFigureName) stepped down as CEO in Jan 2021 (Matt Gline, ex-CFO, succeeded him) and then stepped down as Executive Chairman in Feb 2023 to run for U.S. President. He has no operating/leadership role at Roivant now, though he remains a shareholder (~7% stake). As of 2026 he is "
+  },
+  {
+   "id": "fisher-investments",
+   "from": "",
+   "to": "Damian Ornani",
+   "title": "Chief Executive Officer",
+   "effectiveDate": "2016-07",
+   "upcoming": null,
+   "sourceUrl": "https://www.investmentnews.com/retirement-planning/fisher-investments-names-damian-ornani-ceo-as-ken-fisher-relinquishes-role/66833",
+   "sourceDate": "2026",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "A second, more targeted search resolved what the earlier agent flagged as uncertain. Damian Ornani has been CEO since July 2016 and remains CEO as of 2026 (firm and subsidiaries managed $441B+ AUM as of June 2026). Ken Fisher (founder) is Executive Chairman, not CEO — our data's ceoName=null should "
+  },
+  {
+   "id": "bp",
+   "from": "Murray Auchincloss",
+   "to": "Meg O'Neill",
+   "title": "Chief Executive Officer",
+   "effectiveDate": "2026-04-01",
+   "upcoming": null,
+   "sourceUrl": "https://www.bp.com/press-and-publications/press-releases/bp-plc-announces-leadership-transition",
+   "sourceDate": "2025-12-17",
+   "verifiedBy": "sonnet",
+   "notes": "Murray Auchincloss stepped down as CEO and board director effective 2025-12-18. Carol Howle (EVP, Supply, Trading & Shipping) served as interim CEO in the gap. Meg O'Neill (previously CEO of Woodside Energy) became bp's permanent CEO effective 2026-04-01. Auchincloss remained available in an advisor"
+  },
+  {
+   "id": "maverik",
+   "from": "Unknown CEO",
+   "to": "Crystal Maggelet",
+   "title": "CEO and Chief Adventure Guide (also CEO/Chairwoman of parent FJ Management)",
+   "effectiveDate": "2024",
+   "upcoming": null,
+   "sourceUrl": "https://www.cstoredive.com/news/maverik-names-crystal-maggelet-ceo/722853/",
+   "sourceDate": "2026-03",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed via C-Store Dive and Utah Business. Maggelet stepped in as CEO after the prior CEO's unexpected departure following the Kum & Go acquisition integration; named Utah Business CEO of the Year 2026."
+  },
+  {
+   "id": "eg-america",
+   "from": "Unknown CEO",
+   "to": "Russell Colaco",
+   "title": "CEO",
+   "effectiveDate": "2025-05",
+   "upcoming": null,
+   "sourceUrl": "https://www.cstoredive.com/news/eg-group-ceo-russell-colaco-eg-america/747005/",
+   "sourceDate": "2025-05",
+   "verifiedBy": "sonnet",
+   "notes": "Data previously had no CEO name on file ('Unknown CEO'). Russell Colaco was named CEO of parent EG Group and, shortly after (~May 2025), was also appointed top executive/CEO of U.S. subsidiary EG America, succeeding John Carey (who returned to the UK as a group senior advisor). Colaco holds both CEO"
+  },
+  {
+   "id": "santander-bank",
+   "from": "Unknown CEO",
+   "to": "John Ciulla",
+   "title": "CEO",
+   "effectiveDate": "2026-08-20",
+   "upcoming": null,
+   "sourceUrl": "https://www.santanderbank.com/about/media-center/santander-completes-webster-acquisition-082026",
+   "sourceDate": "2026-08-20",
+   "verifiedBy": "sonnet",
+   "notes": "Resolves 'Unknown CEO' placeholder. Santander Bank NA is the US retail banking subsidiary of Banco Santander (Spain). Following Santander's completed acquisition of Webster Financial Corporation (announced Feb 2026, closed Aug 2026), former Webster Bank CEO John Ciulla became CEO of Santander Bank, "
+  },
+  {
+   "id": "winco-foods",
+   "from": "Unknown CEO",
+   "to": "Grant Haag",
+   "title": "President and CEO",
+   "effectiveDate": "2018-05",
+   "upcoming": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/WinCo_Foods",
+   "sourceDate": "2026",
+   "verifiedBy": "sonnet",
+   "notes": "Resolves 'Unknown CEO' placeholder. WinCo is employee-owned; Grant Haag, a 34-year WinCo veteran, was named President in 2018 and became President and CEO succeeding Steven Goddard in May 2018 (older search results describing the pending 2018 promotion are legacy announcement text, not a current tra"
+  },
+  {
+   "id": "odp-corporation",
+   "from": "Gerry Smith",
+   "to": "Craig Gunckel",
+   "title": "Chief Executive Officer",
+   "effectiveDate": "2025-12-10",
+   "upcoming": null,
+   "sourceUrl": "https://www.businesswire.com/news/home/20251210247721/en/Atlas-Holdings-Completes-Acquisition-of-The-ODP-Corporation-Craig-Gunckel-Named-Chief-Executive-Officer",
+   "sourceDate": "2025-12",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed via BusinessWire/Morningstar. Atlas Holdings completed its ~$1B acquisition of ODP on Dec 10, 2025; Gunckel (former Iconex CEO) named CEO, succeeding Gerry Smith. Company is now private, delisted from Nasdaq."
+  },
+  {
+   "id": "staples",
+   "from": "Unknown CEO",
+   "to": "Rachel Huckle",
+   "title": "Chief Executive Officer",
+   "effectiveDate": "2025-08",
+   "upcoming": null,
+   "sourceUrl": "https://wbjournal.com/honoree/2026-power-100-rachel-huckle/",
+   "sourceDate": "2026",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Huckle was Staples Canada CEO from March 2024, then quietly expanded to CEO of the full Staples organization around Aug 2025 with no formal press release; John Lederer moved to Executive Chairman. Still CEO per 2026 Worcester Business Journal Power 100 profile."
+  },
+  {
+   "id": "harbor-freight",
+   "from": "Unknown CEO",
+   "to": "Eric Smidt",
+   "title": "Chairman and Chief Executive Officer",
+   "effectiveDate": "1999",
+   "upcoming": null,
+   "sourceUrl": "https://www.harborfreight.com/about-us/eric-smidt-bio.html",
+   "sourceDate": "2026",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Eric Smidt has been Chairman/CEO since 1999, when he bought out his father and co-founder Allan Smidt; privately held, ~1,600 stores, ~$9B annual revenue as of 2026."
+  },
+  {
+   "id": "lululemon",
+   "from": "Meghan Frank and Andre Maestrini",
+   "to": "Heidi O'Neill",
+   "title": "CEO",
+   "effectiveDate": "2026-09-08",
+   "upcoming": null,
+   "sourceUrl": "https://www.cnbc.com/2026/04/22/lululemon-names-former-nike-exec-heidi-oneill-as-new-ceo.html",
+   "sourceDate": "2026-09",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed via CNBC and Lululemon's SEC 8-K/DEFA14A filings. Announced 2026-04-22; O'Neill (ex-Nike) started as CEO and joined the board 2026-09-08, taking over from interim co-CEOs Frank and Maestrini."
+  },
+  {
+   "id": "stater-bros",
+   "from": "Pete Van Helden",
+   "to": "Greg McNiff",
+   "title": "CEO",
+   "effectiveDate": "2025-09-29",
+   "upcoming": null,
+   "sourceUrl": "https://www.grocerydive.com/news/stater-bros-names-new-ceo/759805/",
+   "sourceDate": "2025-09-11",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "The person is right but the year is wrong. McNiff became CEO on 2025-09-29 (announced 2025-09-11) — NOT 2026-09-29 as the earlier agent stated, a date that hadn't happened yet as of today (2026-09-27). McNiff has actually been CEO for about a full year already; Van Helden moved to executive chairman"
+  },
+  {
+   "id": "ingles-markets",
+   "from": "Unknown CEO",
+   "to": "Jim Lanning",
+   "title": "President and CEO",
+   "effectiveDate": "2025-03",
+   "upcoming": null,
+   "sourceUrl": "https://www.andnowuknow.com/buyside-news/ingles-markets-appoints-jim-lanning-its-new-ceo-announces-executive-changes/jessica-donnel/48848",
+   "sourceDate": "2026-09",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed via multiple retail trade sources (Supermarket News, Stockopedia). Lanning, company president since 2003, was named CEO around March 2025; still in role in 2026, reporting to chairman Robert P. Ingle II."
+  },
+  {
+   "id": "golub-corp",
+   "from": "Unknown CEO",
+   "to": "John Persons",
+   "title": "President and CEO, Northeast Grocery (parent of Golub Corp/Price Chopper/Market 32)",
+   "effectiveDate": "2024-02",
+   "upcoming": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/Northeast_Grocery",
+   "sourceDate": "2026-09",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Persons (formerly Tops Markets president/COO) became President & CEO of the combined Northeast Grocery organization (Golub Corp/Price Chopper + Tops) in Feb 2024, succeeding Frank Curci, who had succeeded Scott Grimmett. Still in role as of Sept 2026. Note: Golub Corp now operates as part"
+  },
+  {
+   "id": "raleys",
+   "from": "Unknown CEO",
+   "to": "Mike Teel",
+   "title": "Owner, Chairman, President and CEO",
+   "effectiveDate": "2026-03",
+   "upcoming": null,
+   "sourceUrl": "https://www.supermarketnews.com/executive-moves/teel-returns-as-raley-s-ceo-two-co-presidents-named",
+   "sourceDate": "2026-03",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed via Wikipedia and Supermarket News. Teel, majority owner since 2015, returned to the CEO role in March 2026 after Keith Knopf's departure."
+  },
+  {
+   "id": "lowes-foods",
+   "from": "Unknown CEO",
+   "to": "Tim Lowe",
+   "title": "President and CEO",
+   "effectiveDate": null,
+   "upcoming": null,
+   "sourceUrl": "https://progressivegrocer.com/lowes-foods-ceo-encourages-retailers-rebel-against-status-quo",
+   "sourceDate": "2026",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed via Wikipedia's infobox (last updated July 2026) and Progressive Grocer, though the exact appointment date is not well documented in available sources."
+  },
+  {
+   "id": "h-mart",
+   "from": "Unknown CEO",
+   "to": "Il Yeon Kwon",
+   "title": "CEO and Founder",
+   "effectiveDate": null,
+   "upcoming": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/H_Mart",
+   "sourceDate": "2026-09",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed via Wikipedia and H Mart's own site. Kwon founded H Mart in 1982 and remains CEO."
+  },
+  {
+   "id": "kvat-food-stores",
+   "from": "Unknown CEO",
+   "to": "Steven C. Smith",
+   "title": "President and CEO",
+   "effectiveDate": null,
+   "upcoming": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/Food_City_(K-VA-T)",
+   "sourceDate": "2026-01",
+   "verifiedBy": "sonnet",
+   "notes": "Resolves 'Unknown CEO' placeholder. K-VA-T Food Stores (Food City) is privately/employee-held; Steven C. Smith ('Steve Smith') is President and CEO, confirmed current as of Jan 2026 sources."
+  },
+  {
+   "id": "fresh-thyme",
+   "from": "Unknown CEO",
+   "to": "Liz Zolcak",
+   "title": "President",
+   "effectiveDate": "2022-07",
+   "upcoming": null,
+   "sourceUrl": "https://www.grocerydive.com/news/fresh-thyme-market-president-liz-zolcak-store-revamp-loyalty-program/823152/",
+   "sourceDate": "2026",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed via Wikipedia (last updated Jan 2026). Zolcak succeeded Gerald Melville, who retired July 2022; the company uses 'President' rather than 'CEO' as its top title."
+  },
+  {
+   "id": "gelsons",
+   "from": "Unknown CEO",
+   "to": "Koichi Toyo",
+   "title": "President and CEO",
+   "effectiveDate": "2026-06",
+   "upcoming": null,
+   "sourceUrl": "https://www.grocerydive.com/news/gelsons-new-president-ceo/822836/",
+   "sourceDate": "2026-06-12",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed via Wikipedia and Grocery Dive. Toyo (from parent Pan Pacific International Holdings) was appointed President/CEO around June 2026, succeeding Ryan Adams."
+  },
+  {
+   "id": "market-basket",
+   "from": "Unknown CEO",
+   "to": "Chuck Casassa",
+   "title": "President",
+   "effectiveDate": "2026-04",
+   "upcoming": null,
+   "sourceUrl": "https://www.cbsnews.com/boston/news/market-basket-new-president-artie-t-fired/",
+   "sourceDate": "2026-04-20",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed, including the striking underlying claim: a Delaware judge ruled in April 2026 that the board's firing of Arthur T. Demoulas was justified, and longtime employee Chuck Casassa (who started as a bagger) was named president. The company uses 'President' rather than 'CEO' as its top title."
+  },
+  {
+   "id": "vallarta-supermarkets",
+   "from": "Unknown CEO",
+   "to": "Enrique Gonzalez Jr",
+   "title": "President and CEO",
+   "effectiveDate": null,
+   "upcoming": null,
+   "sourceUrl": "https://www.grocerydive.com/news/vallarta-supermarkets-chief-of-stores-jose-manuel/823001/",
+   "sourceDate": "2026",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed via fresh search. Enrique Gonzalez Jr is President and CEO of Vallarta Supermarkets; our data had no CEO on file."
+  },
+  {
+   "id": "northgate-gonzalez-market",
+   "from": "Unknown CEO",
+   "to": "Oscar and Jesus Gonzalez",
+   "title": "Co-President (family leadership, succeeding founder)",
+   "effectiveDate": "2024",
+   "upcoming": null,
+   "sourceUrl": "https://theshelbyreport.com/2025/11/12/miguel-gonzalez-transitions-to-advisory-role-confident-in-northgates-next-chapter/",
+   "sourceDate": "2025-11-12",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Earlier agent named founder Miguel González as current CEO, but per a Nov 2025 trade report Miguel already transitioned to an advisory role (he and Oscar had been co-CEOs for years; Miguel retired in 2024). Oscar and Jesús González are the current co-presidents running the company day to day. Correc"
+  },
+  {
+   "id": "royal-farms",
+   "from": "Unknown CEO",
+   "to": "John Kemp",
+   "title": "President and CEO",
+   "effectiveDate": null,
+   "upcoming": null,
+   "sourceUrl": "https://www.crunchbase.com/person/john-kemp-ad39",
+   "sourceDate": "2026",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed via fresh search. John Kemp is President and CEO of Royal Farms."
+  },
+  {
+   "id": "rutters",
+   "from": "Unknown CEO",
+   "to": "Scott Hartman",
+   "title": "President and CEO",
+   "effectiveDate": null,
+   "upcoming": null,
+   "sourceUrl": "https://www.cspdailynews.com/company-news/csp-names-rutters-scott-hartman-2025-retail-leader-year",
+   "sourceDate": "2025",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed via fresh search. Scott Hartman, third-generation President and CEO of Rutter's, 34 years in the role; named 2025 CSP Retail Leader of the Year."
+  },
+  {
+   "id": "parkers-kitchen",
+   "from": "Brandon Hofmann",
+   "to": "John Rudolfs",
+   "title": "CEO",
+   "effectiveDate": "2026-09-04",
+   "upcoming": null,
+   "sourceUrl": "https://www.griceconnect.com/local-news/parkers-kitchen-announces-leadership-transition-10313095",
+   "sourceDate": "2026-09-04",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Brandon Hofmann and John Rudolfs had been co-CEOs (Parker's Kitchen's first non-founder CEOs); Hofmann departed Sept 4, 2026 to pursue other opportunities, leaving Rudolfs as sole CEO."
+  },
+  {
+   "id": "thorntons",
+   "from": "Unknown CEO",
+   "to": "Debi Boffa",
+   "title": "Chief Executive Officer",
+   "effectiveDate": "2025-10",
+   "upcoming": null,
+   "sourceUrl": "https://www.cspdailynews.com/mergers-acquisitions/new-ceo-thorntons-joint-venture-acquisition-closes",
+   "sourceDate": "2025-10",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "A second, more targeted search resolved what the earlier agent flagged as inconclusive. Debi Boffa (24 years in BP's retail business) was named CEO of Thorntons in October 2025, succeeding Simon Richards, who departed that fall."
+  },
+  {
+   "id": "mt-bank",
+   "from": "Unknown CEO",
+   "to": "René F. Jones",
+   "title": "Chairman and CEO",
+   "effectiveDate": "2017",
+   "upcoming": null,
+   "sourceUrl": "https://ir.mtb.com/news-releases/news-release-details/mt-bank-ceo-rene-jones-highlights-strong-performance-technology",
+   "sourceDate": "2026",
+   "verifiedBy": "sonnet",
+   "notes": "Resolves 'Unknown CEO' placeholder. René F. Jones has been Chairman and CEO of M&T Bank Corp since 2017; confirmed current via 2026 M&T investor-relations annual-letter release."
+  },
+  {
+   "id": "cadence-bank",
+   "from": "James D. Rollins III",
+   "to": "Stephen D. Steinour",
+   "title": "Chairman and CEO, Huntington Bancshares Incorporated",
+   "effectiveDate": "2026-02-01",
+   "upcoming": null,
+   "sourceUrl": "https://ir.huntington.com/news-presentations/press-releases/detail/967/huntington-bank-completes-merger-with-cadence-bank-expanding-presence-across-texas-and-the-south",
+   "sourceDate": "2026-02-01",
+   "verifiedBy": "sonnet",
+   "notes": "Cadence Bank was acquired by Huntington Bancshares; merger closed Feb 1, 2026 ($7.4B all-stock deal). Cadence is now merged into The Huntington National Bank. Dan Rollins (James D. Rollins III) left the CEO role entirely and became a non-executive vice chairman of Huntington's board -- he is no long"
+  },
+  {
+   "id": "jcrew-group",
+   "from": "Unknown CEO",
+   "to": "Libby Wadle",
+   "title": "Chief Executive Officer",
+   "effectiveDate": "2020",
+   "upcoming": null,
+   "sourceUrl": "https://investors.jcrew.com/management/libby-wadle",
+   "sourceDate": "2026",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed via J.Crew Group's own investor relations site. Wadle has been CEO since 2020 (also a founding Madewell team member); named World Retail Congress 'Woman of the Year' 2025 and still listed as CEO in 2026 sources."
+  },
+  {
+   "id": "urban-outfitters",
+   "from": "Unknown CEO",
+   "to": "Richard Hayne",
+   "title": "Co-founder, Chairman and Chief Executive Officer",
+   "effectiveDate": "1976",
+   "upcoming": null,
+   "sourceUrl": "https://urbanoutfittersinc.gcs-web.com/management/richard-hayne",
+   "sourceDate": "2026",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed via the company's 2026 SEC 10-K and investor relations site, plus Feb 2026 earnings-call commentary and insider share-sale filings — Hayne remains active CEO and Chairman as of 2026."
+  },
+  {
+   "id": "canada-goose",
+   "from": "Unknown CEO",
+   "to": "Dani Reiss",
+   "title": "Chairman and Chief Executive Officer",
+   "effectiveDate": "2001-01",
+   "upcoming": null,
+   "sourceUrl": "https://www.tipranks.com/news/company-announcements/canada-goose-ceo-dani-reiss-boosts-stake-with-september-share-purchase",
+   "sourceDate": "2026-09",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed as of Sept 2026 — a Sept 9, 2026 insider share purchase filing confirms Reiss is still Chairman & CEO. Patrick Bourke was named President, North America in Feb 2026, a distinct, subordinate role, not a CEO succession."
+  },
+  {
+   "id": "tory-burch",
+   "from": "Unknown CEO",
+   "to": "Pierre-Yves Roussel",
+   "title": "Chief Executive Officer",
+   "effectiveDate": "2019",
+   "upcoming": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/Tory_Burch_LLC",
+   "sourceDate": "2026-09",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Roussel has led Tory Burch since January 2019 and remains CEO as of September 2026."
+  },
+  {
+   "id": "belk",
+   "from": "Unknown CEO",
+   "to": "Don Hendricks",
+   "title": "Chief Executive Officer",
+   "effectiveDate": "2022",
+   "upcoming": null,
+   "sourceUrl": "https://www.retaildive.com/news/belk-names-ceo-don-hendricks/631578/",
+   "sourceDate": "2024-10",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Hendricks became CEO in 2022 after Nir Patel's abrupt departure; no evidence of a further change since. Consistent with Oct 2024 reporting naming Steve Sadove as Chairman."
+  },
+  {
+   "id": "boscovs",
+   "from": "Unknown CEO",
+   "to": "Jim Boscov",
+   "title": "Chairman and Chief Executive Officer",
+   "effectiveDate": null,
+   "upcoming": null,
+   "sourceUrl": "https://chainstoreage.com/operations/boscovs-ceo-hands-reins-nephew-jim-boscov",
+   "sourceDate": "2026-04",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Jim Boscov (nephew of founder Al Boscov) remains Chairman & CEO as of 2026."
+  },
+  {
+   "id": "llbean",
+   "from": "Unknown CEO",
+   "to": "Greg Elder",
+   "title": "President and Chief Executive Officer",
+   "effectiveDate": "January 2026",
+   "upcoming": null,
+   "sourceUrl": "https://www.bostonglobe.com/2026/01/09/business/ll-bean-ceo/",
+   "sourceDate": "2026-01",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Elder was promoted to CEO in January 2026, succeeding Stephen Smith."
+  },
+  {
+   "id": "brooks-brothers",
+   "from": "Unknown CEO",
+   "to": "Ken Ohashi",
+   "title": "Brand Chief Executive Officer (reports to Catalyst Brands CEO Marc Rosen)",
+   "effectiveDate": "circa 2023-2024",
+   "upcoming": null,
+   "sourceUrl": "https://www.catalystbrands.com/leadership/ken-ohashi.html",
+   "sourceDate": "2026-06",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed via CNBC (June 2026) and Catalyst Brands' own leadership page. Ohashi was also named Brand CEO of Nautica in January 2026."
+  },
+  {
+   "id": "tommy-bahama",
+   "from": "Unknown CEO",
+   "to": "Doug Wood",
+   "title": "Chief Executive Officer",
+   "effectiveDate": "January 30, 2024",
+   "upcoming": null,
+   "sourceUrl": "https://fortune.com/2026/08/03/tommy-bahama-ceo-doug-wood-on-clothing-fashion-having-fun/",
+   "sourceDate": "2026-08-03",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Doug Wood (Oxford Industries) has served as Tommy Bahama CEO since January 2024 and remains so per an August 2026 Fortune profile."
+  },
+  {
+   "id": "hess",
+   "from": "John B. Hess",
+   "to": "Mike Wirth",
+   "title": "Chairman and CEO, Chevron Corporation",
+   "effectiveDate": "2025-07-18",
+   "upcoming": null,
+   "sourceUrl": "https://www.chevron.com/newsroom/2025/q3/chevron-completes-acquisition-of-hess-corporation",
+   "sourceDate": "2025-07-18",
+   "verifiedBy": "sonnet",
+   "notes": "Chevron completed its ~$53-55B acquisition of Hess Corporation on July 18, 2025 (prior to this app's data cutoff); Hess Corp no longer exists as an independent operating company and there is no distinct surviving 'Hess' business unit with its own chief -- Hess's assets (incl. Bakken and Guyana/Stabr"
+  },
+  {
+   "id": "culvers",
+   "from": "Enrique Silva",
+   "to": "Julie Fussner",
+   "title": "CEO",
+   "effectiveDate": "2025-04",
+   "upcoming": null,
+   "sourceUrl": "https://www.restaurantdive.com/news/culvers-hires-julie-fussner-ceo/746545/",
+   "sourceDate": "2025-04",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Julie Fussner, previously CMO, became Culver's fifth CEO and first female CEO in April 2025, succeeding retiree Enrique Silva."
+  },
+  {
+   "id": "dave-busters",
+   "from": "Chris Morris",
+   "to": "Darin Harper",
+   "title": "Chief Executive Officer (promoted from CFO)",
+   "effectiveDate": "2026-08-03",
+   "upcoming": null,
+   "sourceUrl": "https://www.restaurantdive.com/news/dave-and-busters-appoints-ceo-darin-harper/826948/",
+   "sourceDate": "2026-08",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Earlier agent's answer was already stale. After Chris Morris resigned (Dec 2024) and Kevin Sheehan served as interim, Dave & Buster's hired Tarun Lal (former KFC U.S. president) as permanent CEO. Lal then retired, and CFO Darin Harper was promoted to CEO effective Aug 3, 2026 — he is the current CEO"
+  },
+  {
+   "id": "cec-entertainment",
+   "from": "David McKillips",
+   "to": "Scott Drake",
+   "title": "President and CEO",
+   "effectiveDate": "2026-02-04",
+   "upcoming": null,
+   "sourceUrl": "https://www.mediapost.com/publications/article/412522/scott-drake-promoted-to-cec-entertainment-ceo-pre.html",
+   "sourceDate": "2026-02-04",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Scott Drake (CFO since 2024) was promoted to President and CEO of CEC Entertainment (Chuck E. Cheese/Peter Piper Pizza parent) in early February 2026, succeeding David McKillips, who moved to become CEO of Topgolf International."
+  },
+  {
+   "id": "toyota",
+   "from": "Koji Sato",
+   "to": "Kenta Kon",
+   "title": "President and CEO",
+   "effectiveDate": "2026-04-01",
+   "upcoming": null,
+   "sourceUrl": "https://www.cnbc.com/2026/02/06/toyota-ceo-koji-sato-to-step-down-and-be-replaced-by-cfo-kenta-kon-profit-forecast.html",
+   "sourceDate": "2026-02-06",
+   "verifiedBy": "sonnet",
+   "notes": "Announced Feb 6, 2026, effective April 1, 2026: Kenta Kon (formerly Toyota's CFO) became President, succeeding Koji Sato, who moved to Vice Chairman and a new 'Chief Industry Officer' role (also chairman of JAMA as of Jan 2026). Toyota's home-market title convention: 'President' (shacho) is the top "
+  },
+  {
+   "id": "bmw-group",
+   "from": "Oliver Zipse",
+   "to": "Milan Nedeljković",
+   "title": "CEO / Chairman of the Board of Management",
+   "effectiveDate": "2026-05-13",
+   "upcoming": null,
+   "sourceUrl": "https://www.bmwblog.com/2025/12/09/bmw-new-ceo-milan-nedeljkovic-profile/",
+   "sourceDate": "2026-05",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Milan Nedeljković succeeded Oliver Zipse as BMW Group CEO following Zipse's planned retirement at the May 13, 2026 Annual General Meeting."
+  },
+  {
+   "id": "raymond-james",
+   "from": "Paul Reilly",
+   "to": "Paul Shoukry",
+   "title": "President and CEO",
+   "effectiveDate": "2025",
+   "upcoming": null,
+   "sourceUrl": "https://www.raymondjames.com/about-us/leadership-team/bio?_=paul.shoukry",
+   "sourceDate": "2026-09",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Paul Shoukry completed the planned CEO succession during fiscal 2025 (announced March 2024), becoming the firm's fourth CEO; Paul Reilly remains as Executive Chair. A Sept 15, 2026 Raymond James press release on executive appointments corroborates Shoukry is the sitting CEO today."
+  },
+  {
+   "id": "orangetheory",
+   "from": "Dave Long",
+   "to": "Tom Leverton",
+   "title": "Chief Executive Officer, Purpose Brands (Orangetheory's parent company)",
+   "effectiveDate": "November 2024",
+   "upcoming": null,
+   "sourceUrl": "https://athletechnews.com/orangetheory-anytime-fitness-purpose-brands/",
+   "sourceDate": "2024-11",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Corrected the effectiveDate: the Purpose Brands merger and Leverton's appointment as CEO were announced in November 2024, not 'circa 2026' as the earlier agent stated. Core finding holds -- Dave Long is now co-chair of the Purpose Brands board, not CEO."
+  },
+  {
+   "id": "life-time",
+   "from": "Bahram Akradi",
+   "to": "James Ryder",
+   "title": "Chief Executive Officer",
+   "effectiveDate": "2024",
+   "upcoming": null,
+   "sourceUrl": "https://ir.lifetime.life/corporate-governance/board-of-directors",
+   "sourceDate": "2026-08",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Ryder has been CEO since 2024; Akradi remains founder/Executive Chairman (still publicly active per an August 2026 CNBC interview) but is not CEO."
+  },
+  {
+   "id": "24-hour-fitness",
+   "from": "Karl Sanft",
+   "to": "Mark Mastrov",
+   "title": "Interim Chief Executive Officer",
+   "effectiveDate": "August 2026",
+   "upcoming": null,
+   "sourceUrl": "https://athletechnews.com/24-hour-fitness-mark-mastrov-interim-ceo-karl-sanft-departs/",
+   "sourceDate": "2026-08",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Mastrov (founder, returned as owner/executive chair via a January 2026 acquisition) stepped in as interim CEO in August 2026 after Sanft departed."
+  },
+  {
+   "id": "crunch-fitness",
+   "from": "Jim Rowley",
+   "to": "Chequan Lewis",
+   "title": "Chief Executive Officer",
+   "effectiveDate": "June 22, 2026",
+   "upcoming": null,
+   "sourceUrl": "https://www.crunch.com/thehub/crunch-fitness-names-chequan-lewis-chief-executive-officer/",
+   "sourceDate": "2026-06-22",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Lewis was named CEO effective June 22, 2026; Rowley became Executive Chairman."
+  },
+  {
+   "id": "six-flags",
+   "from": "Richard Zimmerman",
+   "to": "John Reilly",
+   "title": "President and Chief Executive Officer",
+   "effectiveDate": "December 8, 2025",
+   "upcoming": null,
+   "sourceUrl": "https://www.businesswire.com/news/home/20251124771922/en/Six-Flags-Appoints-John-Reilly-President-and-Chief-Executive-Officer",
+   "sourceDate": "2025-11-24",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Reilly took over effective December 8, 2025 and continues as CEO through 2026 per SEC filings and press coverage."
+  },
+  {
+   "id": "frontier-airlines",
+   "from": "Barry Biffle",
+   "to": "James G. Dempsey",
+   "title": "President and Chief Executive Officer",
+   "effectiveDate": "January 7, 2026",
+   "upcoming": null,
+   "sourceUrl": "https://news.flyfrontier.com/frontier-group-holdings-inc-names-james-g-dempsey-as-president-and-chief-executive-officer/",
+   "sourceDate": "2026-01-07",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Dempsey was named permanent CEO in January 2026 after serving as interim CEO since December 2025, and remains CEO as of 2026."
+  },
+  {
+   "id": "ollies-bargain-outlet",
+   "from": "John Swygert",
+   "to": "Eric van der Valk",
+   "title": "President and CEO",
+   "effectiveDate": "February 2025",
+   "upcoming": null,
+   "sourceUrl": "https://investors.ollies.us/management/eric-van-der-valk/",
+   "sourceDate": "2026",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Van der Valk has been President & CEO since February 2025 and remains so in 2026 per the investor relations site and Q2 2026 earnings call commentary."
+  },
+  {
+   "id": "bass-pro-group",
+   "from": "Jim Hagale",
+   "to": "Johnny Morris",
+   "title": "Founder, majority owner, and CEO",
+   "effectiveDate": "ongoing",
+   "upcoming": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/Johnny_Morris_(businessman)",
+   "sourceDate": "2026-09",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Johnny Morris remains founder/owner/CEO. Jim Hagale was longtime President who moved to acting CFO in 2019 when Mike McDermott became President; Hagale has not been CEO."
+  },
+  {
+   "id": "sturm-ruger",
+   "from": "Christopher Killoy",
+   "to": "Todd Seyfert",
+   "title": "President and CEO",
+   "effectiveDate": "March 1, 2025",
+   "upcoming": null,
+   "sourceUrl": "https://shotbusiness.com/2026/01/columns/five-minutes-with-todd-seyfert-president-and-chief-executive-officer-sturm-ruger-co-inc/",
+   "sourceDate": "2026-01",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Seyfert has served as President/CEO since March 2025 and remains active in the role through mid-2026 per board compensation filings."
+  },
+  {
+   "id": "les-schwab-tire",
+   "from": "Mike Broberg",
+   "to": "Tom Nolan",
+   "title": "CEO and Chairman",
+   "effectiveDate": "April 7, 2026",
+   "upcoming": null,
+   "sourceUrl": "https://bendbulletin.com/2026/03/06/les-schwab-names-tom-nolan-as-new-ceo-chairman/",
+   "sourceDate": "2026-03-06",
+   "verifiedBy": "haiku+sonnet-review",
+   "notes": "Confirmed. Nolan was appointed CEO/Chairman effective April 7, 2026, succeeding Broberg, and is the first outside hire for the role."
+  },
+  {
+   "id": "cumberland-farms",
+   "from": "Unknown CEO",
+   "to": "Russell Colaco",
+   "title": "Chief Executive Officer",
+   "effectiveDate": "2025-04",
+   "upcoming": null,
+   "sourceUrl": "https://www.cstoredive.com/news/eg-group-rebrands-as-cumberland-farms/814625/",
+   "sourceDate": "2026-03-13",
+   "verifiedBy": "sonnet",
+   "notes": "Major structural change: parent EG Group (UK-based, owner of the eg-america/Cumberland Farms US business) has itself rebranded globally as 'Cumberland Farms' in 2026 (name change became apparent ~March 2026; HQ relocating from UK to Charlotte, NC) because the US is now its largest market. Russell 'R"
+  }
+ ],
+ "unresolved": [
+  {
+   "id": "x-twitter",
+   "dataCeo": "Elon Musk",
+   "finding": "Elon Musk",
+   "reason": "uncertain: Confirmed: X Corp CEO Linda Yaccarino departed July 2025; X Corp was folded into xAI (March 2025), which then merged into SpaceX (Feb 2026, "
+  },
+  {
+   "id": "comcast",
+   "dataCeo": "Brian Roberts",
+   "finding": "Brian Roberts and Michael Cavanagh",
+   "reason": "kept incumbent co-CEO name (sprite + surname stay valid)"
+  },
+  {
+   "id": "koch-industries",
+   "dataCeo": "Charles Koch",
+   "finding": "Charles Koch and Dave Robertson",
+   "reason": "kept incumbent co-CEO name (sprite + surname stay valid)"
+  },
+  {
+   "id": "foot-locker",
+   "dataCeo": "Mary Dillon",
+   "finding": "None — no distinct Foot Locker CEO",
+   "reason": "uncertain: Corrected: this is an acquired/no-longer-independent case, not a simple stale-CEO case. Dick's Sporting Goods completed its $2.4B acquisitio"
+  },
+  {
+   "id": "jo-ann",
+   "dataCeo": "Chris DiTullio",
+   "finding": null,
+   "reason": "uncertain: JOANN went through a SECOND Chapter 11 filing on Jan 15, 2025 and fully liquidated — all 800+ stores closed by May 30, 2025; a plan administ"
+  },
+  {
+   "id": "big-lots",
+   "dataCeo": "Bruce Thorn",
+   "finding": null,
+   "reason": "uncertain: Bruce Thorn was terminated as CEO amid Big Lots' bankruptcy in Dec 2024 — that part is right. But 'Charles Anthony' as successor CEO could n"
+  },
+  {
+   "id": "ikea-usa",
+   "dataCeo": "Javier Quinones",
+   "finding": "Javier Quinones",
+   "reason": "uncertain: Could not find a fresh, checkable source: Wikipedia's IKEA article covers only global Ingka/Inter IKEA leadership (not the US country manage"
+  },
+  {
+   "id": "pioneer-natural-resources",
+   "dataCeo": "Scott Sheffield",
+   "finding": "None — company no longer independent",
+   "reason": "uncertain: Corrected: earlier agent gave a successor (Richard P. Dealy) for a company that no longer exists independently. ExxonMobil completed its $59"
+  },
+  {
+   "id": "discover-financial",
+   "dataCeo": "Michael Rhodes",
+   "finding": null,
+   "reason": "uncertain: Discover Financial Services merged fully into Capital One on May 18, 2025 and no longer exists as an independent, separately reporting compa"
+  },
+  {
+   "id": "ferrero",
+   "dataCeo": "Lapo Civiletti",
+   "finding": null,
+   "reason": "uncertain: Confirmed the underlying restructuring but the earlier agent's slot naming is muddled. Ferrero eliminated its single 'Group CEO' role in a 2"
+  },
+  {
+   "id": "five-guys",
+   "dataCeo": "Matt Murrell",
+   "finding": "Matt Murrell",
+   "reason": "uncertain: Confirmed. Five Guys remains privately run by the Murrell family (Jerry Murrell's five sons in various operational roles) with no formal CEO"
+  },
+  {
+   "id": "peets-coffee",
+   "dataCeo": "Dave Burwick",
+   "finding": "No distinct named CEO identified; Eric Lauterbach holds the 'President' title",
+   "reason": "uncertain: Corrected from a flat 'Unknown': fresh research found Peet's currently listing Eric Lauterbach as President, not a named 'CEO' — Peet's oper"
+  },
+  {
+   "id": "wetzels-pretzels",
+   "dataCeo": "Jennifer Schuler",
+   "finding": "Unable to independently confirm (earlier agent named Vincent Montanelli)",
+   "reason": "uncertain: Could not independently verify with fresh sources — the cited Restaurant Business Online article and other trade outlets (NRN, Franchise Tim"
+  },
+  {
+   "id": "bob-evans",
+   "dataCeo": "Bret Halverson",
+   "finding": "Unable to independently confirm (earlier agent named Mickey Mills)",
+   "reason": "uncertain: Could not independently confirm. Wikipedia is very stale for Bob Evans Restaurants (last named CEO is Steven Davis, resigned 2014; no mentio"
+  },
+  {
+   "id": "pilot-flying-j",
+   "dataCeo": "Shameek Konar",
+   "finding": "Unable to independently confirm (earlier agent named Adam Wright)",
+   "reason": "uncertain: Could not independently confirm with a fresh source — the cited CCJ Digital article and Pilot's own newsroom both returned 403/404 to fetch "
+  },
+  {
+   "id": "tuesday-morning",
+   "dataCeo": "Fred Hand",
+   "finding": "None — company liquidated",
+   "reason": "uncertain: Corrected: this is the acquired/liquidated failure mode — the earlier agent gave a successor (Andrew T. Berger) for a company whose retail o"
+  },
+  {
+   "id": "midas",
+   "dataCeo": "Erik Olsen",
+   "finding": "Don Byrd",
+   "reason": "uncertain: Confirmed Don Byrd is TBC Corp's President/CEO (since May 2024), matching the earlier agent's finding. But the entity mapping itself is genu"
+  },
+  {
+   "id": "calm",
+   "dataCeo": "David Ko",
+   "finding": null,
+   "reason": "uncertain: Ko's May 2026 departure is confirmed, but no successor CEO could be found in any source through Sept 2026. Correcting the status label from "
+  },
+  {
+   "id": "two-men-and-a-truck",
+   "dataCeo": "Randy Shacka",
+   "finding": "Michael Mullican is CEO of parent ServiceMaster Brands; Randy Shacka remains President of Two Men and a Truck itself",
+   "reason": "uncertain: Confirmed role mismatch. Two Men and a Truck International itself does not appear to carry a distinct 'CEO' title — Shacka holds 'President."
+  },
+  {
+   "id": "udemy",
+   "dataCeo": "Greg Brown",
+   "finding": "Greg Hart (Coursera CEO; no distinct Udemy CEO)",
+   "reason": "uncertain: Greg Brown was CEO 2023–March 2025, succeeded by Hugo Sarrazin. Udemy merged into Coursera (closed May 11, 2026); Sarrazin then left for Ava"
+  },
+  {
+   "id": "tiktok",
+   "dataCeo": "Shou Zi Chew",
+   "finding": "Shou Zi Chew",
+   "reason": "uncertain: Chew remains TikTok's global CEO, but the Jan 22, 2026 US divestiture deal (with Oracle/Silver Lake/MGX) created TikTok USDS Joint Venture L"
+  },
+  {
+   "id": "github",
+   "dataCeo": "Thomas Dohmke",
+   "finding": "No standalone CEO",
+   "reason": "uncertain: Dohmke stepped down Aug 2025 (later founded startup Entire); Microsoft did not name a CEO successor and folded GitHub into its CoreAI divisi"
+  },
+  {
+   "id": "ftx",
+   "dataCeo": null,
+   "finding": "John J. Ray III",
+   "reason": "uncertain: Sam Bankman-Fried (publicFigureName) resigned as CEO in Nov 2022 and was convicted of fraud in 2023; he is imprisoned and has no role with F"
+  },
+  {
+   "id": "lone-pine-capital",
+   "dataCeo": null,
+   "finding": null,
+   "reason": "uncertain: Stephen Mandel (publicFigureName, founder) stepped back from day-to-day management in January 2019 into a mentorship/reduced-oversight role."
+  },
+  {
+   "id": "td-ameritrade",
+   "dataCeo": null,
+   "finding": null,
+   "reason": "uncertain: TD Ameritrade no longer exists as a standalone company or brand. Charles Schwab completed its acquisition in October 2020; client accounts f"
+  },
+  {
+   "id": "reyes-holdings",
+   "dataCeo": null,
+   "finding": "Chris Reyes",
+   "reason": "uncertain: Privately held; company site and Wikipedia confirm J. Christopher (Chris) Reyes and Jude Reyes co-founded the company in 1976 but do not sta"
+  },
+  {
+   "id": "saban-entertainment",
+   "dataCeo": null,
+   "finding": null,
+   "reason": "uncertain: Saban Entertainment was sold to Disney and rebranded as BVS Entertainment on Nov 29, 2001; it has had no active production since 2009 and ex"
+  },
+  {
+   "id": "sequoia-capital",
+   "dataCeo": null,
+   "finding": "Alfred Lin & Pat Grady (Co-Senior Stewards)",
+   "reason": "uncertain: The earlier agent's info (Michael Moritz, unconfirmed Roelof Botha) was stale and incomplete. Roelof Botha was Senior Steward 2022 until ste"
+  },
+  {
+   "id": "citgo",
+   "dataCeo": "Unknown CEO",
+   "finding": "Contested/unresolved — Elliott Management-aligned board reportedly still operationally in control; Asdrúbal Chávez named by Venezuela's PDVSA but not yet in actual control",
+   "reason": "uncertain: Confirmed and updated with same-day reporting. As of Sept 27, 2026, actual operational control has NOT transferred to Chávez — OFAC licensin"
+  },
+  {
+   "id": "container-store",
+   "dataCeo": "Unknown CEO",
+   "finding": "N/A — absorbed into Bed Bath & Beyond, Inc.",
+   "reason": "uncertain: Confirmed. Bed Bath & Beyond (Executive Chairman/CEO Marcus Lemonis) agreed to acquire The Container Store for ~$150M (announced April 2, 20"
+  },
+  {
+   "id": "patel-brothers",
+   "dataCeo": "Unknown CEO",
+   "finding": null,
+   "reason": "uncertain: Confirmed as genuinely unresolvable rather than a research gap. Patel Brothers is family-run, with day-to-day operations handled collectivel"
+  },
+  {
+   "id": "bashas",
+   "dataCeo": "Unknown CEO",
+   "finding": "Steve Mayer",
+   "reason": "uncertain: Confirmed via Wikipedia (last updated Sept 16, 2026). Mayer has been President since June 2023; Bashas' operates as a division of Raley's (m"
+  },
+  {
+   "id": "mapco",
+   "dataCeo": "Unknown CEO",
+   "finding": "Not confirmed — no named current successor found",
+   "reason": "uncertain: Additional research confirms the earlier agent's 'uncertain' call. Hal Adams (CEO since 2018) departed Oct 2025; subsequent CSP Daily News/C"
+  },
+  {
+   "id": "comerica",
+   "dataCeo": "Curtis C. Farmer",
+   "finding": "Curtis C. Farmer",
+   "reason": "uncertain: Comerica Incorporated was acquired by Fifth Third Bancorp; the merger closed Feb 2, 2026, and full technology/brand conversion (accounts, ba"
+  },
+  {
+   "id": "asics",
+   "dataCeo": "Yasuhito Hirota",
+   "finding": "Yasuhito Hirota is confirmed current Chairman & CEO of ASICS Corp (global parent, Japan) since 2022; Koichiro Kodama is President & CEO of the ASICS America/North America subsidiary (reappointed Oct 2023)",
+   "reason": "uncertain: Data's Yasuhito Hirota has NOT been replaced -- he is confirmed as sitting Chairman/CEO of ASICS Corp globally. He is not, however, the head"
+  },
+  {
+   "id": "sinclair-oil",
+   "dataCeo": "Ross Matthews",
+   "finding": "Uncertain (not Franklin Myers)",
+   "reason": "uncertain: Entity confusion: the earlier agent's answer (Franklin Myers, interim CEO, Timothy Go's departure) describes HF Sinclair Corporation, the NY"
+  },
+  {
+   "id": "papa-murphys",
+   "dataCeo": "Kim McBee",
+   "finding": "No distinct CEO — brand of MTY Food Group (CEO Eric Lefebvre)",
+   "reason": "uncertain: Papa Murphy's has been a wholly owned subsidiary of Montreal-based MTY Food Group since 2019; MTY's corporate CEO Eric Lefebvre oversees the"
+  },
+  {
+   "id": "potbelly",
+   "dataCeo": "Bob Wright",
+   "finding": "No distinct CEO confirmed post-acquisition; Adam Noyes is President",
+   "reason": "uncertain: RaceTrac completed its $566M acquisition of Potbelly in Oct 2025 and promoted COO Adam Noyes to President. Bob Wright stayed on as CEO only "
+  },
+  {
+   "id": "spirit-airlines",
+   "dataCeo": "Dave Davis",
+   "finding": "Dave Davis",
+   "reason": "uncertain: Confirmed. Spirit ceased all operations on May 2, 2026 after a second Chapter 11 filing and a failed federal bailout. Davis was CEO through "
+  },
+  {
+   "id": "pet-supplies-plus",
+   "dataCeo": "Chris Rowland",
+   "finding": "Unclear -- conflicting sources tie Chris Rowland, Mark Martin, and Harvey Solway to CEO/President titles at Pet Supplies Plus",
+   "reason": "uncertain: Cannot confirm current CEO. A second search surfaced a third candidate name (Harvey Solway, LinkedIn) in addition to the earlier agent's two"
+  },
+  {
+   "id": "one-medical",
+   "dataCeo": "Trent Green",
+   "finding": "Unclear -- no publicly confirmed named successor to Trent Green found; NOT Amir Dan Rubin",
+   "reason": "uncertain: Trent Green did step down effective April 4, 2025 (to lead NRC Health), so dataCeo is confirmed stale. But the earlier agent's claim that le"
+  }
+ ],
+ "upcomingSuccessions": [
+  {
+   "id": "warner-bros-discovery",
+   "dataCeo": "David Zaslav",
+   "upcoming": "David Ellison (Chairman & CEO of Paramount Skydance Corp) is set to become CEO of the combined company once the ~$110B Paramount Skydance acquisition of WBD closes. Per Zaslav's internal memo the deal is expected to close 'by early October 2026' after a Sept 21, 2026 settlement with state AGs cleared a major hurdle; final close had not occurred as of 2026-09-27. Zaslav is expected to depart with a large exit package at close."
+  },
+  {
+   "id": "energy-transfer",
+   "dataCeo": null,
+   "upcoming": "Marshall McCrea plans to retire on or before 2026-12-31; Thomas Long will become sole CEO at that point (announced 2026-06-01)."
+  },
+  {
+   "id": "tyson-foods",
+   "dataCeo": "Donnie King",
+   "upcoming": "Jeff Schomburger, President and CEO effective 2026-10-04"
+  },
+  {
+   "id": "dropbox",
+   "dataCeo": "Drew Houston",
+   "upcoming": "Ashraf Alkarmi (current Co-CEO since 2026-05-26) is set to become sole CEO after a transition period, with Houston moving to Executive Chairman — no effective date announced yet as of this verification."
+  },
+  {
+   "id": "concentra",
+   "dataCeo": "Keith Newton",
+   "upcoming": "Matt DiCanio to become President and CEO effective 2026-11-01; Newton to transition to Executive Chairman."
+  },
+  {
+   "id": "ahold-delhaize",
+   "dataCeo": "Frans Muller",
+   "upcoming": "Thierry Garnier nominated to succeed Muller as President and CEO around the April 2027 Annual General Meeting; Muller to retire from the company in 2027"
+  },
+  {
+   "id": "adobe",
+   "dataCeo": "Shantanu Narayen",
+   "upcoming": "Anil Chakravarthy named to become President and CEO effective December 1, 2026 (announced Sept 3, 2026); Narayen will transition to Executive Chair"
+  },
+  {
+   "id": "brown-forman",
+   "dataCeo": "Lawson Whiting",
+   "upcoming": "Whiting announced retirement 2026-07-13, effective when a successor is appointed; search ongoing"
+  },
+  {
+   "id": "best-buy",
+   "dataCeo": "Corie Barry",
+   "upcoming": "Jason Bonfig (Nov 1, 2026)"
+  },
+  {
+   "id": "dollar-general",
+   "dataCeo": "Todd Vasos",
+   "upcoming": "Jerry Fleeman Jr. (effective 2027-01-01)"
+  },
+  {
+   "id": "jde-peets",
+   "dataCeo": "Rafa Oliveira",
+   "upcoming": "Transitioning to Heineken CEO effective 2026-10-01"
+  },
+  {
+   "id": "extra-space-storage",
+   "dataCeo": "Joe Margolis",
+   "upcoming": "2027-01-01"
+  },
+  {
+   "id": "rentokil-terminix",
+   "dataCeo": "Andy Ransom",
+   "upcoming": "2026"
+  },
+  {
+   "id": "volvo-cars",
+   "dataCeo": "Hakan Samuelsson",
+   "upcoming": "Klaus Zellmer"
+  },
+  {
+   "id": "clorox",
+   "dataCeo": "Linda Rendle",
+   "upcoming": "CEO search in progress"
+  },
+  {
+   "id": "post-holdings",
+   "dataCeo": "Robert V. Vitale",
+   "upcoming": "Nicolas Catoggio becomes CEO October 1, 2026"
+  },
+  {
+   "id": "heb",
+   "dataCeo": "Howard Butt III",
+   "upcoming": "Roxanne Orsak promoted to President Jan 2026, reports to Butt"
+  },
+  {
+   "id": "sprouts-farmers-market",
+   "dataCeo": "Jack Sinclair",
+   "upcoming": "Nick Konat to become CEO Jan 4, 2027; Sinclair to Executive Chairman"
+  }
+ ],
+ "peopleRolesToReview": [
+  {
+   "personId": "warren-a-stephens",
+   "entityId": "stephens-inc",
+   "role": "Chairman, President & CEO",
+   "newCeo": "Miles and John Stephens"
+  },
+  {
+   "personId": "john-b-hess",
+   "entityId": "hess",
+   "role": "CEO",
+   "newCeo": "Mike Wirth"
+  },
+  {
+   "personId": "tim-cook",
+   "entityId": "apple",
+   "role": "CEO",
+   "newCeo": "John Ternus"
+  }
+ ],
+ "spriteLost": [
+  {
+   "id": "walmart",
+   "from": "Doug McMillon",
+   "to": "John Furner"
+  },
+  {
+   "id": "target",
+   "from": "Brian Cornell",
+   "to": "Michael Fiddelke"
+  },
+  {
+   "id": "altria",
+   "from": "Billy Gifford",
+   "to": "Sal Mancuso"
+  },
+  {
+   "id": "kroger",
+   "from": "Rodney McMullen",
+   "to": "Greg Foran"
+  },
+  {
+   "id": "walgreens",
+   "from": "Tim Wentworth",
+   "to": "Mike Motz"
+  },
+  {
+   "id": "albertsons",
+   "from": "Vivek Sankaran",
+   "to": "Susan Morris"
+  },
+  {
+   "id": "kohls",
+   "from": "Tom Kingsbury",
+   "to": "Michael J. Bender"
+  },
+  {
+   "id": "jcpenney",
+   "from": "Marc Rosen",
+   "to": "Michelle Wlazlo"
+  },
+  {
+   "id": "grocery-outlet",
+   "from": "RJ Sheedy",
+   "to": "Jason Potter"
+  },
+  {
+   "id": "michaels",
+   "from": "Ashley Buchanan",
+   "to": "David Boone"
+  },
+  {
+   "id": "five-below",
+   "from": "Joel Anderson",
+   "to": "Winnie Park"
+  },
+  {
+   "id": "aldi",
+   "from": "Jason Hart",
+   "to": "Atty McGrath"
+  },
+  {
+   "id": "lidl",
+   "from": "Joel Rampoldt",
+   "to": "Alan Barry"
+  },
+  {
+   "id": "etsy",
+   "from": "Josh Silverman",
+   "to": "Kruti Patel Goyal"
+  },
+  {
+   "id": "hot-topic",
+   "from": "Kathryn Merrical",
+   "to": "Steve Vranes"
+  },
+  {
+   "id": "winn-dixie",
+   "from": "Jason Hart",
+   "to": "Atty McGrath"
+  },
+  {
+   "id": "carmax",
+   "from": "Bill Nash",
+   "to": "Keith Barr"
+  },
+  {
+   "id": "rei",
+   "from": "Eric Artz",
+   "to": "Mary Beth Laughton"
+  },
+  {
+   "id": "floor-and-decor",
+   "from": "Tom Taylor",
+   "to": "Bradley S. Paulsen"
+  },
+  {
+   "id": "aarons",
+   "from": "Douglas Lindsay",
+   "to": "Cory Miller"
+  },
+  {
+   "id": "paypal",
+   "from": "Alex Chriss",
+   "to": "Enrique Lores"
+  },
+  {
+   "id": "workday",
+   "from": "Carl Eschenbach",
+   "to": "Aneel Bhusri"
+  },
+  {
+   "id": "instacart",
+   "from": "Fidji Simo",
+   "to": "Chris Rogers"
+  },
+  {
+   "id": "t-mobile",
+   "from": "Mike Sievert",
+   "to": "Srini Gopalan"
+  },
+  {
+   "id": "disney",
+   "from": "Bob Iger",
+   "to": "Josh D'Amaro"
+  },
+  {
+   "id": "spotify",
+   "from": "Daniel Ek",
+   "to": "Alex Norström & Gustav Söderström"
+  }
+ ],
+ "held": [
+  {
+   "id": "apple",
+   "from": "Tim Cook",
+   "to": "John Ternus",
+   "title": "CEO",
+   "effectiveDate": "2026-09-01",
+   "upcoming": null,
+   "sourceUrl": "https://en.wikipedia.org/wiki/Tim_Cook",
+   "sourceDate": null,
+   "verifiedBy": "sonnet",
+   "notes": "Very recent change: announced 2026-04-20 that Cook would step down 2026-09-01 (just before today's date); Cook became Executive Chairman, John Ternus (former SVP Hardware Engineering) became CEO. Confirmed via two independent sources (Wikipedia + stockanalysis.com).",
+   "heldReason": "Owner decision 2026-09-30: hold Apple at Tim Cook for now. John Ternus has been CEO since 2026-09-01 (Cook is Executive Chairman). Sprite description for Ternus prepared."
+  }
+ ]
+}
