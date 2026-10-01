@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 358 220" width="358" height="220" font-family="Helvetica, Arial, sans-serif">
+  <!--
+    Track row — visual states reference (v2, full-height columns + brighter focus).
+
+    Layout convention (no row paddingHorizontal — columns flush to row edges):
+      Sprite column   x=  0 to  44   (44 wide, square, full row height)
+      Name column     x= 44 to 294   (flex middle; text padded 12pt internally)
+      AVOID column    x=294 to 358   (64 wide, full row height)
+
+    Row stack (220pt total):
+      Row 1  y=  0– 44  default parent (collapsed, not focused)
+      Row 2  y= 44– 88  focused parent (expanded) — cyan top rule + brighter tint
+      Strip  y= 88–132  day circles — same brighter tint, today column even brighter
+      Row 3  y=132–176  avoided today (✓ column replaces AVOID column)
+      Row 4  y=176–220  child row (no sprite column, indented 76pt)
+
+    Brightness bumps (vs. v1):
+      focused row tint   rgba(40,120,200,0.08) → 0.18    (TRACK_ROW_FOCUS_BG_COLOR)
+      today column tint  rgba(40,120,200,0.12) → 0.30    (TRACK_TODAY_BAND_OPACITY)
+
+    New conventions:
+      • Sprite at TRACK_ROW_SPRITE_SIZE = 44 (was 32) — fills the column.
+      • AvoidButton height = 44 (was 36) — fills the column.
+      • Focused row carries 1px focusAccent rules on TOP and BOTTOM (the
+        day-today convention), extended across the expanded zone so row 2 +
+        day-circles strip read as one cohesive cell.
+      • TRACK_CHILD_INDENT bumps 56 → 76 to preserve visual indent now that
+        the parent sprite column ends at x=44 + 12pt internal text padding = 56.
+
+    Bevels approximated with 4 thin rect edges per beveled element
+    (top/left light, bottom/right dark for raised; inverse for inset).
+
+    Color palette (design/tokens.ts):
+      bgVoid           #070B12   svg backdrop
+      panelInner       #0E1012   row bg (rest)
+      panelOuter       #0A0B0C   sprite column bg + day-tile bg
+      bevelLight       #3A3E42   raised bevel light edge
+      bevelDark        #141618   raised bevel dark edge / row separator
+      bevelInsetDark   #0A0B0C   inset bevel dark edge
+      bevelInsetLight  #222528   inset bevel light edge
+      focusAccent      #2878C8   focused border + AVOID button bg + today rules
+      focusBevelLight  #4A9AE8   raised focus bevel light
+      focusBevelDark   #1A4A7A   raised focus bevel dark
+      focusText        #C0DAF0   focused name color
+      textPrimary      #DCE7F6   default name color + AVOID label
+      textSecondary    #A8B4C8   subtitle + count + child name
+      dangerRed        #FF3B30   weekly count
+      successGreenDeep #1A3A1A   ✓ button bg + checked-day bg
+      successGreenText #5AB55A   ✓ glyph + checked-day check
+      rewardYellow     #FFC93C   sparkles
+  -->
+
+  <!-- Background (bgVoid behind everything) -->
+  <rect x="0" y="0" width="358" height="220" fill="#070B12"/>
+
+  <!-- ─────────── Row 1 — DEFAULT (collapsed, not focused, not avoided) ─────────── -->
+  <g id="row-default">
+    <!-- row bg -->
+    <rect x="0" y="0" width="358" height="44" fill="#0E1012"/>
+
+    <!-- Sprite column: 44×44 panelOuter, flush left -->
+    <rect x="0" y="0" width="44" height="44" fill="#0A0B0C"/>
+    <!-- Sprite at 44×44 (was 32×32 — now fills the column) — pixel-art bust placeholder -->
+    <g transform="translate(0, 0)">
+      <rect x="14" y="6"  width="16" height="14" fill="#CAA890"/>           <!-- head -->
+      <rect x="11" y="20" width="22" height="2"  fill="#3A3E42"/>           <!-- collar -->
+      <rect x="8"  y="22" width="28" height="22" fill="#1F2A3D"/>           <!-- suit -->
+      <rect x="21" y="26" width="2"  height="18" fill="#5A6B85"/>           <!-- shirt placket -->
+    </g>
+
+    <!-- Name column text (paddingLeft 12 inside name column) -->
+    <text x="56" y="20" fill="#DCE7F6" font-size="15" font-weight="600">PLATFORM NAME</text>
+    <text x="56" y="34" fill="#A8B4C8" font-size="11">Public figure name</text>
+
+    <!-- Count (right-aligned at x=288, 6pt before AVOID column at x=294) -->
+    <text x="288" y="27" fill="#FF3B30" font-size="14" font-weight="600" text-anchor="end">5×</text>
+
+    <!-- AVOID column: 64×44 focusAccent + bevel raised, flush right -->
+    <g id="avoid-default" transform="translate(294, 0)">
+      <rect x="0" y="0" width="64" height="44" fill="#2878C8"/>
+      <rect x="0" y="0" width="64" height="2"  fill="#4A9AE8"/>             <!-- bevel top -->
+      <rect x="0" y="0" width="2"  height="44" fill="#4A9AE8"/>             <!-- bevel left -->
+      <rect x="0" y="42" width="64" height="2"  fill="#1A4A7A"/>            <!-- bevel bottom -->
+      <rect x="62" y="0" width="2"  height="44" fill="#1A4A7A"/>            <!-- bevel right -->
+      <text x="32" y="26" fill="#DCE7F6" font-size="11" font-weight="700" letter-spacing="0.8" text-anchor="middle">AVOID</text>
+    </g>
+
+    <!-- bottom separator (PAINTED LAST so it renders OVER the sprite column edge) -->
+    <rect x="0" y="43" width="358" height="1" fill="#141618"/>
+  </g>
+
+  <!-- ─────────── Row 2 — FOCUSED (expanded) ─────────── -->
+  <g id="row-focused">
+    <!-- row bg -->
+    <rect x="0" y="44" width="358" height="44" fill="#0E1012"/>
+    <!-- focusTint overlay (BRIGHTER — 0.18) — covers entire row including sprite column -->
+    <rect x="0" y="44" width="358" height="44" fill="#2878C8" fill-opacity="0.18"/>
+
+    <!-- Sprite column: panelOuter base, focusTint shows through -->
+    <rect x="0" y="44" width="44" height="44" fill="#0A0B0C"/>
+    <rect x="0" y="44" width="44" height="44" fill="#2878C8" fill-opacity="0.18"/>
+    <!-- Sprite art -->
+    <g transform="translate(0, 44)">
+      <rect x="14" y="6"  width="16" height="14" fill="#CAA890"/>
+      <rect x="11" y="20" width="22" height="2"  fill="#3A3E42"/>
+      <rect x="8"  y="22" width="28" height="22" fill="#1F2A3D"/>
+      <rect x="21" y="26" width="2"  height="18" fill="#5A6B85"/>
+    </g>
+
+    <!-- Name (focusText) + subtitle -->
+    <text x="56" y="64" fill="#C0DAF0" font-size="15" font-weight="600">PLATFORM NAME</text>
+    <text x="56" y="78" fill="#A8B4C8" font-size="11">Public figure name</text>
+    <text x="288" y="71" fill="#FF3B30" font-size="14" font-weight="600" text-anchor="end">5×</text>
+
+    <!-- AVOID column (same as default — focusAccent + bevelFocusRaised) -->
+    <g transform="translate(294, 44)">
+      <rect x="0" y="0" width="64" height="44" fill="#2878C8"/>
+      <rect x="0" y="0" width="64" height="2"  fill="#4A9AE8"/>
+      <rect x="0" y="0" width="2"  height="44" fill="#4A9AE8"/>
+      <rect x="0" y="42" width="64" height="2"  fill="#1A4A7A"/>
+      <rect x="62" y="0" width="2"  height="44" fill="#1A4A7A"/>
+      <text x="32" y="26" fill="#DCE7F6" font-size="11" font-weight="700" letter-spacing="0.8" text-anchor="middle">AVOID</text>
+    </g>
+
+    <!-- Sparkles (rewardYellow, top-right area, layered above AVOID column) -->
+    <text x="334" y="48" fill="#FFC93C" font-size="10">✦</text>
+    <text x="346" y="58" fill="#FFC93C" font-size="8">✧</text>
+    <text x="322" y="50" fill="#FFC93C" font-size="7">✦</text>
+
+    <!-- top focusAccent rule (PAINTED LAST so it renders OVER the sprite + AVOID columns) -->
+    <rect x="0" y="44" width="358" height="1" fill="#2878C8"/>
+    <!-- (NO bottom rule — continues into day-circles strip) -->
+  </g>
+
+  <!-- ─────────── Day Circles (Sat–Fri, Tue = today) ─────────── -->
+  <g id="day-circles">
+    <!-- strip bg + brighter focusTint overlay (continues from row 2) -->
+    <rect x="0" y="88" width="358" height="44" fill="#0E1012"/>
+    <rect x="0" y="88" width="358" height="44" fill="#2878C8" fill-opacity="0.18"/>
+
+    <!-- 7 columns: SAT, SUN, MON, TUE(today), WED, THU, FRI
+         Container x=12..346, columns 36 wide, gap ~10.25 (matches v1)
+         Tile 28×28 at column-x + 4, tile y = 102 (paddingTop 2 + label 12 + gap 2 = 16 → strip y=88+16=104; using y=102 for slightly tighter)
+         Strip height 44 (was 50): paddingTop 2, label 12, gap 2, tile 28, paddingBottom 0 → 44 -->
+
+    <!-- TUE today column band (BRIGHTER — 0.30) painted FIRST so other column content layers on top -->
+    <rect x="160" y="88" width="36" height="44" fill="#2878C8" fill-opacity="0.30"/>
+    <rect x="160" y="88" width="36" height="1"  fill="#2878C8"/>           <!-- today col top rule -->
+    <rect x="160" y="131" width="36" height="1" fill="#2878C8"/>           <!-- today col bottom rule -->
+
+    <!-- SAT (checked) -->
+    <text x="40" y="100" fill="#DCE7F6" font-size="11" font-weight="700" text-anchor="middle">SAT</text>
+    <g transform="translate(26, 102)">
+      <rect x="0" y="0" width="28" height="28" rx="4" fill="#1A3A1A"/>
+      <rect x="0" y="0" width="28" height="2"  fill="#1A3A1A"/>
+      <rect x="0" y="0" width="2"  height="28" fill="#1A3A1A"/>
+      <rect x="0" y="26" width="28" height="2"  fill="#2A5A2A"/>
+      <rect x="26" y="0" width="2"  height="28" fill="#2A5A2A"/>
+      <text x="14" y="20" fill="#5AB55A" font-size="14" font-weight="700" text-anchor="middle">✓</text>
+    </g>
+
+    <!-- SUN (checked) -->
+    <text x="86" y="100" fill="#DCE7F6" font-size="11" font-weight="700" text-anchor="middle">SUN</text>
+    <g transform="translate(72, 102)">
+      <rect x="0" y="0" width="28" height="28" rx="4" fill="#1A3A1A"/>
+      <rect x="0" y="0" width="28" height="2"  fill="#1A3A1A"/>
+      <rect x="0" y="0" width="2"  height="28" fill="#1A3A1A"/>
+      <rect x="0" y="26" width="28" height="2"  fill="#2A5A2A"/>
+      <rect x="26" y="0" width="2"  height="28" fill="#2A5A2A"/>
+      <text x="14" y="20" fill="#5AB55A" font-size="14" font-weight="700" text-anchor="middle">✓</text>
+    </g>
+
+    <!-- MON (open, past) -->
+    <text x="132" y="100" fill="#DCE7F6" font-size="11" font-weight="700" text-anchor="middle">MON</text>
+    <g transform="translate(118, 102)">
+      <rect x="0" y="0" width="28" height="28" rx="4" fill="#0A0B0C"/>
+      <rect x="0" y="0" width="28" height="2"  fill="#0A0B0C"/>
+      <rect x="0" y="0" width="2"  height="28" fill="#0A0B0C"/>
+      <rect x="0" y="26" width="28" height="2"  fill="#3A3E42"/>            <!-- tileOpen lightens bottom -->
+      <rect x="26" y="0" width="2"  height="28" fill="#3A3E42"/>
+    </g>
+
+    <!-- TUE (today, open, focused borders) -->
+    <text x="178" y="100" fill="#5FAEFF" font-size="11" font-weight="700" text-anchor="middle">TUE</text>
+    <g transform="translate(164, 102)">
+      <rect x="0" y="0" width="28" height="28" rx="4" fill="#0A0B0C"/>
+      <rect x="0" y="0" width="28" height="2"  fill="#0A0B0C"/>
+      <rect x="0" y="0" width="2"  height="28" fill="#0A0B0C"/>
+      <rect x="0" y="26" width="28" height="2"  fill="#2878C8"/>            <!-- tileToday focusAccent edges -->
+      <rect x="26" y="0" width="2"  height="28" fill="#2878C8"/>
+    </g>
+
+    <!-- WED (future, dimmed) -->
+    <g opacity="0.2">
+      <text x="224" y="100" fill="#DCE7F6" font-size="11" font-weight="700" text-anchor="middle">WED</text>
+      <g transform="translate(210, 102)">
+        <rect x="0" y="0" width="28" height="28" rx="4" fill="#0A0B0C"/>
+        <rect x="0" y="0" width="28" height="2"  fill="#0A0B0C"/>
+        <rect x="0" y="0" width="2"  height="28" fill="#0A0B0C"/>
+        <rect x="0" y="26" width="28" height="2"  fill="#222528"/>
+        <rect x="26" y="0" width="2"  height="28" fill="#222528"/>
+      </g>
+    </g>
+
+    <!-- THU (future, dimmed) -->
+    <g opacity="0.2">
+      <text x="270" y="100" fill="#DCE7F6" font-size="11" font-weight="700" text-anchor="middle">THU</text>
+      <g transform="translate(256, 102)">
+        <rect x="0" y="0" width="28" height="28" rx="4" fill="#0A0B0C"/>
+        <rect x="0" y="0" width="28" height="2"  fill="#0A0B0C"/>
+        <rect x="0" y="0" width="2"  height="28" fill="#0A0B0C"/>
+        <rect x="0" y="26" width="28" height="2"  fill="#222528"/>
+        <rect x="26" y="0" width="2"  height="28" fill="#222528"/>
+      </g>
+    </g>
+
+    <!-- FRI (future, dimmed) -->
+    <g opacity="0.2">
+      <text x="316" y="100" fill="#DCE7F6" font-size="11" font-weight="700" text-anchor="middle">FRI</text>
+      <g transform="translate(302, 102)">
+        <rect x="0" y="0" width="28" height="28" rx="4" fill="#0A0B0C"/>
+        <rect x="0" y="0" width="28" height="2"  fill="#0A0B0C"/>
+        <rect x="0" y="0" width="2"  height="28" fill="#0A0B0C"/>
+        <rect x="0" y="26" width="28" height="2"  fill="#222528"/>
+        <rect x="26" y="0" width="2"  height="28" fill="#222528"/>
+      </g>
+    </g>
+
+    <!-- bottom focusAccent rule (PAINTED LAST — closes the focused-expanded zone, edge-to-edge) -->
+    <rect x="0" y="131" width="358" height="1" fill="#2878C8"/>
+  </g>
+
+  <!-- ─────────── Row 3 — AVOIDED TODAY (collapsed, not focused, ✓ column) ─────────── -->
+  <g id="row-avoided">
+    <rect x="0" y="132" width="358" height="44" fill="#0E1012"/>
+
+    <!-- Sprite column -->
+    <rect x="0" y="132" width="44" height="44" fill="#0A0B0C"/>
+    <g transform="translate(0, 132)">
+      <rect x="14" y="6"  width="16" height="14" fill="#CAA890"/>
+      <rect x="11" y="20" width="22" height="2"  fill="#3A3E42"/>
+      <rect x="8"  y="22" width="28" height="22" fill="#1F2A3D"/>
+      <rect x="21" y="26" width="2"  height="18" fill="#5A6B85"/>
+    </g>
+
+    <text x="56" y="152" fill="#DCE7F6" font-size="15" font-weight="600">PLATFORM NAME</text>
+    <text x="56" y="166" fill="#A8B4C8" font-size="11">Public figure name</text>
+    <text x="288" y="159" fill="#FF3B30" font-size="14" font-weight="600" text-anchor="end">6×</text>
+
+    <!-- ✓ column: 64×44 successGreenDeep + bevelGreenInset -->
+    <g id="avoid-done" transform="translate(294, 132)">
+      <rect x="0" y="0" width="64" height="44" fill="#1A3A1A"/>
+      <rect x="0" y="0" width="64" height="2"  fill="#1A3A1A"/>             <!-- inset top dark -->
+      <rect x="0" y="0" width="2"  height="44" fill="#1A3A1A"/>             <!-- inset left dark -->
+      <rect x="0" y="42" width="64" height="2"  fill="#2A5A2A"/>            <!-- inset bottom lighter -->
+      <rect x="62" y="0" width="2"  height="44" fill="#2A5A2A"/>            <!-- inset right lighter -->
+      <text x="32" y="29" fill="#5AB55A" font-size="20" font-weight="700" text-anchor="middle">✓</text>
+    </g>
+
+    <!-- bottom separator (PAINTED LAST so it renders OVER sprite + ✓ columns) -->
+    <rect x="0" y="175" width="358" height="1" fill="#141618"/>
+  </g>
+
+  <!-- ─────────── Row 4 — CHILD (no sprite column, indented 76pt) ─────────── -->
+  <g id="row-child">
+    <rect x="0" y="176" width="358" height="44" fill="#0E1012"/>
+
+    <!-- (no sprite column on child rows — keeps parent/child differentiation) -->
+
+    <!-- Child name (indented to TRACK_CHILD_INDENT = 76 — bumped from 56 to clear new sprite-column geometry) -->
+    <text x="76" y="202" fill="#A8B4C8" font-size="13" font-weight="500">Sub-platform name</text>
+
+    <!-- count (smaller, dangerRed) -->
+    <text x="288" y="202" fill="#FF3B30" font-size="13" font-weight="600" text-anchor="end">2×</text>
+
+    <!-- AVOID column (same dimensions as parent rows) -->
+    <g transform="translate(294, 176)">
+      <rect x="0" y="0" width="64" height="44" fill="#2878C8"/>
+      <rect x="0" y="0" width="64" height="2"  fill="#4A9AE8"/>
+      <rect x="0" y="0" width="2"  height="44" fill="#4A9AE8"/>
+      <rect x="0" y="42" width="64" height="2"  fill="#1A4A7A"/>
+      <rect x="62" y="0" width="2"  height="44" fill="#1A4A7A"/>
+      <text x="32" y="26" fill="#DCE7F6" font-size="11" font-weight="700" letter-spacing="0.8" text-anchor="middle">AVOID</text>
+    </g>
+
+    <!-- bottom separator (PAINTED LAST so it renders OVER the AVOID column) -->
+    <rect x="0" y="219" width="358" height="1" fill="#141618"/>
+  </g>
+</svg>
