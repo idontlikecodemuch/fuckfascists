@@ -14,6 +14,14 @@ interface DeriveScorecardScreenStateInput {
   minAvoids: number;
 }
 
+interface PendingPreviousScorecardInput {
+  hasDropped: boolean;
+  liveWeekOf: string;
+  scoredWeekOf: string;
+  dropGrandTotal: number | null;
+  minAvoids: number;
+}
+
 export function deriveScorecardScreenState({
   userNav,
   capturing,
@@ -44,4 +52,21 @@ export function shouldShowPreviewStamp(
   minAvoids: number,
 ): boolean {
   return effectiveState === 'preview' && liveGrandTotal != null && liveGrandTotal >= minAvoids;
+}
+
+/**
+ * Bridges the Saturday-midnight rollover before the completed week's later
+ * scorecard drop. The status is meaningful only when that week has a card.
+ */
+export function shouldShowPendingPreviousScorecard({
+  hasDropped,
+  liveWeekOf,
+  scoredWeekOf,
+  dropGrandTotal,
+  minAvoids,
+}: PendingPreviousScorecardInput): boolean {
+  return !hasDropped &&
+    liveWeekOf !== scoredWeekOf &&
+    dropGrandTotal != null &&
+    dropGrandTotal >= minAvoids;
 }

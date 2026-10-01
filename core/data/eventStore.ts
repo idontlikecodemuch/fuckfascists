@@ -139,6 +139,18 @@ export async function recordPlatformAvoidForDate(
 }
 
 /**
+ * Removes an affirmative platform avoidance for a specific date.
+ * Used by the day-circle UI when a tester/user marked the wrong day.
+ */
+export async function removePlatformAvoidForDate(
+  adapter: StorageAdapter,
+  platformId: string,
+  date: string,
+): Promise<void> {
+  await adapter.deletePlatformAvoidForDate(platformId, date);
+}
+
+/**
  * Returns the total avoid count for a single platform during the given week.
  * Sums all daily counts from Monday through Sunday. Defaults to current week.
  */

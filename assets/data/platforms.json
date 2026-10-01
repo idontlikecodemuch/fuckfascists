@@ -21,7 +21,8 @@
       "sortOrder": 200,
       "children": [
         { "id": "youtube", "name": "YouTube", "defaultSelected": true,  "sortOrder": 201 },
-        { "id": "gemini",  "name": "Gemini",  "defaultSelected": false, "sortOrder": 202 }
+        { "id": "gemini",  "name": "Gemini",  "defaultSelected": false, "sortOrder": 202 },
+        { "id": "google-workspace", "name": "Google Workspace", "defaultSelected": false, "sortOrder": 203 }
       ]
     },
     {
@@ -47,6 +48,20 @@
       "entityId": "x-twitter",
       "defaultSelected": true,
       "sortOrder": 500
+    },
+    {
+      "id": "starlink",
+      "name": "Starlink",
+      "entityId": "spacex",
+      "defaultSelected": false,
+      "sortOrder": 550
+    },
+    {
+      "id": "cursor",
+      "name": "Cursor",
+      "entityId": "anysphere",
+      "defaultSelected": false,
+      "sortOrder": 575
     },
     {
       "id": "netflix",
@@ -151,7 +166,8 @@
       "children": [
         { "id": "linkedin",     "name": "LinkedIn",       "defaultSelected": false, "sortOrder": 1801 },
         { "id": "github",       "name": "GitHub",         "defaultSelected": false, "sortOrder": 1802 },
-        { "id": "bing-copilot", "name": "Bing / Copilot", "defaultSelected": false, "sortOrder": 1803 }
+        { "id": "bing-copilot", "name": "Bing / Copilot", "defaultSelected": false, "sortOrder": 1803 },
+        { "id": "microsoft-365", "name": "Microsoft 365",  "defaultSelected": false, "sortOrder": 1804 }
       ]
     }
   ]

@@ -16,6 +16,10 @@ const chromeMock = {
       set: jest.fn(async (items: Record<string, unknown>) => {
         Object.assign(store, items);
       }),
+      remove: jest.fn(async (keys: string | string[]) => {
+        const list = Array.isArray(keys) ? keys : [keys];
+        list.forEach((key) => delete store[key]);
+      }),
     },
   },
 };
@@ -35,6 +39,10 @@ function clearStore() {
   });
   chromeMock.storage.local.set.mockImplementation(async (items: Record<string, unknown>) => {
     Object.assign(store, items);
+  });
+  chromeMock.storage.local.remove.mockImplementation(async (keys: string | string[]) => {
+    const list = Array.isArray(keys) ? keys : [keys];
+    list.forEach((key) => delete store[key]);
   });
 }
 
@@ -164,6 +172,19 @@ describe('ChromeStorageAdapter', () => {
       const results = await adapter.getPlatformAvoids('twitter');
       expect(results).toHaveLength(1);
       expect(results[0].platformId).toBe('twitter');
+    });
+  });
+
+  describe('deletePlatformAvoidForDate', () => {
+    it('removes only the selected platform/date event', async () => {
+      await adapter.upsertPlatformAvoid({ platformId: 'twitter', date: '2024-03-11', count: 1 });
+      await adapter.upsertPlatformAvoid({ platformId: 'twitter', date: '2024-03-12', count: 1 });
+
+      await adapter.deletePlatformAvoidForDate('twitter', '2024-03-11');
+
+      const results = await adapter.getPlatformAvoids('twitter');
+      expect(results).toHaveLength(1);
+      expect(results[0].date).toBe('2024-03-12');
     });
   });
 

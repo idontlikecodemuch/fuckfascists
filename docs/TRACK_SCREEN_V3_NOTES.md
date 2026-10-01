@@ -77,6 +77,16 @@ Platform avoids are now binary per platform per calendar day:
 
 Legacy overcounted platform events are normalized on read so Track and Scorecard totals do not keep surfacing impossible daily counts.
 
+### Avoid and defeat boundary
+
+Recorded avoids and arena defeats are intentionally separate:
+
+- `AVOID` and day-circle actions write the selected platform/date once.
+- Every queued arena hit independently rolls to defeat that figure: 80% for a same-day `AVOID` tap (`ARENA_DEFEAT_CHANCE_TODAY`), 50% for back-dated day circles, `✓` re-presses and direct arena taps (`ARENA_DEFEAT_CHANCE`).
+- A successful defeat is visual state for the current local day/session; avoid history does not recreate it.
+- Direct arena sprite taps can trigger hit FX and the defeat roll, but never write an avoid.
+- Removing or backfilling a day changes utility history only; it does not force a sprite state.
+
 ## Pressure Test Matrix
 
 These were exercised in code and in the interaction model:
@@ -91,13 +101,13 @@ Expected: day circles collapse.
 Expected: day circles expand again.
 
 4. User taps `AVOID` on an unfocused row.
-Expected: today logs once, focus shifts, button becomes `✓`, arena hit FX fires.
+Expected: today logs once, focus shifts, button becomes `✓`, arena hit FX fires, and the sprite has an independent 80% chance to become and remain defeated.
 
 5. User taps `✓` on an unfocused row.
 Expected: row focuses and day circles expand together.
 
 6. User taps `✓` on a focused row.
-Expected: day circles toggle with no extra data write.
+Expected: day circles toggle with no extra data write; the visual hit can roll again.
 
 7. User taps a different row while one row is expanded.
 Expected: previous row collapses immediately and the newly tapped row opens.
@@ -116,6 +126,9 @@ Expected: pending collapse timers are canceled so the row stays open.
 
 12. Arena background and portrait crop.
 Expected: the background uses `cover` only when the asset aspect ratio is already close to the arena and falls back to `contain` otherwise, so scenes stay filled without looking zoomed. Sprite crops are now shifted slightly left and up so faces stay fully visible inside the square crop.
+
+13. User taps a sprite directly in the focused arena or grid.
+Expected: hit FX runs and the 50% defeat roll is evaluated with no avoid or scorecard write.
 
 ### Automated coverage added
 

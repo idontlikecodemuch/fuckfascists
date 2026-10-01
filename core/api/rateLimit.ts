@@ -11,6 +11,14 @@ export const FEC_DEFAULT_LIMITS: RateLimiterConfig = {
   windowMs: 3_600_000, // 1 hour
 };
 
+// FEC/data.gov's public DEMO_KEY currently advertises a 10-request allowance.
+// Keep the in-app fallback below that ceiling; curated local/Git data should
+// make this path rare. This key is a documented public sentinel, not a secret.
+export const FEC_DEMO_LIMITS: RateLimiterConfig = {
+  maxRequests: 10,
+  windowMs: 3_600_000,
+};
+
 /**
  * Sliding-window in-memory rate limiter.
  * One instance per FECClient; not persisted across app restarts.

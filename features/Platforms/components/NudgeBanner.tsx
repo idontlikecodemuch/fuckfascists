@@ -1,5 +1,12 @@
 import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
-import { AccessibilityInfo, Animated, Easing, PanResponder, StyleSheet } from 'react-native';
+import {
+  AccessibilityInfo,
+  Animated,
+  Easing,
+  PanResponder,
+  StyleSheet,
+  type LayoutChangeEvent,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AlertBanner } from '../../../core/ui/AlertBanner';
 import { platformsCopy } from '../../../copy/platforms';
@@ -11,6 +18,8 @@ interface NudgeBannerProps {
   onPress: () => void;
   /** Called when the banner becomes visible/hidden so screens can avoid it. */
   onVisibleChange?: (visible: boolean) => void;
+  /** Reports the rendered banner height so AppShell can reserve space. */
+  onHeightChange?: (height: number) => void;
 }
 
 const HIDDEN_OFFSET_Y = -180;
@@ -27,7 +36,7 @@ const SWIPE_DISMISS_VY = -0.65;
  * AlertBanner handles the visual surface; this file owns the trigger, motion,
  * dismiss gestures, and safe-area/full-bleed positioning.
  */
-export function NudgeBanner({ onPress, onVisibleChange }: NudgeBannerProps) {
+export function NudgeBanner({ onPress, onVisibleChange, onHeightChange }: NudgeBannerProps) {
   const [dismissed, setDismissed] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const insets = useSafeAreaInsets();
@@ -38,9 +47,18 @@ export function NudgeBanner({ onPress, onVisibleChange }: NudgeBannerProps) {
   const isNudgeDay = today === NUDGE_DAY;
 
   useEffect(() => {
-    onVisibleChange?.(isNudgeDay && !dismissed);
-    return () => { onVisibleChange?.(false); };
-  }, [dismissed, isNudgeDay, onVisibleChange]);
+    const visible = isNudgeDay && !dismissed;
+    onVisibleChange?.(visible);
+    onHeightChange?.(
+      visible
+        ? Math.ceil(insets.top + theme.a11y.minTapTarget + theme.space.sm * 2)
+        : 0,
+    );
+    return () => {
+      onVisibleChange?.(false);
+      onHeightChange?.(0);
+    };
+  }, [dismissed, insets.top, isNudgeDay, onHeightChange, onVisibleChange]);
 
   useEffect(() => {
     let cancelled = false;
@@ -167,6 +185,10 @@ export function NudgeBanner({ onPress, onVisibleChange }: NudgeBannerProps) {
     handleDismiss();
   }, [handleDismiss, onPress]);
 
+  const handleLayout = useCallback((event: LayoutChangeEvent) => {
+    onHeightChange?.(Math.ceil(event.nativeEvent.layout.height));
+  }, [onHeightChange]);
+
   const translateY = useMemo(() => Animated.add(entryY, dragY), [dragY, entryY]);
 
   if (!isNudgeDay || dismissed) return null;
@@ -174,6 +196,7 @@ export function NudgeBanner({ onPress, onVisibleChange }: NudgeBannerProps) {
   return (
     <Animated.View
       style={[styles.position, { transform: [{ translateY }] }]}
+      onLayout={handleLayout}
       {...panResponder.panHandlers}
     >
       <AlertBanner

@@ -21,6 +21,7 @@ import { buildListData } from '../utils/listData';
 import { DayCircles } from './DayCircles';
 import { PlatformGroupHeader } from './PlatformGroupHeader';
 import { PlatformRow } from './PlatformRow';
+import { ARENA_DEFEAT_CHANCE_TODAY } from '../context/trackHelpers';
 
 const TRACK_DAILY_OPEN_KEY = 'track_daily_open_last_visit';
 
@@ -39,6 +40,7 @@ export function TrackList({ onShowCard }: TrackListProps = {}) {
   const {
     avoid,
     avoidForDate,
+    unavoidForDate,
     clearFocus,
     focusPlatform,
     focusedFigureName,
@@ -259,6 +261,11 @@ export function TrackList({ onShowCard }: TrackListProps = {}) {
                 const recorded = await avoidForDate(platformId, date);
                 if (recorded) queueArenaHit(figureName, delay);
               }}
+              onRemoveDate={async (date) => {
+                dismissDailyPreview();
+                openPlatformDetails(platformId);
+                await unavoidForDate(platformId, date);
+              }}
             />
           </Animated.View>
         </TrackListItemShell>
@@ -304,7 +311,7 @@ export function TrackList({ onShowCard }: TrackListProps = {}) {
               if (!todayAvoided) {
                 focusPlatform(platformId);
                 const recorded = await avoid(platformId);
-                if (recorded) queueArenaHit(figureName, delay);
+                if (recorded) queueArenaHit(figureName, delay, ARENA_DEFEAT_CHANCE_TODAY);
                 return;
               }
 
@@ -318,6 +325,7 @@ export function TrackList({ onShowCard }: TrackListProps = {}) {
   }, [
     avoid,
     avoidForDate,
+    unavoidForDate,
     detailPlatformIds,
     dismissDailyPreview,
     focusPlatform,

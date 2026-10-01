@@ -3,6 +3,7 @@ import type { StorageAdapter } from '../../../core/data';
 import {
   recordPlatformAvoid,
   recordPlatformAvoidForDate,
+  removePlatformAvoidForDate,
   getPlatformAvoidsForWeek,
 } from '../../../core/data';
 import { getLocalWeekStart, getLocalDateString } from '../../../core/utils/localDate';
@@ -19,6 +20,8 @@ export interface PlatformAvoidanceState {
   avoid: (platformId: string) => Promise<boolean>;
   /** Records an avoidance for the given platform on a specific date. */
   avoidForDate: (platformId: string, date: string) => Promise<boolean>;
+  /** Removes an avoidance for the given platform on a specific date. */
+  unavoidForDate: (platformId: string, date: string) => Promise<boolean>;
   /** Clears all platform avoid events. Dev/testing only. */
   clearAll: () => Promise<void>;
 }
@@ -105,6 +108,22 @@ export function usePlatformAvoidance(
     [adapter]
   );
 
+  const unavoidForDate = useCallback(
+    async (platformId: string, date: string) => {
+      try {
+        const existed = hasPlatformAvoidForDate(events, platformId, date);
+        if (!existed) return false;
+        await removePlatformAvoidForDate(adapter, platformId, date);
+        setEvents((prev) => prev.filter((event) => !(event.platformId === platformId && event.date === date)));
+        return true;
+      } catch (err) {
+        setError((err as Error).message);
+        return false;
+      }
+    },
+    [adapter, events],
+  );
+
   const items = useMemo<PlatformItem[]>(() => platforms.map((platform) => {
     const platformEvents = events.filter((e) => e.platformId === platform.id);
     const dayCounts = new Map<string, number>();
@@ -120,7 +139,7 @@ export function usePlatformAvoidance(
     [items],
   );
 
-  return { weekOf, items, totalAvoids, loading, error, avoid, avoidForDate, clearAll };
+  return { weekOf, items, totalAvoids, loading, error, avoid, avoidForDate, unavoidForDate, clearAll };
 }
 
 function normalizePlatformEvents(events: PlatformAvoidEvent[]): PlatformAvoidEvent[] {

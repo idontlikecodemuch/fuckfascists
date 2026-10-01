@@ -10,13 +10,14 @@
  * runs in the SW, deriveDonationSummary runs in renderFlag.ts with the same
  * inputs the app's DataZone uses.
  *
- * No browsing history is accessed here. The popup only reads state that the
- * service worker already has in memory.
+ * No browsing history is accessed here. The popup only reads the active tab
+ * URL after the user opens the extension, and only to recover a missing
+ * service-worker domain check for that tab.
  */
 
 import type {
   TabFlag, WeeklyStats,
-  GetCurrentFlagMsg, AvoidEntityMsg, SnoozeDomainMsg, GetWeeklyStatsMsg,
+  CheckDomainMsg, GetCurrentFlagMsg, AvoidEntityMsg, SnoozeDomainMsg, GetWeeklyStatsMsg,
 } from '../types';
 import { extCopy } from '../copy';
 import { renderFlag } from './renderFlag';
@@ -61,6 +62,17 @@ function getMondayOf(date: Date): string {
   return d.toISOString().slice(0, 10);
 }
 
+function hostnameFromTabUrl(url: string | undefined): string | null {
+  if (!url) return null;
+  try {
+    const parsed = new URL(url);
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return null;
+    return parsed.hostname;
+  } catch {
+    return null;
+  }
+}
+
 function hydrateStaticCopy(): void {
   document.title = extCopy.appName;
   appTitle.textContent = extCopy.appName;
@@ -102,6 +114,29 @@ async function loadWeeklyStats(weekOf: string): Promise<void> {
   }
 }
 
+async function getCurrentFlag(tabId: number): Promise<TabFlag | null> {
+  const flagMsg: GetCurrentFlagMsg = { type: 'GET_CURRENT_FLAG', tabId };
+  return await chrome.runtime.sendMessage(flagMsg) as TabFlag | null;
+}
+
+async function ensureFlagForActiveTab(tab: chrome.tabs.Tab): Promise<TabFlag | null> {
+  const tabId = tab.id;
+  if (!tabId) return null;
+
+  const existing = await getCurrentFlag(tabId);
+  if (existing) return existing;
+
+  const hostname = hostnameFromTabUrl(tab.url);
+  if (!hostname) return null;
+
+  // Recovery path for MV3 cold starts: if the content script's page-load
+  // CHECK_DOMAIN message did not leave a tab flag, opening the popup checks
+  // the active tab directly and then reads the freshly populated flag.
+  const checkMsg: CheckDomainMsg = { type: 'CHECK_DOMAIN', hostname, tabId };
+  await chrome.runtime.sendMessage(checkMsg).catch(() => undefined);
+  return await getCurrentFlag(tabId);
+}
+
 // ── Main ───────────────────────────────────────────────────────────────────────
 
 async function main() {
@@ -112,9 +147,7 @@ async function main() {
   const tabId = tab?.id;
   if (!tabId) { showOnly(stateClean); return; }
 
-  // Request current flag from service worker
-  const flagMsg: GetCurrentFlagMsg = { type: 'GET_CURRENT_FLAG', tabId };
-  const flag = await chrome.runtime.sendMessage(flagMsg) as TabFlag | null;
+  const flag = await ensureFlagForActiveTab(tab);
 
   if (!flag) {
     showOnly(stateClean);

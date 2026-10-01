@@ -5,6 +5,9 @@ export const scorecardCopy = {
   tabLabel: "SCORECARD",
   title: "SCORECARD",
   dropsLabel: "DROPS THIS FRIDAY",
+  pendingPreviousTitle: "LAST WEEK'S SCORECARD",
+  pendingPreviousStatus: "DROPPING SOON",
+  currentWeekLabel: "NEW WEEK",
   previewStamp: "PREVIEW",
   previewA11y: "Preview \u2014 this is not the official weekly drop",
 
@@ -50,5 +53,5 @@ export const scorecardCopy = {
   // Footer (rendered card)
   tagline: sharedCopy.brandTagline,
   cta: sharedCopy.siteUrl,
-  dataAttribution: "DATA: FEC.GOV",
+  dataAttribution: "@fckfascists.app",
 } as const;

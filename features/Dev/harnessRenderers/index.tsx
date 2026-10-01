@@ -27,6 +27,7 @@ import {
 } from './trackStates';
 import {
   renderScorecardPopulated,
+  renderScorecardPending,
   renderScorecardEmpty,
   renderInfoDefault,
   renderInfoTransparency,
@@ -36,6 +37,10 @@ import {
   renderScanResultPreAvoid,
   renderScanResultPostAvoid,
   renderScanNoMatch,
+  renderScanToastTryAgain,
+  renderScanToastUpcNotFile,
+  renderScanToastProductFound,
+  renderScanToastLookupPaused,
   renderNotificationThursday,
 } from './contentStates';
 
@@ -64,6 +69,7 @@ const RENDERERS: Record<string, () => React.ReactElement> = {
 
   // Scorecard
   scorecard_populated: renderScorecardPopulated,
+  scorecard_pending: renderScorecardPending,
   scorecard_empty: renderScorecardEmpty,
 
   // Info
@@ -77,6 +83,10 @@ const RENDERERS: Record<string, () => React.ReactElement> = {
   scan_result_pre_avoid: renderScanResultPreAvoid,
   scan_result_post_avoid: renderScanResultPostAvoid,
   scan_no_match: renderScanNoMatch,
+  scan_toast_try_again: renderScanToastTryAgain,
+  scan_toast_upc_not_file: renderScanToastUpcNotFile,
+  scan_toast_product_found: renderScanToastProductFound,
+  scan_toast_lookup_paused: renderScanToastLookupPaused,
 
   // Tab bar — reuses map default (tab bar is always visible via AppShell)
   tabbar_full: renderMapDefault,

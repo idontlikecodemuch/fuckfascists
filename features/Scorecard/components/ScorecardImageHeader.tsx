@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, PixelRatio, StyleSheet, Text, View } from 'react-native';
 import { scorecardCopy } from '../../../copy/scorecard';
 import { theme } from '../../../design/tokens';
+import { scorecardLogo } from '../../../core/scorecard/scorecardAssets';
 import { Beam } from './ScorecardImageDecorations';
 
 const pr = PixelRatio.get();
@@ -32,7 +33,7 @@ export function ScorecardImageHeader({ dateRange }: ScorecardImageHeaderProps) {
   return (
     <View style={styles.header} collapsable={false}>
       <Image
-        source={require('../../../assets/pixel/brand/FF_logo.png')}
+        source={scorecardLogo}
         style={styles.logo}
         resizeMode="contain"
       />

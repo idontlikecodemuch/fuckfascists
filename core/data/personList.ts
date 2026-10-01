@@ -8,10 +8,39 @@ export async function fetchPeopleList(bundled: PoliticalPerson[]): Promise<Polit
 
     const raw: unknown = await response.json();
     const parsed = parsePeopleList(raw);
-    return parsed.length > 0 ? parsed : bundled;
+    return shouldAcceptPeopleUpdate(parsed, bundled) ? parsed : bundled;
   } catch {
     return bundled;
   }
+}
+
+function personDataTimestamp(person: PoliticalPerson): number {
+  const summaryTimestamp = person.donationSummary?.lastUpdated
+    ? Date.parse(person.donationSummary.lastUpdated)
+    : 0;
+  return Math.max(Date.parse(person.lastVerifiedDate) || 0, summaryTimestamp || 0);
+}
+
+/** Reject stale or suspiciously partial Git payloads instead of downgrading local data. */
+function shouldAcceptPeopleUpdate(
+  remote: PoliticalPerson[],
+  local: PoliticalPerson[],
+): boolean {
+  if (remote.length === 0) return false;
+  if (local.length === 0) return true;
+
+  const minimumCompleteCount = Math.max(1, Math.floor(local.length * 0.9));
+  if (remote.length < minimumCompleteCount) return false;
+
+  const remoteTimestamp = remote.reduce(
+    (latest, person) => Math.max(latest, personDataTimestamp(person)),
+    0,
+  );
+  const localTimestamp = local.reduce(
+    (latest, person) => Math.max(latest, personDataTimestamp(person)),
+    0,
+  );
+  return remoteTimestamp >= localTimestamp;
 }
 
 export function parsePeopleList(raw: unknown): PoliticalPerson[] {

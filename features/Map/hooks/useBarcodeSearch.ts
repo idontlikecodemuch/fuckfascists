@@ -12,6 +12,10 @@ import { mapCopy } from '../../../copy/map';
 export interface BarcodeNotice {
   kind: 'unsupported' | 'no_match' | 'not_in_database' | 'lookup_unavailable';
   label: string;
+  /** Product label for the dynamic "[PRODUCT] FOUND" heading. */
+  productName?: string | null;
+  /** Brand/owner candidate shown separately from the product heading. */
+  parentCompanyName?: string | null;
   /**
    * __DEV__-only diagnostic detail. Surfaced under the user-facing toast
    * message in dev builds so the actual failure (HTTP 403, cooldown, etc.)
@@ -96,8 +100,10 @@ export function useBarcodeSearch(entities: Entity[]) {
           }
 
           setNotice({
-            kind: 'no_match',
+            kind: cached.status === 'not_in_database' ? 'not_in_database' : 'no_match',
             label: buildBarcodeLabel(cached.productName, cached.brandName, normalized.displayCode),
+            productName: cached.productName,
+            parentCompanyName: cached.brandName,
           });
           return null;
         }
@@ -133,7 +139,7 @@ export function useBarcodeSearch(entities: Entity[]) {
             productName: null,
             brandName: null,
             source: 'open_food_facts',
-            status: 'no_match',
+            status: 'not_in_database',
             fetchedAt: Date.now(),
           });
 
@@ -158,6 +164,8 @@ export function useBarcodeSearch(entities: Entity[]) {
           setNotice({
             kind: 'no_match',
             label: buildBarcodeLabel(live.productName, live.brandName, live.barcode),
+            productName: live.productName,
+            parentCompanyName: live.brandName,
           });
           return null;
         }

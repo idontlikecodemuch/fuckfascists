@@ -11,7 +11,7 @@
  * Accessible from the beta dev menu. Not reachable in production builds.
  * DEV ONLY.
  */
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { View, Text, Pressable, Alert, StyleSheet, PixelRatio } from 'react-native';
 import { captureScreen } from 'react-native-view-shot';
 import * as MediaLibrary from 'expo-media-library';
@@ -26,6 +26,8 @@ import {
 } from '../../config/constants';
 import {
   HARNESS_STEPS,
+  UPC_TOAST_HARNESS_STEPS,
+  SCORECARD_HARNESS_STEPS,
   NOTIFICATION_STEP,
   filenameForStep,
   type HarnessMode,
@@ -36,18 +38,23 @@ import { HarnessFontScaleProvider } from './HarnessFontScale';
 
 interface ScreenshotHarnessProps {
   onClose: () => void;
+  autoMode?: Extract<HarnessMode, 'upc_toasts' | 'scorecard_states'>;
 }
 
 type HarnessState = 'idle' | 'running' | 'done';
 
 const delay = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 
-export function ScreenshotHarness({ onClose }: ScreenshotHarnessProps) {
+const HARNESS_SCREENSHOT_DIR = `${FileSystem.documentDirectory}harness-screenshots/`;
+
+export function ScreenshotHarness({ onClose, autoMode }: ScreenshotHarnessProps) {
   const [state, setState] = useState<HarnessState>('idle');
   const [currentStep, setCurrentStep] = useState<HarnessStep | null>(null);
   const [progress, setProgress] = useState({ current: 0, total: 0 });
   const [renderedElement, setRenderedElement] = useState<React.ReactElement | null>(null);
+  const [activeMode, setActiveMode] = useState<HarnessMode | null>(null);
   const cancelled = useRef(false);
+  const autoStarted = useRef(false);
 
   const captureStep = useCallback(async (step: HarnessStep, mode: HarnessMode): Promise<boolean> => {
     if (cancelled.current) return false;
@@ -67,7 +74,12 @@ export function ScreenshotHarness({ onClose }: ScreenshotHarnessProps) {
     const tempUri = await captureScreen({ format: 'png', quality: 1 });
     const namedUri = `${FileSystem.cacheDirectory}${filename}`;
     await FileSystem.copyAsync({ from: tempUri, to: namedUri });
-    await MediaLibrary.createAssetAsync(namedUri);
+    const writesToDocumentsOnly = mode === 'upc_toasts' || mode === 'scorecard_states';
+    if (!writesToDocumentsOnly) {
+      await MediaLibrary.createAssetAsync(namedUri);
+    }
+    await FileSystem.makeDirectoryAsync(HARNESS_SCREENSHOT_DIR, { intermediates: true });
+    await FileSystem.copyAsync({ from: namedUri, to: `${HARNESS_SCREENSHOT_DIR}${filename}` });
     await FileSystem.deleteAsync(namedUri, { idempotent: true });
 
     await delay(HARNESS_CAPTURE_DELAY_MS);
@@ -75,10 +87,14 @@ export function ScreenshotHarness({ onClose }: ScreenshotHarnessProps) {
   }, []);
 
   const runSweep = useCallback(async (mode: HarnessMode) => {
-    const { status } = await MediaLibrary.requestPermissionsAsync();
-    if (status !== 'granted') {
-      Alert.alert('Camera roll permission required.');
-      return;
+    if (mode !== 'upc_toasts' && mode !== 'scorecard_states') {
+      // Standard sweeps save to Photos; the automated UPC pass writes only to
+      // the app Documents container so it needs no photo-library permission.
+      const { status } = await MediaLibrary.requestPermissionsAsync(true);
+      if (status !== 'granted') {
+        Alert.alert('Camera roll permission required.');
+        return;
+      }
     }
 
     // A11y preflight
@@ -95,7 +111,12 @@ export function ScreenshotHarness({ onClose }: ScreenshotHarnessProps) {
 
     cancelled.current = false;
     setState('running');
-    const steps = HARNESS_STEPS;
+    setActiveMode(mode);
+    const steps = mode === 'upc_toasts'
+      ? UPC_TOAST_HARNESS_STEPS
+      : mode === 'scorecard_states'
+        ? SCORECARD_HARNESS_STEPS
+        : HARNESS_STEPS;
     setProgress({ current: 0, total: steps.length });
 
     let captured = 0;
@@ -118,8 +139,17 @@ export function ScreenshotHarness({ onClose }: ScreenshotHarnessProps) {
     }
   }, [captureStep]);
 
+  useEffect(() => {
+    if (!autoMode || autoStarted.current) return;
+    autoStarted.current = true;
+    runSweep(autoMode).catch(() => {
+      setState('done');
+      setRenderedElement(null);
+    });
+  }, [autoMode, runSweep]);
+
   const runNotification = useCallback(async () => {
-    const { status } = await MediaLibrary.requestPermissionsAsync();
+    const { status } = await MediaLibrary.requestPermissionsAsync(true);
     if (status !== 'granted') {
       Alert.alert('Camera roll permission required.');
       return;
@@ -161,19 +191,21 @@ export function ScreenshotHarness({ onClose }: ScreenshotHarnessProps) {
         <HarnessFontScaleProvider isA11yMode={false}>
           {renderedElement}
         </HarnessFontScaleProvider>
-        <View style={styles.progressOverlay} pointerEvents="box-none">
-          <View style={styles.progressBar}>
-            <Text style={styles.progressText}>
-              {harnessCopy.capturing(progress.current, progress.total)}
-            </Text>
-            {currentStep && (
-              <Text style={styles.stepLabel}>{harnessCopy.stepLabel(currentStep.label)}</Text>
-            )}
-            <Pressable onPress={handleCancel} style={styles.cancelBtn}>
-              <Text style={styles.cancelText}>{harnessCopy.cancelButton}</Text>
-            </Pressable>
+        {activeMode !== 'upc_toasts' && activeMode !== 'scorecard_states' && (
+          <View style={styles.progressOverlay} pointerEvents="box-none">
+            <View style={styles.progressBar}>
+              <Text style={styles.progressText}>
+                {harnessCopy.capturing(progress.current, progress.total)}
+              </Text>
+              {currentStep && (
+                <Text style={styles.stepLabel}>{harnessCopy.stepLabel(currentStep.label)}</Text>
+              )}
+              <Pressable onPress={handleCancel} style={styles.cancelBtn}>
+                <Text style={styles.cancelText}>{harnessCopy.cancelButton}</Text>
+              </Pressable>
+            </View>
           </View>
-        </View>
+        )}
       </View>
     );
   }
@@ -198,6 +230,16 @@ export function ScreenshotHarness({ onClose }: ScreenshotHarnessProps) {
           label={harnessCopy.modeNotifLabel}
           desc={harnessCopy.modeNotifDesc}
           onPress={runNotification}
+        />
+        <ModeButton
+          label={harnessCopy.modeUpcToastsLabel}
+          desc={harnessCopy.modeUpcToastsDesc}
+          onPress={() => runSweep('upc_toasts')}
+        />
+        <ModeButton
+          label={harnessCopy.modeScorecardStatesLabel}
+          desc={harnessCopy.modeScorecardStatesDesc}
+          onPress={() => runSweep('scorecard_states')}
         />
 
         <Pressable onPress={onClose} style={styles.closeBtn}>

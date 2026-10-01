@@ -99,6 +99,10 @@ export class ChromeStorageAdapter implements StorageAdapter {
       .map(([, v]) => v as PlatformAvoidEvent);
   }
 
+  async deletePlatformAvoidForDate(platformId: string, date: string): Promise<void> {
+    await chrome.storage.local.remove(PLATFORM_KEY(platformId, date));
+  }
+
   async getPlatformAvoidsForWeek(weekStart: string, weekEnd: string): Promise<PlatformAvoidEvent[]> {
     const all = await this.getPlatformAvoids();
     return all.filter((e) => e.date >= weekStart && e.date < weekEnd);

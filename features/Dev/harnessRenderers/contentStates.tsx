@@ -10,6 +10,7 @@ import { FaqItem } from '../../Info/components/FaqItem';
 import { LinkRow } from '../../Info/components/LinkRow';
 import { BusinessCard } from '../../Map/components/BusinessCard';
 import { BarcodeLookupBanner } from '../../Map/components/BarcodeLookupBanner';
+import type { BarcodeNotice } from '../../Map/hooks/useBarcodeSearch';
 import { AlertBanner } from '../../../core/ui/AlertBanner';
 import { platformsCopy } from '../../../copy/platforms';
 import { infoCopy } from '../../../copy/info';
@@ -26,6 +27,7 @@ import {
   harnessHighConfResult,
   harnessEntities,
   harnessNoMatchNotice,
+  harnessBarcodeNotices,
 } from '../harnessFixtures';
 
 const noop = () => {};
@@ -61,6 +63,23 @@ export function renderScorecardEmpty(): React.ReactElement {
         </View>
         <View style={s.cardWrapper}>
           <LivePreview data={harnessScorecardEmpty} />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+export function renderScorecardPending(): React.ReactElement {
+  return (
+    <SafeAreaView style={s.container}>
+      <ScrollView contentContainerStyle={s.scroll}>
+        <View style={s.topBar}>
+          <Text style={s.topBarTitle} accessibilityRole="header" allowFontScaling>
+            {scorecardCopy.title}
+          </Text>
+        </View>
+        <View style={s.cardWrapper}>
+          <LivePreview data={harnessScorecardEmpty} showPendingPreviousCard />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -174,6 +193,40 @@ export function renderScanNoMatch(): React.ReactElement {
       <BarcodeLookupBanner notice={harnessNoMatchNotice} onDismiss={noop} />
     </ScanHero>
   );
+}
+
+function renderScanToast(notice: BarcodeNotice): React.ReactElement {
+  return (
+    <SafeAreaView style={s.container}>
+      <ScrollView contentContainerStyle={s.scanContent}>
+        <View style={s.scanHero}>
+          <Text style={s.scanHeading} allowFontScaling>{scanCopy.heading}</Text>
+          <Text style={s.scanBody}>{scanCopy.bodyLine1}{'\n'}{scanCopy.bodyLine2}</Text>
+          <Pressable style={s.scanCta} accessibilityRole="button">
+            <Text style={s.scanCtaLabel}>{scanCopy.primaryAction}</Text>
+          </Pressable>
+          <Text style={s.scanFootnote}>{scanCopy.footnoteLine1}{'\n'}{scanCopy.footnoteLine2}</Text>
+        </View>
+      </ScrollView>
+      <BarcodeLookupBanner notice={notice} onDismiss={noop} />
+    </SafeAreaView>
+  );
+}
+
+export function renderScanToastTryAgain(): React.ReactElement {
+  return renderScanToast(harnessBarcodeNotices.unsupported);
+}
+
+export function renderScanToastUpcNotFile(): React.ReactElement {
+  return renderScanToast(harnessBarcodeNotices.not_in_database);
+}
+
+export function renderScanToastProductFound(): React.ReactElement {
+  return renderScanToast(harnessBarcodeNotices.no_match);
+}
+
+export function renderScanToastLookupPaused(): React.ReactElement {
+  return renderScanToast(harnessBarcodeNotices.lookup_unavailable);
 }
 
 // ── Notification ────────────────────────────────────────────────────────────

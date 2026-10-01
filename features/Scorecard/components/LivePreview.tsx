@@ -16,15 +16,21 @@ import { PreviewPersonRow } from './PreviewPersonRow';
 
 interface LivePreviewProps {
   data: ScorecardViewData;
+  showPendingPreviousCard?: boolean;
   onSwitchTab?: (tab: string) => void;
 }
 
 /**
  * State 1: The in-app interactive preview — scrollable, detailed, NOT shareable.
- * Shows the hero count, person rows grouped by CEO, and "DROPS THIS FRIDAY" subtext.
- * This is the reason to visit the Scorecard tab mid-week.
+ * Shows the live hero count and person rows grouped by CEO. During the short
+ * Saturday rollover bridge, it also distinguishes last week's pending card
+ * from the new active slate.
  */
-export function LivePreview({ data, onSwitchTab }: LivePreviewProps) {
+export function LivePreview({
+  data,
+  showPendingPreviousCard = false,
+  onSwitchTab,
+}: LivePreviewProps) {
   const { weekOf, persons, grandTotal } = data;
   const dateRange = formatWeekRange(weekOf);
 
@@ -74,10 +80,30 @@ export function LivePreview({ data, onSwitchTab }: LivePreviewProps) {
           <Text style={styles.title} allowFontScaling={false}>
             {scorecardCopy.title}
           </Text>
-          <Text style={styles.dropsLabel} allowFontScaling={false}>
-            {scorecardCopy.dropsLabel}
-          </Text>
+          {showPendingPreviousCard ? (
+            <View
+              style={styles.pendingCardStatus}
+              accessibilityRole="text"
+              accessibilityLabel={`${scorecardCopy.pendingPreviousTitle}. ${scorecardCopy.pendingPreviousStatus}.`}
+            >
+              <Text style={styles.pendingCardTitle} allowFontScaling={false}>
+                {scorecardCopy.pendingPreviousTitle}
+              </Text>
+              <Text style={styles.pendingCardLabel} allowFontScaling={false}>
+                {scorecardCopy.pendingPreviousStatus}
+              </Text>
+            </View>
+          ) : (
+            <Text style={styles.dropsLabel} allowFontScaling={false}>
+              {scorecardCopy.dropsLabel}
+            </Text>
+          )}
           <NeonRule />
+          {showPendingPreviousCard && (
+            <Text style={styles.currentWeekLabel} allowFontScaling={false}>
+              {scorecardCopy.currentWeekLabel}
+            </Text>
+          )}
           <Text style={styles.dateRange} allowFontScaling={false}>
             {dateRange}
           </Text>
@@ -173,6 +199,37 @@ const styles = StyleSheet.create({
     fontFamily: theme.fonts.bodySemiBold,
     fontSize: 11,
     color: theme.colors.textSecondary,
+    letterSpacing: 2,
+  },
+  pendingCardStatus: {
+    alignSelf: 'stretch',
+    alignItems: 'center',
+    marginTop: theme.space.sm,
+    paddingVertical: theme.space.sm,
+    paddingHorizontal: theme.space.md,
+    backgroundColor: theme.colors.surface1,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: theme.colors.highlightBlue,
+    boxShadow: glow(theme.colors.highlightBlue, 'subtle'),
+  },
+  pendingCardTitle: {
+    fontFamily: theme.fonts.bodyMedium,
+    fontSize: 10,
+    color: theme.colors.textSecondary,
+    letterSpacing: 2,
+  },
+  pendingCardLabel: {
+    fontFamily: theme.fonts.bodySemiBold,
+    fontSize: 13,
+    color: theme.colors.rewardYellow,
+    letterSpacing: 2,
+    marginTop: 2,
+  },
+  currentWeekLabel: {
+    fontFamily: theme.fonts.bodySemiBold,
+    fontSize: 10,
+    color: theme.colors.highlightBlue,
     letterSpacing: 2,
   },
   dateRange: {

@@ -10,7 +10,7 @@ export interface CachedBarcodeLookup {
   productName: string | null;
   brandName: string | null;
   source: 'open_food_facts';
-  status: 'matched' | 'no_match';
+  status: 'matched' | 'no_match' | 'not_in_database';
   fetchedAt: number;
 }
 
@@ -20,7 +20,7 @@ interface BarcodeLookupRow {
   product_name: string | null;
   brand_name: string | null;
   source: 'open_food_facts';
-  status: 'matched' | 'no_match';
+  status: 'matched' | 'no_match' | 'not_in_database';
   fetched_at: number;
 }
 

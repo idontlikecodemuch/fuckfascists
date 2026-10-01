@@ -79,6 +79,7 @@ function makeAdapter(
     clearOldPlatformAvoids:   jest.fn().mockResolvedValue(undefined),
     upsertPlatformAvoid:      jest.fn().mockResolvedValue(undefined),
     getPlatformAvoids:        jest.fn().mockResolvedValue(platformEvents),
+    deletePlatformAvoidForDate: jest.fn().mockResolvedValue(undefined),
     getPlatformAvoidsForWeek: jest.fn().mockResolvedValue(platformEvents),
     clearAllPlatformAvoids:   jest.fn().mockResolvedValue(undefined),
     clearEntityAvoidsInRange:   jest.fn().mockResolvedValue(undefined),

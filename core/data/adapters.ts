@@ -40,6 +40,9 @@ export interface StorageAdapter {
   /** Returns all platform avoid events, optionally filtered by platformId. */
   getPlatformAvoids(platformId?: string): Promise<PlatformAvoidEvent[]>;
 
+  /** Deletes the platform avoid event for one platform/date pair. */
+  deletePlatformAvoidForDate(platformId: string, date: string): Promise<void>;
+
   /**
    * Returns platform avoid events whose date falls within [weekStart, weekEnd).
    * weekStart is Monday YYYY-MM-DD; weekEnd is the following Monday.

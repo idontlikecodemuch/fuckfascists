@@ -10,6 +10,7 @@ import type { MapKitPOI } from '../nativeModules/MapKitSearch';
 import type { MapPin, ScanResult } from '../types';
 import {
   POI_SEARCH_RADIUS_METERS,
+  POI_SEARCH_FALLBACK_RADIUS_METERS,
   POI_SEARCH_RADIUS_MIN_METERS,
   POI_SEARCH_RADIUS_MAX_METERS,
   TAP_CACHE_TTL_MS,
@@ -35,6 +36,13 @@ interface CellCacheEntry {
   pois: MapKitPOI[];
   expiresAt: number;
 }
+
+interface TapMatchArtifacts {
+  batchResults: ScanResult[];
+  newPins: MapPin[];
+}
+
+type TapFeedbackMode = 'normal' | 'silent';
 
 /**
  * Rounds to 4 decimal places (~11m grid) for tap cell cache keys.
@@ -109,7 +117,7 @@ const TAP_NO_MATCH_DISPLAY_MS = 2000;
  *   - FlagMarkers (tapPins): only added, never removed.
  *   - Ghost markers (tapNoMatchCoords): only added, capped without rotation.
  *   - Loading indicator: NOT a Marker — no native map subview involved.
- *   - processTapResults serialized via inFlightRef (one at a time).
+ *   - Tap matching serialized via inFlightRef (one at a time).
  */
 export function useTapSearch(
   deps: MatchingDeps,
@@ -135,98 +143,126 @@ export function useTapSearch(
   const ghostKeysRef = useRef(new Set<string>());
 
   /**
-   * Runs each POI through matchEntity and adds matched pins at coordinate.
+   * Runs each POI through matchEntity and prepares matched pins at coordinate.
    * When a POI has a url (iOS MapKit), passes it as a domain hint for
    * guarded first-party matching. FEC fuzzy fallback is disabled for POI taps:
    * arbitrary street-level names have produced false-positive business cards.
    * Uses Promise.allSettled so one failing POI doesn't block the others.
-   * Serialized — if a previous call is in-flight, dropped.
    */
-  const processTapResults = useCallback(
-    async (pois: MapKitPOI[], coordinate: LatLng, suppressNoMatch = false) => {
-      if (inFlightRef.current) return;
-      inFlightRef.current = true;
-
-      try {
-        const results = await Promise.allSettled(
-          pois.map((poi) =>
-            matchEntity(
-              poi.name,
-              deps,
-              areaHash,
-              poi.url ? normalizeHost(poi.url) : undefined,
-              { allowFecFallback: false },
-            ),
+  const buildTapMatchArtifacts = useCallback(
+    async (pois: MapKitPOI[], coordinate: LatLng): Promise<TapMatchArtifacts> => {
+      const results = await Promise.allSettled(
+        pois.map((poi) =>
+          matchEntity(
+            poi.name,
+            deps,
+            areaHash,
+            poi.url ? normalizeHost(poi.url) : undefined,
+            { allowFecFallback: false },
           ),
-        );
+        ),
+      );
 
-        const newPins: MapPin[] = [];
-        const batchResults: ScanResult[] = [];
-        const seenIds = new Set<string>();
-        for (const r of results) {
-          if (r.status !== 'fulfilled' || !r.value.matched) continue;
-          const scanResult = buildScanResult(r.value);
-          const id = scanResult.entityId ?? scanResult.fecCommitteeId;
-          if (!id) continue;
-          if (seenIds.has(id)) continue;
-          seenIds.add(id);
-          batchResults.push(scanResult);
-          newPins.push({
-            id,
-            name: scanResult.matchedAlias || scanResult.canonicalName,
-            coords: coordinate,
-            result: scanResult,
-            avoided: avoidedTodayRef?.current?.has(id) ?? false,
-          });
-        }
-
-        setLatestTapBatch(batchResults);
-        if (batchResults.length > 0 && !suppressNoMatch) {
-          haptics.mapEntity();
-        }
-
-        // Ghost marker: show when tap found POI names but none matched.
-        // Append-only — once cap is reached, no new ghosts are added.
-        // Deduplicate by rounded coordinate key.
-        // Suppressed on auto-scan to avoid noisy first-load UI.
-        if (batchResults.length === 0 && pois.length > 0 && !suppressNoMatch) {
-          if (tapNoMatchTimer.current) clearTimeout(tapNoMatchTimer.current);
-          setTapNoMatch(true);
-
-          const key = ghostKey(coordinate);
-          if (!ghostKeysRef.current.has(key)) {
-            ghostKeysRef.current.add(key);
-            setTapNoMatchCoords((prev) => {
-              // Cap reached — stop adding, never remove.
-              if (prev.length >= MAX_GHOST_MARKERS) return prev;
-              return [...prev, coordinate];
-            });
-          }
-
-          tapNoMatchTimer.current = setTimeout(() => {
-            setTapNoMatch(false);
-          }, TAP_NO_MATCH_DISPLAY_MS);
-        } else if (!suppressNoMatch) {
-          setTapNoMatch(false);
-        }
-
-        if (newPins.length > 0) {
-          // Dedupe by id + rounded coords so the same entity (e.g. Apple) can
-          // pin at every distinct location the user taps. Earlier id-only
-          // dedup silently dropped the second Apple Store onward (#141).
-          const pinKey = (p: MapPin) => `${p.id}-${ghostKey(p.coords)}`;
-          setTapPins((prev) => {
-            const existing = new Set(prev.map(pinKey));
-            const deduped = newPins.filter((p) => !existing.has(pinKey(p)));
-            return [...prev, ...deduped];
-          });
-        }
-      } finally {
-        inFlightRef.current = false;
-        setTapSearching(false);
+      const newPins: MapPin[] = [];
+      const batchResults: ScanResult[] = [];
+      const seenIds = new Set<string>();
+      for (const r of results) {
+        if (r.status !== 'fulfilled' || !r.value.matched) continue;
+        const scanResult = buildScanResult(r.value);
+        const id = scanResult.entityId ?? scanResult.fecCommitteeId;
+        if (!id) continue;
+        if (seenIds.has(id)) continue;
+        seenIds.add(id);
+        batchResults.push(scanResult);
+        newPins.push({
+          id,
+          name: scanResult.matchedAlias || scanResult.canonicalName,
+          coords: coordinate,
+          result: scanResult,
+          avoided: avoidedTodayRef?.current?.has(id) ?? false,
+        });
       }
+
+      return { batchResults, newPins };
     },
     [deps, areaHash],
+  );
+
+  const applyTapResults = useCallback(
+    (
+      { batchResults, newPins }: TapMatchArtifacts,
+      coordinate: LatLng,
+      poiCount: number,
+      feedbackMode: TapFeedbackMode,
+    ) => {
+      setLatestTapBatch(batchResults);
+      if (batchResults.length > 0 && feedbackMode === 'normal') {
+        haptics.mapEntity();
+      }
+
+      // Ghost marker: show when tap found POI names but none matched.
+      // Append-only — once cap is reached, no new ghosts are added.
+      // Deduplicate by rounded coordinate key.
+      if (batchResults.length === 0 && poiCount > 0 && feedbackMode === 'normal') {
+        if (tapNoMatchTimer.current) clearTimeout(tapNoMatchTimer.current);
+        setTapNoMatch(true);
+
+        const key = ghostKey(coordinate);
+        if (!ghostKeysRef.current.has(key)) {
+          ghostKeysRef.current.add(key);
+          setTapNoMatchCoords((prev) => {
+            // Cap reached — stop adding, never remove.
+            if (prev.length >= MAX_GHOST_MARKERS) return prev;
+            return [...prev, coordinate];
+          });
+        }
+
+        tapNoMatchTimer.current = setTimeout(() => {
+          setTapNoMatch(false);
+        }, TAP_NO_MATCH_DISPLAY_MS);
+      } else if (feedbackMode === 'normal') {
+        setTapNoMatch(false);
+      }
+
+      if (newPins.length > 0) {
+        // Dedupe by id + rounded coords so the same entity (e.g. Apple) can
+        // pin at every distinct location the user taps. Earlier id-only
+        // dedup silently dropped the second Apple Store onward (#141).
+        const pinKey = (p: MapPin) => `${p.id}-${ghostKey(p.coords)}`;
+        setTapPins((prev) => {
+          const existing = new Set(prev.map(pinKey));
+          const deduped = newPins.filter((p) => !existing.has(pinKey(p)));
+          return [...prev, ...deduped];
+        });
+      }
+    },
+    [],
+  );
+
+  const searchPois = useCallback(
+    async (coordinate: LatLng, radius: number): Promise<MapKitPOI[]> => {
+      const cellKey = tapCellKey(
+        coordinate.latitude,
+        coordinate.longitude,
+        radius,
+      );
+      const cached = cellCache.current.get(cellKey);
+
+      if (cached && cached.expiresAt > Date.now()) return cached.pois;
+
+      const pois = await MapKitSearch.searchNearby(
+        coordinate.latitude,
+        coordinate.longitude,
+        radius,
+      );
+
+      cellCache.current.set(cellKey, {
+        pois,
+        expiresAt: Date.now() + TAP_CACHE_TTL_MS,
+      });
+      return pois;
+    },
+    [],
   );
 
   /**
@@ -248,6 +284,7 @@ export function useTapSearch(
 
       // Drop tap if a previous search is still in-flight.
       if (inFlightRef.current) return;
+      inFlightRef.current = true;
 
       setTapSearching(true);
 
@@ -255,35 +292,35 @@ export function useTapSearch(
 
       try {
         const radius = computeSearchRadius(regionRef?.current ?? null);
-        const cellKey = tapCellKey(
-          coordinate.latitude,
-          coordinate.longitude,
-          radius,
-        );
-        const cached = cellCache.current.get(cellKey);
+        let pois = await searchPois(coordinate, radius);
+        let artifacts = await buildTapMatchArtifacts(pois, coordinate);
 
-        if (cached && cached.expiresAt > Date.now()) {
-          await processTapResults(cached.pois, coordinate);
-          return;
+        // Large POI labels/properties can put the user's tap just outside the
+        // strict street-level radius. Give user taps one broader pass only
+        // after the first pass finds no curated match (#200).
+        const fallbackRadius = Math.max(radius, POI_SEARCH_FALLBACK_RADIUS_METERS);
+        if (
+          artifacts.batchResults.length === 0 &&
+          fallbackRadius > radius
+        ) {
+          const fallbackPois = await searchPois(coordinate, fallbackRadius);
+          const fallbackArtifacts = await buildTapMatchArtifacts(fallbackPois, coordinate);
+          if (fallbackArtifacts.batchResults.length > 0 || pois.length === 0) {
+            pois = fallbackPois;
+            artifacts = fallbackArtifacts;
+          }
         }
-        const pois = await MapKitSearch.searchNearby(
-          coordinate.latitude,
-          coordinate.longitude,
-          radius,
-        );
 
-        cellCache.current.set(cellKey, {
-          pois,
-          expiresAt: Date.now() + TAP_CACHE_TTL_MS,
-        });
-        await processTapResults(pois, coordinate);
+        applyTapResults(artifacts, coordinate, pois.length, 'normal');
       } catch (err) {
         // Fail silently — no user-visible error for tap search failures.
         console.error('[useTapSearch] handleMapPress error:', err);
+      } finally {
+        inFlightRef.current = false;
         setTapSearching(false);
       }
     },
-    [processTapResults],
+    [applyTapResults, buildTapMatchArtifacts, searchPois],
   );
 
   /**
@@ -300,16 +337,21 @@ export function useTapSearch(
       Keyboard.dismiss();
 
       if (inFlightRef.current) return;
+      inFlightRef.current = true;
       const { name, coordinate } = e.nativeEvent;
       setTapSearching(true);
       try {
-        await processTapResults([{ name }], coordinate);
+        const pois = [{ name }];
+        const artifacts = await buildTapMatchArtifacts(pois, coordinate);
+        applyTapResults(artifacts, coordinate, pois.length, 'normal');
       } catch (err) {
         console.error('[useTapSearch] handlePoiClick error:', err);
+      } finally {
+        inFlightRef.current = false;
         setTapSearching(false);
       }
     },
-    [processTapResults],
+    [applyTapResults, buildTapMatchArtifacts],
   );
 
   /**
@@ -320,35 +362,21 @@ export function useTapSearch(
     async (coordinate: LatLng) => {
       const now = Date.now();
       lastTapAt.current = now;
+      if (inFlightRef.current) return;
+      inFlightRef.current = true;
 
       try {
         const radius = computeSearchRadius(regionRef?.current ?? null);
-        const cellKey = tapCellKey(
-          coordinate.latitude,
-          coordinate.longitude,
-          radius,
-        );
-        const cached = cellCache.current.get(cellKey);
-
-        if (cached && cached.expiresAt > Date.now()) {
-          await processTapResults(cached.pois, coordinate, true);
-          return;
-        }
-        const pois = await MapKitSearch.searchNearby(
-          coordinate.latitude,
-          coordinate.longitude,
-          radius,
-        );
-        cellCache.current.set(cellKey, {
-          pois,
-          expiresAt: Date.now() + TAP_CACHE_TTL_MS,
-        });
-        await processTapResults(pois, coordinate, true);
+        const pois = await searchPois(coordinate, radius);
+        const artifacts = await buildTapMatchArtifacts(pois, coordinate);
+        applyTapResults(artifacts, coordinate, pois.length, 'silent');
       } catch {
         // Fail silently — auto-scan errors are not user-actionable.
+      } finally {
+        inFlightRef.current = false;
       }
     },
-    [processTapResults],
+    [applyTapResults, buildTapMatchArtifacts, searchPois],
   );
 
   const resetTapPins = useCallback(() => {

@@ -41,7 +41,13 @@ import { buildGridFigures, pickRandomArena, pickReaction } from '../utils/arenaH
 import { computeGridCellSize } from '../utils/platformHelpers';
 
 export function GameArena() {
-  const { arenaFocusKey, focusedFigureName, arenaHitRequest, isDefeated } = useTrack();
+  const {
+    arenaFocusKey,
+    focusedFigureName,
+    arenaHitRequest,
+    isDefeated,
+    queueArenaHit,
+  } = useTrack();
   const fx = useFX();
   const { width: screenWidth } = useWindowDimensions();
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -199,12 +205,13 @@ export function GameArena() {
   }, [arenaHitRequest, fireHitFX]);
 
   const handleArenaTap = useCallback(() => {
-    fireHitFX();
-  }, [fireHitFX]);
+    if (focusedFigureName) queueArenaHit(focusedFigureName);
+  }, [focusedFigureName, queueArenaHit]);
 
-  const handleGridTap = useCallback(() => {
+  const handleGridTap = useCallback((figureName: string) => {
+    queueArenaHit(figureName);
     fireHitFX(0.5, 0.18);
-  }, [fireHitFX]);
+  }, [fireHitFX, queueArenaHit]);
 
   const backgroundSource = backgroundKey ? arenaAssets[backgroundKey] : null;
   const singleSpriteSize = Math.round(measuredHeight * TRACK_ARENA_SINGLE_DISPLAY_RATIO);
@@ -278,7 +285,7 @@ export function GameArena() {
               return (
                 <Pressable
                   key={figure.spriteId}
-                  onPress={handleGridTap}
+                  onPress={() => handleGridTap(figure.figureName)}
                   style={[
                     styles.gridCell,
                     { width: gridCellSize, height: gridCellSize },

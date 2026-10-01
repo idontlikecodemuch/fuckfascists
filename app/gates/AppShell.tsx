@@ -5,6 +5,7 @@ import { MapScreen } from '../../features/Map/MapScreen';
 import { ScanScreen } from '../../features/Scan/ScanScreen';
 import { TrackScreen } from '../../features/Platforms/TrackScreen';
 import { NudgeBanner } from '../../features/Platforms/components/NudgeBanner';
+import { AppUpdateBanner } from '../../features/Updates/AppUpdateBanner';
 import { ScorecardScreen } from '../../features/Scorecard/ScorecardScreen';
 import { SCORECARD_DROP_NOTIFICATION_TYPE } from '../../features/Scorecard/hooks/useDropSchedule';
 import { useScorecardDropNotification } from '../../features/Scorecard/hooks/useScorecardDropNotification';
@@ -27,7 +28,7 @@ import { theme } from '../../design/tokens';
 const CatalogScreen = __DEV__
   ? require('../../features/Dev/CatalogScreen').CatalogScreen
   : () => null;
-// Screenshot harness — available in all builds behind the beta mode triple-tap.
+// Screenshot harness — available in all builds behind the confirmed beta unlock.
 // Lazy-loaded on first open to avoid bloating the production bundle startup.
 let _ScreenshotHarness: React.ComponentType<{ onClose: () => void }> | null = null;
 function getScreenshotHarness() {
@@ -65,7 +66,7 @@ function isScorecardDrop(
  * Rendered only after onboarding and launch gates have passed.
  */
 export function AppShell({ adapter, entities, people }: AppShellProps) {
-  const { betaEnabled, registerTap } = useBetaMode();
+  const { betaEnabled, registerTap, setBetaEnabled } = useBetaMode();
   // Initial tab resolves from the cold-start notification response before any
   // screen mounts. Starting at null holds the shell blank until we know where
   // to route — prevents MapScreen from painting a frame that later leaves a
@@ -74,6 +75,9 @@ export function AppShell({ adapter, entities, people }: AppShellProps) {
   const [harnessOpen, setHarnessOpen] = useState(false);
   const [scorecardPresentationActive, setScorecardPresentationActive] = useState(false);
   const [nudgeVisible, setNudgeVisible] = useState(false);
+  const [nudgeHeight, setNudgeHeight] = useState(0);
+  const [appUpdateVisible, setAppUpdateVisible] = useState(false);
+  const [appUpdateHeight, setAppUpdateHeight] = useState(0);
   const [avoidRefreshKey, setAvoidRefreshKey] = useState(0);
   // Incrementing key forces screen remount after beta reset, clearing all
   // in-memory state (map pins, tap results, etc.).
@@ -136,11 +140,31 @@ export function AppShell({ adapter, entities, people }: AppShellProps) {
   }, [lastNotificationResponse]);
 
   const handleVersionTap = useCallback(async () => {
-    const toggled = await registerTap();
-    if (toggled) {
-      Alert.alert(betaEnabled ? betaCopy.deactivated : betaCopy.activated);
+    const unlockRequested = await registerTap();
+    if (!unlockRequested) return;
+
+    if (betaEnabled) {
+      await setBetaEnabled(false);
+      Alert.alert(betaCopy.deactivated);
+      return;
     }
-  }, [registerTap, betaEnabled]);
+
+    Alert.alert(
+      betaCopy.enableTitle,
+      betaCopy.enableBody,
+      [
+        { text: betaCopy.enableCancel, style: 'cancel' },
+        {
+          text: betaCopy.enableConfirm,
+          onPress: () => {
+            setBetaEnabled(true)
+              .then(() => Alert.alert(betaCopy.activated))
+              .catch(() => undefined);
+          },
+        },
+      ],
+    );
+  }, [registerTap, betaEnabled, setBetaEnabled]);
 
   // FECClient is stable for the lifetime of the app.
   const fecClient = useMemo(() => {
@@ -181,7 +205,6 @@ export function AppShell({ adapter, entities, people }: AppShellProps) {
             adapter={adapter}
             fetchOrgs={fetchOrgs}
             fetchOrgSummary={fetchOrgSummary}
-            topContentOffset={showShellChrome && nudgeVisible ? theme.space.lg : 0}
             onAvoidRecorded={handleAvoidRecorded}
           />
         );
@@ -215,6 +238,11 @@ export function AppShell({ adapter, entities, people }: AppShellProps) {
     setActiveTab('report');
   }, []);
 
+  const handleNudgeVisibleChange = useCallback((visible: boolean) => {
+    setNudgeVisible(visible);
+    if (!visible) setNudgeHeight(0);
+  }, []);
+
   const handleOpenHarness = useCallback(() => {
     setHarnessOpen(true);
   }, []);
@@ -228,6 +256,13 @@ export function AppShell({ adapter, entities, people }: AppShellProps) {
   }, []);
 
   const showShellChrome = !scorecardPresentationActive;
+  const contentTopOffset = showShellChrome
+    ? appUpdateVisible
+      ? appUpdateHeight
+      : nudgeVisible
+        ? nudgeHeight
+        : 0
+    : 0;
 
   // Screenshot harness takes over the full screen when open (beta mode only)
   if (betaEnabled && harnessOpen) {
@@ -244,8 +279,24 @@ export function AppShell({ adapter, entities, people }: AppShellProps) {
 
   return (
     <View style={styles.root}>
-      <View key={resetKey} style={styles.content}>{renderScreen()}</View>
-      {showShellChrome && <NudgeBanner onPress={handleNudgePress} onVisibleChange={setNudgeVisible} />}
+      <View
+        key={resetKey}
+        style={[styles.content, contentTopOffset > 0 && { paddingTop: contentTopOffset }]}
+      >
+        {renderScreen()}
+      </View>
+      {showShellChrome && !appUpdateVisible && (
+        <NudgeBanner
+          onPress={handleNudgePress}
+          onVisibleChange={handleNudgeVisibleChange}
+          onHeightChange={setNudgeHeight}
+        />
+      )}
+      <AppUpdateBanner
+        suppressed={!showShellChrome}
+        onVisibleChange={setAppUpdateVisible}
+        onHeightChange={setAppUpdateHeight}
+      />
       {showShellChrome && <TabBar activeTab={activeTab} onSelect={setActiveTab} />}
       {betaEnabled && showShellChrome && (
         <BetaOverlay

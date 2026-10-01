@@ -77,6 +77,31 @@ describe('fetchEntityList', () => {
     const result = await fetchEntityList(bundled);
     expect(result).toEqual(bundled);
   });
+
+  it('does not replace newer local data with an older Git payload', async () => {
+    const current = [{ ...validEntity, lastVerifiedDate: '2026-08-20' }];
+    const stale = [{ ...validEntity, id: 'stale', lastVerifiedDate: '2026-05-29' }];
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve(stale),
+    } as Response);
+
+    await expect(fetchEntityList(current)).resolves.toEqual(current);
+  });
+
+  it('rejects a suspiciously partial Git payload', async () => {
+    const current = Array.from({ length: 10 }, (_, index) => ({
+      ...validEntity,
+      id: `local-${index}`,
+    }));
+    const partial = [{ ...validEntity, id: 'remote', lastVerifiedDate: '2026-09-01' }];
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve(partial),
+    } as Response);
+
+    await expect(fetchEntityList(current)).resolves.toEqual(current);
+  });
 });
 
 // ─── parseEntityList ──────────────────────────────────────────────────────────
@@ -114,6 +139,25 @@ describe('parseEntityList', () => {
     const result = parseEntityList([withCommitteeId]);
     expect(result).toHaveLength(1);
     expect(result[0].fecCommitteeId).toBe('D000000074');
+  });
+
+  it('normalizes a verified public figure when a separate CEO is absent', () => {
+    const founderLed = {
+      ...validEntity,
+      id: 'bloomberg',
+      ceoName: undefined,
+      publicFigureName: 'Michael Bloomberg',
+    };
+    const result = parseEntityList([founderLed]);
+
+    expect(result).toHaveLength(1);
+    expect(result[0].ceoName).toBe('Michael Bloomberg');
+    expect(result[0].publicFigureName).toBe('Michael Bloomberg');
+  });
+
+  it('still rejects entities with neither a CEO nor a public figure', () => {
+    const noFigure = { ...validEntity, ceoName: undefined };
+    expect(parseEntityList([noFigure])).toEqual([]);
   });
 
   it('skips invalid entries while keeping valid ones', () => {

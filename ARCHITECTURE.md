@@ -214,7 +214,8 @@ matchEntity(rawInput, deps, areaHash?)
     │
     ├─ 2. cache check (deps.getCache)
     │      key = normalized + ":" + areaHash
-    │      hit within ENTITY_CACHE_TTL_DAYS → return cached result immediately
+    │      hit within ENTITY_CACHE_TTL_DAYS → use unless the active
+    │      Git/bundled donationSummary has a newer lastUpdated date
     │
     ├─ 3. alias match (findByAlias)
     │      exact match against entity.aliases[] / canonicalName
@@ -292,31 +293,35 @@ not a positioning bug.
 
 ---
 
-## 6. CDN-Fetch-with-Bundled-Fallback Pattern
+## 6. Git-Fetch-with-Bundled-Fallback Pattern
 
-Used in three places. Always the same shape:
+Runtime FEC data follows this shape:
 
 ```
-app launch (or service worker init)
+app launch
     │
-    ├─ 1. render/use bundled content immediately (zero wait, works offline)
-    │
-    └─ 2. fetch CDN version in background
+    ├─ 1. render/use bundled local data immediately (zero wait, works offline)
+    └─ 2. fetch public Git runtime bundle in background
                │
-               ├─ success + valid → silently replace bundled content
-               └─ any failure   → keep bundled content, no error shown
+               ├─ complete + same/newer → use for this session
+               ├─ stale/partial         → keep local data
+               └─ network failure       → keep local data
+                                          │
+                         per-lookup stale/miss → live FEC DEMO_KEY fallback
+                                                   └─ failure → stale curated data
 ```
 
-| Usage | Bundled source | CDN URL constant |
+| Usage | Bundled source | Remote URL constant |
 |---|---|---|
 | Entity list | `entities.json` (bundled at build) | `ENTITY_LIST_UPDATE_URL` |
-| Drop schedule | inferred from current week | `DROP_SCHEDULE_URL` |
+| People list | `people.bundle.json` (bundled at build) | `PEOPLE_LIST_UPDATE_URL` |
 | Info content | `features/Info/data/content.ts` | `INFO_CONTENT_URL` |
 
-URLs in `config/constants.ts` point to the data repo at `idontlikecodemuch/fckfascists-data`:
+The populated runtime bundles currently live in the public main repository:
 
 ```typescript
-export const ENTITY_LIST_UPDATE_URL = 'https://raw.githubusercontent.com/idontlikecodemuch/fckfascists-data/main/entities.json';
+export const ENTITY_LIST_UPDATE_URL = 'https://raw.githubusercontent.com/idontlikecodemuch/fuckfascists/main/assets/data/entities.json';
+export const PEOPLE_LIST_UPDATE_URL = 'https://raw.githubusercontent.com/idontlikecodemuch/fuckfascists/main/assets/data/people.bundle.json';
 export const INFO_CONTENT_URL = 'https://raw.githubusercontent.com/idontlikecodemuch/fckfascists-data/main/info.json';
 ```
 
@@ -520,8 +525,9 @@ SW restart.
 ```
 Mobile app (useDropSchedule):
     ├─ computes deterministic weekly drop time on-device
-    │  └─ weighted toward US-friendly Friday evening / Saturday daytime slots
-    ├─ avoids the previous week's drop hour
+    │  └─ uniform minute-level slot in the Friday 6pm–Saturday 4pm ET window
+    ├─ applies EST/EDT before converting the shared moment to UTC
+    ├─ keeps adjacent weekly slots at least 90 minutes apart
     ├─ AppShell schedules Expo local notification at startup / after avoid writes
     │  ├─ only if scored week has enough avoids to render a card
     │  └─ quiet if local drop time is from 11pm through 8:59am

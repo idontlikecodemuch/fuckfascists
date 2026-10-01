@@ -137,6 +137,39 @@ describe('cache hit', () => {
     if (result.matched) expect(result.fromCache).toBe(false);
     expect(deps.fetchOrgSummary).toHaveBeenCalledWith('D000000074');
   });
+
+  it('does not let an older lookup cache shadow fresher Git or bundled data', async () => {
+    const cached: LocalCache = {
+      key: 'walmart',
+      fecCommitteeId: 'D000000074',
+      donationSummary: mockDonationSummary,
+      confidence: 1.0,
+      fetchedAt: Date.now(),
+    };
+    const freshSummary: DonationSummary = {
+      ...mockDonationSummary,
+      recentRepubs: 4_000_000,
+      lastUpdated: '2026-08-20',
+    };
+    const freshEntity: Entity = {
+      ...walmartEntity,
+      lastVerifiedDate: '2026-08-20',
+      donationSummary: freshSummary,
+    };
+    const deps = makeDeps({
+      entities: [freshEntity],
+      getCache: jest.fn().mockResolvedValue(cached),
+    });
+
+    const result = await matchEntity('Walmart', deps);
+
+    expect(result.matched).toBe(true);
+    if (result.matched) {
+      expect(result.fromCache).toBe(false);
+      expect(result.donationSummary).toBe(freshSummary);
+    }
+    expect(deps.fetchOrgSummary).not.toHaveBeenCalled();
+  });
 });
 
 // ─── Domain match ────────────────────────────────────────────────────────────
@@ -433,6 +466,27 @@ describe('alias match', () => {
     if (!result.matched) {
       expect(result.lookupStatus).toBe('lookup_unavailable');
     }
+  });
+
+  it('uses stale curated data when the final live FEC refresh is unavailable', async () => {
+    const staleSummary: DonationSummary = {
+      ...mockDonationSummary,
+      lastUpdated: '2024-01-01',
+    };
+    const deps = makeDeps({
+      entities: [{
+        ...walmartEntity,
+        lastVerifiedDate: '2024-01-01',
+        donationSummary: staleSummary,
+      }],
+      fetchOrgSummary: jest.fn().mockRejectedValue(new Error('FEC offline')),
+    });
+
+    const result = await matchEntity('Walmart', deps);
+
+    expect(result.matched).toBe(true);
+    if (result.matched) expect(result.donationSummary).toBe(staleSummary);
+    expect(deps.setCache).not.toHaveBeenCalled();
   });
 });
 

@@ -65,7 +65,7 @@ These are not preferences. They are constraints. Never violate them.
 API keys and credentials must **only ever be read from environment variables**. This is a hard rule.
 
 - **Never hardcode any key, token, or credential** in source files, config files, or comments. `.env` is gitignored; `.env.example` shows placeholders only. Hardcoded keys are bugs — remove immediately and rotate.
-- **`FECClient` supports anonymous mode** — runs without `FEC_API_KEY`, making requests with no `api_key` param (lower rate limits). `console.warn` in non-prod when key is absent.
+- **`FECClient` supports a public fallback** — when `FEC_API_KEY` is absent it sends data.gov's non-secret `DEMO_KEY` and enforces the advertised 10-request local ceiling. Curated local/Git data is the primary path; this fallback is intentionally rare. `console.warn` in non-prod when the demo path is active.
 - **`FEC_API_KEY` is required only for FEC API pipeline scripts** — `verify:entities`, `fetch:donations`, and `fetch:people` make live FEC API requests and must be flagged before running. Bulk-first scripts such as `hydrate:entities:bulk`, `build:people:bulk-top`, and `hydrate:people:bulk` use local `tools/fec-bulk/` files and do not require an API key.
 - **Android map key is not the FEC key** — native Android map rendering uses Google Maps SDK and reads `GOOGLE_MAPS_ANDROID_API_KEY` from `.env` via `app.config.js`. No-key Android builds intentionally render a mapless search fallback. Restrict any map key in Google Cloud to package `com.fckapp.fck` plus the signing certificate SHA. FEC app traffic can still run anonymously.
 - **`OPENAI_API_KEY` is required for `gpt_image.py`** — the GPT image pipeline reads from `.env` via python-dotenv. Exits with a clear error if missing. Not used by any app or extension runtime code.
@@ -122,7 +122,7 @@ All tables in `fuckfascists.db` share the same database file and receive identic
 │   ├── Onboarding/                  ← first-run flow (3 screens: Welcome, Permissions, Privacy)
 │   ├── Info/                        ← transparency, about, FAQ
 │   ├── Scan/                        ← barcode scanning (UPC/EAN → bundled prefix index → Open Food Facts → entity match)
-│   ├── Beta/                        ← beta testing mode (triple-tap toggle, BetaOverlay)
+│   ├── Beta/                        ← beta testing mode (seven-tap + confirm, device-only BetaOverlay)
 │   ├── Launch/                      ← daily launch screen (once per calendar day)
 │   └── Dev/                         ← dev-only catalog screen
 ├── core/
@@ -198,20 +198,14 @@ All tables in `fuckfascists.db` share the same database file and receive identic
 All of these live in `/config/constants.ts`. They can be adjusted post-launch without code changes. Never hardcode these values anywhere else.
 
 ```typescript
-// Scorecard drop window (times in ET). Canonical names are DROP_WINDOW_*;
+// Scorecard drop window (America/New_York). Canonical names are DROP_WINDOW_*;
 // SCORECARD_WINDOW_* aliases are retained for backward compat with
 // computeDropTime.ts until the migration is done.
 export const DROP_WINDOW_START_DAY = 5;        // Friday
 export const DROP_WINDOW_START_HOUR = 18;      // 6pm ET
 export const DROP_WINDOW_END_DAY = 6;          // Saturday
-export const DROP_WINDOW_END_HOUR = 16;        // 4pm ET
-export const SCORECARD_DROP_WEIGHTED_HOUR_OFFSETS = [
-  // Full window once, US-friendly Friday evening / Saturday daytime twice more.
-  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-  11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-  0, 1, 2, 3, 4, 16, 17, 18, 19, 20, 21,
-  0, 1, 2, 3, 4, 16, 17, 18, 19, 20, 21,
-];
+export const DROP_WINDOW_END_HOUR = 16;        // 4pm ET (exclusive)
+export const SCORECARD_DROP_MIN_SEPARATION_MINUTES = 90;
 export const SCORECARD_QUIET_NOTIFICATION_FROM_HOUR = 23; // 11pm local
 export const SCORECARD_QUIET_NOTIFICATION_BEFORE_HOUR = 9;
 
@@ -244,7 +238,7 @@ export const CONFIDENCE_THRESHOLD_MEDIUM = 0.60;
 export const FEC_API_BASE_URL = 'https://api.open.fec.gov/v1';
 
 // Curated entity list update URL
-export const ENTITY_LIST_UPDATE_URL = 'https://raw.githubusercontent.com/idontlikecodemuch/fckfascists-data/main/entities.json';
+export const ENTITY_LIST_UPDATE_URL = 'https://raw.githubusercontent.com/idontlikecodemuch/fuckfascists/main/assets/data/entities.json';
 
 // Drop schedule is computed deterministically on-device — no CDN fetch needed.
 // See core/dropSchedule/computeDropTime.ts. V2: optional server override — see Known Limitations.
@@ -256,6 +250,7 @@ export const INFO_CONTENT_URL = 'https://raw.githubusercontent.com/idontlikecode
 // Default fallback when region is unavailable; min/max clamps for the dynamic calculation.
 export const POI_SEARCH_RADIUS_METERS = 50;
 export const POI_SEARCH_RADIUS_MIN_METERS = 15;
+export const POI_SEARCH_FALLBACK_RADIUS_METERS = 45;
 export const POI_SEARCH_RADIUS_MAX_METERS = 200;
 export const TAP_CACHE_TTL_MS = 60 * 1000; // 60 seconds
 export const TAP_DEBOUNCE_MS = 500;
@@ -272,7 +267,7 @@ export const BARCODE_SCAN_GUIDE_HEIGHT = 128;
 export const BARCODE_SCAN_GUIDE_SIDE_INSET_PERCENT = 14;
 
 // People list update URL
-export const PEOPLE_LIST_UPDATE_URL = 'https://raw.githubusercontent.com/idontlikecodemuch/fckfascists-data/main/people.json';
+export const PEOPLE_LIST_UPDATE_URL = 'https://raw.githubusercontent.com/idontlikecodemuch/fuckfascists/main/assets/data/people.bundle.json';
 
 // Thursday nudge notification — reminds users to log avoids before Friday scorecard drop.
 export const NUDGE_DAY = 4;    // Thursday (0 = Sunday)
@@ -461,7 +456,7 @@ Preferred order (bulk-first; API only for targeted validation):
 11. (Optional canary) `node scripts/validate-people-fec-coverage.mjs --person=jeff-bezos --api` — one FEC API call to spot-check a person's coverage vs. Schedule A
 
 ### `python3 scripts/sync-products-from-off.py`
-Processes the Open Food Facts MongoDB bulk dump into `assets/data/products.json`. Scans ~4.4M product documents, extracts exact barcode product rows plus UPC prefix evidence per producer, and outputs a three-layer index: exact runtime `products` (2,000 rows), conservative runtime `producers` (111 entries after the May 26, 2026 product entity-coverage batch), and broader `producerResearch` (209 entries for future expansion; 115 currently mapped to live entities). Rebuilds read current `entities.json` to refresh product-side entity match fields before runtime producers are built, including clearing stale product-side `entityId` values after alias cleanup. Checkpoint-based resume (`tools/off-bulk/checkpoints/`). Requires the OFF bulk archive at `tools/off-bulk/openfoodfacts-mongodbdump` (not committed — 91GB+). Use `--rebuild-from-checkpoint --exact-product-limit 2000` to regenerate `products.json` from saved aggregates and the 5,000-row exact-product candidate pool without rescanning. Philip Morris International and Altria currently resolve to distinct runtime entity IDs. See `docs/PRODUCTS_DATA_PIPELINE.md` and `docs/DATA_CLEANING_AUDIT_2026-04-20.md` for details and current audit caveats.
+Processes the Open Food Facts MongoDB bulk dump into `assets/data/products.json`. Scans ~4.4M product documents, extracts exact barcode product rows plus UPC prefix evidence per producer, and outputs a three-layer index: exact runtime `products` (2,000 rows), conservative runtime `producers` (111 entries after the May 26, 2026 product entity-coverage batch), and broader `producerResearch` (209 entries for future expansion; 115 currently mapped to live entities). Rebuilds read current `entities.json` to refresh product-side entity match fields before runtime producers are built, including clearing stale product-side `entityId` values after alias cleanup. Checkpoint-based resume (`tools/off-bulk/checkpoints/`). The raw OFF archive path is `tools/off-bulk/openfoodfacts-mongodbdump` (not committed — 91GB+), but that local file was deleted on June 27, 2026 to save disk. Use `--rebuild-from-checkpoint --exact-product-limit 2000` to regenerate `products.json` from saved aggregates and the 5,000-row exact-product candidate pool without rescanning; redownload the OFF Mongo dump to that path before any fresh scan. Philip Morris International and Altria currently resolve to distinct runtime entity IDs. See `docs/PRODUCTS_DATA_PIPELINE.md` and `docs/DATA_CLEANING_AUDIT_2026-04-20.md` for details and current audit caveats.
 
 ### `node scripts/generate-arena-assets.mjs`
 Scans `assets/pixel/arena/` for PNG files and regenerates `core/arena/arenaAssets.ts` — a static `require()` map used by `GameArena`. Run this after adding or removing arena background images. The generated file should be committed to the repo (Metro bundler requires the static `require()` strings at build time).
@@ -479,9 +474,9 @@ Reconciles `entities.json` against `people.json` for V1/V2 separation. Adds reve
 The weekly scorecard is a synchronized global event. Every user with the same app version receives it at the exact same moment — computed entirely on-device with no network dependency.
 
 ### Drop timing
-- Drop time is computed deterministically via PRNG in `core/dropSchedule/computeDropTime.ts` — same ISO week year + week number always produces the same result on every install, forever.
-- Seed: djb2 hash of `"ff-drop-{year}-W{week}"` mod `SCORECARD_DROP_WEIGHTED_HOUR_OFFSETS.length`, mapped to a weighted hour offset inside the **Friday evening – Saturday afternoon US window**. Every hour in the broad window remains possible; Friday evening and Saturday daytime appear three times in the table, so they are more likely. The window is still EST = UTC-5 hardcoded for MVP, so displayed ET shifts one hour during DST.
-- Collision rule: if this week's hour matches last week's, advance by 1 hour (wrapping within the window) — fully deterministic.
+- Drop time is computed by the versioned deterministic PRNG in `core/dropSchedule/computeDropTime.ts`. The `ff-drop-v2` sequence maps every ISO week to the same absolute moment on every install, with no device-specific randomness.
+- Selection is uniform across all 1,320 minute slots from **Friday 6:00pm inclusive through Saturday 4:00pm exclusive in America/New_York**. Eastern daylight-saving transitions are applied before the result is converted to UTC.
+- Consecutive weeks advance by a strongly mixed pseudorandom step whose range guarantees at least `SCORECARD_DROP_MIN_SEPARATION_MINUTES` (90 minutes) between their final slots, including across ISO-year boundaries.
 - No network fetch for the schedule — `useDropSchedule` calls `getCurrentDropTime()` synchronously, no loading state.
 - Push notification is scheduled from `AppShell` via `useScorecardDropNotification`, not from the Scorecard tab. It runs on app startup and after avoid writes, so users do not need to open Scorecard first. It only schedules when the scored week has at least `MIN_AVOIDS_FOR_DROP`; empty weeks cancel the `scorecard-drop` notification. Identifier is `SCORECARD_DROP_NOTIFICATION_ID = 'scorecard-drop'` — scoped cancel-and-reschedule preserves the Thursday nudge (`platform-nudge-thursday`). If the drop lands at/after `SCORECARD_QUIET_NOTIFICATION_FROM_HOUR` or before `SCORECARD_QUIET_NOTIFICATION_BEFORE_HOUR` in the user's local device time, the notification is scheduled quiet (`sound: false`, iOS passive interruption level, Android quiet channel).
 - Notification carries `content.data = { type: 'scorecard-drop' }`. `AppShell` routes on `data.type`, not the human-readable title, so copy edits don't break cold-start or warm-start routing.
@@ -503,6 +498,8 @@ This is the full lifecycle and it ties directly to Principle #9:
 
 ### weekOf rollover — exact scored-week lookup
 `getLocalWeekStart()` returns the Saturday starting the current local week — it advances at Saturday midnight local. The drop can still be in its presentation window after that rollover, so `ScorecardScreen` computes `scoredWeekOf` from `schedule.dropAt` via `getScoredWeekOfDrop()` (anchor one day before the drop, then find that local Sat-Fri week). The post-drop flow aggregates, captures, purges, and checks archives with `scoredWeekOf`, not the live `schedule.weekOf`. This prevents an old archived card from short-circuiting a new drop while still avoiding Saturday-midnight orphaning.
+
+Before the drop, that rollover creates a deliberate two-week UI state. If the completed scored week has at least `MIN_AVOIDS_FOR_DROP`, Live Preview shows `LAST WEEK'S SCORECARD / DROPPING SOON` and labels the zeroed active range `NEW WEEK`. The condition is derived from `!hasDropped`, differing live/scored week keys, and the completed week's aggregate. It reveals no exact drop time and stays hidden for empty completed weeks.
 
 ### Filename format
 `Those-I-FCKd-{Month}-{DD}-{YY}.jpg` — e.g. `Those-I-FCKd-April-11-26.jpg`. Built by `buildCardFilename(weekOf)` in `features/Scorecard/utils/formatters.ts`. The prefix echoes the card's hero sentence ("I FCKd [grid] N× this week"); reads like an inscription (riff on "To Those I Loved") when the share receiver sees it. Voice: Sh*tposter (user voice, first-person), non-vulgar, FCK substitution per the voice framework. Archive view renders a readable label via `formatCardLabel()` → `"April 11, 2026"`. Legacy `.png` cards remain readable and are matched by `findCardForWeek()`.
@@ -533,15 +530,15 @@ Extension data is NOT included in the scorecard (V1) — extension has its own i
 - Extension has its own simple weekly summary in the popup — does not feed into the mobile scorecard in V1
 
 ### Extension — FEC API key
-- **No API key is used or stored** — the extension always calls the FEC API in anonymous mode (no `api_key` param). FEC anonymous rate limits are per-IP and sufficient for individual users. A shared key would pool all users against one limit, which is a scaling problem.
+- **No private API key is used or stored** — the extension uses data.gov's public `DEMO_KEY` only for the rare live FEC fallback. Its conservative 10-request ceiling is enforced locally. A shared private key would pool all users against one secret/limit, which is a scaling and disclosure problem.
 - **No options page exists** for API key configuration — do not create one.
-- `FECClient` is constructed with `{ apiKey: '' }` to prevent `process.env` access in the browser context while keeping the client in anonymous mode.
+- `FECClient` is constructed with `{ apiKey: '' }` to prevent `process.env` access in the browser context and select the public `DEMO_KEY` path.
 
 ### Extension — donation data priority order
 When a flagged domain is detected, `handleCheckDomain` resolves donation data in this order:
 1. **Fresh local extension cache** (`ext:{entityId}` in `chrome.storage.local`) — populated by previous live calls
 2. **Bundled `entity.donationSummary`** — primary path; used when present and `isBundledDataFresh()` returns true (within `ENTITY_CACHE_TTL_DAYS` of `entity.lastVerifiedDate`). No API call made.
-3. **Anonymous live FEC call** — fallback when bundled data is absent or stale; result written to local cache
+3. **Public DEMO_KEY live FEC call** — tightly rate-limited fallback when curated data is absent or stale; result written to local cache
 4. **Stale bundled data** — used when the live call fails and bundled data exists (even if expired)
 5. **No data** — `noBundledData: true` on `TabFlag`; popup shows "No bundled donation data." (not "temporarily unavailable")
 
@@ -552,8 +549,15 @@ When a flagged domain is detected, `handleCheckDomain` resolves donation data in
 - Single JSON file covering: top 500 US companies, top 500 retailers, top 500–1,000 GOP-donating orgs
 - Hosted publicly on GitHub — community can view, fork, and submit PRs
 - Bundled with the app at build time (works offline from day one)
-- App fetches updates periodically from ENTITY_LIST_UPDATE_URL and caches locally
+- App starts from bundled data, checks the public Git runtime bundle in the background, rejects stale/partial downgrades, and uses the accepted list for the session
 - Domain mappings (amazon.com → Amazon → Jeff Bezos) live in the same list
+
+### Soft app updates
+
+- `AppUpdateBanner` checks Apple's public lookup endpoint for a newer iOS version. It never blocks launch, account access, local data, or any app screen.
+- Copy is intentionally data-led: `NEW FILES ON DECK / A newer build has the latest FEC records. Tap to update.` Tapping opens the App Store; dismissing is remembered for that offered version.
+- Store/network failure returns no banner. This is a durable offline-first app: bundled data and normal functionality must survive if an app store, Git host, or update service disappears.
+- Never turn this into a mandatory gate. Data-shape incompatibility must preserve the last compatible local bundle rather than bricking an old install.
 
 ### Future expansion: non-corporate entities
 V1 covers for-profit corporations and their PACs. Add foundations (e.g. Gates Foundation), NGOs / nonprofits (e.g. Goodwill, ASPCA), and family offices in a later release — users will reasonably search for these.
@@ -584,11 +588,11 @@ V1 covers for-profit corporations and their PACs. Add foundations (e.g. Gates Fo
 
 ```typescript
 // Environment config in .env files, never committed. See .env.example.
-// FEC_API_KEY optional for app (anonymous mode); required only for FEC API pipeline scripts.
+// FEC_API_KEY optional for app (public DEMO_KEY fallback); required for pipeline scripts.
 
 DEV   — local build, verbose logging on, real API calls (FEC_API_KEY recommended in .env)
 TEST  — jest, mocked API responses only here
-PROD  — release build, logging off, real API calls (FEC_API_KEY optional — anonymous mode)
+PROD  — release build, logging off, real API calls (FEC_API_KEY optional — public DEMO_KEY fallback)
 ```
 
 ---
@@ -650,7 +654,7 @@ Run this checklist before uploading any App Store, TestFlight, public APK, exten
 - **Confirm the archived/uploaded build was created after the intended commit.** Check Xcode Organizer archive time and, for App Store/TestFlight, the uploaded build number. If a fix landed after the archive timestamp, rebuild and upload again.
 - **Confirm the public URL set is launch-correct.** `copy/shared.ts` should point user-facing site/privacy/support/extension URLs at the intended public domains before upload.
 - **Run the release verification set.** At minimum: `npm run typecheck`, full Jest with `.claude` ignored, and one physical-device smoke test of Map, Scan, Track, Scorecard, and Info.
-- **Confirm beta mode is off on any device used to smoke-test the onboarding flow.** The version label's triple-tap toggle persists `ff_beta_mode` in SecureStore and survives Xcode reinstalls on iOS (Android Keystore clears on uninstall). With beta on, the Permissions screen short-circuits OS prompts, fakes the grant, and suppresses auto-advance — masking the real new-user flow. Toggle off via triple-tap → BetaOverlay before testing onboarding.
+- **Confirm beta mode is off on any device used to smoke-test onboarding.** The version label requires seven taps plus an explicit confirmation. State lives under the device-only `ff_beta_mode_device_v2` SecureStore key, so it survives app updates but cannot migrate to another phone through backup restore. With beta on, Permissions short-circuits OS prompts and suppresses auto-advance. Seven-tap the version label again to disable before testing onboarding.
 
 ### What NOT to do
 - Do not squash-merge a subset of a branch's changes to main and then continue working on the original branch. This creates diverged histories that are painful to reconcile.
@@ -720,7 +724,7 @@ The entire app is styled as a **vintage 8-bit video game**. This is the foundati
 | SQLite adapter (`app/storage/SqliteAdapter.ts`) | ✅ Done |
 | Map scan, flag, business card, avoid tap | ✅ Done |
 | Platforms, Scorecard, Onboarding, Info screens | ✅ Done |
-| Track screen rebuild (context-driven, flat layout) | ✅ Done — TrackProvider context (todayActions + recentlyDefeated), TrackHeader + GameArena + FlatList with PlatformGroupHeader/PlatformRow/AvoidButton/DayCircles. ArenaFX extracted. Sat–Fri week, per-figure arena backgrounds, past-day avoid triggers defeated sprite, StarField bg. All files ≤250 lines. |
+| Track screen rebuild (context-driven, flat layout) | ✅ Done — TrackProvider context keeps durable platform/date avoids separate from visual arena defeats. TrackHeader + GameArena + FlatList with PlatformGroupHeader/PlatformRow/AvoidButton/DayCircles. ArenaFX extracted. Sat–Fri week, per-figure arena backgrounds, and every row or sprite hit gets an independent 50% defeat roll; direct sprite taps never write avoids. StarField bg. |
 | Track row full-height columns + sprite-screen | ✅ Done (2026-04-29) — PlatformRow rebuilt around full-row-height columns: sprite-screen left (44×44 cyan tint + focusAccent border + soft glow), AVOID button right (64×44 fills row), nameColumn middle. Focused row swaps borderLeft 3px for borderTop+borderBottom focusAccent rules (day-today convention extended row-wide); when expanded the bottom rule drops so the row + day-circles strip read as one continuous focusTint band closing on a focusAccent rule. `trackFocusTint` 0.08 → 0.18, `TRACK_TODAY_BAND_OPACITY` 0.12 → 0.30, `TRACK_DAY_CIRCLES_PADDING_*` 3/5 → 1/1, `TRACK_ROW_PADDING_*` 5/12 → 0/0, `TRACK_ROW_SPRITE_SIZE` 32 → 44, `TRACK_BUTTON_HEIGHT` 36 → 44, `TRACK_CHILD_INDENT` 56 → 64. JSX structure preserved — single styled `<View>` wrapper added around `FigureBadge`. Reference SVG at `tools/img-gen/reference/track-row-states.svg`. |
 | Track screen full polish — uniform 48pt slices + cyan dimensional bevel + multi-platform group polish | ✅ Done (2026-05-01, `531ae65`) — `TRACK_ROW_SPRITE_SIZE` 44 → 48, `TRACK_BUTTON_HEIGHT` 44 → `TRACK_ROW_SPRITE_SIZE`, `TRACK_BUTTON_WIDTH` 64 → 56, `TRACK_GROUP_HEADER_PADDING_VERTICAL` 5 → 0, `TRACK_CHILD_ROW_PADDING_VERTICAL` 4 → 0, `TRACK_ROW_FACE_ANCHOR_Y` 0.5 → 0.42 (heads upper third). PlatformRow gets a 2-step gradient overlay (white 0.10 / black 0.28) + `panelFocusedRow` brighter fill + sub-row `panelFocusedChildRow` (`trackFocusBgDeep`) + row-level `rowSeparator` for non-last rows. PlatformGroupHeader: avatar mirrors row sprite-screen with right + bottom dividers; Bungee 14pt name; inline SEE FILE link; count `dangerRed` matches singleton; `panelFocusedContainer` cyan fill; bottom border `bevelLight`/`focusBevelDark`. AvoidButton: `bevelFocusRaised` active + `bevelGreenInset` done + `borderRadius: 0`. TrackList: `focusedPanelItemKeys` precomputation drives panel cap/sides cyan dimensional bevel; cap variants collapsed to bevel.width height (no fill gap); inline `isLastInGroup` lookup. New tokens `trackFocusBg #15243A` + `trackFocusBgDeep #0B1422`. `listData.ts` regex strips `Platforms` so `Meta Platforms Inc` → `META`. |
 | Arena visual polish — 1px outline + 2px screen border + flush sprites + pumped flicker | ✅ Done (2026-05-01, `531ae65`) — `arenaFrame` flat 1px `focusBevelLight` outer outline (was `bevelFocusRaised` 2px raised plaque, dropped). New `gameArenaWrap` View wraps GameArena with `bgVoid` solid bg (defensive against StarField bleed) + 2px top + 1px other-sides cyan border framing the arena content as a "screen." `gridCell.paddingBottom: 2 → 0` so sprite art sits flush with yellow border. `grid` padding `space.sm` (8) → `space.md` (12). Pumped flicker: `ARENA_FLICKER_DIP_OPACITY` 0.35 → 0.10, intervals 4–14s → 2.5–8s, `DIP_MS` 90 → 120, `RECOVER_MS` 140 → 180 — reads as a CRT pulse instead of near-imperceptible. Separator below arena dropped translucent rgba bg + glow shadow (was leaking StarField), now an empty 8pt spacer. `TRACK_ARENA_SEPARATOR_HEIGHT` 4 → 8. |
@@ -728,16 +732,16 @@ The entire app is styled as a **vintage 8-bit video game**. This is the foundati
 | TabBar brand-yellow glow strip | ✅ Done (2026-05-01, `bd1e1a2`) — Replaced cyan strip above the tab bar with brand `rewardYellow` line + heavy multi-layer halo. Switched legacy `shadowColor`/`shadowRadius`/`shadowOpacity` to RN 0.76 `boxShadow` three-stop stack (blur 12 alpha 1.0 / blur 24 alpha 0.7 / blur 36 offsetY -4 alpha 0.4). Line 3px → 2px so halo carries the visual. |
 | AvoidButton state-leak bug fix (Map BusinessCard) | ✅ Done (2026-05-01, `1c21723`) — `features/Map/components/AvoidButton.tsx` useEffect was a one-way sync (`if (initialConfirmed) setConfirmed(true)`) — symmetric reset was missing. After Apr 27's persistent-mount fix made `BusinessCard` reuse the AvoidButton instance across card opens, `confirmed=true` from a prior avoid leaked onto every subsequent (non-avoided) card, making them all read as already avoided. Fix: useEffect now two-way syncs both `confirmed` and `error` whenever `initialConfirmed` changes. Pre-existing bug, surfaced when the persistent-mount pattern reached Track. |
 | Sprite face-anchor (canonical post-normalization) | ✅ Done (2026-04-29) — `SpriteView` accepts `faceAnchorX/Y` props; when set, computes `cropOffsetX/Y` dynamically from `SPRITE_FACE_NEUTRAL_X/Y = 0.52/0.23` or `SPRITE_FACE_DEFEATED_X/Y = 0.62/0.24` (selected by sprite `state`). Two pairs of constants in `config/constants.ts` measured from the normalize_sprites.py pipeline output — same for every sprite, defeated leans `+0.10` X. Per-Track-surface anchors: `TRACK_ROW_FACE_ANCHOR_X/Y = 0.5/0.5` (face dead center in row sprite-screen), `TRACK_ARENA_SINGLE_FACE_ANCHOR_X/Y = 0.5/0.3` (upper third), `TRACK_ARENA_GRID_FACE_ANCHOR_X/Y = 0.5/0.35`. Removes `TRACK_SPRITE_BUST_CROP_OFFSET_X/Y`, `TRACK_ARENA_GRID_CROP_OFFSET_X/Y`, `TRACK_ARENA_SINGLE_CROP_OFFSET_X/Y` (replaced by face-anchor math). `TRACK_GRID_SPRITE_SCALE: 1.0 → 0.93` so arena grid sprites fit inside the cell content area (cell - 2×border - paddingBottom). PlatformRow, PlatformGroupHeader, GameArena (single + grid) all use the face-anchor mode. Backward-compatible — non-Track surfaces (BusinessCard, Scorecard) keep their explicit `cropOffsetX/Y`. |
-| Scorecard image — Claude Design "polished main" alignment | ✅ Done (2026-04-30) — `ScorecardImage.tsx` rebuilt to match `tools/img-gen/reference/fck-scorecard claude design/project/scorecard/index.html`. Composition: I FCK'D N× headline up top (Bungee 120, gold N× w/ glow), data panel with cyan corner-tick brackets, THIS WEEK alone bottom-right, footer with beam + 🤘 tagline + Bungee 58 cyan CTA + DATA: FEC.GOV. Person rows scaled up (sprite 200, name 52, count 104). Beam-flanked date header. Vignette via inset boxShadow; scanlines via tiled `assets/pixel/scorecard/scanlines.png`. Power bar reanchored to fixed bottom (520) with tier-proportional native height — tube stays in place, top decoration grows. New tokens: `scorecardCream #E8E0D0`, `scorecardDim #667788`. Extracted: `ScorecardImageHeader`, `ScorecardImageFooter`, `ScorecardImageDecorations` (Beam, CornerTick, Sparkle helpers). Test pipeline: `tools/img-gen/scripts/composite_scorecard.py` rewritten to match RN render; old preserved as `composite_scorecard_legacy.py`. Spec doc `docs/SCORECARD_IMAGE.md` extensively updated. |
+| Scorecard image — Claude Design "polished main" alignment | ✅ Done (2026-04-30; footer updated 2026-07-01) — `ScorecardImage.tsx` rebuilt to match `tools/img-gen/reference/fck-scorecard claude design/project/scorecard/index.html`. Composition: I FCK'D N× headline up top (Bungee 120, gold N× w/ glow), data panel with cyan corner-tick brackets, THIS WEEK alone bottom-right, footer with beam + 🤘 tagline + Bungee 58 cyan CTA (`FCKfascists.com`) + muted handle (`@fckfascists.app`). Person rows scaled up (sprite 200, name 52, count 104). Beam-flanked date header. Vignette via inset boxShadow; scanlines via tiled `assets/pixel/scorecard/scanlines.png`. Power bar reanchored to fixed bottom (520) with tier-proportional native height — tube stays in place, top decoration grows. New tokens: `scorecardCream #E8E0D0`, `scorecardDim #667788`. Extracted: `ScorecardImageHeader`, `ScorecardImageFooter`, `ScorecardImageDecorations` (Beam, CornerTick, Sparkle helpers). Test pipeline: `tools/img-gen/scripts/composite_scorecard.py` rewritten to match RN render; old preserved as `composite_scorecard_legacy.py`. Spec doc `docs/SCORECARD_IMAGE.md` extensively updated. |
 | Browser extension (MV3, Chrome + Firefox) | ✅ Done |
 | FEC entity verification run (`verify:entities`) | ✅ Done |
 | Donation data bundled into `entities.json` | ✅ Done |
-| Anonymous FEC API mode (no key required in app) | ✅ Done |
+| Public DEMO_KEY FEC fallback (no private key in app) | ✅ Done — 10-request local ceiling; local/Git data remains primary |
 | Design system: tokens + 26 components migrated | ✅ Done — `design/tokens.ts` + all components use theme tokens |
 | Pixel art assets: pipeline + deploy + wired | ✅ Done — 35 assets in `assets/pixel/`, FlagMarker + BusinessCard wired. 107 CEO sprites in `assets/pixel/sprites/`, wired into BusinessCard, PlatformRow, ScorecardView. 4-step keying pipeline with 1px alpha erosion. Brand logos wired (map header, launch, onboarding, icon, splash). 4 arena backgrounds wired into GameArena. UI kit sliced (30 elements): frames wired into BusinessCard + ScorecardView, buttons into AvoidButton + MapControls, input field into MapSearchBar, bar into TabBar, header bar into MapScreen. Eagle seal (`seal_eagle.png` + `seal_eagle_sm.png`) wired into manila folder card. |
 | Design refinement: 8-bit game energy | ✅ Done — Map header bar, search bar depth, tab bar texture, BusinessCard sprite-left layout + donation hierarchy flip + reward overlay + sprite perch ON card, MatchChooser visual upgrade, GameArena tiled bg texture + rewardYellow cell borders, PlatformGroup parent company grouping + short names + hideSprite/compact child rows, InfoScreen collapsible transparency + section ornamentation, tap-to-dismiss backdrop, AvoidButton depth borders, global highlight lines reduced to 2px |
 | Onboarding tightened (5→3 screens) | ✅ Done — Welcome, Privacy (WHAT WE DON'T DO), Permissions (BEFORE WE START). Privacy promise before permission request. |
-| Beta testing mode | ✅ Done — triple-tap toggle, BetaOverlay, screenshot tool |
+| Beta testing mode | ✅ Done — seven-tap + explicit confirmation, device-only state, BetaOverlay, screenshot tool |
 | Daily launch screen | ✅ Done — once per calendar day, rotating messages, 5s auto-dismiss, breathing logo animation |
 | Avoid celebration animation + haptics | ✅ Done — card-local StampOverlay + MoneyParticles + screen shake + amber pulse (replaced former full-screen AvoidCelebration checkmark). FX system (`core/fx/`) still used by GameArena. |
 | App built and running on iOS simulator | ✅ Done — `FckFascists.app` installed on iPhone 16 Pro simulator |
@@ -759,7 +763,7 @@ The entire app is styled as a **vintage 8-bit video game**. This is the foundati
 | BusinessCard manila folder reskin | ✅ Done — manila folder wrapper, cream document table layout, folder tab dismiss, sprite perch (168px, 80/20 split), swipe-down dismiss, post-avoid stamp + particles + shake + amber pulse, AvoidButton hydration fix, AvoidCelebration removed. Pixel art eagle seal wired (48px BOX-downsampled, red-tinted folder + dark doc header). |
 | Extension tested in Chrome | ✅ Done |
 | Scorecard rebuild (4-state tab, rendered card, archive) | ✅ Done — 4-state screen (preview/loading/presentation/empty/archive), ScorecardImage 1080×1920 capture, CardPresentation full-screen takeover + celebrations, surface tracking (numeric column), shared CollapsibleRow, card archive, dev tools. Drop window Fri 6pm–Sat 4pm ET. |
-| Scorecard capture-then-purge privacy flow | ✅ Done (2026-04-18, hardened 2026-05-07) — drop fires → aggregate scored week → capture card → purge scoped events `[scoredWeekOf, scoredWeekOf+7)`. `purgeScoredWeekAvoidEvents` in `core/data/eventStore.ts`. Purge is gated on capture success; failure retains raw events for retry on next visit. Launch-resilient — first open after a missed drop runs the same flow. Loader copy proves the promise: "Locking in my card. Shredding the data." |
+| Scorecard capture-then-purge privacy flow | ✅ Done (2026-04-18, hardened 2026-05-07; asset preload 2026-07-01) — drop fires → aggregate scored week → preload rendered-card image assets → capture card → purge scoped events `[scoredWeekOf, scoredWeekOf+7)`. `purgeScoredWeekAvoidEvents` in `core/data/eventStore.ts`. Purge is gated on capture success; failure retains raw events for retry on next visit. Launch-resilient — first open after a missed drop runs the same flow. Loader copy proves the promise: "Locking in my card. Shredding the data." |
 | Scorecard 48h presentation window + scored-week lookup | ✅ Done (2026-04-18, hardened 2026-05-07) — `SCORECARD_PRESENTATION_WINDOW_MS = 48h`. Full-screen takeover only inside the window; after, tab returns to LivePreview and card moves to archive. Drop flow resolves the card via exact `findCardForWeek(scoredWeekOf)` so older archived cards cannot skip the current capture+purge; `scoredWeekOf` anchors to `dropAt - 24h` so Saturday local rollover still maps to the week that ended Friday. |
 | Scorecard filename + archive labels — inscription format | ✅ Done (2026-04-18, JPEG 2026-04-30) — captured cards saved as `Those-I-FCKd-{Month}-{DD}-{YY}.jpg` via `buildCardFilename()`. Archive labels render readable `"April 11, 2026"` via `formatCardLabel()`. Legacy `.png` cards remain readable. Sh*tposter voice, non-vulgar, first-person. |
 | Scorecard notification hygiene (scoped cancel, data.type routing) | ✅ Done (2026-04-18) — drop notification has identifier `'scorecard-drop'` + `data.type = 'scorecard-drop'`. Cancellation scoped by identifier so Thursday nudge (`platform-nudge-thursday`) survives. `AppShell` routes on `data.type` with one-release title-string fallback. |
@@ -826,7 +830,7 @@ After writing any file, scan it once for deprecated APIs, `.then()` chains, `var
   - **Native guard (defense-in-depth):** `AIRMap.m` patched with `if (subview == nil) return` at the top of `insertReactSubview:atIndex:`, `removeReactSubview:`, and `addSubview:`. This prevents the `NSInvalidArgumentException` even if a nil subview leaks through from the Fabric reconciler for any reason. **The Podfile `post_install` hook re-applies this patch automatically after every `pod install`** — it reads `AIRMap.m`, checks for the nil guards, and injects them if missing. The hook is idempotent (safe to run repeatedly).
 - **react-native-maps — `onRegionChangeComplete` render loop** — storing the map region in `useState` and passing the setter directly to `onRegionChangeComplete` creates an infinite re-render loop: region change → setState → re-render MapView → region change → ... The app freezes. **Fix:** Store region in a `useRef` instead of `useState` — the region is only consumed by zoom callbacks (never rendered directly), so it doesn't need to trigger re-renders. `MapScreen.tsx` uses `regionRef` with a stable `handleRegionChange` callback. Do not revert this to `useState`.
 - **react-native-maps — map snap-back on location update** — a `useEffect` depending on `location.coords` that unconditionally calls `animateToRegion` will snap the map back to the user's position every time coords get a new object reference (e.g. location button press, tab re-mount). **Fix:** Use a `hasInitiallyCentered` ref guard so the auto-center fires exactly once on mount. For the location button, use a separate `pendingRecenter` ref flag + effect pattern: set the flag before calling `requestLocation`, then the effect only animates when the flag is true. Do not combine initial centering and explicit re-centering into a single unguarded effect.
-- **POI search radius tuning** — `computeSearchRadius()` uses 2% of the visible map span (not 5%). At 5%, the auto-center zoom (`latitudeDelta: 0.02`) produced a 111m radius — over a city block. At 2% with min clamp 15m, street-level taps resolve to individual buildings. If cross-street matches recur, reduce the multiplier further or add a hard cap below 50m.
+- **POI search radius tuning** — `computeSearchRadius()` uses 2% of the visible map span (not 5%). At 5%, the auto-center zoom (`latitudeDelta: 0.02`) produced a 111m radius — over a city block. At 2% with min clamp 15m, street-level taps resolve to individual buildings. User taps get one broader 45m fallback only after the strict pass finds no curated match, which helps large hotel/property labels without widening every tap. If cross-street matches recur, reduce the fallback or add category-aware filtering.
 - **POI tap cache key** — `tapCellKey()` in `useTapSearch.ts` rounds to 4 decimal places (~11m grid, not 3 dp / ~111m) and includes the computed search radius. This ensures (a) taps on opposite sides of a street get different cache entries, and (b) zooming in/out at the same location triggers a fresh MKLocalPointsOfInterestRequest instead of returning stale results from a wider/narrower search. TTL is 60s (double-tap dedup only, not exploration persistence).
 - **V2 cleanup — extension confidence CSS classes** — `popup.ts` uses `'HIGH'`/`'MEDIUM'` string class names derived from numeric scores. In V2, rename to BEM format (`confidence-badge--high`/`--medium`).
 - **`NSCameraUsageDescription` required for barcode scanning** — iOS requires an explicit `NSCameraUsageDescription` in `Info.plist`. Requesting camera access without it causes an OS-level crash. Validate with `plutil -lint ios/FckFascists/Info.plist` after any prebuild.

@@ -2,7 +2,7 @@ import type { DonationSummary, FECLineItem } from '../models';
 import { makeFecCommitteeUrl } from '../models';
 import type { FECCommittee } from '../matching/types';
 import { normalizeForFecQuery } from '../matching/fecQuery';
-import { RateLimiter, FEC_DEFAULT_LIMITS } from './rateLimit';
+import { RateLimiter, FEC_DEFAULT_LIMITS, FEC_DEMO_LIMITS } from './rateLimit';
 import { RateLimitError } from './errors'; // eslint-disable-line @typescript-eslint/no-unused-vars -- re-thrown by RateLimiter
 import { FEC_API_BASE_URL } from '../../config/constants';
 
@@ -31,6 +31,9 @@ export class FECParseError extends FECError {
 
 // Cycles to fetch — 2016 through 2026 (update when a new cycle begins).
 const CYCLES_SINCE_2016 = [2016, 2018, 2020, 2022, 2024, 2026] as const;
+// data.gov's documented public fallback value. It is intentionally not a
+// private credential and is heavily rate-limited by FEC/data.gov.
+const FEC_PUBLIC_DEMO_KEY = 'DEMO_KEY';
 
 // ── FEC API response shapes ────────────────────────────────────────────────────
 
@@ -76,22 +79,25 @@ interface FECScheduleBResponse {
 // ── Client ─────────────────────────────────────────────────────────────────────
 
 export interface FECClientConfig {
-  /** Defaults to process.env.FEC_API_KEY. When absent, client runs in anonymous mode (no api_key param). */
+  /** Defaults to process.env.FEC_API_KEY, then FEC's public DEMO_KEY fallback. */
   apiKey?: string;
   rateLimiter?: RateLimiter;
 }
 
 export class FECClient {
-  private readonly apiKey: string | null;
+  private readonly apiKey: string;
   private readonly rateLimiter: RateLimiter;
 
   constructor(config: FECClientConfig = {}) {
-    const key = config.apiKey ?? process.env['FEC_API_KEY'] ?? null;
-    if (!key && process.env['NODE_ENV'] !== 'production') {
-      console.warn('[FECClient] No FEC_API_KEY found — running in anonymous mode. Rate limits may be stricter.');
+    const configuredKey = (config.apiKey ?? process.env['FEC_API_KEY'] ?? '').trim();
+    const usingDemoKey = configuredKey.length === 0;
+    if (usingDemoKey && process.env['NODE_ENV'] !== 'production') {
+      console.warn('[FECClient] No FEC_API_KEY found — using the public DEMO_KEY fallback.');
     }
-    this.apiKey = key;
-    this.rateLimiter = config.rateLimiter ?? new RateLimiter(FEC_DEFAULT_LIMITS);
+    this.apiKey = configuredKey || FEC_PUBLIC_DEMO_KEY;
+    this.rateLimiter = config.rateLimiter ?? new RateLimiter(
+      usingDemoKey ? FEC_DEMO_LIMITS : FEC_DEFAULT_LIMITS,
+    );
   }
 
   /**
@@ -127,7 +133,7 @@ export class FECClient {
     const q = normalizeForFecQuery(name);
     if (!q) return [];
     const params = new URLSearchParams({ q, per_page: '20' });
-    if (this.apiKey) params.set('api_key', this.apiKey);
+    params.set('api_key', this.apiKey);
     const data = await this.get<FECSearchResponse>(`/committees/?${params}`);
     return (data.results ?? []).map((c) => ({
       orgid: c.committee_id,
@@ -148,7 +154,7 @@ export class FECClient {
   async getCommitteeTotals(committeeId: string): Promise<DonationSummary> {
     const id = encodeURIComponent(committeeId);
     const cycleParams = CYCLES_SINCE_2016.map((c) => `cycle=${c}`).join('&');
-    const keyParam = this.apiKey ? `&api_key=${encodeURIComponent(this.apiKey)}` : '';
+    const keyParam = `&api_key=${encodeURIComponent(this.apiKey)}`;
 
     // Details then totals — serialized to avoid per-minute rate limit spikes.
     // Each this.get() call passes through the RateLimiter; no extra delay needed.
@@ -269,7 +275,7 @@ export class FECClient {
     const id            = encodeURIComponent(committeeId);
     const sbCycleParams = CYCLES_SINCE_2016.map((c) => `two_year_transaction_period=${c}`).join('&');
     const sbTypeParams  = ['H', 'S', 'P'].map((t) => `recipient_committee_type=${t}`).join('&');
-    const keyParam      = this.apiKey ? `&api_key=${encodeURIComponent(this.apiKey)}` : '';
+    const keyParam      = `&api_key=${encodeURIComponent(this.apiKey)}`;
 
     const records: FECScheduleBResult[] = [];
     let cursor = '';

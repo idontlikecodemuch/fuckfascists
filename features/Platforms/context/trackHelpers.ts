@@ -6,6 +6,18 @@ export interface ArenaHitRequest {
   delayMs: number;
 }
 
+// Back-dated day circles, ✓ re-presses and direct arena taps roll at the base
+// chance; a same-day AVOID tap rolls at the higher today chance.
+export const ARENA_DEFEAT_CHANCE = 0.5;
+export const ARENA_DEFEAT_CHANCE_TODAY = 0.8;
+
+export function rollArenaDefeat(
+  random: () => number = Math.random,
+  chance: number = ARENA_DEFEAT_CHANCE,
+): boolean {
+  return random() < chance;
+}
+
 export function buildTodayActions(
   items: PlatformItem[],
   today: string,
@@ -22,10 +34,9 @@ export function buildTodayActions(
   return actions;
 }
 
-export function isFigureDefeatedToday(
+export function isFigureDefeated(
   figureName: string,
-  todayActions: Set<string>,
-  recentlyDefeated: Set<string>,
+  defeatedFigures: Set<string>,
 ): boolean {
-  return todayActions.has(figureName) || recentlyDefeated.has(figureName);
+  return defeatedFigures.has(figureName);
 }

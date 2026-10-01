@@ -1,92 +1,131 @@
 import { computeDropTime, getISOWeek, getCurrentDropTime } from '../computeDropTime';
-import { SCORECARD_DROP_WEIGHTED_HOUR_OFFSETS } from '../../../config/constants';
+import { SCORECARD_DROP_MIN_SEPARATION_MINUTES } from '../../../config/constants';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
-/**
- * Extracts the hour offset (0–21) from a drop Date by measuring how many hours
- * after Friday 23:00 UTC (6pm ET) the drop falls.
- */
-function getHourOffset(drop: Date): number {
-  const dayOfWeek = drop.getUTCDay();
-  // If the drop is on Saturday (6), Friday is 1 day before.
-  const daysFromFriday = dayOfWeek === 6 ? 1 : 0;
-  const fridayWindowStart = new Date(drop);
-  fridayWindowStart.setUTCDate(fridayWindowStart.getUTCDate() - daysFromFriday);
-  fridayWindowStart.setUTCHours(23, 0, 0, 0);
-  return Math.round((drop.getTime() - fridayWindowStart.getTime()) / 3_600_000);
+const easternFormatter = new Intl.DateTimeFormat('en-US', {
+  timeZone: 'America/New_York',
+  weekday: 'short',
+  hour: 'numeric',
+  minute: '2-digit',
+  hourCycle: 'h23',
+});
+
+function getEasternParts(drop: Date): { weekday: string; hour: number; minute: number } {
+  const parts = easternFormatter.formatToParts(drop);
+  const value = (type: Intl.DateTimeFormatPartTypes): string =>
+    parts.find((part) => part.type === type)?.value ?? '';
+
+  return {
+    weekday: value('weekday'),
+    hour: Number(value('hour')),
+    minute: Number(value('minute')),
+  };
+}
+
+/** Minute offset inside Friday 6pm–Saturday 4pm ET. */
+function getWindowMinuteOffset(drop: Date): number {
+  const { weekday, hour, minute } = getEasternParts(drop);
+  if (weekday === 'Fri') return (hour - 18) * 60 + minute;
+  if (weekday === 'Sat') return 6 * 60 + hour * 60 + minute;
+  throw new Error(`drop fell outside Friday/Saturday ET: ${drop.toISOString()}`);
+}
+
+function isoWeeksInYear(year: number): number {
+  const jan1Day = new Date(Date.UTC(year, 0, 1)).getUTCDay();
+  const isLeap = (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+  return jan1Day === 4 || (jan1Day === 3 && isLeap) ? 53 : 52;
+}
+
+function weekPairs(startYear: number, endYear: number): Array<{ year: number; week: number }> {
+  const result: Array<{ year: number; week: number }> = [];
+  for (let year = startYear; year <= endYear; year++) {
+    for (let week = 1; week <= isoWeeksInYear(year); week++) {
+      result.push({ year, week });
+    }
+  }
+  return result;
 }
 
 // ── computeDropTime ───────────────────────────────────────────────────────────
 
 describe('computeDropTime', () => {
-  it('returns the same Date for the same inputs (determinism)', () => {
-    expect(computeDropTime(2024, 11).getTime()).toBe(computeDropTime(2024, 11).getTime());
-    expect(computeDropTime(2025, 1).getTime()).toBe(computeDropTime(2025, 1).getTime());
-    expect(computeDropTime(2024, 52).getTime()).toBe(computeDropTime(2024, 52).getTime());
+  it('returns the same absolute moment for the same week in every device timezone', () => {
+    const originalTimezone = process.env.TZ;
+    try {
+      process.env.TZ = 'Pacific/Honolulu';
+      const hawaii = computeDropTime(2026, 34).getTime();
+      process.env.TZ = 'Asia/Tokyo';
+      const tokyo = computeDropTime(2026, 34).getTime();
+      process.env.TZ = 'Europe/London';
+      const london = computeDropTime(2026, 34).getTime();
+
+      expect(hawaii).toBe(tokyo);
+      expect(tokyo).toBe(london);
+    } finally {
+      process.env.TZ = originalTimezone;
+    }
   });
 
-  it('keeps every broad-window hour possible while biasing US-friendly hours', () => {
-    const weightedOffsets: readonly number[] = SCORECARD_DROP_WEIGHTED_HOUR_OFFSETS;
-    const allOffsets = new Set<number>(weightedOffsets);
-    expect(allOffsets.size).toBe(22);
-    for (let offset = 0; offset < 22; offset++) {
-      expect(allOffsets.has(offset)).toBe(true);
-    }
+  it('keeps versioned winter and daylight-time fixtures stable', () => {
+    expect(computeDropTime(2026, 1).toISOString()).toBe('2026-01-03T09:47:00.000Z');
+    expect(computeDropTime(2026, 32).toISOString()).toBe('2026-08-07T22:20:00.000Z');
+  });
 
-    // Friday evening / Saturday daytime slots are repeated by config to make
-    // them more likely, but the table still preserves overnight variety.
-    const counts = weightedOffsets.reduce<Record<number, number>>(
-      (acc, offset) => ({ ...acc, [offset]: (acc[offset] ?? 0) + 1 }),
-      {},
+  it('keeps every drop inside Friday 6pm–Saturday 4pm America/New_York', () => {
+    for (const { year, week } of weekPairs(2020, 2040)) {
+      const { weekday, hour } = getEasternParts(computeDropTime(year, week));
+      expect(['Fri', 'Sat']).toContain(weekday);
+      if (weekday === 'Fri') expect(hour).toBeGreaterThanOrEqual(18);
+      if (weekday === 'Sat') expect(hour).toBeLessThan(16);
+    }
+  });
+
+  it('uses minute-level times across the full window instead of on-the-hour slots', () => {
+    const offsets = weekPairs(2020, 2040).map(({ year, week }) =>
+      getWindowMinuteOffset(computeDropTime(year, week)),
     );
-    expect(counts[0]).toBeGreaterThan(counts[10]);
-    expect(counts[18]).toBeGreaterThan(counts[10]);
+    const nonHourlyDrops = offsets.filter((offset) => offset % 60 !== 0).length;
+    const quartileCounts = [0, 0, 0, 0];
+    for (const offset of offsets) {
+      quartileCounts[Math.min(Math.floor(offset / 330), 3)]++;
+    }
+
+    expect(nonHourlyDrops / offsets.length).toBeGreaterThan(0.9);
+    expect(new Set(offsets).size).toBeGreaterThan(650);
+    for (const count of quartileCounts) expect(count).toBeGreaterThan(200);
   });
 
-  it('output falls within the Friday 6pm ET – Saturday 4pm ET window for all weeks in 2024', () => {
-    // Window: Fri 6pm ET (23 UTC) – Sat 4pm ET (21 UTC) = 22 hours
-    for (let week = 1; week <= 52; week++) {
-      const drop = computeDropTime(2024, week);
-      const dayOfWeek = drop.getUTCDay(); // 5=Fri, 6=Sat
-
-      expect([5, 6]).toContain(dayOfWeek);
-
-      if (dayOfWeek === 5 /* Friday */) {
-        // Must be at or after 23:00 UTC (6pm ET)
-        expect(drop.getUTCHours()).toBeGreaterThanOrEqual(23);
-      } else {
-        // Saturday: must be before 21:00 UTC (4pm ET)
-        expect(drop.getUTCHours()).toBeLessThanOrEqual(21);
+  it('separates every pair of adjacent drops across years', () => {
+    let previousOffset: number | null = null;
+    for (const { year, week } of weekPairs(2020, 2040)) {
+      const offset = getWindowMinuteOffset(computeDropTime(year, week));
+      if (previousOffset !== null) {
+        expect(Math.abs(offset - previousOffset))
+          .toBeGreaterThanOrEqual(SCORECARD_DROP_MIN_SEPARATION_MINUTES);
       }
+      previousOffset = offset;
     }
   });
 
-  it('two consecutive weeks never produce the same hour offset', () => {
-    // The "avoid last week" rule guarantees this invariant.
-    for (let week = 2; week <= 52; week++) {
-      const thisOffset = getHourOffset(computeDropTime(2024, week));
-      const prevOffset = getHourOffset(computeDropTime(2024, week - 1));
-      expect(thisOffset).not.toBe(prevOffset);
+  it('does not reproduce the 2026 late-window one-hour countdown', () => {
+    const offsets = Array.from({ length: 9 }, (_, index) =>
+      getWindowMinuteOffset(computeDropTime(2026, 32 + index)),
+    );
+    const oneHourEarlierSteps = offsets.slice(1).filter(
+      (offset, index) => offset === offsets[index] - 60,
+    );
+
+    expect(oneHourEarlierSteps).toHaveLength(0);
+    expect(new Set(offsets).size).toBe(offsets.length);
+  });
+
+  it('handles week 1 and 52/53-week year boundaries', () => {
+    for (const [year, week] of [[2020, 53], [2021, 1], [2024, 52], [2025, 1]] as const) {
+      const drop = computeDropTime(year, week);
+      expect(drop).toBeInstanceOf(Date);
+      expect(Number.isNaN(drop.getTime())).toBe(false);
     }
-  });
-
-  it('handles week 1 / year rollover without throwing', () => {
-    // Week 1 must look up the previous year's last week without crashing.
-    const drop2025W1 = computeDropTime(2025, 1);
-    expect(drop2025W1).toBeInstanceOf(Date);
-    expect(isNaN(drop2025W1.getTime())).toBe(false);
-
-    const drop2024W1 = computeDropTime(2024, 1);
-    expect(drop2024W1).toBeInstanceOf(Date);
-    expect(isNaN(drop2024W1.getTime())).toBe(false);
-  });
-
-  it('week 1 and the last week of the previous year have different hour offsets', () => {
-    // 2023 has 52 ISO weeks; 2024 week 1 must differ from 2023 week 52.
-    const w1 = getHourOffset(computeDropTime(2024, 1));
-    const w52prev = getHourOffset(computeDropTime(2023, 52));
-    expect(w1).not.toBe(w52prev);
   });
 });
 
@@ -109,13 +148,11 @@ describe('getISOWeek', () => {
   });
 
   it('handles Dec 31 2018 (ISO week 1 of 2019 — year rollover)', () => {
-    // 2018-12-31 is Monday of ISO week 1 of 2019.
     const dec31 = new Date('2018-12-31T00:00:00Z').getTime();
     expect(getISOWeek(dec31)).toEqual({ year: 2019, week: 1 });
   });
 
   it('handles Dec 28 2020 (ISO week 53 of 2020 — 53-week year)', () => {
-    // 2020 has 53 ISO weeks; Dec 28 is in week 53.
     const dec28 = new Date('2020-12-28T00:00:00Z').getTime();
     expect(getISOWeek(dec28)).toEqual({ year: 2020, week: 53 });
   });
@@ -127,17 +164,14 @@ describe('getCurrentDropTime', () => {
   it('returns a valid Date', () => {
     const drop = getCurrentDropTime();
     expect(drop).toBeInstanceOf(Date);
-    expect(isNaN(drop.getTime())).toBe(false);
+    expect(Number.isNaN(drop.getTime())).toBe(false);
   });
 
-  it('returns the same value as computeDropTime for the current ISO week', () => {
-    // Freeze the clock for this test by calling both within the same ms window.
+  it('returns a current-week drop within eight days of now', () => {
     const nowMs = Date.now();
     const drop = getCurrentDropTime();
 
-    const dayOfWeek = drop.getUTCDay();
-    expect([5, 6]).toContain(dayOfWeek); // must be Friday or Saturday
-    // Sanity: the drop is a real timestamp within 8 days of now
+    expect(['Fri', 'Sat']).toContain(getEasternParts(drop).weekday);
     expect(Math.abs(drop.getTime() - nowMs)).toBeLessThan(8 * 86_400_000);
   });
 });

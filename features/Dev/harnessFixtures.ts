@@ -12,6 +12,7 @@ import type { ScorecardPerson } from '../Scorecard/data/aggregateScorecard';
 import type { TrackContextValue } from '../Platforms/context/TrackContext';
 import type { AboutContent, ReferenceEntry, LinkEntry } from '../Info/types';
 import type { BarcodeNotice } from '../Map/hooks/useBarcodeSearch';
+import { getLocalWeekStart } from '../../core/utils/localDate';
 
 // ── Donation summaries ──────────────────────────────────────────────────────
 
@@ -148,6 +149,18 @@ export const harnessNoMatchNotice: BarcodeNotice = {
   label: 'Kirkland Signature',
 };
 
+export const harnessBarcodeNotices: Record<BarcodeNotice['kind'], BarcodeNotice> = {
+  unsupported: { kind: 'unsupported', label: 'barcode' },
+  not_in_database: { kind: 'not_in_database', label: '012345678905' },
+  no_match: {
+    kind: 'no_match',
+    label: 'Kirkland Signature Organic Extra Virgin Olive Oil',
+    productName: 'Kirkland Signature Organic Extra Virgin Olive Oil',
+    parentCompanyName: 'Costco Wholesale',
+  },
+  lookup_unavailable: { kind: 'lookup_unavailable', label: '012345678905' },
+};
+
 // ── Platforms ───────────────────────────────────────────────────────────────
 
 const twitterPlatform: Platform = {
@@ -180,7 +193,7 @@ export const harnessPlatforms: Platform[] = [
   twitterPlatform, instagramPlatform, facebookPlatform, amazonPlatform, youtubePlatform,
 ];
 
-const today = new Date().toISOString().slice(0, 10);
+const today = getLocalWeekStart();
 const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
 
 export const harnessPlatformItems: PlatformItem[] = [
@@ -216,6 +229,7 @@ export function buildMockTrackContext(
     todayActions: new Set<string>(),
     avoid: noopAsync,
     avoidForDate: noopAsync,
+    unavoidForDate: noopAsync,
     loading: false,
     error: null,
     platforms: harnessPlatforms,

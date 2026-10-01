@@ -13,7 +13,7 @@ export {
   MIGRATE_ADD_SURFACE_COLUMN,
 } from './schema';
 
-export { fetchEntityList, parseEntityList } from './entityList';
+export { fetchEntityList, parseEntityList, preferFresherEntityList } from './entityList';
 export { fetchPeopleList, parsePeopleList } from './personList';
 
 export {
@@ -26,6 +26,7 @@ export {
   purgeScoredWeekAvoidEvents,
   recordPlatformAvoid,
   recordPlatformAvoidForDate,
+  removePlatformAvoidForDate,
   getAllEntityAvoids,
   getPlatformWeeklyTotal,
   getAllPlatformWeeklyTotals,

@@ -2,15 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import * as Location from 'expo-location';
 import * as Notifications from 'expo-notifications';
-import * as SecureStore from 'expo-secure-store';
+import { readBetaMode } from '../../Beta/betaModeStore';
 import { OnboardingSlide } from '../components/OnboardingSlide';
 import { onboardCopy } from '../../../copy/onboard';
 import { theme } from '../../../design/tokens';
 import { bevelFocusRaised, bevelAmberRaised, bevelGreenInset } from '../../../design/bevel';
 import { fillSelf, fixedFillSelf, flexChild } from '../../../design/layout';
 import { SparkleDecoration } from '../../../core/fx';
-
-const BETA_KEY = 'ff_beta_mode';
 
 interface PermissionsScreenProps {
   stepIndex: number;
@@ -32,9 +30,9 @@ export function PermissionsScreen({ stepIndex, onNext }: PermissionsScreenProps)
   useEffect(() => {
     let cancelled = false;
     async function checkExisting() {
-      const beta = await SecureStore.getItemAsync(BETA_KEY);
+      const beta = await readBetaMode();
       if (cancelled) return;
-      if (beta === 'true') { setIsBeta(true); return; }
+      if (beta) { setIsBeta(true); return; }
 
       const [loc, notif] = await Promise.all([
         Location.getForegroundPermissionsAsync(),

@@ -183,7 +183,7 @@ var COPY_ALL_DATA = {
     "emptyState": "Hit the {map}. Hit {track}.\nMake them feel it.",
     "tagline": "The fascists won't FCK themselves.",
     "cta": "FCKfascists.com",
-    "dataAttribution": "DATA: FEC.GOV"
+    "dataAttribution": "@fckfascists.app"
   },
   "onboard": {
     "welcomeTitle": "WELCOME",

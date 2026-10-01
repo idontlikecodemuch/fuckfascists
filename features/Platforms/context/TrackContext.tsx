@@ -5,7 +5,6 @@ import React, {
   useEffect,
   useMemo,
   useReducer,
-  useRef,
   useState,
 } from 'react';
 import { AppState } from 'react-native';
@@ -15,8 +14,7 @@ import type { Platform, PlatformItem } from '../types';
 import { usePlatformAvoidance } from '../hooks/usePlatformAvoidance';
 import { getLocalDateString } from '../../../core/utils/localDate';
 import type { ArenaHitRequest } from './trackHelpers';
-import { buildTodayActions, isFigureDefeatedToday } from './trackHelpers';
-import { ARENA_HIT_FX_MS } from '../../../config/constants';
+import { buildTodayActions, isFigureDefeated, rollArenaDefeat } from './trackHelpers';
 import { initialTrackUIState, trackUIReducer } from './trackUIState';
 
 // ── Public figure helpers ────────────────────────────────────────────────────
@@ -44,13 +42,14 @@ export interface TrackContextValue {
   todayActions: Set<string>;
   avoid: (platformId: string) => Promise<boolean>;
   avoidForDate: (platformId: string, date: string) => Promise<boolean>;
+  unavoidForDate: (platformId: string, date: string) => Promise<boolean>;
   loading: boolean;
   error: string | null;
   platforms: Platform[];
   personWeeklyAvoids: (figureName: string) => number;
   isDefeated: (figureName: string) => boolean;
   arenaHitRequest: ArenaHitRequest | null;
-  queueArenaHit: (figureName: string, delayMs?: number) => void;
+  queueArenaHit: (figureName: string, delayMs?: number, defeatChance?: number) => void;
   clearAll: () => Promise<void>;
 }
 
@@ -75,15 +74,9 @@ interface TrackProviderProps {
 export function TrackProvider({ adapter, platforms, onAvoidRecorded, children }: TrackProviderProps) {
   const [uiState, dispatch] = useReducer(trackUIReducer, initialTrackUIState);
   const [arenaHitRequest, setArenaHitRequest] = useState<ArenaHitRequest | null>(null);
-  const [recentlyDefeated, setRecentlyDefeated] = useState<Set<string>>(new Set());
+  const [defeatedFigures, setDefeatedFigures] = useState<Set<string>>(new Set());
   const [todayKey, setTodayKey] = useState(getLocalDateString);
-  const recentlyDefeatedTimersRef = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
   const avoidance = usePlatformAvoidance(adapter, platforms);
-
-  useEffect(() => {
-    const timers = recentlyDefeatedTimersRef.current;
-    return () => { timers.forEach(clearTimeout); };
-  }, []);
 
   useEffect(() => {
     const refreshToday = () => setTodayKey(getLocalDateString());
@@ -97,6 +90,12 @@ export function TrackProvider({ adapter, platforms, onAvoidRecorded, children }:
       sub.remove();
     };
   }, []);
+
+  // Defeats are visual game state, not reconstructed from recorded avoids.
+  // Reset them when the local calendar day changes.
+  useEffect(() => {
+    setDefeatedFigures(new Set());
+  }, [todayKey]);
 
   const getFigureName = useCallback((platformId: string) => {
     const platform = platforms.find((item) => item.id === platformId);
@@ -129,59 +128,46 @@ export function TrackProvider({ adapter, platforms, onAvoidRecorded, children }:
     dispatch({ type: 'toggle-platform-details', platformId, figureName });
   }, [getFigureName]);
 
-  const queueArenaHit = useCallback((figureName: string, delayMs = 0) => {
+  const queueArenaHit = useCallback((figureName: string, delayMs = 0, defeatChance?: number) => {
     setArenaHitRequest({
       id: Date.now() + Math.floor(Math.random() * 1000),
       figureName,
       delayMs,
     });
+
+    if (rollArenaDefeat(Math.random, defeatChance)) {
+      setDefeatedFigures((previous) => {
+        if (previous.has(figureName)) return previous;
+        const next = new Set(previous);
+        next.add(figureName);
+        return next;
+      });
+    }
   }, []);
 
-  // todayActions is derived data. Figures reset to neutral when the local day
-  // changes unless they have an avoid logged for the new day.
+  // todayActions remains useful for row state and list invalidation. It does not
+  // drive sprite defeats; a recorded avoid and a visual hit are separate events.
   const todayActions = useMemo(() => {
     return buildTodayActions(avoidance.items, todayKey, getDisplayFigure);
   }, [avoidance.items, todayKey]);
 
-  const flashDefeated = useCallback((figureName: string) => {
-    setRecentlyDefeated((prev) => {
-      const next = new Set(prev);
-      next.add(figureName);
-      return next;
-    });
-    // Clear any existing timer for this figure
-    const timers = recentlyDefeatedTimersRef.current;
-    const existing = timers.get(figureName);
-    if (existing) clearTimeout(existing);
-    timers.set(figureName, setTimeout(() => {
-      timers.delete(figureName);
-      setRecentlyDefeated((prev) => {
-        const next = new Set(prev);
-        next.delete(figureName);
-        return next;
-      });
-    }, ARENA_HIT_FX_MS));
-  }, []);
-
   const avoid = useCallback(async (platformId: string) => {
     const recorded = await avoidance.avoid(platformId);
-    if (recorded) {
-      onAvoidRecorded?.();
-      const figureName = getFigureName(platformId);
-      if (figureName) flashDefeated(figureName);
-    }
+    if (recorded) onAvoidRecorded?.();
     return recorded;
-  }, [avoidance, getFigureName, flashDefeated, onAvoidRecorded]);
+  }, [avoidance, onAvoidRecorded]);
 
   const avoidForDate = useCallback(async (platformId: string, date: string) => {
     const recorded = await avoidance.avoidForDate(platformId, date);
-    if (recorded) {
-      onAvoidRecorded?.();
-      const figureName = getFigureName(platformId);
-      if (figureName) flashDefeated(figureName);
-    }
+    if (recorded) onAvoidRecorded?.();
     return recorded;
-  }, [avoidance, getFigureName, flashDefeated, onAvoidRecorded]);
+  }, [avoidance, onAvoidRecorded]);
+
+  const unavoidForDate = useCallback(async (platformId: string, date: string) => {
+    const removed = await avoidance.unavoidForDate(platformId, date);
+    if (removed) onAvoidRecorded?.();
+    return removed;
+  }, [avoidance, onAvoidRecorded]);
 
   const personWeeklyAvoids = useCallback((figureName: string): number => {
     return avoidance.items
@@ -190,12 +176,13 @@ export function TrackProvider({ adapter, platforms, onAvoidRecorded, children }:
   }, [avoidance.items]);
 
   const isDefeated = useCallback((figureName: string): boolean => {
-    return isFigureDefeatedToday(figureName, todayActions, recentlyDefeated);
-  }, [todayActions, recentlyDefeated]);
+    return isFigureDefeated(figureName, defeatedFigures);
+  }, [defeatedFigures]);
 
   const clearAll = useCallback(async () => {
     await avoidance.clearAll();
     setArenaHitRequest(null);
+    setDefeatedFigures(new Set());
     dispatch({ type: 'reset' });
   }, [avoidance]);
 
@@ -219,6 +206,7 @@ export function TrackProvider({ adapter, platforms, onAvoidRecorded, children }:
     todayActions,
     avoid,
     avoidForDate,
+    unavoidForDate,
     loading: avoidance.loading,
     error: avoidance.error,
     platforms,
@@ -237,6 +225,7 @@ export function TrackProvider({ adapter, platforms, onAvoidRecorded, children }:
     avoidance.weekOf,
     avoid,
     avoidForDate,
+    unavoidForDate,
     clearAll,
     clearFocus,
     focusPlatform,

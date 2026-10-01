@@ -4,30 +4,22 @@ import { theme } from '../design/tokens';
 export const WEEK_START_DAY = 6;               // Saturday (0 = Sunday)
 export const WEEK_START_HOUR = 0;              // 12:00am local time
 
-// Scorecard drop window (broad public copy; exact weighted slots below)
+// Scorecard drop window. Times are interpreted in America/New_York so the
+// synchronized global moment follows Eastern daylight-saving transitions.
 export const DROP_WINDOW_START_DAY = 5;        // Friday (0 = Sunday)
 export const DROP_WINDOW_START_HOUR = 18;      // 6pm ET
 export const DROP_WINDOW_END_DAY = 6;          // Saturday (0 = Sunday)
-export const DROP_WINDOW_END_HOUR = 16;        // 4pm ET
+export const DROP_WINDOW_END_HOUR = 16;        // 4pm ET (exclusive)
 
 // Legacy aliases — computeDropTime.ts reads these. Keep until migrated.
 export const SCORECARD_WINDOW_START_HOUR = DROP_WINDOW_START_HOUR;
 export const SCORECARD_WINDOW_END_HOUR = DROP_WINDOW_END_HOUR;
 export const SCORECARD_WINDOW_DAY = DROP_WINDOW_START_DAY;
 
-// Scorecard drop selection weights.
-// The full Fri-evening -> Sat-afternoon window appears once so occasional
-// overnight / early-morning drops still happen. US-friendly hours appear two
-// extra times, making Friday evening and Saturday daytime much more likely.
-// Offsets are hours after the computed Friday window start.
-export const SCORECARD_DROP_WEIGHTED_HOUR_OFFSETS = [
-  // Baseline: every hour in the broad window has a chance.
-  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-  11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-  // US-friendly emphasis: Friday evening and Saturday daytime.
-  0, 1, 2, 3, 4, 16, 17, 18, 19, 20, 21,
-  0, 1, 2, 3, 4, 16, 17, 18, 19, 20, 21,
-] as const;
+// Adjacent weekly drops are kept at least this far apart inside the window.
+// The sequence remains deterministic and uniform to the minute; this guard
+// only prevents two weeks from feeling like the same scheduled moment.
+export const SCORECARD_DROP_MIN_SEPARATION_MINUTES = 90;
 
 // Scorecard drop notification — local quiet-hours guard.
 // If a user's local device time is at/after the evening hour or before the
@@ -134,15 +126,28 @@ export const OPEN_FOOD_FACTS_API_BASE_URL = 'https://world.openfoodfacts.org/api
 // when bumping app.json's version.
 // Docs: https://openfoodfacts.github.io/openfoodfacts-server/api/
 // Read limit: 15 req/min per IP (or per user on mobile).
-export const OPEN_FOOD_FACTS_USER_AGENT = 'FCKFascists/1.0.0 (https://fckfascists.com)';
+export const OPEN_FOOD_FACTS_USER_AGENT = 'FCKFascists/1.1.0 (https://fckfascists.com)';
 // Abort the OFF fetch after this many ms so a hung connection on cellular
 // doesn't stall the scan flow indefinitely. ~8s leaves room for slow networks
 // while still failing fast enough to retry on the next scan.
 export const OPEN_FOOD_FACTS_TIMEOUT_MS = 8000;
 
-// Curated entity list update URL
-export const ENTITY_LIST_UPDATE_URL = 'https://raw.githubusercontent.com/idontlikecodemuch/fckfascists-data/main/entities.json';
-export const PEOPLE_LIST_UPDATE_URL = 'https://raw.githubusercontent.com/idontlikecodemuch/fckfascists-data/main/people.json';
+// Curated runtime data updates. The dedicated fckfascists-data repository is
+// currently an empty placeholder, so use the public, versioned runtime bundles
+// that actually ship from this repository. Local bundled data remains the
+// startup/failure fallback; live FEC is the final per-lookup fallback.
+const RUNTIME_DATA_RAW_BASE =
+  'https://raw.githubusercontent.com/idontlikecodemuch/fuckfascists/main/assets/data';
+export const ENTITY_LIST_UPDATE_URL = `${RUNTIME_DATA_RAW_BASE}/entities.json`;
+export const PEOPLE_LIST_UPDATE_URL = `${RUNTIME_DATA_RAW_BASE}/people.bundle.json`;
+
+// App Store update discovery. This is a soft, dismissible prompt only; failure
+// never blocks startup or the app's bundled/Git/FEC data paths.
+export const IOS_APP_STORE_ID = '6761508241';
+export const IOS_APP_STORE_URL =
+  `https://apps.apple.com/us/app/fck-financialcontributionkit/id${IOS_APP_STORE_ID}`;
+export const IOS_APP_STORE_LOOKUP_URL =
+  `https://itunes.apple.com/lookup?id=${IOS_APP_STORE_ID}&country=us`;
 
 // Drop schedule is computed deterministically on-device.
 // See core/dropSchedule/computeDropTime.ts.
@@ -166,6 +171,9 @@ export const INFO_CONTENT_URL = 'https://raw.githubusercontent.com/idontlikecode
 // fallback when region data is unavailable.
 export const POI_SEARCH_RADIUS_METERS = 50;
 export const POI_SEARCH_RADIUS_MIN_METERS = 15;
+// Second-pass tap radius when the strict first pass finds no curated match.
+// Helps large property labels (hotels, campuses) without widening every tap.
+export const POI_SEARCH_FALLBACK_RADIUS_METERS = 45;
 export const POI_SEARCH_RADIUS_MAX_METERS = 200;
 // Persistent cache TTL for barcode -> brand/entity resolutions.
 // Keeps repeated shelf scans offline after the first successful lookup.

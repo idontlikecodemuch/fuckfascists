@@ -45,6 +45,7 @@ const SHARE_TEXT_WIDTH_PCT = 0.40;
 const PRESENTATION_HINT_MS = 6000;
 const PRESENTATION_HINTS_KEY = 'scorecard_presentation_hints_seen';
 const PRESENTATION_HINTS = [{ id: 'share', version: 'v1' }] as const;
+const SCREENSHOT_CARD_CENTER_OFFSET_RATIO = 0.035;
 type PresentationHintId = (typeof PRESENTATION_HINTS)[number]['id'];
 
 interface CardPresentationProps {
@@ -93,6 +94,7 @@ export function CardPresentation({ pngUri, onDismiss }: CardPresentationProps) {
 
   const chevronWidth = Math.round(screenW * CHEVRON_WIDTH_PCT);
   const shareTextWidth = Math.round(screenW * SHARE_TEXT_WIDTH_PCT);
+  const screenshotCardOffsetY = Math.round(screenH * SCREENSHOT_CARD_CENTER_OFFSET_RATIO);
 
   useEffect(() => {
     // Fire the haptic jig synced to the reveal animation. ~700ms drumroll
@@ -219,7 +221,11 @@ export function CardPresentation({ pngUri, onDismiss }: CardPresentationProps) {
         <>
           <StatusBar hidden />
           <View style={styles.captureBase} pointerEvents="none">
-            <Image source={{ uri: pngUri }} style={styles.fullBleed} resizeMode="contain" />
+            <Image
+              source={{ uri: pngUri }}
+              style={[styles.fullBleed, { transform: [{ translateY: screenshotCardOffsetY }] }]}
+              resizeMode="contain"
+            />
           </View>
         </>
       )}

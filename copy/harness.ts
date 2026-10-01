@@ -15,6 +15,10 @@ export const harnessCopy = {
   modeA11yDesc: 'Same sweep, largest Dynamic Type',
   modeNotifLabel: 'NOTIFICATION',
   modeNotifDesc: 'Fire Thursday nudge now',
+  modeUpcToastsLabel: 'UPC TOASTS',
+  modeUpcToastsDesc: 'Capture all four scanner toast states',
+  modeScorecardStatesLabel: 'SCORECARD STATES',
+  modeScorecardStatesDesc: 'Capture populated, pending, and empty states',
 
   // Progress
   capturing: (current: number, total: number) => `Capturing ${current} of ${total}`,

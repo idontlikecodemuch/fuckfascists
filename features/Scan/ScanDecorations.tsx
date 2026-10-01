@@ -44,7 +44,7 @@ interface ScanStandbyPanelProps {
 
 export function ScanStandbyPanel({ busy, onOpenScanner }: ScanStandbyPanelProps) {
   return (
-    <>
+    <View style={styles.root} collapsable={false}>
       {/* Color wash behind panel */}
       <View style={styles.washContainer} pointerEvents="none">
         <View style={styles.wash} />
@@ -86,11 +86,18 @@ export function ScanStandbyPanel({ busy, onOpenScanner }: ScanStandbyPanelProps)
           <SparkleDecoration variant="info" />
         </View>
       </View>
-    </>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  root: {
+    alignSelf: 'stretch',
+    width: '100%',
+    minWidth: '100%',
+    paddingHorizontal: SCAN_PANEL_HORIZONTAL_MARGIN,
+    overflow: 'visible',
+  },
   washContainer: { ...StyleSheet.absoluteFillObject, alignItems: 'center', justifyContent: 'center' },
   wash: {
     width: SCAN_PANEL_WASH_SIZE, height: SCAN_PANEL_WASH_SIZE,
@@ -99,12 +106,12 @@ const styles = StyleSheet.create({
   },
   panelOuter: {
     ...fixedFillSelf,
-    marginHorizontal: SCAN_PANEL_HORIZONTAL_MARGIN,
+    width: '100%',
     shadowColor: theme.colors.focusAccent, shadowOffset: { width: 0, height: 0 },
     shadowOpacity: SCAN_PANEL_SHADOW_OPACITY, shadowRadius: SCAN_PANEL_SHADOW_RADIUS, elevation: 12,
   },
   panel: {
-    ...fixedFillSelf, ...bevelFocusRaised, backgroundColor: theme.colors.panelInner, overflow: 'visible',
+    ...fixedFillSelf, width: '100%', ...bevelFocusRaised, backgroundColor: theme.colors.panelInner, overflow: 'visible',
     boxShadow: [
       { offsetX: 0, offsetY: 6, blurRadius: theme.glow.blurRadius, spreadDistance: theme.glow.spreadDistance, inset: true, color: theme.glow.color },
       { offsetX: 0, offsetY: -6, blurRadius: theme.glow.blurRadius, spreadDistance: theme.glow.spreadDistance, inset: true, color: theme.glow.color },
@@ -120,14 +127,16 @@ const styles = StyleSheet.create({
   },
   panelContent: {
     ...fixedFillSelf,
+    width: '100%',
     alignItems: 'center', paddingVertical: theme.space['3xl'], paddingHorizontal: theme.space.xl, zIndex: 2,
   },
   icon: { marginBottom: theme.space.md },
   heading: { ...theme.type.displayL, color: theme.colors.focusText, textAlign: 'center', marginBottom: theme.space.sm },
   body: { ...theme.type.bodyM, color: theme.colors.textSecondary, textAlign: 'center', lineHeight: 22 },
-  ctaWrapper: { ...fixedFillSelf, marginTop: theme.space['2xl'], marginBottom: theme.space.lg, overflow: 'visible' },
+  ctaWrapper: { ...fixedFillSelf, width: '100%', marginTop: theme.space['2xl'], marginBottom: theme.space.lg, overflow: 'visible' },
   cta: {
     ...fixedFillSelf,
+    width: '100%',
     minHeight: theme.a11y.minTapTarget, paddingHorizontal: theme.space['3xl'],
     alignItems: 'center', justifyContent: 'center', backgroundColor: theme.colors.focusAccent,
     ...bevelFocusRaised, borderRadius: theme.radii.button,

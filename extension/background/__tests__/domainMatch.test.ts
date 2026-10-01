@@ -1,5 +1,7 @@
 import { findByDomain } from '../domainMatch';
 import type { Entity } from '../../../core/models';
+import { parseEntityList } from '../../../core/data';
+import bundledEntitiesRaw from '../../../assets/data/entities.json';
 
 // ─── Fixtures ─────────────────────────────────────────────────────────────────
 
@@ -41,11 +43,23 @@ describe('findByDomain', () => {
     expect(result?.id).toBe('amazon');
   });
 
+  it('matches an owned subdomain when only the apex domain is listed', () => {
+    const entities: Entity[] = [makeEntity({ id: 'amz', canonicalName: 'Amazon', domains: ['amazon.com'] })];
+    const result = findByDomain('sellercentral.amazon.com', entities);
+    expect(result?.id).toBe('amz');
+  });
+
   it('strips www. and matches apex when only apex is in the list', () => {
     // If entity only has 'walmart.com' (no www), www.walmart.com should still match via stripping
     const entities: Entity[] = [makeEntity({ id: 'wm', canonicalName: 'WM', domains: ['walmart.com'] })];
     const result = findByDomain('www.walmart.com', entities);
     expect(result?.id).toBe('wm');
+  });
+
+  it('does not match lookalike domains without a dot boundary', () => {
+    const entities: Entity[] = [makeEntity({ id: 'amz', canonicalName: 'Amazon', domains: ['amazon.com'] })];
+    expect(findByDomain('notamazon.com', entities)).toBeNull();
+    expect(findByDomain('amazon.com.evil.example', entities)).toBeNull();
   });
 
   it('returns null for an unlisted domain', () => {
@@ -71,5 +85,14 @@ describe('findByDomain', () => {
 
   it('returns null for an empty hostname', () => {
     expect(findByDomain('', ENTITIES)).toBeNull();
+  });
+
+  it('matches the platform domains added in the August 2026 refresh', () => {
+    const entities = parseEntityList(bundledEntitiesRaw);
+    expect(findByDomain('cursor.com', entities)?.id).toBe('anysphere');
+    expect(findByDomain('workspace.google.com', entities)?.id).toBe('google-alphabet');
+    expect(findByDomain('microsoft365.com', entities)?.id).toBe('microsoft');
+    expect(findByDomain('office.com', entities)?.id).toBe('microsoft');
+    expect(findByDomain('outlook.com', entities)?.id).toBe('microsoft');
   });
 });

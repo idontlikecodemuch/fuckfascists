@@ -27,5 +27,9 @@ export const betaCopy = {
   resetFailed: "Could not reset app state.",
   activated: "Beta mode ON",
   deactivated: "Beta mode OFF",
+  enableTitle: "Enable beta tools?",
+  enableBody: "Tester controls can reset local app state and capture screenshots.",
+  enableCancel: "Cancel",
+  enableConfirm: "Enable beta",
   surfaceLabel: (tab: Tab): string => SURFACE_LABELS[tab],
 } as const;

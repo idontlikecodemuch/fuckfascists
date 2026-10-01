@@ -567,11 +567,14 @@ async function scanBulkFiles({ cycles, filesByCycle, personsByDistinctive, disti
         }
 
         let attributed = false;
+        const attributedPersonIds = new Set();
         for (const candidate of candidates) {
+          if (attributedPersonIds.has(candidate.personId)) continue;
           if (!matchesQueryAgainst(fieldTokens, candidate.queryTokens)) continue;
           const aggregate = aggregates.get(candidate.personId);
           if (!aggregate) continue;
           updateAggregate(aggregate, fields, cycle, contributorName);
+          attributedPersonIds.add(candidate.personId);
           attributed = true;
         }
 

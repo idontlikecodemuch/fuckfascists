@@ -12,6 +12,257 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: September 1, 2026 ET — 1.1.0 simulator release QA
+
+**Focus:** Verify the release version, UPC notices, and every scorecard presentation trigger before App Store submission.
+
+**Simulator verification:**
+
+- Rebuilt and installed the current native app on iPhone 17 Pro / iOS 26.5. The installed bundle reports `1.1.0 (9)`.
+- Captured all four UPC states: try again, UPC not on file, product found with separately styled product/company names, and lookup paused.
+- Captured all three scorecard display branches: populated preview, Saturday rollover bridge (`DROPPING SOON`), and empty post-drop. Fixture dates now use the real Saturday week boundary (`AUG 29 — SEP 4`).
+- Ran a forced drop through the real `ScorecardScreen`, isolated SQLite storage, native image capture, card archive lookup, presentation handoff, and privacy purge. The generated JPEG is 1080×1920; archive lookup and removal of the scored week's raw events both passed.
+- Verified minute-level shared drop randomization, empty/populated/rollover state derivation, notification identifier/date/routing payload, and scoped notification cancellation in automated tests.
+- The simulator would not retain a scheduled local notification without notification authorization, and `simctl` cannot grant that permission. Native notification display/tap remains the one manual TestFlight/device check; scheduling and routing logic are covered deterministically.
+
+**Evidence:**
+
+- `tools/release-qa/2026-09-01/scorecard-report.json`
+- `tools/screenshots/release-qa/`
+- `tools/screenshots/upc-toasts/`
+
+**Verification:**
+
+- `npm test -- --runInBand` -> 49 suites / 507 tests passed.
+- `npm run typecheck` -> exit 0.
+
+### Session: August 31, 2026 ET — Beta-state containment + UPC toast rebuild
+
+**Focus:** Pull the newest TestFlight note, prevent public installs from inheriting beta tools, and rebuild/visually verify the UPC scanner's result/error toasts.
+
+**Shipped in current worktree:**
+
+- Imported 3 Build 8 TestFlight records; 2 were #204–#205 duplicates and the new #206 reported a friend opening directly into beta mode.
+- Replaced the legacy migratable `ff_beta_mode` Keychain state with `ff_beta_mode_device_v2` stored as `WHEN_UNLOCKED_THIS_DEVICE_ONLY`. The old key is deleted/ignored on read, so upgrades default back to production mode.
+- Raised the hidden unlock from 3 taps/1.5 seconds to 7 taps/3 seconds and added an explicit `Enable beta tools?` confirmation. Disabling still uses the same hidden gesture without an extra confirmation.
+
+**UPC toast rebuild:**
+
+- Added four structured title/body states with matching app-style icons: yellow scan reticle (`TRY THAT AGAIN`), blue file (`UPC NOT ON FILE`), green product cube (`[PRODUCT] FOUND`), and red offline cloud (`LOOKUP PAUSED`).
+- Made the surface a compact, non-blocking HUD toast with a six-second auto-dismiss and explicit ×; removed the full-screen invisible dismiss backdrop and duplicate accessibility target.
+- Preserved `not_in_database` in the negative barcode cache so first and repeat scans use the same truthful state/copy.
+- Added deterministic harness fixtures and a dedicated `UPC TOASTS` capture mode. The harness writes clean PNGs to its Documents container without requiring Photos access; standard sweeps still retain their existing camera-roll path.
+- Built and ran the iPhone 17 Pro / iOS 26.5 simulator with 0 build errors. Captures: `tools/screenshots/upc-toasts/ff_scan_toast_{try_again,upc_not_file,product_found,lookup_paused}.png`.
+- Prepared the App Store release as `1.1.0` / iOS build `9` (Android version code `9`), aligned app/package/Xcode/Info.plist metadata, updated the Open Food Facts user-agent, and made the Info screen display the native app version. Browser manifests/packages were rebuilt as `1.1.0`.
+
+**Verification:**
+
+- Beta/onboarding focus -> 2 suites / 10 tests passed.
+- `npm test -- --runInBand` -> 48 suites / 505 tests passed.
+- `npm run typecheck` -> exit 0.
+
+### Session: August 26, 2026 ET — Soft updates + runtime FEC refresh repair
+
+**Focus:** Keep app updates optional, restore the intended local → Git → FEC data path, and review the newest Build 8 TestFlight notes.
+
+**Shipped in current worktree:**
+
+- Added a dismissible iOS update banner in the app voice: `NEW FILES ON DECK / A newer build has the latest FEC records. Tap to update.` It checks Apple's public lookup endpoint, opens the App Store when tapped, remembers dismissal for that offered version, loses priority to full-screen scorecard presentation, and fails open on every network/store error.
+- Confirmed the dedicated `fckfascists-data` repository contains only its README; the configured entity, people, and Info payloads returned 404. Entity and people refresh now target the populated public runtime bundles in this repository (`assets/data/entities.json` and the slim `assets/data/people.bundle.json`).
+- Hardened Git refreshes so stale or suspiciously partial payloads cannot replace newer local bundles. The app still renders bundled data immediately and remains fully usable if Git or the stores disappear.
+- Fixed runtime entity normalization: 22 founder/owner-led records with a verified `publicFigureName` but no duplicate `ceoName` were being silently filtered out. They now normalize `ceoName` from the public figure, restoring all 754 bundled entities to the active list.
+- Fixed lookup-cache precedence: a fresh cache entry can no longer shadow a newer curated Git/bundled `donationSummary`.
+- Matched mobile and extension failure behavior: if the last-resort FEC request fails, both retain the stale curated total instead of showing blank data, and neither re-labels that stale fallback as a fresh cache write.
+- Confirmed keyless FEC requests now return `403 API_KEY_MISSING`. The last-resort live lookup now uses data.gov's public, non-secret `DEMO_KEY` with a conservative 10-request local hourly ceiling; local/Git data remains primary.
+- Imported 2 new Build 8 TestFlight notes as #204–#205. Both show the same June 13–19 historical scorecard captured before #194's native-image preload fix. New captures are already fixed; the saved historical JPG cannot be reconstructed after its privacy purge.
+
+**Verification:**
+
+- Focused data/update/API suites -> 6 suites / 100 tests passed.
+- `npm test -- --runInBand` -> 46 suites / 497 tests passed.
+- `npm run typecheck` -> exit 0.
+- `npm run build:ext:all` -> Chrome, Firefox, Edge, and Safari bundles/packages rebuilt.
+
+### Session: August 23, 2026 ET — Scorecard drop randomization v2
+
+**Focus:** Replace the correlated hourly scorecard schedule after consecutive late-window drops exposed a deterministic countdown pattern.
+
+**Shipped in current worktree:**
+
+- Replaced the ordered djb2/weighted-hour lookup with the versioned `ff-drop-v2` minute-level sequence. All installs still compute one shared absolute drop moment without a server.
+- Made all 1,320 minutes in the Friday 6:00pm–Saturday 4:00pm America/New_York window eligible with no time-of-day weighting.
+- Added Eastern daylight-saving handling and a deterministic 90-minute minimum separation between adjacent weekly slots, including ISO-year boundaries.
+- Expanded schedule verification across 2020–2040 for timezone independence, window bounds, minute-level spread, four-quartile distribution, adjacent-week separation, and the 2026 countdown regression.
+
+**Verification:**
+
+- `npm test -- --runInBand core/dropSchedule/__tests__/computeDropTime.test.ts` -> 14 tests passed.
+- `npm test -- --runInBand` -> 45 suites / 482 tests passed.
+- `npm run typecheck` -> exit 0.
+
+### Session: August 15, 2026 CT — TestFlight pull and scorecard timing diagnosis
+
+**Focus:** Pull the latest beta submissions and investigate the reported missing scorecard before changing release code.
+
+**Findings:**
+
+- Pulled 2 new TestFlight records and catalogued them as #202-#203. The scorecard attachment downloaded; Apple's attachment server returned HTTP 500 for the cosmetics screenshot, but its comment and metadata were imported.
+- #203 was submitted at 10:26 AM CDT on August 15. The deterministic Build 8 schedule placed the `Week of August 8, 2026` drop at 2:00 PM CDT that day, so the 10:25 AM archive screenshot correctly ended at `Week of August 1, 2026`.
+- Friday evening avoids occurred before the scheduled drop. Existing code refreshes notification scheduling after avoid writes, retains the just-completed week, and routes app startup to an uncaptured card for 48 hours after the drop.
+- Added a Saturday rollover bridge to Live Preview: when the completed week has a real card pending, the fresh slate is labeled `NEW WEEK` and a separate `LAST WEEK'S SCORECARD / DROPPING SOON` band appears until the drop. The secret exact drop time remains hidden, and empty completed weeks never show the message.
+- The remaining actionable check is whether `Week of August 8, 2026` appears after the scheduled 2:00 PM CDT drop.
+- #202 requests a cosmetics-company UPC coverage audit but includes no specific barcode or incorrect result; it remains a scoped data-research backlog item.
+
+**Verification:**
+
+- `npx jest features/Scorecard/utils/__tests__/screenState.test.ts features/Scorecard/utils/__tests__/pendingDropLaunch.test.ts features/Scorecard/utils/__tests__/avoidRetention.test.ts --runInBand` -> 3 suites / 19 tests passed.
+- `npm run typecheck` -> exit 0.
+- iPhone 17 Pro simulator build -> 0 errors. Seeded one simulator-only Friday avoid and confirmed the pending band, new-week label, zeroed live slate, archive link, and tab chrome render without overlap.
+- Evidence: `tools/screenshots/ios-sim-scorecard-dropping-soon.png`.
+
+### Session: July 11, 2026 ET — Accurate arena defeat registration
+
+**Focus:** Complete the Track utility/game-state split found during Build 7 testing.
+
+**Shipped in current worktree:**
+
+- Recorded avoids remain deterministic platform/date events; they no longer force or reconstruct a defeated sprite.
+- Every queued row hit (`AVOID`, checked-state hit, or day-circle avoid) and direct arena sprite tap now uses one independent 50% visual defeat roll.
+- Successful defeats remain visible for the current local day/session and reset at the local day boundary.
+- Direct arena taps trigger hit feedback but never write avoids or change scorecard totals.
+- Updated TestFlight notes #198/#199 and the Track behavior reference. The expanded `RECOVERED` overlay and money-shower treatment remain visual polish follow-ups.
+- Bumped the app to version `1.0.1`, iOS build `8`, and Android version code `8`.
+
+**Verification:**
+
+- `npm test -- --runInBand` -> 45 suites / 476 tests passed.
+- `npm run typecheck` -> exit 0.
+- `npx expo config --type public` -> version `1.0.1`, iOS build `8`, Android version code `8`.
+- `plutil -lint ios/FckFascists/Info.plist` and `git diff --check` -> exit 0.
+- Clean simulator build installed on iPhone 17 Pro with 0 errors and native `CFBundleVersion = 8`.
+- Simulator smoke test exercised the real `TrackProvider` and SQLite adapter with controlled roll values: a missed hit left Bezos neutral while recording one Amazon avoid; a following direct sprite hit switched Bezos to defeated while the database stayed at exactly one avoid row. Temporary smoke wiring and its test row were removed afterward.
+- Evidence: `tools/screenshots/ios-sim-defeat-50pct-miss.png` and `tools/screenshots/ios-sim-defeat-50pct-success.png`.
+
+### Session: July 4, 2026 ET — Track avoid/sprite invariant tests
+
+**Branch:** main worktree, direct local edits. Existing app/extension/data/signing changes and local reference artifacts preserved.
+
+**Focus:** Lock down the Track behavior decision that utility avoids and sprite-hit feedback are separate systems.
+
+**Historical checkpoint (superseded by the July 11 interaction decision above):**
+
+- Added the initial regression coverage that removed weekly defeats. The later July 11 change completes the separation: neither past nor today's recorded avoids directly drive defeated sprite state.
+- Added event-store coverage for platform avoid writes: current-day avoids are deduped, explicit day-circle avoids write only the selected platform/date pair, and duplicate past-day taps are no-ops.
+- Corrected stale docs that implied past-day avoids should trigger defeated sprites.
+
+**Verification:**
+
+- `npx jest features/Platforms/__tests__/trackHelpers.test.ts features/Platforms/__tests__/trackUIState.test.ts core/data/__tests__/eventStore.test.ts features/Scorecard/data/__tests__/aggregateScorecard.test.ts --runInBand` -> 4 suites / 55 tests passed.
+- `npm run typecheck` -> exit 0.
+- `git diff --check` -> exit 0.
+- Live simulator screenshot capture was attempted, but `xcrun simctl` could not get a responsive CoreSimulator session from this environment. Report used the existing Track harness screenshots under `tools/copy-preview/screenshots/`.
+
+### Session: July 3, 2026 ET — Build 7 beta feedback pull
+
+**Branch:** main worktree, direct local edits. Existing app/extension/data/signing changes and local reference artifacts preserved.
+
+**Focus:** Pull and catalogue the newest TestFlight feedback, fix the no-input bugs, and adjust scorecard share-card spacing.
+
+**Shipped in current worktree:**
+
+- Pulled 6 new Build 7 TestFlight screenshot feedback records via `npm run feedback:apple -- --since=2026-07-01 --download-screenshots`.
+- Catalogued Round 18 as #196-#201 in `tools/review/TESTFLIGHT_REVIEW.md`.
+- Resolved #200: iOS MapKit taps keep the strict dynamic POI radius first, then run a single 45m fallback pass only when the first pass finds no curated match. Confirmed `Homewood Suites by Hilton` -> Hilton and `Westin` -> Marriott aliases are present.
+- Resolved #196: Info FAQ rows now use full-width, non-collapsible accordion shells with clipped inner backgrounds to prevent the expansion/growing-box paint regression.
+- Partially resolved #201: tapping the business-card sprite no longer dismisses the card; the later tap-to-hit dynamic remains grouped with #198/#199.
+- Adjusted the rendered scorecard share card: lifted the "I FCK'D N×" headline 20 design px to increase its visual distance from the sprite grid; regenerated `tools/img-gen/output/scorecard/scorecard_test.png`.
+- Remaining design/mechanics backlog: #198/#199 Track temporary hit/recovery dynamics and #197 app-wide glowing-line flicker inventory.
+
+**Verification:**
+
+- Store-feedback import succeeded; output is local-only at `tools/review/store-feedback/2026-07-03T15-11-30-616Z/`.
+- `npm run typecheck` -> exit 0.
+- `npx jest core/matching/__tests__/aliasMatch.test.ts core/matching/__tests__/pipeline.test.ts features/Info/__tests__/content.test.ts --runInBand` -> 3 suites / 55 tests passed.
+
+### Session: July 1, 2026 ET — Build 7 beta feedback, Starlink platform, Android readiness
+
+**Branch:** main worktree, direct local edits. Existing OFF cleanup, Chrome extension, app polish, Xcode signing project changes, and local reference artifacts preserved.
+
+**Focus:** Pull and catalogue the newest TestFlight feedback, fix the actionable Build 7 notes, add Starlink to Track platforms, and confirm Android remains ready for no-map-key simulator testing.
+
+**Shipped in current worktree:**
+
+- Pulled 6 TestFlight records via `npm run feedback:apple -- --since=2026-06-18 --download-screenshots`; catalogued Round 17 in `tools/review/TESTFLIGHT_REVIEW.md`.
+- Marked 4 Build 6 records as duplicates of already-resolved #190-#193.
+- Resolved #194: `useCardCapture` now preloads scorecard background/logo/frame/scanlines/beam/power-meter assets plus visible defeated sprites, then waits two paint frames before `react-native-view-shot` captures the card. This prevents saved single-person cards from missing native image assets.
+- Resolved #195: Track day circles can now be unchecked for past/today days. Removing a checked day deletes that platform/date avoid event from storage, updates weekly totals, and keeps future days disabled.
+- Added Starlink to `assets/data/platforms.json` as a non-default Track platform linked to the existing `spacex` entity, which already carries `starlink.com`, Elon Musk, and SpaceX PAC data.
+- Updated the rendered scorecard footer: acquisition CTA stays `FCKfascists.com`; the old `DATA: FEC.GOV` footnote is replaced with a slightly larger muted `@fckfascists.app` handle. Synchronized `copy/scorecard.ts`, `ScorecardImageFooter`, the Python visual compositor, copy-preview exports, and scorecard docs.
+- Confirmed Android config is current for no-map-key testing: `extra.hasAndroidGoogleMapsApiKey=false` without `GOOGLE_MAPS_ANDROID_API_KEY`, and providing the env var injects `android.config.googleMaps.apiKey`.
+
+**Verification:**
+
+- `npm run typecheck` -> exit 0.
+- `npm test -- --runInBand` -> 45 suites / 471 tests passed.
+- `npx expo config --type public` -> exit 0; Android package `com.fckapp.fck`, minSdk 29, no Google Maps config when key is absent.
+
+### Session: June 27, 2026 ET — OFF bulk dump cleanup
+
+**Branch:** main worktree, direct local edits. Existing app/extension polish changes, Xcode signing project changes, and local reference artifacts preserved.
+
+**Focus:** Remove the local Open Food Facts raw Mongo dump to reclaim disk space while keeping checkpoint rebuilds usable and documented.
+
+**Shipped in current worktree:**
+
+- Deleted `tools/off-bulk/openfoodfacts-mongodbdump` (`76,657,007,423` bytes; about `71.4 GiB`). `tools/off-bulk/checkpoints/` remains in place.
+- Updated `scripts/sync-products-from-off.py` so `--rebuild-from-checkpoint` works without the raw dump, while fresh scans fail with a clear redownload instruction.
+- Updated `docs/PRODUCTS_DATA_PIPELINE.md` and `CLAUDE.md` to document that the raw OFF dump is intentionally absent and must be redownloaded before a fresh scan.
+
+**Verification:**
+
+- `python3 -m py_compile scripts/sync-products-from-off.py` -> exit 0.
+- `python3 scripts/sync-products-from-off.py --rebuild-from-checkpoint --no-final-write` -> exit 0 without the raw OFF dump.
+
+### Session: June 24, 2026 ET — Chrome extension refresh
+
+**Branch:** main worktree, direct local edits. Existing app polish changes, Xcode signing project changes, and local reference artifacts preserved.
+
+**Focus:** Make sure the Chrome MV3 extension is current with the app/data shape before distribution.
+
+**Shipped in current worktree:**
+
+- Rebuilt `dist/extension` via `npm run build:ext`; bundled data matches source checksums exactly.
+- Confirmed extension bundle contains current `assets/data/entities.json` (`753` entities) and `assets/data/people.bundle.json` (`1,071` people).
+- Hardened domain matching so curated apex domains also match owned subdomains, while dot-boundary checks prevent lookalike false positives like `notamazon.com`.
+- Added popup recovery for Manifest V3 cold starts: opening the popup now re-checks the active tab domain if no in-memory flag exists.
+- Guarded service-worker domain checks and weekly stats behind the bundled-data init promise so early messages do not race an empty entity list.
+
+**Verification:**
+
+- `npm run typecheck` -> exit 0.
+- `npx jest extension/background/__tests__/domainMatch.test.ts extension/background/__tests__/sessionStore.test.ts extension/storage/__tests__/ChromeStorageAdapter.test.ts extension/popup/__tests__/popupStaticCopy.test.ts --runInBand` -> 4 suites / 36 tests passed.
+- `npm run build:ext` -> built `dist/extension/`.
+
+### Session: June 18, 2026 ET — Build 6 beta feedback pull
+
+**Branch:** main worktree, direct local edits. Existing Xcode signing project changes and local reference artifacts preserved.
+
+**Focus:** Pull, catalogue, and fix new TestFlight screenshot feedback after the Build 6 beta.
+
+**Status:**
+
+- Confirmed simulator-seeded sample scorecards were local-only app data and are not present in repo status or the pushed build.
+- Pulled 4 new TestFlight screenshot feedback records via `npm run feedback:apple -- --since=2026-06-15 --download-screenshots`; catalogued them as #190-#193 in `tools/review/TESTFLIGHT_REVIEW.md`.
+- Resolved #190: Thursday `NudgeBanner` now reports its rendered height and `AppShell` reserves that space above whichever random tab launches; removed the old Map-only top offset.
+- Resolved #191: Scan standby now has a non-collapsible full-width root plus pinned 100% nested panel/content/CTA layers to prevent the first-frame growing-background regression.
+- Resolved #192: Track rows now clip the AVOID button inside a fixed action column so row fills/bevels cannot grow or overpaint the right edge.
+- Resolved #193: iOS scorecard screenshot/share backing image now gets a small downward optical-centering offset while the live presentation overlay remains unchanged.
+
+**Verification:**
+
+- `npm run typecheck` -> exit 0.
+- `npx jest app/navigation/__tests__/initialTab.test.ts features/Scorecard/data/__tests__/cardArchive.test.ts features/Map/__tests__/productIndex.test.ts features/Platforms/__tests__/trackHelpers.test.ts --runInBand` -> 4 suites / 18 tests passed.
+
 ### Session: June 17, 2026 ET — Clark how-to onboarding memo
 
 **Branch:** main worktree, direct local edits. Existing dirty and untracked local artifacts preserved.

@@ -6,6 +6,7 @@ import type { Entity } from '../../core/models';
 import type { StorageAdapter } from '../../core/data';
 import { purgeScoredWeekAvoidEvents } from '../../core/data';
 import type { Platform } from '../Platforms/types';
+import type { DropSchedule } from './types';
 import { useDropSchedule, SCORECARD_DROP_NOTIFICATION_ID } from './hooks/useDropSchedule';
 import { useScorecard } from './hooks/useScorecard';
 import { useCardCapture } from './hooks/useCardCapture';
@@ -20,6 +21,7 @@ import { findCardForWeek } from './data/cardArchive';
 import { getScoredWeekOfDrop } from './utils/scoredWeek';
 import {
   deriveScorecardScreenState,
+  shouldShowPendingPreviousScorecard,
   shouldShowPreviewStamp,
   type ScorecardUserNav,
 } from './utils/screenState';
@@ -37,6 +39,10 @@ interface ScorecardScreenProps {
   platforms: Platform[];
   onSwitchTab?: (tab: string) => void;
   onPresentationActiveChange?: (active: boolean) => void;
+  /** DEV-only deterministic schedule for the native release QA harness. */
+  devScheduleOverride?: DropSchedule;
+  /** DEV-only clock paired with devScheduleOverride. */
+  devNowMsOverride?: number;
 }
 
 /**
@@ -67,17 +73,27 @@ export function ScorecardScreen({
   platforms,
   onSwitchTab,
   onPresentationActiveChange,
+  devScheduleOverride,
+  devNowMsOverride,
 }: ScorecardScreenProps) {
   const imageRef = useRef<View>(null);
   const [userNav, setUserNav] = useState<ScorecardUserNav>('auto');
   const [cardUri, setCardUri] = useState<string | null>(null);
   const insets = useSafeAreaInsets();
 
-  const { schedule, hasDropped } = useDropSchedule();
+  const liveDropSchedule = useDropSchedule();
+  const qaOverrideActive = __DEV__ && devScheduleOverride != null;
+  const schedule = qaOverrideActive ? devScheduleOverride : liveDropSchedule.schedule;
+  const scheduleNowMs = qaOverrideActive
+    ? devNowMsOverride ?? Date.now()
+    : Date.now();
+  const hasDropped = qaOverrideActive
+    ? scheduleNowMs >= schedule.dropAt
+    : liveDropSchedule.hasDropped;
   const scoredWeekOf = getScoredWeekOfDrop(schedule.dropAt);
 
   const inPresentationWindow =
-    hasDropped && Date.now() - schedule.dropAt < SCORECARD_PRESENTATION_WINDOW_MS;
+    hasDropped && scheduleNowMs - schedule.dropAt < SCORECARD_PRESENTATION_WINDOW_MS;
 
   const { data: liveData, loading: liveDataLoading } = useScorecard(
     adapter, entities, platforms, schedule.weekOf,
@@ -118,7 +134,7 @@ export function ScorecardScreen({
       await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
       if (cancelled) return;
 
-      const result = await captureCard(imageRef, scoredWeekOf);
+      const result = await captureCard(imageRef, scoredWeekOf, dropData);
       if (cancelled) return;
 
       if (!result) {
@@ -151,7 +167,7 @@ export function ScorecardScreen({
 
     await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 
-    const result = await captureCard(imageRef, schedule.weekOf);
+    const result = await captureCard(imageRef, schedule.weekOf, liveData);
     if (result) {
       setCardUri(result.uri);
       setUserNav('present');
@@ -206,6 +222,13 @@ export function ScorecardScreen({
     liveGrandTotal,
     MIN_AVOIDS_FOR_DROP,
   );
+  const showPendingPreviousCard = shouldShowPendingPreviousScorecard({
+    hasDropped,
+    liveWeekOf: schedule.weekOf,
+    scoredWeekOf,
+    dropGrandTotal: dropData?.grandTotal ?? null,
+    minAvoids: MIN_AVOIDS_FOR_DROP,
+  });
 
   return (
     <SafeAreaView style={styles.container}>
@@ -229,7 +252,11 @@ export function ScorecardScreen({
       )}
       {effectiveState === 'preview' && liveData && (
         <>
-          <LivePreview data={liveData} onSwitchTab={onSwitchTab} />
+          <LivePreview
+            data={liveData}
+            showPendingPreviousCard={showPendingPreviousCard}
+            onSwitchTab={onSwitchTab}
+          />
           <Pressable
             style={styles.archiveLink}
             onPress={() => setUserNav('archive')}

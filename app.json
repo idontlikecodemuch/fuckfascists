@@ -2,7 +2,7 @@
   "expo": {
     "name": "FCK",
     "slug": "fuckfascists",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "newArchEnabled": true,
     "icon": "./assets/pixel/brand/icon.png",
@@ -55,6 +55,7 @@
     ],
     "ios": {
       "bundleIdentifier": "com.fckapp.fck",
+      "buildNumber": "9",
       "config": {
         "usesNonExemptEncryption": false
       },
@@ -65,6 +66,7 @@
     },
     "android": {
       "package": "com.fckapp.fck",
+      "versionCode": 9,
       "minSdkVersion": 29,
       "adaptiveIcon": {
         "foregroundImage": "./assets/pixel/brand/icon.png",

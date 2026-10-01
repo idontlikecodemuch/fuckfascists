@@ -1062,8 +1062,9 @@ def persist_progress(
     exact_product_limit: int,
     status: str,
     partial: bool,
+    archive_size: int | None = None,
 ) -> None:
-    archive_size = archive_path.stat().st_size
+    archive_size = archive_size if archive_size is not None else archive_path.stat().st_size
     checkpoint = checkpoint_payload(
         archive_path=archive_path,
         archive_size=archive_size,
@@ -1247,8 +1248,6 @@ def main() -> int:
     args = parse_args()
     if not args.products_path.exists():
         raise RuntimeError(f"Missing products file: {args.products_path}")
-    if not args.archive_path.exists():
-        raise RuntimeError(f"Missing OFF archive: {args.archive_path}")
 
     payload = load_products_payload(args.products_path)
     seeds, term_to_index = build_seed_index(payload)
@@ -1258,7 +1257,11 @@ def main() -> int:
 
     if args.rebuild_from_checkpoint:
         if not checkpoint:
-            raise RuntimeError("Cannot rebuild from checkpoint because no compatible checkpoint file was found.")
+            raise RuntimeError(
+                "Cannot rebuild from checkpoint because no compatible checkpoint file was found. "
+                "If the local OFF dump was deleted to save space, redownload the Open Food Facts Mongo dump "
+                f"to {args.archive_path} before running a fresh scan."
+            )
 
         status = str(checkpoint.get("status") or "paused")
         persist_progress(
@@ -1276,6 +1279,7 @@ def main() -> int:
             exact_product_limit=exact_product_limit,
             status=status,
             partial=status != "complete",
+            archive_size=int(checkpoint.get("archiveSize") or 0),
         )
 
         if not args.no_final_write:
@@ -1310,6 +1314,13 @@ def main() -> int:
             )
         )
         return 0
+
+    if not args.archive_path.exists():
+        raise RuntimeError(
+            f"Missing OFF archive: {args.archive_path}. The local Open Food Facts Mongo dump may have "
+            "been deleted to save disk space. Redownload it to this path before running a fresh scan, "
+            "or use --rebuild-from-checkpoint when the saved checkpoint is sufficient."
+        )
 
     if checkpoint_offset > 0:
         start_offset = checkpoint_offset

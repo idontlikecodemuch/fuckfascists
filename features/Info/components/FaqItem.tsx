@@ -5,6 +5,7 @@ import { infoCopy } from '../../../copy/info';
 import { theme } from '../../../design/tokens';
 import { bevelRaised } from '../../../design/bevel';
 import { SparkleDecoration } from '../../../core/fx/SparkleDecoration';
+import { fixedFillSelf, flexChild } from '../../../design/layout';
 
 interface FaqItemProps {
   entry: ReferenceEntry;
@@ -20,50 +21,62 @@ export function FaqItem({ entry, defaultOpen = false }: FaqItemProps) {
   const [open, setOpen] = useState(defaultOpen);
 
   return (
-    <View style={[styles.wrapper, open ? styles.wrapperOpen : null]}>
-      <Pressable
-        onPress={() => setOpen((v) => !v)}
-        style={[styles.question, open ? styles.questionOpen : null]}
-        accessibilityRole="button"
-        accessibilityLabel={entry.q}
-        accessibilityState={{ expanded: open }}
-        accessibilityHint={open ? infoCopy.faqCollapse : infoCopy.faqExpand}
-      >
-        {open ? <View style={styles.accentBar} /> : null}
-        <Text
-          style={[styles.questionText, open ? styles.questionTextOpen : null]}
-          allowFontScaling
+    <View style={styles.shell} collapsable={false}>
+      <View style={[styles.wrapper, open ? styles.wrapperOpen : null]} collapsable={false}>
+        <Pressable
+          onPress={() => setOpen((v) => !v)}
+          style={[styles.question, open ? styles.questionOpen : null]}
+          accessibilityRole="button"
+          accessibilityLabel={entry.q}
+          accessibilityState={{ expanded: open }}
+          accessibilityHint={open ? infoCopy.faqCollapse : infoCopy.faqExpand}
         >
-          {entry.q}
-        </Text>
-        <Text
-          style={[styles.indicator, open ? styles.indicatorOpen : null]}
-          accessible={false}
-        >
-          {open ? theme.accordion.expandedIndicator : theme.accordion.collapsedIndicator}
-        </Text>
-      </Pressable>
+          {open ? <View style={styles.accentBar} /> : null}
+          <Text
+            style={[styles.questionText, open ? styles.questionTextOpen : null]}
+            allowFontScaling
+          >
+            {entry.q}
+          </Text>
+          <Text
+            style={[styles.indicator, open ? styles.indicatorOpen : null]}
+            accessible={false}
+          >
+            {open ? theme.accordion.expandedIndicator : theme.accordion.collapsedIndicator}
+          </Text>
+        </Pressable>
 
-      {open && (
-        <View style={styles.answer}>
-          <Text style={styles.answerText} allowFontScaling>{entry.a}</Text>
-        </View>
-      )}
+        {open && (
+          <View style={styles.answer} collapsable={false}>
+            <Text style={styles.answerText} allowFontScaling>{entry.a}</Text>
+          </View>
+        )}
+      </View>
       {open ? <SparkleDecoration /> : null}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  wrapper: {
+  shell: {
+    ...fixedFillSelf,
+    width: '100%',
     marginBottom: theme.space.xs,
+    position: 'relative',
+    overflow: 'visible',
+  },
+  wrapper: {
+    ...fixedFillSelf,
+    width: '100%',
     ...bevelRaised,
     borderRadius: theme.radii.sharp,
     backgroundColor: theme.colors.panelOuter,
-    overflow: 'visible',
+    overflow: 'hidden',
   },
   wrapperOpen: {},
   question: {
+    ...fixedFillSelf,
+    width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     minHeight: theme.a11y.minTapTarget,
@@ -87,6 +100,7 @@ const styles = StyleSheet.create({
   },
   questionText: {
     flex: 1,
+    ...flexChild,
     ...theme.type.uiLabel,
     fontSize: 13,
     color: theme.colors.textPrimary,
@@ -97,6 +111,7 @@ const styles = StyleSheet.create({
   },
   indicator: {
     ...theme.type.caption,
+    flexShrink: 0,
     color: theme.colors.textSecondary,
     marginLeft: theme.space.sm,
   },
@@ -104,6 +119,8 @@ const styles = StyleSheet.create({
     color: theme.colors.highlightBlue,
   },
   answer: {
+    ...fixedFillSelf,
+    width: '100%',
     backgroundColor: theme.colors.focusTint,
     paddingHorizontal: theme.space.lg,
     paddingVertical: theme.space.md,
@@ -112,6 +129,7 @@ const styles = StyleSheet.create({
   },
   answerText: {
     ...theme.type.bodyS,
+    ...flexChild,
     color: theme.colors.textSecondary,
     lineHeight: 20,
   },

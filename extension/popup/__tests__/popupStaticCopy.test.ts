@@ -4,6 +4,7 @@ import { resolve } from 'node:path';
 import { extCopy } from '../../copy';
 
 const html = readFileSync(resolve(__dirname, '../popup.html'), 'utf8');
+const renderCardSource = readFileSync(resolve(__dirname, '../renderCard.ts'), 'utf8');
 const normalizedHtml = html.replace(/\s+/g, ' ');
 
 describe('extension popup static copy', () => {
@@ -26,5 +27,9 @@ describe('extension popup static copy', () => {
     expect(html).not.toContain('Donation data temporarily unavailable.');
     expect(html).not.toContain('★ AVOIDED');
     expect(html).not.toContain('This one counts.');
+  });
+
+  it('does not render dynamic extension data through innerHTML', () => {
+    expect(renderCardSource).not.toContain('.innerHTML');
   });
 });

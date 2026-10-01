@@ -11,15 +11,15 @@ const FOOTER_BEAM_WIDTH_DESIGN = 520;
 const TAGLINE_FONT_SIZE_DESIGN = 32;
 const CTA_FONT_SIZE_DESIGN = 58;
 const CTA_LETTER_SPACING_DESIGN = 6;
-const ATTRIBUTION_FONT_SIZE_DESIGN = 22;
-const ATTRIBUTION_LETTER_SPACING_DESIGN = 6;
+const ATTRIBUTION_FONT_SIZE_DESIGN = 32;
+const ATTRIBUTION_LETTER_SPACING_DESIGN = 3;
 
 /**
  * Footer section of the rendered scorecard:
  *   Beam (full-width-ish cyan rule)
  *   🤘 The fascists won't FCK themselves. 🤘   (gold horns)
  *   FCKfascists.com   (Bungee cyan, strong glow)
- *   DATA: FEC.GOV     (dim attribution)
+ *   @fckfascists.app  (white handle)
  */
 export function ScorecardImageFooter() {
   return (
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   attribution: {
     fontFamily: theme.fonts.bodySemiBold,
     fontSize: scale(ATTRIBUTION_FONT_SIZE_DESIGN),
-    color: theme.colors.scorecardDim,
+    color: '#FFFFFF',
     letterSpacing: scale(ATTRIBUTION_LETTER_SPACING_DESIGN),
     marginTop: scale(-4),
   },

@@ -149,14 +149,27 @@ export async function loadPeopleEntityOverrides(filePath = DEFAULT_PEOPLE_ENTITY
   try {
     const raw = JSON.parse(await readFile(filePath, 'utf8'));
     const people = typeof raw === 'object' && raw !== null ? raw.people ?? {} : {};
+    const rawPersonMerges = typeof raw === 'object' && raw !== null ? raw.personMerges ?? {} : {};
     const commonNameOverrides = {};
     const roleOverrides = {};
+    const personMerges = {};
+    const fecSearchNameOverrides = {};
+
+    for (const [sourceId, targetIdValue] of Object.entries(rawPersonMerges)) {
+      const targetId = normalizeWhitespace(targetIdValue);
+      if (sourceId && targetId && sourceId !== targetId) personMerges[sourceId] = targetId;
+    }
 
     for (const [personId, entry] of Object.entries(people)) {
       if (typeof entry !== 'object' || entry === null) continue;
 
       const commonName = normalizeWhitespace(entry.commonName);
       if (commonName) commonNameOverrides[personId] = commonName;
+
+      const fecSearchNames = Array.isArray(entry.fecSearchNames)
+        ? Array.from(new Set(entry.fecSearchNames.map(normalizeWhitespace).filter(Boolean)))
+        : [];
+      if (fecSearchNames.length > 0) fecSearchNameOverrides[personId] = fecSearchNames;
 
       const entityLinks = typeof entry.entityLinks === 'object' && entry.entityLinks !== null ? entry.entityLinks : {};
       const nextLinks = {};
@@ -171,12 +184,16 @@ export async function loadPeopleEntityOverrides(filePath = DEFAULT_PEOPLE_ENTITY
       raw,
       commonNameOverrides,
       roleOverrides,
+      personMerges,
+      fecSearchNameOverrides,
     };
   } catch {
     return {
       raw: { people: {} },
       commonNameOverrides: {},
       roleOverrides: {},
+      personMerges: {},
+      fecSearchNameOverrides: {},
     };
   }
 }

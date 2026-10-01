@@ -54,14 +54,37 @@ function widenPerson(p: TabFlagPerson): PoliticalPerson {
   return p as unknown as PoliticalPerson;
 }
 
-/** Escape entity-sourced strings before interpolating into innerHTML. */
-function escapeHtml(s: string): string {
-  return s
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
+function safeExternalUrl(rawUrl: string): string | null {
+  try {
+    const parsed = new URL(rawUrl);
+    return parsed.protocol === 'https:' || parsed.protocol === 'http:' ? parsed.href : null;
+  } catch {
+    return null;
+  }
+}
+
+function makeSpan(className: string, text: string): HTMLSpanElement {
+  const span = document.createElement('span');
+  span.className = className;
+  span.textContent = text;
+  return span;
+}
+
+function renderAmountLine(
+  host: HTMLElement,
+  leadingText: string,
+  primaryText: string,
+  separatorText: string,
+  secondaryText: string,
+  trailingText = '',
+): void {
+  host.replaceChildren(
+    document.createTextNode(leadingText),
+    makeSpan('amount-primary', primaryText),
+    document.createTextNode(separatorText),
+    makeSpan('amount-secondary', secondaryText),
+    document.createTextNode(trailingText),
+  );
 }
 
 // ── "Based on" source list ─────────────────────────────────────────────────────
@@ -77,32 +100,39 @@ function renderBasedOn(
   pacUrl: string | null,
   people: TabFlagPerson[],
 ): void {
-  const parts: string[] = [];
+  const sources: Array<{ label: string; url: string }> = [];
 
   if (committeeName && pacUrl) {
     const label = `${extCopy.sourcePrefix} ${shortPacName(entityName, committeeName)} \u2197`;
-    parts.push(
-      `<a class="based-on-link" href="${escapeHtml(pacUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a>`,
-    );
+    const url = safeExternalUrl(pacUrl);
+    if (url) sources.push({ label, url });
   }
 
   for (const person of people) {
     const widened = widenPerson(person);
     const lastName = extractLastName(getPersonDisplayName(widened));
-    const url = makeFecIndividualUrl(widened);
+    const url = safeExternalUrl(makeFecIndividualUrl(widened));
     const label = `${lastName} ${extCopy.donationsLinkSuffix} \u2197`;
-    parts.push(
-      `<a class="based-on-link" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a>`,
-    );
+    if (url) sources.push({ label, url });
   }
 
-  if (parts.length === 0) {
+  if (sources.length === 0) {
     basedOnEl.hidden = true;
     return;
   }
 
-  basedOnEl.innerHTML =
-    `<span class="based-on-label">${escapeHtml(extCopy.basedOnLabel)}</span> ${parts.join(', ')}`;
+  const children: Node[] = [makeSpan('based-on-label', extCopy.basedOnLabel), document.createTextNode(' ')];
+  sources.forEach((source, index) => {
+    if (index > 0) children.push(document.createTextNode(', '));
+    const anchor = document.createElement('a');
+    anchor.className = 'based-on-link';
+    anchor.href = source.url;
+    anchor.target = '_blank';
+    anchor.rel = 'noopener noreferrer';
+    anchor.textContent = source.label;
+    children.push(anchor);
+  });
+  basedOnEl.replaceChildren(...children);
   basedOnEl.hidden = false;
 }
 
@@ -154,22 +184,44 @@ export function renderCard(flag: TabFlag): void {
     const oSuffix = oTotal > 0 ? `${extCopy.oSep}${formatDonationAmount(oTotal)}` : '';
 
     if (summary.recentRIsLarger) {
-      recentAmountEl.innerHTML =
-        `<span class="amount-primary">${extCopy.rPrefix}${formatDonationAmount(summary.recentR)}</span>${extCopy.dSep}<span class="amount-secondary">${formatDonationAmount(summary.recentD)}</span>`;
+      renderAmountLine(
+        recentAmountEl,
+        '',
+        `${extCopy.rPrefix}${formatDonationAmount(summary.recentR)}`,
+        extCopy.dSep,
+        formatDonationAmount(summary.recentD),
+      );
     } else {
-      recentAmountEl.innerHTML =
-        `<span class="amount-primary">D: ${formatDonationAmount(summary.recentD)}</span>${extCopy.dSep}<span class="amount-secondary">R: ${formatDonationAmount(summary.recentR)}</span>`;
+      renderAmountLine(
+        recentAmountEl,
+        '',
+        `D: ${formatDonationAmount(summary.recentD)}`,
+        extCopy.dSep,
+        `R: ${formatDonationAmount(summary.recentR)}`,
+      );
     }
     recentCycleEl.textContent  = `${extCopy.cyclePrefix}${summary.recentCycleLabel}`;
     recentAmountEl.hidden = false;
     recentCycleEl.hidden  = false;
 
     if (summary.rIsLarger) {
-      totalSince2016.innerHTML =
-        `Total since 2016: <span class="amount-primary">${extCopy.rPrefix}${formatDonationAmount(summary.totalR)}</span>${extCopy.dSep}<span class="amount-secondary">${formatDonationAmount(summary.totalD)}</span>${oSuffix}`;
+      renderAmountLine(
+        totalSince2016,
+        'Total since 2016: ',
+        `${extCopy.rPrefix}${formatDonationAmount(summary.totalR)}`,
+        extCopy.dSep,
+        formatDonationAmount(summary.totalD),
+        oSuffix,
+      );
     } else {
-      totalSince2016.innerHTML =
-        `Total since 2016: <span class="amount-primary">D: ${formatDonationAmount(summary.totalD)}</span>${extCopy.dSep}<span class="amount-secondary">R: ${formatDonationAmount(summary.totalR)}</span>${oSuffix}`;
+      renderAmountLine(
+        totalSince2016,
+        'Total since 2016: ',
+        `D: ${formatDonationAmount(summary.totalD)}`,
+        extCopy.dSep,
+        `R: ${formatDonationAmount(summary.totalR)}`,
+        oSuffix,
+      );
     }
     totalSince2016.hidden = false;
 

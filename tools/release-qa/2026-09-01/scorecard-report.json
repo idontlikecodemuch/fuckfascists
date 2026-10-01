@@ -1,0 +1,25 @@
+{
+  "generatedAt": "2026-09-01T13:21:18.440Z",
+  "appVersion": "1.1.0",
+  "iosBuildNumber": "9",
+  "scorecard": {
+    "weekOf": "2026-08-29",
+    "cardExists": true,
+    "cardFilename": "Those-I-FCKd-August-29-26.jpg",
+    "presentationActive": true,
+    "rawEntityEventsAfterCapture": 0,
+    "rawPlatformEventsAfterCapture": 0,
+    "purgePassed": true,
+    "archiveLookupPassed": true,
+    "screenshotPath": "file:///Users/christophershannon/Library/Developer/CoreSimulator/Devices/2EF5A239-EA23-4DF2-BC94-179378214DE8/data/Containers/Data/Application/DE0D6DA8-70A2-4E4D-9AF2-DEDC9C70F2BA/Documents/release-qa/scorecard-presentation.png"
+  },
+  "triggerDerivations": {
+    "emptyPostDrop": true,
+    "populatedPreview": true,
+    "saturdayRolloverBridge": true
+  },
+  "notification": {
+    "scheduledWithRoutingType": false,
+    "error": null
+  }
+}

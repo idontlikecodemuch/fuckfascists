@@ -3,7 +3,7 @@
  *
  * Responsibilities:
  *  1. Listen for CHECK_DOMAIN messages from the content script.
- *  2. Look up the domain against the bundled + CDN-refreshed entity list.
+ *  2. Look up the domain against the bundled + Git-refreshed entity list.
  *  3. If matched and not snoozed, fetch donation data and set the amber icon.
  *  4. Reply to popup messages: GET_CURRENT_FLAG, AVOID_ENTITY, SNOOZE_DOMAIN,
  *     GET_WEEKLY_STATS.
@@ -24,6 +24,7 @@ import {
   getLastFlagged, recordFlagged, setSnoozed, isSnoozed,
 } from './sessionStore';
 import { makeCacheDeps } from '../../core/data/cacheStore';
+import { parseEntityList, preferFresherEntityList } from '../../core/data/entityList';
 import { FECClient } from '../../core/api';
 import { getMondayOf, recordEntityAvoid } from '../../core/data/eventStore';
 import {
@@ -40,29 +41,31 @@ function entityConfidence(matchScore: number | undefined): number {
 
 const adapter = new ChromeStorageAdapter();
 const cacheDeps = makeCacheDeps(adapter);
-// Always run in anonymous mode — no API key required or used.
-// The FEC API allows anonymous requests at per-IP rate limits, which are
-// sufficient for individual extension users. Bundled donationSummary data
-// is the primary path; live calls are the fallback for missing/stale entries.
+// No private key in the extension; empty config selects FEC's public DEMO_KEY.
+// Bundled/Git donationSummary data is the primary path; the public fallback is
+// reserved for missing/stale entries and capped at 10 requests locally.
 const apiClient = new FECClient({ apiKey: '' });
 let entities: Entity[] = [];
 let people: PoliticalPerson[] = [];
 
 async function init() {
-  // Load entity list: prefer a CDN-refreshed copy in storage, fall back to the
-  // bundled file. The bundled file is the source of truth until a real CDN URL
-  // is configured (ENTITY_LIST_UPDATE_URL currently contains a placeholder).
+  // Local-first: load the bundled file, then accept a stored Git copy only when
+  // it is complete and at least as fresh. This prevents an old persisted list
+  // from shadowing a newer extension bundle after an update.
+  await loadBundledEntityList();
   const listResult = await chrome.storage.local.get('entity_list');
-  const stored = listResult['entity_list'] as Entity[] | undefined;
-  if (stored?.length) {
-    entities = stored;
-  } else {
-    await loadBundledEntityList();
+  const stored = parseEntityList(listResult['entity_list']);
+  if (stored.length) {
+    entities = preferFresherEntityList(stored, entities);
   }
   // People list is bundled-only for now; no CDN refresh path yet. Matches the
   // app's people.bundle.json (raw[] stripped for non-live-linked people).
   await loadBundledPeopleList();
 }
+
+const initPromise = init().catch((error) => {
+  console.error(error);
+});
 
 /** Loads the entity list bundled at build time (assets/data/entities.json). */
 async function loadBundledEntityList(): Promise<void> {
@@ -71,14 +74,8 @@ async function loadBundledEntityList(): Promise<void> {
     const res = await fetch(url);
     if (!res.ok) return;
     const raw: unknown = await res.json();
-    const arr =
-      typeof raw === 'object' &&
-      raw !== null &&
-      !Array.isArray(raw) &&
-      Array.isArray((raw as Record<string, unknown>)['entities'])
-        ? ((raw as Record<string, unknown>)['entities'] as Entity[])
-        : (raw as Entity[]);
-    if (Array.isArray(arr) && arr.length > 0) {
+    const arr = parseEntityList(raw);
+    if (arr.length > 0) {
       entities = arr;
     }
   } catch {
@@ -129,17 +126,11 @@ async function refreshEntityList(): Promise<void> {
     const res = await fetch(ENTITY_LIST_UPDATE_URL);
     if (!res.ok) return;
     const raw: unknown = await res.json();
-    // Accept both { _meta, entities: [...] } wrapper and legacy flat array.
-    const arr =
-      typeof raw === 'object' &&
-      raw !== null &&
-      !Array.isArray(raw) &&
-      Array.isArray((raw as Record<string, unknown>)['entities'])
-        ? ((raw as Record<string, unknown>)['entities'] as Entity[])
-        : (raw as Entity[]);
-    if (Array.isArray(arr) && arr.length > 0) {
-      entities = arr;
-      await chrome.storage.local.set({ entity_list: arr });
+    const remote = parseEntityList(raw);
+    const preferred = preferFresherEntityList(remote, entities);
+    if (preferred === remote) {
+      entities = remote;
+      await chrome.storage.local.set({ entity_list: remote });
     }
   } catch {
     // Silently ignore — bundled list (if any) stays active
@@ -222,19 +213,24 @@ async function handleCheckDomain(hostname: string, tabId: number): Promise<void>
   // Priority order for donation data:
   // 1. Local extension cache — populated by previous live API calls.
   // 2. Bundled donationSummary — the primary path; use when present and fresh.
-  // 3. Anonymous live FEC API call — fallback when bundled data is absent or stale.
+  // 3. Public DEMO_KEY FEC call — rare fallback when curated data is absent or stale.
   // 4. Stale bundled data — last resort when the live call fails.
   // 5. No data — flag is still set; popup shows "No bundled donation data."
 
   const cached = await cacheDeps.getCache(cacheKey);
-  if (cached && Date.now() - cached.fetchedAt < CACHE_TTL_MS) {
+  const activeSummaryIsNewer = !!entity.donationSummary && (
+    !cached?.donationSummary ||
+    (Date.parse(entity.donationSummary.lastUpdated) || 0) >
+      (Date.parse(cached.donationSummary.lastUpdated) || 0)
+  );
+  if (cached && Date.now() - cached.fetchedAt < CACHE_TTL_MS && !activeSummaryIsNewer) {
     // 1. Fresh local cache hit.
     donationSummary = cached.donationSummary;
   } else if (entity.donationSummary && isBundledDataFresh(entity)) {
     // 2. Bundled summary is present and within TTL — use directly, skip API call.
     donationSummary = entity.donationSummary;
   } else if (committeeId) {
-    // 3. Bundled data absent or stale — attempt anonymous live call.
+    // 3. Curated data absent or stale — attempt the public DEMO_KEY fallback.
     try {
       donationSummary = await apiClient.fetchOrgSummary(committeeId);
       await cacheDeps.setCache({
@@ -385,6 +381,7 @@ chrome.runtime.onMessage.addListener(
     (async () => {
       switch (msg.type) {
         case 'CHECK_DOMAIN': {
+          await initPromise;
           // Prefer the authoritative tab ID from the message sender over the
           // placeholder (-1) sent by the content script.
           const tabId = sender.tab?.id ?? msg.tabId;
@@ -412,6 +409,7 @@ chrome.runtime.onMessage.addListener(
         }
 
         case 'GET_WEEKLY_STATS': {
+          await initPromise;
           const stats = await handleGetWeeklyStats(msg.weekOf);
           sendResponse(stats);
           break;
@@ -458,9 +456,8 @@ chrome.alarms.onAlarm.addListener((alarm) => {
 chrome.runtime.onInstalled.addListener(() => {
   // (Re-)create the alarm on install or extension update. chrome.alarms.create
   // is idempotent by name — it replaces any existing alarm with the same name.
-  chrome.alarms.create('entity-list-refresh', { periodInMinutes: 1440 });
+  chrome.alarms.create('entity-list-refresh', {
+    delayInMinutes: 1,
+    periodInMinutes: 1440,
+  });
 });
-
-// ── Initialise ─────────────────────────────────────────────────────────────────
-
-init().catch(console.error);

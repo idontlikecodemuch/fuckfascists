@@ -23,14 +23,15 @@ interface DayCirclesProps {
   platformName: string;
   dayCounts: Map<string, number>;
   onAvoidDate: (date: string) => Promise<void>;
+  onRemoveDate: (date: string) => Promise<void>;
 }
 
 /**
- * - Checked: green fill + checkmark, not tappable
+ * - Checked: green fill + checkmark, tappable to remove a mistaken mark
  * - Open (past/today): empty bordered, tappable
  * - Future: faded, not tappable
  */
-export function DayCircles({ weekOf, platformName, dayCounts, onAvoidDate }: DayCirclesProps) {
+export function DayCircles({ weekOf, platformName, dayCounts, onAvoidDate, onRemoveDate }: DayCirclesProps) {
   const dates = getWeekDates(weekOf);
 
   return (
@@ -58,8 +59,16 @@ export function DayCircles({ weekOf, platformName, dayCounts, onAvoidDate }: Day
                 {dayLabel}
               </Text>
               <Pressable
-                onPress={(!checked && !future) ? async () => { haptics.avoid(); await onAvoidDate(date); } : undefined}
-                disabled={checked || future}
+                onPress={!future ? async () => {
+                  if (checked) {
+                    haptics.tap();
+                    await onRemoveDate(date);
+                    return;
+                  }
+                  haptics.avoid();
+                  await onAvoidDate(date);
+                } : undefined}
+                disabled={future}
                 style={[
                   styles.tile,
                   checked && styles.tileChecked,
@@ -69,7 +78,7 @@ export function DayCircles({ weekOf, platformName, dayCounts, onAvoidDate }: Day
                 ]}
                 accessibilityRole="button"
                 accessibilityLabel={a11yLabel}
-                accessibilityState={{ disabled: checked || future }}
+                accessibilityState={{ disabled: future, selected: checked }}
                 hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
               >
                 {checked && (

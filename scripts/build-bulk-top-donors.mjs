@@ -1,5 +1,5 @@
 import { createReadStream } from 'node:fs';
-import { mkdtemp, readFile, readdir, rm, stat, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, readdir, rm, stat, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { spawn } from 'node:child_process';
 import readline from 'node:readline';
@@ -244,6 +244,8 @@ function parseArgs(argv) {
     top: DEFAULT_TOP,
     output: DEFAULT_OUTPUT,
     concurrency: DEFAULT_CONCURRENCY,
+    resumeDir: null,
+    resumeThrough: 0,
   };
 
   for (const arg of argv) {
@@ -263,6 +265,12 @@ function parseArgs(argv) {
     } else if (arg.startsWith('--concurrency=')) {
       const value = Number.parseInt(arg.slice('--concurrency='.length), 10);
       if (Number.isFinite(value) && value > 0) args.concurrency = value;
+    } else if (arg.startsWith('--resume-dir=')) {
+      const value = arg.slice('--resume-dir='.length).trim();
+      if (value) args.resumeDir = path.resolve(process.cwd(), value);
+    } else if (arg.startsWith('--resume-through=')) {
+      const value = Number.parseInt(arg.slice('--resume-through='.length), 10);
+      if (Number.isFinite(value) && value >= 0) args.resumeThrough = value;
     }
   }
 
@@ -451,8 +459,9 @@ async function buildPartialFile({
   return partialPath;
 }
 
-async function buildTopDonors(files, top, concurrency = DEFAULT_CONCURRENCY) {
-  const tempDir = await mkdtemp(path.join(tmpdir(), 'fec-bulk-top-'));
+async function buildTopDonors(files, top, concurrency = DEFAULT_CONCURRENCY, resumeDir = null, resumeThrough = 0) {
+  const tempDir = resumeDir ?? await mkdtemp(path.join(tmpdir(), 'fec-bulk-top-'));
+  if (resumeDir) await mkdir(tempDir, { recursive: true });
   const extractScriptPath = path.join(tempDir, 'extract.awk');
   const aggregateScriptPath = path.join(tempDir, 'aggregate.awk');
   const mergedPath = path.join(tempDir, 'partials-merged-sorted.tsv');
@@ -462,7 +471,15 @@ async function buildTopDonors(files, top, concurrency = DEFAULT_CONCURRENCY) {
 
   try {
     const partialPaths = new Array(files.length);
-    let nextIndex = 0;
+    const safeResumeThrough = Math.min(Math.max(0, resumeThrough), files.length);
+    for (let index = 0; index < safeResumeThrough; index += 1) {
+      const partialPath = path.join(tempDir, `partial-${String(index + 1).padStart(3, '0')}.tsv`);
+      const partialStats = await stat(partialPath);
+      if (partialStats.size === 0) throw new Error(`Resume partial is empty: ${partialPath}`);
+      partialPaths[index] = partialPath;
+    }
+    if (safeResumeThrough > 0) console.log(`Resuming after ${safeResumeThrough} validated partial files.`);
+    let nextIndex = safeResumeThrough;
 
     async function worker() {
       while (nextIndex < files.length) {
@@ -599,7 +616,13 @@ async function main() {
   console.log(`Ranking top ${args.top} donors from bulk files across cycles ${args.cycles.join(', ')}...`);
   console.log(`Files scanned: ${files.length}`);
 
-  const { donorsAggregated, donors } = await buildTopDonors(files, args.top, args.concurrency);
+  const { donorsAggregated, donors } = await buildTopDonors(
+    files,
+    args.top,
+    args.concurrency,
+    args.resumeDir,
+    args.resumeThrough,
+  );
   const { keyToIds, peopleById } = buildPeopleLookup(people);
 
   let matchedCount = 0;

@@ -7,8 +7,9 @@
  * version is fetched from INFO_CONTENT_URL.
  *
  * UI chrome (section headers, expand/collapse labels, icons) lives in copy/info.ts.
- * Editorial content (this file) can be updated without an app release by editing
- * info.json in the fuckfascists-data repo.
+ * Editorial content (this file) ships with the app. The optional remote
+ * INFO_CONTENT_URL is fail-open and must point at a populated public JSON file
+ * before it can replace this bundled source.
  */
 import type { InfoContent } from '../features/Info/types';
 import { sharedCopy } from './shared';

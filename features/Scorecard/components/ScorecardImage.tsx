@@ -22,6 +22,7 @@ const scale = (px: number) => px / pr;
 const VIEW_WIDTH = SCORECARD_IMAGE_WIDTH / pr;
 const VIEW_HEIGHT = SCORECARD_IMAGE_HEIGHT / pr;
 
+const HEADLINE_LIFT_DESIGN = 20;
 const HEADLINE_FONT_SIZE_DESIGN = 120;
 const HEADLINE_GAP_DESIGN = 18;
 const PANEL_PAD_TOP_DESIGN = 14;
@@ -183,6 +184,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'baseline',
     gap: scale(HEADLINE_GAP_DESIGN),
+    transform: [{ translateY: -scale(HEADLINE_LIFT_DESIGN) }],
   },
   headlineWhite: {
     fontFamily: theme.fonts.headline,

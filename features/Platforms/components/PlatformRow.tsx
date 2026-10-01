@@ -107,17 +107,17 @@ export function PlatformRow({
         }
         accessibilityState={{ expanded }}
       >
-          {!isChild && (
-            <View style={styles.spriteScreen}>
-              <FigureBadge
-                figureName={figureName}
-                state="neutral"
-                size={SPRITE_INNER_SIZE}
-                cropRatio={TRACK_SPRITE_BUST_CROP_RATIO}
-                faceAnchorX={TRACK_ROW_FACE_ANCHOR_X}
-                faceAnchorY={TRACK_ROW_FACE_ANCHOR_Y}
-              />
-            </View>
+        {!isChild && (
+          <View style={styles.spriteScreen}>
+            <FigureBadge
+              figureName={figureName}
+              state="neutral"
+              size={SPRITE_INNER_SIZE}
+              cropRatio={TRACK_SPRITE_BUST_CROP_RATIO}
+              faceAnchorX={TRACK_ROW_FACE_ANCHOR_X}
+              faceAnchorY={TRACK_ROW_FACE_ANCHOR_Y}
+            />
+          </View>
         )}
 
         <View style={styles.nameColumn}>
@@ -172,11 +172,13 @@ export function PlatformRow({
         )}
       </Pressable>
 
-      <AvoidButton
-        avoidedToday={todayAvoided}
-        platformName={item.platform.name}
-        onPress={onAvoidPress}
-      />
+      <View style={styles.actionColumn}>
+        <AvoidButton
+          avoidedToday={todayAvoided}
+          platformName={item.platform.name}
+          onPress={onAvoidPress}
+        />
+      </View>
 
       {focused && <SparkleDecoration />}
     </View>
@@ -248,6 +250,14 @@ const styles = StyleSheet.create({
   },
   dimmedBody: {
     opacity: TRACK_ROW_DIMMED_OPACITY,
+  },
+  actionColumn: {
+    width: TRACK_BUTTON_WIDTH,
+    height: TRACK_ROW_SPRITE_SIZE,
+    flexShrink: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
   },
   // 2-step gradient overlay on top-level rows (singletons + group headers
   // get this in their own component). Top half adds a subtle highlight,

@@ -1,4 +1,4 @@
-import { RateLimiter, FEC_DEFAULT_LIMITS } from '../rateLimit';
+import { RateLimiter, FEC_DEFAULT_LIMITS, FEC_DEMO_LIMITS } from '../rateLimit';
 import { RateLimitError } from '../errors';
 
 describe('RateLimiter', () => {
@@ -70,5 +70,9 @@ describe('RateLimiter', () => {
   it('uses FEC defaults when constructed with no arguments', () => {
     const limiter = new RateLimiter();
     expect(limiter.remaining).toBe(FEC_DEFAULT_LIMITS.maxRequests);
+  });
+
+  it('keeps the public DEMO_KEY fallback at the advertised ten-request ceiling', () => {
+    expect(FEC_DEMO_LIMITS).toEqual({ maxRequests: 10, windowMs: 3_600_000 });
   });
 });

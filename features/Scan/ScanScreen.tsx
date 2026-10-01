@@ -46,6 +46,9 @@ export function ScanScreen({
   const [scannerOpen, setScannerOpen] = useState(false);
   const [activeResult, setActiveResult] = useState<ScanResult | null>(null);
   const [lastLookupLabel, setLastLookupLabel] = useState('');
+  const [lastBarcodeContext, setLastBarcodeContext] = useState<
+    Extract<ScanResult['context'], { kind: 'barcode' }> | null
+  >(null);
   const [avoidedIds, setAvoidedIds] = useState<string[]>([]);
 
   useEffect(() => {
@@ -55,6 +58,7 @@ export function ScanScreen({
   const handleOpenScanner = useCallback(() => {
     clearNotice();
     setLastLookupLabel('');
+    setLastBarcodeContext(null);
     setActiveResult(null);
     reset();
     setScannerOpen(true);
@@ -73,6 +77,7 @@ export function ScanScreen({
       setLastLookupLabel(
         buildBarcodeLabel(target.context.productName, target.context.brandName, target.context.barcode),
       );
+      setLastBarcodeContext(target.context);
       await scan(target.searchTerm, target.context);
     },
     [clearNotice, reset, resolveBarcode, scan]
@@ -89,12 +94,14 @@ export function ScanScreen({
   const handleDismiss = useCallback(() => {
     setActiveResult(null);
     setLastLookupLabel('');
+    setLastBarcodeContext(null);
     clearNotice();
     reset();
   }, [clearNotice, reset]);
 
   const handleDismissNotice = useCallback(() => {
     setLastLookupLabel('');
+    setLastBarcodeContext(null);
     clearNotice();
     reset();
   }, [clearNotice, reset]);
@@ -102,7 +109,12 @@ export function ScanScreen({
   const derivedNotice = useMemo(() => {
     if (notice) return notice;
     if (status === 'unmatched' && lastLookupLabel) {
-      return { kind: 'no_match' as const, label: lastLookupLabel };
+      return {
+        kind: 'no_match' as const,
+        label: lastLookupLabel,
+        productName: lastBarcodeContext?.productName,
+        parentCompanyName: lastBarcodeContext?.brandName,
+      };
     }
     if (status === 'lookup_unavailable' && lastLookupLabel) {
       return {
@@ -112,7 +124,7 @@ export function ScanScreen({
       };
     }
     return null;
-  }, [lastLookupLabel, notice, status, lookupReason]);
+  }, [lastBarcodeContext, lastLookupLabel, notice, status, lookupReason]);
 
   const activeAssociatedPeople = activeResult?.entity
     ? getAssociatedPeople(activeResult.entity, people, entities)

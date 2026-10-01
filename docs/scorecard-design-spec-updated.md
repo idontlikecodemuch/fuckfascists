@@ -28,7 +28,8 @@ export const WEEK_START_HOUR = 0;             // 12:00am local time
 export const DROP_WINDOW_START_DAY = 5;       // Friday
 export const DROP_WINDOW_START_HOUR = 18;     // 6pm ET
 export const DROP_WINDOW_END_DAY = 6;         // Saturday
-export const DROP_WINDOW_END_HOUR = 16;       // 4pm ET
+export const DROP_WINDOW_END_HOUR = 16;       // 4pm ET (exclusive)
+export const SCORECARD_DROP_MIN_SEPARATION_MINUTES = 90;
 export const SCORECARD_QUIET_NOTIFICATION_FROM_HOUR = 23; // 11pm local
 export const SCORECARD_QUIET_NOTIFICATION_BEFORE_HOUR = 9;
 
@@ -37,8 +38,9 @@ export const MIN_AVOIDS_FOR_DROP = 1;         // suppress card + notification be
 
 ### Drop Timing
 
-- Deterministic weighted time within the Friday evening → Saturday afternoon US window
-- Every hour in the broad window remains possible; Friday evening and Saturday daytime are more likely
+- Deterministic time selected uniformly from every minute in the Friday 6pm → Saturday 4pm America/New_York window
+- Every install receives the same absolute UTC moment, regardless of device timezone
+- Eastern daylight-saving transitions are respected, and adjacent weeks remain at least 90 minutes apart
 - Local notification scheduled on-device from app startup and after avoid writes
 - Drop notification schedules only when the scored week has enough avoids to render a card
 - From 11pm through 8:59am local device time, the drop notification is quiet
@@ -153,8 +155,8 @@ Two number systems, two colors, no collision.
 7. **Power meter** — vertical bar, left edge (see Power Meter section)
 8. **Footer:**
    - Tagline: "The fascists won't f\*ck themselves." (asterisk version)
-   - CTA: "fckfascists.org" — sized prominently (~16px on canvas), this is the acquisition hook
-   - Attribution: "DATA: FEC.GOV" — smallest, most muted
+   - CTA: "FCKfascists.com" — sized prominently (~16px on canvas), this is the acquisition hook
+   - Handle: "@fckfascists.app" — full white, larger than the old source footnote
    - Sparkle/star decorations scattered
 
 ### Count Grid Zone
@@ -247,7 +249,7 @@ All tier thresholds are variables so they can be tuned based on real usage data.
 
 ## Drop Mechanics
 
-- Deterministic weighted time within configured Friday/Saturday window (Friday evening → Saturday afternoon US time)
+- Deterministic minute-level time within the configured Friday 6pm–Saturday 4pm America/New_York window
 - Local notification at drop time via Expo local notifications
   - From 11pm through 8:59am local device time: quiet delivery, no sound/vibration
   - iOS: reliable, near-zero drift
@@ -382,8 +384,8 @@ export const scorecardCopy = {
   previewA11y: "Preview — this is not the official weekly drop",
   emptyState: "Hit the Map. Hit Track.\nMake them feel it.",
   tagline: "The fascists won't f*ck themselves.",
-  cta: "fckfascists.org",
-  dataAttribution: "DATA: FEC.GOV",
+  cta: "FCKfascists.com",
+  dataAttribution: "@fckfascists.app",
 } as const;
 // NOTE: No shareText. The PNG is the share payload — no text metadata
 // is cached or generated alongside it. The card is self-contained.

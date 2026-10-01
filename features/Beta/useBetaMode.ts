@@ -1,15 +1,15 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import * as SecureStore from 'expo-secure-store';
+import { readBetaMode, writeBetaMode } from './betaModeStore';
 
-const BETA_KEY = 'ff_beta_mode';
-const TAP_COUNT_REQUIRED = 3;
-const TAP_WINDOW_MS = 1500;
+const TAP_COUNT_REQUIRED = 7;
+const TAP_WINDOW_MS = 3000;
 
 /**
  * Manages beta testing mode.
  *
- * Triple-tap the version label on the Info screen to toggle.
- * State persisted in SecureStore so it survives app restarts.
+ * Seven-tap the version label on the Info screen to request a toggle.
+ * State is persisted device-only so it survives app updates but cannot migrate
+ * to another phone through an iCloud/backup restore.
  */
 export function useBetaMode() {
   const [enabled, setEnabled] = useState(false);
@@ -17,22 +17,21 @@ export function useBetaMode() {
 
   useEffect(() => {
     let cancelled = false;
-    SecureStore.getItemAsync(BETA_KEY)
-      .then((val) => { if (!cancelled) setEnabled(val === 'true'); })
+    readBetaMode()
+      .then((val) => { if (!cancelled) setEnabled(val); })
       .catch(() => {});
     return () => { cancelled = true; };
   }, []);
 
-  const toggle = useCallback(async () => {
-    const next = !enabled;
+  const setBetaEnabled = useCallback(async (next: boolean) => {
     setEnabled(next);
-    await SecureStore.setItemAsync(BETA_KEY, next ? 'true' : 'false');
-    return next;
-  }, [enabled]);
+    await writeBetaMode(next);
+  }, []);
 
   /**
    * Call this on every tap of the version label.
-   * Returns `true` when the triple-tap fires (and beta is toggled).
+   * Returns `true` when the hidden seven-tap threshold is reached. The caller
+   * owns confirmation and the actual state change.
    */
   const registerTap = useCallback(async (): Promise<boolean> => {
     const now = Date.now();
@@ -45,11 +44,10 @@ export function useBetaMode() {
 
     if (tapTimestamps.current.length >= TAP_COUNT_REQUIRED) {
       tapTimestamps.current = [];
-      await toggle();
       return true;
     }
     return false;
-  }, [toggle]);
+  }, []);
 
-  return { betaEnabled: enabled, registerTap };
+  return { betaEnabled: enabled, registerTap, setBetaEnabled };
 }

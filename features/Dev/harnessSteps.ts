@@ -43,6 +43,7 @@ export const HARNESS_STEPS: HarnessStep[] = [
 
   // Scorecard
   { id: 'scorecard_populated', surface: 'scorecard', state: 'populated', label: 'Scorecard \u2014 populated' },
+  { id: 'scorecard_pending', surface: 'scorecard', state: 'pending', label: 'Scorecard \u2014 previous card dropping soon' },
   { id: 'scorecard_empty', surface: 'scorecard', state: 'empty', label: 'Scorecard \u2014 empty' },
 
   // Info
@@ -55,13 +56,24 @@ export const HARNESS_STEPS: HarnessStep[] = [
   { id: 'scan_scanner_open', surface: 'scan', state: 'scanner_open', label: 'Scan \u2014 scanner open' },
   { id: 'scan_result_pre_avoid', surface: 'scan', state: 'result_pre_avoid', label: 'Scan \u2014 result (pre-avoid)' },
   { id: 'scan_result_post_avoid', surface: 'scan', state: 'result_post_avoid', label: 'Scan \u2014 result (post-avoid)' },
-  { id: 'scan_no_match', surface: 'scan', state: 'no_match', label: 'Scan \u2014 no match' },
+  { id: 'scan_toast_try_again', surface: 'scan', state: 'toast_try_again', label: 'Scan toast \u2014 try again' },
+  { id: 'scan_toast_upc_not_file', surface: 'scan', state: 'toast_upc_not_file', label: 'Scan toast \u2014 UPC not on file' },
+  { id: 'scan_toast_product_found', surface: 'scan', state: 'toast_product_found', label: 'Scan toast \u2014 product found' },
+  { id: 'scan_toast_lookup_paused', surface: 'scan', state: 'toast_lookup_paused', label: 'Scan toast \u2014 lookup paused' },
 
   // Tab bar (captured from map view — tab bar always visible)
   { id: 'tabbar_full', surface: 'tabbar', state: 'full', label: 'Tab bar \u2014 from MAP' },
 ];
 
-export type HarnessMode = 'full' | 'a11y' | 'notification';
+export type HarnessMode = 'full' | 'a11y' | 'notification' | 'upc_toasts' | 'scorecard_states';
+
+export const UPC_TOAST_HARNESS_STEPS = HARNESS_STEPS.filter(
+  (step) => step.surface === 'scan' && step.state.startsWith('toast_'),
+);
+
+export const SCORECARD_HARNESS_STEPS = HARNESS_STEPS.filter(
+  (step) => step.surface === 'scorecard',
+);
 
 /**
  * Build the filename for a captured step.

@@ -39,6 +39,15 @@ derivation, presents an existing scored-week card even when live week is empty,
 hides PREVIEW on zero-avoid empty states, and exposes Past scorecards from
 `EmptyWeek`. Remaining presenter-design work (#145) is separate.
 
+2026-08-15 update: Ref #203 was submitted at 10:26 AM CDT, before that week's
+deterministic 2:00 PM CDT drop. Its archive screenshot correctly ended at
+`Week of August 1, 2026`; Friday evening avoids belong to the not-yet-dropped
+`Week of August 8, 2026`. Verify after 2:00 PM before treating this as a
+capture, retention, or pending-launch regression. The rollover UX is resolved
+in the current worktree: Saturday Live Preview now separates the fresh slate
+with `NEW WEEK` and shows `LAST WEEK'S SCORECARD / DROPPING SOON` only when the
+completed week has enough avoids for a pending card.
+
 Current diagnosis:
 - The capture-then-purge flow and archive exist now, so the early "no share card generated" issue should be functionally fixed.
 - Latest presentation screenshot still shows the rendered card too large/left-clipped inside `CardPresentation`: `Image resizeMode="contain"` fills the host, but the captured 9:16 PNG plus absolute share button/dismiss controls need a designed presenter layout.
@@ -125,13 +134,14 @@ Recommended work:
 
 ### 8. Data additions and spot checks
 
-Review refs: #89, #91, #102, #104, #113, #116, #118, #121, #123, #134, #139, #140, #142.
+Review refs: #89, #91, #102, #104, #113, #116, #118, #121, #123, #134, #139, #140, #142, #202.
 
 Recommended work:
 - Add Grindr.
 - Add or verify Navy Federal Credit Union.
 - Decide hospital/medical center coverage scope.
 - Spot-check Chipotle, McDonald's ownership/franchise data, Red Bull/Florida's Natural scan coverage, AMC no-PAC handling, Washington Plaza/Hotel AKA coverage.
+- Produce a cosmetics-company coverage report from the bundled product and producer-research data, then add representative UPC fixtures for confirmed gaps (#202).
 - Rebuild products after any alias/entity changes.
 
 ### 9. Onboarding / Info / Launch polish

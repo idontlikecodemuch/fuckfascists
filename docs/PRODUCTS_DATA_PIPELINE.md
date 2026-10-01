@@ -121,6 +121,13 @@ The bulk source is the local Open Food Facts Mongo dump at:
 
 - `tools/off-bulk/openfoodfacts-mongodbdump`
 
+**Current local state:** this raw dump was deleted on June 27, 2026 to reclaim
+about 71 GiB. The checkpoint files under `tools/off-bulk/checkpoints/` remain,
+so `python3 scripts/sync-products-from-off.py --rebuild-from-checkpoint` can
+still rebuild `products.json` from the saved aggregate scan. Any fresh OFF scan
+requires redownloading the Open Food Facts Mongo dump back to
+`tools/off-bulk/openfoodfacts-mongodbdump`.
+
 The archive is a large raw binary dump, not line-delimited JSON. The sync script:
 
 1. Locates the first BSON product document inside the archive.

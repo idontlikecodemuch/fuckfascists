@@ -109,6 +109,62 @@ function addCycleCents(map, cycle, cents) {
   map.set(cycle, (map.get(cycle) ?? 0) + cents);
 }
 
+export function removePriorInherentlyPartisanTotals(summary) {
+  const ledger = Array.isArray(summary?.inherentlyPartisanCycleTotals)
+    ? summary.inherentlyPartisanCycleTotals
+    : [];
+  if (ledger.length === 0) return { ...summary };
+
+  const priorByCycle = new Map();
+  let priorR = 0;
+  let priorD = 0;
+  for (const entry of ledger) {
+    if (!Array.isArray(entry) || entry.length < 3) continue;
+    const cycle = Number(entry[0] || 0);
+    const r = Number(entry[1] || 0);
+    const d = Number(entry[2] || 0);
+    if (!Number.isFinite(cycle) || cycle <= 0) continue;
+    priorByCycle.set(cycle, { r, d });
+    priorR += r;
+    priorD += d;
+  }
+
+  const adjustedCycleTotals = (Array.isArray(summary.cycleTotals) ? summary.cycleTotals : []).map((entry) => {
+    const cycle = Number(entry?.[0] || 0);
+    const prior = priorByCycle.get(cycle) ?? { r: 0, d: 0 };
+    return [
+      cycle,
+      roundCurrency(Math.max(0, Number(entry?.[1] || 0) - prior.r)),
+      roundCurrency(Math.max(0, Number(entry?.[2] || 0) - prior.d)),
+      roundCurrency(Number(entry?.[3] || 0)),
+    ];
+  });
+  const rawCycles = new Set(
+    (Array.isArray(summary.raw) ? summary.raw : [])
+      .map((row) => Number(row?.cycle || 0))
+      .filter((cycle) => Number.isFinite(cycle) && cycle > 0)
+  );
+  const activeCycles = adjustedCycleTotals
+    .filter((entry) => entry[1] !== 0 || entry[2] !== 0 || entry[3] !== 0 || rawCycles.has(entry[0]))
+    .map((entry) => entry[0])
+    .sort((a, b) => a - b);
+  const recentCycle = activeCycles.length > 0 ? activeCycles[activeCycles.length - 1] : 0;
+  const recentTotals = adjustedCycleTotals.find((entry) => entry[0] === recentCycle) ?? [recentCycle, 0, 0, 0];
+
+  return {
+    ...summary,
+    totalRepubs: roundCurrency(Math.max(0, Number(summary.totalRepubs || 0) - priorR)),
+    totalDems: roundCurrency(Math.max(0, Number(summary.totalDems || 0) - priorD)),
+    recentCycle,
+    recentRepubs: recentTotals[1],
+    recentDems: recentTotals[2],
+    recentO: recentTotals[3],
+    activeCycles,
+    cycleTotals: adjustedCycleTotals,
+    inherentlyPartisanCycleTotals: [],
+  };
+}
+
 function buildSourceRowsByEntity(pacRows, currentBundleMaxCycle) {
   const rowsByEntity = new Map();
   const ongoingCycleAmounts = new Map();
@@ -546,11 +602,12 @@ async function main() {
   const previewEntities = entities.map((entity) => {
     const summary = entity?.donationSummary;
     if (!summary) return entity;
+    const baseSummary = removePriorInherentlyPartisanTotals(summary);
 
     const rawRows = Array.isArray(summary.raw) ? summary.raw.map(cloneRow) : [];
     const otherRows = rawRows.filter((row) => normalizeWhitespace(row.lineNumber) !== '23');
     const currentLine23 = rawRows.filter((row) => normalizeWhitespace(row.lineNumber) === '23');
-    const recentCycle = Number(summary.recentCycle || 0);
+    const recentCycle = Number(baseSummary.recentCycle || 0);
 
     currentRawRows += rawRows.length;
     currentLine23Rows += currentLine23.length;
@@ -646,7 +703,7 @@ async function main() {
 
     const nextRaw = sortRawRows(nextRawRows);
     const nextDisplayOtherCents = sumDisplayOtherCents(nextRaw);
-    const nextActiveCycles = buildActiveCycles(summary, nextRaw, movedRCentsByCycle, movedDCentsByCycle);
+    const nextActiveCycles = buildActiveCycles(baseSummary, nextRaw, movedRCentsByCycle, movedDCentsByCycle);
     const previewRecentCycle =
       nextActiveCycles.length > 0 ? Math.max(...nextActiveCycles) : Math.max(recentCycle, findMaxCycleInRows(nextRaw));
     const previewRecentOtherCents = sumDisplayOtherCents(nextRaw, previewRecentCycle);
@@ -666,16 +723,16 @@ async function main() {
     }
 
     let previewSummary = {
-      ...summary,
+      ...baseSummary,
       recentCycle: previewRecentCycle,
-      totalRepubs: roundCurrency(Number(summary.totalRepubs || 0) + movedRCents / 100),
-      totalDems: roundCurrency(Number(summary.totalDems || 0) + movedDCents / 100),
+      totalRepubs: roundCurrency(Number(baseSummary.totalRepubs || 0) + movedRCents / 100),
+      totalDems: roundCurrency(Number(baseSummary.totalDems || 0) + movedDCents / 100),
       recentRepubs: nextRecentRepubs,
       recentDems: nextRecentDems,
       totalO: fromCents(nextDisplayOtherCents),
       recentO: fromCents(previewRecentOtherCents),
       activeCycles: nextActiveCycles,
-      cycleTotals: buildCycleTotals(summary, nextActiveCycles, nextRaw, movedRCentsByCycle, movedDCentsByCycle),
+      cycleTotals: buildCycleTotals(baseSummary, nextActiveCycles, nextRaw, movedRCentsByCycle, movedDCentsByCycle),
       raw: nextRaw,
       lastUpdated: generatedAt,
     };
@@ -728,6 +785,15 @@ async function main() {
         inherentlyRCentsByCycle,
         inherentlyDCentsByCycle
       ),
+      inherentlyPartisanCycleTotals: Array.from(
+        new Set([...inherentlyRCentsByCycle.keys(), ...inherentlyDCentsByCycle.keys()])
+      )
+        .sort((a, b) => a - b)
+        .map((cycle) => [
+          cycle,
+          fromCents(inherentlyRCentsByCycle.get(cycle) ?? 0),
+          fromCents(inherentlyDCentsByCycle.get(cycle) ?? 0),
+        ]),
     };
 
     const currentLine23Amount = currentLine23.reduce((sum, row) => sum + Number(row.amount || 0), 0);
@@ -880,9 +946,11 @@ async function main() {
   console.log(`Wrote ${previewEntitiesPath}`);
 }
 
-try {
-  await main();
-} catch (error) {
-  console.error(error instanceof Error ? error.message : error);
-  process.exit(1);
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  try {
+    await main();
+  } catch (error) {
+    console.error(error instanceof Error ? error.message : error);
+    process.exit(1);
+  }
 }

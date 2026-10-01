@@ -1,5 +1,6 @@
 import {
   deriveScorecardScreenState,
+  shouldShowPendingPreviousScorecard,
   shouldShowPreviewStamp,
 } from '../screenState';
 
@@ -66,5 +67,37 @@ describe('shouldShowPreviewStamp', () => {
 
   it('stamps active in-app previews', () => {
     expect(shouldShowPreviewStamp('preview', 1, 1)).toBe(true);
+  });
+});
+
+describe('shouldShowPendingPreviousScorecard', () => {
+  const pendingBase = {
+    hasDropped: false,
+    liveWeekOf: '2026-08-15',
+    scoredWeekOf: '2026-08-08',
+    dropGrandTotal: 3,
+    minAvoids: 1,
+  };
+
+  it('shows after the new week starts while last week has a pending card', () => {
+    expect(shouldShowPendingPreviousScorecard(pendingBase)).toBe(true);
+  });
+
+  it('does not promise a card when the completed week has no avoids', () => {
+    expect(shouldShowPendingPreviousScorecard({
+      ...pendingBase,
+      dropGrandTotal: 0,
+    })).toBe(false);
+  });
+
+  it('does not show before rollover or after the drop', () => {
+    expect(shouldShowPendingPreviousScorecard({
+      ...pendingBase,
+      liveWeekOf: pendingBase.scoredWeekOf,
+    })).toBe(false);
+    expect(shouldShowPendingPreviousScorecard({
+      ...pendingBase,
+      hasDropped: true,
+    })).toBe(false);
   });
 });

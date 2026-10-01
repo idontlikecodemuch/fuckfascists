@@ -180,13 +180,17 @@ describe('TRACKED_PLATFORMS', () => {
     // Singletons
     expect(ids.has('tiktok')).toBe(true);
     expect(ids.has('x-twitter')).toBe(true);
+    expect(ids.has('starlink')).toBe(true);
+    expect(ids.has('cursor')).toBe(true);
     expect(ids.has('netflix')).toBe(true);
     expect(ids.has('grindr')).toBe(true);
     // Group children
     expect(ids.has('facebook')).toBe(true);
     expect(ids.has('instagram')).toBe(true);
     expect(ids.has('youtube')).toBe(true);
+    expect(ids.has('google-workspace')).toBe(true);
     expect(ids.has('amazon')).toBe(true);
+    expect(ids.has('microsoft-365')).toBe(true);
   });
 
   it('does not include group parent IDs', () => {

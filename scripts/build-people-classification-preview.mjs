@@ -305,6 +305,11 @@ function buildAdditiveRowsByPerson(rows) {
   return byPersonId;
 }
 
+export function stripPriorAdditiveRows(rawRows, sourceKinds) {
+  if (!sourceKinds || sourceKinds.size === 0) return [...rawRows];
+  return rawRows.filter((row) => !sourceKinds.has(normalizeWhitespace(row?.sourceKind)));
+}
+
 function buildSpotlight(beforePerson, afterPerson, committeeCycleMap) {
   if (!beforePerson?.donationSummary || !afterPerson?.donationSummary) return null;
 
@@ -569,6 +574,11 @@ async function main() {
   const peopleDocument = normalizePeopleDocument(rawPeopleDocument);
   const committeeCycleMap = buildCommitteeCycleMap(rawCommitteeReport);
   const additiveRowsByPerson = buildAdditiveRowsByPerson(inherentlyPartisanPeopleRows);
+  const additiveSourceKinds = new Set(
+    inherentlyPartisanPeopleRows
+      .map((row) => normalizeWhitespace(row?.sourceKind) || 'inherently_partisan')
+      .filter(Boolean)
+  );
   const beforeTotals = summarizePeopleTotals(peopleDocument.people);
   const beforeRawTotals = summarizePeopleRawTotals(peopleDocument.people);
   const beforeSummaryDrift = measureSummaryDrift(peopleDocument.people);
@@ -589,7 +599,8 @@ async function main() {
   const nextPeople = peopleDocument.people.map((person) => {
     if (!person?.donationSummary) return person;
 
-    const nextRaw = (person.donationSummary.raw ?? []).map((row) => {
+    const baseRaw = stripPriorAdditiveRows(person.donationSummary.raw ?? [], additiveSourceKinds);
+    const nextRaw = baseRaw.map((row) => {
       const key = committeeCycleKey(normalizeCommitteeId(row.committeeId), row.cycle);
       const record = committeeCycleMap.get(key);
       const resolvedParty = record?.resolvedParty ?? 'O';
@@ -783,9 +794,11 @@ async function main() {
   console.log(`Wrote ${previewOutputPath}`);
 }
 
-try {
-  await main();
-} catch (error) {
-  console.error(error instanceof Error ? error.message : error);
-  process.exit(1);
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  try {
+    await main();
+  } catch (error) {
+    console.error(error instanceof Error ? error.message : error);
+    process.exit(1);
+  }
 }

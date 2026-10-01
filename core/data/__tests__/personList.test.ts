@@ -81,6 +81,31 @@ describe('fetchPeopleList', () => {
     const result = await fetchPeopleList(bundled);
     expect(result).toEqual(bundled);
   });
+
+  it('does not replace newer local data with an older Git payload', async () => {
+    const current = [{ ...validPerson, lastVerifiedDate: '2026-08-20' }];
+    const stale = [{ ...validPerson, id: 'stale', lastVerifiedDate: '2026-05-29' }];
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve(stale),
+    } as Response);
+
+    await expect(fetchPeopleList(current)).resolves.toEqual(current);
+  });
+
+  it('rejects a suspiciously partial Git payload', async () => {
+    const current = Array.from({ length: 10 }, (_, index) => ({
+      ...validPerson,
+      id: `local-${index}`,
+    }));
+    const partial = [{ ...validPerson, id: 'remote', lastVerifiedDate: '2026-09-01' }];
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve(partial),
+    } as Response);
+
+    await expect(fetchPeopleList(current)).resolves.toEqual(current);
+  });
 });
 
 describe('parsePeopleList', () => {

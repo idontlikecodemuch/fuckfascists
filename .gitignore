@@ -30,8 +30,12 @@ tools/img-gen/output/
 tools/img-gen/.env
 tools/img-gen/cache_id.txt
 
-# Bulk data archives (FEC + OFF)
-tools/fec-bulk/
+# Bulk data archives (FEC + OFF). Keep only the FEC runbook and generated manifests.
+tools/fec-bulk/*
+!tools/fec-bulk/README.md
+!tools/fec-bulk/manifests/
+tools/fec-bulk/manifests/*
+!tools/fec-bulk/manifests/*.json
 tools/off-bulk/
 
 # OpenStates legislator data (downloaded by scripts/download-openstates.mjs)
@@ -65,3 +69,21 @@ assets/pixel/sprites-hires/
 
 # Pre-optimization asset archive (originals before downsizing/format conversion)
 tools/asset-archive/
+
+# Local media, review scratch, and caches (never commit; added 2026-09-30)
+marketing/video/
+marketing/appstore/
+marketing/scorecards/
+tools/review/cropped/
+tools/review/Screenshot*.png
+tools/screenshots/ios-sim-*.png
+tools/img-gen/missing-characters*.json
+tools/img-gen/reference/
+__pycache__/
+.claude/plans/
+.claude/codex-*.md
+tools/IMG_*
+tools/review/IMG_*
+assets/pixel/guide/*
+!assets/pixel/guide/clark-portrait.png
+assets/starbg/ChatGPT*

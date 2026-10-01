@@ -21,10 +21,21 @@ describe('FECClient', () => {
   // ── Constructor ─────────────────────────────────────────────────────────────
 
   describe('constructor', () => {
-    it('initializes in anonymous mode when no API key is available', () => {
+    it('initializes with the public DEMO_KEY fallback when no API key is available', () => {
       const original = process.env['FEC_API_KEY'];
       delete process.env['FEC_API_KEY'];
       expect(() => new FECClient()).not.toThrow();
+      if (original !== undefined) process.env['FEC_API_KEY'] = original;
+    });
+
+    it('sends the public DEMO_KEY when no private key is configured', async () => {
+      const original = process.env['FEC_API_KEY'];
+      delete process.env['FEC_API_KEY'];
+      mockFetch.mockResolvedValueOnce(mockJson({ results: [] }));
+
+      await new FECClient().searchCommittees('Walmart');
+
+      expect(String(mockFetch.mock.calls[0][0])).toContain('api_key=DEMO_KEY');
       if (original !== undefined) process.env['FEC_API_KEY'] = original;
     });
 

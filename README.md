@@ -43,6 +43,7 @@ This is non-negotiable:
 - **No browsing history** — the extension never logs which sites you visit
 - **No "support" events** — the app cannot record that you went somewhere or bought something. Only affirmative avoidances are logged
 - **Open source** — every line of code is here for you to read
+- **Durable by default** — update notices are optional; the bundled app remains usable if an app store or data host disappears
 
 See the in-app Info tab or [FCKfascists.com/privacy](https://FCKfascists.com/privacy) for the full disclosure.
 

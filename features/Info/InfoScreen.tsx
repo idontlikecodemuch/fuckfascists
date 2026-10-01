@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Pressable, StyleSheet, SafeAreaView, Linking } from 'react-native';
 import Animated, { useSharedValue, useAnimatedScrollHandler } from 'react-native-reanimated';
+import Constants from 'expo-constants';
 import { useInfoContent } from './hooks/useInfoContent';
 import { InfoSection } from './components/InfoSection';
 import { FaqItem } from './components/FaqItem';
@@ -25,6 +26,7 @@ interface InfoScreenProps {
 
 export function InfoScreen({ onVersionTap }: InfoScreenProps) {
   const content = useInfoContent();
+  const appVersion = Constants.expoConfig?.version ?? content.version;
   const { about, reference, links } = content;
   const scrollY = useSharedValue(0);
   const scrollHandler = useAnimatedScrollHandler({
@@ -114,7 +116,7 @@ export function InfoScreen({ onVersionTap }: InfoScreenProps) {
             accessibilityRole="button"
             accessibilityLabel={infoCopy.versionLabel}
           >
-            <Text style={styles.versionText} allowFontScaling>v{content.version}</Text>
+            <Text style={styles.versionText} allowFontScaling>v{appVersion}</Text>
           </Pressable>
         </View>
 

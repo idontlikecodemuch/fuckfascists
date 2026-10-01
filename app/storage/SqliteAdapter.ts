@@ -185,6 +185,13 @@ export class SqliteAdapter implements StorageAdapter {
     return rows.map((r) => ({ platformId: r.platform_id, date: r.date, count: r.count }));
   }
 
+  async deletePlatformAvoidForDate(platformId: string, date: string): Promise<void> {
+    await this.db.runAsync(
+      `DELETE FROM ${TABLE_PLATFORM_AVOIDS} WHERE platform_id = ? AND date = ?`,
+      [platformId, date],
+    );
+  }
+
   async getPlatformAvoidsForWeek(weekStart: string, weekEnd: string): Promise<PlatformAvoidEvent[]> {
     const rows = await this.db.getAllAsync<PlatformAvoidRow>(
       `SELECT * FROM ${TABLE_PLATFORM_AVOIDS} WHERE date >= ? AND date < ?`,

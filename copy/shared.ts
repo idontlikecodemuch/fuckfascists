@@ -19,7 +19,7 @@ export const sharedCopy = {
   brandTaglineStacked: "The fascists won't\nFCK themselves.",
   siteUrl: SITE_DOMAIN,
   repoUrl: "https://github.com/idontlikecodemuch/fuckfascists",
-  dataRepoUrl: "https://github.com/idontlikecodemuch/fckfascists-data",
+  dataRepoUrl: "https://github.com/idontlikecodemuch/fuckfascists/tree/main/assets/data",
   issuesUrl: "https://github.com/idontlikecodemuch/fuckfascists/issues",
   privacyUrl: `${SITE_ORIGIN}/privacy`,
   contactEmail: "info@fckfascists.com",

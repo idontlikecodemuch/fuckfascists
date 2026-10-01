@@ -69,7 +69,7 @@ The card composes top → bottom inside the content insets:
 │         SCORECARD                   │  ← Plex 600 32px, letterSpacing 14
 │       ━━━ APR 4 — APR 10 ━━━        │  ← Beam — date — Beam (cyan rules)
 │                                     │
-│   I FCK'D 11×                       │  ← Hero (Bungee 120, 11× in gold w/ glow)
+│   I FCK'D 11×                       │  ← Hero (Bungee 120, lifted 20px; 11× in gold w/ glow)
 │   ┌───────────────────────────┐     │
 │   │ ⌐                       ¬│     │  ← Cyan corner ticks (4 × 18×18)
 │   │ [sprite]  NAME      5×   │     │  ← Person rows (sprite 180,
@@ -84,7 +84,7 @@ The card composes top → bottom inside the content insets:
 │       ━━━━━━━━━━━━━━━━━━━━━━        │  ← Footer beam (520 wide)
 │   🤘 The fascists won't FCK… 🤘     │  ← Tagline, Plex 600 32, gold horns
 │       FCKfascists.com               │  ← Bungee 58, cyan, strong glow
-│       DATA: FEC.GOV                 │  ← Plex 600 22, dim
+│       @fckfascists.app              │  ← Plex 600 32, white
 │                                     │
 │ [power bar]                         │  ← Left slot, anchored bottom 520
 └─────────────────────────────────────┘
@@ -148,7 +148,7 @@ natively; IBM Plex weights are explicit.
 | Header logo | (image asset, no text) | 520px wide | — |
 | SCORECARD subtitle | IBMPlexSans-SemiBold (600) | 32 | 14 |
 | Date range | IBMPlexSans-Medium (500) | 26 | 4 |
-| Hero "I FCK'D" + count | Bungee-Regular | 120 | 2 |
+| Hero "I FCK'D" + count | Bungee-Regular | 120 | 2; visual lift -20px |
 | Hero "×" suffix | IBMPlexSans-SemiBold (700) | 84 (~0.7em of count) | — |
 | Person name | IBMPlexSans-SemiBold (600) | 52 | 2 |
 | Person detail | IBMPlexSans-Medium (500) | 26 | 0.5 |
@@ -158,7 +158,7 @@ natively; IBM Plex weights are explicit.
 | THIS WEEK | Bungee-Regular | 64 | 6 |
 | Tagline | IBMPlexSans-SemiBold (600) | 32 | 1 |
 | CTA URL | Bungee-Regular | 58 | 6 |
-| Attribution | IBMPlexSans-SemiBold (600) | 22 | 6 |
+| Handle | IBMPlexSans-SemiBold (600) | 32 | 3 |
 
 All fonts bundled in `assets/fonts/`; app loads them via Expo font loading.
 
@@ -176,7 +176,8 @@ better than cool-blue-tinted white.
 | Gold (counts, headline N×, horns) | `#FFC93C` | `rewardYellow` |
 | Cream (names, hero prefix, THIS WEEK) | `#E8E0D0` | `scorecardCream` |
 | Muted (detail, tagline) | `#A8B4C8` | `textSecondary` |
-| Dim (date, DATA: FEC.GOV) | `#667788` | `scorecardDim` |
+| Dim (date, tagline body) | `#667788` | `scorecardDim` |
+| Footer handle | `#FFFFFF` | hard-coded white in share footer |
 | Blue (beam glow, panel inset) | `#2878C8` | `focusAccent` |
 | Highlight blue | `#5FAEFF` | `highlightBlue` |
 | Glow cyan (URL, beams, corner ticks) | `#7AF2FF` | `glowCyan` |
@@ -241,7 +242,7 @@ The scorecard uses the **defeated** variant (top-right or right half) — charac
 |---|---|
 | Top-level composition + canvas + sparkles + frame overlay | `features/Scorecard/components/ScorecardImage.tsx` |
 | Header (logo + SCORECARD + beam-flanked date) | `features/Scorecard/components/ScorecardImageHeader.tsx` |
-| Footer (beam + tagline + CTA + DATA: FEC.GOV) | `features/Scorecard/components/ScorecardImageFooter.tsx` |
+| Footer (beam + tagline + CTA + handle) | `features/Scorecard/components/ScorecardImageFooter.tsx` |
 | Beam, CornerTick, Sparkle helpers | `features/Scorecard/components/ScorecardImageDecorations.tsx` |
 | Person row | `features/Scorecard/components/CardPersonRow.tsx` |
 | Power bar | `features/Scorecard/components/PowerMeter.tsx` |
@@ -276,6 +277,11 @@ The app-side runtime flow for a real weekly drop is:
    `purgeOldAvoidEvents(adapter, getScorecardAvoidPurgeCutoff())` so the
    just-finished Sat-Fri week is not deleted after Saturday local rollover
    before capture can run.
+0.5. **Live Preview explains the Saturday bridge.** Between local Saturday
+   rollover and the secret drop moment, a completed week with at least one
+   avoid shows `LAST WEEK'S SCORECARD / DROPPING SOON`; the fresh slate is
+   labeled `NEW WEEK`. The status is suppressed for empty completed weeks and
+   disappears once the drop fires.
 1. **Drop fires** (or first app open after a missed drop). `useDropSchedule()`
    schedules a local re-check at the drop boundary, so a user already sitting
    on the Scorecard tab still flips into the post-drop path without a tab
@@ -283,11 +289,13 @@ The app-side runtime flow for a real weekly drop is:
 2. Effect in `features/Scorecard/ScorecardScreen.tsx` runs.
 3. **Aggregate** the scored week's events via `useScorecard` → `ScorecardViewData`.
 4. **Check for an existing card for this exact week** via `findCardForWeek()` (`features/Scorecard/data/cardArchive.ts`) so an older archive card cannot satisfy a new drop.
-5. **If no card:** show loader (`"Locking in my card.\nShredding the data."`), mount `ScorecardImage` off-screen, capture via `react-native-view-shot` → JPG saved as `Those-I-FCKd-{Month}-{DD}-{YY}.jpg`.
+5. **If no card:** show loader (`"Locking in my card.\nShredding the data."`), mount `ScorecardImage` off-screen, preload the rendered-card image assets (background, logo, frame, scanlines, beam, active power meter, and visible defeated sprites), wait two paint frames, then capture via `react-native-view-shot` → JPG saved as `Those-I-FCKd-{Month}-{DD}-{YY}.jpg`.
 6. **Purge scoped events** via `purgeScoredWeekAvoidEvents(adapter, weekOf)` (`core/data/eventStore.ts`). Scope is strictly `[weekOf, weekOf+7)` so the live week can never be touched. Runs ONLY if capture succeeded.
 7. **Present** if we're inside the 48h presentation window (`SCORECARD_PRESENTATION_WINDOW_MS` from drop moment). Past that, tab falls back to `LivePreview` for the new live week; the saved card remains in archive.
 
 **Capture failure semantics:** if `captureCard` returns `null` (disk full, render error, app killed), the effect sets state back to `'preview'` and the raw events are retained. Purge never runs. Next Scorecard tab visit retries. Under no circumstance is purge reached when capture failed — the "delete the data" promise requires we also keep the "save the card" promise.
+
+**Image-load guard:** `useCardCapture` preloads static scorecard art and the top visible person sprites before capture. This prevents a native-image decode race where text renders in the saved JPG but the logo/sprites are blank.
 
 See CLAUDE.md § "Scorecard capture-then-purge — privacy upgrade" and § "Scorecard — Drop Mechanics" for the full non-negotiables.
 
@@ -334,6 +342,9 @@ isn't the real drop" signaling lives in-app:
   non-empty in-app previews.
 - `LivePreview` renders the live week with the same chrome but does not
   invoke `<ScorecardImage>` (no capture happens until the real drop).
+- During the Saturday rollover bridge, `LivePreview` visually separates the
+  pending completed-week card from the new live week's zeroed slate without
+  disclosing the deterministic drop time.
 
 ---
 

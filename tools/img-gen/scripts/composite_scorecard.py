@@ -12,7 +12,7 @@ Composition (top → bottom):
   Hero     — "I FCK'D N×" together (gold count w/ glow)
   Panel    — person rows + cyan corner ticks + 2px border + inset glow
   Closing  — THIS WEEK, right-aligned
-  Footer   — beam + 🤘 tagline + CTA URL + DATA: FEC.GOV
+  Footer   — beam + 🤘 tagline + CTA URL + social handle
   Decor    — vignette, scanlines, sparkles, gold frame
 
 Run:
@@ -75,6 +75,7 @@ DEFAULT_PERSONS = [
 DATE_RANGE = "APR 4 — APR 10"
 GRAND_TOTAL = 11
 POWER_TIER = "legendary"
+HEADLINE_LIFT = 20
 
 # 2×1 layout sprites (others are 2×2). Defeated = right half.
 SPRITE_2X1 = {"david-joyner"}
@@ -234,17 +235,18 @@ def render_headline(canvas: Image.Image, total: int, y: int) -> int:
     times = "×"
     draw = ImageDraw.Draw(canvas)
     px = CONTENT_LEFT
+    draw_y = y - HEADLINE_LIFT
     # Drop shadow on white prefix
-    draw_letter_spaced(canvas, (px, y), prefix, f_hl, CREAM, 2,
+    draw_letter_spaced(canvas, (px, draw_y), prefix, f_hl, CREAM, 2,
                        shadow=(0, 0, 0, 178), shadow_off=(0, 4))
     px += text_w(draw, prefix, f_hl, 2) + 18
     # Gold count with glow
-    draw_letter_spaced(canvas, (px, y), count, f_hl, GOLD,
+    draw_letter_spaced(canvas, (px, draw_y), count, f_hl, GOLD,
                        shadow=(0, 0, 0, 153), shadow_off=(0, 4),
                        glow=GOLD[:3] + (179,), glow_radius=22)
     px += draw.textbbox((0, 0), count, font=f_hl)[2]
     # × suffix in Plex SemiBold (smaller)
-    draw.text((px, y + 30), times, font=f_x, fill=GOLD)
+    draw.text((px, draw_y + 30), times, font=f_x, fill=GOLD)
     return y + 120
 
 
@@ -374,20 +376,20 @@ def render_this_week(canvas: Image.Image, y: int) -> int:
 
 
 def render_footer(canvas: Image.Image) -> None:
-    """Layer 8: beam + 🤘 tagline + CTA URL + DATA: FEC.GOV. Bottom-anchored."""
+    """Layer 8: beam + 🤘 tagline + CTA URL + social handle. Bottom-anchored."""
     cursor = H - CONTENT_BOTTOM
-    f_attr = font(PLEX_SEMIBOLD, 22)
+    f_attr = font(PLEX_SEMIBOLD, 32)
     f_cta = font(BUNGEE, 58)
     f_tag = font(PLEX_SEMIBOLD, 32)
     draw = ImageDraw.Draw(canvas)
     # Bottom-up
-    attr_text = "DATA: FEC.GOV"
-    aw = text_w(draw, attr_text, f_attr, 6)
-    cursor -= 22 - 4
-    draw_letter_spaced(canvas, ((W - aw) // 2, cursor), attr_text, f_attr, DIM, 6)
+    attr_text = "@fckfascists.app"
+    aw = text_w(draw, attr_text, f_attr, 3)
+    cursor -= 32 - 4
+    draw_letter_spaced(canvas, ((W - aw) // 2, cursor), attr_text, f_attr, (255, 255, 255, 255), 3)
     cursor -= 16
     # CTA
-    cta_text = "FCKFASCISTS.ORG"
+    cta_text = "FCKFASCISTS.COM"
     cw = text_w(draw, cta_text, f_cta, 6)
     cursor -= 58 + 4
     draw_letter_spaced(canvas, ((W - cw) // 2, cursor), cta_text, f_cta, CYAN, 6,

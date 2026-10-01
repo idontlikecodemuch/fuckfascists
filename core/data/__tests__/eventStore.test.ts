@@ -1,6 +1,8 @@
 import {
   recordEntityAvoid,
   recordPlatformAvoid,
+  recordPlatformAvoidForDate,
+  removePlatformAvoidForDate,
   getAllEntityAvoids,
   getPlatformAvoidsForWeek,
   purgeOldAvoidEvents,
@@ -23,6 +25,7 @@ function makeAdapter(
     getEntityAvoids: jest.fn().mockResolvedValue([]),
     upsertPlatformAvoid: jest.fn().mockResolvedValue(undefined),
     getPlatformAvoids: jest.fn().mockResolvedValue([]),
+    deletePlatformAvoidForDate: jest.fn().mockResolvedValue(undefined),
     getPlatformAvoidsForWeek: jest.fn().mockResolvedValue([]),
     clearAllPlatformAvoids: jest.fn().mockResolvedValue(undefined),
     upsertAvoidPin: jest.fn().mockResolvedValue(undefined),
@@ -31,6 +34,8 @@ function makeAdapter(
     clearOldAvoidPins: jest.fn().mockResolvedValue(undefined),
     clearOldEntityAvoids: jest.fn().mockResolvedValue(undefined),
     clearOldPlatformAvoids: jest.fn().mockResolvedValue(undefined),
+    clearEntityAvoidsInRange: jest.fn().mockResolvedValue(undefined),
+    clearPlatformAvoidsInRange: jest.fn().mockResolvedValue(undefined),
     ...overrides,
   } as jest.Mocked<StorageAdapter>;
 }
@@ -152,6 +157,62 @@ describe('recordPlatformAvoid', () => {
     expect(adapter.upsertPlatformAvoid).toHaveBeenCalledWith(
       expect.objectContaining({ count: 1 })
     );
+  });
+
+  it('does not record a duplicate avoid for the same platform today', async () => {
+    const today = getLocalDateString();
+    const adapter = makeAdapter({
+      getPlatformAvoids: jest.fn().mockResolvedValue([
+        { platformId: 'twitter', date: today, count: 1 },
+      ]),
+    });
+
+    const recorded = await recordPlatformAvoid(adapter, 'twitter');
+
+    expect(recorded).toBe(false);
+    expect(adapter.upsertPlatformAvoid).not.toHaveBeenCalled();
+  });
+});
+
+// ─── recordPlatformAvoidForDate ─────────────────────────────────────────────
+
+describe('recordPlatformAvoidForDate', () => {
+  it('records only the explicit platform/date pair selected by the user', async () => {
+    const adapter = makeAdapter();
+
+    const recorded = await recordPlatformAvoidForDate(adapter, 'instagram', '2026-06-24');
+
+    expect(recorded).toBe(true);
+    expect(adapter.upsertPlatformAvoid).toHaveBeenCalledWith({
+      platformId: 'instagram',
+      date: '2026-06-24',
+      count: 1,
+    });
+  });
+
+  it('does not record duplicate past-day avoids', async () => {
+    const adapter = makeAdapter({
+      getPlatformAvoids: jest.fn().mockResolvedValue([
+        { platformId: 'instagram', date: '2026-06-24', count: 1 },
+      ]),
+    });
+
+    const recorded = await recordPlatformAvoidForDate(adapter, 'instagram', '2026-06-24');
+
+    expect(recorded).toBe(false);
+    expect(adapter.upsertPlatformAvoid).not.toHaveBeenCalled();
+  });
+});
+
+// ─── removePlatformAvoidForDate ──────────────────────────────────────────────
+
+describe('removePlatformAvoidForDate', () => {
+  it('deletes the single platform/date pair', async () => {
+    const adapter = makeAdapter();
+
+    await removePlatformAvoidForDate(adapter, 'instagram', '2026-06-27');
+
+    expect(adapter.deletePlatformAvoidForDate).toHaveBeenCalledWith('instagram', '2026-06-27');
   });
 });
 

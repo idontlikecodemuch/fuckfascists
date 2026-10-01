@@ -1,6 +1,6 @@
 {
   "name": "fuckfascists",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "scripts": {
     "test": "jest",
@@ -10,6 +10,11 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "build:ext": "node scripts/build-extension.mjs",
+    "build:ext:all": "node scripts/build-extension.mjs --browser=all",
+    "build:ext:edge": "node scripts/build-extension.mjs --browser=edge",
+    "build:ext:firefox": "node scripts/build-extension.mjs --browser=firefox",
+    "build:ext:safari": "node scripts/build-extension.mjs --browser=safari",
+    "build:ext:safari-project": "node scripts/build-safari-extension.mjs",
     "build:ext:watch": "node scripts/build-extension.mjs --watch",
     "verify:entities": "node scripts/verify-entities.mjs",
     "fetch:donations": "node scripts/fetch-donation-data.mjs",

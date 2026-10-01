@@ -543,7 +543,7 @@ All exports are `ViewStyle` objects. Spread into component styles.
 
 **Animation:** `AlertBanner` has no built-in animation. Top-level alert motion belongs to the owning component. The Thursday `NudgeBanner` uses a one-time slide-down plus three small vertical jiggle beats on mount and swipe-up exit; reduced motion renders it static.
 
-**Thursday nudge placement:** Full-bleed top strip (`top: 0`, `left: 0`, `right: 0`) with blue extending behind the status/safe area. Content padding includes `insets.top` so text and the × stay below the notch/status bar. Do not scale the whole banner; container width must remain stable. When visible on Map, the shell passes a small `topContentOffset` so the search bar does not crowd the banner.
+**Thursday nudge placement:** Full-bleed top strip (`top: 0`, `left: 0`, `right: 0`) with blue extending behind the status/safe area. Content padding includes `insets.top` so text and the × stay below the notch/status bar. Do not scale the whole banner; container width must remain stable. When visible, `NudgeBanner` reports its rendered height and `AppShell` reserves that height above the active tab so launch can land on Map, Track, Scan, or Scorecard without the banner covering page controls.
 
 **Color treatment:** Keep the panel in `colors.focusAccent` so it reads as an app-wide alert, not an error/reward state. Use `showSparkles` for Scorecard-related emphasis instead of changing the whole panel to amber/red.
 

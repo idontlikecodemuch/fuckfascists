@@ -146,9 +146,14 @@ export function BusinessCard({
 
       {/* Sprite — perching on document */}
       {spriteId && (
-        <View style={styles.spritePerch} pointerEvents="none" accessibilityElementsHidden>
+        <Pressable
+          onPress={() => haptics.tap()}
+          style={styles.spritePerch}
+          accessibilityElementsHidden
+          importantForAccessibility="no-hide-descendants"
+        >
           <SpriteView spriteId={spriteId} state={avoided ? 'defeated' : 'neutral'} size={CARD_SPRITE_SIZE} visible={visible} />
-        </View>
+        </Pressable>
       )}
 
       {/* Document panel with drop shadow */}

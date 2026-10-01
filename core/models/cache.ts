@@ -10,6 +10,8 @@ export interface FECLineItem {
 
 /** Compact shipped party totals for a single FEC cycle: [cycle, R, D, O]. */
 export type DonationCycleTotals = [cycle: number, repubs: number, dems: number, other: number];
+/** Refresh ledger for additive inaugural/party-account totals: [cycle, R, D]. */
+export type InherentlyPartisanCycleTotals = [cycle: number, repubs: number, dems: number];
 
 export interface DonationSummary {
   committeeId: string;
@@ -23,6 +25,7 @@ export interface DonationSummary {
   recentO?: number;              // non-R non-D donations in most recent cycle only
   activeCycles: number[];        // all cycles with activity since 2016, ascending
   cycleTotals?: DonationCycleTotals[]; // compact per-cycle party totals, sorted ascending
+  inherentlyPartisanCycleTotals?: InherentlyPartisanCycleTotals[]; // replaced on each additive-data refresh
   raw: FECLineItem[];            // non-Republican non-Democrat line items; stored for future use
   lastUpdated: string;           // YYYY-MM-DD
   fecCommitteeUrl: string;       // https://www.fec.gov/data/committee/{committeeId}/

@@ -32,6 +32,7 @@ function makeMutableAdapter(entityEvents: EntityAvoidEvent[]): jest.Mocked<Stora
     getEntityAvoids: jest.fn(async () => entities),
     upsertPlatformAvoid: jest.fn().mockResolvedValue(undefined),
     getPlatformAvoids: jest.fn(async () => platformEvents),
+    deletePlatformAvoidForDate: jest.fn().mockResolvedValue(undefined),
     getPlatformAvoidsForWeek: jest.fn(async (start: string, end: string) =>
       platformEvents.filter((event) => event.date >= start && event.date < end),
     ),

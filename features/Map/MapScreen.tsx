@@ -46,8 +46,6 @@ interface MapScreenProps {
   adapter: StorageAdapter;
   fetchOrgs: MatchingDeps['fetchOrgs'];
   fetchOrgSummary: MatchingDeps['fetchOrgSummary'];
-  /** Additional top spacing reserved by shell-level overlays. */
-  topContentOffset?: number;
   /** Notifies app-level schedulers after a new avoid is written. */
   onAvoidRecorded?: () => void;
 }
@@ -106,7 +104,6 @@ export function MapScreen({
   adapter,
   fetchOrgs,
   fetchOrgSummary,
-  topContentOffset = 0,
   onAvoidRecorded,
 }: MapScreenProps) {
   const insets = useSafeAreaInsets();
@@ -332,7 +329,7 @@ export function MapScreen({
   // swipe-dismiss PanResponder runs independently.
   const { slideY, dimOpacity } = useCardOverlayAnimation(cardVisible);
   const headerBarHeight = Math.round(screenWidth / HEADER_BAR_ASPECT);
-  const SEARCH_TOP = insets.top + headerBarHeight + theme.space.md + topContentOffset;
+  const SEARCH_TOP = insets.top + headerBarHeight + theme.space.md;
 
   return (
     <SafeAreaView style={styles.container}>

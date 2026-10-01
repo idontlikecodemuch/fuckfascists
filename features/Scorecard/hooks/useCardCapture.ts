@@ -1,9 +1,24 @@
 import { useCallback, useState } from 'react';
-import type { View } from 'react-native';
+import { Image } from 'react-native';
+import type { ImageSourcePropType, View } from 'react-native';
 import { captureRef } from 'react-native-view-shot';
 import * as FileSystem from 'expo-file-system';
+import { Asset } from 'expo-asset';
 import { SCORECARD_CAPTURE_TIMEOUT_MS } from '../../../config/constants';
+import {
+  powerMeterAssets,
+  scorecardBeam,
+  scorecardBg,
+  scorecardFrame,
+  scorecardLogo,
+  scorecardScanlines,
+} from '../../../core/scorecard/scorecardAssets';
+import { getSpriteFrame, nameToSpriteId } from '../../../core/sprites/spriteLoader';
+import type { ScorecardViewData } from '../types';
 import { buildCardFilename } from '../utils/formatters';
+
+const SCORECARD_ASSET_PRELOAD_TIMEOUT_MS = 2500;
+const SCORECARD_VISIBLE_PERSON_LIMIT = 3;
 
 export interface CardCaptureResult {
   uri: string;
@@ -38,6 +53,51 @@ async function waitForRef<T>(
   return ref.current;
 }
 
+function waitForAnimationFrames(count: number): Promise<void> {
+  return new Promise((resolve) => {
+    const step = (remaining: number) => {
+      if (remaining <= 0) {
+        resolve();
+        return;
+      }
+      requestAnimationFrame(() => step(remaining - 1));
+    };
+    step(count);
+  });
+}
+
+async function loadImageSource(source: ImageSourcePropType): Promise<void> {
+  if (typeof source === 'number') {
+    await Asset.fromModule(source).downloadAsync();
+    return;
+  }
+
+  const resolved = Image.resolveAssetSource(source);
+  if (resolved?.uri) await Image.prefetch(resolved.uri);
+}
+
+async function preloadScorecardImageAssets(data: ScorecardViewData): Promise<void> {
+  const sources: ImageSourcePropType[] = [
+    scorecardBg,
+    scorecardLogo,
+    scorecardFrame,
+    scorecardScanlines,
+    scorecardBeam,
+  ];
+
+  if (data.powerTier) {
+    const powerSource = powerMeterAssets[data.powerTier.index];
+    if (powerSource) sources.push(powerSource);
+  }
+
+  for (const person of data.persons.slice(0, SCORECARD_VISIBLE_PERSON_LIMIT)) {
+    const frame = getSpriteFrame(nameToSpriteId(person.figureName), 'defeated');
+    if (frame) sources.push(frame.source);
+  }
+
+  await Promise.all(sources.map(loadImageSource));
+}
+
 /**
  * Manages the capture of ScorecardImage via react-native-view-shot.
  *
@@ -50,7 +110,7 @@ async function waitForRef<T>(
  *   const { captureCard, capturing } = useCardCapture();
  *   const imageRef = useRef<View>(null);
  *   // Mount <ScorecardImage ref={imageRef} ... /> off-screen
- *   const result = await captureCard(imageRef, weekOf);
+ *   const result = await captureCard(imageRef, weekOf, scorecardData);
  *
  * Failure semantics: any error (including a capture timeout) returns null
  * and leaves the raw avoid events intact. The ScorecardScreen post-drop
@@ -71,6 +131,7 @@ export function useCardCapture() {
     async (
       viewRef: React.RefObject<View | null>,
       weekOf: string,
+      data: ScorecardViewData,
     ): Promise<CardCaptureResult | null> => {
       setCapturing(true);
 
@@ -83,6 +144,16 @@ export function useCardCapture() {
           setCapturing(false);
           return null;
         }
+
+        // view-shot can capture text before native <Image> assets have
+        // decoded, producing a malformed card with the logo/sprites missing.
+        // Preload the exact static/dynamic image sources, then give Fabric
+        // two paint frames before taking the bitmap.
+        await withTimeout(
+          preloadScorecardImageAssets(data),
+          SCORECARD_ASSET_PRELOAD_TIMEOUT_MS,
+        ).catch(() => undefined);
+        await waitForAnimationFrames(2);
 
         // Ensure destination dir exists BEFORE the capture so the
         // post-capture move can't be the thing that fails first.

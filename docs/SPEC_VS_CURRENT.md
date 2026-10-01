@@ -18,14 +18,14 @@ This document tracks where the current implementation aligns with, deviates from
 | Open source | Full codebase public | GitHub repo public |
 | Sideload/PWA stability | First-class concern | APK sideload path confirmed |
 | Confidence levels always shown | Never claim certainty data doesn't support | Confidence labels in UI |
-| Data links to source | All data cites FEC.gov | Attribution standardized to FEC.GOV |
+| Data links to source | All data cites FEC.gov | In-app data cards link to FEC.gov; scorecard footer uses the social handle `@fckfascists.app` |
 | Configurable variables in constants.ts | No hardcoded thresholds | All values in `config/constants.ts` |
 | Weekly scorecard | Weekly drop, shareable | Weekly scorecard implemented |
 | Platform avoidance tracking | Daily checklist for social/streaming/delivery | Platform avoidance implemented |
 | 8-bit visual design system | Pixel art aesthetic, dark palette, chunky borders | `design/tokens.ts` + `design/bevel.ts` (bevel system). All components on blue chrome / amber action / dark panel design language. 35 pixel art assets + 107 CEO sprite sheets deployed. Track screen: beveled panels, blue focus chrome, amber AVOID, SparkleDecoration. BusinessCard: blue focus bevel, sprite-left layout (no frame), tappable confidence badge, post-avoid large sparkles. AvoidButton: amber raised / green inset bevel. BusinessBanner: blue chrome bevel + variant accent bars. GameArena, MatchChooser, InfoScreen, map controls all on same visual language. 4-step keying pipeline with 1px alpha erosion. shared FX system (`core/fx/`). |
 | Onboarding flow | Multi-screen first-run flow | 3 screens: Welcome, Clark how-to memo (HOW TO: FCK), Permissions (BEFORE WE START) — with explicit Map / Track / Scan / Scorecard instructions, on-device privacy promise, and actual OS permission result checking |
 | Map first-use hints | Onboarding tooltips for map features | Three-stage dismissable hints (search → tap → barcode) persisted via SecureStore |
-| Beta testing mode | Hidden dev tools | Triple-tap version label → BetaOverlay with screenshot tool |
+| Beta testing mode | Hidden dev tools | Seven-tap version label + explicit confirmation → device-only BetaOverlay with screenshot tool |
 
 ---
 
@@ -35,7 +35,7 @@ This document tracks where the current implementation aligns with, deviates from
 |---|---|---|---|
 | Data source | OpenSecrets API | FEC.gov API directly | OpenSecrets rate limits too tight for bulk lookups; FEC is the primary source anyway and more transparent |
 | Confidence field | String labels ('HIGH', 'MEDIUM') | Numeric 0–1 confidence values with thresholds in `config/constants.ts` | More precise, pipeline-friendly, easier to tune thresholds while keeping display labels derived at render time |
-| Scorecard timing | Random drop Friday 12PM–Sunday 8PM (BeReal model) | Deterministic weighted Friday evening–Saturday afternoon US window; every hour remains possible, Friday evening and Saturday daytime are more likely | Narrowed window for consistency; BeReal model preserved with less overnight annoyance. Local drops from 11pm through 8:59am use quiet notifications. |
+| Scorecard timing | Random drop Friday 12PM–Sunday 8PM (BeReal model) | Deterministic minute-level Friday 6PM–Saturday 4PM America/New_York window; every minute is possible, all installs share one UTC moment, and adjacent weeks stay at least 90 minutes apart | Narrowed window for consistency while preserving unpredictability and global synchronization. Local drops from 11pm through 8:59am use quiet notifications. |
 | Scorecard data lifecycle | Raw events persist until a week-rollover purge | **Capture-then-purge** — at drop, PNG is captured to disk and the scored week's raw events are purged immediately (scoped to `[weekOf, weekOf+7)`) | Net privacy upgrade: PNG is derivative (no timestamps/surfaces/per-day breakdown), raw event log cannot be reconstructed. Also fixes the "drop disappears at Saturday midnight" bug since presentation resolves the PNG by mtime, not by `weekOf` filename |
 | Scorecard presentation persistence | Drop shows indefinitely on tab | Drop takes over the Scorecard tab for 48h (`SCORECARD_PRESENTATION_WINDOW_MS`), then tab returns to LivePreview for the new week; card reachable via "Past scorecards" | Clear end to the celebration window; PNG archive preserves history |
 | Scorecard image filename | `{weekOf}.png` (ISO date) | `Those-I-FCKd-{Month}-{DD}-{YY}.jpg` — e.g. `Those-I-FCKd-April-11-26.jpg` (legacy `.png` accepted on read) | Sh*tposter voice on output surface; echoes card's hero sentence; reads like an inscription on share |
@@ -47,7 +47,7 @@ This document tracks where the current implementation aligns with, deviates from
 | Cross-device sync | QR code scan to bridge extension → app | Deferred to V2 | Complexity too high for MVP; extension and app remain separate |
 | Extension trigger frequency | Session-based or daily reset | Session-based (configurable) | Most conservative privacy-respecting default |
 | iOS native module packaging | Manual Xcode target addition | Expo Modules API package at `modules/mapkit-search/`, registered via `"mapkit-search": "file:./modules/mapkit-search"` in dependencies | CocoaPods autolinking discovers it automatically on prebuild — no Podfile edits, no `expo.autolinking.searchPaths` override required |
-| Extension FEC API key | User-configured key stored in chrome.storage.local | No API key — anonymous mode only | Per-IP FEC rate limits are sufficient for individual users; shared key pooling is a scaling problem; bundled data makes live calls rare |
+| Extension FEC API key | User-configured key stored in chrome.storage.local | No private key — public `DEMO_KEY` fallback with a 10-request local ceiling | Local/Git data is primary; the public FEC fallback is deliberately rare and no user credential is stored |
 | Extension donation data source | Live FEC API call on every domain match | Bundled `entity.donationSummary` first; live call only when absent or stale | Bundled data (populated by `fetch:donations` pipeline) covers all 161 verified entities; live calls are rare fallbacks; popup distinguishes "No bundled donation data" from transient unavailability |
 | Product scanning | Not in original spec | Dedicated `SCAN BETA` tab using `expo-camera`, a lazy-mounted scanner sheet, a modular local `products.json` producer index derived from checkpointed OFF bulk-data aggregation, Open Food Facts barcode lookup on remaining misses, and an on-device barcode cache | Product-level shelf scanning closes a major gap without shipping a giant product catalog; repeated OFF prefix evidence gives common producer-family hits a strong local fallback while keeping entity expansion isolated from unrelated data work |
 
@@ -80,7 +80,7 @@ This document tracks where the current implementation aligns with, deviates from
 | Map POI tap scope | Full pipeline match vs. curated list only for V1 | ✅ **Resolved** — full pipeline match (alias first, FEC fuzzy fallback) |
 | App Store name | Clean store-listing name vs. branded in-app name | ✅ **Resolved** — store listing is `FCK, FinancialContributionKit` (iOS) and `FCK, Financial Contribution Kit` (Android, longer character limit). In-app brand mark is `FCK FASCISTS` standalone (launch screen, scorecard, share image) / `FCK Fascists` in body prose. Per `docs/FCK_VOICE_FRAMEWORK.md` v2.3 — the clinical store name next to the actual product experience is the joke. |
 | Uber entity | No PAC found, name-based match failing | `fecCommitteeId: ""` — needs manual research |
-| ENTITY_LIST_UPDATE_URL | Data repo URL | ✅ **Resolved** — `idontlikecodemuch/fckfascists-data` |
+| ENTITY_LIST_UPDATE_URL | Data repo URL | ✅ **Resolved** — populated public runtime bundle in `idontlikecodemuch/fuckfascists`; the separate data repository remains an empty placeholder |
 | Extension + scorecard unification | QR code bridge or keep separate forever | Deferred to V2 but needs a final answer |
 
 ---

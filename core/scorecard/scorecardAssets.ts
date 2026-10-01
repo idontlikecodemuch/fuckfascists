@@ -8,6 +8,10 @@ import type { ImageSourcePropType } from 'react-native';
 export const scorecardBg: ImageSourcePropType =
   require('../../assets/pixel/scorecard/starbg.jpg');
 
+/** FCK FASCISTS brand logo used by the rendered card header. */
+export const scorecardLogo: ImageSourcePropType =
+  require('../../assets/pixel/brand/FF_logo.png');
+
 /** Gold frame overlay (transparent interior). */
 export const scorecardFrame: ImageSourcePropType =
   require('../../assets/pixel/scorecard/frame.png');

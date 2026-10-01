@@ -22,6 +22,26 @@ import type { Entity, PoliticalPerson } from './core/models';
 import bundledEntitiesRaw from './assets/data/entities.json';
 import bundledPeopleRaw from './assets/data/people.bundle.json';
 
+const AutoUpcToastHarness = __DEV__ && process.env.EXPO_PUBLIC_UPC_TOAST_HARNESS === '1'
+  ? require('./features/Dev/ScreenshotHarness').ScreenshotHarness as React.ComponentType<{
+      onClose: () => void;
+      autoMode: 'upc_toasts';
+    }>
+  : null;
+
+const AutoReleaseQAHarness = __DEV__ && process.env.EXPO_PUBLIC_RELEASE_QA_HARNESS === '1'
+  ? require('./features/Dev/ReleaseQAHarness').ReleaseQAHarness as React.ComponentType<{
+      entities: Entity[];
+    }>
+  : null;
+
+const AutoScorecardVisualHarness = __DEV__ && process.env.EXPO_PUBLIC_SCORECARD_VISUAL_HARNESS === '1'
+  ? require('./features/Dev/ScreenshotHarness').ScreenshotHarness as React.ComponentType<{
+      onClose: () => void;
+      autoMode: 'scorecard_states';
+    }>
+  : null;
+
 // ─── App ──────────────────────────────────────────────────────────────────────
 
 export default function App() {
@@ -62,7 +82,8 @@ export default function App() {
     return () => { cancelled = true; };
   }, []);
 
-  // Attempt to refresh entity list from CDN; falls back to bundled on failure.
+  // Local-first: render the bundled entity list immediately, then check the
+  // public Git runtime bundle. Per-lookup live FEC remains the final fallback.
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -76,7 +97,7 @@ export default function App() {
     return () => { cancelled = true; };
   }, []);
 
-  // Attempt to refresh people list from CDN; falls back to bundled on failure.
+  // Same local-first → Git refresh order for the slim people runtime bundle.
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -99,6 +120,30 @@ export default function App() {
           <Text style={styles.splashTitle}>{sharedCopy.appName.replace(' ', '\n')}</Text>
           <ActivityIndicator color={theme.colors.rewardYellow} style={styles.splashSpinner} />
         </View>
+      </SafeAreaProvider>
+    );
+  }
+
+  if (AutoUpcToastHarness) {
+    return (
+      <SafeAreaProvider>
+        <AutoUpcToastHarness onClose={() => undefined} autoMode="upc_toasts" />
+      </SafeAreaProvider>
+    );
+  }
+
+  if (AutoReleaseQAHarness) {
+    return (
+      <SafeAreaProvider>
+        <AutoReleaseQAHarness entities={entities} />
+      </SafeAreaProvider>
+    );
+  }
+
+  if (AutoScorecardVisualHarness) {
+    return (
+      <SafeAreaProvider>
+        <AutoScorecardVisualHarness onClose={() => undefined} autoMode="scorecard_states" />
       </SafeAreaProvider>
     );
   }

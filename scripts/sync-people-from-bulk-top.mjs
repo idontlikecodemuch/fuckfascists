@@ -300,6 +300,7 @@ const ROLE_OVERRIDES = {
 };
 let runtimeCommonNameOverrides = COMMON_NAME_OVERRIDES;
 let runtimeRoleOverrides = ROLE_OVERRIDES;
+let runtimeFecSearchNameOverrides = {};
 
 function today() {
   return new Date().toISOString().slice(0, 10);
@@ -763,6 +764,7 @@ function buildMergedPerson(donor, matches, usedIds, entityMatcher) {
     cleanCanonicalName(donor.canonicalName),
     ...sortedMatches.map((person) => person.canonicalName),
     ...sortedMatches.flatMap((person) => person.fecSearchNames ?? []),
+    ...(runtimeFecSearchNameOverrides[baseId] ?? []),
   ]);
   const mergedExistingRoles = mergeRoles(sortedMatches);
   const { associatedEntityIds, rolesByEntity } = mergeEntityLinks({
@@ -811,7 +813,7 @@ function buildMergedPerson(donor, matches, usedIds, entityMatcher) {
   };
 }
 
-function buildMeta(existingMeta, bulkMeta, people, duplicateKeysCollapsed, duplicateDisplayNamesCollapsed, hadExistingPeople, currentEntityIds) {
+function buildMeta(existingMeta, bulkMeta, people, duplicateKeysCollapsed, duplicateDisplayNamesCollapsed, configuredPersonMerges, hadExistingPeople, currentEntityIds) {
   const hydratedPeople = people.filter((person) => Array.isArray(person.donationSummary?.raw) && person.donationSummary.raw.length > 0).length;
   const contributorIdCoverage = people.filter((person) => typeof person.fecContributorId === 'string' && person.fecContributorId.trim().length > 0).length;
   const linkedPeople = people.filter((person) => Array.isArray(person.associatedEntityIds) && person.associatedEntityIds.length > 0).length;
@@ -836,6 +838,7 @@ function buildMeta(existingMeta, bulkMeta, people, duplicateKeysCollapsed, dupli
     bulkValidation: hadExistingPeople ? bulkMeta?.validation ?? null : null,
     duplicateKeysCollapsed,
     duplicateDisplayNamesCollapsed,
+    configuredPersonMerges,
     linkedPeople,
     uniqueEntityIds: uniqueEntityIds.size,
     forwardReferencedEntityIds,
@@ -1009,6 +1012,53 @@ function collapseDuplicateDisplayNames(people) {
   return { people: collapsed, duplicateSummaries };
 }
 
+export function applyConfiguredPersonMerges(people, configuredMerges = {}) {
+  const byId = new Map(people.map((person) => [person.id, person]));
+  const removedIds = new Set();
+  const summaries = [];
+
+  for (const [sourceId, targetId] of Object.entries(configuredMerges)) {
+    const source = byId.get(sourceId);
+    const target = byId.get(targetId);
+    if (!source || !target || source === target || removedIds.has(sourceId)) continue;
+
+    target.aliases = unique([...(target.aliases ?? []), ...(source.aliases ?? []), source.displayName]);
+    target.fecSearchNames = unique([
+      ...(target.fecSearchNames ?? []),
+      source.canonicalName,
+      ...(source.fecSearchNames ?? []),
+    ]);
+    target.associatedEntityIds = unique([
+      ...(target.associatedEntityIds ?? []),
+      ...(source.associatedEntityIds ?? []),
+    ]);
+    target.rolesByEntity = mergeRoleMaps(target.rolesByEntity, source.rolesByEntity);
+    target.primaryState = target.primaryState || source.primaryState;
+    target.primaryEmployer = target.primaryEmployer || source.primaryEmployer;
+    target.primaryOccupation = target.primaryOccupation || source.primaryOccupation;
+    target.donorRank = Math.min(target.donorRank ?? Number.POSITIVE_INFINITY, source.donorRank ?? Number.POSITIVE_INFINITY);
+    target.donationSummary = (target.donationSummary?.raw?.length ?? 0) >= (source.donationSummary?.raw?.length ?? 0)
+      ? target.donationSummary
+      : source.donationSummary;
+    target.lastVerifiedDate = [target.lastVerifiedDate, source.lastVerifiedDate].filter(Boolean).sort().at(-1);
+    target.verificationStatus = target.verificationStatus === 'manual' || source.verificationStatus === 'manual'
+      ? 'manual'
+      : target.verificationStatus || source.verificationStatus;
+    target.notes = unique([target.notes, source.notes]).filter(Boolean).join(' | ');
+
+    removedIds.add(sourceId);
+    summaries.push({ sourceId, targetId });
+  }
+
+  const merged = people.filter((person) => !removedIds.has(person.id));
+  merged.sort((left, right) => (left.donorRank ?? 100_000) - (right.donorRank ?? 100_000));
+  merged.forEach((person, index) => {
+    person.donorRank = index + 1;
+    person.tier = inferTier(index + 1);
+  });
+  return { people: merged, summaries };
+}
+
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   const loadedOverrides = await loadPeopleEntityOverrides(args.overrides);
@@ -1020,6 +1070,7 @@ async function main() {
     Object.keys(loadedOverrides.roleOverrides).length > 0
       ? loadedOverrides.roleOverrides
       : ROLE_OVERRIDES;
+  runtimeFecSearchNameOverrides = loadedOverrides.fecSearchNameOverrides;
   const existingRaw = JSON.parse(await readFile(PEOPLE_PATH, 'utf8'));
   const entitiesRaw = JSON.parse(await readFile(ENTITIES_PATH, 'utf8'));
   const bulkRaw = JSON.parse(await readFile(args.input, 'utf8'));
@@ -1048,6 +1099,8 @@ async function main() {
 
   const manualOverridePeople = manualPeopleFromOverrides(loadedOverrides.raw, mergedPeople, usedIds);
   mergedPeople = mergedPeople.concat(manualOverridePeople);
+  const configuredMerges = applyConfiguredPersonMerges(mergedPeople, loadedOverrides.personMerges);
+  mergedPeople = configuredMerges.people;
 
   const nextPeopleFile = {
     _meta: buildMeta(
@@ -1056,6 +1109,7 @@ async function main() {
       mergedPeople,
       duplicateKeysCollapsed,
       collapsedDisplayNames.duplicateSummaries.length,
+      configuredMerges.summaries.length,
       hadExistingPeople,
       currentEntityIds
     ),
@@ -1070,6 +1124,7 @@ async function main() {
     mergedPeopleCount: mergedPeople.length,
     duplicateKeysCollapsed,
     duplicateDisplayNamesCollapsed: collapsedDisplayNames.duplicateSummaries.length,
+    configuredPersonMerges: configuredMerges.summaries,
     matchedDonors: donors.filter((donor) => donor.validation?.status === 'matched').length,
     ambiguousDonors: donors.filter((donor) => donor.validation?.status === 'ambiguous').length,
     missingDonors: donors.filter((donor) => donor.validation?.status === 'missing').length,
@@ -1099,7 +1154,9 @@ async function main() {
   console.log(`Wrote ${args.summary}`);
 }
 
-main().catch((error) => {
-  console.error(error instanceof Error ? error.message : error);
-  process.exit(1);
-});
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  main().catch((error) => {
+    console.error(error instanceof Error ? error.message : error);
+    process.exit(1);
+  });
+}

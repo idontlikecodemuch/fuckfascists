@@ -1075,7 +1075,7 @@ UPC scanner is still blurry when close up. Thought this was fixed?
 **Screenshot:** `store-feedback/2026-05-29T22-37-26-815Z/screenshots/AJXKZ5rgsnHv2A_91z-63Sk-1.jpg`
 **Screen:** Track / arena characters
 
-**Status:** RESOLVED IN CURRENT WORKTREE — `TrackContext.isDefeated()` now uses today's avoid actions plus the short post-tap `recentlyDefeated` feedback state only. The old weekly-count fallback was removed, and `todayKey` refreshes on app active / minute tick so a new local day resets figures without requiring app restart. Added `features/Platforms/__tests__/trackHelpers.test.ts`.
+**Status:** RESOLVED / SUPERSEDED BY #198-#199 — the old weekly-count fallback remains removed and local-day refresh still clears visual defeats. The later interaction decision fully separates the systems: recorded avoids no longer drive defeated sprites at all; only a successful 50% arena-hit roll registers a visual defeat.
 
 **Feedback:**
 Characters are supposed to reset back to undefeated each day. Only if that day is avoided.
@@ -1169,3 +1169,275 @@ We should improve the past screen card moment. With dates and some kind of organ
 
 **Feedback:**
 Part of Pepsi family
+
+---
+
+# Round 16 — 2026-06-18
+
+Imported via `npm run feedback:apple -- --since=2026-06-15 --download-screenshots`.
+
+Local import directory: `tools/review/store-feedback/2026-06-18T22-11-21-342Z/` (gitignored; contains tester metadata and raw attachments).
+
+The import returned 4 new Build 6 records.
+
+---
+
+## 190. App Shell — Thursday Alert Should Push Page Content Down
+**Screenshot:** `store-feedback/2026-06-18T22-11-21-342Z/screenshots/AJysJZMFLmWaU2YY-MYwBJk-1.jpg`
+**Screen:** Track setup / scorecard incoming banner
+
+**Status:** RESOLVED — `NudgeBanner` now reports its rendered height and `AppShell` reserves that top padding above the active tab. Removed the old Map-only `topContentOffset` path so Map, Track, Scan, Scorecard, and Info all get the same push-down behavior when the Thursday banner is visible.
+
+**Feedback:**
+I think the alert should probably push down all the pages now that we are going to random ones
+
+---
+
+## 191. Scan — First-Frame Background Width Regression Still Present
+**Screenshot:** `store-feedback/2026-06-18T22-11-21-342Z/screenshots/AKcAJvZvBw81pNv0ARkDPgk-1.jpg`
+**Screen:** Scan standby panel
+
+**Status:** RESOLVED — `ScanStandbyPanel` now renders inside a non-collapsible full-width root and pins the nested panel/content/CTA layers to `width: '100%'`, preventing the first-frame intrinsic-width paint before the layout settles.
+
+**Feedback:**
+The growing background bug is still not fixed
+
+---
+
+## 192. Track — AVOID Button Column Still Grows / Overpaints
+**Screenshot:** `store-feedback/2026-06-18T22-11-21-342Z/screenshots/AI9UgOv4kdtXDa4hx9agpEA-1.jpg`
+**Screen:** Track list / expanded and collapsed rows
+
+**Status:** RESOLVED — `PlatformRow` now wraps `AvoidButton` in a fixed-width, fixed-height, clipped action column (`TRACK_BUTTON_WIDTH` x `TRACK_ROW_SPRITE_SIZE`) so row focus fills and bevels cannot overpaint beyond the intended button slice.
+
+**Feedback:**
+Growing avoid button bug still not fixed. We've fixed this a bunch find the regression
+
+---
+
+## 193. Scorecard — Share Background Needs Vertical Centering
+**Screenshot:** `store-feedback/2026-06-18T22-11-21-342Z/screenshots/AAM2DCNdgAvh_KWXjULfL1c-1.jpg`
+**Screen:** Scorecard full-screen presentation / screenshot-share background
+
+**Status:** RESOLVED — iOS `CardPresentation` keeps the live secure overlay unchanged, but applies a small downward optical-centering offset to the hidden screenshot backing image used by the screenshot/share trigger.
+
+**Feedback:**
+This needs to be vertically centered to properly share on social (the screenshot bg trigger)
+
+---
+
+# Round 17 — 2026-07-01
+
+Imported via `npm run feedback:apple -- --since=2026-06-18 --download-screenshots`.
+
+Local import directory: `tools/review/store-feedback/2026-07-01T12-48-27-984Z/` (gitignored; contains tester metadata and raw attachments).
+
+The import returned 6 records: 2 new Build 7 records plus 4 Build 6 records already catalogued as #190-#193.
+
+Duplicate Build 6 records in this import:
+- `AJysJZMFLmWaU2YY-MYwBJk` — duplicate of #190, already resolved by app-wide banner padding.
+- `AKcAJvZvBw81pNv0ARkDPgk` — duplicate of #191, already resolved by full-width Scan standby layout.
+- `AI9UgOv4kdtXDa4hx9agpEA` — duplicate of #192, already resolved by fixed/clipped Track action column.
+- `AAM2DCNdgAvh_KWXjULfL1c` — duplicate of #193, already resolved by iOS share backing-image centering.
+
+---
+
+## 194. Scorecard — Single-Person Card Captured Without Image Assets
+**Screenshot:** `store-feedback/2026-07-01T12-48-27-984Z/screenshots/ACHHf9SivaAXdpxWxN5Xf-E-1.jpg`
+**Screen:** Scorecard share/presentation image
+**Build:** 7
+
+**Status:** RESOLVED IN CURRENT WORKTREE — `useCardCapture` now preloads the exact scorecard image sources before `react-native-view-shot` captures: background, logo, frame, scanlines, beam, active power meter, and the visible defeated person sprites. It then waits two paint frames before capture. This addresses the observed failure mode where text rendered but native image assets (brand logo + sprite) were blank in the saved card.
+
+**Feedback:**
+Single person scorecard is malformed. Where is the sprite?! Where is the branding?! It looks like all the pixel assets aren’t loading
+
+---
+
+## 195. Track — Checked Day Circles Should Be Removable
+**Screenshot:** `store-feedback/2026-07-01T12-48-27-984Z/screenshots/ACEzNcp8OosjpnHlnu08uIo-1.jpg`
+**Screen:** Track expanded platform row / day circles
+**Build:** 7
+
+**Status:** RESOLVED IN CURRENT WORKTREE — checked past/today day tiles are now tappable. Tapping a checked day removes that platform/date avoid event from local storage and updates the weekly row/scorecard totals; future days remain disabled. The visible UI stays the same, and accessibility copy now says checked days can be tapped to remove.
+
+**Feedback:**
+You can’t uncheck a box - not. A locker but we should allow the user to uncheck if they mistakenly check. Doesn’t need to affect the sprite
+
+---
+
+# Round 18 — 2026-07-03
+
+Imported via `npm run feedback:apple -- --since=2026-07-01 --download-screenshots`.
+
+Local import directory: `tools/review/store-feedback/2026-07-03T15-11-30-616Z/` (gitignored; contains tester metadata and raw attachments).
+
+The import returned 6 new Build 7 records.
+
+---
+
+## 196. Info — Accordion Background Grows During Expansion
+**Screenshot:** `store-feedback/2026-07-03T15-11-30-616Z/screenshots/APIYydFxwvQQTU9G4pIDpWM-1.jpg`
+**Screen:** Info / FAQ accordion
+**Build:** 7
+
+**Status:** RESOLVED IN CURRENT WORKTREE — `FaqItem` now uses a non-collapsible full-width outer shell plus clipped full-width wrapper/question/answer layers. Sparkles remain outside the clipped panel shell, while the accordion background no longer paints at intrinsic width before expanding.
+
+**Feedback:**
+The background growing box at load issue from scan and track is present on the info boxes as well when you expand
+
+---
+
+## 197. Visual System — Glowing Lines Should Flicker
+**Screenshot:** `store-feedback/2026-07-03T15-11-30-616Z/screenshots/AJykZJFESXr32tmYHBKkBy8-1.jpg`
+**Screen:** Map / bottom tab chrome
+**Build:** 7
+
+**Status:** NEW DESIGN REQUEST — inventory glowing rule/beam usages before implementation so the flicker treatment is consistent and does not add noise to text-heavy panels.
+
+**Feedback:**
+Let’s make all the glowing lines (example the yellow line above menu) flicker randomly but noticeably. Let’s identify all of them in the app first
+
+---
+
+## 198. Track — Current-Day Avoid Should Sometimes Recover
+**Screenshot:** `store-feedback/2026-07-03T15-11-30-616Z/screenshots/AKi5-s3NdMOC5M8PIzb4GD4-1.jpg`
+**Screen:** Track / arena + expanded platform row
+**Build:** 7
+
+**Status:** CORE MECHANIC RESOLVED IN CURRENT WORKTREE — avoid actions still record the selected platform/date exactly once, while every queued arena hit now gets an independent 50% defeat roll. Defeated figures are visual local-day/session state and are no longer inferred from avoid history. The larger `RECOVERED` overlay, `FCK again` tooltip, and follow-up money shower remain visual polish follow-ups.
+
+**Feedback:**
+When tapping a past day they get hit but come back. Tapping the current day keeps them “hit”
+
+But I kind of like the dynamic - let’s make half the time it doesn’t fully take them down. And shows a “RECOVERED” big across the screen. With a “FCK again” tool tip over. Again 50% chance of getting “hit mode” when. You do get a hit after this mode you get a money shower.
+
+Research and write out the sample dynamics before implementing
+
+---
+
+## 199. Track — Non-Avoid Taps Should Momentarily Hit Then Recover
+**Screenshot:** `store-feedback/2026-07-03T15-11-30-616Z/screenshots/AEGkLWlUWW_Bfg-nQFdaIG0-1.jpg`
+**Screen:** Track / arena + expanded platform row
+**Build:** 7
+
+**Status:** CORE MECHANIC RESOLVED IN CURRENT WORKTREE — pair with #198. Focused and grid sprite taps now queue the same 50% visual defeat roll and hit FX without calling any avoid API. Recorded avoids and scorecard counts cannot be changed by direct arena taps.
+
+**Feedback:**
+Similarly to the previous - tapping them when not avoiding should momentarily put them in “hit” mode and they come back - not recording any avoids or the “recovered” mechanic but still satisfying
+
+---
+
+## 200. Map — Homewood Suites / Westin Not Dropping Pins
+**Screenshot:** `store-feedback/2026-07-03T15-11-30-616Z/screenshots/AAtjvit-pZ3NofoC3bQbfb0-1.jpg`
+**Screen:** Map / Apple Maps hotel POIs
+**Build:** 7
+
+**Status:** RESOLVED IN CURRENT WORKTREE — Homewood Suites by Hilton and Westin both exact-match bundled aliases. iOS user taps now keep the strict dynamic radius first, then run one broader 45m MapKit POI pass only if the first pass finds no curated match. This gives large hotel/property labels a second chance without widening every tap or enabling fuzzy FEC fallback.
+
+**Feedback:**
+Bug: home wood inn and suites and the Westin aren’t dropping any pins at all. Multiple taps tried was able to drop a grey pin before and after
+
+---
+
+## 201. Map — Sprite Tap Should Not Dismiss Open Business Card
+**Screenshot:** `store-feedback/2026-07-03T15-11-30-616Z/screenshots/AHFPVPd8DN52LTKX-YfyZUU-1.jpg`
+**Screen:** Map / business card with entity sprite
+**Build:** 7
+
+**Status:** PARTIAL RESOLVED IN CURRENT WORKTREE — the bug is fixed: the business-card sprite is now its own no-op `Pressable`, so tapping it no longer falls through to the dim backdrop and dismisses the card. The arena-style tap-to-hit dynamic remains a design follow-up paired with #198/#199.
+
+**Feedback:**
+When a card comes up tapping the sprite should not dismiss the card. Also bring the arena tap to hit brt bring back dynamic here
+
+---
+
+# Round 19 — 2026-08-15
+
+Imported via `npm run feedback:apple -- --since=2026-07-03 --no-apple-crashes`.
+
+Local metadata import directory: `tools/review/store-feedback/2026-08-15T15-28-34-109Z/` (gitignored; contains tester metadata and attachment URLs).
+
+The import returned 2 new records. An attachment-enabled pull downloaded the scorecard screenshot to `tools/review/store-feedback/2026-08-15T15-28-15-349Z/`, but Apple's attachment server returned HTTP 500 for the cosmetics screenshot.
+
+---
+
+## 202. Scan/Data — Audit Cosmetics Company UPC Coverage
+**Screenshot:** Unavailable from Apple during this pull (HTTP 500)
+**Screen:** Scan / product data
+**Build:** 7
+
+**Status:** RESEARCH BACKLOG — the note does not identify a particular barcode, company, or incorrect result. Scope this as a coverage report against the bundled product and producer-research data, followed by a small fixture set of representative cosmetics UPCs. Do not add broad producer aliases without evidence because that can create false parent-company matches.
+
+**Feedback:**
+Look into a deep dive of cosmetics companies for the UPC
+
+---
+
+## 203. Scorecard — Reported Missing Week Was Checked Before Its Scheduled Drop
+**Screenshot:** `store-feedback/2026-08-15T15-28-15-349Z/screenshots/AH3F3I4rhJ5aZ7TcXbrAkoo-1.jpg`
+**Screen:** Past scorecards
+**Build:** 8
+
+**Status:** UX CLARIFIED IN CURRENT WORKTREE; VERIFY AFTER DROP — feedback was submitted at 10:26 AM CDT on Saturday, August 15. The deterministic Build 8 schedule placed that week's drop at 2:00 PM CDT, so the screenshot correctly still showed `Week of August 1, 2026` as the newest archived card. Avoids recorded around 6 PM Friday belong to `Week of August 8, 2026` and occurred before its drop.
+
+Current code refreshes scorecard notification scheduling after an avoid write, preserves the just-completed week until capture, and routes an app launch within 48 hours after the drop to an uncaptured scorecard. No regression is established by this report. The confusing Saturday bridge now has an explicit in-app state: when the active slate has rolled to the new week but the completed week has a real card pending, Live Preview shows `LAST WEEK'S SCORECARD / DROPPING SOON` plus `NEW WEEK` above the fresh date range. It does not reveal the secret drop time and cannot appear for an empty completed week, before rollover, or after the drop. Verify that `Week of August 8, 2026` appears after 2:00 PM CDT; reopen as a defect only if it remains absent after launching the app during the pending-drop window.
+
+**Feedback:**
+Somehow the most recent week didn’t fire. I had avoids but didn’t get presented a card or see it in the history. I did it later (6ish) on Friday. What could cause it? Possible it was being presented as I was adding avoids? When was it presented this week? How can we fix this?
+
+---
+
+# Round 20 — 2026-08-26
+
+Imported via `npm run feedback:apple -- --since=2026-08-15 --download-screenshots`.
+
+Local import directory: `tools/review/store-feedback/2026-08-27T02-28-46-803Z/` (gitignored; contains tester metadata and raw attachments).
+
+The import returned 3 records: 2 new Build 8 notes plus the already-catalogued #203 duplicate.
+
+---
+
+## 204. Scorecard — Historical Single-Person Card Has No Sprite
+**Screenshot:** `store-feedback/2026-08-27T02-28-46-803Z/screenshots/AKY_Ge-rMByLyupQVSQirYQ-1.jpg`
+**Screen:** Past scorecard for June 13–19
+**Build:** 8
+
+**Status:** ALREADY RESOLVED FOR NEW CAPTURES; HISTORICAL JPG CANNOT BE REBUILT — the screenshot is the same missing-native-image failure catalogued as #194. `useCardCapture` now preloads the logo, frame, beam, scanlines, power meter, and visible defeated sprites before capture, then waits two paint frames. The June card was captured before that fix and is a saved derivative; its raw avoid events were intentionally purged after capture, so the old image cannot be regenerated without inventing data. No new capture regression is established.
+
+**Feedback:**
+Sick isn’t showing up on the single avoid style
+
+---
+
+## 205. Scorecard — Historical Single-Person Card Missing Multiple Art Layers
+**Screenshot:** `store-feedback/2026-08-27T02-28-46-803Z/screenshots/ABKqqjjDu20V8RC5hopZCtE-1.jpg`
+**Screen:** Past scorecard for June 13–19
+**Build:** 8
+
+**Status:** DUPLICATE OF #194/#204 — the screenshot is the same already-saved June card and shows the same pre-fix capture missing the sprite, brand logo, frame, and power meter. Current capture preloading covers all of those sources. Verify the next newly generated single-person scorecard on-device; reopen only if a new post-fix card drops image layers.
+
+**Feedback:**
+And actually a LOT of stuff isn’t showing up
+
+---
+
+# Round 21 — 2026-08-31
+
+Imported via `npm run feedback:apple -- --since=2026-08-27 --download-screenshots`.
+
+Local import directory: `tools/review/store-feedback/2026-08-31T14-22-12-325Z/` (gitignored; contains tester metadata and raw attachments).
+
+The import returned 3 records: 1 new Build 8 note plus the already-catalogued #204–#205 duplicates.
+
+---
+
+## 206. Beta — Public Install Inherited Beta Mode
+**Screenshot:** `store-feedback/2026-08-31T14-22-12-325Z/screenshots/AK5cw45zmEtw3OxoFyDf__M-1.jpg`
+**Screen:** Info with BETA/SHOTS/RESET/BUG overlay
+**Build:** 8
+
+**Status:** RESOLVED IN CURRENT WORKTREE — beta state no longer reads the legacy migratable `ff_beta_mode` Keychain item. It uses a versioned `ff_beta_mode_device_v2` item with `WHEN_UNLOCKED_THIS_DEVICE_ONLY`, preventing backup/device migration. Activation now requires seven version-label taps within three seconds plus an explicit `Enable beta tools?` confirmation. Upgrading clears/ignores the old state, so existing accidental beta installs return to production mode by default.
+
+**Feedback:**
+A friend downloaded the app and it started in beta mode

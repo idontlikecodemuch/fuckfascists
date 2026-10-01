@@ -51,10 +51,21 @@ function shouldUseBundledSummary(
   return !looksSuspiciouslyZeroed;
 }
 
-function shouldUseCachedSummary(cached: LocalCache): boolean {
+function shouldUseCachedSummary(
+  cached: LocalCache,
+  activeSummary?: DonationSummary,
+): boolean {
   if (isCacheExpired(cached.fetchedAt)) return false;
 
   const donationSummary = cached.donationSummary;
+  // Git/bundled data is curated and can be refreshed more recently than a
+  // lookup cache entry. Never let the cache shadow a newer active summary.
+  if (activeSummary) {
+    if (!donationSummary) return false;
+    const activeUpdatedAt = Date.parse(activeSummary.lastUpdated) || 0;
+    const cachedUpdatedAt = Date.parse(donationSummary.lastUpdated) || 0;
+    if (activeUpdatedAt > cachedUpdatedAt) return false;
+  }
   if (!donationSummary) return true;
 
   const rawItems = Array.isArray(donationSummary.raw) ? donationSummary.raw : [];
@@ -104,15 +115,15 @@ export async function matchEntity(
 
   // Step 1: Cache check
   const cached = await deps.getCache(cacheKey);
-  if (cached && shouldUseCachedSummary(cached)) {
-    const entity =
-      deps.entities.find((e) => e.fecCommitteeId === cached.fecCommitteeId) ??
-      null;
+  const cachedEntity = cached
+    ? deps.entities.find((e) => e.fecCommitteeId === cached.fecCommitteeId) ?? null
+    : null;
+  if (cached && shouldUseCachedSummary(cached, cachedEntity?.donationSummary)) {
     return {
       matched: true,
       lookupStatus: 'matched',
-      entity,
-      committeeName: entity?.canonicalName ?? cached.donationSummary?.committeeName ?? null,
+      entity: cachedEntity,
+      committeeName: cachedEntity?.canonicalName ?? cached.donationSummary?.committeeName ?? null,
       matchedAlias: rawInput,
       confidence: cached.confidence,
       fecCommitteeId: cached.fecCommitteeId,
@@ -144,7 +155,7 @@ export async function matchEntity(
   // Step 4: Fuzzy FEC committee search
   if (!allowFecFallback) return { matched: false, lookupStatus: 'no_match', normalizedInput };
 
-  // fetchOrgs can 403 in anonymous mode — treat as no candidates rather than a hard error.
+  // The public FEC fallback can 403/rate-limit — report lookup unavailable, not a crash.
   // Pass `rawInput` (not `normalizedInput`) so FECClient can apply its own
   // FEC-flavored normalization for the `q=` value — notably keeping ampersands
   // and hyphens as token separators instead of collapsing them. See fecQuery.ts.
@@ -164,17 +175,23 @@ export async function matchEntity(
 
   // Use bundled donationSummary when present and fresh — skips live API call.
   let donationSummary: DonationSummary | null = null;
+  let cacheSummary = true;
   if (entity && shouldUseBundledSummary(entity.donationSummary, entity.lastVerifiedDate)) {
     donationSummary = entity.donationSummary;
   } else {
     try {
-      donationSummary = await deps.fetchOrgSummary(best.org.orgid);
+      const liveSummary = await deps.fetchOrgSummary(best.org.orgid);
+      donationSummary = liveSummary ?? entity?.donationSummary ?? null;
+      cacheSummary = liveSummary !== null;
     } catch {
-      // API unavailable — match still succeeds; card shows without donation data
+      // Durable fallback: keep showing curated stale data rather than going
+      // blank when FEC is unavailable. Do not cache it as a fresh live result.
+      donationSummary = entity?.donationSummary ?? null;
+      cacheSummary = false;
     }
   }
 
-  if (donationSummary) {
+  if (donationSummary && cacheSummary) {
     await deps.setCache({
       key: cacheKey,
       fecCommitteeId: best.org.orgid,
@@ -242,17 +259,23 @@ async function resolveEntityMatch(
   const confidence = 1.0;
 
   let donationSummary: DonationSummary | null = null;
+  let cacheSummary = true;
   if (shouldUseBundledSummary(entity.donationSummary, entity.lastVerifiedDate)) {
     donationSummary = entity.donationSummary;
   } else {
     try {
-      donationSummary = await deps.fetchOrgSummary(orgId);
+      const liveSummary = await deps.fetchOrgSummary(orgId);
+      donationSummary = liveSummary ?? entity.donationSummary ?? null;
+      cacheSummary = liveSummary !== null;
     } catch {
-      // API unavailable — match still succeeds; card shows without donation data
+      // Keep the stale curated record available offline/FEC-down, but do not
+      // stamp it into the lookup cache with a fresh fetchedAt timestamp.
+      donationSummary = entity.donationSummary ?? null;
+      cacheSummary = false;
     }
   }
 
-  if (donationSummary) {
+  if (donationSummary && cacheSummary) {
     await deps.setCache({
       key: cacheKey,
       fecCommitteeId: orgId,
