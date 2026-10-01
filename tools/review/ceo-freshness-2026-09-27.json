@@ -5,7 +5,7 @@
   "method": "Web research per entity. Sonnet agents for PAC-funded batches; Haiku agents for the rest, with every Haiku stale/uncertain result re-verified by a Sonnet agent. Applied only status=stale with a clean name; uncertain cases left unchanged.",
   "changed": 183,
   "unresolved": 41,
-  "upcomingSuccessions": 18,
+  "upcomingSuccessions": 19,
   "peopleRolesToReview": 3,
   "held": 1
  },
@@ -2545,6 +2545,11 @@
    "id": "sprouts-farmers-market",
    "dataCeo": "Jack Sinclair",
    "upcoming": "Nick Konat to become CEO Jan 4, 2027; Sinclair to Executive Chairman"
+  },
+  {
+   "id": "general-mills",
+   "dataCeo": "Jeff Harmening",
+   "upcoming": "Dana McNabb becomes CEO 2027-01-01; Harmening to executive chair (announced 2026-09-30, https://www.cnbc.com/2026/09/30/general-mills-dana-mcnabb-ceo-succeeding-harmening.html)"
   }
  ],
  "peopleRolesToReview": [

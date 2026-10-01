@@ -2367,7 +2367,9 @@
     "id": "sal-mancuso",
     "name": "Sal Mancuso",
     "tier": "standard",
-    "likeness": "Gray and brown hair, tanned skin, medium build, oval face, clean-shaven",
+    "likeness": "short dark brown hair swept back, gray at the sides, receding hairline, broad squarish face, heavy dark brows, clean-shaven",
+    "skinTone": "light olive with a warm undertone",
+    "bodyType": "average to athletic build, broad shoulders",
     "variants": {
       "A": {
         "outfit": "Dark gray suit, white dress shirt, Marlboro-red tie, black dress shoes, visible company logo on chest"
@@ -2378,7 +2380,9 @@
     "id": "jacek-olczak",
     "name": "Jacek Olczak",
     "tier": "standard",
-    "likeness": "Dark hair with gray, light tan skin, medium build, strong jaw, clean-shaven",
+    "likeness": "thick silver-white hair side-parted and swept back over the ears, short neatly trimmed white beard and mustache, dark graying brows, oval face, no glasses",
+    "skinTone": "fair with a cool pink undertone",
+    "bodyType": "average to solid build, medium frame, shoulders of normal width",
     "variants": {
       "A": {
         "outfit": "Navy Philip Morris suit, white shirt, burgundy tie, black dress shoes, visible company logo on chest"
@@ -2389,7 +2393,9 @@
     "id": "joaquin-duato",
     "name": "Joaquin Duato",
     "tier": "standard",
-    "likeness": "Dark hair graying at temples, medium olive skin, medium build, square jaw, clean-shaven, alert expression",
+    "likeness": "thick short silver-gray hair brushed up and to the side, high forehead, oval face with narrow chin, crinkly squinting eyes, clean-shaven",
+    "skinTone": "light with a neutral to warm undertone",
+    "bodyType": "slim build, narrow-to-medium shoulders",
     "variants": {
       "A": {
         "outfit": "Charcoal suit, crisp white shirt, J&J-red tie, polished black shoes, visible company logo on chest"
@@ -2400,7 +2406,9 @@
     "id": "ramon-laguarta",
     "name": "Ramon Laguarta",
     "tier": "standard",
-    "likeness": "Dark hair graying at sides, olive skin, medium build, angular face, clean-shaven",
+    "likeness": "short silver-gray hair swept up and to the side, light gray-blue eyes, long face, prominent straight nose, clean-shaven",
+    "skinTone": "light with a warm, slightly pink undertone",
+    "bodyType": "lean build, medium shoulders",
     "variants": {
       "A": {
         "outfit": "Dark blue PepsiCo executive blazer, white button-down, navy tie, dress shoes, visible company logo on chest"
@@ -2411,7 +2419,9 @@
     "id": "henrique-braun",
     "name": "Henrique Braun",
     "tier": "standard",
-    "likeness": "Dark brown hair, warm olive skin, medium build, rounded face, clean-shaven, approachable expression",
+    "likeness": "dark brown hair with gray streaks, side-parted and swept back with volume, thick dark brows, long face with strong chin, clean-shaven",
+    "skinTone": "light with a warm golden undertone",
+    "bodyType": "average to lean build, medium-broad shoulders",
     "variants": {
       "A": {
         "outfit": "Coca-Cola red executive blazer, white dress shirt, red and gold tie, polished shoes, visible company logo on chest"
@@ -2422,7 +2432,9 @@
     "id": "steve-cahillane",
     "name": "Steve Cahillane",
     "tier": "standard",
-    "likeness": "Light brown hair graying, fair skin, medium build, rectangular face, clean-shaven, authoritative bearing",
+    "likeness": "short sandy-blond hair fading to silver, side-parted and swept over, light eyes, squarish face with full cheeks, clean-shaven",
+    "skinTone": "fair with a cool pink undertone, slightly flushed cheeks",
+    "bodyType": "average to solid build, broad shoulders",
     "variants": {
       "A": {
         "outfit": "Kraft Heinz burgundy blazer, white button-down, dark tie, dress shoes, visible company logo on chest"
@@ -2433,7 +2445,9 @@
     "id": "dirk-van-de-put",
     "name": "Dirk Van de Put",
     "tier": "standard",
-    "likeness": "Light brown to blond hair, fair skin, medium build, angular face, clean-shaven, focused expression",
+    "likeness": "completely bald shiny head, light blue-gray eyes, broad rounded face with full cheeks, crinkled eyes, clean-shaven",
+    "skinTone": "fair with a warm pink undertone",
+    "bodyType": "stocky build, broad solid shoulders, thick neck",
     "variants": {
       "A": {
         "outfit": "Mondelez navy executive suit, white dress shirt, burgundy and gold tie, polished shoes, visible company logo on chest"
@@ -2444,7 +2458,9 @@
     "id": "jeff-harmening",
     "name": "Jeff Harmening",
     "tier": "standard",
-    "likeness": "Dark hair with gray, fair skin, medium build, broad face, clean-shaven, determined expression",
+    "likeness": "shaved bald head, short trimmed white beard and mustache, translucent gray rectangular glasses, long face",
+    "skinTone": "fair with a cool pink undertone",
+    "bodyType": "lean build, medium shoulders",
     "variants": {
       "A": {
         "outfit": "General Mills gold and blue blazer, white button-down, navy tie, dress shoes, visible company logo on chest"
@@ -2455,7 +2471,9 @@
     "id": "mick-beekhuizen",
     "name": "Mick Beekhuizen",
     "tier": "standard",
-    "likeness": "Light brown hair graying, fair skin, medium build, rounded face, clean-shaven, approachable expression",
+    "likeness": "short wavy dark brown hair with slight graying, mildly receding, long narrow face, prominent nose, light eyes, clean-shaven",
+    "skinTone": "fair with a neutral to warm undertone",
+    "bodyType": "lean build, long neck, medium shoulders",
     "variants": {
       "A": {
         "outfit": "Campbell's red blazer, white dress shirt, burgundy tie, polished shoes, visible company logo on chest"
@@ -2466,7 +2484,9 @@
     "id": "shailesh-jejurikar",
     "name": "Shailesh Jejurikar",
     "tier": "standard",
-    "likeness": "Dark hair, warm brown skin, medium build, rounded face, clean-shaven, warm expression",
+    "likeness": "short thick black hair with light graying, side-parted and swept back, long face with high cheekbones, dark eyes and brows, clean-shaven",
+    "skinTone": "light brown with a warm golden undertone",
+    "bodyType": "slim build, narrow-to-medium shoulders",
     "variants": {
       "A": {
         "outfit": "Procter & Gamble blue executive suit, white button-down, navy and gold tie, dress shoes, visible company logo on chest"
@@ -2477,7 +2497,9 @@
     "id": "kirk-tanner",
     "name": "Kirk Tanner",
     "tier": "standard",
-    "likeness": "Dark hair graying, fair skin, medium build, broad face, clean-shaven, commanding expression, athletic bearing",
+    "likeness": "short medium-brown hair side-parted and combed over, light blue eyes, long rectangular face, prominent rounded chin, clean-shaven",
+    "skinTone": "fair with a warm, slightly ruddy undertone",
+    "bodyType": "athletic build, medium-broad shoulders",
     "variants": {
       "A": {
         "outfit": "Hershey brown blazer, white button-down, brown and gold tie, dress shoes, visible company logo on chest"
@@ -2488,7 +2510,9 @@
     "id": "tim-cofer",
     "name": "Tim Cofer",
     "tier": "standard",
-    "likeness": "Light brown hair, fair skin, medium build, rectangular face, clean-shaven, professional expression",
+    "likeness": "short dark brown-black hair combed up and back, gray at the temples, straight dark brows, dark brown eyes, oval face with defined cheekbones, clean-shaven",
+    "skinTone": "light with a warm undertone",
+    "bodyType": "lean build, medium shoulders",
     "variants": {
       "A": {
         "outfit": "Keurig Dr Pepper burgundy and gray blazer, white dress shirt, burgundy tie, polished shoes, visible company logo on chest"
@@ -2499,7 +2523,9 @@
     "id": "rafael-oliveira",
     "name": "Rafael Oliveira",
     "tier": "standard",
-    "likeness": "Dark brown hair, warm olive skin, medium build, rounded face, clean-shaven, approachable smile",
+    "likeness": "thick dark brown hair, medium-short and side-swept with a loose fringe, dark brows, long oval face with narrow chin, faint stubble shadow",
+    "skinTone": "light olive with a warm undertone",
+    "bodyType": "average to lean build, medium shoulders",
     "variants": {
       "A": {
         "outfit": "Heineken green executive blazer, white button-down, emerald tie, dress shoes, visible company logo on chest"
@@ -2510,7 +2536,9 @@
     "id": "nobuhiro-torii",
     "name": "Nobuhiro Torii",
     "tier": "standard",
-    "likeness": "Dark hair with gray, tan skin, medium build, oval face, clean-shaven, refined expression",
+    "likeness": "salt-and-pepper hair swept up and back with textured volume, dark eyes, straight dark brows, oval face, serious closed-mouth expression, clean-shaven",
+    "skinTone": "light with a neutral to warm undertone",
+    "bodyType": "slim build, narrow shoulders",
     "variants": {
       "A": {
         "outfit": "Suntory navy and gold executive suit, white dress shirt, burgundy tie, polished shoes, visible company logo on chest"
@@ -2521,7 +2549,9 @@
     "id": "dave-lewis",
     "name": "Dave Lewis",
     "tier": "standard",
-    "likeness": "Gray and white hair, fair skin, medium to stocky build, round face, clean-shaven, friendly expression",
+    "likeness": "very short close-cropped gray hair, deeply receding and thin on top, light blue eyes, broad face with wide jaw, crinkled eyes, clean-shaven",
+    "skinTone": "fair with a cool pink undertone",
+    "bodyType": "fit average build, medium-broad shoulders",
     "variants": {
       "A": {
         "outfit": "Diageo black and gold blazer, white button-down, black and gold tie, dress shoes, visible company logo on chest"
@@ -2532,7 +2562,9 @@
     "id": "alexandre-ricard",
     "name": "Alexandre Ricard",
     "tier": "standard",
-    "likeness": "Dark hair with gray, fair skin, medium build, angular face, clean-shaven, distinguished expression",
+    "likeness": "short cropped dark brown hair textured up on top, receding at the temples, dark brows, long rectangular face with prominent chin, clean-shaven",
+    "skinTone": "fair with a neutral to pink undertone",
+    "bodyType": "lean build, long-limbed, medium shoulders",
     "variants": {
       "A": {
         "outfit": "Pernod Ricard navy executive blazer, white dress shirt, gold and burgundy tie, polished shoes, visible company logo on chest"
@@ -2543,7 +2575,9 @@
     "id": "ryals-mcmullian",
     "name": "Ryals McMullian",
     "tier": "standard",
-    "likeness": "Brown hair with gray, fair skin, medium build, broad face, clean-shaven, professional expression",
+    "likeness": "short salt-and-pepper hair brushed back, high receding hairline, dark eyes, broad face with full cheeks, clean-shaven",
+    "skinTone": "light with a warm undertone",
+    "bodyType": "average build, medium shoulders",
     "variants": {
       "A": {
         "outfit": "Flowers Foods beige and tan blazer, white button-down, tan tie, dress shoes, visible company logo on chest"
@@ -2554,7 +2588,9 @@
     "id": "brian-mcnamara",
     "name": "Brian McNamara",
     "tier": "standard",
-    "likeness": "Light brown hair, fair skin, medium to athletic build, rectangular face, clean-shaven, executive bearing",
+    "likeness": "short gray hair combed straight back, dark rectangular glasses, broad face with full cheeks, dark graying brows, clean-shaven",
+    "skinTone": "light with a warm undertone",
+    "bodyType": "average build, medium shoulders",
     "variants": {
       "A": {
         "outfit": "Haleon navy and white blazer, white dress shirt, blue tie, polished shoes, visible company logo on chest"
@@ -2565,7 +2601,9 @@
     "id": "sean-connolly",
     "name": "Sean Connolly",
     "tier": "standard",
-    "likeness": "Dark hair graying at temples, fair skin, medium build, strong jaw, clean-shaven, determined expression",
+    "likeness": "short spiky white-blond hair pushed up in front, thick black rectangular glasses, light blue eyes, oval face with rounded chin, clean-shaven",
+    "skinTone": "fair with a pink undertone",
+    "bodyType": "average build, medium shoulders",
     "variants": {
       "A": {
         "outfit": "Conagra burgundy and gray blazer, white button-down, burgundy tie, dress shoes, visible company logo on chest"
@@ -2576,7 +2614,9 @@
     "id": "john-ghingo",
     "name": "John Ghingo",
     "tier": "standard",
-    "likeness": "Dark hair, fair tan skin, medium build, oval face, clean-shaven, approachable expression",
+    "likeness": "short textured salt-and-pepper hair brushed up and back, gray at the temples, heavy dark brows, long face, prominent straight nose, clean-shaven with light shadow",
+    "skinTone": "light with a warm olive undertone",
+    "bodyType": "lean build, medium shoulders",
     "variants": {
       "A": {
         "outfit": "Hormel Foods red and gold blazer, white dress shirt, red tie, polished shoes, visible company logo on chest"
@@ -2587,7 +2627,9 @@
     "id": "shane-smith",
     "name": "Shane Smith",
     "tier": "standard",
-    "likeness": "Brown hair graying, fair skin, medium to stocky build, round face, clean-shaven, friendly expression",
+    "likeness": "medium-short dark brown hair slicked back, graying at the sides, full trimmed salt-and-pepper beard and mustache graying at the chin, dark brows, broad face with high cheekbones",
+    "skinTone": "light with a warm undertone",
+    "bodyType": "solid build, broad shoulders",
     "variants": {
       "A": {
         "outfit": "Smithfield Foods maroon and tan blazer, white button-down, maroon tie, dress shoes, visible company logo on chest"
@@ -2598,7 +2640,9 @@
     "id": "michel-doukeris",
     "name": "Michel Doukeris",
     "tier": "standard",
-    "likeness": "Dark brown hair with gray, warm olive skin, medium build, angular face, clean-shaven, confident expression",
+    "likeness": "short salt-and-pepper hair combed to the side, mostly gray on top, dark straight brows, broad square face with wide jaw, intense level gaze, clean-shaven",
+    "skinTone": "light with a warm undertone",
+    "bodyType": "solid stocky build, broad shoulders, thick neck",
     "variants": {
       "A": {
         "outfit": "AB InBev red and gold blazer, white dress shirt, red and gold tie, polished shoes, visible company logo on chest"
@@ -2609,7 +2653,9 @@
     "id": "rahul-goyal",
     "name": "Rahul Goyal",
     "tier": "standard",
-    "likeness": "Dark hair, warm brown skin, medium build, rounded face, clean-shaven, approachable expression",
+    "likeness": "short black hair with light graying, side-parted, thin gunmetal rectangular glasses, rounded face with full cheeks, clean-shaven",
+    "skinTone": "medium brown with a warm undertone",
+    "bodyType": "solid average build, medium-broad shoulders",
     "variants": {
       "A": {
         "outfit": "Molson Coors blue and gold blazer, white button-down, navy tie, dress shoes, visible company logo on chest"
@@ -2620,7 +2666,9 @@
     "id": "nicholas-fink",
     "name": "Nicholas Fink",
     "tier": "standard",
-    "likeness": "Brown hair graying, fair skin, medium to athletic build, rectangular face, clean-shaven, executive bearing, focused expression",
+    "likeness": "short gray-brown hair, receding at the temples with high forehead, light blue eyes, long narrow face, strong nose, clean-shaven",
+    "skinTone": "fair with a warm undertone",
+    "bodyType": "lean build, medium shoulders",
     "variants": {
       "A": {
         "outfit": "Constellation Brands gold and blue blazer, white dress shirt, gold tie, polished shoes, visible company logo on chest"
@@ -2631,7 +2679,9 @@
     "id": "lawson-whiting",
     "name": "Lawson Whiting",
     "tier": "standard",
-    "likeness": "Gray and white hair, fair skin, medium to stocky build, broad face, clean-shaven, distinguished expression",
+    "likeness": "thick short silver-gray hair swept to the side, light blue eyes, broad round face with full cheeks and soft jaw, clean-shaven",
+    "skinTone": "fair with a pink, ruddy undertone",
+    "bodyType": "heavyset build, broad shoulders, full neck",
     "variants": {
       "A": {
         "outfit": "Brown-Forman brown and gold blazer, white button-down, brown and gold tie, polished shoes, visible company logo on chest"
@@ -2642,7 +2692,9 @@
     "id": "jeff-schomburger",
     "name": "Jeff Schomburger",
     "tier": "standard",
-    "likeness": "Light brown hair, fair skin, medium build, broad face, clean-shaven, determined expression",
+    "likeness": "short close-cropped sandy-gray hair thinning and receding on top, short gray-white stubble beard, broad face with strong jaw, crinkled eyes",
+    "skinTone": "fair with a warm, slightly weathered undertone",
+    "bodyType": "solid build, broad shoulders",
     "variants": {
       "A": {
         "outfit": "Tyson Foods red and gold blazer, white dress shirt, burgundy tie, polished shoes, visible company logo on chest"
@@ -2653,7 +2705,9 @@
     "id": "john-furner",
     "name": "John Furner",
     "tier": "important",
-    "likeness": "Short salt-and-pepper hair swept to the side, wide toothy grin, deep laugh lines, fair skin, oval face, lean build, clean-shaven",
+    "likeness": "short salt-and-pepper hair swept to the side, oval face, clean-shaven",
+    "skinTone": "fair with a warm, lightly sun-touched undertone",
+    "bodyType": "lean build, medium shoulders",
     "variants": {
       "A": {
         "outfit": "Navy blazer over open-collar light-blue oxford shirt, Walmart spark lapel pin, gray slacks, brown loafers, visible company logo on chest"
@@ -2667,7 +2721,9 @@
     "id": "michael-fiddelke",
     "name": "Michael Fiddelke",
     "tier": "important",
-    "likeness": "Short cropped light-brown hair, receding hairline, fair ruddy skin, broad rounded face, strong chin, clean-shaven, sturdy build",
+    "likeness": "short cropped light-brown hair, receding hairline, broad rounded face, strong chin, clean-shaven",
+    "skinTone": "fair with a cool pink, slightly ruddy undertone",
+    "bodyType": "average to lean build, medium shoulders",
     "variants": {
       "A": {
         "outfit": "Navy suit, white shirt, Target-red tie, bullseye lapel pin, black dress shoes, visible company logo on chest"
@@ -2681,7 +2737,9 @@
     "id": "greg-foran",
     "name": "Greg Foran",
     "tier": "important",
-    "likeness": "Thick silver-white hair brushed up and back, long face, prominent nose, dark brows, fair skin, clean-shaven, medium build",
+    "likeness": "thick silver-white hair brushed up and back, long face, prominent nose, dark brows, clean-shaven",
+    "skinTone": "fair with a warm, lightly tanned undertone",
+    "bodyType": "lean fit build, medium shoulders",
     "variants": {
       "A": {
         "outfit": "Charcoal suit, white shirt, Kroger-blue tie, black dress shoes, visible company logo on chest"
@@ -2695,7 +2753,9 @@
     "id": "mike-motz",
     "name": "Mike Motz",
     "tier": "important",
-    "likeness": "Dark hair slicked back and graying at the sides, thick dark brows, tanned skin, long face, strong chin, smile lines, clean-shaven",
+    "likeness": "dark hair slicked back and graying at the sides, thick dark brows, long face, strong chin, clean-shaven",
+    "skinTone": "light with a warm golden, lightly tanned undertone",
+    "bodyType": "lean build, medium shoulders",
     "variants": {
       "A": {
         "outfit": "Heather-mauve textured sport coat, open-collar white shirt, Walgreens-red pocket square, dark slacks, brown loafers, visible company logo on chest"
@@ -2709,7 +2769,9 @@
     "id": "susan-morris",
     "name": "Susan Morris",
     "tier": "standard",
-    "likeness": "Shoulder-length voluminous dark brown hair, side part, dark brows, fair skin, oval face, bright wide smile, pearl stud earrings",
+    "likeness": "shoulder-length voluminous dark brown hair, side part, dark brows, oval face, pearl stud earrings",
+    "skinTone": "fair with a warm, slightly golden undertone",
+    "bodyType": "slim build, narrow shoulders",
     "variants": {
       "A": {
         "outfit": "Navy blazer over white open-collar blouse, Albertsons-blue silk scarf, customer-service-desk name badge, black pumps, visible company logo on chest"
@@ -2720,7 +2782,9 @@
     "id": "michael-j-bender",
     "name": "Michael J. Bender",
     "tier": "standard",
-    "likeness": "Close-cropped graying hair thinning on top, black rectangular glasses, dark brown skin, rounded face, clean-shaven, medium build",
+    "likeness": "close-cropped graying hair thinning on top, black rectangular glasses, rounded face, clean-shaven",
+    "skinTone": "dark brown with a warm undertone",
+    "bodyType": "average build, medium shoulders",
     "variants": {
       "A": {
         "outfit": "Navy blazer over open-collar light-blue button-down, gray slacks, Kohl's Cash coupon in breast pocket, black loafers, visible company logo on chest"
@@ -2731,7 +2795,9 @@
     "id": "michelle-wlazlo",
     "name": "Michelle Wlazlo",
     "tier": "standard",
-    "likeness": "Shoulder-length blonde hair with darker roots, center part, light eyes, fair skin, oval face, slim build, soft closed smile",
+    "likeness": "shoulder-length honey-blonde hair with darker light-brown roots, center part, light blue-gray eyes, oval face, layered chain necklaces",
+    "skinTone": "fair with a neutral to warm undertone",
+    "bodyType": "slim build, narrow shoulders",
     "variants": {
       "A": {
         "outfit": "Black cardigan over pale collared blouse, layered chain necklaces, JCPenney-red tailor's tape around neck, dark trousers, visible company logo on chest"
@@ -2742,7 +2808,9 @@
     "id": "jason-potter",
     "name": "Jason Potter",
     "tier": "standard",
-    "likeness": "Gray hair swept back with volume, big toothy grin, full rounded face, fair rosy skin, dark brows, clean-shaven, sturdy build",
+    "likeness": "medium-brown hair slicked straight back with volume, light blue eyes, full broad rounded face, crinkled eyes, clean-shaven",
+    "skinTone": "fair with a warm, rosy undertone",
+    "bodyType": "solid stocky build, broad shoulders, thick neck",
     "variants": {
       "A": {
         "outfit": "Open-collar light-blue button-down, Grocery Outlet name badge, bowl of bargain strawberries in hand, khaki pants, visible company logo on chest"
@@ -2753,7 +2821,9 @@
     "id": "david-boone",
     "name": "David Boone",
     "tier": "standard",
-    "likeness": "Brown hair swept back with light graying, thick black rectangular glasses, tanned skin, long face, broad smile, clean-shaven",
+    "likeness": "brown hair swept back with light graying, thick black rectangular glasses, long face, clean-shaven",
+    "skinTone": "light with a warm golden, tanned undertone",
+    "bodyType": "lean build, medium shoulders",
     "variants": {
       "A": {
         "outfit": "Gray plaid sport coat, open-collar pink shirt, navy pocket square, dusting of craft glitter on the lapels, dark slacks, visible company logo on chest"
@@ -2764,7 +2834,9 @@
     "id": "winnie-park",
     "name": "Winnie Park",
     "tier": "standard",
-    "likeness": "Chin-length dark brown bob with caramel highlights, deep side part, dark brows, dark eyes, light skin, oval face, drop earrings",
+    "likeness": "chin-length dark brown bob with caramel highlights, deep side part, dark brows, dark eyes, oval face, drop earrings",
+    "skinTone": "light with a warm golden undertone",
+    "bodyType": "slim petite build, narrow shoulders",
     "variants": {
       "A": {
         "outfit": "Black leather jacket over Five Below-blue blouse, five-dollar price tag clipped to lapel, black trousers, black ankle boots, visible company logo on chest"
@@ -2775,7 +2847,9 @@
     "id": "atty-mcgrath",
     "name": "Atty McGrath",
     "tier": "standard",
-    "likeness": "Long straight dark brown hair past shoulders, lighter auburn ends, dark brows, fair skin, oval face, warm closed smile, slim build",
+    "likeness": "long straight dark brown hair past shoulders, lighter auburn ends, dark brows, oval face",
+    "skinTone": "fair with a neutral to warm undertone",
+    "bodyType": "slim build, narrow shoulders",
     "variants": {
       "A": {
         "outfit": "Navy blazer over black crew top, orange-and-yellow ALDI scarf, shopping-cart quarter in one hand, black trousers, visible company logo on chest"
@@ -2786,7 +2860,9 @@
     "id": "alan-barry",
     "name": "Alan Barry",
     "tier": "standard",
-    "likeness": "Short dark brown hair side-parted and combed up, fair skin, full rounded face, friendly smile, clean-shaven, sturdy build",
+    "likeness": "short dark brown hair side-parted and combed up, full rounded face, clean-shaven",
+    "skinTone": "fair with a cool pink undertone",
+    "bodyType": "solid average build, medium-broad shoulders",
     "variants": {
       "A": {
         "outfit": "Navy suit, open-collar light-blue shirt, Lidl yellow-and-red lapel pin, fresh bakery baguette under one arm, black wristwatch, visible company logo on chest"
@@ -2797,7 +2873,9 @@
     "id": "kruti-patel-goyal",
     "name": "Kruti Patel Goyal",
     "tier": "standard",
-    "likeness": "Shoulder-length straight black hair, center part, thick black rectangular glasses, medium-brown skin, oval face, wide smile",
+    "likeness": "shoulder-length straight black hair, center part, thick black rectangular glasses, oval face",
+    "skinTone": "light brown with a warm golden undertone",
+    "bodyType": "slim build, narrow shoulders",
     "variants": {
       "A": {
         "outfit": "Etsy-orange blazer over white open-collar shirt, chunky gold chain necklace, handmade ceramic mug in one hand, black trousers, visible company logo on chest"
@@ -2808,7 +2886,9 @@
     "id": "steve-vranes",
     "name": "Steve Vranes",
     "tier": "standard",
-    "likeness": "Short dark brown hair combed up, receding at temples, fair skin, long face, strong jaw, big smile, clean-shaven, tall lean build",
+    "likeness": "short dark brown hair combed up, receding at temples, long face, strong jaw, clean-shaven",
+    "skinTone": "fair with a warm undertone",
+    "bodyType": "tall and lean, medium shoulders",
     "variants": {
       "A": {
         "outfit": "Black crew-neck tee under dark navy blazer, rows of fandom enamel pins on lapel, Hot Topic red lanyard, dark jeans, black sneakers, visible company logo on chest"
@@ -2819,7 +2899,9 @@
     "id": "keith-barr",
     "name": "Keith Barr",
     "tier": "standard",
-    "likeness": "Short brown hair side-swept and graying at the sides, high hairline, light eyes, fair skin, long face, faint smile, clean-shaven",
+    "likeness": "short brown hair side-swept and graying at the sides, high hairline, light eyes, long face, clean-shaven",
+    "skinTone": "fair with a pink undertone",
+    "bodyType": "lean build, medium shoulders",
     "variants": {
       "A": {
         "outfit": "Navy quilted CarMax vest over crisp white button-down, yellow price sticker on one shoulder, car key fob twirling on a finger, khaki slacks, visible company logo on chest"
@@ -2830,7 +2912,9 @@
     "id": "mary-beth-laughton",
     "name": "Mary Beth Laughton",
     "tier": "standard",
-    "likeness": "Shoulder-length honey-blonde hair with side part, light eyes, fair skin, oval face, wide toothy smile, small earrings, slim build",
+    "likeness": "shoulder-length honey-blonde hair with side part, light eyes, oval face, small earrings",
+    "skinTone": "fair with a warm undertone",
+    "bodyType": "slim build, narrow shoulders",
     "variants": {
       "A": {
         "outfit": "Forest-green REI fleece vest over cream quarter-zip, carabiner clipped to belt loop, tan trail pants, hiking boots, visible company logo on chest"
@@ -2841,7 +2925,9 @@
     "id": "bradley-s-paulsen",
     "name": "Bradley S. Paulsen",
     "tier": "standard",
-    "likeness": "Closely shaved bald head, fair skin, long face, brown brows, broad toothy grin, clean-shaven, lean athletic build",
+    "likeness": "closely shaved bald head, long face, brown brows, clean-shaven",
+    "skinTone": "fair to light with a warm undertone",
+    "bodyType": "lean athletic build, medium shoulders",
     "variants": {
       "A": {
         "outfit": "Navy suit, light-blue shirt, patterned light-blue tie, Floor & Decor-red lanyard, marble tile sample under one arm, visible company logo on chest"
@@ -2852,7 +2938,9 @@
     "id": "cory-miller",
     "name": "Cory Miller",
     "tier": "standard",
-    "likeness": "Short sandy-brown hair, receding hairline, fair skin, long oval face, easy smile, clean-shaven, medium build",
+    "likeness": "short sandy-brown hair, receding hairline, long oval face, clean-shaven",
+    "skinTone": "fair with a warm, slightly ruddy undertone",
+    "bodyType": "average build, medium shoulders",
     "variants": {
       "A": {
         "outfit": "Navy suit, open-collar light-blue shirt, Aaron's-yellow lapel pin, tape measure clipped to belt, sofa fabric swatch in one hand, visible company logo on chest"
@@ -2863,7 +2951,9 @@
     "id": "enrique-lores",
     "name": "Enrique Lores",
     "tier": "important",
-    "likeness": "Short cropped graying brown hair, receding temples, light skin, narrow long face, deep-set eyes, wry closed smile, clean-shaven",
+    "likeness": "short cropped graying brown hair, receding temples, narrow long face, deep-set eyes, clean-shaven",
+    "skinTone": "light with a neutral to warm undertone",
+    "bodyType": "slim build, narrow shoulders",
     "variants": {
       "A": {
         "outfit": "Charcoal suit, open-collar light-blue shirt, red pocket square, PayPal-blue lapel pin, black dress shoes, visible company logo on chest"
@@ -2877,7 +2967,9 @@
     "id": "john-ternus",
     "name": "John Ternus",
     "tier": "important",
-    "likeness": "Thick dark brown hair swept back, graying temples, salt-and-pepper stubble, tanned skin, strong jaw, broad grin, athletic build",
+    "likeness": "thick dark brown hair swept back, graying temples, salt-and-pepper stubble, strong jaw",
+    "skinTone": "light with a warm golden, lightly tanned undertone",
+    "bodyType": "lean athletic build, broad shoulders tapering to a trim waist",
     "variants": {
       "A": {
         "outfit": "Navy crew-neck tee, dark slim jeans, white sneakers, smartwatch on wrist, keynote clicker in hand, visible company logo on chest"
@@ -2891,7 +2983,9 @@
     "id": "aneel-bhusri",
     "name": "Aneel Bhusri",
     "tier": "standard",
-    "likeness": "Thick short silver-gray hair combed up, dark rectangular glasses, tan-brown skin, rounded face, broad smile, clean-shaven",
+    "likeness": "thick short silver-gray hair combed up, thin-framed rectangular glasses, thick dark brows, rounded face, clean-shaven",
+    "skinTone": "light brown with a warm golden undertone",
+    "bodyType": "average to solid build, medium-broad shoulders",
     "variants": {
       "A": {
         "outfit": "Navy Workday hoodie, Workday-orange conference lanyard, dark jeans, gray sneakers, timesheet tablet tucked under one arm, visible company logo on chest"
@@ -2902,7 +2996,9 @@
     "id": "chris-rogers",
     "name": "Chris Rogers",
     "tier": "standard",
-    "likeness": "Short cropped dark brown hair graying at sides, receding temples, faint stubble shadow, fair skin, wide toothy grin, long face",
+    "likeness": "short cropped dark brown hair graying at sides, receding temples, faint stubble shadow, long face",
+    "skinTone": "fair with a warm undertone",
+    "bodyType": "lean build, medium shoulders",
     "variants": {
       "A": {
         "outfit": "Instacart-green zip vest over open-collar gray-blue shirt, paper grocery bag with carrot tops poking out, dark jeans, white sneakers, visible company logo on chest"
@@ -2913,7 +3009,9 @@
     "id": "srini-gopalan",
     "name": "Srini Gopalan",
     "tier": "important",
-    "likeness": "Short cropped black hair graying at temples, dark brows, medium-brown skin, long narrow face, broad smile, clean-shaven",
+    "likeness": "short cropped black hair graying at temples, dark brows, long narrow face, clean-shaven",
+    "skinTone": "light brown, edging toward medium brown, with a warm golden undertone",
+    "bodyType": "slim build, medium shoulders",
     "variants": {
       "A": {
         "outfit": "Navy blazer over open-collar denim-blue shirt, T-Mobile magenta pocket square, dark slacks, black loafers, visible company logo on chest"
@@ -2927,7 +3025,9 @@
     "id": "josh-damaro",
     "name": "Josh D'Amaro",
     "tier": "important",
-    "likeness": "Thick salt-and-pepper hair spiked up on top, darker short sides, dark brows, tanned skin, square jaw, toothy grin, clean-shaven",
+    "likeness": "thick salt-and-pepper hair spiked up on top, darker short sides, dark brows, square jaw, clean-shaven",
+    "skinTone": "light with a warm golden, tanned undertone",
+    "bodyType": "lean athletic build, medium-broad shoulders, long-limbed",
     "variants": {
       "A": {
         "outfit": "Charcoal suit, open-collar white shirt, oval JOSH cast-member name tag on lapel, black dress shoes, visible company logo on chest"
