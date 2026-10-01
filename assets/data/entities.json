@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "totalEntities": 754,
+    "totalEntities": 757,
     "updatedAt": "2026-09-30",
     "formatVersion": "1.0",
     "entityDonationHydrationSource": "FEC bulk PAS2/OTH files",
@@ -17997,7 +17997,11 @@
         "Always",
         "Tampax",
         "Vicks",
-        "Metamucil"
+        "Metamucil",
+        "Puffs",
+        "Dreft",
+        "Luvs",
+        "Bounce Dryer Sheets"
       ],
       "domains": [
         "pg.com",
@@ -18213,7 +18217,8 @@
         "Calve",
         "Amora",
         "Axe",
-        "Degree"
+        "Degree",
+        "Seventh Generation"
       ],
       "domains": [
         "unilever.com",
@@ -18757,7 +18762,10 @@
         "Irish Spring",
         "Ajax",
         "Fabuloso",
-        "Hill's Pet Nutrition"
+        "Hill's Pet Nutrition",
+        "Murphy Oil Soap",
+        "Murphy's Oil Soap",
+        "Suavitel"
       ],
       "domains": [
         "colgatepalmolive.com",
@@ -19896,7 +19904,15 @@
         "Trojan",
         "Nair",
         "Orajel",
-        "TheraBreath"
+        "TheraBreath",
+        "Kaboom",
+        "Xtra Laundry Detergent",
+        "Batiste",
+        "Waterpik",
+        "Spinbrush",
+        "First Response",
+        "Zicam",
+        "Vitafusion"
       ],
       "domains": [
         "churchdwight.com",
@@ -19914,7 +19930,7 @@
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-05-26",
       "verificationStatus": "unverified",
-      "notes": "Added from product coverage gap: 5 OFF matched products, led by Arm & Hammer. FEC committee hydration pending."
+      "notes": "Added from product coverage gap: 5 OFF matched products, led by Arm & Hammer. FEC committee hydration pending. 2026-09-24: no matching committee in local FEC committee masters 2016-2026 (Arm & Hammer baking soda scan reported as nothing on file); bulk verification pending."
     },
     {
       "id": "clorox",
@@ -19927,7 +19943,16 @@
         "Brita",
         "Glad",
         "Hidden Valley",
-        "Burt's Bees"
+        "Burt's Bees",
+        "The Clorox Company",
+        "Formula 409",
+        "Tilex",
+        "Kingsford",
+        "Fresh Step",
+        "Scoop Away",
+        "Green Works",
+        "Clorox 2",
+        "KC Masterpiece"
       ],
       "domains": [
         "thecloroxcompany.com",
@@ -19948,7 +19973,7 @@
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-05-26",
       "verificationStatus": "unverified",
-      "notes": "Added from product coverage gap: 19 OFF matched products across 3 prefixes. FEC committee hydration pending."
+      "notes": "Added from product coverage gap: 19 OFF matched products across 3 prefixes. FEC committee hydration pending. 2026-09-24: local FEC committee master lists CLOROX EMPLOYEES' POLITICAL ACTION COMMITTEE (C00062224, connected org THE CLOROX COMPANY); bulk verification pending."
     },
     {
       "id": "bic",
@@ -20007,7 +20032,7 @@
       "fecCommitteeId": "",
       "lastVerifiedDate": "2026-05-26",
       "verificationStatus": "unverified",
-      "notes": "Added from product coverage gap/common shelf-brand pass. FEC committee hydration pending."
+      "notes": "Added from product coverage gap/common shelf-brand pass. FEC committee hydration pending. 2026-09-24: no matching committee in local FEC committee masters 2016-2026; bulk verification pending."
     },
     {
       "id": "kao",
@@ -20356,7 +20381,11 @@
         "Clearasil",
         "Woolite",
         "Resolve",
-        "Veet"
+        "Veet",
+        "Easy-Off",
+        "Spray 'n Wash",
+        "Calgon",
+        "Dettol"
       ],
       "domains": [
         "reckitt.com",
@@ -20392,7 +20421,9 @@
         "All Laundry Detergent",
         "Right Guard",
         "Pril",
-        "Syoss"
+        "Syoss",
+        "Soft Scrub",
+        "Renuzit"
       ],
       "domains": [
         "henkel.com",
@@ -39478,6 +39509,111 @@
       "lastVerifiedDate": "2026-05-06",
       "parentEntityId": "amazon",
       "verificationStatus": "manual"
+    },
+    {
+      "id": "sc-johnson",
+      "canonicalName": "S.C. Johnson & Son Inc",
+      "aliases": [
+        "SC Johnson",
+        "S.C. Johnson",
+        "S. C. Johnson",
+        "SC Johnson & Son",
+        "Windex",
+        "Pledge",
+        "Glade",
+        "Scrubbing Bubbles",
+        "Ziploc",
+        "Drano",
+        "Fantastik",
+        "Saran Wrap",
+        "Mrs. Meyer's",
+        "Mrs. Meyer's Clean Day",
+        "Ecover",
+        "OFF! Repellent",
+        "Kiwi Shoe Polish"
+      ],
+      "domains": [
+        "scjohnson.com",
+        "windex.com",
+        "ziploc.com",
+        "glade.com",
+        "pledge.com",
+        "scrubbingbubbles.com",
+        "mrsmeyers.com",
+        "methodhome.com",
+        "drano.com"
+      ],
+      "categoryTags": [
+        "consumer-goods",
+        "household"
+      ],
+      "ceoName": "H. Fisk Johnson",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-09-24",
+      "verificationStatus": "unverified",
+      "notes": "Added 2026-09-24 for household/cleaning coverage (Windex, Pledge, Glade, Ziploc, Scrubbing Bubbles, Mrs. Meyer's). Private company; H. Fisk Johnson is Chairman and CEO. Local FEC committee master lists S. C. JOHNSON & SON, INC POLITICAL ACTION COMMITTEE (C00342246); bulk verification pending. Single-word brands Raid, Shout, Method omitted as too broad for exact alias matching."
+    },
+    {
+      "id": "3m",
+      "canonicalName": "3M Co",
+      "aliases": [
+        "3M",
+        "3M Company",
+        "Scotch-Brite",
+        "Scotch Tape",
+        "Post-it",
+        "Post-it Notes",
+        "Command Strips",
+        "Filtrete",
+        "Nexcare",
+        "Scotchgard",
+        "Futuro",
+        "Thinsulate"
+      ],
+      "domains": [
+        "3m.com",
+        "post-it.com",
+        "scotch-brite.com",
+        "filtrete.com",
+        "command.com",
+        "nexcare.com"
+      ],
+      "categoryTags": [
+        "consumer-goods",
+        "household",
+        "industrial"
+      ],
+      "ceoName": "William M. Brown",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-09-24",
+      "verificationStatus": "unverified",
+      "notes": "Added 2026-09-24 for household coverage (Scotch-Brite, Post-it, Command, Filtrete). William M. Brown became CEO May 1, 2024 and Chairman March 1, 2025. Local FEC committee master lists 3M COMPANY PAC (C00084475); bulk verification pending. Single-word brands Scotch, Command, ACE omitted as too broad."
+    },
+    {
+      "id": "reynolds-consumer-products",
+      "canonicalName": "Reynolds Consumer Products Inc",
+      "aliases": [
+        "Reynolds Consumer Products",
+        "Reynolds Wrap",
+        "Reynolds Kitchens",
+        "Hefty",
+        "Presto Products"
+      ],
+      "domains": [
+        "reynoldsconsumerproducts.com",
+        "reynoldsbrands.com",
+        "reynoldskitchens.com",
+        "hefty.com"
+      ],
+      "categoryTags": [
+        "consumer-goods",
+        "household"
+      ],
+      "ceoName": "Scott Huckins",
+      "fecCommitteeId": "",
+      "lastVerifiedDate": "2026-09-24",
+      "verificationStatus": "unverified",
+      "notes": "Added 2026-09-24 for household coverage (Reynolds Wrap, Hefty). Scott Huckins became President and CEO January 1, 2025. No matching committee found in local FEC committee masters 2016-2026; bulk verification pending."
     }
   ]
 }
