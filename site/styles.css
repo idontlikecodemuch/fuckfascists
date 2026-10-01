@@ -395,6 +395,45 @@ p { margin: 0 0 var(--space-md); }
 }
 
 /* ─────────────────────────────────────────────────────────────────────── */
+/* WATCH — the 60-second explainer, right under the hero                  */
+/* ─────────────────────────────────────────────────────────────────────── */
+
+.watch {
+  padding: var(--space-3xl) 0 var(--space-2xl);
+  background: var(--bg-void);
+}
+.watch .container { max-width: 900px; text-align: center; }
+.watch-eyebrow { margin-bottom: var(--space-md); }
+.watch-title {
+  margin: 0 auto var(--space-xl);
+  color: var(--text-primary);
+  font-size: clamp(1.2rem, 2.8vw, 1.6rem);
+  text-wrap: balance;
+}
+.watch-cabinet {
+  padding: 10px;
+  background: var(--surface-2);
+  border: 3px solid var(--text-primary);
+  box-shadow:
+    inset 3px 3px 0 rgba(255,255,255,0.12),
+    inset -3px -3px 0 rgba(0,0,0,0.55),
+    0 8px 0 rgba(0,0,0,0.5),
+    0 0 36px rgba(122, 242, 255, 0.14);
+}
+.watch-video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+}
+.watch-note {
+  margin: var(--space-lg) 0 0;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+.watch-note a { color: var(--highlight-blue); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ─────────────────────────────────────────────────────────────────────── */
 /* WHAT IT DOES — action loop (Map / Scan / Track / Share)                */
 /* ─────────────────────────────────────────────────────────────────────── */
 
