@@ -1,0 +1,307 @@
+{
+  "generatedAt": "2026-10-01T04:42:17Z",
+  "source": "https://www.fec.gov/files/bulk-downloads/",
+  "cycles": [
+    2016,
+    2018,
+    2020,
+    2022,
+    2024,
+    2026
+  ],
+  "totalCompressedBytes": 21968303942,
+  "refreshedArchives": 15,
+  "zipIntegrity": "unzip -tq passed for all 15 refreshed archives",
+  "installation": "2022 and 2026 installed with scripts/install-fec-bulk-cycle.mjs; 2024 cm/cn/ccl swapped in place (pas2/oth/indiv unchanged since 2026-03-08)",
+  "archiveRetention": "Archives may be removed after validation and installation because the extracted corpus plus archives exceeded local disk headroom.",
+  "archives": [
+    {
+      "cycle": 2016,
+      "file": "cm16.zip",
+      "bytes": 732154,
+      "lastModified": "2020-12-31T07:36:50Z",
+      "sha256": "484c9c1f90557dfbb81d837b3c05ccf0f6e94905686c2f14f7f23a27d8833063",
+      "unchangedSince": "2026-08-18"
+    },
+    {
+      "cycle": 2016,
+      "file": "cn16.zip",
+      "bytes": 271705,
+      "lastModified": "2020-12-31T07:36:46Z",
+      "sha256": "7dd5b2df23b83ca408d9abd11f02486209c3bf638b3cf601ac13b0e5d19f51da",
+      "unchangedSince": "2026-08-18"
+    },
+    {
+      "cycle": 2016,
+      "file": "ccl16.zip",
+      "bytes": 66791,
+      "lastModified": "2020-12-31T07:36:56Z",
+      "sha256": "c021139395be2ffacc93ade7d0846207637819aafc9fdeb413f27d8efe87537a",
+      "unchangedSince": "2026-08-18"
+    },
+    {
+      "cycle": 2016,
+      "file": "pas216.zip",
+      "bytes": 15450184,
+      "lastModified": "2022-10-18T15:03:02Z",
+      "sha256": "014b99fcf5a7eb851fdb11fab50a20198164954e7f210da2ccece3bb582532af",
+      "unchangedSince": "2026-08-18"
+    },
+    {
+      "cycle": 2016,
+      "file": "oth16.zip",
+      "bytes": 79578850,
+      "lastModified": "2022-10-18T15:03:13Z",
+      "sha256": "a2419dc2fa1ea297f8e60dd935cb45e5346591482a77e1f22405144a5aa14543",
+      "unchangedSince": "2026-08-18"
+    },
+    {
+      "cycle": 2016,
+      "file": "indiv16.zip",
+      "bytes": 1491695257,
+      "lastModified": "2022-10-16T15:14:05Z",
+      "sha256": "c409dad5ce7667d58cb62a2d39ed616929188dc5aae078a6c74fb0247b4c29c9",
+      "unchangedSince": "2026-08-18"
+    },
+    {
+      "cycle": 2018,
+      "file": "cm18.zip",
+      "bytes": 809262,
+      "lastModified": "2022-12-31T07:18:18Z",
+      "sha256": "66a7aada4013c7e3d4229b865ad506609298e45a31dd8c4f676184003bb878d0",
+      "unchangedSince": "2026-08-18"
+    },
+    {
+      "cycle": 2018,
+      "file": "cn18.zip",
+      "bytes": 271951,
+      "lastModified": "2022-12-31T07:18:14Z",
+      "sha256": "fba6302a5c6649b8f3297a6aa8691cebf124a8788bdb12697107bc5ba55a0cd6",
+      "unchangedSince": "2026-08-18"
+    },
+    {
+      "cycle": 2018,
+      "file": "ccl18.zip",
+      "bytes": 75250,
+      "lastModified": "2022-12-31T07:18:23Z",
+      "sha256": "6704d162d288a003fd2264a20dd5e65f120c74093e5ccfbb27b078c5c3b010ec",
+      "unchangedSince": "2026-08-18"
+    },
+    {
+      "cycle": 2018,
+      "file": "pas218.zip",
+      "bytes": 12556308,
+      "lastModified": "2022-12-25T21:49:49Z",
+      "sha256": "5fee204a918b4546ba04d9f05e608a8fc734d2d6b42c9625215a1b1c2932fdd0",
+      "unchangedSince": "2026-08-18"
+    },
+    {
+      "cycle": 2018,
+      "file": "oth18.zip",
+      "bytes": 35253493,
+      "lastModified": "2022-12-25T21:49:58Z",
+      "sha256": "7ea49a35ed8a8db96b096026010c6af6e2c3c0405c4b6cf66ea74fb2089f0cf3",
+      "unchangedSince": "2026-08-18"
+    },
+    {
+      "cycle": 2018,
+      "file": "indiv18.zip",
+      "bytes": 1599886501,
+      "lastModified": "2022-12-25T21:49:35Z",
+      "sha256": "9de143ee9ef2ee0af9306e97b7b900de170cbfd4f1cef444b75ae1b26623ae6c",
+      "unchangedSince": "2026-08-18"
+    },
+    {
+      "cycle": 2020,
+      "file": "cm20.zip",
+      "bytes": 782585,
+      "lastModified": "2024-12-31T07:06:40Z",
+      "sha256": "70a1849958e1b75d6b194c782b7e6b5713070340bd2424df69f02356562e8d10",
+      "unchangedSince": "2026-08-18"
+    },
+    {
+      "cycle": 2020,
+      "file": "cn20.zip",
+      "bytes": 283545,
+      "lastModified": "2024-12-31T07:06:36Z",
+      "sha256": "f0229bb4e6b8030b074972ffb27fa163b195729b31f1276005ecca31a0728a39",
+      "unchangedSince": "2026-08-18"
+    },
+    {
+      "cycle": 2020,
+      "file": "ccl20.zip",
+      "bytes": 76498,
+      "lastModified": "2024-12-31T07:06:44Z",
+      "sha256": "24368dbc335b551d3b836c401b8765825209d8f5c7c2ff047f9f8f3585433039",
+      "unchangedSince": "2026-08-18"
+    },
+    {
+      "cycle": 2020,
+      "file": "pas220.zip",
+      "bytes": 28978598,
+      "lastModified": "2024-12-29T22:08:51Z",
+      "sha256": "7a8355e2cdae6c4bf0e79fcbd8fe6276d559f886bfe6f8d4e45d64aa393aa1a2",
+      "unchangedSince": "2026-08-18"
+    },
+    {
+      "cycle": 2020,
+      "file": "oth20.zip",
+      "bytes": 232936142,
+      "lastModified": "2024-12-29T22:09:53Z",
+      "sha256": "039ca33db6450d4ab585cc1ec2111fb1d5d6f93581c4e849df5a8e8e08973ff2",
+      "unchangedSince": "2026-08-18"
+    },
+    {
+      "cycle": 2020,
+      "file": "indiv20.zip",
+      "bytes": 5865170563,
+      "lastModified": "2024-12-29T22:08:04Z",
+      "sha256": "df8af5cb14f32ccfb24897091512780b8c9609f0f95bfabcbe157410284c67ff",
+      "unchangedSince": "2026-08-18"
+    },
+    {
+      "cycle": 2022,
+      "file": "cm22.zip",
+      "bytes": 838274,
+      "lastModified": "2026-09-30T05:42:12Z",
+      "sha256": "807c366055c0322ebb3ac2815c9a004b77fd0f300a53a7d2c8a58d457e8312d1",
+      "downloadedOn": "2026-09-30"
+    },
+    {
+      "cycle": 2022,
+      "file": "cn22.zip",
+      "bytes": 313270,
+      "lastModified": "2026-09-30T05:42:08Z",
+      "sha256": "cf49253bc543eacda87ff6b9721f53423c55bc962feef1eb400a30bde900891b",
+      "downloadedOn": "2026-09-30"
+    },
+    {
+      "cycle": 2022,
+      "file": "ccl22.zip",
+      "bytes": 84083,
+      "lastModified": "2026-09-30T05:42:16Z",
+      "sha256": "ed41fcdb3fc48fec7a74bcce1bca13def1e41f03006cfe0c67e273e24573b569",
+      "downloadedOn": "2026-09-30"
+    },
+    {
+      "cycle": 2022,
+      "file": "pas222.zip",
+      "bytes": 25675262,
+      "lastModified": "2026-09-27T16:18:28Z",
+      "sha256": "8462d0ad309c0ea2c12cf86d7628a213b5399c97593faa9c2097bc63282dbc8b",
+      "downloadedOn": "2026-09-30"
+    },
+    {
+      "cycle": 2022,
+      "file": "oth22.zip",
+      "bytes": 146761604,
+      "lastModified": "2026-09-27T16:19:04Z",
+      "sha256": "7a682b7321c65003f49ee413ce88f40a2be97eeebff7c1ccb85a845375ea7d15",
+      "downloadedOn": "2026-09-30"
+    },
+    {
+      "cycle": 2022,
+      "file": "indiv22.zip",
+      "bytes": 5216181692,
+      "lastModified": "2026-09-27T16:17:50Z",
+      "sha256": "127744cc61ac1376a4d7f4c508b92aacf5fec79830cf60e04b42558b1d635807",
+      "downloadedOn": "2026-09-30"
+    },
+    {
+      "cycle": 2024,
+      "file": "cm24.zip",
+      "bytes": 883457,
+      "lastModified": "2026-09-30T05:42:13Z",
+      "sha256": "f15cf6c255c71525255b3f45e864ddc1fd74bb0d51f88cbec1ccc6bdbaf0a83c",
+      "downloadedOn": "2026-09-30"
+    },
+    {
+      "cycle": 2024,
+      "file": "cn24.zip",
+      "bytes": 356367,
+      "lastModified": "2026-09-30T05:42:09Z",
+      "sha256": "d9eddcc5e943b8fa65c9b6b0d5294f5eb4ee68e3f98fe3bf8405c303a2a67c18",
+      "downloadedOn": "2026-09-30"
+    },
+    {
+      "cycle": 2024,
+      "file": "ccl24.zip",
+      "bytes": 94262,
+      "lastModified": "2026-09-30T05:42:18Z",
+      "sha256": "afa6c048a179e7324d4066381ee70fddffc011e4e693b729e5e0717f433f8a11",
+      "downloadedOn": "2026-09-30"
+    },
+    {
+      "cycle": 2024,
+      "file": "pas224.zip",
+      "bytes": 24683218,
+      "lastModified": "2026-03-08T21:46:14Z",
+      "sha256": "81520f5d1371f2e89beecd148193e55fdcff7f1dfa6b3a63770e21b928bcbfaf",
+      "unchangedSince": "2026-08-18"
+    },
+    {
+      "cycle": 2024,
+      "file": "oth24.zip",
+      "bytes": 505214543,
+      "lastModified": "2026-03-08T21:48:05Z",
+      "sha256": "0f16299c773b91a9fc4e815c1f220a4e265cac5888b7f9ca02feaab81c791b81",
+      "unchangedSince": "2026-08-18"
+    },
+    {
+      "cycle": 2024,
+      "file": "indiv24.zip",
+      "bytes": 4244259029,
+      "lastModified": "2026-03-08T21:45:42Z",
+      "sha256": "6dfdc17f4e3873f853e55caa7d914602425dce5724145a1062171bae5e8747e7",
+      "unchangedSince": "2026-08-18"
+    },
+    {
+      "cycle": 2026,
+      "file": "cm26.zip",
+      "bytes": 871044,
+      "lastModified": "2026-09-30T05:42:15Z",
+      "sha256": "2f15420651f461cb9829af118c5daf380a7cc8b2601292cd2ef77f58da7e9251",
+      "downloadedOn": "2026-09-30"
+    },
+    {
+      "cycle": 2026,
+      "file": "cn26.zip",
+      "bytes": 309460,
+      "lastModified": "2026-09-30T05:42:11Z",
+      "sha256": "700a106357f25b1dbae2e8c75010170a82717d0abc0e79959c8c7f2d26beaec9",
+      "downloadedOn": "2026-09-30"
+    },
+    {
+      "cycle": 2026,
+      "file": "ccl26.zip",
+      "bytes": 88411,
+      "lastModified": "2026-09-30T05:42:19Z",
+      "sha256": "be55941e1bfdd088c677d3857600d41d05537f7ede9add7b079d423f5b0845b7",
+      "downloadedOn": "2026-09-30"
+    },
+    {
+      "cycle": 2026,
+      "file": "pas226.zip",
+      "bytes": 8414477,
+      "lastModified": "2026-09-27T16:01:47Z",
+      "sha256": "fc7a6e1de1633e9a6b0f68a4393802bdde581ffe12297e8d76a8ec3d9f878f45",
+      "downloadedOn": "2026-09-30"
+    },
+    {
+      "cycle": 2026,
+      "file": "oth26.zip",
+      "bytes": 213420416,
+      "lastModified": "2026-09-27T16:02:52Z",
+      "sha256": "433abc6b868cd8f5a0e575061cbf47603ad85dc307847602c18451c7a690f5ac",
+      "downloadedOn": "2026-09-30"
+    },
+    {
+      "cycle": 2026,
+      "file": "indiv26.zip",
+      "bytes": 2214979436,
+      "lastModified": "2026-09-27T16:01:24Z",
+      "sha256": "1c5d0a60857033750d75327f591d791af6453a4233d6c2a28209e82b11460d6c",
+      "downloadedOn": "2026-09-30"
+    }
+  ]
+}
