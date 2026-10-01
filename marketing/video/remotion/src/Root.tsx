@@ -1,6 +1,9 @@
 import React from 'react';
-import { CalculateMetadataFunction, Composition } from 'remotion';
+import { CalculateMetadataFunction, Composition, Still } from 'remotion';
 import { Explainer, type ExplainerProps } from './Explainer';
+import { PREVIEW_FRAMES, PREVIEW_H, PREVIEW_W, Preview } from './appstore/Preview';
+import { Tile } from './appstore/Tile';
+import { TILES, TILE_H, TILE_W } from './appstore/tiles';
 import type { LayoutMode } from './LayoutContext';
 import { FPS, buildTimeline, lineIds, type Cut, type HookStyle } from './timing';
 import { probeScene, probeVeo, probeVo } from './vo';
@@ -32,6 +35,11 @@ const CUTS: Array<{ id: string; cut: Cut; layout: LayoutMode; width: number; hei
 
 export const RemotionRoot: React.FC = () => (
   <>
+    {/* App Store 1.1: seven 6.9" screenshot tiles + the app preview (scripts/appstore.sh) */}
+    {TILES.map((tile, i) => (
+      <Still key={tile.id} id={`Tile-${String(i + 1).padStart(2, '0')}-${tile.id}`} component={Tile} width={TILE_W} height={TILE_H} defaultProps={tile} />
+    ))}
+    <Composition id="AppPreview" component={Preview} width={PREVIEW_W} height={PREVIEW_H} fps={FPS} durationInFrames={PREVIEW_FRAMES} />
     {CUTS.map(({ id, cut, layout, width, height, hook }) => (
       <Composition
         key={id}

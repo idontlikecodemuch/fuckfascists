@@ -28,6 +28,22 @@ Measured Sep 28 on the hook: local Chrome 12 corrupt frames in 300, the shell 0 
 every output and fails on a flagged frame. Do not start Remotion Studio for
 renders; `scripts/render.sh` is the path.
 
+## Sep 30: App Store 1.1 screenshots + app preview (`scripts/appstore.sh`)
+
+Same captures the videos were cut from (`marketing/video/captures/`, v1.1.0 build 9
+code), no new recording. `scripts/appstore.sh prep` pulls seven frames into
+`marketing/video/appstore/frames/` and cuts two phone-crop scorecard clips into
+`marketing/video/appstore/clips/`; `tiles` renders `Tile-01…07` (`<Still>`s,
+1320×2868 = 6.9" iPhone) to `marketing/appstore/1.1/screenshots-6.9/`; `preview`
+renders `AppPreview` (886×1920, 30 fps, ~19.5 s, punk 30 s bed) next to them.
+Design: `src/appstore/tiles.ts` holds the seven captions; `Tile.tsx` is a caption
+band over a CSS bezel that bleeds off the bottom exactly at the tab bar's yellow line
+(`CUT_Y` 2319 of 2622) — the Debug build's DEV tab and the SCAN (BETA) label never
+show. The Scan frame is the real-phone take with a simulator 9:41 strip pasted over
+its clock/recording dot. The preview is app footage only (phone-crop clips, caption
+band, logo strip, no Clark, no device frame, no price) per Apple's preview rules; the
+drop beat starts on the loader (94.15 s) because the frame before it shows DEV TOOLS.
+
 ## Sep 29: full-bleed is the vertical format; slam open on every cut
 
 The creator approved the full-bleed proof and made it the format for **every vertical
