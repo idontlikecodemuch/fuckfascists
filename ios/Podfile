@@ -120,7 +120,11 @@ target 'FckFascists' do
     # subjects — critical for barcode scanning of small UPCs at close range.
     # Falls back to .builtInWideAngleCamera for front-facing and older devices.
     # Idempotent — safe to re-run.
-    expo_camera_utils_path = File.join(installer.sandbox.pod_dir('ExpoCamera'), 'ios', 'Common', 'ExpoCameraUtils.swift')
+    # pod_dir('ExpoCamera') is node_modules/expo-camera/ios (the podspec's
+    # folder), so the sources sit directly under it. Before 2026-10-02 this
+    # path had an extra 'ios' segment and the patch never applied.
+    expo_camera_dir = installer.sandbox.pod_dir('ExpoCamera')
+    expo_camera_utils_path = File.join(expo_camera_dir, 'Common', 'ExpoCameraUtils.swift')
     if File.exist?(expo_camera_utils_path)
       content = File.read(expo_camera_utils_path)
       unless content.include?('// FCK macro-lens patch')
@@ -137,6 +141,33 @@ target 'FckFascists' do
       end
     else
       Pod::UI.puts "⚠️  ExpoCameraUtils.swift not found at #{expo_camera_utils_path} — skipping macro-lens patch"
+    end
+
+    # ── expo-camera macro lens patch, part 2: starting zoom ─────────────
+    # On the virtual multi-camera devices chosen above, zoom factor 1.0 is the
+    # ultra-wide lens, and expo-camera maps the default zoom prop (0) to 1.0.
+    # Without this the scanner preview would look like 0.5x. Start at the
+    # switch-over to the wide lens instead, so the preview matches 1x and iOS
+    # still switches to the ultra-wide for close focus. Devices without
+    # constituent lenses report no switch-over factors and keep 1.0.
+    # Idempotent — safe to re-run.
+    expo_camera_view_path = File.join(expo_camera_dir, 'Current', 'CameraView.swift')
+    if File.exist?(expo_camera_view_path)
+      content = File.read(expo_camera_view_path)
+      unless content.include?('// FCK macro-lens zoom patch')
+        original = "      let minZoom = 1.0\n      device.videoZoomFactor = minZoom * pow(device.activeFormat.videoMaxZoomFactor / minZoom, zoom)"
+        replacement = "      // FCK macro-lens zoom patch — start virtual multi-camera devices at the\n      // wide-lens switch-over (1.0 is the ultra-wide on those devices).\n      let minZoom: CGFloat = device.virtualDeviceSwitchOverVideoZoomFactors.first.map { CGFloat(truncating: $0) } ?? 1.0\n      device.videoZoomFactor = minZoom * pow(device.activeFormat.videoMaxZoomFactor / minZoom, zoom)"
+        if content.include?(original)
+          File.write(expo_camera_view_path, content.sub(original, replacement))
+          Pod::UI.puts "✅ CameraView.swift patched to start at the wide-lens zoom"
+        else
+          Pod::UI.puts "⚠️  CameraView.swift zoom patch pattern not found — check expo-camera version"
+        end
+      else
+        Pod::UI.puts "✅ CameraView.swift macro-lens zoom patch already present"
+      end
+    else
+      Pod::UI.puts "⚠️  CameraView.swift not found at #{expo_camera_view_path} — skipping macro-lens zoom patch"
     end
   end
 end
