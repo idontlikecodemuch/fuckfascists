@@ -1,0 +1,16 @@
+# fckfascists.com — Apache rules for public_html.
+# Deploys with marketing/video/remotion/scripts/upload-site.sh site/.htaccess=.htaccess --to ""
+# Keep it minimal: anything Bluehost's AllowOverride rejects turns the whole site into a 500.
+
+RewriteEngine On
+RewriteBase /
+
+# Extension store links from the app (copy/shared.ts) go to the homepage until the stores publish.
+RewriteRule ^extension/(chrome|firefox)/?$ / [R=302,L]
+
+# Extensionless pages: /privacy serves privacy.html (URL unchanged), only when that file exists.
+# App Store privacy policy URL: https://FCKfascists.com/privacy
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+RewriteRule ^([^.]+?)/?$ /$1.html [L]
