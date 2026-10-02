@@ -256,6 +256,8 @@ var COPY_ALL_DATA = {
     "transparency.confidence.body": "Most businesses match to our bundled list automatically — high confidence, no badge. When a match comes from searching the FEC database, we show a MATCHED badge and a disclaimer. Tap the FEC link to verify. We never claim more certainty than the data supports.",
     "transparency.storage.title": "What's stored on my device?",
     "transparency.storage.body": "Only your avoidance actions: business IDs and dates you tapped Avoid, and platform avoids you logged. No times, no locations, no identifiers. The only outbound calls are to FEC.gov and GitHub — public data, one direction. Nothing about you is sent out.",
+    "transparency.brand-ownership.title": "What happens when a brand changes owners?",
+    "transparency.brand-ownership.body": "A brand follows its current owner. Once a sale or spin-off is complete, the brand and its product barcodes move to the new owner. Ben & Jerry’s now matches to The Magnum Ice Cream Company, not Unilever.\n\nIf the seller keeps a minority stake, we note it on the new owner’s record. The brand still goes to the new owner. If we can’t confirm the current owner, the brand shows no match instead of a guess. Spot an outdated owner? Tap “Report a bug or correction” below.",
     "transparency.data-currency.title": "How current is the data?",
     "transparency.data-currency.body": "Contribution data follows FEC reporting cycles and covers every cycle since 2016. The entity list ships with the app and updates automatically when connected. Both are versioned and public on GitHub.",
     "transparency.limitations.title": "What doesn't the app cover?",

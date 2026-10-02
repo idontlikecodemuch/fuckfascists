@@ -119,6 +119,19 @@ export const BUNDLED_INFO_CONTENT: InfoContent = {
       category: 'data',
     },
     {
+      id: 'brand-ownership',
+      q: 'What happens when a brand changes owners?',
+      a:
+        'A brand follows its current owner. Once a sale or spin-off is complete, the ' +
+        'brand and its product barcodes move to the new owner. Ben & Jerry’s now ' +
+        'matches to The Magnum Ice Cream Company, not Unilever.\n\n' +
+        'If the seller keeps a minority stake, we note it on the new owner’s record. ' +
+        'The brand still goes to the new owner. If we can’t confirm the current ' +
+        'owner, the brand shows no match instead of a guess. Spot an outdated owner? ' +
+        'Tap “Report a bug or correction” below.',
+      category: 'data',
+    },
+    {
       id: 'data-currency',
       q: 'How current is the data?',
       a:
