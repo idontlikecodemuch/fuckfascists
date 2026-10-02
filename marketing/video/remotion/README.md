@@ -28,13 +28,13 @@ Measured Sep 28 on the hook: local Chrome 12 corrupt frames in 300, the shell 0 
 every output and fails on a flagged frame. Do not start Remotion Studio for
 renders; `scripts/render.sh` is the path.
 
-## Sep 30: App Store 1.1 screenshots + app preview (`scripts/appstore.sh`)
+## Sep 30: App Store screenshots + app preview (`scripts/appstore.sh`) — shipped with 1.2
 
 Same captures the videos were cut from (`marketing/video/captures/`, v1.1.0 build 9
 code), no new recording. `scripts/appstore.sh prep` pulls seven frames into
 `marketing/video/appstore/frames/` and cuts two phone-crop scorecard clips into
 `marketing/video/appstore/clips/`; `tiles` renders `Tile-01…07` (`<Still>`s,
-1320×2868 = 6.9" iPhone) to `marketing/appstore/1.1/screenshots-6.9/`; `preview`
+1320×2868 = 6.9" iPhone) to `marketing/appstore/1.2/screenshots-6.9/` (the store went 1.0 → 1.2; 1.1 was never submitted); `preview`
 renders `AppPreview` (886×1920, 30 fps, ~19.5 s, punk 30 s bed) next to them.
 Design: `src/appstore/tiles.ts` holds the seven captions; `Tile.tsx` is a caption
 band over a CSS bezel that bleeds off the bottom exactly at the tab bar's yellow line

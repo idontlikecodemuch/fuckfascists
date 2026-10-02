@@ -1,7 +1,7 @@
 import { staticFile } from 'remotion';
 
 /**
- * App Store screenshot tiles for 1.1 (6.9" canvas, 1320×2868). Each tile is one
+ * App Store screenshot tiles for 1.2 (6.9" canvas, 1320×2868). Each tile is one
  * frame pulled from the Sep 21–26 simulator/phone captures (v1.1.0 build 9 code)
  * into media/appstore/frames/ by scripts/appstore.sh, under a caption band. The
  * phone bleeds off the bottom of the canvas just below the tab bar's yellow line,
@@ -27,7 +27,7 @@ export const TILES: Tile[] = [
     id: 'map-file',
     frame: 'map_card',
     headline: 'TAP A BUSINESS.\nHERE’S THE FILE.',
-    sub: 'Every dollar, straight from FEC.gov.\nRecords rebuilt August 2026, 2016–2026 cycles.',
+    sub: 'Every dollar, straight from FEC.gov.\nSix election cycles, 2016–2026.',
   },
   {
     id: 'map-avoid',

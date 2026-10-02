@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# App Store 1.1 assets from the Sep 21–26 captures (v1.1.0 build 9 code):
+# App Store 1.2 assets from the Sep 21–26 captures (v1.1.0 build 9 code; Track/Scan UI unchanged in 1.2,
+# and the store never shipped 1.1):
 #   scripts/appstore.sh prep     → frames (7 stills) + the two scorecard phone-crop clips
 #   scripts/appstore.sh tiles    → seven 1320×2868 PNG tiles (6.9" iPhone)
 #   scripts/appstore.sh preview  → the 886×1920 app preview (H.264, 30 fps, ~19 s)
@@ -9,7 +10,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 SRC=${SRC:-/Users/christophershannon/fuckfascists/marketing/video/captures}
 MEDIA=${MEDIA:-/Users/christophershannon/fuckfascists/marketing/video/appstore}
-OUT=${OUT:-/Users/christophershannon/fuckfascists/marketing/appstore/1.1}
+OUT=${OUT:-/Users/christophershannon/fuckfascists/marketing/appstore/1.2}
 R8=$SRC/R8_scorecard_preview-generate-reveal-moneyrain-share.mp4
 
 frame() { ffmpeg -nostdin -v error -ss "$2" -i "$SRC/$1" -frames:v 1 -y "$MEDIA/frames/$3.png"; }
