@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "totalEntities": 757,
+    "totalEntities": 761,
     "updatedAt": "2026-10-01",
     "formatVersion": "1.0",
     "entityDonationHydrationSource": "FEC bulk PAS2/OTH files",
@@ -18224,9 +18224,6 @@
         "Hellmann's",
         "Vaseline",
         "Knorr",
-        "Breyers",
-        "Ben & Jerry's",
-        "Magnum",
         "Maille",
         "Calve",
         "Amora",
@@ -18237,8 +18234,7 @@
       "domains": [
         "unilever.com",
         "unileverusa.com",
-        "hellmanns.com",
-        "benjerry.com"
+        "hellmanns.com"
       ],
       "categoryTags": [
         "food",
@@ -18247,8 +18243,9 @@
       ],
       "ceoName": "Fernando Fernandez",
       "fecCommitteeId": null,
-      "lastVerifiedDate": "2026-04-20",
-      "verificationStatus": "manual"
+      "lastVerifiedDate": "2026-10-01",
+      "verificationStatus": "manual",
+      "notes": "Ice cream brands (Ben & Jerry's, Breyers, Magnum and others) moved to magnum-ice-cream-company after the demerger completed 2025-12-06; Unilever kept about 19.9% of that company and plans to sell it within five years. Product rows for brands Unilever sold earlier (Country Crock, I Can't Believe It's Not Butter and Brummel & Brown to Upfield in 2018; Ragu to Mizkan in 2014; Lipton tea bags to LIPTON Teas and Infusions in 2022) were removed from products.json. See docs/BRAND_OWNERSHIP_2026-10-01.md."
     },
     {
       "id": "ferrero",
@@ -19923,10 +19920,8 @@
         "Xtra Laundry Detergent",
         "Batiste",
         "Waterpik",
-        "Spinbrush",
         "First Response",
-        "Zicam",
-        "Vitafusion"
+        "Zicam"
       ],
       "domains": [
         "churchdwight.com",
@@ -19944,7 +19939,7 @@
       "fecCommitteeId": null,
       "lastVerifiedDate": "2026-10-01",
       "verificationStatus": "manual",
-      "notes": "Added from product coverage gap: 5 OFF matched products, led by Arm & Hammer. FEC committee hydration pending. 2026-09-24: no matching committee in local FEC committee masters 2016-2026 (Arm & Hammer baking soda scan reported as nothing on file); bulk verification pending."
+      "notes": "Added from product coverage gap: 5 OFF matched products, led by Arm & Hammer. FEC committee hydration pending. 2026-09-24: no matching committee in local FEC committee masters 2016-2026 (Arm & Hammer baking soda scan reported as nothing on file); bulk verification pending. Vitafusion moved to piping-rock-health-products (sale closed 2025-12-31). Spinbrush removed: Church & Dwight exited the brand by the end of 2025 and the buyer is not named. See docs/BRAND_OWNERSHIP_2026-10-01.md."
     },
     {
       "id": "clorox",
@@ -20453,14 +20448,8 @@
         "Mucinex",
         "Durex",
         "Enfamil",
-        "Air Wick",
         "Clearasil",
-        "Woolite",
-        "Resolve",
         "Veet",
-        "Easy-Off",
-        "Spray 'n Wash",
-        "Calgon",
         "Dettol"
       ],
       "domains": [
@@ -20468,7 +20457,6 @@
         "lysol.com",
         "finishdishwashing.com",
         "mucinex.com",
-        "airwick.us",
         "enfamil.com"
       ],
       "categoryTags": [
@@ -20479,8 +20467,9 @@
       ],
       "ceoName": "Kris Licht",
       "fecCommitteeId": null,
-      "lastVerifiedDate": "2026-04-20",
-      "verificationStatus": "manual"
+      "lastVerifiedDate": "2026-10-01",
+      "verificationStatus": "manual",
+      "notes": "Air Wick, Woolite, Resolve, Easy-Off and Calgon moved to vestacy after the Essential Home sale to Advent International closed 2025-12-31; Reckitt keeps a 30% stake in that business. French's moved to McCormick in 2017. Spray 'n Wash removed: its current owner after the sale is unconfirmed (not named by Reckitt or Vestacy), so it shows no match. See docs/BRAND_OWNERSHIP_2026-10-01.md."
     },
     {
       "id": "henkel",
@@ -20495,7 +20484,6 @@
         "Snuggle",
         "Got2b",
         "All Laundry Detergent",
-        "Right Guard",
         "Pril",
         "Syoss",
         "Soft Scrub",
@@ -20516,8 +20504,9 @@
       ],
       "ceoName": "Carsten Knobel",
       "fecCommitteeId": null,
-      "lastVerifiedDate": "2026-04-20",
-      "verificationStatus": "manual"
+      "lastVerifiedDate": "2026-10-01",
+      "verificationStatus": "manual",
+      "notes": "Right Guard moved to thriving-brands (sold by Henkel in 2021). See docs/BRAND_OWNERSHIP_2026-10-01.md."
     },
     {
       "id": "beyond-meat",
@@ -39856,6 +39845,108 @@
       "lastVerifiedDate": "2026-10-01",
       "verificationStatus": "manual",
       "notes": "Added 2026-09-24 for household coverage (Reynolds Wrap, Hefty). Scott Huckins became President and CEO January 1, 2025. No matching committee found in local FEC committee masters 2016-2026; bulk verification pending."
+    },
+    {
+      "id": "magnum-ice-cream-company",
+      "canonicalName": "The Magnum Ice Cream Company N.V.",
+      "aliases": [
+        "The Magnum Ice Cream Company",
+        "Magnum Ice Cream Company",
+        "Magnum",
+        "Ben & Jerry's",
+        "Breyers",
+        "Klondike",
+        "Talenti",
+        "Good Humor",
+        "Popsicle",
+        "Cornetto",
+        "Yasso"
+      ],
+      "domains": [
+        "magnumicecream.com",
+        "benjerry.com",
+        "breyers.com"
+      ],
+      "categoryTags": [
+        "food",
+        "consumer-goods"
+      ],
+      "ceoName": "Peter ter Kulve",
+      "fecCommitteeId": null,
+      "lastVerifiedDate": "2026-10-01",
+      "verificationStatus": "manual",
+      "notes": "Added 2026-10-01. Unilever's ice cream business, demerged 2025-12-06 and listed in Amsterdam, London and New York. Unilever retains about 19.9% and plans to sell it within five years. Peter ter Kulve is CEO. Sources: unilever.com/investors/the-magnum-ice-cream-company-demerger; foodbusinessnews.net (brand list). No PAC: no committee for this company or its owners in local FEC committee masters 2016-2026 (verify:entities:bulk near misses were unrelated: BACKPAC, MD Resolve, Right Track PAC, Vision PAC)."
+    },
+    {
+      "id": "vestacy",
+      "canonicalName": "Vestacy",
+      "aliases": [
+        "Vestacy",
+        "Air Wick",
+        "Woolite",
+        "Resolve",
+        "Easy-Off",
+        "Calgon"
+      ],
+      "domains": [
+        "vestacy.com",
+        "airwick.us",
+        "woolite.us",
+        "easyoff.us"
+      ],
+      "categoryTags": [
+        "consumer-goods",
+        "household"
+      ],
+      "ceoName": "Marcello Bottoli",
+      "fecCommitteeId": null,
+      "lastVerifiedDate": "2026-10-01",
+      "verificationStatus": "manual",
+      "notes": "Added 2026-10-01. Reckitt's former Essential Home business, sold to Advent International (majority owner) on 2025-12-31; Reckitt keeps a 30% equity stake in Advent's acquisition vehicle. Marcello Bottoli is CEO. Sources: reckitt.com/news/reckitt-agrees-to-divest-essential-home; reckitt.com/news/reckitt-completes-divestment-of-essential-home. No PAC: no committee for this company or its owners in local FEC committee masters 2016-2026 (verify:entities:bulk near misses were unrelated: BACKPAC, MD Resolve, Right Track PAC, Vision PAC)."
+    },
+    {
+      "id": "thriving-brands",
+      "canonicalName": "Thriving Brands LLC",
+      "aliases": [
+        "Thriving Brands",
+        "Right Guard",
+        "Dry Idea"
+      ],
+      "domains": [
+        "rightguard.com"
+      ],
+      "categoryTags": [
+        "consumer-goods",
+        "personal-care"
+      ],
+      "ceoName": "Craig Cappozzo",
+      "fecCommitteeId": null,
+      "lastVerifiedDate": "2026-10-01",
+      "verificationStatus": "manual",
+      "notes": "Added 2026-10-01. Formed in 2021 by Trive Capital (Dallas) to buy Right Guard and Dry Idea from Henkel. Craig Cappozzo is CEO per the 2021 formation announcement. Sources: trivecapital.com (formation release); openFDA NDC labeler 82699 lists Right Guard under Thriving Brands LLC. No PAC: no committee for this company or its owners in local FEC committee masters 2016-2026 (verify:entities:bulk near misses were unrelated: BACKPAC, MD Resolve, Right Track PAC, Vision PAC)."
+    },
+    {
+      "id": "piping-rock-health-products",
+      "canonicalName": "Piping Rock Health Products LLC",
+      "aliases": [
+        "Piping Rock",
+        "Piping Rock Health Products",
+        "Vitafusion",
+        "L'il Critters"
+      ],
+      "domains": [
+        "pipingrock.com",
+        "vitafusion.com"
+      ],
+      "categoryTags": [
+        "consumer-goods",
+        "health"
+      ],
+      "ceoName": "Scott Rudolph",
+      "fecCommitteeId": null,
+      "lastVerifiedDate": "2026-10-01",
+      "verificationStatus": "manual",
+      "notes": "Added 2026-10-01. Ronkonkoma, NY supplement maker founded 2011 by Scott Rudolph (former NBTY CEO). Bought Vitafusion and L'il Critters from Church & Dwight; the sale closed 2025-12-31 per Church & Dwight's FY2025 10-K. Sources: Church & Dwight 8-K (2025-12-09); drugstorenews.com Q&A with Scott Rudolph. No PAC: no committee for this company or its owners in local FEC committee masters 2016-2026 (verify:entities:bulk near misses were unrelated: BACKPAC, MD Resolve, Right Track PAC, Vision PAC)."
     }
   ]
 }

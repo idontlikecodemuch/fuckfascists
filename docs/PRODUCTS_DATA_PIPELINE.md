@@ -323,6 +323,8 @@ Behavior:
 
 That rebuild mode is what made later cleanup passes cheap.
 
+Manual edits the sync does not produce are lost on a rebuild and must be reapplied: the beta-feedback exact row 5201156250881 (PepsiCo) and the 2026-10-01 brand-ownership corrections listed in `docs/BRAND_OWNERSHIP_2026-10-01.md` (French's rows to McCormick, ice cream prefixes to The Magnum Ice Cream Company, Upfield spreads and other sold brands removed from Unilever).
+
 ## Script Usage
 
 Full scan:

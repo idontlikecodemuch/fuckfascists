@@ -1,13 +1,14 @@
 {
   "_meta": {
     "description": "Modular product-producer lookup index that resolves to existing entity IDs only.",
-    "lastUpdated": "2026-06-15",
+    "lastUpdated": "2026-10-01",
     "confidence": "heuristic + public research + off-bulk db aggregation",
     "researchFocus": "UPC-heavy parent producers and major shelf brands found in stores; keep brand aliases tied to parent-company candidates.",
     "researchNotes": [
       "The `producers` array is now derived from the OFF bulk DB and filtered to repeated UPC-prefix evidence for runtime use.",
       "The `producerResearch` array remains the broader reference directory and now includes DB-backed prefix and brand observations for each producer.",
-      "entityIdExists reflects current `entities.json` canonical-name and alias coverage only; alias matches are not a separate legal-entity reconciliation pass."
+      "entityIdExists reflects current `entities.json` canonical-name and alias coverage only; alias matches are not a separate legal-entity reconciliation pass.",
+      "2026-10-01 manual ownership corrections (not produced by the OFF sync; reapply after any rebuild until a curated layer exists): see docs/BRAND_OWNERSHIP_2026-10-01.md."
     ],
     "researchEntryCount": 209,
     "researchSources": [
@@ -42,7 +43,7 @@
         "accessedDate": "2026-03-24"
       }
     ],
-    "producerCount": 111,
+    "producerCount": 112,
     "producerSource": "Runtime producers come from OFF bulk DB prefix aggregation filtered to repeated UPC evidence.",
     "syncCheckpoint": {
       "partial": false,
@@ -51,7 +52,7 @@
       "documentsScanned": 4403001,
       "updatedAt": "2026-05-26T13:53:26Z"
     },
-    "productCount": 2001,
+    "productCount": 1977,
     "productSource": "Runtime exact products come from OFF bulk DB product rows that match one existing producer seed and current entity ID, plus narrow beta-feedback exact barcode overrides."
   },
   "producers": [
@@ -615,7 +616,6 @@
         "871132",
         "871410",
         "871120",
-        "077567",
         "048001",
         "871256",
         "041000",
@@ -629,7 +629,6 @@
         "871811",
         "079400",
         "068400",
-        "076840",
         "871242",
         "750630",
         "890103",
@@ -654,10 +653,8 @@
         "301423",
         "500018",
         "871170",
-        "027400",
         "400040",
         "888646",
-        "011115",
         "480088",
         "871764",
         "590030",
@@ -676,7 +673,6 @@
         "600108",
         "871160",
         "872131",
-        "040600",
         "063350",
         "317805",
         "401330",
@@ -699,12 +695,25 @@
         "Hellmann's",
         "Vaseline",
         "Knorr",
-        "Lipton",
-        "Breyers",
-        "Ben& Jerry's",
-        "Magnum"
+        "Lipton"
       ],
       "source": "off-bulk"
+    },
+    {
+      "canonicalProducerName": "The Magnum Ice Cream Company",
+      "entityId": "magnum-ice-cream-company",
+      "entityMatchType": "manual-ownership-2026-10-01",
+      "matchedProductCount": 44,
+      "prefixThreshold": null,
+      "prefixes": [
+        "077567",
+        "076840"
+      ],
+      "observedBrands": [
+        "Breyers",
+        "Ben & Jerry's"
+      ],
+      "source": "manual-ownership-2026-10-01"
     },
     {
       "canonicalProducerName": "Starbucks",
@@ -3081,7 +3090,6 @@
       "matchedProductCount": 189,
       "prefixThreshold": 2,
       "prefixes": [
-        "041500",
         "019200",
         "363824",
         "305994",
@@ -3100,11 +3108,7 @@
       "observedBrands": [
         "Lysol",
         "Finish",
-        "Mucinex",
-        "French's",
-        "Frank's",
-        "Cattlemen's",
-        "Frank's RedHot"
+        "Mucinex"
       ],
       "source": "off-bulk"
     },
@@ -12873,18 +12877,6 @@
       "matchedTerm": "coca cola"
     },
     {
-      "barcode": "0027400272554",
-      "displayBarcode": "027400272554",
-      "productName": "28% vegetable oil spread",
-      "canonicalProducerName": "Unilever",
-      "entityId": "unilever",
-      "entityMatchType": "alias",
-      "matchedProducerProductCount": 4102,
-      "source": "off-bulk-exact",
-      "brandName": "Unilever",
-      "matchedTerm": "unilever"
-    },
-    {
       "barcode": "0048500201329",
       "displayBarcode": "048500201329",
       "productName": "Caffè Mocha",
@@ -13219,18 +13211,6 @@
       "source": "off-bulk-exact",
       "brandName": "Ball Park",
       "matchedTerm": "ball park"
-    },
-    {
-      "barcode": "0669149105528",
-      "displayBarcode": "669149105528",
-      "productName": "Alkalized water",
-      "canonicalProducerName": "Dabur",
-      "entityId": "dabur",
-      "entityMatchType": "alias",
-      "matchedProducerProductCount": 645,
-      "source": "off-bulk-exact",
-      "brandName": "Affinitylifestyles.Com Inc",
-      "matchedTerm": "real"
     },
     {
       "barcode": "0068437389778",
@@ -13752,9 +13732,9 @@
       "barcode": "0041500053165",
       "displayBarcode": "041500053165",
       "productName": "Base Barbecue Sauce",
-      "canonicalProducerName": "Reckitt Benckiser",
-      "entityId": "reckitt",
-      "entityMatchType": "alias",
+      "canonicalProducerName": "McCormick",
+      "entityId": "mccormick",
+      "entityMatchType": "manual-ownership-2026-10-01",
       "matchedProducerProductCount": 189,
       "source": "off-bulk-exact",
       "brandName": "Cattlemen's",
@@ -13999,18 +13979,6 @@
       "source": "off-bulk-exact",
       "brandName": "Coca-Cola",
       "matchedTerm": "coca cola"
-    },
-    {
-      "barcode": "0040600389181",
-      "displayBarcode": "040600389181",
-      "productName": "28% vegetable oil spread",
-      "canonicalProducerName": "Unilever",
-      "entityId": "unilever",
-      "entityMatchType": "alias",
-      "matchedProducerProductCount": 4102,
-      "source": "off-bulk-exact",
-      "brandName": "I Can'T Believe It's Not Butter",
-      "matchedTerm": "unilever"
     },
     {
       "barcode": "0762111006790",
@@ -14733,18 +14701,6 @@
       "matchedTerm": "ottogi"
     },
     {
-      "barcode": "0070481444280",
-      "displayBarcode": "070481444280",
-      "productName": "Mustard, Arizona Heat",
-      "canonicalProducerName": "Colgate-Palmolive",
-      "entityId": "colgate-palmolive",
-      "entityMatchType": "alias",
-      "matchedProducerProductCount": 278,
-      "source": "off-bulk-exact",
-      "brandName": "Olds Products Co",
-      "matchedTerm": "colgate palmolive"
-    },
-    {
       "barcode": "0072250007603",
       "displayBarcode": "072250007603",
       "productName": "100% whole wheat tortillas",
@@ -14868,9 +14824,9 @@
       "barcode": "0041500058450",
       "displayBarcode": "041500058450",
       "productName": "Beef Stew Seasoning Mix",
-      "canonicalProducerName": "Reckitt Benckiser",
-      "entityId": "reckitt",
-      "entityMatchType": "alias",
+      "canonicalProducerName": "McCormick",
+      "entityId": "mccormick",
+      "entityMatchType": "manual-ownership-2026-10-01",
       "matchedProducerProductCount": 189,
       "source": "off-bulk-exact",
       "brandName": "French's",
@@ -15105,18 +15061,6 @@
       "matchedTerm": "coca cola"
     },
     {
-      "barcode": "0011115135778",
-      "displayBarcode": "011115135778",
-      "productName": "Brummel& brown buttery spread, 10% nonfat yogurt, 35% vegetable oil spread",
-      "canonicalProducerName": "Unilever",
-      "entityId": "unilever",
-      "entityMatchType": "alias",
-      "matchedProducerProductCount": 4102,
-      "source": "off-bulk-exact",
-      "brandName": "Unilever",
-      "matchedTerm": "unilever"
-    },
-    {
       "barcode": "0048500201299",
       "displayBarcode": "048500201299",
       "productName": "Caramel Macchiato",
@@ -15175,18 +15119,6 @@
       "source": "off-bulk-exact",
       "brandName": "Fleury Michon",
       "matchedTerm": "fleury michon"
-    },
-    {
-      "barcode": "0030955477329",
-      "displayBarcode": "030955477329",
-      "productName": "Buffalo Valley Grains, Snicker Doodles Cookies",
-      "canonicalProducerName": "Mars, Inc.",
-      "entityId": "mars",
-      "entityMatchType": "alias",
-      "matchedProducerProductCount": 1933,
-      "source": "off-bulk-exact",
-      "brandName": "First Row Software Publishing",
-      "matchedTerm": "snickers"
     },
     {
       "barcode": "0009800630127",
@@ -15960,9 +15892,9 @@
       "barcode": "0041500058023",
       "displayBarcode": "041500058023",
       "productName": "Brown Gravy Mix",
-      "canonicalProducerName": "Reckitt Benckiser",
-      "entityId": "reckitt",
-      "entityMatchType": "alias",
+      "canonicalProducerName": "McCormick",
+      "entityId": "mccormick",
+      "entityMatchType": "manual-ownership-2026-10-01",
       "matchedProducerProductCount": 189,
       "source": "off-bulk-exact",
       "brandName": "French's",
@@ -16183,18 +16115,6 @@
       "source": "off-bulk-exact",
       "brandName": "Coca-Cola",
       "matchedTerm": "coca cola"
-    },
-    {
-      "barcode": "0011115340035",
-      "displayBarcode": "011115340035",
-      "productName": "Brummel& brown buttery spread, 10% nonfat yogurt, 35% vegetable oil spread",
-      "canonicalProducerName": "Unilever",
-      "entityId": "unilever",
-      "entityMatchType": "alias",
-      "matchedProducerProductCount": 4102,
-      "source": "off-bulk-exact",
-      "brandName": "Unilever",
-      "matchedTerm": "unilever"
     },
     {
       "barcode": "0012000162787",
@@ -17040,9 +16960,9 @@
       "barcode": "0041500785707",
       "displayBarcode": "041500785707",
       "productName": "Buffalo Wings Sauce",
-      "canonicalProducerName": "Reckitt Benckiser",
-      "entityId": "reckitt",
-      "entityMatchType": "alias",
+      "canonicalProducerName": "McCormick",
+      "entityId": "mccormick",
+      "entityMatchType": "manual-ownership-2026-10-01",
       "matchedProducerProductCount": 189,
       "source": "off-bulk-exact",
       "brandName": "Frank's RedHot",
@@ -17083,18 +17003,6 @@
       "source": "off-bulk-exact",
       "brandName": "Centrum",
       "matchedTerm": "centrum"
-    },
-    {
-      "barcode": "5012818160178",
-      "displayBarcode": "5012818160178",
-      "productName": "Chopped Red Chillies",
-      "canonicalProducerName": "Procter & Gamble",
-      "entityId": "procter-gamble",
-      "entityMatchType": "alias",
-      "matchedProducerProductCount": 156,
-      "source": "off-bulk-exact",
-      "brandName": "Very Lazy",
-      "matchedTerm": "gillette"
     },
     {
       "barcode": "0070737014755",
@@ -17251,18 +17159,6 @@
       "source": "off-bulk-exact",
       "brandName": "Coca-Cola",
       "matchedTerm": "coca cola"
-    },
-    {
-      "barcode": "0011115370001",
-      "displayBarcode": "011115370001",
-      "productName": "Brummel& brown buttery spread, creamy strawberry, 10% nonfat yogurt, 34% vegetable oil spread",
-      "canonicalProducerName": "Unilever",
-      "entityId": "unilever",
-      "entityMatchType": "alias",
-      "matchedProducerProductCount": 4102,
-      "source": "off-bulk-exact",
-      "brandName": "Unilever",
-      "matchedTerm": "unilever"
     },
     {
       "barcode": "0012000043673",
@@ -18108,9 +18004,9 @@
       "barcode": "0041500220208",
       "displayBarcode": "041500220208",
       "productName": "CRISPY FRIED ONIONS",
-      "canonicalProducerName": "Reckitt Benckiser",
-      "entityId": "reckitt",
-      "entityMatchType": "alias",
+      "canonicalProducerName": "McCormick",
+      "entityId": "mccormick",
+      "entityMatchType": "manual-ownership-2026-10-01",
       "matchedProducerProductCount": 189,
       "source": "off-bulk-exact",
       "brandName": "French's",
@@ -18321,18 +18217,6 @@
       "matchedTerm": "coca cola"
     },
     {
-      "barcode": "0038252398156",
-      "displayBarcode": "038252398156",
-      "productName": "Chocolatey Fudge Candy Bites",
-      "canonicalProducerName": "Unilever",
-      "entityId": "unilever",
-      "entityMatchType": "alias",
-      "matchedProducerProductCount": 4102,
-      "source": "off-bulk-exact",
-      "brandName": "Klondike",
-      "matchedTerm": "unilever"
-    },
-    {
       "barcode": "0048500022450",
       "displayBarcode": "048500022450",
       "productName": "Chilled Espresso Breverage",
@@ -18372,9 +18256,9 @@
       "barcode": "3014680041618",
       "displayBarcode": "3014680041618",
       "productName": "Café qualité filtre décaféiné",
-      "canonicalProducerName": "Mondelez International",
-      "entityId": "mondelez",
-      "entityMatchType": "alias",
+      "canonicalProducerName": "JDE Peet's",
+      "entityId": "jde-peets",
+      "entityMatchType": "manual-ownership-2026-10-01",
       "matchedProducerProductCount": 2373,
       "source": "off-bulk-exact",
       "brandName": "Maxwell House",
@@ -19176,9 +19060,9 @@
       "barcode": "0041500785431",
       "displayBarcode": "041500785431",
       "productName": "Carolina Tangy Gold Barbecue Sauce",
-      "canonicalProducerName": "Reckitt Benckiser",
-      "entityId": "reckitt",
-      "entityMatchType": "alias",
+      "canonicalProducerName": "McCormick",
+      "entityId": "mccormick",
+      "entityMatchType": "manual-ownership-2026-10-01",
       "matchedProducerProductCount": 189,
       "source": "off-bulk-exact",
       "brandName": "Cattlemen's",
@@ -19387,18 +19271,6 @@
       "source": "off-bulk-exact",
       "brandName": "Coca-Cola",
       "matchedTerm": "coca cola"
-    },
-    {
-      "barcode": "0036200014981",
-      "displayBarcode": "036200014981",
-      "productName": "Chunky Garden Combination Sauce",
-      "canonicalProducerName": "Unilever",
-      "entityId": "unilever",
-      "entityMatchType": "alias",
-      "matchedProducerProductCount": 4102,
-      "source": "off-bulk-exact",
-      "brandName": "RAGÚ",
-      "matchedTerm": "unilever"
     },
     {
       "barcode": "0048500022443",
@@ -20244,9 +20116,9 @@
       "barcode": "0041500805023",
       "displayBarcode": "041500805023",
       "productName": "Cayenne Pepper Sauce",
-      "canonicalProducerName": "Reckitt Benckiser",
-      "entityId": "reckitt",
-      "entityMatchType": "alias",
+      "canonicalProducerName": "McCormick",
+      "entityId": "mccormick",
+      "entityMatchType": "manual-ownership-2026-10-01",
       "matchedProducerProductCount": 189,
       "source": "off-bulk-exact",
       "brandName": "Frank's RedHot",
@@ -21300,9 +21172,9 @@
       "barcode": "0041500057118",
       "displayBarcode": "041500057118",
       "productName": "Chicken Gravy Mix",
-      "canonicalProducerName": "Reckitt Benckiser",
-      "entityId": "reckitt",
-      "entityMatchType": "alias",
+      "canonicalProducerName": "McCormick",
+      "entityId": "mccormick",
+      "entityMatchType": "manual-ownership-2026-10-01",
       "matchedProducerProductCount": 189,
       "source": "off-bulk-exact",
       "brandName": "French's",
@@ -21331,18 +21203,6 @@
       "source": "off-bulk-exact",
       "brandName": "Centrum",
       "matchedTerm": "centrum"
-    },
-    {
-      "barcode": "0036602312029",
-      "displayBarcode": "036602312029",
-      "productName": "Ricola Dual Action",
-      "canonicalProducerName": "Procter & Gamble",
-      "entityId": "procter-gamble",
-      "entityMatchType": "alias",
-      "matchedProducerProductCount": 156,
-      "source": "off-bulk-exact",
-      "brandName": "Ricola",
-      "matchedTerm": "tide"
     },
     {
       "barcode": "0035493014616",
@@ -21499,18 +21359,6 @@
       "source": "off-bulk-exact",
       "brandName": "Coca-Cola",
       "matchedTerm": "coca cola"
-    },
-    {
-      "barcode": "0040600215893",
-      "displayBarcode": "040600215893",
-      "productName": "Cooking Spray, Original",
-      "canonicalProducerName": "Unilever",
-      "entityId": "unilever",
-      "entityMatchType": "alias",
-      "matchedProducerProductCount": 4102,
-      "source": "off-bulk-exact",
-      "brandName": "I Can'T Believe It's Not Butter",
-      "matchedTerm": "unilever"
     },
     {
       "barcode": "0012000044946",
@@ -22356,9 +22204,9 @@
       "barcode": "0041500058078",
       "displayBarcode": "041500058078",
       "productName": "Chili-O",
-      "canonicalProducerName": "Reckitt Benckiser",
-      "entityId": "reckitt",
-      "entityMatchType": "alias",
+      "canonicalProducerName": "McCormick",
+      "entityId": "mccormick",
+      "entityMatchType": "manual-ownership-2026-10-01",
       "matchedProducerProductCount": 189,
       "source": "off-bulk-exact",
       "brandName": "French's",
@@ -22543,18 +22391,6 @@
       "source": "off-bulk-exact",
       "brandName": "Coca-Cola",
       "matchedTerm": "coca cola"
-    },
-    {
-      "barcode": "0027400250620",
-      "displayBarcode": "027400250620",
-      "productName": "Country crock calcium",
-      "canonicalProducerName": "Unilever",
-      "entityId": "unilever",
-      "entityMatchType": "alias",
-      "matchedProducerProductCount": 4102,
-      "source": "off-bulk-exact",
-      "brandName": "Country Crock",
-      "matchedTerm": "unilever"
     },
     {
       "barcode": "0012000151743",
@@ -23400,9 +23236,9 @@
       "barcode": "0041500058290",
       "displayBarcode": "041500058290",
       "productName": "Chilio seasoning mix",
-      "canonicalProducerName": "Reckitt Benckiser",
-      "entityId": "reckitt",
-      "entityMatchType": "alias",
+      "canonicalProducerName": "McCormick",
+      "entityId": "mccormick",
+      "entityMatchType": "manual-ownership-2026-10-01",
       "matchedProducerProductCount": 189,
       "source": "off-bulk-exact",
       "brandName": "French's",
@@ -23575,18 +23411,6 @@
       "source": "off-bulk-exact",
       "brandName": "Coca-Cola",
       "matchedTerm": "coca cola"
-    },
-    {
-      "barcode": "0027400103087",
-      "displayBarcode": "027400103087",
-      "productName": "Country crock original",
-      "canonicalProducerName": "Unilever",
-      "entityId": "unilever",
-      "entityMatchType": "alias",
-      "matchedProducerProductCount": 4102,
-      "source": "off-bulk-exact",
-      "brandName": "Country Crock",
-      "matchedTerm": "unilever"
     },
     {
       "barcode": "0012000151828",
@@ -24432,9 +24256,9 @@
       "barcode": "0041500000251",
       "displayBarcode": "041500000251",
       "productName": "Classic Yellow Mustard",
-      "canonicalProducerName": "Reckitt Benckiser",
-      "entityId": "reckitt",
-      "entityMatchType": "alias",
+      "canonicalProducerName": "McCormick",
+      "entityId": "mccormick",
+      "entityMatchType": "manual-ownership-2026-10-01",
       "matchedProducerProductCount": 189,
       "source": "off-bulk-exact",
       "brandName": "French's",
@@ -24595,18 +24419,6 @@
       "source": "off-bulk-exact",
       "brandName": "Coca-Cola",
       "matchedTerm": "coca cola"
-    },
-    {
-      "barcode": "0027400323195",
-      "displayBarcode": "027400323195",
-      "productName": "Country crock spreadable butter with canola oil, original, salted",
-      "canonicalProducerName": "Unilever",
-      "entityId": "unilever",
-      "entityMatchType": "alias",
-      "matchedProducerProductCount": 4102,
-      "source": "off-bulk-exact",
-      "brandName": "Country Crock",
-      "matchedTerm": "unilever"
     },
     {
       "barcode": "0012000813313",
@@ -25452,9 +25264,9 @@
       "barcode": "0041500000312",
       "displayBarcode": "041500000312",
       "productName": "Classic Yellow Mustard",
-      "canonicalProducerName": "Reckitt Benckiser",
-      "entityId": "reckitt",
-      "entityMatchType": "alias",
+      "canonicalProducerName": "McCormick",
+      "entityId": "mccormick",
+      "entityMatchType": "manual-ownership-2026-10-01",
       "matchedProducerProductCount": 189,
       "source": "off-bulk-exact",
       "brandName": "French's",
@@ -25615,18 +25427,6 @@
       "source": "off-bulk-exact",
       "brandName": "Coca-Cola",
       "matchedTerm": "coca cola"
-    },
-    {
-      "barcode": "0027400103223",
-      "displayBarcode": "027400103223",
-      "productName": "Country crock vegetable oil spread original",
-      "canonicalProducerName": "Unilever",
-      "entityId": "unilever",
-      "entityMatchType": "alias",
-      "matchedProducerProductCount": 4102,
-      "source": "off-bulk-exact",
-      "brandName": "Country Crock",
-      "matchedTerm": "unilever"
     },
     {
       "barcode": "0492716500385",
@@ -26472,9 +26272,9 @@
       "barcode": "0041500007007",
       "displayBarcode": "041500007007",
       "productName": "Classic Yellow Mustard",
-      "canonicalProducerName": "Reckitt Benckiser",
-      "entityId": "reckitt",
-      "entityMatchType": "alias",
+      "canonicalProducerName": "McCormick",
+      "entityId": "mccormick",
+      "entityMatchType": "manual-ownership-2026-10-01",
       "matchedProducerProductCount": 189,
       "source": "off-bulk-exact",
       "brandName": "French's",
@@ -26635,18 +26435,6 @@
       "source": "off-bulk-exact",
       "brandName": "Coca-Cola",
       "matchedTerm": "coca cola"
-    },
-    {
-      "barcode": "0027400391187",
-      "displayBarcode": "027400391187",
-      "productName": "Country crock, churn style, 40% vegetable oil spread",
-      "canonicalProducerName": "Unilever",
-      "entityId": "unilever",
-      "entityMatchType": "alias",
-      "matchedProducerProductCount": 4102,
-      "source": "off-bulk-exact",
-      "brandName": "Country Crock",
-      "matchedTerm": "unilever"
     },
     {
       "barcode": "0012000101519",
@@ -27492,9 +27280,9 @@
       "barcode": "0041500756776",
       "displayBarcode": "041500756776",
       "productName": "Classic Yellow Mustard",
-      "canonicalProducerName": "Reckitt Benckiser",
-      "entityId": "reckitt",
-      "entityMatchType": "alias",
+      "canonicalProducerName": "McCormick",
+      "entityId": "mccormick",
+      "entityMatchType": "manual-ownership-2026-10-01",
       "matchedProducerProductCount": 189,
       "source": "off-bulk-exact",
       "brandName": "French's",
@@ -27655,18 +27443,6 @@
       "source": "off-bulk-exact",
       "brandName": "Coca-Cola",
       "matchedTerm": "coca cola"
-    },
-    {
-      "barcode": "0027400252280",
-      "displayBarcode": "027400252280",
-      "productName": "Country crock, light, 28% vegetable oil spread",
-      "canonicalProducerName": "Unilever",
-      "entityId": "unilever",
-      "entityMatchType": "alias",
-      "matchedProducerProductCount": 4102,
-      "source": "off-bulk-exact",
-      "brandName": "Country Crock",
-      "matchedTerm": "unilever"
     },
     {
       "barcode": "0012000103131",
@@ -28512,9 +28288,9 @@
       "barcode": "0041500763675",
       "displayBarcode": "041500763675",
       "productName": "Classic Yellow Mustard",
-      "canonicalProducerName": "Reckitt Benckiser",
-      "entityId": "reckitt",
-      "entityMatchType": "alias",
+      "canonicalProducerName": "McCormick",
+      "entityId": "mccormick",
+      "entityMatchType": "manual-ownership-2026-10-01",
       "matchedProducerProductCount": 189,
       "source": "off-bulk-exact",
       "brandName": "Reckitt Benckiser Inc",
@@ -28675,18 +28451,6 @@
       "source": "off-bulk-exact",
       "brandName": "Coca-Cola",
       "matchedTerm": "coca cola"
-    },
-    {
-      "barcode": "0027400174025",
-      "displayBarcode": "027400174025",
-      "productName": "Country crock, original, 40% vegetable oil spread",
-      "canonicalProducerName": "Unilever",
-      "entityId": "unilever",
-      "entityMatchType": "alias",
-      "matchedProducerProductCount": 4102,
-      "source": "off-bulk-exact",
-      "brandName": "Country Crock",
-      "matchedTerm": "unilever"
     },
     {
       "barcode": "0012000101144",
@@ -29532,9 +29296,9 @@
       "barcode": "0041500819389",
       "displayBarcode": "041500819389",
       "productName": "Classic Yellow Mustard",
-      "canonicalProducerName": "Reckitt Benckiser",
-      "entityId": "reckitt",
-      "entityMatchType": "alias",
+      "canonicalProducerName": "McCormick",
+      "entityId": "mccormick",
+      "entityMatchType": "manual-ownership-2026-10-01",
       "matchedProducerProductCount": 189,
       "source": "off-bulk-exact",
       "brandName": "French's",
@@ -29683,18 +29447,6 @@
       "source": "off-bulk-exact",
       "brandName": "Coca-Cola",
       "matchedTerm": "coca cola"
-    },
-    {
-      "barcode": "0027400103209",
-      "displayBarcode": "027400103209",
-      "productName": "Country crock, original, 60% vegetable oil spread",
-      "canonicalProducerName": "Unilever",
-      "entityId": "unilever",
-      "entityMatchType": "alias",
-      "matchedProducerProductCount": 4102,
-      "source": "off-bulk-exact",
-      "brandName": "Country Crock",
-      "matchedTerm": "unilever"
     },
     {
       "barcode": "0012000109508",
@@ -30540,9 +30292,9 @@
       "barcode": "0041500932088",
       "displayBarcode": "041500932088",
       "productName": "Classic Yellow Sweet Mustard With Brown Sugar",
-      "canonicalProducerName": "Reckitt Benckiser",
-      "entityId": "reckitt",
-      "entityMatchType": "alias",
+      "canonicalProducerName": "McCormick",
+      "entityId": "mccormick",
+      "entityMatchType": "manual-ownership-2026-10-01",
       "matchedProducerProductCount": 189,
       "source": "off-bulk-exact",
       "brandName": "French's",
@@ -30691,18 +30443,6 @@
       "source": "off-bulk-exact",
       "brandName": "Coca-Cola",
       "matchedTerm": "coca cola"
-    },
-    {
-      "barcode": "0027400130106",
-      "displayBarcode": "027400130106",
-      "productName": "Country crock, vegetable oil spread, cinnamon",
-      "canonicalProducerName": "Unilever",
-      "entityId": "unilever",
-      "entityMatchType": "alias",
-      "matchedProducerProductCount": 4102,
-      "source": "off-bulk-exact",
-      "brandName": "Country Crock",
-      "matchedTerm": "unilever"
     },
     {
       "barcode": "0012000045332",
@@ -31548,9 +31288,9 @@
       "barcode": "0041500002248",
       "displayBarcode": "041500002248",
       "productName": "Classic yellow mustard",
-      "canonicalProducerName": "Reckitt Benckiser",
-      "entityId": "reckitt",
-      "entityMatchType": "alias",
+      "canonicalProducerName": "McCormick",
+      "entityId": "mccormick",
+      "entityMatchType": "manual-ownership-2026-10-01",
       "matchedProducerProductCount": 189,
       "source": "off-bulk-exact",
       "brandName": "French's",
@@ -31699,18 +31439,6 @@
       "source": "off-bulk-exact",
       "brandName": "Coca-Cola",
       "matchedTerm": "coca cola"
-    },
-    {
-      "barcode": "0041000002557",
-      "displayBarcode": "041000002557",
-      "productName": "Decaffeinated Coldbrew Family Size Iced Tea Bags",
-      "canonicalProducerName": "Unilever",
-      "entityId": "unilever",
-      "entityMatchType": "alias",
-      "matchedProducerProductCount": 4102,
-      "source": "off-bulk-exact",
-      "brandName": "Lipton",
-      "matchedTerm": "unilever"
     },
     {
       "barcode": "0054467502591",
@@ -32556,9 +32284,9 @@
       "barcode": "0041500220062",
       "displayBarcode": "041500220062",
       "productName": "Crispy Fried Onions Original",
-      "canonicalProducerName": "Reckitt Benckiser",
-      "entityId": "reckitt",
-      "entityMatchType": "alias",
+      "canonicalProducerName": "McCormick",
+      "entityId": "mccormick",
+      "entityMatchType": "manual-ownership-2026-10-01",
       "matchedProducerProductCount": 189,
       "source": "off-bulk-exact",
       "brandName": "French's",
@@ -32707,18 +32435,6 @@
       "source": "off-bulk-exact",
       "brandName": "Coca-Cola",
       "matchedTerm": "coca cola"
-    },
-    {
-      "barcode": "0041000008139",
-      "displayBarcode": "041000008139",
-      "productName": "Decaffeinated Green Tea",
-      "canonicalProducerName": "Unilever",
-      "entityId": "unilever",
-      "entityMatchType": "alias",
-      "matchedProducerProductCount": 4102,
-      "source": "off-bulk-exact",
-      "brandName": "Lipton",
-      "matchedTerm": "unilever"
     },
     {
       "barcode": "0054467502614",
@@ -33564,9 +33280,9 @@
       "barcode": "0041500220222",
       "displayBarcode": "041500220222",
       "productName": "Crispy Fried Onions Original",
-      "canonicalProducerName": "Reckitt Benckiser",
-      "entityId": "reckitt",
-      "entityMatchType": "alias",
+      "canonicalProducerName": "McCormick",
+      "entityId": "mccormick",
+      "entityMatchType": "manual-ownership-2026-10-01",
       "matchedProducerProductCount": 189,
       "source": "off-bulk-exact",
       "brandName": "French's",
@@ -34572,9 +34288,9 @@
       "barcode": "0041500941462",
       "displayBarcode": "041500941462",
       "productName": "Crispy fried onions",
-      "canonicalProducerName": "Reckitt Benckiser",
-      "entityId": "reckitt",
-      "entityMatchType": "alias",
+      "canonicalProducerName": "McCormick",
+      "entityId": "mccormick",
+      "entityMatchType": "manual-ownership-2026-10-01",
       "matchedProducerProductCount": 189,
       "source": "off-bulk-exact",
       "brandName": "French's",
@@ -35580,9 +35296,9 @@
       "barcode": "0041500784106",
       "displayBarcode": "041500784106",
       "productName": "Deli Mustered",
-      "canonicalProducerName": "Reckitt Benckiser",
-      "entityId": "reckitt",
-      "entityMatchType": "alias",
+      "canonicalProducerName": "McCormick",
+      "entityId": "mccormick",
+      "entityMatchType": "manual-ownership-2026-10-01",
       "matchedProducerProductCount": 189,
       "source": "off-bulk-exact",
       "brandName": "French's",
@@ -36576,9 +36292,9 @@
       "barcode": "0041500819716",
       "displayBarcode": "041500819716",
       "productName": "Dijon Mustard",
-      "canonicalProducerName": "Reckitt Benckiser",
-      "entityId": "reckitt",
-      "entityMatchType": "alias",
+      "canonicalProducerName": "McCormick",
+      "entityId": "mccormick",
+      "entityMatchType": "manual-ownership-2026-10-01",
       "matchedProducerProductCount": 189,
       "source": "off-bulk-exact",
       "brandName": "French's",
