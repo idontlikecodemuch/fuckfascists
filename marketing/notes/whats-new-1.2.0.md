@@ -23,8 +23,6 @@ Fresh files. Sharper scans. Random drops.
 
 • Clearer scan results: notices now name the product and its parent company.
 
-• Your scorecard now drops at a random minute between Friday evening and Saturday afternoon — the same moment for everyone. If the new week starts first, last week's card shows as dropping soon.
-
 • Your scorecard shows full surnames — Van de Put, not Put.
 
 • Track now includes Cursor, Google Workspace and Microsoft 365.
@@ -35,10 +33,12 @@ No accounts. No tracking. Your activity stays on your device.
 
 ---
 
-Review notes (Oct 2): the household line moved up with the data bullets and
+Review notes (Oct 2): the owner removed the drop bullet (drops were already
+random in 1.0, so not new for store users); the App Store Connect record
+matches this text (1,172 chars). The headline keeps "Random drops." at the
+owner's choice. The household line moved up with the data bullets and
 says "on file", away from the two scanner bullets, so nobody reads it as
-"scan Windex" (most of those barcodes return no match until 1.2.1). The drop
-bullet uses the marketing phrase (random drop between Friday and Saturday).
+"scan Windex" (most of those barcodes return no match until 1.2.1).
 Not mentioned on purpose: new sprite art (paused to 1.2.1), Android, the Apple
 CEO hold. Numbers per the release session's data checks: 761 companies, 26
 aliases / ~24 brands → "about 25". The seven screenshot tiles stand (Track and
