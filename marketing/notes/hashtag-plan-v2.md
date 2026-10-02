@@ -15,8 +15,11 @@ sharp but the caption must be accurate. Broad tags (#PixelArt, #brands, #scanner
 #VideoGames) are out: no room that cares, and pixel-art rooms are hostile to AI-made sprites.
 
 **Changed from v1:** #DarkMoney goes from "never" to rule-bound rotate. #PixelArt, #8bit and
-#iOSApp are dropped. #MoneyInPolitics becomes core; #IndieGames is the one game tag; #IFCKd
-is new for user scorecards. "Boycott" stays out of hashtags but in the App Store keywords.
+#iOSApp are dropped. #MoneyInPolitics becomes core; #IndieGames is the one game tag. "Boycott"
+stays out of hashtags but in the App Store keywords.
+
+**Approved by the creator Oct 2, 2026** with one change: no separate user tag — users are
+asked to tag @fckfascists.app and #FCKapp (one house tag, one ask).
 
 ## Evidence
 
@@ -46,7 +49,6 @@ it gave counts three times, then a login wall, so other IG numbers fall back to 
 | #SoloDev | BH 4,000 (2024). BSKY 94/day, 84 authors; "Solo Game Dev" feed (147 likes) | Real solo devs | No | Small, but true ("a project by one person") and a story hook | none | **Rotate** (BTS/Track) |
 | #PixelArt / #PixelArtGame / #8bit / #iOSGames / #MobileGames | BH 5.2M / 3,695 / 1.5M / 141K (hypercasual) / 1.7M (Brawl Stars) | Artists; free-to-play | No | N: too broad (the creator's rule), and the pixel rooms police AI art | none | Never |
 | #FCKapp | IG: none. BSKY: 0 posts | Nobody yet | No | Ownable; matches FCKapp.com | none-low | **Core (house tag)** |
-| #IFCKd | 0 / 0 | Nobody yet | No | The card's own headline ("I FCK'D N×"); the place user cards collect | low (profanity read) | **Scorecard + "tag us" line** |
 | #FCKFascists | BSKY 95 posts in 894 days, 44 from one German anti-AfD account (co-tags #FCKNZS #FCKAfD #NazisRaus). IG: BH doesn't index it; neighbours #fuckfascists 6,926 (#fucktrump) and #fcknzs 350K (antifa punk) | Anti-fascist slogan posts | Yes | N: the handle already catches name searches | high + profanity | Never (verdict below) |
 
 ## The plan (Instagram)
@@ -61,14 +63,13 @@ on-screen text and VO: "campaign finance", "FEC.gov", "R: and D:", "indie game".
 | MAP (Clark, a business's filing) | `#MoneyInPolitics #IndieGames #FCKapp #DarkMoney #CampaignFinance` | Needs a contrast line (below). Caption names the company, never the CEO |
 | SCAN (barcode → parent co.) | `#MoneyInPolitics #IndieGames #FCKapp #DarkMoney #CampaignFinance` | Same |
 | TRACK (arena, CEO sprites) | `#MoneyInPolitics #IndieGames #FCKapp #SoloDev` | No #DarkMoney: the subject is people (CEO sprites as targets) |
-| SCORECARD drop (Sh*tposter) | `#IFCKd #FCKapp #MoneyInPolitics #IndieGames` | No #DarkMoney next to named CEOs. Line: "Post yours, tag @fckfascists.app + #IFCKd, we repost." |
+| SCORECARD drop (Sh*tposter) | `#MoneyInPolitics #IndieGames #FCKapp` | No #DarkMoney next to named CEOs. Line: "Post yours, tag @fckfascists.app + #FCKapp, we repost." |
 | Behind the scenes / dev | `#MoneyInPolitics #IndieGames #FCKapp #SoloDev` | Show the app, not the "brush" (AI sprites) |
 | App update (Clark, neutral) | `#MoneyInPolitics #IndieGames #FCKapp #CampaignFinance #SoloDev` | n/a |
 | Data explainer / news peg | `#DarkMoney #MoneyInPolitics #CampaignFinance #FCKapp #IndieGames` | The flagship #DarkMoney post; contrast line in the first sentence |
 | **BOOST** (any paid) | `#IndieGames #FCKapp` | See boost rule |
 
-**Boost rule.** No #DarkMoney, #MoneyInPolitics or #CampaignFinance on a boost, and no
-#IFCKd. The caption leads with "FCK, Financial Contribution Kit · $1.99 iPhone game · Get the
+**Boost rule.** No #DarkMoney, #MoneyInPolitics or #CampaignFinance on a boost. The caption leads with "FCK, Financial Contribution Kit · $1.99 iPhone game · Get the
 app" to fit the product-sale carve-out (v1). **Profanity:** Meta bans profanity in ads
 "even when it's obscure, misspelled or vague"
 ([Meta](https://transparency.meta.com/policies/ad-standards/objectionable-content/profanity/));
@@ -129,16 +130,16 @@ If a post can't carry a contrast line, the nearest honest tag is #CampaignFinanc
   walled); a ten-second check in the app.
 - **#FCKapp: house tag, core.** 0 uses anywhere, so it's ownable. It matches FCKapp.com (which
   redirects to the site) and the store name. Check after week 1 that the tag page shows our posts.
-- **#IFCKd: the user tag.** It's the scorecard's own hero line (apostrophes break hashtags,
-  so not #IFCK'd). Scorecard drop posts and the "tag us" line only; never boosts. Skip
-  #ThoseIFCKd (the filename, which nobody sees) and #FCKd (already "#fckd up", Australian
-  politics on BSKY). The share sheet sends only the image, so nobody learns #IFCKd from the
-  card; adding it to the share text would be an app change.
+- **No separate user tag (creator, Oct 2).** The ask is one line everywhere: tag
+  @fckfascists.app + #FCKapp. A card-headline tag was considered and dropped: a second house
+  tag splits the room, and #FCKd is already "#fckd up" / Australian politics on BSKY. The
+  share sheet sends only the image, so nobody learns the tag from the card; adding the ask to
+  the share text would be an app change.
 
 ## Where amplification actually comes from
 
 Tags **can** classify a post, keep it visible on small exact pages (#MoneyInPolitics,
-#CampaignFinance), collect user cards (#IFCKd) and trigger Bluesky feeds. They **can't**
+#CampaignFinance), collect user cards (#FCKapp) and trigger Bluesky feeds. They **can't**
 create reach on IG (Mosseri, per v1 sources and
 [Kontentino](https://www.kontentino.com/q-and-a/instagram-hashtags-reach/)), and they won't
 put us on the Top tab of #IndieGames or #DarkMoney without engagement. What has to carry the load:
@@ -154,7 +155,7 @@ put us on the Top tab of #IndieGames or #DarkMoney without engagement. What has 
 4. **Collabs:** indie-game curators are realistic (e.g. @roganplaysgames, 89.1K, weekly
    indie roundups). OpenSecrets and Issue One almost certainly won't co-post with
    "FCK FASCISTS"; pitch them the data, not a collab.
-5. **The scorecard loop:** each user who posts a card tagging @fckfascists.app + #IFCKd
+5. **The scorecard loop:** each user who posts a card tagging @fckfascists.app + #FCKapp
    reaches their own followers; repost every one to Stories.
 6. **Games for Change Awards:** "Best in Community Empowerment" (formerly Civics). The 2026
    window was Jan 1, 2025–Mar 31, 2026, fee $75
@@ -202,7 +203,7 @@ politics room leans left. The money-in-politics *feeds* are tiny ("Corporate Mon
 - **Data posts:** `#DarkMoney #CampaignFinance #FollowTheMoney` + a contrast line.
 - **Game / Track / BTS:** `#PoliticalGames #SoloDev #MoneyInPolitics`. #PoliticalGames is the
   *Suzerain* room; #SoloDev feeds "Solo Game Dev" (147) and "Indie Devs Hub".
-- **Scorecard:** `#IFCKd #FCKapp #PoliticalGames`
+- **Scorecard:** `#FCKapp #PoliticalGames #MoneyInPolitics`
 - **AI caveat:** the big indie/pixel feeds ban AI art ("Indie Devs & Games", 966 likes, "No
   AI"; "Indie Pixel Games !"; "Game Dev 💙"; "Bluesky IndieDev"), and our sprites come from
   the Gemini/GPT pipeline. Don't trigger them (#IndieGame #IndieDev #SoloGameDev #pixel)
@@ -217,7 +218,7 @@ politics room leans left. The money-in-politics *feeds* are tiny ("Corporate Mon
    If its comments are mostly party fights and few ask about the app, swap it out.
 2. **Visibility:** 24h after posting, open #MoneyInPolitics and #FCKapp logged in. Missing
    from Recent on a tag that small → check Settings → Account Status.
-3. **#IFCKd:** count user cards after two drops; zero means the "tag us" line isn't landing.
+3. **#FCKapp cards:** count user cards after two drops; zero means the "tag us" line isn't landing.
 4. **App Store:** App Analytics "App Store Search" impressions/units, 14 days before vs after
    1.2.0; spot-check "campaign finance", "dark money", "boycott", "political game".
 5. **Bluesky:** engagement on data posts vs #PoliticalGames posts; did we land in the feeds?
