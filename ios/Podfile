@@ -63,6 +63,20 @@ target 'FckFascists' do
       end
     end
 
+    # ── Minimum pod deployment target ───────────────────────────────────
+    # Xcode 27 rejects targets below iOS 15.0, and some pod resource bundles
+    # (react-native-maps' privacy bundle) still declare 11.0. Raise any
+    # lower target to the app's own minimum. Idempotent — safe to re-run.
+    min_ios = podfile_properties['ios.deploymentTarget'] || '15.1'
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |build_config|
+        current = build_config.build_settings['IPHONEOS_DEPLOYMENT_TARGET']
+        if current && Gem::Version.new(current) < Gem::Version.new(min_ios)
+          build_config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = min_ios
+        end
+      end
+    end
+
     # ── AIRMap nil guard patch ──────────────────────────────────────────
     # Prevents NSInvalidArgumentException crash when Fabric reconciler
     # passes nil subviews to the native map during rapid marker add/remove.
