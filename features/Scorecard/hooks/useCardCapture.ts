@@ -11,6 +11,7 @@ import {
   scorecardBg,
   scorecardFrame,
   scorecardLogo,
+  scorecardNoSpriteMark,
   scorecardScanlines,
 } from '../../../core/scorecard/scorecardAssets';
 import { getSpriteFrame, nameToSpriteId } from '../../../core/sprites/spriteLoader';
@@ -90,10 +91,14 @@ async function preloadScorecardImageAssets(data: ScorecardViewData): Promise<voi
     if (powerSource) sources.push(powerSource);
   }
 
+  let needsNoSpriteMark = false;
   for (const person of data.persons.slice(0, SCORECARD_VISIBLE_PERSON_LIMIT)) {
     const frame = getSpriteFrame(nameToSpriteId(person.figureName), 'defeated');
     if (frame) sources.push(frame.source);
+    else needsNoSpriteMark = true;
   }
+  // Rows without a sprite show the pixel X; load it before capture too.
+  if (needsNoSpriteMark) sources.push(scorecardNoSpriteMark);
 
   await Promise.all(sources.map(loadImageSource));
 }
