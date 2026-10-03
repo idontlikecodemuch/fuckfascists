@@ -2367,11 +2367,11 @@
     "id": "sal-mancuso",
     "name": "Sal Mancuso",
     "tier": "standard",
-    "faceShape": "square: broad, about as wide as long, with a wide strong jaw, squared chin, and full but firm cheeks; no jowls, no double chin, not round or soft",
-    "likeness": "short dark brown hair swept back and slightly up at the front, gray at the temples on both sides, slightly receding at the temples, straight dark brows, hazel-brown eyes, straight prominent nose, bare eyes and clean-shaven with a smooth jaw: no glasses, no beard, no stubble",
-    "skinTone": "light olive with a warm undertone",
-    "bodyType": "fit and broad-shouldered, solid but not heavy, average height",
-    "signature": "wide square jaw, dark hair combed back with gray temples",
+    "faceShape": "broad square-oval: about as wide as long, with a wide forehead, full firm cheeks, a wide soft jaw and a broad rounded chin; solid, not long, not gaunt, no jowls, no double chin",
+    "likeness": "thick dark brown hair, short, swept back and to one side with a little lift at the front, receding at both temples into a broad forehead, a light fleck of gray at both temples: mostly dark, no solid gray patch; thick dark slightly arched brows set close together; hazel eyes with heavy upper lids; large straight nose with a broad fleshy tip; thin lips; bare eyes and clean-shaven with a smooth jaw: no glasses, no beard, no stubble",
+    "skinTone": "light olive with a warm tan undertone: not orange",
+    "bodyType": "solid build with broad shoulders, sturdy but not heavy, average height",
+    "signature": "broad full face with a large straight nose, under dark swept-back hair with receding temples",
     "variants": {
       "A": {
         "outfit": "charcoal suit jacket, light blue open-collar dress shirt with no tie, charcoal trousers, black dress shoes, small Altria lapel pin, visible company logo on chest"
@@ -2382,11 +2382,11 @@
     "id": "jacek-olczak",
     "name": "Jacek Olczak",
     "tier": "standard",
-    "faceShape": "oval: longer than wide, with moderately full cheeks, a medium jaw, and a rounded chin softened by the beard; not gaunt, not heavy or jowly",
-    "likeness": "silver-white hair of medium length, combed back and slightly to the side with modest volume, neat and close to the head, covering the tops of the ears but not reaching the shoulders: not long, not wild, not a mane; dark gray brows that angle down at the outer ends, narrow hooded eyes, short closely trimmed white beard on the chin and jaw with a thin mustache: not a full or long beard, no glasses",
-    "skinTone": "fair with a light neutral-cream tone and only a faint pink: not red, not flushed",
+    "faceShape": "broad oval: only slightly longer than wide, with a high forehead, wide full cheeks, a wide jaw and a rounded chin under the beard; solid but firm: not narrow, not gaunt, no jowls",
+    "likeness": "thick silver-white hair swept sideways across the top of the head from a deep side part, lying flat and smooth with little height, covering the tops of the ears and ending above the collar: not long, not a mane, no volume on top; dark gray brows that slant down at the outer ends; narrow hooded eyes; a straight broad nose; short closely trimmed white beard on the chin and jaw with a slightly darker gray mustache: not a full or long beard; no glasses",
+    "skinTone": "fair with a light neutral-cream tone, even color across the face with no blush spots: not red, not flushed",
     "bodyType": "average build with medium shoulders, trim but not thin, average to slightly tall height",
-    "signature": "silver-white hair combed back off the forehead and a short trimmed white beard",
+    "signature": "flat side-swept silver-white hair over hooded eyes, and a short trimmed white beard",
     "variants": {
       "A": {
         "outfit": "medium blue textured suit jacket, white open-collar dress shirt with no tie, matching blue trousers, black dress shoes, small Philip Morris International lapel pin, visible company logo on chest"
@@ -2397,11 +2397,11 @@
     "id": "joaquin-duato",
     "name": "Joaquin Duato",
     "tier": "standard",
-    "faceShape": "oval: clearly longer than wide, with high cheekbones, slim cheeks, a tapered jaw, and a narrow chin; lean but not gaunt or hollow",
-    "likeness": "thick short silver-gray hair brushed up and slightly to the side with a bristly front, full hairline, light gray brows, narrow eyes with deep crinkles at the corners, straight nose, clean-shaven, usually no glasses",
-    "skinTone": "light with a warm undertone",
-    "bodyType": "slim build with narrow-to-medium shoulders, trim but not frail, average height",
-    "signature": "short upswept silver-gray hair and narrow, deeply crinkled eyes in a long lean face",
+    "faceShape": "wide at the cheekbones and tapering: slightly longer than wide, with high, full, rounded cheekbones, a narrowing lower face and a small pointed chin; smooth and youthful for his age: not gaunt, not hollow, no deep lines",
+    "likeness": "short neat silver-white hair brushed up and back off the forehead in a smooth tidy crop, not spiky, not messy; straight hairline set high with slightly receded corners, short sides; very narrow almond-shaped eyes under heavy upper lids, slanting slightly down at the outer corners; thin light gray-brown brows; straight medium nose; wide mouth; ears stick out slightly; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "skinTone": "light with a warm golden undertone, not red",
+    "bodyType": "slim, trim build with medium shoulders, fit but not frail, average height",
+    "signature": "very narrow heavy-lidded almond eyes over high rounded cheekbones, under a neat silver-white crop",
     "variants": {
       "A": {
         "outfit": "navy-blue suit, white button-down dress shirt, light blue patterned tie, navy trousers, black dress shoes, small red J&J lapel pin, visible company logo on chest"
@@ -2412,11 +2412,11 @@
     "id": "ramon-laguarta",
     "name": "Ramon Laguarta",
     "tier": "standard",
-    "faceShape": "oval: longer than wide, with a tall forehead, moderate cheeks, a straight medium jaw, and a rounded chin; lean but not gaunt, not heavy",
-    "likeness": "thick silver-gray hair swept up and back from a high forehead with soft volume on top, full sides, light gray brows, light gray-blue eyes, long straight prominent nose, clean-shaven, no glasses",
-    "skinTone": "light with a warm pink undertone",
-    "bodyType": "lean build with medium shoulders, trim but not thin, average height",
-    "signature": "swept-up silver-gray hair over a high forehead and a long straight nose",
+    "faceShape": "broad square-oval: only a little longer than wide, with wide cheekbones, full firm cheeks, a wide rounded jaw and a broad chin; solid, not long, not narrow, not gaunt, not jowly",
+    "likeness": "short thick silver-gray hair brushed up and back from the forehead in a short neat soft wave, trimmed short at the sides and back with the ears fully showing: no hair over the ears, not long, not a mane; hairline full with a slight dip at the temples; straight light gray-brown brows; small light gray-green eyes; straight nose with a broad rounded tip; wide mouth; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "skinTone": "light with a warm beige tone, even color across the face with no blush spots: not red, not sunburnt",
+    "bodyType": "average build with medium-broad shoulders, solid but not heavy, average height",
+    "signature": "broad square face under short neat silver hair brushed up at the front",
     "variants": {
       "A": {
         "outfit": "navy suit, light blue open-collar dress shirt with no tie, navy trousers, black dress shoes, small blue-red-white PepsiCo globe lapel pin, visible company logo on chest"
@@ -2442,11 +2442,11 @@
     "id": "steve-cahillane",
     "name": "Steve Cahillane",
     "tier": "standard",
-    "faceShape": "oval-square: slightly longer than wide, with moderate cheeks, a firm squared jaw, and a straight chin; solid but not heavy: not round, no jowls, no double chin",
-    "likeness": "short sandy-blond hair going silver, side-parted and swept across with soft volume on top, short tidy sides, pale sandy brows, light blue eyes with crinkles at the corners, clean-shaven, no glasses",
-    "skinTone": "fair with a light warm pink tone and only a faint flush on the cheeks: not red, not sunburnt",
+    "faceShape": "broad rectangle: a little longer than wide, with wide full cheeks, a broad rounded jaw and a broad strong chin; firm, not round, not narrow, no jowls",
+    "likeness": "short pale sandy-blond hair mixed with white, side-parted with a soft fringe swept across the forehead, soft volume on top, short sides with the ears showing; pale sandy brows, barely visible; small light blue eyes; straight nose with a rounded tip; wide mouth with thin lips; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "skinTone": "fair warm light beige, one even color across the face with no blush spots on the cheeks: not pink, not red",
     "bodyType": "average build with medium-broad shoulders, solid but not heavy, average height",
-    "signature": "rosy round cheeks under side-swept sandy-silver hair",
+    "signature": "broad face under a soft side-swept fringe of pale sandy-white hair",
     "variants": {
       "A": {
         "outfit": "medium royal-blue blazer, light blue open-collar dress shirt with no tie, gray trousers, brown dress shoes, gold wristwatch, small red Kraft Heinz lapel pin, visible company logo on chest"
@@ -2457,11 +2457,11 @@
     "id": "dirk-van-de-put",
     "name": "Dirk Van de Put",
     "tier": "standard",
-    "faceShape": "oval: the head is longer than wide because of a tall smooth bald dome; the face below is broad with full cheeks, a rounded jaw, and a rounded chin, firm: no jowls, no double chin",
-    "likeness": "completely bald with a smooth shiny scalp and no visible hair at the sides, very pale sparse brows that almost disappear, light blue-gray eyes with crinkles at the corners, deep creases from nose to mouth, clean-shaven, no glasses",
-    "skinTone": "fair with a pink undertone",
-    "bodyType": "average build with medium shoulders, solid but not heavy, average height",
-    "signature": "completely bald, tall shiny dome with nearly invisible pale brows",
+    "faceShape": "broad: the face below the bald dome is nearly as wide as long, with wide cheekbones, full rounded apple cheeks, a wide rounded jaw and a rounded chin; firm and healthy: not narrow, not gaunt, no hollow cheeks, no jowls, no double chin",
+    "likeness": "completely bald with a smooth, wide, rounded scalp and no hair at the sides; very pale sparse brows that almost disappear; small narrow gray-blue eyes with crow's feet; a broad nose with a wide rounded tip; thin lips; large ears that stick out; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "skinTone": "light with a warm golden-tan undertone: not pink, not red",
+    "bodyType": "average build with medium-broad shoulders, solid but not heavy, average height",
+    "signature": "a wide, completely bald dome over full round apple cheeks and small narrow eyes",
     "variants": {
       "A": {
         "outfit": "dark navy blazer, pale blue open-collar dress shirt with no tie, dark trousers, black dress shoes, small purple Mondelez lapel pin, visible company logo on chest"
@@ -2472,11 +2472,11 @@
     "id": "jeff-harmening",
     "name": "Jeff Harmening",
     "tier": "standard",
-    "faceShape": "oval: longer than wide with a tall bald dome, moderately full cheeks, a medium jaw, and a rounded chin under the beard; not heavy, not gaunt",
-    "likeness": "bald on top with a very short gray-white fringe at the sides and back, short closely trimmed white full beard and mustache, light gray brows, rectangular translucent gray glasses",
-    "skinTone": "fair with a pink undertone",
+    "faceShape": "broad oval: longer than wide because of a tall smooth bald dome; the face has wide cheekbones, full rounded cheeks, a wide jaw and a rounded chin under the beard; firm: not heavy, not gaunt, no jowls",
+    "likeness": "fully bald head with no visible hair at the sides or back; very short close-cropped white beard and mustache trimmed very close, densest on the chin and upper lip: not full, not bushy, not long; faint light gray brows; light blue-gray eyes with crow's feet; wide rectangular glasses with translucent smoky-gray frames; a long prominent nose with a rounded tip; ears that stick out",
+    "skinTone": "fair with a light warm-pink undertone: not red",
     "bodyType": "average build with medium shoulders, trim but not thin, average height",
-    "signature": "bald dome, short white beard, and rectangular gray glasses",
+    "signature": "a fully bald dome, a short close-cropped white beard and translucent gray rectangular glasses",
     "variants": {
       "A": {
         "outfit": "navy pinstripe suit, light blue dress shirt, deep red patterned tie, navy trousers, black dress shoes, small blue General Mills G lapel pin, visible company logo on chest"
@@ -2487,11 +2487,11 @@
     "id": "mick-beekhuizen",
     "name": "Mick Beekhuizen",
     "tier": "standard",
-    "faceShape": "long: clearly longer than wide and narrow, with slim cheeks, a defined jaw, and a long rounded chin; lean but not gaunt or hollow",
-    "likeness": "short dark brown wavy hair with loose curls on top and soft waves over the ears, medium length at the sides: not faded, not shaved, slightly receding at the temples, straight dark brows, blue-gray eyes, long straight nose, completely clean-shaven with a smooth jaw: no beard, no stubble, no goatee, no glasses",
-    "skinTone": "fair with a pink undertone",
+    "faceShape": "long: clearly longer than wide, with lean cheeks, a defined jaw and a long rounded chin; lean and youthful: not gaunt, not hollow",
+    "likeness": "short brown hair, close-cut at the sides and a little longer on top with a tight curly texture about an inch long, receding at the temples into a high forehead, a touch of gray at the sides, not long, not wavy over the ears, not a mop; thin straight light brown brows; narrow blue-gray eyes; long straight nose; wide mouth; ears stick out noticeably; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "skinTone": "fair with a light pink undertone, not red",
     "bodyType": "lean and fit with medium shoulders, slim but not frail, appears tall",
-    "signature": "long narrow face under short dark wavy hair",
+    "signature": "short curly-topped brown hair over a long face, and ears that stick out",
     "variants": {
       "A": {
         "outfit": "navy blazer, pale blue open-collar dress shirt with no tie, navy trousers, brown dress shoes, small red Campbell's lapel pin, visible company logo on chest"
@@ -2502,11 +2502,11 @@
     "id": "shailesh-jejurikar",
     "name": "Shailesh Jejurikar",
     "tier": "standard",
-    "faceShape": "long: clearly longer than wide, with high prominent cheekbones, slim cheeks, a tapered jaw, and a narrow chin; lean but not gaunt",
-    "likeness": "thick short black-brown hair side-parted and swept back with volume on top, full hairline, a faint touch of gray at the temples, straight dark brows, dark brown eyes, prominent straight nose, clean-shaven, no glasses",
-    "skinTone": "light brown with a warm undertone",
+    "faceShape": "long diamond: clearly longer than wide, widest at high rounded cheekbones, tapering to a narrow jaw and a narrow pointed chin; slim lower cheeks; lean but not gaunt, not square, no wide jaw",
+    "likeness": "thick black hair, short-medium, side-parted and swept back and to the side with soft volume on top and a soft wave at the front, full hairline, sides only lightly touched with gray: mostly black, no gray patch; thick straight black brows; narrow dark almond eyes; long prominent nose with a broad rounded tip; large ears that stick out; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "skinTone": "light brown with a warm golden undertone: not dark, not orange",
     "bodyType": "slim build with medium shoulders, trim but not frail, average height",
-    "signature": "long face with high cheekbones under thick swept-back dark hair",
+    "signature": "high round cheekbones tapering to a narrow pointed chin, a long prominent nose and large ears",
     "variants": {
       "A": {
         "outfit": "charcoal suit, white open-collar dress shirt with no tie, charcoal trousers, black dress shoes, small blue P&G lapel pin, visible company logo on chest"
@@ -2517,11 +2517,11 @@
     "id": "kirk-tanner",
     "name": "Kirk Tanner",
     "tier": "standard",
-    "faceShape": "oval: slightly longer than wide, with broad cheekbones, full firm cheeks, a medium jaw, and a rounded chin; lean but healthy: not gaunt, no hollow cheeks, no deep lines",
-    "likeness": "short medium-dark brown hair side-parted and swept across, receding at the temples into a high forehead, little visible gray, light brown brows, light blue eyes, clean-shaven, no glasses",
-    "skinTone": "fair with a ruddy pink undertone",
+    "faceShape": "wide inverted triangle: about as wide as long, with very broad high cheekbones and full rounded cheeks narrowing to a small pointed chin; healthy and full: not gaunt, no hollow cheeks, no deep lines",
+    "likeness": "short medium-brown hair side-parted and swept across the top, deeply receding at both temples, leaving a rounded forelock at the center front, high forehead, little visible gray; thin light brown brows; narrow light blue eyes; medium nose with a rounded tip; wide mouth; ears stick out slightly; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "skinTone": "fair with a ruddy tan undertone, not red",
     "bodyType": "lean, fit build with medium shoulders, trim but not thin, average height",
-    "signature": "high cheekbones tapering to a pointed chin, side-swept brown hair receding at the temples",
+    "signature": "very broad cheekbones narrowing to a small pointed chin, under receding side-swept brown hair",
     "variants": {
       "A": {
         "outfit": "dark navy blazer, lavender-and-blue checked open-collar dress shirt with no tie, gray trousers, brown dress shoes, small brown Hershey's lapel pin, visible company logo on chest"
@@ -2532,11 +2532,11 @@
     "id": "tim-cofer",
     "name": "Tim Cofer",
     "tier": "standard",
-    "faceShape": "oval: longer than wide, with moderate cheeks, a firm straight jaw, and a slightly squared chin; lean but not gaunt, not heavy",
-    "likeness": "short neat dark brown hair side-parted and combed across, gray at the temples and over the ears on both sides, full hairline, straight dark brows, narrow dark brown eyes, clean-shaven, no glasses",
-    "skinTone": "fair with a neutral to warm undertone",
+    "faceShape": "long oval: longer than wide, with a wide forehead, broad flat cheeks, a medium jaw and a long rounded chin; lean, not square-jawed, not chiseled; smooth with few lines, looks about 50",
+    "likeness": "thick short dark brown hair, nearly black on top, brushed up and back with a slight side part and a straight full hairline, silver-gray on both sides over the ears; thick straight dark brows that slant slightly down at the outer ends; narrow dark brown eyes with heavy smooth upper lids, set wide apart; long straight nose with a broad rounded tip; small mouth with thin lips; ears that stick out slightly; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "skinTone": "fair peach-beige: not tan, not red",
     "bodyType": "lean build with medium shoulders, trim but not frail, average height",
-    "signature": "neat side-parted dark hair with sharp gray temples and straight dark brows",
+    "signature": "narrow heavy-lidded eyes set wide under thick straight dark brows, and silver sides on dark hair",
     "variants": {
       "A": {
         "outfit": "black suit, crisp white open-collar dress shirt with no tie, black trousers, black dress shoes, small Dr Pepper maroon lapel pin, visible company logo on chest"
@@ -2547,11 +2547,11 @@
     "id": "rafael-oliveira",
     "name": "Rafael Oliveira",
     "tier": "standard",
-    "faceShape": "long oval: clearly longer than wide, with slim cheeks, a narrow jaw, and a narrow rounded chin; lean but not gaunt, not angular",
-    "likeness": "thick dark brown hair, medium-short, side-parted and swept back with full volume on top and a loose lock near the front, no visible gray, straight dark brows, dark brown eyes, straight nose, clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
-    "skinTone": "light olive with a warm undertone",
+    "faceShape": "long rectangle: clearly longer than wide, with straight sides, broad flat cheekbones, a medium jaw and a long rounded chin; lean but not gaunt, not angular, few lines, looks about 45",
+    "likeness": "thick dark brown hair, medium-short, side-parted with the front falling forward in a soft fringe that sweeps across the forehead toward one side, slightly longer over the tops of the ears: not swept back, not tall, no pompadour; no gray; straight thick dark brows; narrow dark almond eyes with heavy upper lids; straight nose with a rounded tip; wide mouth with thin lips; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "skinTone": "light olive-beige with a warm undertone: not tan, not orange",
     "bodyType": "slim build with medium shoulders, lean but not frail, average height",
-    "signature": "long lean face under thick swept-back dark brown hair",
+    "signature": "soft dark fringe swept across the forehead over a long face with a long chin",
     "variants": {
       "A": {
         "outfit": "navy quarter-zip sweater over a light blue collared shirt, dark gray trousers, brown leather shoes, small green Heineken red-star lapel pin, visible company logo on chest"
@@ -2562,11 +2562,11 @@
     "id": "nobuhiro-torii",
     "name": "Nobuhiro Torii",
     "tier": "standard",
-    "faceShape": "oval: longer than wide, with flat firm cheeks, a narrow tapered jaw, and a small rounded chin; lean but not gaunt",
-    "likeness": "thick salt-and-pepper hair, mostly gray, swept up and back from the forehead in a textured tousled crest with full volume, short sides, straight dark graying brows, narrow dark eyes, clean-shaven, no glasses",
-    "skinTone": "light with a warm neutral undertone",
-    "bodyType": "slim build with medium shoulders and long legs, lean but not frail, appears average to tall",
-    "signature": "tall tousled crest of swept-up salt-and-pepper hair",
+    "faceShape": "broad oval: only a little longer than wide, widest at broad flat cheekbones, with flat firm cheeks, a wide soft jaw and a rounded chin; firm, not heavy, not long, not narrow",
+    "likeness": "East Asian features. Thick salt-and-pepper hair, dark gray on top with silver streaks and silver-gray at the sides, swept up and back from the forehead in one smooth full wave with soft volume, short neat sides: smooth, not spiky, no points; low straight dark-gray brows; narrow eyes with smooth single-fold upper lids; low flat nose bridge with a broad nose tip; wide mouth with thin lips; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "skinTone": "light beige with a neutral-warm undertone: not tan, not orange",
+    "bodyType": "slim build with medium shoulders and long legs, lean but not frail, tall",
+    "signature": "one smooth swept-back wave of salt-and-pepper hair, and narrow single-lid eyes over broad flat cheekbones",
     "variants": {
       "A": {
         "outfit": "charcoal pinstripe suit, white dress shirt, bright red tie, charcoal trousers, black dress shoes, small Suntory lapel pin, visible company logo on chest"
@@ -2577,11 +2577,11 @@
     "id": "dave-lewis",
     "name": "Dave Lewis",
     "tier": "standard",
-    "faceShape": "oval: longer than wide, with a high domed forehead, firm cheeks over prominent cheekbones, a medium jaw, and a rounded chin; lean but not gaunt, not heavy",
-    "likeness": "very short close-cropped gray hair, thin on top with a deeply receding hairline and a high bare forehead, fuller at the sides, light gray brows, light blue eyes with crinkles at the corners, deep creases from nose to mouth, clean-shaven, no glasses",
-    "skinTone": "fair with a pink undertone",
-    "bodyType": "fit and lean with medium shoulders, trim but not thin, average height",
-    "signature": "close-cropped gray hair receding to a high bare forehead, deep-set crinkled blue eyes",
+    "faceShape": "broad round: nearly as wide as long, with a high rounded dome, wide cheekbones, full rounded cheeks, a wide jaw and a rounded chin; firm and healthy: not long, not narrow, not gaunt, no hollow cheeks, no jowls",
+    "likeness": "very short close-cropped gray hair, thin on top with a small tuft at the front center and bare, deeply receding temples; sides cropped short and close to the head, not bushy; light sparse brows; small light blue eyes with crow's feet; a prominent broad nose with a rounded tip; thin lips; ears that stick out; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "skinTone": "fair with a warm light-tan undertone: not pink, not red",
+    "bodyType": "fit, average build with medium-broad shoulders, trim but not thin, average height",
+    "signature": "a broad round face with full cheeks and a prominent nose under a close-cropped receding gray crop",
     "variants": {
       "A": {
         "outfit": "charcoal suit jacket, light blue pinstriped button-down open-collar shirt with no tie, charcoal trousers, black dress shoes, small Diageo lapel pin, visible company logo on chest"
@@ -2592,11 +2592,11 @@
     "id": "alexandre-ricard",
     "name": "Alexandre Ricard",
     "tier": "standard",
-    "faceShape": "oval: clearly longer than wide, with slim cheeks, a firm narrow jaw, and a rounded chin; lean but not gaunt: not square, not heavy",
-    "likeness": "short dark brown hair cropped close at the sides and a little tousled on top, receding at the temples into an M-shaped hairline, little or no gray, heavy straight dark brows, deep-set dark eyes, clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
-    "skinTone": "fair with a pink undertone",
-    "bodyType": "slim to average build with medium shoulders, trim but not thin, appears tall",
-    "signature": "heavy straight dark brows under short dark hair receding at the temples",
+    "faceShape": "broad oval: a little longer than wide, widest at the cheekbones with full rounded cheeks, tapering to a soft rounded chin; solid and firm: not long, not narrow, not gaunt, no hollow cheeks, no jowls",
+    "likeness": "very short near-black hair cropped close all over, the hairline receding at both temples to leave a high rounded forehead with a short tuft at the center; thin straight dark brows, not heavy, not low; small dark eyes; a medium-broad nose with a rounded tip; thin lips; ears that stick out slightly; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "skinTone": "light with a warm neutral-beige undertone: not pink, not red",
+    "bodyType": "average build with medium shoulders, trim but not thin, tall",
+    "signature": "close-cropped near-black hair receding at the temples above a broad, round-cheeked face",
     "variants": {
       "A": {
         "outfit": "navy suit, white dress shirt, slim dark navy tie, navy trousers, black dress shoes, small blue Pernod Ricard lapel pin, visible company logo on chest"
@@ -2607,11 +2607,11 @@
     "id": "ryals-mcmullian",
     "name": "Ryals McMullian",
     "tier": "standard",
-    "faceShape": "round: broad and full, about as wide as long across the cheeks, with full cheeks, a wide rounded jaw, and a rounded chin; short face, not elongated; firm and fit: no double chin, no jowls",
-    "likeness": "short gray hair combed straight back, dark gray on top and lighter gray at the sides, kept short and close to the head, high forehead with a receding hairline, dark straight brows, dark brown eyes, clean-shaven, no glasses",
-    "skinTone": "light with a warm tan undertone",
-    "bodyType": "average build with medium shoulders, solid but not heavy, average height",
-    "signature": "broad round face under short combed-back salt-and-pepper hair with a high receding hairline",
+    "faceShape": "broad oblong: longer than wide, with a very tall, broad, domed forehead, full cheeks, a wide rounded jaw and a long rounded chin; broad but not round, not short; firm, no double chin, no jowls",
+    "likeness": "very short dark gray hair combed straight back flat to the head, lighter silver at the sides, hairline receding far back at both temples leaving a tall bare forehead with a short center tuft; straight medium-dark brows; small deep-set dark brown eyes; long straight nose with a rounded tip; ears that stick out; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "skinTone": "light with a warm tan undertone: not red, not orange",
+    "bodyType": "average build with medium-broad shoulders, trim, not heavy, not stocky, average height",
+    "signature": "very tall broad forehead under a deeply receding, short combed-back gray hairline, and ears that stick out",
     "variants": {
       "A": {
         "outfit": "medium gray windowpane suit, light blue dress shirt, navy pin-dot tie, gray trousers, black dress shoes, small Flowers Foods red-and-gold lapel pin, visible company logo on chest"
@@ -2622,11 +2622,11 @@
     "id": "brian-mcnamara",
     "name": "Brian McNamara",
     "tier": "standard",
-    "faceShape": "oval: clearly longer than wide, with moderate cheeks, a defined firm jaw, and a straight chin; solid but not heavy: not square, no jowls, no heavy cheeks",
-    "likeness": "gray hair, darker gray on top and silver at the sides, combed back with a small side part and a little lift at the front, slightly receding at the temples, dark gray brows, thin semi-rimless rectangular glasses with a dark top bar and a thin clear lower edge, clean-shaven",
-    "skinTone": "light with a warm undertone",
-    "bodyType": "average build with medium shoulders, solid but not heavy, average height",
-    "signature": "combed-back gray hair and thin semi-rimless glasses on a long oval face",
+    "faceShape": "broad squarish: only slightly longer than wide, with wide cheekbones, full flat cheeks, a wide straight jaw and a broad chin; solid but firm: not long, not narrow, no jowls, no double chin",
+    "likeness": "gray hair combed straight back and lying flat with visible comb lines, darker steel-gray on top and lighter silver at the sides, a high forehead with slightly receding temples; no side part, no lift at the front; straight dark-gray brows, not heavy; narrow hazel eyes; thin semi-rimless rectangular glasses with a dark top bar and a barely visible lower edge; a broad straight nose with a wide tip; thin lips; ears that stick out slightly; clean-shaven with a smooth jaw: no beard, no stubble",
+    "skinTone": "fair with a light neutral undertone: not tan, not orange, not red",
+    "bodyType": "solid build with broad shoulders and a thick chest, sturdy but not heavy, average height",
+    "signature": "flat slicked-back gray hair and thin semi-rimless glasses on a broad, square face",
     "variants": {
       "A": {
         "outfit": "dark navy suit, light blue dress shirt, lilac tie, navy trousers, black dress shoes, small teal Haleon lapel pin, visible company logo on chest"
@@ -2637,11 +2637,11 @@
     "id": "sean-connolly",
     "name": "Sean Connolly",
     "tier": "standard",
-    "faceShape": "oval: slightly longer than wide, with moderately full cheeks, a soft rounded jaw, and a rounded chin; firm, not heavy or jowly",
-    "likeness": "short platinum white-blond hair spiked straight up at the front with crisp texture, short sides, pale nearly invisible brows, light blue eyes, bold black rectangular glasses, clean-shaven",
+    "faceShape": "long oval: clearly longer than wide, with moderately full cheeks, a firm rounded jaw and a long strong rounded chin; trim, not heavy, not jowly",
+    "likeness": "short bright pure-white hair, not blond, not cream, gelled and spiked straight up across the front in sharp textured points, short sides; pale white brows, nearly invisible; light blue eyes; bold thick black rectangular glasses; straight nose with a slightly broad tip; clean-shaven with a smooth jaw: no beard, no stubble",
     "skinTone": "fair with a light beige tone and a faint warm tan: not pink, not red",
-    "bodyType": "average build with medium shoulders, trim but not thin, average height",
-    "signature": "spiky platinum-white hair standing straight up and bold black rectangular glasses",
+    "bodyType": "trim build with medium shoulders, fit, not heavy, average height",
+    "signature": "spiky pure-white hair standing straight up and bold black rectangular glasses",
     "variants": {
       "A": {
         "outfit": "navy suit, light blue dress shirt, orange-and-lavender striped tie, navy trousers, black dress shoes, small green Conagra leaf lapel pin, visible company logo on chest"
@@ -2652,11 +2652,11 @@
     "id": "john-ghingo",
     "name": "John Ghingo",
     "tier": "standard",
-    "faceShape": "long: clearly longer than wide, with slim cheeks, a narrow straight jaw, and a narrow rounded chin; lean but not gaunt or hollow",
-    "likeness": "short salt-and-pepper hair, dark gray on top with silver streaks and lighter gray at the temples, brushed up and back with a slightly spiky texture, full hairline, straight dark brows, hazel eyes, long straight nose, deep creases from nose to mouth, clean-shaven, no glasses",
-    "skinTone": "light with a warm undertone",
+    "faceShape": "rectangular: longer than wide, with prominent cheekbones, lean flat cheeks, a straight strong jaw and a squared chin; lean but not gaunt, not narrow or pinched",
+    "likeness": "short two-tone hair: dark steel-gray on top and bright silver-white on the short sides and temples, the top combed back and slightly to one side in smooth glossy lines, not spiky; full straight hairline; thick straight dark brows set low over deep-set light hazel eyes; long, straight, prominent nose; wide mouth; ears stick out slightly; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "skinTone": "light olive with a warm undertone, not red",
     "bodyType": "lean build with medium shoulders, slim but not frail, appears tall",
-    "signature": "long lean face under brushed-back salt-and-pepper hair",
+    "signature": "two-tone hair, dark gray on top over white sides, and a long prominent nose under low thick brows",
     "variants": {
       "A": {
         "outfit": "navy suit, light blue checked dress shirt, navy tie with small dots, navy trousers, black dress shoes, small red Hormel lapel pin, visible company logo on chest"
@@ -2667,11 +2667,11 @@
     "id": "shane-smith",
     "name": "Shane Smith",
     "tier": "standard",
-    "faceShape": "square: broad, about as wide as long, with moderately full cheeks and a wide jaw squared off by the beard; firm, not heavy, no jowls",
-    "likeness": "thick dark brown hair swept straight back with volume on top, receding at the temples, short neatly trimmed full beard and mustache, dark brown with gray at the chin and cheeks, straight dark brows, narrow eyes with crinkles at the corners, no glasses",
-    "skinTone": "light with a warm undertone",
-    "bodyType": "broad-shouldered and solid, sturdy but not heavy or overweight, average height",
-    "signature": "swept-back dark hair and a trimmed salt-and-pepper beard on a broad square face",
+    "faceShape": "broad oval: slightly longer than wide, with full firm cheeks and a wide jaw squared off by the beard; firm, not heavy, not puffy, no jowls",
+    "likeness": "thick dark brown hair swept back and to one side with volume on top and a loose lock falling toward one temple, slightly receding at the temples; short neatly trimmed full beard and mustache, dark brown on the cheeks and mustache, turning gray-white at the chin and under the lower lip; straight dark brows; narrow eyes; straight nose; no glasses",
+    "skinTone": "light with a warm undertone: not red",
+    "bodyType": "average build with medium-broad shoulders, trim, not heavy, not stocky, average height",
+    "signature": "dark swept-back hair with a loose front lock, and a trimmed dark beard with a gray-white chin",
     "variants": {
       "A": {
         "outfit": "charcoal suit, white dress shirt, navy-and-white diagonal striped tie, charcoal trousers, black dress shoes, small light blue lapel pin, visible company logo on chest"
@@ -2682,11 +2682,11 @@
     "id": "michel-doukeris",
     "name": "Michel Doukeris",
     "tier": "standard",
-    "faceShape": "square: broad, about as wide as long, with wide cheekbones, flat firm cheeks, a broad straight jaw, and a strong squared chin; solid but not heavy, no jowls, not round",
-    "likeness": "thick short salt-and-pepper hair, dark gray with lighter gray at the sides, brushed up and back with a little texture at the front, full hairline, low straight heavy dark brows, deep-set narrow dark eyes, clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
-    "skinTone": "light with a warm undertone",
+    "faceShape": "broad and square-round: about as wide as long, with wide cheekbones, full cheeks, a broad jaw and a rounded chin with slight fullness under it; solid and fleshy but not fat, not long",
+    "likeness": "short dense salt-and-pepper hair, dark gray with lighter gray at the sides, textured and brushed up and slightly forward at the front, close-cut sides, full low hairline, not swept back, not a pompadour; thick dark brows that tilt up at the inner ends; small deep-set dark eyes with puffy lower lids; broad nose with a rounded tip; full lower lip; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "skinTone": "light olive with a warm undertone, not red",
     "bodyType": "average build with medium-broad shoulders, solid but not heavy, average height",
-    "signature": "broad square face with low heavy brows over deep-set eyes, short brushed-up gray hair",
+    "signature": "broad fleshy face with small deep-set eyes under thick dark brows",
     "variants": {
       "A": {
         "outfit": "dark navy suit, light blue open-collar dress shirt with no tie, navy trousers, black dress shoes, small gold AB InBev lapel pin, visible company logo on chest"
@@ -2697,11 +2697,11 @@
     "id": "rahul-goyal",
     "name": "Rahul Goyal",
     "tier": "standard",
-    "faceShape": "round: nearly as wide as long, with full cheeks, a soft rounded jaw, and a rounded chin; firm, no double chin, not jowly",
-    "likeness": "short neat black hair side-parted and combed across, a little gray at the temples, full hairline, straight dark brows, dark brown eyes, thin rectangular gunmetal glasses, clean-shaven",
-    "skinTone": "medium brown with a warm undertone",
+    "faceShape": "broad round-square: about as wide as long, with full cheeks, a wide soft jaw and a broad rounded chin; firm, not jowly, no double chin",
+    "likeness": "short thick black hair cut close at the sides, brushed forward and to one side with a short straight front edge, full low hairline, only a faint touch of gray just above the ears: mostly black, no gray patch; thick straight black brows; narrow dark eyes; thin rectangular gunmetal metal glasses set wide across the face; broad nose with a wide rounded tip; ears that stick out; clean-shaven with a smooth jaw: no beard, no stubble",
+    "skinTone": "medium brown with a warm golden undertone: not dark, not red",
     "bodyType": "average build with medium shoulders, solid but not heavy, average height",
-    "signature": "round full-cheeked face with thin rectangular glasses and short neat black hair",
+    "signature": "wide round face with thin rectangular glasses and ears that stick out, under short black hair",
     "variants": {
       "A": {
         "outfit": "light blue-gray quarter-zip sweater over a light blue collared shirt, dark gray trousers, brown leather shoes, small red Coors lapel pin, visible company logo on chest"
@@ -2712,11 +2712,11 @@
     "id": "nicholas-fink",
     "name": "Nicholas Fink",
     "tier": "standard",
-    "faceShape": "oval: longer than wide, with a high forehead, slim cheeks over defined cheekbones, a tapered jaw, and a narrow rounded chin; lean but not gaunt",
-    "likeness": "short gray hair with darker gray on top, receding deeply at the temples into a high forehead, short at the sides, slightly brushed up at the front, light gray brows, light blue eyes with crinkles at the corners, clean-shaven, no glasses",
-    "skinTone": "fair with a warm undertone",
-    "bodyType": "lean build with medium shoulders, slim but not frail, average height",
-    "signature": "short gray hair receding into a high forehead over a lean narrow face",
+    "faceShape": "long oval: clearly longer than wide, widest at a tall rounded domed forehead, with moderately full cheeks, a medium rounded jaw and a rounded chin with a small dimple; firm and youthful for about 50 with few lines: not gaunt, not hollow-cheeked, not old or wrinkled",
+    "likeness": "short thinning gray hair, a little darker gray on top, receding at both temples into a tall bare forehead with a short tousled tuft at the front center, sides cut short and close with the ears showing: not full, not puffy, no volume at the sides; straight light brown-gray brows, blue eyes, long straight nose with a rounded tip, ears that stick out slightly, clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "skinTone": "fair with a warm light-tan undertone: not pink, not red",
+    "bodyType": "medium build with medium shoulders, trim but not thin, average height",
+    "signature": "tall bare domed forehead under short thinning gray hair, and ears that stick out slightly",
     "variants": {
       "A": {
         "outfit": "navy windowpane-check blazer, crisp white open-collar dress shirt with no tie, navy trousers, brown dress shoes, small gold Constellation star lapel pin, visible company logo on chest"
@@ -2727,11 +2727,11 @@
     "id": "lawson-whiting",
     "name": "Lawson Whiting",
     "tier": "standard",
-    "faceShape": "round: broad and full, nearly as wide as long, with full rosy cheeks, a wide soft jaw, and a rounded chin; a little fullness under the chin but no heavy jowls",
-    "likeness": "thick short silver-gray hair side-parted and swept across with soft volume on top, full hairline, pale brows, light blue eyes with crinkles at the corners, clean-shaven, no glasses",
-    "skinTone": "fair with a ruddy pink undertone",
+    "faceShape": "broad and full: only a little longer than wide, with a wide forehead, big full cheeks, a wide jaw and a rounded chin with some fullness under it; heavy-faced but not obese, no deep lines",
+    "likeness": "short pale silver-blond hair, white-gray with a faint blond tint, thin and slightly tousled, brushed across from a side part with a little wave at the front, sitting close to the head, not a thick helmet, not tall; nearly invisible pale brows; small narrow light blue eyes under heavy lids; medium nose with a rounded tip; thin lips; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "skinTone": "fair with a light pink undertone, even color across the face with no blush spots, not sunburnt red",
     "bodyType": "large, solid build with broad shoulders and chest, sturdy and a bit heavyset but not obese",
-    "signature": "broad full rosy face under thick side-swept silver hair",
+    "signature": "big broad full face with small narrow eyes and nearly invisible brows",
     "variants": {
       "A": {
         "outfit": "navy suit, white dress shirt, light blue patterned tie, navy trousers, black dress shoes, small gold Brown-Forman crest lapel pin, visible company logo on chest"
@@ -2742,11 +2742,11 @@
     "id": "jeff-schomburger",
     "name": "Jeff Schomburger",
     "tier": "standard",
-    "faceShape": "long: longer than wide, with broad cheekbones, lean firm cheeks, a long strong jaw, and a prominent squared chin; lean but not gaunt, not heavy",
-    "likeness": "short close-cropped sandy-gray hair, thinning on top with a receding hairline and high forehead, short trimmed gray stubble beard and mustache, light sandy brows, light blue eyes with crinkles at the corners, deep creases from nose to mouth, no glasses",
-    "skinTone": "fair with a warm tan undertone",
+    "faceShape": "broad round-square: about as wide as long, with wide cheekbones, full rounded apple cheeks, a wide jaw and a broad rounded chin under the beard; firm and healthy: not long, not narrow, not gaunt, no jowls",
+    "likeness": "short close-cropped sandy-gray hair, thin on top with a small forelock and receding temples, fuller at the sides; short evenly trimmed salt-and-pepper beard and mustache, mostly white-gray, covering the cheeks, jaw and chin: not long, not bushy; sparse light sandy brows; small narrow hazel-green eyes with deep crow's feet; a broad nose with a large rounded tip; ears that stick out; no glasses",
+    "skinTone": "light with a warm tan undertone: not red",
     "bodyType": "fit, athletic build with medium-broad shoulders, solid but not heavy, average to tall height",
-    "signature": "long strong jaw under a short gray stubble beard, close-cropped receding sandy-gray hair",
+    "signature": "full round apple cheeks under a short white-gray beard, and a broad rounded nose",
     "variants": {
       "A": {
         "outfit": "indigo-blue textured blazer, light lavender-blue open-collar dress shirt with no tie, navy trousers, brown dress shoes, small red Tyson oval lapel pin, visible company logo on chest"
@@ -2757,11 +2757,11 @@
     "id": "john-furner",
     "name": "John Furner",
     "tier": "important",
-    "faceShape": "broad oval: slightly longer than wide, with wide cheekbones, firm lean cheeks, a strong squared jaw and a squared chin; wide through the jaw but not heavy, not narrow",
-    "likeness": "short cropped gray-and-sandy hair about an inch and a half long, mostly gray with sandy-blond flecks, combed up and slightly to the side in a neat tidy finish, high forehead, light sandy brows, light blue eyes with crinkles at the corners, clean-shaven, no glasses; tidy and close to the head, not wavy, not swept back, not a pompadour",
-    "skinTone": "fair with a warm pink undertone",
-    "bodyType": "fit build with medium-broad shoulders, trim but not thin, average to slightly tall height",
-    "signature": "short cropped gray-sandy hair and a broad squared jaw",
+    "faceShape": "broad rectangle: slightly longer than wide and wide all the way down, with a wide forehead, broad full cheeks, a wide jaw and a broad rounded chin; solid and healthy: not gaunt, not chiseled, no jowls",
+    "likeness": "short silver-gray hair about an inch long, lighter silver on top and slightly darker gray at the sides, brushed up and a little to the side in a soft textured crop, full hairline with slightly receded corners, not sandy, not brown, not swept back; small narrow light blue eyes; light gray brows; broad nose with a wide rounded tip; wide mouth; ears stick out slightly; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "skinTone": "fair with a warm light-tan undertone, not red",
+    "bodyType": "fit build with medium-broad shoulders, solid but not bulky, average to slightly tall height",
+    "signature": "broad full face with small narrow eyes and a broad rounded nose, under short silver-gray hair",
     "variants": {
       "A": {
         "outfit": "blue-gray checked sport coat, white open-collar dress shirt with no tie, dark navy trousers, brown dress shoes, white Walmart associate name badge reading JOHN clipped to the lapel, visible company logo on chest"
@@ -2775,11 +2775,11 @@
     "id": "michael-fiddelke",
     "name": "Michael Fiddelke",
     "tier": "important",
-    "faceShape": "oval: slightly longer than wide, with broad flat cheekbones, firm lean cheeks, a wide strong jaw, and a rounded chin; not round, not heavy",
-    "likeness": "very short close-cropped light brown hair, thinning on top with a receding hairline and high forehead, light sandy brows, light blue eyes with crinkles at the corners, clean-shaven, no glasses",
-    "skinTone": "fair with a ruddy pink undertone",
+    "faceShape": "long oval: longer than wide, with a tall domed forehead, lean cheeks, a wide strong jaw and a broad rounded chin; youthful for his age: not gaunt, not round, no deep lines",
+    "likeness": "very short buzz-cut light brown hair, evenly short all over and thin on top with scalp showing through, receding at the temples with a small tuft left at the front center, not bald, not shaved; short straight light brows; narrow light blue eyes; straight medium nose; thin lips; ears stick out noticeably; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "skinTone": "fair with a light pink undertone, not red",
     "bodyType": "average build with medium-broad shoulders, trim but not thin, average to slightly tall height",
-    "signature": "close-cropped receding light brown hair over a high forehead and a wide strong jaw",
+    "signature": "thin buzz cut over a tall forehead, and ears that stick out",
     "variants": {
       "A": {
         "outfit": "navy suit, white dress shirt, bright red tie, navy trousers, black dress shoes, small red Target bullseye lapel pin, visible company logo on chest"
@@ -2793,11 +2793,11 @@
     "id": "greg-foran",
     "name": "Greg Foran",
     "tier": "important",
-    "faceShape": "long: clearly longer than wide, with high prominent cheekbones, lean cheeks, a long strong jaw, and a firm squared chin; lean and weathered but not gaunt",
-    "likeness": "short silver-white hair about two inches long, brushed up and back with modest lift, full hairline, light gray brows, light blue eyes with deep crinkles at the corners, long straight nose, deep creases from nose to mouth, clean-shaven, no glasses; hair stays close to the head, not a tall swoop, not a pompadour",
-    "skinTone": "fair with a warm, slightly weathered tan undertone",
+    "faceShape": "large rectangle: longer than wide but broad throughout, with a wide forehead, wide cheekbones, firm flat cheeks, a long wide jaw and a broad squared chin; lean and weathered but solid: not narrow, not gaunt, no hollow cheeks",
+    "likeness": "short silver-white hair about two inches long, brushed up and back from a side part with modest lift at the front, full hairline; hair stays close to the head: not a tall swoop, not a pompadour; sparse light gray brows; small light blue eyes with deep crow's feet; a long, straight, prominent nose; thin lips; ears that stick out slightly; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "skinTone": "light with a weathered golden-tan undertone: not red, not orange",
     "bodyType": "lean, fit build with medium shoulders, trim but not frail, average to tall height",
-    "signature": "thick swept-back silver-white hair over a long, lean, deeply creased face",
+    "signature": "a large, broad rectangular face with a long prominent nose under short brushed-back silver-white hair",
     "variants": {
       "A": {
         "outfit": "navy suit, white-and-lavender checked dress shirt, dark navy tie with small dots, navy trousers, black dress shoes, small blue Kroger lapel pin, visible company logo on chest"
@@ -2811,11 +2811,11 @@
     "id": "mike-motz",
     "name": "Mike Motz",
     "tier": "important",
-    "faceShape": "broad and squarish: only slightly longer than wide, with wide cheekbones, firm lean cheeks, a wide strong jaw and a squared chin; strong but not gaunt, not long and thin",
-    "likeness": "dark charcoal-gray hair, salt-and-pepper throughout with silver mixed in at the sides, combed straight back smooth and flat with moderate height, full hairline, strong dark brows, deep-set brown eyes with crinkles at the corners, creases from nose to mouth, clean-shaven, no glasses; hair is not jet black, not a tall pompadour",
-    "skinTone": "light with a warm tan undertone",
-    "bodyType": "lean build with medium shoulders, trim but not frail, average height",
-    "signature": "tall slicked-back dark hair with silver sides over a long strong-jawed face",
+    "faceShape": "rectangular: a little longer than wide, with a tall forehead, wide high cheekbones, firm cheeks, a broad strong jaw and a squared chin; strong but not gaunt, not narrow",
+    "likeness": "thick salt-and-pepper hair, dark charcoal streaked evenly with silver throughout and slightly lighter at the temples, combed straight back from the forehead with moderate height and a soft wave, full hairline, not jet black on top, not two-tone, not a tall pompadour; thick dark brows that peak in a high arch; narrow deep-set brown eyes; long straight nose; wide mouth; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "skinTone": "light with a warm tan undertone, not red",
+    "bodyType": "trim build with medium shoulders, fit but not frail, average height",
+    "signature": "combed-back salt-and-pepper hair and high-arched thick dark brows",
     "variants": {
       "A": {
         "outfit": "navy blazer, crisp white open-collar dress shirt with no tie, navy trousers, black dress shoes, small red Walgreens W lapel pin, visible company logo on chest"
@@ -2829,11 +2829,11 @@
     "id": "susan-morris",
     "name": "Susan Morris",
     "tier": "standard",
-    "faceShape": "heart: slightly longer than wide, broad across the high cheekbones, tapering to a narrow pointed chin; firm cheeks, slim but not gaunt",
-    "likeness": "shoulder-length rich dark brown hair with full volume, side-parted and swept back from the face, layered with soft curled-under ends, dark arched brows, brown eyes, small pearl stud earrings, small pendant necklace",
-    "skinTone": "light with a warm undertone",
+    "faceShape": "heart: slightly longer than wide, broad across high full rounded cheeks, tapering to a narrow pointed chin; slim, not square, not angular, no wide jaw",
+    "likeness": "voluminous shoulder-length rich dark chocolate-brown hair with a few warm chestnut tones, deep side part with a long fringe sweeping across the forehead to one side, big rounded volume at the crown and sides, ends curled under at the shoulders; dark high-arched defined brows; brown almond eyes with dark lashes; straight nose with a rounded tip; full lips with pink lipstick; small pearl stud earrings; small pendant necklace",
+    "skinTone": "light warm beige: not tan, not pink",
     "bodyType": "slim build with narrow shoulders, trim but not frail, average height",
-    "signature": "voluminous shoulder-length dark brown hair swept to the side with curled ends, high cheekbones",
+    "signature": "voluminous side-swept dark brown hair with curled-under ends, and full round cheeks tapering to a pointed chin",
     "variants": {
       "A": {
         "outfit": "taupe-brown tweed blazer over a matching dark top, small silver pendant necklace, dark trousers, black pumps, small blue Albertsons lapel pin, visible company logo on chest"
@@ -2844,11 +2844,11 @@
     "id": "michael-j-bender",
     "name": "Michael J. Bender",
     "tier": "standard",
-    "faceShape": "broad oval: nearly as wide as long, with a smooth high forehead, full cheeks, a wide jaw and a rounded chin; solid but not heavy, no double chin",
-    "likeness": "bald on top with a very short close-cropped dark-gray fringe at the sides and back, short dark brows, thin black rectangular glasses, clean-shaven",
-    "skinTone": "dark brown with a warm undertone",
-    "bodyType": "lean build with medium shoulders, trim but not frail, average height",
-    "signature": "bald head with a close-cropped gray fringe and thin black rectangular glasses",
+    "faceShape": "broad oval: slightly longer than wide, with a tall domed head and high wide forehead, wide cheekbones, full cheeks, a wide rounded jaw and a rounded chin; solid but not heavy, no double chin",
+    "likeness": "very close-cropped gray hair: a short salt-and-pepper buzz over the sides and back, thinning across the top of a tall domed head, receding hairline; dark rectangular glasses with medium-thick black frames; thin dark brows; dark brown eyes; broad nose; full lips; clean-shaven with a smooth jaw: no beard, no stubble, no mustache",
+    "skinTone": "dark brown with a warm undertone, not orange, not gray",
+    "bodyType": "medium build with medium-broad shoulders, trim but not frail, average height",
+    "signature": "tall domed head with a gray buzz and dark rectangular glasses",
     "variants": {
       "A": {
         "outfit": "dark navy blazer, light blue open-collar dress shirt with no tie, navy trousers, black dress shoes, small maroon Kohl's lapel pin, visible company logo on chest"
@@ -2859,11 +2859,11 @@
     "id": "michelle-wlazlo",
     "name": "Michelle Wlazlo",
     "tier": "standard",
-    "faceShape": "oval: longer than wide, with high cheekbones, slim cheeks, a tapered jaw, and a narrow chin; slim but not gaunt",
-    "likeness": "straight shoulder-length blonde hair with darker honey-brown roots, center-parted and sleek, falling past the jaw in loose ends, light brown arched brows, blue-gray eyes, small stud earrings, layered silver chain necklaces",
-    "skinTone": "fair with a neutral to warm undertone",
+    "faceShape": "oval: longer than wide, with broad high cheekbones, slim cheeks, a tapered jaw and a narrow chin; slim but not gaunt, not heavy",
+    "likeness": "straight shoulder-length light ash-blonde hair with darker roots, parted slightly off-center with lift at the crown, swept back from the face on one side, ends brushing the shoulders, not a blunt helmet bob, not brassy yellow; large wide-set light blue-gray eyes, almond-shaped and slightly upturned; thin arched brows a shade darker than the hair; slim straight nose; small stud earrings",
+    "skinTone": "fair with a neutral undertone, not tan",
     "bodyType": "slim build with narrow shoulders, trim but not frail, average height",
-    "signature": "sleek center-parted shoulder-length blonde hair with dark roots, layered silver chain necklaces",
+    "signature": "large wide-set light eyes and shoulder-length ash-blonde hair with dark roots",
     "variants": {
       "A": {
         "outfit": "black tailored blazer over a pale gray silk collared blouse, layered silver chain necklaces, black trousers, black pointed flats, small red JCPenney lapel pin, visible company logo on chest"
@@ -2874,11 +2874,11 @@
     "id": "jason-potter",
     "name": "Jason Potter",
     "tier": "standard",
-    "faceShape": "round: broad, nearly as wide as long, with full cheeks, a wide jaw, and a rounded chin; firm: no double chin, no jowls",
-    "likeness": "medium brown hair slicked straight back with a smooth glossy finish, receding at the temples into a slight widow's peak, light brown brows, light blue eyes with crinkles at the corners, clean-shaven, no glasses",
-    "skinTone": "fair with a ruddy pink undertone",
-    "bodyType": "broad-shouldered and solid, sturdy but not heavy, average height",
-    "signature": "slicked-back brown hair on a broad round face",
+    "faceShape": "broad round: nearly as wide as long, with a wide forehead, full rounded cheeks, a wide jaw and a rounded chin; youthful and firm: no jowls, no double chin, no sagging, not heavy",
+    "likeness": "medium brown hair slicked straight back flat and tight to the scalp with a glossy finish, receding at the temples to a slight widow's peak, no volume on top and nothing over the ears; thin light-brown brows with a soft arch, not heavy; small light blue eyes with crow's feet; a broad nose with a rounded tip; ears that stick out slightly; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "skinTone": "fair with a light pink undertone, even color across the face with no blush spots: not red",
+    "bodyType": "broad-shouldered average build with a trim waist, solid but not heavy, not stocky, no belly, average height",
+    "signature": "glossy hair slicked tight straight back on a broad round face",
     "variants": {
       "A": {
         "outfit": "dark navy blazer, light blue gingham open-collar dress shirt with no tie, gray trousers, brown dress shoes, small red Grocery Outlet lapel pin, visible company logo on chest"
@@ -2889,11 +2889,11 @@
     "id": "david-boone",
     "name": "David Boone",
     "tier": "standard",
-    "faceShape": "long: clearly longer than wide, with slim cheeks, a narrow straight jaw, and a narrow rounded chin; lean but not gaunt",
-    "likeness": "medium brown hair, fuller and longer on top, swept straight back with volume and curling slightly over the collar, light brown brows, thick bold black rectangular glasses, clean-shaven",
-    "skinTone": "light with a warm tan undertone",
-    "bodyType": "lean build with medium shoulders, slim but not frail, average height",
-    "signature": "thick bold black rectangular glasses and swept-back brown hair over a long lean face",
+    "faceShape": "broad rectangle: longer than wide but wide throughout, with a broad forehead, wide cheekbones, firm full cheeks, a wide jaw and a rounded chin; middle-aged and solid: not narrow, not boyish, not gaunt",
+    "likeness": "medium brown hair with lighter sandy-ash streaks, swept straight back with volume on top, receding at both temples to leave a short peak at the front center, full and thick at the sides over the ears; light brown brows; blue eyes with deep crow's feet; thick dark tortoiseshell-brown rectangular glasses; a long, straight, prominent nose with a rounded tip; ears that stick out slightly; clean-shaven with a smooth jaw: no beard, no stubble",
+    "skinTone": "light with a warm golden-tan undertone: not orange, not red",
+    "bodyType": "athletic build with broad shoulders, trim but not thin, average height",
+    "signature": "thick dark rectangular glasses on a broad, middle-aged face, with brown hair swept back from receding temples",
     "variants": {
       "A": {
         "outfit": "gray glen-plaid sport coat, pink open-collar dress shirt with no tie, navy pocket square, gray trousers, brown loafers, small red Michaels lapel pin, visible company logo on chest"
@@ -2904,11 +2904,11 @@
     "id": "winnie-park",
     "name": "Winnie Park",
     "tier": "standard",
-    "faceShape": "round: nearly as wide as long, with full high cheeks, a soft jaw, and a small rounded chin; slim, not heavy, not angular",
-    "likeness": "chin-length dark brown bob with only a few soft caramel highlights, deep side part with volume at the crown and slightly tousled ends brushing the jaw, dark arched brows, dark almond eyes, statement drop earrings; mostly dark brown, not blonde, not caramel overall",
-    "skinTone": "light peach-beige with a soft pink undertone; pale, not tan, not golden, not yellow, not orange",
+    "faceShape": "round: nearly as wide as long, widest at full broad cheeks, with a soft rounded jaw and a small rounded chin; slim, not heavy, not long, not angular",
+    "likeness": "East Asian features. Chin-length dark brown bob with soft lighter brown tones, deep side part with a long side-swept fringe falling across the forehead toward one eye, volume at the crown, ends flipped slightly outward at the jaw: mostly dark brown, not blonde; narrow almond eyes with smooth single-fold lids, no heavy eyeliner; softly arched dark brows; small nose with a low flat bridge and a rounded tip; full lips; long silver drop earrings",
+    "skinTone": "light peach-beige with a soft pink undertone; pale, not tan, not golden, not yellow, not orange, not red",
     "bodyType": "slim, petite build with narrow shoulders, trim but not frail, below average height",
-    "signature": "side-parted chin-length brown bob with caramel highlights and statement earrings",
+    "signature": "round full-cheeked face with narrow almond eyes, framed by a side-swept chin-length brown bob",
     "variants": {
       "A": {
         "outfit": "black leather moto jacket with silver studs over a black top, black trousers, black ankle boots, statement drop earrings, small blue Five Below lapel pin, visible company logo on chest"
@@ -2919,11 +2919,11 @@
     "id": "atty-mcgrath",
     "name": "Atty McGrath",
     "tier": "standard",
-    "faceShape": "oval: longer than wide, with slim cheeks, a tapered jaw, and a narrow pointed chin; slim but not gaunt",
-    "likeness": "long straight dark brown hair falling well past the shoulders, center-parted and sleek with slightly lighter brown ends, medium dark brows with a soft arch, blue-gray eyes, no glasses",
-    "skinTone": "fair with a neutral pink undertone",
+    "faceShape": "soft oval: longer than wide, with a high forehead, wide rounded cheekbones and full apple cheeks, tapering to a narrow, slightly pointed chin; slim but soft: not angular, not gaunt, no sharp jaw",
+    "likeness": "long straight dark chestnut-brown hair with auburn tints and slightly lighter ends, parted a little off-center, falling smoothly well past the shoulders; thin, softly arched medium-brown brows set high above the eyes, not heavy, not dark; almond-shaped blue-gray eyes with natural lashes, no heavy eyeliner; a straight, fairly long nose; medium full lips; no glasses",
+    "skinTone": "fair with a light neutral-warm undertone, even color across the face with no blush spots: not red",
     "bodyType": "slim build with narrow shoulders, trim but not frail, average height",
-    "signature": "long sleek center-parted dark brown hair framing a narrow oval face",
+    "signature": "long sleek auburn-tinted brown hair framing an oval face with full apple cheeks and high, thin arched brows",
     "variants": {
       "A": {
         "outfit": "black tailored blazer over a black crew-neck top, black trousers, black pumps, small blue-and-orange ALDI lapel pin, visible company logo on chest"
@@ -2934,11 +2934,11 @@
     "id": "alan-barry",
     "name": "Alan Barry",
     "tier": "standard",
-    "faceShape": "oval: slightly longer than wide, with moderate smooth cheeks, a firm medium jaw, and a defined rounded chin; youthful, not gaunt, not heavy",
-    "likeness": "short brown hair, a little longer on top, brushed up and back with light texture, short neat sides, no visible gray, light brown brows, light blue eyes, clean-shaven, no glasses",
-    "skinTone": "fair with a pink undertone",
-    "bodyType": "lean, fit build with medium shoulders, trim but not thin, average to tall height",
-    "signature": "brushed-up short brown hair on a youthful clean-shaven oval face",
+    "faceShape": "broad oval: only slightly longer than wide, widest at the full rounded cheeks, with a soft wide jaw and a short rounded chin; youthful and firm: not long, not chiseled, not heavy, no double chin",
+    "likeness": "short dark brown hair, cropped at the sides and a little longer on top, swept to one side with a slight lift at the front, the hairline a little higher at the temples; no chestnut or blond highlights, no tall quiff; thin light-brown brows set low and nearly straight, not heavy; small narrow light blue-gray eyes; a short straight nose with a rounded tip; ears that stick out slightly; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "skinTone": "fair with a light pink undertone, even color across the face with no blush spots: not red, not sunburnt",
+    "bodyType": "average build with medium-broad shoulders, solid but not heavy, average to tall height",
+    "signature": "full rounded cheeks on a broad youthful face, and small narrow light eyes under short side-swept dark brown hair",
     "variants": {
       "A": {
         "outfit": "dark navy textured blazer, light blue open-collar dress shirt with no tie, dark navy trousers, black leather belt, black smartwatch, brown dress shoes, small blue-yellow-red Lidl lapel pin, visible company logo on chest"
@@ -2949,11 +2949,11 @@
     "id": "kruti-patel-goyal",
     "name": "Kruti Patel Goyal",
     "tier": "standard",
-    "faceShape": "long oval: clearly longer than wide, with high cheekbones, slim cheeks, a tapered jaw, and a narrow pointed chin; slim but not gaunt",
-    "likeness": "straight dark brown-black hair falling just past the shoulders, center-parted and sleek, dark brows, bold oversized black square glasses, small gold stud earrings, chunky gold chain necklace",
-    "skinTone": "light brown with a warm undertone",
+    "faceShape": "long oval: clearly longer than wide, with high cheekbones, slim cheeks, a tapered jaw and a narrow pointed chin; slim but not gaunt",
+    "likeness": "straight dark brown-black hair, center-parted with lift at the crown, falling to just past the shoulders with softly layered ends, not waist-length, not flat curtains; thick bold black rectangular glasses with softly rounded corners, prominent but sized to the face, not goggles; dark arched brows showing above the frames; dark brown eyes; long slender straight nose; full lips; small gold stud earrings",
+    "skinTone": "light brown with a warm golden undertone, not orange",
     "bodyType": "slim build with narrow shoulders, trim but not frail, average height",
-    "signature": "bold oversized black square glasses and sleek center-parted dark hair",
+    "signature": "bold black rectangular glasses and center-parted dark hair just past the shoulders",
     "variants": {
       "A": {
         "outfit": "crisp white button-up shirt with an open collar, chunky gold chain necklace, black tailored trousers, black loafers, small orange Etsy lapel pin, visible company logo on chest"
@@ -2964,11 +2964,11 @@
     "id": "steve-vranes",
     "name": "Steve Vranes",
     "tier": "standard",
-    "faceShape": "broad squared: only slightly longer than wide, with wide cheekbones, firm flat cheeks, a wide strong squared jaw and a squared chin; strong but not gaunt, not long and narrow",
-    "likeness": "short dark brown hair brushed up at the front, receding slightly at the temples, short sides, straight dark brows, dark eyes with crinkles at the corners, short dark stubble around the mouth and chin like a goatee with only a light shadow on the cheeks, no glasses; stubble stays short, not a full beard",
-    "skinTone": "light with a warm undertone",
-    "bodyType": "tall and lean with medium-broad shoulders, slim but not lanky",
-    "signature": "long square-jawed face with dark stubble and a receding M-shaped hairline",
+    "faceShape": "rectangle: longer than wide, with a tall forehead, wide cheekbones, flat firm cheeks, and a wide squared jaw and chin made broader by the beard; strong, not narrow, not gaunt, looks about 40",
+    "likeness": "short dark brown hair with a tousled textured top brushed up, hairline receding deeply at both temples leaving a short tuft at the center front; short close-trimmed dark beard covering the chin, mustache and jawline, densest around the mouth and chin and shorter on the cheeks: neat and short, not long, not bushy; thick straight dark brows; deep-set hazel-brown eyes; straight nose; no glasses",
+    "skinTone": "light with a warm undertone: not red",
+    "bodyType": "tall with broad shoulders, solid and fit, not heavy",
+    "signature": "deeply receding M-shaped hairline with a center tuft, and a short dark beard framing a strong square jaw",
     "variants": {
       "A": {
         "outfit": "plain black crew-neck T-shirt with no printed logo, graphic, or text anywhere on it, dark jeans, black sneakers, one small red-and-black enamel pin on the left chest"
@@ -2979,11 +2979,11 @@
     "id": "keith-barr",
     "name": "Keith Barr",
     "tier": "standard",
-    "faceShape": "oval: longer than wide, with moderate firm cheeks, a straight medium jaw, and a rounded chin; lean but not gaunt, not heavy",
-    "likeness": "short neat brown hair side-parted and combed across with a slight lift at the front, a touch of gray at the temples, slightly receding at the corners, light brown brows, light blue eyes, clean-shaven, no glasses",
-    "skinTone": "fair with a pink undertone",
-    "bodyType": "lean build with medium shoulders, trim but not thin, average height",
-    "signature": "neat side-parted brown hair and light blue eyes on a clean oval face",
+    "faceShape": "broad oval: a little longer than wide, with wide full cheeks, a broad soft jaw and a rounded chin; boyish and healthy: not gaunt, not narrow, no jowls",
+    "likeness": "short neat ash-brown hair lying flat, side-parted and combed across, a little gray mixed in at the sides, receding at the temples into a high forehead, no lift or quiff at the front; straight light brown brows; pale bright blue eyes; medium straight nose; thin lips; ears stick out slightly; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "skinTone": "fair, even color across the face with no blush spots, not red",
+    "bodyType": "medium build with medium shoulders, solid but not heavy, average height",
+    "signature": "broad boyish face with full cheeks and pale bright blue eyes",
     "variants": {
       "A": {
         "outfit": "navy quilted puffer vest with a small white CarMax logo on the chest over a white button-down shirt with an open collar, khaki trousers, brown shoes, visible company logo on chest"
@@ -2994,11 +2994,11 @@
     "id": "mary-beth-laughton",
     "name": "Mary Beth Laughton",
     "tier": "standard",
-    "faceShape": "oval: slightly longer than wide, with high cheekbones, moderate firm cheeks, a soft jaw, and a rounded chin; slim, not gaunt, not heavy",
-    "likeness": "shoulder-length light honey-blonde hair with pale blonde highlights and slightly darker roots, side-parted with long side-swept face-framing layers, light brows, blue eyes with crinkles at the corners, small gold hoop earrings, fine gold necklace; light golden blonde, not brown, not caramel, not orange",
-    "skinTone": "fair with a warm undertone",
+    "faceShape": "long oval: clearly longer than wide, with defined cheekbones, slim cheeks, a soft narrow jaw and a long rounded chin; slim, not gaunt, not heavy",
+    "likeness": "shoulder-length light golden-blonde hair with slightly darker roots, deep side part with long side-swept bangs falling across the forehead, hanging straight past the shoulders with ends flicking out, light golden blonde, not caramel, not brown, not orange; thin light brows; narrow blue eyes with heavy lids; long straight nose with a slightly pointed tip; medium lips",
+    "skinTone": "fair with a neutral undertone, not tan, not red",
     "bodyType": "slim, athletic build with narrow shoulders, trim but not frail, average height",
-    "signature": "side-swept shoulder-length honey-blonde hair in outdoor-casual layers",
+    "signature": "deep side part with long side-swept golden-blonde bangs, and a long straight nose",
     "variants": {
       "A": {
         "outfit": "cream quilted puffer jacket with a small REI co-op logo on the chest over a light top, fine gold necklace, slim dark jeans, brown trail-style boots, visible company logo on chest"
@@ -3009,11 +3009,11 @@
     "id": "bradley-s-paulsen",
     "name": "Bradley S. Paulsen",
     "tier": "standard",
-    "faceShape": "long: longer than wide, with a tall smooth crown, prominent cheekbones, lean firm cheeks, a strong straight jaw, and a squared chin; lean but not gaunt",
-    "likeness": "head shaved nearly bald with faint short stubble at the sides, straight dark brows, dark eyes with deep crinkles at the corners, deep creases from nose to mouth, clean-shaven, no glasses",
-    "skinTone": "light with a warm tan undertone",
+    "faceShape": "broad: the face below the tall bald dome is nearly as wide as long, with wide cheekbones, full rounded cheeks, a wide jaw and a broad squared chin; fit and firm: not long, not narrow, not gaunt, no hollow cheeks",
+    "likeness": "head shaved bald, with only a faint gray buzz above the ears; straight medium-brown brows, not heavy; light-brown eyes with crow's feet; a broad nose with a rounded tip; a wide mouth; large ears that stick out from the head; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "skinTone": "light with a warm tan undertone: not red",
     "bodyType": "fit, athletic build with medium-broad shoulders, solid but not heavy, average height",
-    "signature": "shaved bald head and prominent cheekbones on a long lean face",
+    "signature": "a shaved bald head with large ears that stick out, on a broad face with wide cheekbones",
     "variants": {
       "A": {
         "outfit": "navy suit, light blue dress shirt, light blue patterned tie, navy trousers, black dress shoes, small red Floor & Decor lapel pin, visible company logo on chest"
@@ -3024,11 +3024,11 @@
     "id": "cory-miller",
     "name": "Cory Miller",
     "tier": "standard",
-    "faceShape": "oval: slightly longer than wide, with moderately full cheeks, a firm rounded jaw, and a rounded chin; solid but not heavy, not angular",
-    "likeness": "short light reddish-brown hair cropped close at the sides with a slight lift at the front, receding at the temples into a high forehead, light sandy brows, light eyes, clean-shaven, no glasses",
-    "skinTone": "fair with a ruddy pink undertone",
-    "bodyType": "average to athletic build with medium shoulders, solid but not heavy, average height",
-    "signature": "short reddish-brown hair receding at the temples above a fair, ruddy oval face",
+    "faceShape": "broad oval: slightly longer than wide, with a wide forehead and broad cheekbones, firm full cheeks, a medium rounded jaw and a rounded chin; solid but firm: not angular, not heavy, no jowls",
+    "likeness": "very short light ash-brown hair with dull sandy tones in a crew cut, receding at the temples to a high forehead with a small tuft at the front center; not red, not ginger, not orange; faint light sandy brows set low; small narrow deep-set light eyes; a medium straight nose with a rounded tip; ears that stick out slightly; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "skinTone": "fair with a light pink undertone, even color across the face with no blush spots: not red, not sunburnt",
+    "bodyType": "athletic build with medium-broad shoulders, solid but not heavy, average height",
+    "signature": "a very short sandy crew cut receding at the temples, and small narrow deep-set eyes",
     "variants": {
       "A": {
         "outfit": "dark navy blazer, light blue open-collar dress shirt with no tie, gray trousers, brown dress shoes, small Aaron's lapel pin, visible company logo on chest"
@@ -3039,11 +3039,11 @@
     "id": "enrique-lores",
     "name": "Enrique Lores",
     "tier": "important",
-    "faceShape": "long: clearly longer than wide, with prominent cheekbones, slim cheeks, a narrow jaw, and a narrow pointed chin; lean but not gaunt or hollow",
-    "likeness": "short salt-and-pepper hair, dark gray on top with lighter gray sides, receding at the temples, slightly tousled on top, straight dark brows, deep-set dark eyes with crinkles at the corners, deep creases from nose to mouth, clean-shaven, no glasses",
-    "skinTone": "light with a warm undertone",
-    "bodyType": "slim build with narrow shoulders, lean but not frail, average height",
-    "signature": "long narrow face with deep nose-to-mouth creases under short receding salt-and-pepper hair",
+    "faceShape": "inverted triangle: longer than wide, widest at the temples and cheekbones, then tapering steadily to a narrow pointed chin; firm cheeks: not gaunt, not hollow, not square, no jowls",
+    "likeness": "short dark brown-gray hair with lighter gray at the sides, tousled upward on top, deeply receding at both temples to leave a rounded forelock in the center; thin, softly arched dark brows, not heavy, not low; small deep-set dark brown eyes with crow's feet; a long straight nose with a rounded tip; thin lips; ears that stick out; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "skinTone": "light with a warm olive-beige undertone: not red",
+    "bodyType": "slim to average build with medium shoulders, trim but not frail, average height",
+    "signature": "a face wide at the temples that tapers to a narrow pointed chin, under a deeply receding forelock",
     "variants": {
       "A": {
         "outfit": "charcoal blazer, light blue open-collar dress shirt with no tie, red patterned pocket square, charcoal trousers, black dress shoes, small blue PayPal P lapel pin, visible company logo on chest"
@@ -3057,11 +3057,11 @@
     "id": "john-ternus",
     "name": "John Ternus",
     "tier": "important",
-    "faceShape": "long: longer than wide, with lean flat cheeks, a strong straight jaw, and a defined squared chin; lean but not gaunt, not heavy",
-    "likeness": "short dark brown hair with only a few gray threads at the temples, textured and swept up and back with volume on top, shorter sides, heavy straight dark brows, dark eyes with crinkles at the corners, light dark-brown stubble along the jaw and upper lip about a day or two of growth, no glasses; stubble is short and mostly dark, not a gray beard; hair is mostly brown, not salt-and-pepper",
-    "skinTone": "light with a warm undertone",
-    "bodyType": "fit, athletic swimmer's build with broad shoulders and a trim waist, solid but not bulky, average to tall height",
-    "signature": "heavy dark brows and swept-up graying brown hair with salt-and-pepper stubble",
+    "faceShape": "long: clearly longer than wide, with high cheekbones, lean flat cheeks, a defined jaw and a narrow rounded chin; boyish and lean: not gaunt, not heavy, not square-jawed",
+    "likeness": "short dark brown hair, nearly black, lightly tousled and pushed up and a little to one side with modest height, short neat sides with a few gray threads at the temples only, not a pompadour, not a tall quiff, no gray patches; straight dark brows; light hazel eyes; longish straight nose with a rounded tip; wide mouth; ears stick out slightly; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "skinTone": "light with a warm undertone, not red",
+    "bodyType": "slim, lean build with medium shoulders, trim and fit but not bulky, average to tall height",
+    "signature": "boyish long face under short tousled near-black hair",
     "variants": {
       "A": {
         "outfit": "charcoal-gray knit long-sleeve button-up shirt worn untucked with the collar open, dark indigo jeans, dark leather sneakers, small white Apple logo pin, visible company logo on chest"
@@ -3075,11 +3075,11 @@
     "id": "aneel-bhusri",
     "name": "Aneel Bhusri",
     "tier": "standard",
-    "faceShape": "round but firm: nearly as wide as long, with moderately full cheeks, a wide jaw and a rounded chin; broad but not heavy, no double chin, no jowls, no sagging cheeks",
-    "likeness": "thick short silver-white hair combed up and back with full volume, full hairline, thick dark-gray brows that stand out against the hair, rectangular black glasses with smoky gray lower rims, clean-shaven",
-    "skinTone": "light brown with a warm undertone",
-    "bodyType": "average build with medium shoulders and a trim torso; no belly, not stocky, not heavy, average height",
-    "signature": "thick swept-up silver-white hair, dark brows, and rectangular black glasses on a broad face",
+    "faceShape": "broad: nearly as wide as long, with wide full cheeks, a wide rounded jaw and a rounded chin; solid but firm: not fat, no double chin, no jowls",
+    "likeness": "short light silver-gray hair about an inch long, brushed up and back with a modest lift at the front, a little darker gray at the crown, temples slightly receding; hair stays short and close to the head: not tall, not a pompadour, not pure white; medium dark-gray brows, not heavy; rectangular glasses whose thick black top rims fade to clear smoky gray at the bottom; a long broad nose with a full rounded tip; a wide mouth; ears that stick out slightly; clean-shaven with a smooth jaw: no beard, no stubble",
+    "skinTone": "light brown with a warm golden undertone",
+    "bodyType": "solid build with broad shoulders and a sturdy chest, no belly, not heavy, average height",
+    "signature": "black-to-clear gradient rectangular glasses and a broad prominent nose under short brushed-up silver hair",
     "variants": {
       "A": {
         "outfit": "navy hooded long-sleeve pullover with a small white-and-orange Workday W logo on the chest, dark jeans, dark sneakers, visible company logo on chest"
@@ -3090,11 +3090,11 @@
     "id": "chris-rogers",
     "name": "Chris Rogers",
     "tier": "standard",
-    "faceShape": "broad squarish: nearly as wide as long, with wide cheekbones, firm cheeks, a wide strong jaw and a squared chin; lean but not gaunt, not long and narrow",
-    "likeness": "short salt-and-pepper hair, mostly gray with dark flecks, a little spiky texture on top, close-cropped sides, slightly receding at the corners, straight dark brows, light brown-green eyes with crinkles at the corners, a faint shadow of stubble on the jaw and chin; stubble stays faint, not a beard, no mustache shape, no glasses",
-    "skinTone": "light with a warm undertone",
+    "faceShape": "broad: about as wide as long below a tall rounded forehead, with wide cheekbones, full firm cheeks, a wide jaw and a rounded-square chin; lean and firm: not long, not narrow, not gaunt",
+    "likeness": "very short spiky salt-and-pepper hair, dark gray with lighter gray flecks, about half an inch long, the hairline receding at both temples to leave a rounded forelock in the center; close-cropped sides; straight dark brows of medium thickness; hazel-green eyes with crow's feet; a straight nose with a broad rounded tip; ears that stick out; clean-shaven with a smooth jaw: no beard, no stubble, no mustache, no glasses",
+    "skinTone": "light with a warm beige undertone: not red",
     "bodyType": "lean, fit build with medium shoulders, trim but not thin, average height",
-    "signature": "short gray salt-and-pepper hair on a broad square-jawed face with faint stubble",
+    "signature": "very short spiky salt-and-pepper hair over a tall rounded forehead, and ears that stick out",
     "variants": {
       "A": {
         "outfit": "gray-blue micro-check button-up shirt with an open collar and no jacket, dark jeans, brown leather sneakers, small green Instacart carrot pin, visible company logo on chest"
@@ -3105,11 +3105,11 @@
     "id": "srini-gopalan",
     "name": "Srini Gopalan",
     "tier": "important",
-    "faceShape": "broad oval: only slightly longer than wide, with wide cheekbones, moderately full cheeks, a firm medium-wide jaw and a rounded chin; lean but not long, not narrow, not hollow",
-    "likeness": "short close-cropped hair, mostly black with only light gray at the temples, slightly receding at the temples with a little texture on top, straight dark brows, dark eyes with crinkles at the corners, light creases from nose to mouth, clean-shaven, no glasses",
-    "skinTone": "medium brown with a warm undertone",
+    "faceShape": "oval: longer than wide, widest at high wide cheekbones, with slim lower cheeks, a medium jaw and a rounded chin; lean and fit, not broad, not heavy, not narrow, not hollow, few lines",
+    "likeness": "very short close-cropped hair, black on top with silver-gray at the sides above the ears: mostly black, no gray patch; hairline receding at both temples into a high forehead with a short textured front; thick straight black brows; deep-set dark eyes; long straight nose with a broad rounded tip; ears that stick out; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "skinTone": "medium brown with a warm golden undertone",
     "bodyType": "slim, fit build with medium shoulders, lean but not frail, average height",
-    "signature": "close-cropped salt-and-pepper hair over a long lean face with deep crinkles and creases",
+    "signature": "high wide cheekbones and a long nose under very short dark hair with receding temples and gray sides",
     "variants": {
       "A": {
         "outfit": "black wool button-front overshirt jacket with a small magenta T-Mobile T on the chest over a white crew-neck T-shirt, dark jeans, black smartwatch, black sneakers, visible company logo on chest"
@@ -3123,11 +3123,11 @@
     "id": "josh-damaro",
     "name": "Josh D'Amaro",
     "tier": "important",
-    "faceShape": "long oval: longer than wide, with high cheekbones, lean firm cheeks, a long strong jaw, and a prominent rounded chin; lean but not gaunt, not heavy",
-    "likeness": "thick salt-and-pepper hair, mostly silver-gray over darker roots, swept straight back with full textured volume, full hairline, thick dark brows, dark eyes with crinkles at the corners, deep creases from nose to mouth, clean-shaven, no glasses",
-    "skinTone": "light with a warm tan undertone",
+    "faceShape": "long rectangle: longer than wide, with high broad cheekbones, lean firm cheeks, a long strong jaw and a long squared chin; fit and youthful: not gaunt, no deep lines",
+    "likeness": "short cropped salt-and-pepper hair about an inch long, silver-gray on top with darker gray at the sides, textured and brushed up with a slightly spiky top, straight full hairline, not long, not swept back, not a mane; thick straight dark brows; dark brown eyes; long straight nose; wide mouth; ears stick out slightly; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "skinTone": "light olive with a warm tan undertone, not red",
     "bodyType": "fit, athletic build with medium-broad shoulders, trim but not thin, appears tall",
-    "signature": "thick swept-back silver hair, dark brows, and a long strong jaw",
+    "signature": "short textured silver crop, thick dark brows and a long strong chin",
     "variants": {
       "A": {
         "outfit": "charcoal-navy suit, crisp white open-collar dress shirt with no tie, matching trousers, black dress shoes, small Mickey ears lapel pin, visible company logo on chest"

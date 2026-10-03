@@ -88,6 +88,8 @@ Lessons from the Henrique Braun tests (2026-10-01): describe face shape in propo
 
 Lessons from the 49-character pass (2026-10-01, not shipped): "faint beard shadow" is drawn as a visible beard, so write "clean-shaven with a smooth jaw: no beard, no stubble"; anything the model might add (glasses, beard) needs an explicit "no glasses" / "no beard" or it can appear on only one figure; pink or "warm" skin words drift to sunburnt red, so add "not red"; 2 of 57 frames came back with three figures. After two rounds of description fixes, the owner judged the results still not close enough to the photos. Text descriptions alone may not carry likeness without the name. Review files are in `output/sprite-review-2026-10-01/` (local only).
 
+Opus review of the same 49 (2026-10-03, not yet regenerated): without distinctive detail the model falls back to one stock face (long, narrow, hollow-cheeked, heavy brows, tall swept-back hair). Most of these people have broader, fuller faces than the old text said. "Lean", "creases", "crinkles", "swept back" and "volume" push toward the stock face; "gray at the temples" becomes a gray patch on one side; "rosy" or "flush" becomes blush spots. Nose, ears, eye shape and chin are now described. Per-person notes are in `output/sprite-review-2026-10-01/v4-49.json` (local only).
+
 **Output:** `output/raw/frames/{id}_varA.png`, `{id}_varB.png` (important tier only)
 
 **Examples:**
