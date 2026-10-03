@@ -2368,8 +2368,8 @@
     "name": "Sal Mancuso",
     "tier": "standard",
     "faceShape": "broad square-oval: about as wide as long, with a wide forehead, full firm cheeks, a wide soft jaw and a broad rounded chin; solid, not long, not gaunt, no jowls, no double chin",
-    "likeness": "thick dark brown hair, short, swept back and to one side with a little lift at the front, receding at both temples into a broad forehead, a light fleck of gray at both temples: mostly dark, no solid gray patch; thick dark slightly arched brows set close together; hazel eyes with heavy upper lids; large straight nose with a broad fleshy tip; thin lips; bare eyes and clean-shaven with a smooth jaw: no glasses, no beard, no stubble",
-    "skinTone": "light olive with a warm tan undertone: not orange",
+    "likeness": "thick dark brown hair, short, swept back and to one side with a small low lift at the front, not tall, receding at both temples into a broad forehead, a light fleck of gray at both temples: mostly dark, no solid gray patch; thick dark slightly arched brows set close together; hazel eyes with heavy upper lids; large straight nose with a broad fleshy tip; thin lips; bare eyes and clean-shaven with a smooth jaw: no glasses, no beard, no stubble",
+    "skinTone": "light olive-beige: not orange, not red",
     "bodyType": "solid build with broad shoulders, sturdy but not heavy, average height",
     "signature": "broad full face with a large straight nose, under dark swept-back hair with receding temples",
     "variants": {
@@ -2383,7 +2383,7 @@
     "name": "Jacek Olczak",
     "tier": "standard",
     "faceShape": "broad oval: only slightly longer than wide, with a high forehead, wide full cheeks, a wide jaw and a rounded chin under the beard; solid but firm: not narrow, not gaunt, no jowls",
-    "likeness": "thick silver-white hair swept sideways across the top of the head from a deep side part, lying flat and smooth with little height, covering the tops of the ears and ending above the collar: not long, not a mane, no volume on top; dark gray brows that slant down at the outer ends; narrow hooded eyes; a straight broad nose; short closely trimmed white beard on the chin and jaw with a slightly darker gray mustache: not a full or long beard; no glasses",
+    "likeness": "thick silver-white hair swept diagonally across the top of the head from a deep side part, leaving a high forehead; it lies flat and smooth with little height, and the sides lie close to the head with the ears half visible, ending at the nape: not long, not a mane, not puffy at the sides, no volume on top; medium gray-brown brows of normal thickness that slant down at the outer ends: not black, not heavy; narrow hooded eyes; a straight broad nose; a short white beard trimmed close, densest on the chin and along the jaw, thin on the cheeks, with a slightly darker gray mustache: not a full or bushy beard, not joined to the hair; no glasses",
     "skinTone": "fair with a light neutral-cream tone, even color across the face with no blush spots: not red, not flushed",
     "bodyType": "average build with medium shoulders, trim but not thin, average to slightly tall height",
     "signature": "flat side-swept silver-white hair over hooded eyes, and a short trimmed white beard",
@@ -2399,7 +2399,7 @@
     "tier": "standard",
     "faceShape": "wide at the cheekbones and tapering: slightly longer than wide, with high, full, rounded cheekbones, a narrowing lower face and a small pointed chin; smooth and youthful for his age: not gaunt, not hollow, no deep lines",
     "likeness": "short neat silver-white hair brushed up and back off the forehead in a smooth tidy crop, not spiky, not messy; straight hairline set high with slightly receded corners, short sides; very narrow almond-shaped eyes under heavy upper lids, slanting slightly down at the outer corners; thin light gray-brown brows; straight medium nose; wide mouth; ears stick out slightly; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
-    "skinTone": "light with a warm golden undertone, not red",
+    "skinTone": "light beige, even and neutral, not orange, not red",
     "bodyType": "slim, trim build with medium shoulders, fit but not frail, average height",
     "signature": "very narrow heavy-lidded almond eyes over high rounded cheekbones, under a neat silver-white crop",
     "variants": {
@@ -2412,11 +2412,11 @@
     "id": "ramon-laguarta",
     "name": "Ramon Laguarta",
     "tier": "standard",
-    "faceShape": "broad square-oval: only a little longer than wide, with wide cheekbones, full firm cheeks, a wide rounded jaw and a broad chin; solid, not long, not narrow, not gaunt, not jowly",
-    "likeness": "short thick silver-gray hair brushed up and back from the forehead in a short neat soft wave, trimmed short at the sides and back with the ears fully showing: no hair over the ears, not long, not a mane; hairline full with a slight dip at the temples; straight light gray-brown brows; small light gray-green eyes; straight nose with a broad rounded tip; wide mouth; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "faceShape": "broad square-oval: only a little longer than wide, with wide cheekbones, full firm cheeks, a wide rounded jaw and a broad chin; solid, not long, not narrow, not gaunt, not jowly; smooth with few lines",
+    "likeness": "short thick silver-gray hair brushed back from the forehead and raised only slightly at the front, low and soft: not tall, no crest, no ridges, trimmed short at the sides and back, the temples and the ears fully showing: no hair over the ears, not long, not a mane; hairline full with a slight dip at the temples; thin light silver-gray brows, not dark; small light gray-green eyes; straight nose with a broad rounded tip; wide mouth; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
     "skinTone": "light with a warm beige tone, even color across the face with no blush spots: not red, not sunburnt",
     "bodyType": "average build with medium-broad shoulders, solid but not heavy, average height",
-    "signature": "broad square face under short neat silver hair brushed up at the front",
+    "signature": "broad square face under short low silver hair with the temples and ears showing",
     "variants": {
       "A": {
         "outfit": "navy suit, light blue open-collar dress shirt with no tie, navy trousers, black dress shoes, small blue-red-white PepsiCo globe lapel pin, visible company logo on chest"
@@ -2443,7 +2443,7 @@
     "name": "Steve Cahillane",
     "tier": "standard",
     "faceShape": "broad rectangle: a little longer than wide, with wide full cheeks, a broad rounded jaw and a broad strong chin; firm, not round, not narrow, no jowls",
-    "likeness": "short pale sandy-blond hair mixed with white, side-parted with a soft fringe swept across the forehead, soft volume on top, short sides with the ears showing; pale sandy brows, barely visible; small light blue eyes; straight nose with a rounded tip; wide mouth with thin lips; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "likeness": "short pale sandy-blond hair mixed with white, side-parted with a soft fringe swept across the forehead, low soft volume on top, not tall, short sides with the ears showing; pale sandy brows, barely visible; small light blue eyes; straight nose with a rounded tip; wide mouth with thin lips; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
     "skinTone": "fair warm light beige, one even color across the face with no blush spots on the cheeks: not pink, not red",
     "bodyType": "average build with medium-broad shoulders, solid but not heavy, average height",
     "signature": "broad face under a soft side-swept fringe of pale sandy-white hair",
@@ -2459,7 +2459,7 @@
     "tier": "standard",
     "faceShape": "broad: the face below the bald dome is nearly as wide as long, with wide cheekbones, full rounded apple cheeks, a wide rounded jaw and a rounded chin; firm and healthy: not narrow, not gaunt, no hollow cheeks, no jowls, no double chin",
     "likeness": "completely bald with a smooth, wide, rounded scalp and no hair at the sides; very pale sparse brows that almost disappear; small narrow gray-blue eyes with crow's feet; a broad nose with a wide rounded tip; thin lips; large ears that stick out; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
-    "skinTone": "light with a warm golden-tan undertone: not pink, not red",
+    "skinTone": "light neutral beige: not orange, not golden, not tan, not pink, not red",
     "bodyType": "average build with medium-broad shoulders, solid but not heavy, average height",
     "signature": "a wide, completely bald dome over full round apple cheeks and small narrow eyes",
     "variants": {
@@ -2503,8 +2503,8 @@
     "name": "Shailesh Jejurikar",
     "tier": "standard",
     "faceShape": "long diamond: clearly longer than wide, widest at high rounded cheekbones, tapering to a narrow jaw and a narrow pointed chin; slim lower cheeks; lean but not gaunt, not square, no wide jaw",
-    "likeness": "thick black hair, short-medium, side-parted and swept back and to the side with soft volume on top and a soft wave at the front, full hairline, sides only lightly touched with gray: mostly black, no gray patch; thick straight black brows; narrow dark almond eyes; long prominent nose with a broad rounded tip; large ears that stick out; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
-    "skinTone": "light brown with a warm golden undertone: not dark, not orange",
+    "likeness": "thick black hair, short-medium, side-parted and swept back and to the side with soft low volume on top and a soft wave at the front: not tall, no crest, full hairline, sides only lightly touched with gray: mostly black, no gray patch; thick straight black brows; narrow dark almond eyes; long prominent nose with a broad rounded tip; large ears that stick out; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "skinTone": "light brown with a warm neutral undertone: not orange, not dark brown",
     "bodyType": "slim build with medium shoulders, trim but not frail, average height",
     "signature": "high round cheekbones tapering to a narrow pointed chin, a long prominent nose and large ears",
     "variants": {
@@ -2519,7 +2519,7 @@
     "tier": "standard",
     "faceShape": "wide inverted triangle: about as wide as long, with very broad high cheekbones and full rounded cheeks narrowing to a small pointed chin; healthy and full: not gaunt, no hollow cheeks, no deep lines",
     "likeness": "short medium-brown hair side-parted and swept across the top, deeply receding at both temples, leaving a rounded forelock at the center front, high forehead, little visible gray; thin light brown brows; narrow light blue eyes; medium nose with a rounded tip; wide mouth; ears stick out slightly; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
-    "skinTone": "fair with a ruddy tan undertone, not red",
+    "skinTone": "fair beige with a light even outdoor color, not orange, not red",
     "bodyType": "lean, fit build with medium shoulders, trim but not thin, average height",
     "signature": "very broad cheekbones narrowing to a small pointed chin, under receding side-swept brown hair",
     "variants": {
@@ -2533,7 +2533,7 @@
     "name": "Tim Cofer",
     "tier": "standard",
     "faceShape": "long oval: longer than wide, with a wide forehead, broad flat cheeks, a medium jaw and a long rounded chin; lean, not square-jawed, not chiseled; smooth with few lines, looks about 50",
-    "likeness": "thick short dark brown hair, nearly black on top, brushed up and back with a slight side part and a straight full hairline, silver-gray on both sides over the ears; thick straight dark brows that slant slightly down at the outer ends; narrow dark brown eyes with heavy smooth upper lids, set wide apart; long straight nose with a broad rounded tip; small mouth with thin lips; ears that stick out slightly; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "likeness": "thick short dark brown hair, nearly black on top, brushed back with a slight side part, low on top: not tall and a straight full hairline, silver-gray on both sides over the ears; thick straight dark brows that slant slightly down at the outer ends; narrow dark brown eyes with heavy smooth upper lids, set wide apart; long straight nose with a broad rounded tip; small mouth with thin lips; ears that stick out slightly; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
     "skinTone": "fair peach-beige: not tan, not red",
     "bodyType": "lean build with medium shoulders, trim but not frail, average height",
     "signature": "narrow heavy-lidded eyes set wide under thick straight dark brows, and silver sides on dark hair",
@@ -2563,7 +2563,7 @@
     "name": "Nobuhiro Torii",
     "tier": "standard",
     "faceShape": "broad oval: only a little longer than wide, widest at broad flat cheekbones, with flat firm cheeks, a wide soft jaw and a rounded chin; firm, not heavy, not long, not narrow",
-    "likeness": "East Asian features. Thick salt-and-pepper hair, dark gray on top with silver streaks and silver-gray at the sides, swept up and back from the forehead in one smooth full wave with soft volume, short neat sides: smooth, not spiky, no points; low straight dark-gray brows; narrow eyes with smooth single-fold upper lids; low flat nose bridge with a broad nose tip; wide mouth with thin lips; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "likeness": "East Asian features. Thick salt-and-pepper hair, dark gray on top with silver streaks and silver-gray at the sides, swept up and back from the forehead in one smooth full wave of moderate height: not a tall pompadour, no ridges, short neat sides: smooth, not spiky, no points; low straight dark-gray brows; narrow eyes with smooth single-fold upper lids; low flat nose bridge with a broad nose tip; wide mouth with thin lips; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
     "skinTone": "light beige with a neutral-warm undertone: not tan, not orange",
     "bodyType": "slim build with medium shoulders and long legs, lean but not frail, tall",
     "signature": "one smooth swept-back wave of salt-and-pepper hair, and narrow single-lid eyes over broad flat cheekbones",
@@ -2579,7 +2579,7 @@
     "tier": "standard",
     "faceShape": "broad round: nearly as wide as long, with a high rounded dome, wide cheekbones, full rounded cheeks, a wide jaw and a rounded chin; firm and healthy: not long, not narrow, not gaunt, no hollow cheeks, no jowls",
     "likeness": "very short close-cropped gray hair, thin on top with a small tuft at the front center and bare, deeply receding temples; sides cropped short and close to the head, not bushy; light sparse brows; small light blue eyes with crow's feet; a prominent broad nose with a rounded tip; thin lips; ears that stick out; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
-    "skinTone": "fair with a warm light-tan undertone: not pink, not red",
+    "skinTone": "fair with a light neutral-beige undertone: not orange, not pink, not red",
     "bodyType": "fit, average build with medium-broad shoulders, trim but not thin, average height",
     "signature": "a broad round face with full cheeks and a prominent nose under a close-cropped receding gray crop",
     "variants": {
@@ -2594,7 +2594,7 @@
     "tier": "standard",
     "faceShape": "broad oval: a little longer than wide, widest at the cheekbones with full rounded cheeks, tapering to a soft rounded chin; solid and firm: not long, not narrow, not gaunt, no hollow cheeks, no jowls",
     "likeness": "very short near-black hair cropped close all over, the hairline receding at both temples to leave a high rounded forehead with a short tuft at the center; thin straight dark brows, not heavy, not low; small dark eyes; a medium-broad nose with a rounded tip; thin lips; ears that stick out slightly; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
-    "skinTone": "light with a warm neutral-beige undertone: not pink, not red",
+    "skinTone": "light with a neutral beige undertone: not orange, not pink, not red",
     "bodyType": "average build with medium shoulders, trim but not thin, tall",
     "signature": "close-cropped near-black hair receding at the temples above a broad, round-cheeked face",
     "variants": {
@@ -2609,7 +2609,7 @@
     "tier": "standard",
     "faceShape": "broad oblong: longer than wide, with a very tall, broad, domed forehead, full cheeks, a wide rounded jaw and a long rounded chin; broad but not round, not short; firm, no double chin, no jowls",
     "likeness": "very short dark gray hair combed straight back flat to the head, lighter silver at the sides, hairline receding far back at both temples leaving a tall bare forehead with a short center tuft; straight medium-dark brows; small deep-set dark brown eyes; long straight nose with a rounded tip; ears that stick out; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
-    "skinTone": "light with a warm tan undertone: not red, not orange",
+    "skinTone": "light warm beige: not red, not orange",
     "bodyType": "average build with medium-broad shoulders, trim, not heavy, not stocky, average height",
     "signature": "very tall broad forehead under a deeply receding, short combed-back gray hairline, and ears that stick out",
     "variants": {
@@ -2639,7 +2639,7 @@
     "tier": "standard",
     "faceShape": "long oval: clearly longer than wide, with moderately full cheeks, a firm rounded jaw and a long strong rounded chin; trim, not heavy, not jowly",
     "likeness": "short bright pure-white hair, not blond, not cream, gelled and spiked straight up across the front in sharp textured points, short sides; pale white brows, nearly invisible; light blue eyes; bold thick black rectangular glasses; straight nose with a slightly broad tip; clean-shaven with a smooth jaw: no beard, no stubble",
-    "skinTone": "fair with a light beige tone and a faint warm tan: not pink, not red",
+    "skinTone": "fair light beige with a faint warm tone: not pink, not red, not orange",
     "bodyType": "trim build with medium shoulders, fit, not heavy, average height",
     "signature": "spiky pure-white hair standing straight up and bold black rectangular glasses",
     "variants": {
@@ -2654,7 +2654,7 @@
     "tier": "standard",
     "faceShape": "rectangular: longer than wide, with prominent cheekbones, lean flat cheeks, a straight strong jaw and a squared chin; lean but not gaunt, not narrow or pinched",
     "likeness": "short two-tone hair: dark steel-gray on top and bright silver-white on the short sides and temples, the top combed back and slightly to one side in smooth glossy lines, not spiky; full straight hairline; thick straight dark brows set low over deep-set light hazel eyes; long, straight, prominent nose; wide mouth; ears stick out slightly; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
-    "skinTone": "light olive with a warm undertone, not red",
+    "skinTone": "light beige a shade deeper than fair, neutral, not orange, not yellow, not red",
     "bodyType": "lean build with medium shoulders, slim but not frail, appears tall",
     "signature": "two-tone hair, dark gray on top over white sides, and a long prominent nose under low thick brows",
     "variants": {
@@ -2668,7 +2668,7 @@
     "name": "Shane Smith",
     "tier": "standard",
     "faceShape": "broad oval: slightly longer than wide, with full firm cheeks and a wide jaw squared off by the beard; firm, not heavy, not puffy, no jowls",
-    "likeness": "thick dark brown hair swept back and to one side with volume on top and a loose lock falling toward one temple, slightly receding at the temples; short neatly trimmed full beard and mustache, dark brown on the cheeks and mustache, turning gray-white at the chin and under the lower lip; straight dark brows; narrow eyes; straight nose; no glasses",
+    "likeness": "thick dark brown hair swept back and to one side with moderate volume on top, not tall and a loose lock falling toward one temple, slightly receding at the temples; short neatly trimmed full beard and mustache, dark brown on the cheeks and mustache, turning gray-white at the chin and under the lower lip; straight dark brows; narrow eyes; straight nose; no glasses",
     "skinTone": "light with a warm undertone: not red",
     "bodyType": "average build with medium-broad shoulders, trim, not heavy, not stocky, average height",
     "signature": "dark swept-back hair with a loose front lock, and a trimmed dark beard with a gray-white chin",
@@ -2684,7 +2684,7 @@
     "tier": "standard",
     "faceShape": "broad and square-round: about as wide as long, with wide cheekbones, full cheeks, a broad jaw and a rounded chin with slight fullness under it; solid and fleshy but not fat, not long",
     "likeness": "short dense salt-and-pepper hair, dark gray with lighter gray at the sides, textured and brushed up and slightly forward at the front, close-cut sides, full low hairline, not swept back, not a pompadour; thick dark brows that tilt up at the inner ends; small deep-set dark eyes with puffy lower lids; broad nose with a rounded tip; full lower lip; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
-    "skinTone": "light olive with a warm undertone, not red",
+    "skinTone": "light beige a shade deeper than fair, neutral, not orange, not yellow, not red",
     "bodyType": "average build with medium-broad shoulders, solid but not heavy, average height",
     "signature": "broad fleshy face with small deep-set eyes under thick dark brows",
     "variants": {
@@ -2699,7 +2699,7 @@
     "tier": "standard",
     "faceShape": "broad round-square: about as wide as long, with full cheeks, a wide soft jaw and a broad rounded chin; firm, not jowly, no double chin",
     "likeness": "short thick black hair cut close at the sides, brushed forward and to one side with a short straight front edge, full low hairline, only a faint touch of gray just above the ears: mostly black, no gray patch; thick straight black brows; narrow dark eyes; thin rectangular gunmetal metal glasses set wide across the face; broad nose with a wide rounded tip; ears that stick out; clean-shaven with a smooth jaw: no beard, no stubble",
-    "skinTone": "medium brown with a warm golden undertone: not dark, not red",
+    "skinTone": "medium brown with a warm neutral undertone: not orange, not red, not dark brown",
     "bodyType": "average build with medium shoulders, solid but not heavy, average height",
     "signature": "wide round face with thin rectangular glasses and ears that stick out, under short black hair",
     "variants": {
@@ -2714,7 +2714,7 @@
     "tier": "standard",
     "faceShape": "long oval: clearly longer than wide, widest at a tall rounded domed forehead, with moderately full cheeks, a medium rounded jaw and a rounded chin with a small dimple; firm and youthful for about 50 with few lines: not gaunt, not hollow-cheeked, not old or wrinkled",
     "likeness": "short thinning gray hair, a little darker gray on top, receding at both temples into a tall bare forehead with a short tousled tuft at the front center, sides cut short and close with the ears showing: not full, not puffy, no volume at the sides; straight light brown-gray brows, blue eyes, long straight nose with a rounded tip, ears that stick out slightly, clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
-    "skinTone": "fair with a warm light-tan undertone: not pink, not red",
+    "skinTone": "fair warm beige: not pink, not red, not orange",
     "bodyType": "medium build with medium shoulders, trim but not thin, average height",
     "signature": "tall bare domed forehead under short thinning gray hair, and ears that stick out slightly",
     "variants": {
@@ -2728,10 +2728,10 @@
     "name": "Lawson Whiting",
     "tier": "standard",
     "faceShape": "broad and full: only a little longer than wide, with a wide forehead, big full cheeks, a wide jaw and a rounded chin with some fullness under it; heavy-faced but not obese, no deep lines",
-    "likeness": "short pale silver-blond hair, white-gray with a faint blond tint, thin and slightly tousled, brushed across from a side part with a little wave at the front, sitting close to the head, not a thick helmet, not tall; nearly invisible pale brows; small narrow light blue eyes under heavy lids; medium nose with a rounded tip; thin lips; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "likeness": "short light silver-gray hair, nearly white, a cool gray: not blond, not yellow, not cream; thin and slightly tousled, brushed across from a side part with a little wave at the front, sitting close to the head, not a thick helmet, not tall; nearly invisible pale brows; small narrow light blue eyes under heavy lids; medium nose with a rounded tip; thin lips; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
     "skinTone": "fair with a light pink undertone, even color across the face with no blush spots, not sunburnt red",
     "bodyType": "large, solid build with broad shoulders and chest, sturdy and a bit heavyset but not obese",
-    "signature": "big broad full face with small narrow eyes and nearly invisible brows",
+    "signature": "big broad full face with small narrow eyes and nearly invisible brows, under short silver-gray hair",
     "variants": {
       "A": {
         "outfit": "navy suit, white dress shirt, light blue patterned tie, navy trousers, black dress shoes, small gold Brown-Forman crest lapel pin, visible company logo on chest"
@@ -2744,7 +2744,7 @@
     "tier": "standard",
     "faceShape": "broad round-square: about as wide as long, with wide cheekbones, full rounded apple cheeks, a wide jaw and a broad rounded chin under the beard; firm and healthy: not long, not narrow, not gaunt, no jowls",
     "likeness": "short close-cropped sandy-gray hair, thin on top with a small forelock and receding temples, fuller at the sides; short evenly trimmed salt-and-pepper beard and mustache, mostly white-gray, covering the cheeks, jaw and chin: not long, not bushy; sparse light sandy brows; small narrow hazel-green eyes with deep crow's feet; a broad nose with a large rounded tip; ears that stick out; no glasses",
-    "skinTone": "light with a warm tan undertone: not red",
+    "skinTone": "light beige with a faint warm undertone: not orange, not golden, not red",
     "bodyType": "fit, athletic build with medium-broad shoulders, solid but not heavy, average to tall height",
     "signature": "full round apple cheeks under a short white-gray beard, and a broad rounded nose",
     "variants": {
@@ -2759,7 +2759,7 @@
     "tier": "important",
     "faceShape": "broad rectangle: slightly longer than wide and wide all the way down, with a wide forehead, broad full cheeks, a wide jaw and a broad rounded chin; solid and healthy: not gaunt, not chiseled, no jowls",
     "likeness": "short silver-gray hair about an inch long, lighter silver on top and slightly darker gray at the sides, brushed up and a little to the side in a soft textured crop, full hairline with slightly receded corners, not sandy, not brown, not swept back; small narrow light blue eyes; light gray brows; broad nose with a wide rounded tip; wide mouth; ears stick out slightly; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
-    "skinTone": "fair with a warm light-tan undertone, not red",
+    "skinTone": "fair beige, even and neutral, not orange, not red",
     "bodyType": "fit build with medium-broad shoulders, solid but not bulky, average to slightly tall height",
     "signature": "broad full face with small narrow eyes and a broad rounded nose, under short silver-gray hair",
     "variants": {
@@ -2795,7 +2795,7 @@
     "tier": "important",
     "faceShape": "large rectangle: longer than wide but broad throughout, with a wide forehead, wide cheekbones, firm flat cheeks, a long wide jaw and a broad squared chin; lean and weathered but solid: not narrow, not gaunt, no hollow cheeks",
     "likeness": "short silver-white hair about two inches long, brushed up and back from a side part with modest lift at the front, full hairline; hair stays close to the head: not a tall swoop, not a pompadour; sparse light gray brows; small light blue eyes with deep crow's feet; a long, straight, prominent nose; thin lips; ears that stick out slightly; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
-    "skinTone": "light with a weathered golden-tan undertone: not red, not orange",
+    "skinTone": "light beige, a shade deeper than fair, with weathered texture: not orange, not golden, not red",
     "bodyType": "lean, fit build with medium shoulders, trim but not frail, average to tall height",
     "signature": "a large, broad rectangular face with a long prominent nose under short brushed-back silver-white hair",
     "variants": {
@@ -2813,7 +2813,7 @@
     "tier": "important",
     "faceShape": "rectangular: a little longer than wide, with a tall forehead, wide high cheekbones, firm cheeks, a broad strong jaw and a squared chin; strong but not gaunt, not narrow",
     "likeness": "thick salt-and-pepper hair, dark charcoal streaked evenly with silver throughout and slightly lighter at the temples, combed straight back from the forehead with moderate height and a soft wave, full hairline, not jet black on top, not two-tone, not a tall pompadour; thick dark brows that peak in a high arch; narrow deep-set brown eyes; long straight nose; wide mouth; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
-    "skinTone": "light with a warm tan undertone, not red",
+    "skinTone": "light beige, even and neutral, not orange, not red",
     "bodyType": "trim build with medium shoulders, fit but not frail, average height",
     "signature": "combed-back salt-and-pepper hair and high-arched thick dark brows",
     "variants": {
@@ -2846,7 +2846,7 @@
     "tier": "standard",
     "faceShape": "broad oval: slightly longer than wide, with a tall domed head and high wide forehead, wide cheekbones, full cheeks, a wide rounded jaw and a rounded chin; solid but not heavy, no double chin",
     "likeness": "very close-cropped gray hair: a short salt-and-pepper buzz over the sides and back, thinning across the top of a tall domed head, receding hairline; dark rectangular glasses with medium-thick black frames; thin dark brows; dark brown eyes; broad nose; full lips; clean-shaven with a smooth jaw: no beard, no stubble, no mustache",
-    "skinTone": "dark brown with a warm undertone, not orange, not gray",
+    "skinTone": "deep brown, rich and even, not orange, not gray",
     "bodyType": "medium build with medium-broad shoulders, trim but not frail, average height",
     "signature": "tall domed head with a gray buzz and dark rectangular glasses",
     "variants": {
@@ -2890,8 +2890,8 @@
     "name": "David Boone",
     "tier": "standard",
     "faceShape": "broad rectangle: longer than wide but wide throughout, with a broad forehead, wide cheekbones, firm full cheeks, a wide jaw and a rounded chin; middle-aged and solid: not narrow, not boyish, not gaunt",
-    "likeness": "medium brown hair with lighter sandy-ash streaks, swept straight back with volume on top, receding at both temples to leave a short peak at the front center, full and thick at the sides over the ears; light brown brows; blue eyes with deep crow's feet; thick dark tortoiseshell-brown rectangular glasses; a long, straight, prominent nose with a rounded tip; ears that stick out slightly; clean-shaven with a smooth jaw: no beard, no stubble",
-    "skinTone": "light with a warm golden-tan undertone: not orange, not red",
+    "likeness": "medium brown hair with lighter sandy-ash streaks, swept straight back with volume on top, receding at both temples to leave a short peak at the front center, trimmed shorter at the sides with the ears fully visible; light brown brows; blue eyes with deep crow's feet; thick dark tortoiseshell-brown rectangular glasses; a long, straight, prominent nose with a rounded tip; ears that stick out slightly; clean-shaven with a smooth jaw: no beard, no stubble",
+    "skinTone": "light beige, a shade deeper than fair: not orange, not golden, not red",
     "bodyType": "athletic build with broad shoulders, trim but not thin, average height",
     "signature": "thick dark rectangular glasses on a broad, middle-aged face, with brown hair swept back from receding temples",
     "variants": {
@@ -2905,7 +2905,7 @@
     "name": "Winnie Park",
     "tier": "standard",
     "faceShape": "round: nearly as wide as long, widest at full broad cheeks, with a soft rounded jaw and a small rounded chin; slim, not heavy, not long, not angular",
-    "likeness": "East Asian features. Chin-length dark brown bob with soft lighter brown tones, deep side part with a long side-swept fringe falling across the forehead toward one eye, volume at the crown, ends flipped slightly outward at the jaw: mostly dark brown, not blonde; narrow almond eyes with smooth single-fold lids, no heavy eyeliner; softly arched dark brows; small nose with a low flat bridge and a rounded tip; full lips; long silver drop earrings",
+    "likeness": "East Asian features. Chin-length dark brown bob with soft lighter brown tones, deep side part far to one side, with the fringe swept across the forehead and covering one temple, light tousled layers, ends flicking outward at the jaw: not a smooth helmet, not below the jaw: mostly dark brown, not blonde; narrow almond eyes with smooth single-fold lids, no heavy eyeliner; softly arched dark brows; small nose with a low flat bridge and a rounded tip; full lips; long silver drop earrings",
     "skinTone": "light peach-beige with a soft pink undertone; pale, not tan, not golden, not yellow, not orange, not red",
     "bodyType": "slim, petite build with narrow shoulders, trim but not frail, below average height",
     "signature": "round full-cheeked face with narrow almond eyes, framed by a side-swept chin-length brown bob",
@@ -2951,7 +2951,7 @@
     "tier": "standard",
     "faceShape": "long oval: clearly longer than wide, with high cheekbones, slim cheeks, a tapered jaw and a narrow pointed chin; slim but not gaunt",
     "likeness": "straight dark brown-black hair, center-parted with lift at the crown, falling to just past the shoulders with softly layered ends, not waist-length, not flat curtains; thick bold black rectangular glasses with softly rounded corners, prominent but sized to the face, not goggles; dark arched brows showing above the frames; dark brown eyes; long slender straight nose; full lips; small gold stud earrings",
-    "skinTone": "light brown with a warm golden undertone, not orange",
+    "skinTone": "medium-light brown, a soft neutral brown, not orange, not golden",
     "bodyType": "slim build with narrow shoulders, trim but not frail, average height",
     "signature": "bold black rectangular glasses and center-parted dark hair just past the shoulders",
     "variants": {
@@ -2995,10 +2995,10 @@
     "name": "Mary Beth Laughton",
     "tier": "standard",
     "faceShape": "long oval: clearly longer than wide, with defined cheekbones, slim cheeks, a soft narrow jaw and a long rounded chin; slim, not gaunt, not heavy",
-    "likeness": "shoulder-length light golden-blonde hair with slightly darker roots, deep side part with long side-swept bangs falling across the forehead, hanging straight past the shoulders with ends flicking out, light golden blonde, not caramel, not brown, not orange; thin light brows; narrow blue eyes with heavy lids; long straight nose with a slightly pointed tip; medium lips",
+    "likeness": "shoulder-length light natural blonde hair with soft beige highlights and slightly darker roots, deep side part with long side-swept bangs falling across the forehead, hanging straight past the shoulders with ends flicking out, not brassy yellow, not caramel, not brown, not orange; thin light brows; narrow blue eyes with heavy lids; long straight nose with a slightly pointed tip; medium lips",
     "skinTone": "fair with a neutral undertone, not tan, not red",
     "bodyType": "slim, athletic build with narrow shoulders, trim but not frail, average height",
-    "signature": "deep side part with long side-swept golden-blonde bangs, and a long straight nose",
+    "signature": "deep side part with long side-swept light blonde bangs, and a long straight nose",
     "variants": {
       "A": {
         "outfit": "cream quilted puffer jacket with a small REI co-op logo on the chest over a light top, fine gold necklace, slim dark jeans, brown trail-style boots, visible company logo on chest"
@@ -3011,7 +3011,7 @@
     "tier": "standard",
     "faceShape": "broad: the face below the tall bald dome is nearly as wide as long, with wide cheekbones, full rounded cheeks, a wide jaw and a broad squared chin; fit and firm: not long, not narrow, not gaunt, no hollow cheeks",
     "likeness": "head shaved bald, with only a faint gray buzz above the ears; straight medium-brown brows, not heavy; light-brown eyes with crow's feet; a broad nose with a rounded tip; a wide mouth; large ears that stick out from the head; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
-    "skinTone": "light with a warm tan undertone: not red",
+    "skinTone": "light beige with a faint warm undertone: not orange, not golden, not red",
     "bodyType": "fit, athletic build with medium-broad shoulders, solid but not heavy, average height",
     "signature": "a shaved bald head with large ears that stick out, on a broad face with wide cheekbones",
     "variants": {
@@ -3041,7 +3041,7 @@
     "tier": "important",
     "faceShape": "inverted triangle: longer than wide, widest at the temples and cheekbones, then tapering steadily to a narrow pointed chin; firm cheeks: not gaunt, not hollow, not square, no jowls",
     "likeness": "short dark brown-gray hair with lighter gray at the sides, tousled upward on top, deeply receding at both temples to leave a rounded forelock in the center; thin, softly arched dark brows, not heavy, not low; small deep-set dark brown eyes with crow's feet; a long straight nose with a rounded tip; thin lips; ears that stick out; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
-    "skinTone": "light with a warm olive-beige undertone: not red",
+    "skinTone": "light olive-beige: not orange, not yellow, not red",
     "bodyType": "slim to average build with medium shoulders, trim but not frail, average height",
     "signature": "a face wide at the temples that tapers to a narrow pointed chin, under a deeply receding forelock",
     "variants": {
@@ -3059,7 +3059,7 @@
     "tier": "important",
     "faceShape": "long: clearly longer than wide, with high cheekbones, lean flat cheeks, a defined jaw and a narrow rounded chin; boyish and lean: not gaunt, not heavy, not square-jawed",
     "likeness": "short dark brown hair, nearly black, lightly tousled and pushed up and a little to one side with modest height, short neat sides with a few gray threads at the temples only, not a pompadour, not a tall quiff, no gray patches; straight dark brows; light hazel eyes; longish straight nose with a rounded tip; wide mouth; ears stick out slightly; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
-    "skinTone": "light with a warm undertone, not red",
+    "skinTone": "light with a warm undertone, not orange, not red",
     "bodyType": "slim, lean build with medium shoulders, trim and fit but not bulky, average to tall height",
     "signature": "boyish long face under short tousled near-black hair",
     "variants": {
@@ -3077,7 +3077,7 @@
     "tier": "standard",
     "faceShape": "broad: nearly as wide as long, with wide full cheeks, a wide rounded jaw and a rounded chin; solid but firm: not fat, no double chin, no jowls",
     "likeness": "short light silver-gray hair about an inch long, brushed up and back with a modest lift at the front, a little darker gray at the crown, temples slightly receding; hair stays short and close to the head: not tall, not a pompadour, not pure white; medium dark-gray brows, not heavy; rectangular glasses whose thick black top rims fade to clear smoky gray at the bottom; a long broad nose with a full rounded tip; a wide mouth; ears that stick out slightly; clean-shaven with a smooth jaw: no beard, no stubble",
-    "skinTone": "light brown with a warm golden undertone",
+    "skinTone": "light brown with a neutral undertone: not orange, not golden, not gray",
     "bodyType": "solid build with broad shoulders and a sturdy chest, no belly, not heavy, average height",
     "signature": "black-to-clear gradient rectangular glasses and a broad prominent nose under short brushed-up silver hair",
     "variants": {
@@ -3091,8 +3091,8 @@
     "name": "Chris Rogers",
     "tier": "standard",
     "faceShape": "broad: about as wide as long below a tall rounded forehead, with wide cheekbones, full firm cheeks, a wide jaw and a rounded-square chin; lean and firm: not long, not narrow, not gaunt",
-    "likeness": "very short spiky salt-and-pepper hair, dark gray with lighter gray flecks, about half an inch long, the hairline receding at both temples to leave a rounded forelock in the center; close-cropped sides; straight dark brows of medium thickness; hazel-green eyes with crow's feet; a straight nose with a broad rounded tip; ears that stick out; clean-shaven with a smooth jaw: no beard, no stubble, no mustache, no glasses",
-    "skinTone": "light with a warm beige undertone: not red",
+    "likeness": "very short spiky salt-and-pepper hair, dark gray with lighter gray flecks, about half an inch long, the hairline receding at both temples to leave a rounded forelock in the center; close-cropped sides; straight dark brows of medium thickness, not heavy; hazel-green eyes with crow's feet; a straight nose with a broad rounded tip; ears that stick out; clean-shaven with a smooth jaw: no beard, no stubble, no mustache, no glasses",
+    "skinTone": "light with a warm beige undertone: not orange, not red",
     "bodyType": "lean, fit build with medium shoulders, trim but not thin, average height",
     "signature": "very short spiky salt-and-pepper hair over a tall rounded forehead, and ears that stick out",
     "variants": {
@@ -3107,7 +3107,7 @@
     "tier": "important",
     "faceShape": "oval: longer than wide, widest at high wide cheekbones, with slim lower cheeks, a medium jaw and a rounded chin; lean and fit, not broad, not heavy, not narrow, not hollow, few lines",
     "likeness": "very short close-cropped hair, black on top with silver-gray at the sides above the ears: mostly black, no gray patch; hairline receding at both temples into a high forehead with a short textured front; thick straight black brows; deep-set dark eyes; long straight nose with a broad rounded tip; ears that stick out; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
-    "skinTone": "medium brown with a warm golden undertone",
+    "skinTone": "medium brown with a warm neutral undertone: not orange, not dark brown",
     "bodyType": "slim, fit build with medium shoulders, lean but not frail, average height",
     "signature": "high wide cheekbones and a long nose under very short dark hair with receding temples and gray sides",
     "variants": {
@@ -3125,7 +3125,7 @@
     "tier": "important",
     "faceShape": "long rectangle: longer than wide, with high broad cheekbones, lean firm cheeks, a long strong jaw and a long squared chin; fit and youthful: not gaunt, no deep lines",
     "likeness": "short cropped salt-and-pepper hair about an inch long, silver-gray on top with darker gray at the sides, textured and brushed up with a slightly spiky top, straight full hairline, not long, not swept back, not a mane; thick straight dark brows; dark brown eyes; long straight nose; wide mouth; ears stick out slightly; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
-    "skinTone": "light olive with a warm tan undertone, not red",
+    "skinTone": "light beige a shade deeper than fair, neutral, not orange, not yellow, not red",
     "bodyType": "fit, athletic build with medium-broad shoulders, trim but not thin, appears tall",
     "signature": "short textured silver crop, thick dark brows and a long strong chin",
     "variants": {
