@@ -1,14 +1,17 @@
 import React, { useCallback } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import type { ScorecardPerson } from '../data/aggregateScorecard';
 import { scorecardCopy } from '../../../copy/scorecard';
 import { theme } from '../../../design/tokens';
-import { SpriteView, nameToSpriteId } from '../../../core/sprites/spriteLoader';
+import { SpriteView, hasSprite, nameToSpriteId } from '../../../core/sprites/spriteLoader';
+import { scorecardNoSpriteMark } from '../../../core/scorecard/scorecardAssets';
 import { getDisplaySurname } from '../../../core/utils/surname';
 import { CollapsibleRow } from '../../../core/ui/CollapsibleRow';
 import { SurfaceIcons } from './SurfaceIcon';
 
 const SPRITE_SIZE = 44;
+// Pixel X for figures without a sprite: 28pt keeps the 14px art at a 2× multiple.
+const NO_SPRITE_MARK_SIZE = 28;
 
 interface PreviewPersonRowProps {
   person: ScorecardPerson;
@@ -20,14 +23,26 @@ export function PreviewPersonRow({ person, expanded, onToggle }: PreviewPersonRo
   const expandable = person.children.length > 1;
   const lastName = getDisplaySurname(person.figureName);
   const spriteId = nameToSpriteId(person.figureName);
+  const showSprite = hasSprite(person.figureName);
   const parentName = person.sources[0]?.name ?? '';
 
   const renderHeader = useCallback(() => (
     <View style={styles.header}>
       {/* Reserve the sprite slot dimensions whether or not a sprite exists,
-          so the name/count columns stay aligned across rows (#100). */}
+          so the name/count columns stay aligned across rows (#100). No sprite:
+          the red pixel X, matching the rendered card. */}
       <View style={styles.spriteSlot}>
-        <SpriteView spriteId={spriteId} state="defeated" size={SPRITE_SIZE} />
+        {showSprite ? (
+          <SpriteView spriteId={spriteId} state="defeated" size={SPRITE_SIZE} />
+        ) : (
+          <Image
+            source={scorecardNoSpriteMark}
+            style={styles.noSpriteMark}
+            resizeMode="contain"
+            accessibilityElementsHidden
+            importantForAccessibility="no"
+          />
+        )}
       </View>
       <View style={styles.nameCol}>
         <Text style={styles.name} numberOfLines={1} allowFontScaling={false}>
@@ -49,7 +64,7 @@ export function PreviewPersonRow({ person, expanded, onToggle }: PreviewPersonRo
         </Text>
       )}
     </View>
-  ), [spriteId, lastName, parentName, person.surfaces, person.totalCount, expandable, expanded]);
+  ), [spriteId, showSprite, lastName, parentName, person.surfaces, person.totalCount, expandable, expanded]);
 
   const renderExpanded = useCallback(() => (
     <View style={styles.childList}>
@@ -103,6 +118,10 @@ const styles = StyleSheet.create({
     height: SPRITE_SIZE,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  noSpriteMark: {
+    width: NO_SPRITE_MARK_SIZE,
+    height: NO_SPRITE_MARK_SIZE,
   },
   nameCol: {
     flex: 1,

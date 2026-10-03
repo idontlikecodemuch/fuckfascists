@@ -1,8 +1,9 @@
 import React from 'react';
-import { PixelRatio, StyleSheet, Text, View } from 'react-native';
+import { Image, PixelRatio, StyleSheet, Text, View } from 'react-native';
 import type { ScorecardPerson } from '../data/aggregateScorecard';
 import { scorecardCopy } from '../../../copy/scorecard';
 import { theme } from '../../../design/tokens';
+import { scorecardNoSpriteMark } from '../../../core/scorecard/scorecardAssets';
 import { SpriteView, hasSprite, nameToSpriteId } from '../../../core/sprites/spriteLoader';
 import { getDisplaySurname } from '../../../core/utils/surname';
 
@@ -15,8 +16,7 @@ const COL_GAP_DESIGN = 20;
 const ROW_PAD_V_DESIGN = 14;
 const ROW_PAD_H_DESIGN = 8;
 const COUNT_PAD_RIGHT_DESIGN = 16;
-const NO_SPRITE_TEXT_INSET_DESIGN = 32;
-const NO_SPRITE_EXTRA_PAD_V_DESIGN = 24;
+const NO_SPRITE_MARK_DESIGN = 112; // 14×14 pixel X at 8×, so it stays crisp
 
 const pr = PixelRatio.get();
 const scale = (px: number) => px / pr;
@@ -34,10 +34,9 @@ interface CardPersonRowProps {
  * every character. Counts are gold with a soft amber glow + drop shadow —
  * they read as achievements, not warnings.
  *
- * A figure without a sprite drops the slot entirely, so the name starts at
- * the row's left edge instead of after an empty square on the shared image
- * (TestFlight feedback, build 11). The live preview row keeps its slot for
- * column alignment (#100); this is the rendered card only.
+ * A figure without a sprite shows a red pixel X in the slot instead of an
+ * empty square (TestFlight feedback, build 11; owner picked the X over
+ * logos, flags and icons on 2026-10-03). PreviewPersonRow does the same.
  *
  * Not interactive. collapsable={false} for view-shot capture.
  */
@@ -48,12 +47,9 @@ export function CardPersonRow({ person, isLast }: CardPersonRowProps) {
   const detail = scorecardCopy.platformList(person.sources.map((s) => s.name));
 
   return (
-    <View
-      style={[styles.row, !showSprite && styles.rowNoSprite, !isLast && styles.divider]}
-      collapsable={false}
-    >
-      {showSprite && (
-        <View style={styles.spriteSlot} collapsable={false}>
+    <View style={[styles.row, !isLast && styles.divider]} collapsable={false}>
+      <View style={styles.spriteSlot} collapsable={false}>
+        {showSprite ? (
           <SpriteView
             spriteId={spriteId}
             state="defeated"
@@ -63,8 +59,10 @@ export function CardPersonRow({ person, isLast }: CardPersonRowProps) {
             // Face-anchor is for tight head-only crops (Track sprite-screen),
             // not for the scorecard's full-figure row portrait.
           />
-        </View>
-      )}
+        ) : (
+          <Image source={scorecardNoSpriteMark} style={styles.noSpriteMark} resizeMode="contain" />
+        )}
+      </View>
       <View style={styles.text} collapsable={false}>
         <Text style={styles.name} numberOfLines={1} allowFontScaling={false}>
           {lastName.toUpperCase()}
@@ -88,12 +86,6 @@ const styles = StyleSheet.create({
     paddingVertical: scale(ROW_PAD_V_DESIGN),
     paddingHorizontal: scale(ROW_PAD_H_DESIGN),
   },
-  // No sprite: indent the name a little more than a sprite row's padding so
-  // it doesn't sit against the panel's corner brackets.
-  rowNoSprite: {
-    paddingLeft: scale(ROW_PAD_H_DESIGN + NO_SPRITE_TEXT_INSET_DESIGN),
-    paddingVertical: scale(ROW_PAD_V_DESIGN + NO_SPRITE_EXTRA_PAD_V_DESIGN),
-  },
   divider: {
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(255,255,255,0.07)',
@@ -104,6 +96,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: scale(COL_GAP_DESIGN),
+  },
+  noSpriteMark: {
+    width: scale(NO_SPRITE_MARK_DESIGN),
+    height: scale(NO_SPRITE_MARK_DESIGN),
   },
   text: {
     flex: 1,
