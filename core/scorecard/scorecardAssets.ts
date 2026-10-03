@@ -28,6 +28,11 @@ export const scorecardScanlines: ImageSourcePropType =
 export const scorecardBeam: ImageSourcePropType =
   require('../../assets/pixel/scorecard/beam.png');
 
+/** Red pixel X (14×14 art at 8×, 112×112) shown in the sprite slot for
+ *  figures with no CEO sprite, on the rendered card and the live preview. */
+export const scorecardNoSpriteMark: ImageSourcePropType =
+  require('../../assets/pixel/scorecard/no_sprite_x.png');
+
 /** Power meter tier assets — indexed by tier index (0–3). */
 export const powerMeterAssets: ImageSourcePropType[] = [
   require('../../assets/pixel/scorecard/power_idle.png'),
