@@ -3,7 +3,7 @@ import { PixelRatio, StyleSheet, Text, View } from 'react-native';
 import type { ScorecardPerson } from '../data/aggregateScorecard';
 import { scorecardCopy } from '../../../copy/scorecard';
 import { theme } from '../../../design/tokens';
-import { SpriteView, nameToSpriteId } from '../../../core/sprites/spriteLoader';
+import { SpriteView, hasSprite, nameToSpriteId } from '../../../core/sprites/spriteLoader';
 import { getDisplaySurname } from '../../../core/utils/surname';
 
 const SPRITE_SLOT_DESIGN = 200;
@@ -15,6 +15,8 @@ const COL_GAP_DESIGN = 20;
 const ROW_PAD_V_DESIGN = 14;
 const ROW_PAD_H_DESIGN = 8;
 const COUNT_PAD_RIGHT_DESIGN = 16;
+const NO_SPRITE_TEXT_INSET_DESIGN = 32;
+const NO_SPRITE_EXTRA_PAD_V_DESIGN = 24;
 
 const pr = PixelRatio.get();
 const scale = (px: number) => px / pr;
@@ -32,26 +34,37 @@ interface CardPersonRowProps {
  * every character. Counts are gold with a soft amber glow + drop shadow —
  * they read as achievements, not warnings.
  *
+ * A figure without a sprite drops the slot entirely, so the name starts at
+ * the row's left edge instead of after an empty square on the shared image
+ * (TestFlight feedback, build 11). The live preview row keeps its slot for
+ * column alignment (#100); this is the rendered card only.
+ *
  * Not interactive. collapsable={false} for view-shot capture.
  */
 export function CardPersonRow({ person, isLast }: CardPersonRowProps) {
   const lastName = getDisplaySurname(person.figureName);
   const spriteId = nameToSpriteId(person.figureName);
+  const showSprite = hasSprite(person.figureName);
   const detail = scorecardCopy.platformList(person.sources.map((s) => s.name));
 
   return (
-    <View style={[styles.row, !isLast && styles.divider]} collapsable={false}>
-      <View style={styles.spriteSlot} collapsable={false}>
-        <SpriteView
-          spriteId={spriteId}
-          state="defeated"
-          size={scale(SPRITE_DESIGN)}
-          // Render the full sprite cell — face lands where the artist drew
-          // it (post-normalization, that's consistent across sprites).
-          // Face-anchor is for tight head-only crops (Track sprite-screen),
-          // not for the scorecard's full-figure row portrait.
-        />
-      </View>
+    <View
+      style={[styles.row, !showSprite && styles.rowNoSprite, !isLast && styles.divider]}
+      collapsable={false}
+    >
+      {showSprite && (
+        <View style={styles.spriteSlot} collapsable={false}>
+          <SpriteView
+            spriteId={spriteId}
+            state="defeated"
+            size={scale(SPRITE_DESIGN)}
+            // Render the full sprite cell — face lands where the artist drew
+            // it (post-normalization, that's consistent across sprites).
+            // Face-anchor is for tight head-only crops (Track sprite-screen),
+            // not for the scorecard's full-figure row portrait.
+          />
+        </View>
+      )}
       <View style={styles.text} collapsable={false}>
         <Text style={styles.name} numberOfLines={1} allowFontScaling={false}>
           {lastName.toUpperCase()}
@@ -74,6 +87,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: scale(ROW_PAD_V_DESIGN),
     paddingHorizontal: scale(ROW_PAD_H_DESIGN),
+  },
+  // No sprite: indent the name a little more than a sprite row's padding so
+  // it doesn't sit against the panel's corner brackets.
+  rowNoSprite: {
+    paddingLeft: scale(ROW_PAD_H_DESIGN + NO_SPRITE_TEXT_INSET_DESIGN),
+    paddingVertical: scale(ROW_PAD_V_DESIGN + NO_SPRITE_EXTRA_PAD_V_DESIGN),
   },
   divider: {
     borderBottomWidth: 1,
