@@ -191,7 +191,7 @@ All tables in `fuckfascists.db` share the same database file and receive identic
         ├── brand/                   ← FF_logo.png (stacked), FF_logo_horizontal.png
         ├── arena/                   ← 4 scene backgrounds (sf, nyc street, nyc penthouse, dc)
         ├── ui/                      ← UI kit sliced elements (frames, buttons, bars, badges) + header_bar.png
-        └── sprites/                 ← 107 CEO sprite sheets + manifest.json
+        └── sprites/                 ← 241 CEO sprite sheets + manifest.json
 ```
 
 ---
