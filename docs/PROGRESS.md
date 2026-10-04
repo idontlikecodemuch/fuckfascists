@@ -14,13 +14,27 @@ This document is updated continuously. New instances should read this first — 
 
 ### Session: October 12, 2026 ET — Browser extension store readiness (Chrome, Firefox, Edge)
 
-**Branch:** `chore/extension-store-launch` (not merged). Full packet: `docs/EXTENSION_STORE_LAUNCH.md`.
+**Branch:** `chore/extension-store-launch`, merged to `main` 2026-10-14 with the owner's decisions (no FEC calls in the extension, AGPL-3.0, App Hold Media LLC). Full packet: `docs/EXTENSION_STORE_LAUNCH.md`.
 
 **Fixed:** placeholder solid-color icons replaced (pixel "FCK" at 16/32, app art at 48/128, amber variants); `host_permissions` removed (content-script matches + CORS cover it, verified in headless Chrome for Testing); manifest `name` → `FCK, Financial Contribution Kit` and a Clark-voice 128-char summary; `homepage_url`; popup privacy line (`extCopy.privacyNote`) for CWS Limited Use; popup false "No political funding on record" on the second page of a flagged site (frequency/snooze now gate only the icon); snooze closes the popup; `[hidden]` CSS fix (empty confidence badge + duplicate FEC link were always rendering). New `npm run package:ext:source -- --verify` builds the AMO source archive and proves a byte-identical rebuild.
 
 **Verified:** `web-ext lint` 0/0/0, extension Jest suites, `tsc --noEmit`, headless-Chrome E2E (inject → match → card on page 1 and page 2, GitHub refresh fetch without host permissions). Packages + listing art in `dist/packages/` (gitignored).
 
 **Owner next:** decisions D1 (remove extension FEC fallback before submit — recommended), D3 (privacy page Limited Use statement + Edge), D4 (add a LICENSE); then the store checklist in the packet. Bundled data goes stale 2026-11-30 (60-day window) — refresh before then.
+
+### Session: October 2–4, 2026 ET — 1.2.0 live, main updated, 1.2.1 sprites, git cleanup
+
+**1.2.0:** build 10 was rejected for a launch crash (Xcode 27 requires the UIScene life cycle); build 11 adopts it and was approved. Live as of 2026-10-04, released automatically. Record: `docs/releases/1.2.0.md`. `main` was fast-forwarded to 1.2.0 (tag `v1.2.0`, `f5e3fad`), so installs now fetch the 1.2.0 entity, people and product data.
+
+**1.2.1 (`release/1.2.1`):** scorecard rows for figures without a sprite show a red pixel X (`assets/pixel/scorecard/no_sprite_x.png`) on the shared card and the live preview, instead of an empty slot.
+
+**Sprites (`feat/sprites-1.2.1`):** Opus agents compared each of the 49 descriptions against the person's photo and current sprite, then reviewed the first Gemini renders and applied the lessons across all entries (see `tools/img-gen/USAGE.md`). In a three-person test, Gemini from text alone beat OpenAI `gpt-image-1.5` given the photo (owner and three Opus reviewers agreed; OpenAI also breaks the roster style and its background does not key). All 49 regenerated with Gemini on 2026-10-03/04 (57 frames incl. outfit B); five layout glitches re-rolled. Not yet reviewed by the owner or composed into `assets/pixel/sprites/`. Review files: `tools/img-gen/output/sprite-review-2026-10-03/` (local).
+
+**Other 1.2.1 work:** expo-camera macro-lens patch on `fix/camera-macro-lens` (needs a device test); iOS 27 Track header sits under the status bar on first render after platform setup; household barcode prefixes researched (`tools/off-bulk/research-2026-10-01/`, local).
+
+**Git cleanup (2026-10-04):** deleted all branches already in `main`, including `release/1.1.0` and `release/1.2.0` (tags `v1.1.0`, `v1.2.0`). Old branches with unmerged commits were tagged `archive/<branch>` before deletion (pushed for branches that were on GitHub; local-only for `data/cleaning-products-wip`, `investigate/sprite-clip-logging`, `wip/sprite-experiments-apr22`). Rebased `release/1.2.1`, `feat/sprites-1.2.1` and `fix/camera-macro-lens` onto `main`. Left for the owner: three old worktrees with uncommitted changes (`clever-chandrasekhar`, `epic-bouman`, `distracted-borg` on `fix/sprite-expo-image`) and an old `pre-merge stash` in the main checkout.
+
+**Next:** owner review of the 49 sprites, re-rolls, then compose and deploy them; camera device test; Track header fix; household prefixes; optional promotional text.
 
 ### Session: September 21 – October 1, 2026 ET — Android pass, Build 9 feedback, CEO refresh, FEC refresh, release/1.2.0
 
