@@ -56,6 +56,26 @@
         }
       }
     },
+    "alan-barry": {
+      "file": "alan-barry.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
     "albert-bourla": {
       "file": "albert-bourla.png",
       "tier": "important",
@@ -168,6 +188,26 @@
         }
       }
     },
+    "aneel-bhusri": {
+      "file": "aneel-bhusri.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
     "anthony-hucker": {
       "file": "anthony-hucker.png",
       "tier": "standard",
@@ -266,6 +306,26 @@
     },
     "ashley-buchanan": {
       "file": "ashley-buchanan.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "atty-mcgrath": {
+      "file": "atty-mcgrath.png",
       "tier": "standard",
       "grid": {
         "cols": 2,
@@ -516,6 +576,26 @@
         }
       }
     },
+    "bradley-s-paulsen": {
+      "file": "bradley-s-paulsen.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
     "brian-armstrong": {
       "file": "brian-armstrong.png",
       "tier": "important",
@@ -597,6 +677,26 @@
         "varB_defeated": {
           "col": 1,
           "row": 1
+        }
+      }
+    },
+    "brian-mcnamara": {
+      "file": "brian-mcnamara.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
         }
       }
     },
@@ -920,6 +1020,26 @@
         }
       }
     },
+    "cory-miller": {
+      "file": "cory-miller.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
     "cristiano-amon": {
       "file": "cristiano-amon.png",
       "tier": "standard",
@@ -1120,6 +1240,26 @@
         }
       }
     },
+    "dave-lewis": {
+      "file": "dave-lewis.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
     "david-baszucki": {
       "file": "david-baszucki.png",
       "tier": "important",
@@ -1145,6 +1285,26 @@
         "varB_defeated": {
           "col": 1,
           "row": 1
+        }
+      }
+    },
+    "david-boone": {
+      "file": "david-boone.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
         }
       }
     },
@@ -1269,6 +1429,26 @@
         "varB_defeated": {
           "col": 1,
           "row": 1
+        }
+      }
+    },
+    "dirk-van-de-put": {
+      "file": "dirk-van-de-put.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
         }
       }
     },
@@ -1458,6 +1638,34 @@
     },
     "elon-musk": {
       "file": "elon-musk.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "enrique-lores": {
+      "file": "enrique-lores.png",
       "tier": "important",
       "grid": {
         "cols": 2,
@@ -1776,6 +1984,34 @@
         }
       }
     },
+    "greg-foran": {
+      "file": "greg-foran.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
     "greg-peters": {
       "file": "greg-peters.png",
       "tier": "standard",
@@ -1858,6 +2094,26 @@
     },
     "hock-tan": {
       "file": "hock-tan.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "jacek-olczak": {
+      "file": "jacek-olczak.png",
       "tier": "standard",
       "grid": {
         "cols": 2,
@@ -2088,6 +2344,26 @@
         }
       }
     },
+    "jason-potter": {
+      "file": "jason-potter.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
     "javier-quinones": {
       "file": "javier-quinones.png",
       "tier": "standard",
@@ -2153,6 +2429,46 @@
         "varB_defeated": {
           "col": 1,
           "row": 1
+        }
+      }
+    },
+    "jeff-harmening": {
+      "file": "jeff-harmening.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "jeff-schomburger": {
+      "file": "jeff-schomburger.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
         }
       }
     },
@@ -2320,6 +2636,26 @@
         }
       }
     },
+    "joaquin-duato": {
+      "file": "joaquin-duato.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
     "joel-anderson": {
       "file": "joel-anderson.png",
       "tier": "standard",
@@ -2342,6 +2678,54 @@
     },
     "joel-rampoldt": {
       "file": "joel-rampoldt.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "john-furner": {
+      "file": "john-furner.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "john-ghingo": {
+      "file": "john-ghingo.png",
       "tier": "standard",
       "grid": {
         "cols": 2,
@@ -2408,6 +2792,34 @@
         }
       }
     },
+    "john-ternus": {
+      "file": "john-ternus.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
     "john-venhuizen": {
       "file": "john-venhuizen.png",
       "tier": "standard",
@@ -2425,6 +2837,34 @@
         "varA_defeated": {
           "col": 1,
           "row": 0
+        }
+      }
+    },
+    "josh-damaro": {
+      "file": "josh-damaro.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
         }
       }
     },
@@ -2516,6 +2956,26 @@
         }
       }
     },
+    "keith-barr": {
+      "file": "keith-barr.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
     "ken-griffin": {
       "file": "ken-griffin.png",
       "tier": "important",
@@ -2589,6 +3049,46 @@
         "varB_defeated": {
           "col": 1,
           "row": 1
+        }
+      }
+    },
+    "kirk-tanner": {
+      "file": "kirk-tanner.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "kruti-patel-goyal": {
+      "file": "kruti-patel-goyal.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
         }
       }
     },
@@ -2698,6 +3198,26 @@
     },
     "lauren-hobart": {
       "file": "lauren-hobart.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "lawson-whiting": {
+      "file": "lawson-whiting.png",
       "tier": "standard",
       "grid": {
         "cols": 2,
@@ -2964,6 +3484,26 @@
         }
       }
     },
+    "mary-beth-laughton": {
+      "file": "mary-beth-laughton.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
     "mary-dillon": {
       "file": "mary-dillon.png",
       "tier": "standard",
@@ -3148,8 +3688,116 @@
         }
       }
     },
+    "michael-fiddelke": {
+      "file": "michael-fiddelke.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
+    "michael-j-bender": {
+      "file": "michael-j-bender.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
     "michael-miebach": {
       "file": "michael-miebach.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "michel-doukeris": {
+      "file": "michel-doukeris.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "michelle-wlazlo": {
+      "file": "michelle-wlazlo.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "mick-beekhuizen": {
+      "file": "mick-beekhuizen.png",
       "tier": "standard",
       "grid": {
         "cols": 2,
@@ -3205,6 +3853,34 @@
         "varA_defeated": {
           "col": 1,
           "row": 0
+        }
+      }
+    },
+    "mike-motz": {
+      "file": "mike-motz.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
         }
       }
     },
@@ -3276,6 +3952,26 @@
         }
       }
     },
+    "nicholas-fink": {
+      "file": "nicholas-fink.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
     "nicholas-thompson": {
       "file": "nicholas-thompson.png",
       "tier": "standard",
@@ -3298,6 +3994,26 @@
     },
     "niraj-shah": {
       "file": "niraj-shah.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "nobuhiro-torii": {
+      "file": "nobuhiro-torii.png",
       "tier": "standard",
       "grid": {
         "cols": 2,
@@ -3464,6 +4180,46 @@
         }
       }
     },
+    "rafael-oliveira": {
+      "file": "rafael-oliveira.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "rahul-goyal": {
+      "file": "rahul-goyal.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
     "rahul-purini": {
       "file": "rahul-purini.png",
       "tier": "standard",
@@ -3486,6 +4242,26 @@
     },
     "raj-subramaniam": {
       "file": "raj-subramaniam.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "ramon-laguarta": {
+      "file": "ramon-laguarta.png",
       "tier": "standard",
       "grid": {
         "cols": 2,
@@ -3680,6 +4456,26 @@
         }
       }
     },
+    "ryals-mcmullian": {
+      "file": "ryals-mcmullian.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
     "ryan-cohen": {
       "file": "ryan-cohen.png",
       "tier": "important",
@@ -3784,6 +4580,26 @@
         }
       }
     },
+    "sal-mancuso": {
+      "file": "sal-mancuso.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
     "sam-altman": {
       "file": "sam-altman.png",
       "tier": "important",
@@ -3868,8 +4684,68 @@
         }
       }
     },
+    "sean-connolly": {
+      "file": "sean-connolly.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "shailesh-jejurikar": {
+      "file": "shailesh-jejurikar.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
     "shane-okelly": {
       "file": "shane-okelly.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "shane-smith": {
+      "file": "shane-smith.png",
       "tier": "standard",
       "grid": {
         "cols": 2,
@@ -4012,6 +4888,34 @@
         }
       }
     },
+    "srini-gopalan": {
+      "file": "srini-gopalan.png",
+      "tier": "important",
+      "grid": {
+        "cols": 2,
+        "rows": 2
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        },
+        "varB_neutral": {
+          "col": 0,
+          "row": 1
+        },
+        "varB_defeated": {
+          "col": 1,
+          "row": 1
+        }
+      }
+    },
     "stephen-schwarzman": {
       "file": "stephen-schwarzman.png",
       "tier": "important",
@@ -4040,6 +4944,26 @@
         }
       }
     },
+    "steve-cahillane": {
+      "file": "steve-cahillane.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
     "steve-huffman": {
       "file": "steve-huffman.png",
       "tier": "important",
@@ -4065,6 +4989,26 @@
         "varB_defeated": {
           "col": 1,
           "row": 1
+        }
+      }
+    },
+    "steve-vranes": {
+      "file": "steve-vranes.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
         }
       }
     },
@@ -4113,6 +5057,26 @@
         "varB_defeated": {
           "col": 1,
           "row": 1
+        }
+      }
+    },
+    "susan-morris": {
+      "file": "susan-morris.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
         }
       }
     },
@@ -4186,6 +5150,26 @@
     },
     "tim-boyle": {
       "file": "tim-boyle.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
+        }
+      }
+    },
+    "tim-cofer": {
+      "file": "tim-cofer.png",
       "tier": "standard",
       "grid": {
         "cols": 2,
@@ -4481,6 +5465,26 @@
         "varB_defeated": {
           "col": 1,
           "row": 1
+        }
+      }
+    },
+    "winnie-park": {
+      "file": "winnie-park.png",
+      "tier": "standard",
+      "grid": {
+        "cols": 2,
+        "rows": 1
+      },
+      "frameWidth": 364,
+      "frameHeight": 360,
+      "frames": {
+        "varA_neutral": {
+          "col": 0,
+          "row": 0
+        },
+        "varA_defeated": {
+          "col": 1,
+          "row": 0
         }
       }
     },
