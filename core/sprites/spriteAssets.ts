@@ -11,6 +11,7 @@ export const spriteAssets: Record<string, ImageSourcePropType> = {
   'albert-bourla': require('../../assets/pixel/sprites/albert-bourla.png'),
   'alex-chriss': require('../../assets/pixel/sprites/alex-chriss.png'),
   'alex-karp': require('../../assets/pixel/sprites/alex-karp.png'),
+  'alexandre-ricard': require('../../assets/pixel/sprites/alexandre-ricard.png'),
   'andy-jassy': require('../../assets/pixel/sprites/andy-jassy.png'),
   'aneel-bhusri': require('../../assets/pixel/sprites/aneel-bhusri.png'),
   'anthony-hucker': require('../../assets/pixel/sprites/anthony-hucker.png'),
@@ -246,4 +247,4 @@ export const spriteAssets: Record<string, ImageSourcePropType> = {
   'zhang-yiming': require('../../assets/pixel/sprites/zhang-yiming.png'),
 };
 
-// 239 sprites
+// 240 sprites
