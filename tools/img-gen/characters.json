@@ -2592,11 +2592,11 @@
     "id": "alexandre-ricard",
     "name": "Alexandre Ricard",
     "tier": "standard",
-    "faceShape": "rectangle: clearly longer than wide, with broad cheekbones, firm moderately full cheeks, a wide straight jaw and a long, broad, squared-off chin; solid for about 54: not round, not chubby, not boyish, not narrow, not gaunt, no jowls",
-    "likeness": "short dark brown hair, nearly black, with a slightly tousled texture brushed forward, receding at both temples with a short rounded forelock at the center front, sides cut short with the ears showing: not buzzed, not shaved, not tall; thin straight dark brows set low, just above small deep-set dark eyes; a medium-long straight nose with a rounded tip; a wide mouth with thin lips; ears that stick out slightly; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
+    "faceShape": "broad soft oval: from hairline to chin about 1.3 times as long as wide, and from the brows down to the chin about as long as wide; widest at full, rounded cheeks that fill smoothly down to a softly rounded jaw with no corners, ending in a short rounded chin no wider than the mouth; medium-high forehead; solid and well-fed for about 54: not long, not narrow, not rectangular, not angular, no square jaw corners, no long or jutting chin, no hollow under the cheekbones, but not chubby, not round as a ball, no double chin",
+    "likeness": "short dark brown hair, nearly black, lying close to the head with only a little texture, brushed forward, receding at both temples with a short rounded forelock at the center front, sides cut short with the ears showing: not buzzed, not shaved, not spiky, not tall, adds no height to the head; thin straight dark brows set low, just above small deep-set dark eyes; a medium-long straight nose with a rounded tip; a wide mouth with thin lips; ears that stick out slightly; clean-shaven with a smooth jaw: no beard, no stubble, no glasses",
     "skinTone": "fair light beige with a neutral undertone: not orange, not pink, not red",
     "bodyType": "average build with medium shoulders, trim but not thin, tall",
-    "signature": "a long rectangular face with a broad, long, squared chin, small deep-set eyes, and short tousled dark hair receding at the temples",
+    "signature": "a broad, soft, full-cheeked face with a short rounded chin and small deep-set eyes, under close-lying short dark hair receding at the temples",
     "variants": {
       "A": {
         "outfit": "navy suit, white dress shirt, slim dark navy tie, navy trousers, black dress shoes, small blue Pernod Ricard lapel pin, visible company logo on chest"
@@ -3090,11 +3090,11 @@
     "id": "chris-rogers",
     "name": "Chris Rogers",
     "tier": "standard",
-    "faceShape": "long rectangle-oval: longer than wide, with a tall rounded forehead, broad cheekbones, full firm cheeks, a wide jaw and a long rounded-square chin; youthful and smooth for about 45 with few lines: not gaunt, not hollow-cheeked, not old, not narrow",
+    "faceShape": "tall broad U-shape: from hairline to chin about 1.45 times as long as wide, the tall forehead taking up the top third, and from the brows down to the chin about as long as wide; the jaw is almost as wide as the cheekbones, so the sides of the face run nearly straight down past full, smooth cheeks and turn under in a wide U to a broad, rounded, slightly squared chin; smooth youthful skin for about 45: no forehead lines, no deep folds beside the mouth, no frown lines, no sagging; not narrow at the jaw, no tapering, no small or pointed chin, no hollow cheeks, but not fat, not round, no jowls",
     "likeness": "very short spiky salt-and-pepper hair, dark gray-brown with silver flecks throughout and a little lighter at the sides, about half an inch long, the hairline receding at both temples with a short rounded forelock in the center, close-cropped sides: not white, not light gray, not tall; straight dark brows of medium thickness; hazel-green eyes; a straight nose with a broad rounded tip; a wide mouth; ears that stick out; clean-shaven with a smooth jaw: no beard, no stubble, no mustache, no glasses",
     "skinTone": "light with a warm beige undertone: not orange, not red",
     "bodyType": "fit build with medium shoulders, trim but not thin, average height",
-    "signature": "a long, full-cheeked, youthful face with a wide jaw under very short spiky salt-and-pepper hair, and ears that stick out",
+    "signature": "a tall, broad U-shaped face, as wide at the jaw as at the cheeks, with a tall smooth forehead, under very short spiky salt-and-pepper hair, and ears that stick out",
     "variants": {
       "A": {
         "outfit": "gray-blue micro-check button-up shirt with an open collar and no jacket, dark jeans, brown leather sneakers, small green Instacart carrot pin, visible company logo on chest"
