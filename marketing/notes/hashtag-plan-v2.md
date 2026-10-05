@@ -54,7 +54,11 @@ it gave counts three times, then a login wall, so other IG numbers fall back to 
 ## The plan (Instagram)
 
 The last caption line holds at most 5 tags; most posts use 4. Topic words go in the caption,
-on-screen text and VO: "campaign finance", "FEC.gov", "R: and D:", "indie game".
+on-screen text and VO: "campaign finance", "FEC.gov", "a game". **Organic copy rule (creator,
+Oct 5, relayed by the social lead):** no price, no "iPhone game", no "R: and D:" in organic
+social copy — the model is his YouTube description ("a game for discovering and tracking
+companies' political contributions, straight from FEC.gov … No accounts. No tracking. Ever.
+FCKapp.com"). The boost rule below (spelled-out name, $1.99, 18+) is unchanged: that's an ad.
 
 **CORE, every post (3):** `#MoneyInPolitics #IndieGames #FCKapp`
 
@@ -144,7 +148,8 @@ create reach on IG (Mosseri, per v1 sources and
 [Kontentino](https://www.kontentino.com/q-and-a/instagram-hashtags-reach/)), and they won't
 put us on the Top tab of #IndieGames or #DarkMoney without engagement. What has to carry the load:
 1. **Words the platform reads:** captions, on-screen text and VO ("campaign finance",
-   "FEC.gov", "dark money", "indie game"); IG posts are Google-indexed (v1).
+   "FEC.gov", "dark money", "a game"); IG posts are Google-indexed (v1). No price or
+   "iPhone game" in organic copy (Oct 5 rule).
 2. **Reels topics:** "Add a Topic", up to 3 ([Planoly](https://www.planoly.com/blog/reels-topic)),
    matched to the topics users pick in "Your Algorithm", rolled out Dec 2025–Jan 2026
    ([SocialBee](https://socialbee.com/blog/instagram-updates/)). Pick gaming topics; a
