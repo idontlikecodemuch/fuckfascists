@@ -7,6 +7,7 @@ import { TitleCard } from './components/TitleCard';
 import { Music } from './components/Music';
 import { useFonts } from './fonts';
 import { ClarkIntroPanel } from './panels/ClarkIntroPanel';
+import { ColdOpenPanel } from './panels/ColdOpenPanel';
 import { DropPanel } from './panels/DropPanel';
 import { FeaturePanel } from './panels/FeaturePanel';
 import { HookPanel } from './panels/HookPanel';
@@ -22,7 +23,7 @@ export type ExplainerProps = { cut: Cut; layout: LayoutMode; timeline: Timeline 
 /** Was Clark visible at the end of this panel (full layout)? Decides whether the next report beat glitches him out. */
 const clarkOnAtEnd = (p: PanelTL | undefined): boolean => {
   if (!p) return false;
-  if (p.panel.kind === 'title' || p.panel.kind === 'hook' || p.panel.kind === 'drop') return false;
+  if (p.panel.kind === 'cold' || p.panel.kind === 'title' || p.panel.kind === 'hook' || p.panel.kind === 'drop') return false;
   if (p.panel.kind !== 'feature') return true;
   const f = CLIPS[p.key]?.full ?? {};
   return !f.report && f.reportAt == null && (f.clarkOpacity ?? 1) > 0;
@@ -30,6 +31,8 @@ const clarkOnAtEnd = (p: PanelTL | undefined): boolean => {
 
 const renderPanel = (p: PanelTL, cut: Cut, veo: VeoMap, scene: SceneMap, hook: HookStyle, prev?: PanelTL): React.ReactNode => {
   switch (p.panel.kind) {
+    case 'cold':
+      return <ColdOpenPanel cut={cut} />;
     case 'hook':
       return <HookPanel caption={cut !== '15'} variant={hook} />;
     case 'clark':

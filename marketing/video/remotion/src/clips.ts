@@ -82,6 +82,18 @@ export const INTRO_BG: Record<string, { file: string; clark: boolean }> = {
 };
 
 export const HOOK_CLIP = 'hook_card_rain';
+
+/**
+ * Cold opens for the per-tab shorts (ColdOpenPanel): the payoff moment, ~1.5 s, before
+ * the title card. startFrom/shakeAt in seconds; shakeAt is relative to the open's start.
+ */
+export type ColdOpen = { file: string; startFrom: number; align: 'top' | 'center' | 'bottom'; shakeAt?: number; rain?: boolean };
+export const COLD_OPEN: Partial<Record<Cut, ColdOpen>> = {
+  map: { file: '60_05_map_avoid', startFrom: 0.3, align: 'bottom', shakeAt: 0.55 }, // file up → AVOID stamp at 0.55 s
+  track: { file: '60_08_track_defeat', startFrom: 0.2, align: 'top', shakeAt: 0.5 }, // today's tap → Musk defeated at 0.5 s
+  scan: { file: '30_05_scan', startFrom: 0.7, align: 'bottom' }, // barcode lock → Coca-Cola record at 0.7 s
+  card: { file: '60_12_drop', startFrom: 0.9, align: 'top', rain: true }, // the card, our rain from frame 0, the app's at 0.4 s
+};
 export const clipSrc = (file: string): string => staticFile(`media/clips/${file}.mp4`);
 export const MAP_STILL = staticFile('media/clips/map_still.png');
 export const PREVIEW_STILL = staticFile('media/clips/preview_still.png');

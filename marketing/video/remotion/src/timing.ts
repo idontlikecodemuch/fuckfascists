@@ -4,7 +4,7 @@ export const FPS = 30;
 export type Cut = '60' | '30' | '15' | 'map' | 'track' | 'scan' | 'card';
 /** One tab each, vertical, ≤ 15 s: title card → 2–3 beats → outro. */
 export const SHORTS: Cut[] = ['map', 'track', 'scan', 'card'];
-export type PanelKind = 'hook' | 'clark' | 'title' | 'feature' | 'drop' | 'share' | 'outro';
+export type PanelKind = 'cold' | 'hook' | 'clark' | 'title' | 'feature' | 'drop' | 'share' | 'outro';
 export type Feature = 'MAP' | 'TRACK' | 'SCAN' | 'SCORECARD';
 
 export type ScriptLine = { id: string; text: string; horns?: boolean };
@@ -63,12 +63,17 @@ export const BOX_OVERRIDES_S: Record<string, number> = {
   'c15-05-1': 0.9, // + horns delay + hold = 3.0
   'c30-07-1': 1.9, // end card has no box; + horns delay + hold = 4.0
   'cmap-02-1': 4.0, // same map beat as c60-03-1
+  'ctrack-02-1': 3.3, // Oct 6: trimmed so the track short + its cold open stays under the 15 s bed
+  'ctrack-03-1': 3.6,
+  'ctrack-04-1': 2.3,
   'cmap-05-1': 0.9,
   'ctrack-05-1': 0.9,
   'cscan-04-1': 0.9,
   'ccard-05-1': 0.9,
 };
 export const HOOK_S: Record<Cut, number> = { '60': 2.0, '30': 2.0, '15': 1.5, map: 0, track: 0, scan: 0, card: 0 };
+/** Outcome-first cold open before the title card (shorts only; creator, Oct 6: each short opens differently). */
+export const COLD_OPEN_S: Record<Cut, number> = { '60': 0, '30': 0, '15': 0, map: 1.5, track: 1.5, scan: 1.5, card: 1.5 };
 /** Hook variants: 'rain' = card already up, money falling; 'slam' = the card slams onto the screen first, then the caption. */
 export type HookStyle = 'rain' | 'slam';
 /** extra hook time the slam needs before the caption; the 30 and 15 have no slack to give */
@@ -118,6 +123,14 @@ export const buildTimeline = (cut: Cut, vo: Record<string, { seconds: number; sr
   let prevKind: PanelKind | null = null;
   let prevFeature: Feature | undefined;
 
+  if (COLD_OPEN_S[cut] > 0) {
+    const cold: ScriptPanel = { panel: 'C', title: 'COLD OPEN', kind: 'cold', lines: [] };
+    const d = sec(COLD_OPEN_S[cut]);
+    out.push({ key: `${cut}-C`, panel: cold, from: cursor, duration: d, boxes: [], transitionIn: 'none' });
+    cursor += d;
+    prevKind = 'cold';
+  }
+
   panels.forEach((p, i) => {
     if (p.kind === 'feature' && p.feature && p.feature !== prevFeature && TITLE_S[cut] > 0) {
       const title: ScriptPanel = { panel: `T-${p.feature}`, title: p.feature, kind: 'title', feature: p.feature, lines: [] };
@@ -157,7 +170,7 @@ export const buildTimeline = (cut: Cut, vo: Record<string, { seconds: number; sr
     }
 
     let transitionIn: Transition = 'none';
-    if (i > 0 && (prevKind === 'hook' || prevKind === 'title' || p.kind === 'outro')) transitionIn = 'crt';
+    if ((i > 0 || prevKind === 'cold') && (prevKind === 'cold' || prevKind === 'hook' || prevKind === 'title' || p.kind === 'outro')) transitionIn = 'crt';
 
     out.push({ key: `${cut}-${p.panel}`, panel: p, from: cursor, duration, boxes, transitionIn });
     cursor += duration;
