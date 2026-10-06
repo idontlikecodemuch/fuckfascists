@@ -28,12 +28,24 @@ Measured Sep 28 on the hook: local Chrome 12 corrupt frames in 300, the shell 0 
 every output and fails on a flagged frame. Do not start Remotion Studio for
 renders; `scripts/render.sh` is the path.
 
-## Oct 6: assets are absolute symlinks (`scripts/link-assets.sh`); no price on end cards
+## Oct 6: cold opens on the shorts
+
+Each per-tab short opens on its own payoff for 1.5 s before the icon title card (creator,
+via the social lead: "each opening should differ"): `src/panels/ColdOpenPanel.tsx` plays the
+`COLD_OPEN[cut]` clip (clips.ts) full-bleed at native scale with a slow punch-in and a
+shake on the hit — Map: record up + AVOIDED stamp (60_05 from 0.3 s), Track: arena defeat
+(60_08 from 0.2 s), Scan: barcode lock → record (30_05 from 0.7 s), Card: the card under
+money rain (60_12 from 0.9 s + our rain). `COLD_OPEN_S` in timing.ts inserts the 'cold'
+panel; the track short's beats were trimmed (`BOX_OVERRIDES_S` ctrack-02/03/04) to stay
+under the 15 s bed. Lengths: map 14.1, track 14.4, scan 10.9, card 14.1 s. The 60/30 keep
+the slam; it is not reused on the shorts.
+
+## Oct 6: assets are copied by `scripts/link-assets.sh`; no price on end cards
 
 `public/assets/*.png` and `public/fonts/*.ttf` (except Ionicons) are gitignored and
-(re)created by `scripts/link-assets.sh` as ABSOLUTE symlinks into the repo's `assets/` —
-Remotion preserves symlinks into its bundle, so relative links broke every `<Img>` of
-`cash_*.png`. `render.sh` and `appstore.sh` call it. Also Oct 6: the creator removed the
+copied from the repo's `assets/` by `scripts/link-assets.sh` — Remotion's static server
+won't serve file symlinks (directory symlinks like `public/media` are fine), so symlinked
+`cash_*.png` broke every `<Img>`. `render.sh` and `appstore.sh` call it. Also Oct 6: the creator removed the
 price from every end card (organic copy carries no price): 60/30 sub-line is
 "OUT NOW · NO ADS · NO TRACKING", shorts' tagline is "OUT NOW".
 
