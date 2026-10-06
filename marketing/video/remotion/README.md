@@ -28,6 +28,15 @@ Measured Sep 28 on the hook: local Chrome 12 corrupt frames in 300, the shell 0 
 every output and fails on a flagged frame. Do not start Remotion Studio for
 renders; `scripts/render.sh` is the path.
 
+## Oct 6: assets are absolute symlinks (`scripts/link-assets.sh`); no price on end cards
+
+`public/assets/*.png` and `public/fonts/*.ttf` (except Ionicons) are gitignored and
+(re)created by `scripts/link-assets.sh` as ABSOLUTE symlinks into the repo's `assets/` —
+Remotion preserves symlinks into its bundle, so relative links broke every `<Img>` of
+`cash_*.png`. `render.sh` and `appstore.sh` call it. Also Oct 6: the creator removed the
+price from every end card (organic copy carries no price): 60/30 sub-line is
+"OUT NOW · NO ADS · NO TRACKING", shorts' tagline is "OUT NOW".
+
 ## Sep 30: App Store screenshots + app preview (`scripts/appstore.sh`) — shipped with 1.2
 
 Same captures the videos were cut from (`marketing/video/captures/`, v1.1.0 build 9

@@ -4,3 +4,7 @@ out/
 #   ln -s ../../ public/media   (from remotion/public)
 public/media
 .DS_Store
+# absolute symlinks made by scripts/link-assets.sh
+public/assets/*.png
+public/fonts/*.ttf
+!public/fonts/Ionicons.ttf

@@ -17,6 +17,7 @@
 #   scripts/render.sh check      → re-run the frame check on the existing renders
 set -euo pipefail
 cd "$(dirname "$0")/.."
+bash scripts/link-assets.sh
 OUT=${OUT:-/Users/christophershannon/fuckfascists/marketing/video/renders}
 mkdir -p "$OUT"
 # bt709 = standard limited-range tags; the default writes full-range yuvj420p, which some players mishandle

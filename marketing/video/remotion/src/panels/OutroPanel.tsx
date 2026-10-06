@@ -11,10 +11,11 @@ import { Boxes, ClarkLayer } from './shared';
 import type { VeoMap } from '../vo';
 
 // URL is FCKapp.com in marketing (easier to spell); the in-app share card keeps FCKFASCISTS.COM
-const SHORT_COPY = { tagline: 'OUT NOW · $1.99', sub: 'NO ADS · NO TRACKING\nFCKapp.com · @fckfascists.app' };
+// No price on any end card (creator, Oct 6 2026: organic copy carries no price); the store shows it.
+const SHORT_COPY = { tagline: 'OUT NOW', sub: 'NO ADS · NO TRACKING\nFCKapp.com · @fckfascists.app' };
 const COPY: Record<Cut, { tagline: string; sub: string }> = {
-  '60': { tagline: "THE FASCISTS WON'T\nFCK THEMSELVES.", sub: 'OUT NOW · $1.99\nFCKapp.com · @fckfascists.app' },
-  '30': { tagline: "THE FASCISTS WON'T\nFCK THEMSELVES.", sub: 'OUT NOW · $1.99\nFCKapp.com · @fckfascists.app' },
+  '60': { tagline: "THE FASCISTS WON'T\nFCK THEMSELVES.", sub: 'OUT NOW · NO ADS · NO TRACKING\nFCKapp.com · @fckfascists.app' },
+  '30': { tagline: "THE FASCISTS WON'T\nFCK THEMSELVES.", sub: 'OUT NOW · NO ADS · NO TRACKING\nFCKapp.com · @fckfascists.app' },
   '15': SHORT_COPY,
   map: SHORT_COPY,
   track: SHORT_COPY,

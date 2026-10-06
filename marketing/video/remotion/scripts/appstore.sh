@@ -8,6 +8,7 @@
 # Same render rule as render.sh: Remotion's Chrome Headless Shell, never local Chrome.
 set -euo pipefail
 cd "$(dirname "$0")/.."
+bash scripts/link-assets.sh
 SRC=${SRC:-/Users/christophershannon/fuckfascists/marketing/video/captures}
 MEDIA=${MEDIA:-/Users/christophershannon/fuckfascists/marketing/video/appstore}
 OUT=${OUT:-/Users/christophershannon/fuckfascists/marketing/appstore/1.2}

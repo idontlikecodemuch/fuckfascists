@@ -71,7 +71,12 @@ assets/pixel/sprites-hires/
 tools/asset-archive/
 
 # Local media, review scratch, and caches (never commit; added 2026-09-30)
-marketing/video/
+# marketing media (captures, clips, renders, music, VO) stays out of git; the Remotion
+# project, the music generator and the script export are tracked
+marketing/video/*
+!marketing/video/remotion/
+!marketing/video/music-gen/
+!marketing/video/script.json
 marketing/appstore/
 marketing/scorecards/
 tools/review/cropped/
