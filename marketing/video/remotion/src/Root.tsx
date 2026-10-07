@@ -3,6 +3,7 @@ import { CalculateMetadataFunction, Composition, Still } from 'remotion';
 import { Explainer, type ExplainerProps } from './Explainer';
 import { PREVIEW_FRAMES, PREVIEW_H, PREVIEW_W, Preview } from './appstore/Preview';
 import { Tile } from './appstore/Tile';
+import { COVER_H, COVER_W, PageCover } from './brand/PageCover';
 import { TILES, TILE_H, TILE_W } from './appstore/tiles';
 import type { LayoutMode } from './LayoutContext';
 import { FPS, buildTimeline, lineIds, type Cut, type HookStyle } from './timing';
@@ -40,6 +41,8 @@ export const RemotionRoot: React.FC = () => (
       <Still key={tile.id} id={`Tile-${String(i + 1).padStart(2, '0')}-${tile.id}`} component={Tile} width={TILE_W} height={TILE_H} defaultProps={tile} />
     ))}
     <Composition id="AppPreview" component={Preview} width={PREVIEW_W} height={PREVIEW_H} fps={FPS} durationInFrames={PREVIEW_FRAMES} />
+    {/* Facebook Page cover (Meta ads identity), same look as the IG banner */}
+    <Still id="PageCover" component={PageCover} width={COVER_W} height={COVER_H} />
     {CUTS.map(({ id, cut, layout, width, height, hook }) => (
       <Composition
         key={id}
