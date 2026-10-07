@@ -8,7 +8,8 @@ import { FONT, T } from '../tokens';
  * Facebook Page cover, 1640×624 (shown 820×312 on desktop, 640×360 on phones — phones
  * crop the sides, so everything that matters sits in the central 68%). Creator, Oct 7:
  * the starfield, no logo (the avatar is the mark), and the copy in the upper two thirds so
- * the profile picture, which overlaps the cover's bottom-left, never covers it. No price.
+ * the profile picture, which overlaps the cover's bottom-left, never covers it. No price, no
+ * URL (the Page shows it).
  */
 export const COVER_W = 1640;
 export const COVER_H = 624;
@@ -49,7 +50,6 @@ export const PageCover: React.FC = () => {
         <div style={{ fontFamily: FONT.body, fontWeight: 600, fontSize: 26, letterSpacing: 4, color: T.cream, textShadow: '2px 2px 0 rgba(0,0,0,0.8)', whiteSpace: 'nowrap', textAlign: 'center' }}>
           FINANCIAL CONTRIBUTION KIT · NO ACCOUNTS · NO TRACKING
         </div>
-        <div style={{ fontFamily: FONT.body, fontWeight: 600, fontSize: 28, letterSpacing: 3, color: T.cyan, textShadow: '2px 2px 0 rgba(0,0,0,0.8)' }}>FCKapp.com</div>
       </div>
     </AbsoluteFill>
   );
