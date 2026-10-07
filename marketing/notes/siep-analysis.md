@@ -147,7 +147,7 @@ On Meta's text, very likely yes [I, strong]:
 ## 7. Recommendation: **C, with a hard date, and D as the honest fallback**
 
 1. **Authorize now** under the disclaimer **"App Hold Media LLC."** Try the EIN route for the "Confirmed Organization" icon; whether an LLC's EIN paperwork is accepted is unverified. Classification is close to certain given the Page name, the data and the landing page, so declaring is the only version where the public record reads as a company disclosing rather than one evading.
-2. **Keep the creative product-first and party-symmetric.** Show the app working: map tap, barcode, card. Put R and D side by side, always both. Use "Install now." Inside a declared ad, "Both parties. On file." is fine. It would sink a carve-out attempt, but we aren't attempting one.
+2. **Keep the creative product-first.** Show the app working: map tap, barcode, card. No party words in copy (none of our marketing assets use them; creator, Oct 7). Where the app's record is on screen it shows both totals as the app does — never a frame cropped to one column — because the symmetry is what reads as "no side" to a reviewer. Use "Install now."
 3. **Don't run B as a probe.** The downside is lopsided: a 7-year evasion label and strikes on a brand-new account, in exchange for an ad that can't show the product.
 4. **Rework the scorecard still before paid use** (whatever the option): drop the tagline "The fascists won't FCK themselves," and avoid Musk on paid cards. Expect profanity review on the F★CK logo; test one ad first.
 5. **Hard date:** if authorization plus a delivered impression isn't done by **Oct 23**, hold all Meta paid until Nov 4. Don't fill the freeze week with undeclared ads, the week reviewers are most alert [I].
