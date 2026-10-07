@@ -168,3 +168,18 @@ On Meta's text, very likely yes [I, strong]:
 - Whether an LLC qualifies for the EIN "Confirmed Organization" route.
 - Thresholds for account restriction.
 - Whether SIEP limits Advantage+ targeting.
+
+## 8. The disclaimer name (creator, Oct 7: "App Hold Media feels like a dark money media group")
+
+Verified on Meta's pages today ([how disclaimers work](https://www.facebook.com/business/help/198009284345835), [creating disclaimers, Nov 2025](https://www.facebook.com/government-nonprofits/blog/creating-disclaimers)):
+- The disclaimer must "accurately represent the name of the entity or person responsible for the ad", with "accurate, valid information at all times", and must "not include profanity, objectionable language or unrecognizable words or phrases", and "not include URLs or acronyms, **unless URLs or acronyms make up the name of the organization, which must also be accurately reflected on the website provided**."
+- Five ways to back it. Options 1–3 (EIN / FEC ID / .gov) use the organization's **registered name** and earn the "Confirmed Organization" icon. **Option 4** (contact info: verifiable phone, business email, mail-deliverable address, a website whose domain matches the email) lets the advertiser **submit an organization name**; **Option 5** uses the **Page name**. Options 4–5 get an "About this ad" icon instead.
+- Precedent: "Paid for by Ground News" (brand, not the legal entity), "Paid for by Vote.Org", "Paid for by BALLOTPEDIA" — trade names run under options 4/5.
+
+So: the legal name is only required if you want the "Confirmed Organization" icon (EIN route). A trade name is allowed under option 4 as long as it is the name the public knows the product by and the site reflects it.
+- **"App Hold Media LLC"** — legal, Confirmed-Organization icon, but reads like a holding company.
+- **"FCK Fascists" / "FCK Fascists App" / "FCK Fascists Game"** — the Page name (option 5) or a submitted name (option 4). "App"/"Game" add nothing an entity would be named, and the pairing "FCK" + "Fascists" is the string most likely to be read as profanity/objectionable by the disclaimer reviewer (24 h review; an edit re-triggers review and blocks new ads until approved). The acronym carve-out protects "FCK" only as the organization's name reflected on the website.
+- **"FCK, Financial Contribution Kit"** (the App Store name) — the acronym is spelled out beside it, the site and store reflect it, and it is exactly how Apple lists the product. Best fit for "accurate name of the entity responsible" without the legal entity, and the expansion defuses the profanity read.
+- **"Financial Contribution Kit"** — the cleanest if a reviewer balks at "FCK": accurate (it is the product's name), nonpolitical, no acronym, reflected on the site (og:title, share copy) and the store.
+
+Recommendation: option 4 with **"FCK, Financial Contribution Kit"** (website fckfascists.com, email info@fckfascists.com — same domain — plus a mail-deliverable address and phone); fall back to "Financial Contribution Kit" if the disclaimer is disapproved. Keep "App Hold Media LLC" for the EIN route only if the Confirmed-Organization icon matters more than the name.
