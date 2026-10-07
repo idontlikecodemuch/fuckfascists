@@ -44,15 +44,33 @@ the Instagram app (Apple takes 30% of in-app boosts).
 5. **App Store campaign-link token** — App Store Connect → App Analytics → FCK →
    Acquisition → Campaigns → "Create campaign link". Any link you generate carries your
    provider token `pt=NNNNN`. Keep it; every ad URL below uses it. ~2 min.
-6. **SIEP authorization** — Business Settings → Ad accounts → the account → "Ads about
-   social issues, elections or politics" → Start: confirm identity (ID upload; Meta may
-   mail a code to a US address or verify instantly), then create the disclaimer
-   **"App Hold Media LLC"** (needs a website, email or phone shown publicly — use
-   FCKapp.com and info@fckfascists.com). Wait for "authorized" (1–3 weeks). Reply here when
-   it lands.
+6. **SIEP authorization + disclaimer** (decided Oct 7: disclaimer = **"FCK, Financial
+   Contribution Kit"**, option 4 "Organization name" backed by the registered-agent address
+   and phone, website https://fckfascists.com, email info@fckfascists.com — same domain, as
+   required). The disclaimer lives on the Facebook **Page**, not the business portfolio, and
+   its text is independent of the Page name. The business portfolio can stay "App Hold Media
+   LLC" (internal); the **Page name is the sponsor line on every Facebook ad**, so it should
+   be the brand — "FCK Fascists", matching @fckfascists.app — not the LLC. Order:
+   a. Rename the Page if it says App Hold Media: Page → Settings & privacy → Settings → Page
+      setup → Name → "FCK Fascists" (new Pages usually rename instantly; a review can take
+      up to 3 days).
+   b. Personal authorization (the Page admin's own profile): Accounts Center / facebook.com/id
+      → "Ads about social issues, elections or politics" → confirm identity: 2FA on, upload a
+      government ID (encrypted; never shown; stored ≤ 1 year, reducible to 30 days). Meta may
+      mail a code to a US address — use the registered-agent address only if its mail reaches
+      you.
+   c. Create the disclaimer (desktop, switched into the Page; via Meta Business Suite if the
+      Page is in the portfolio): Page → Settings & privacy → Settings → Page setup → "Issue,
+      electoral or political ads" → View → Manage your disclaimers → create → **Organization
+      name** → "FCK, Financial Contribution Kit" + phone, email, mail-deliverable address,
+      website. Review within 24 h. Fallback name if disapproved: "Financial Contribution Kit".
+   d. On the same screen: **Link ad account** → select the FCK ad account → Save.
+   e. Authorize Instagram: same Page setup area → Instagram → confirm @fckfascists.app is
+      linked and authorized (Meta: "How to authorize your Instagram account").
+   f. Reply here when the disclaimer shows "active"; the campaign build is next.
 7. **Campaign** (desktop Ads Manager → Create):
-   - Objective **Traffic** · declare "This ad is about social issues, elections or
-     politics" → attach the App Hold Media LLC disclaimer.
+   - Objective **Traffic** · Special Ad Category "Social issues, elections or politics" →
+     attach the "FCK, Financial Contribution Kit" disclaimer.
    - Conversion location **Website**, destination
      `https://apps.apple.com/us/app/fck-financialcontributionkit/id6761508241?pt=YOURTOKEN&ct=meta-reels-15&mt=8`
      (change `ct=` per ad: `meta-reels-15`, `meta-reels-map`, `meta-story-card`…; App
