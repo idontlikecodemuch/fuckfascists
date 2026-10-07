@@ -1,5 +1,13 @@
 # Meta ads — setup steps + asset plan (Oct 7, 2026)
 
+> The authorization question — does declaring make FCK "a political app"? — is answered with
+> Ad Library evidence in `siep-analysis.md` (same folder). Short version: it's a disclosure of
+> who paid, not a side; the comparables either declare (Goods Unite Us, Ground News) or don't
+> run Meta ads at all; and Meta's product carve-out does NOT cover us (party/PAC mentions and
+> the Page name exclude it), so "product-first" below means the disclaimer is the only
+> political-looking element, not that the ads can run undeclared. Hard date: live with at
+> least one impression by **Oct 23**, or hold all Meta paid until Nov 4.
+
 Supersedes the Aug 27 Story-ads brief on one point: with the midterms four weeks out,
 authorize for "social issues, elections or politics" (SIEP) **now** instead of running
 undeclared and waiting for a flag. Everything else from the playbook stands: one campaign,
@@ -59,10 +67,13 @@ the Instagram app (Apple takes 30% of in-app boosts).
      Stories** — 9:16 only, so no auto-crops of our videos.
    - CTA **Download**.
 8. **Ads** — three in the one ad set (a real A/B at this budget; more splits the data):
-   the 15 s explainer, the Map short, the Card short (table below). Fourth, optional: a
-   scorecard still (`marketing/scorecards/Those-I-FCKd-July-11-26.jpg`).
-9. **Copy fields** (product-first so the ad sits in Meta's product-sale carve-out; the
-   organic no-price rule does not apply to ads — this is the one place $1.99 belongs):
+   the 15 s explainer, the Map short, the Card short (table below). The scorecard still is
+   NOT paid-safe as it stands (logo, "The fascists won't FCK themselves.", Musk's face —
+   `siep-analysis.md` §4); a paid variant without the tagline and without CEO faces is a
+   separate render if we want a still.
+9. **Copy fields** (product-first — declared ads; the carve-out doesn't apply once R:/D:
+   or "both parties" appear, see `siep-analysis.md` §1 — and the organic no-price rule does
+   not apply to ads, so this is the one place $1.99 belongs):
    - Primary text A: `FCK, Financial Contribution Kit · $1.99 · See where the money goes. Both parties. On file.`
    - Primary text B: `Tap a business. Scan a barcode. Track what you skip. Your scorecard drops every week. $1.99, no accounts, no tracking.`
    - Headline: `Financial contributions, on file.` · Description: `FCKapp.com`
@@ -82,7 +93,7 @@ the Instagram app (Apple takes 30% of in-app boosts).
 | Lead | `fck-explainer-15-9x16.mp4` | 15.1 s | Reels + Stories | Whole story in the length Meta recommends for Reels; slam open, "Random drop", end card | ready |
 | Feature | `fck-short-map-9x16.mp4` | 14.1 s | Reels + Stories | Cold open on the record + AVOIDED stamp — the clearest "what it does" in 1.5 s | ready |
 | Payoff | `fck-short-card-9x16.mp4` | 14.1 s | Reels + Stories | The shareable outcome; money rain in frame 1 | ready |
-| Still | `Those-I-FCKd-July-11-26.jpg` | — | Stories | Native card, zero production, cheapest impression | ready |
+| Still | scorecard, paid variant | — | Stories | Native card, cheapest impression | needs a paid-safe render: no tagline, no CEO faces (`siep-analysis.md` §4) |
 | Later | `fck-short-track`, `fck-short-scan` | 14.4 / 10.9 s | Reels | Second flight after the first 7 days say which angle pulls | ready |
 | Not for paid | 60 vertical, 60 wide, 30 | 30–62 s | — | Completion falls off past ~15 s in paid; the 60s are the landing content on fckfascists.com and YouTube, the 30 is organic | — |
 
