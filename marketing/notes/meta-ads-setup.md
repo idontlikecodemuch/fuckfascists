@@ -74,7 +74,9 @@ the Instagram app (Apple takes 30% of in-app boosts).
 9. **Copy fields** (product-first — declared ads; the carve-out doesn't apply once R:/D:
    or "both parties" appear, see `siep-analysis.md` §1 — and the organic no-price rule does
    not apply to ads, so this is the one place $1.99 belongs):
-   - Primary text A: `FCK, Financial Contribution Kit · $1.99 · See where the money goes. Both parties. On file.`
+   - Primary text A: `FCK, Financial Contribution Kit · $1.99 · See where the money goes. It's all on file.`
+     (no party words in copy, matching every other marketing asset; the record footage shows
+     the app's own R:/D: totals, which is fine in a declared ad)
    - Primary text B: `Tap a business. Scan a barcode. Track what you skip. Your scorecard drops every week. $1.99, no accounts, no tracking.`
    - Headline: `Financial contributions, on file.` · Description: `FCKapp.com`
    - No hashtags in ads. Never "boycott", never a party word, never "dark money".

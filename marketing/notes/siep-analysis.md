@@ -3,6 +3,16 @@
 Research only: Meta help pages and the public Ad Library, read logged out on Oct 7, 2026; no logins.
 **[V]** = verified on a primary page today. **[S]** = secondary source. **[I]** = my inference. Library IDs come from facebook.com/ads/library (US, filter "Issues, elections or politics").
 
+
+> **Correction from the creator (Oct 7):** FCK's marketing copy never says "R" or "D" — the
+> video lines say "Every dollar. Both parties." and the party labels appear only in the app's
+> About/Info. Where this analysis says the ads "carry" R:/D:, read: the *footage* of the app's
+> record (Map and Scan shorts, the 15/30/60, App Store tiles 02/03/05) shows the record with
+> its R:/D: totals on screen, because the record is the product. Creative that avoids that
+> frame exists (the Track and Card shorts show no record), but both show Musk's sprite, which
+> is the political-figure trigger instead. The conclusions stand; the copy-level claim is
+> narrowed to "both parties"/footage, not R/D wording.
+
 ## The answer to your concern
 
 **Authorization does not take a side, and it does not label the app.** It is an identity check plus a disclosure. Meta checks the ID of the person running the ads. Each declared ad then shows "Paid for by App Hold Media LLC", and the creative, a spend range, an impression range and demographics go into the public Ad Library for 7 years. Meta's own description: these ads "can come from a range of advertisers. They include activists, brands, non-profit groups and political organizations" ([About social issues](https://www.facebook.com/business/help/214754279118974)) [V]. Strictly nonpartisan groups sit in the same archive under their own names: Ballotpedia, League of Women Voters, Vote.org. So do a for-profit "no spin" news app (Ground News, thousands of ads running this week), NBCUniversal, and Meta itself ("Paid for by Facebook, Inc."). All verified below. The disclaimer shows who paid, not which side the ad is on. Your ID is never shown publicly [V].
