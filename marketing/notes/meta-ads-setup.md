@@ -62,8 +62,12 @@ the Instagram app (Apple takes 30% of in-app boosts).
    c. Create the disclaimer (desktop, switched into the Page; via Meta Business Suite if the
       Page is in the portfolio): Page → Settings & privacy → Settings → Page setup → "Issue,
       electoral or political ads" → View → Manage your disclaimers → create → **Organization
-      name** → "FCK, Financial Contribution Kit" + phone, email, mail-deliverable address,
-      website. Review within 24 h. Fallback name if disapproved: "Financial Contribution Kit".
+      name** → "FCK, Financial Contribution Kit" + the registered agent's phone and address
+      (never a personal address — the Ad Library shows the disclaimer's name, phone, email,
+      website and address publicly for 7 years; tick **mask street address and ZIP** so only
+      city/state show), email info@fckfascists.com, website https://fckfascists.com. Meta
+      checks the contacts work. Review within 24 h. Fallback name if disapproved:
+      "Financial Contribution Kit". The identity step (your ID) is private and separate.
    d. On the same screen: **Link ad account** → select the FCK ad account → Save.
    e. Authorize Instagram: same Page setup area → Instagram → confirm @fckfascists.app is
       linked and authorized (Meta: "How to authorize your Instagram account").
