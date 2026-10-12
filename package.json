@@ -16,6 +16,7 @@
     "build:ext:safari": "node scripts/build-extension.mjs --browser=safari",
     "build:ext:safari-project": "node scripts/build-safari-extension.mjs",
     "build:ext:watch": "node scripts/build-extension.mjs --watch",
+    "package:ext:source": "node scripts/package-extension-source.mjs",
     "verify:entities": "node scripts/verify-entities.mjs",
     "fetch:donations": "node scripts/fetch-donation-data.mjs",
     "fetch:people": "node scripts/fetch-people-data.mjs",
