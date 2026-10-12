@@ -20,6 +20,7 @@ describe('extension popup static copy', () => {
     expect(html).toContain(extCopy.weeklyTitle);
     expect(html).toContain(extCopy.weeklyBiz);
     expect(html).toContain(extCopy.weeklyPlat);
+    expect(html).toContain(extCopy.privacyNote);
   });
 
   it('does not reintroduce stale popup defaults', () => {

@@ -347,6 +347,7 @@ var COPY_ALL_DATA = {
     "weeklyTitle": "THIS WEEK",
     "weeklyBiz": "BUSINESSES: ",
     "weeklyPlat": "PLATFORMS: ",
+    "privacyNote": "Sites are checked on this device. No browsing history saved.",
     "rPrefix": "R: ",
     "dSep": " · D: ",
     "cyclePrefix": "in ",

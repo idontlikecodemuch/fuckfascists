@@ -196,8 +196,10 @@ async function handleCheckDomain(hostname: string, tabId: number): Promise<void>
   const entity = findByDomain(hostname, entities);
   if (!entity) return;
 
-  if (await isSnoozed(hostname)) return;
-  if (!shouldFlag(hostname)) return;
+  // Snooze and EXTENSION_FLAG_FREQUENCY govern only the amber icon. The tab
+  // flag is always set, so an opened popup never says "no funding on record"
+  // on a matched site (e.g. the second page of a domain already flagged).
+  const lightIcon = !(await isSnoozed(hostname)) && shouldFlag(hostname);
 
   const cacheKey = `ext:${entity.id}`;
   const CACHE_TTL_MS = ENTITY_CACHE_TTL_DAYS * 86_400_000;
@@ -313,6 +315,7 @@ async function handleCheckDomain(hostname: string, tabId: number): Promise<void>
   };
 
   setTabFlag(tabId, flag);
+  if (!lightIcon) return;
   recordFlagged(hostname);
   await setAmberIcon(tabId);
 }

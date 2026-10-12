@@ -14,6 +14,10 @@ export const extCopy = {
   weeklyTitle: "THIS WEEK",
   weeklyBiz: "BUSINESSES: ",
   weeklyPlat: "PLATFORMS: ",
+  // In-product disclosure of the one browsing-activity feature (the domain
+  // check). Chrome Web Store Limited Use requires it in the UI as well as
+  // the store listing. Snoozed hostnames are a user choice, not history.
+  privacyNote: "Sites are checked on this device. No browsing history saved.",
   rPrefix: "R: ",
   dSep: " \u00b7 D: ",
   oSep: " \u00b7 O: ",

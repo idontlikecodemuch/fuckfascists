@@ -45,6 +45,7 @@ const statTop      = document.getElementById('stat-top')!;
 const summaryTitle = document.getElementById('summary-title')!;
 const statEntityLabel = document.getElementById('stat-entity-label')!;
 const statPlatformLabel = document.getElementById('stat-platform-label')!;
+const privacyNote = document.getElementById('privacy-note')!;
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
@@ -94,6 +95,7 @@ function hydrateStaticCopy(): void {
   summaryTitle.textContent = extCopy.weeklyTitle;
   statEntityLabel.textContent = extCopy.weeklyBiz;
   statPlatformLabel.textContent = extCopy.weeklyPlat;
+  privacyNote.textContent = extCopy.privacyNote;
 }
 
 // ── Weekly stats ───────────────────────────────────────────────────────────────
@@ -175,7 +177,9 @@ async function main() {
       durationMs: 7 * 86_400_000, // 7 days
     };
     await chrome.runtime.sendMessage(msg);
-    showOnly(stateClean);
+    // Close rather than show the clean state, which would claim this matched
+    // site has no funding on record.
+    window.close();
   });
 
   // Load weekly summary footer
