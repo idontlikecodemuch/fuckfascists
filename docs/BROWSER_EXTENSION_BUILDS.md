@@ -12,12 +12,24 @@ Outputs:
 
 | Browser | Unpacked build | Upload package |
 |---|---|---|
-| Chrome | `dist/extension/` | `dist/packages/fck-fascists-chrome-1.0.1.zip` |
-| Microsoft Edge | `dist/extension-edge/` | `dist/packages/fck-fascists-edge-1.0.1.zip` |
-| Firefox | `dist/extension-firefox/` | `dist/packages/fck-fascists-firefox-1.0.1.zip` |
-| Safari WebExtension source | `dist/extension-safari/` | `dist/packages/fck-fascists-safari-1.0.1.zip` |
+| Chrome | `dist/extension/` | `dist/packages/fck-fascists-chrome-<version>.zip` |
+| Microsoft Edge | `dist/extension-edge/` | `dist/packages/fck-fascists-edge-<version>.zip` |
+| Firefox | `dist/extension-firefox/` | `dist/packages/fck-fascists-firefox-<version>.zip` |
+| Safari WebExtension source | `dist/extension-safari/` | `dist/packages/fck-fascists-safari-<version>.zip` |
+
+`<version>` is `version` in `extension/manifest.json`.
 
 Individual commands are `npm run build:ext`, `npm run build:ext:edge`, `npm run build:ext:firefox`, and `npm run build:ext:safari`.
+
+## Firefox source archive (AMO)
+
+AMO requires source code for bundled/minified add-ons. After building Firefox:
+
+```bash
+npm run package:ext:source -- --verify
+```
+
+This writes `dist/packages/fck-fascists-firefox-<version>-source.zip`. It is a self-contained project: the bundled sources, the build script, the data, an esbuild-only `package.json` and lockfile, and a README. `--verify` rebuilds from the archive and diffs the result against `dist/extension-firefox/`. Store submission steps live in `docs/EXTENSION_STORE_LAUNCH.md`.
 
 Chrome and Edge use the Chromium Manifest V3 service worker and `chrome.*` namespace. Edge uses the same extension APIs and manifest keys as Chrome.
 
@@ -44,7 +56,7 @@ xcodebuild -project 'dist/safari-extension/FCK FASCISTS/FCK FASCISTS.xcodeproj' 
 xcodebuild -project 'dist/safari-extension/FCK FASCISTS/FCK FASCISTS.xcodeproj' -scheme 'FCK FASCISTS (iOS)' -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO build
 ```
 
-Signing, notarization, and App Store submission require the team's Apple Developer account. Store publication for Chrome, Edge, and Firefox likewise remains an external release step.
+Signing, notarization, and App Store submission require the team's Apple Developer account. Store publication for Chrome, Edge, and Firefox is an owner step; see `docs/EXTENSION_STORE_LAUNCH.md`.
 
 ## Validation performed on 2026-08-21
 

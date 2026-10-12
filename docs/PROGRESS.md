@@ -12,6 +12,16 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: October 12, 2026 ET — Browser extension store readiness (Chrome, Firefox, Edge)
+
+**Branch:** `chore/extension-store-launch` (not merged). Full packet: `docs/EXTENSION_STORE_LAUNCH.md`.
+
+**Fixed:** placeholder solid-color icons replaced (pixel "FCK" at 16/32, app art at 48/128, amber variants); `host_permissions` removed (content-script matches + CORS cover it, verified in headless Chrome for Testing); manifest `name` → `FCK, Financial Contribution Kit` and a Clark-voice 128-char summary; `homepage_url`; popup privacy line (`extCopy.privacyNote`) for CWS Limited Use; popup false "No political funding on record" on the second page of a flagged site (frequency/snooze now gate only the icon); snooze closes the popup; `[hidden]` CSS fix (empty confidence badge + duplicate FEC link were always rendering). New `npm run package:ext:source -- --verify` builds the AMO source archive and proves a byte-identical rebuild.
+
+**Verified:** `web-ext lint` 0/0/0, extension Jest suites, `tsc --noEmit`, headless-Chrome E2E (inject → match → card on page 1 and page 2, GitHub refresh fetch without host permissions). Packages + listing art in `dist/packages/` (gitignored).
+
+**Owner next:** decisions D1 (remove extension FEC fallback before submit — recommended), D3 (privacy page Limited Use statement + Edge), D4 (add a LICENSE); then the store checklist in the packet. Bundled data goes stale 2026-11-30 (60-day window) — refresh before then.
+
 ### Session: September 21 – October 1, 2026 ET — Android pass, Build 9 feedback, CEO refresh, FEC refresh, release/1.2.0
 
 **Branches:** `release/1.1.0` (tag `v1.1.0`) records the shipped 1.1.0 (9) source, which had only existed as the main checkout's uncommitted working tree. `release/1.2.0` is built on it and carries everything below. `claude/android-e2e-testing-975d7e` holds the original history; `data/cleaning-products-wip` the pre-replay batch.

@@ -40,6 +40,7 @@ These documents are the authoritative reference for the project. New instances s
 | Scorecard Image Spec | /docs/SCORECARD_IMAGE.md | Rendering spec for shareable scorecard image — test pipeline, layout, colors, fonts, translation to React Native |
 | Android Readiness | /docs/ANDROID_READINESS.md | Emulator setup (verified 2026-09-21), Android build blocker + workaround, smoke checklist with results, iOS/Android differences, and the no-Google-key map decision record |
 | Store Feedback Automation | /docs/STORE_FEEDBACK_AUTOMATION.md | Maintainer workflow for importing TestFlight feedback, crash feedback, Google Play production reviews, and Android beta-feedback constraints |
+| Extension Store Launch | /docs/EXTENSION_STORE_LAUNCH.md | Chrome Web Store / Firefox Add-ons / Edge Add-ons packet: policy readiness audit, packages + AMO source archive, listing copy, permission and data-use answers, privacy-policy edits, owner checklist, open decisions |
 | CLAUDE.md | /CLAUDE.md | Technical reference for AI agents — update continuously |
 
 **Update cadence:** PROGRESS.md after every session. CLAUDE.md continuously. README.md and SPEC_VS_CURRENT.md when features ship or decisions resolve. Never modify the original spec. When PROGRESS.md exceeds ~10K tokens, move sessions older than one week to PROGRESS_ARCHIVE.md.
@@ -530,8 +531,11 @@ Extension data is NOT included in the scorecard (V1) — extension has its own i
 - User clicks icon to open popup with business card (donation data, confidence, FEC link) + "AVOIDED" button
 - Flags **once per session per domain** by default (configurable via EXTENSION_FLAG_FREQUENCY)
 - User can snooze a domain ("don't remind me for 7 days")
+- **Snooze and EXTENSION_FLAG_FREQUENCY gate only the amber icon.** The tab flag is always built for a matched domain, so an opened popup never shows the clean "No political funding on record" state on a matched site (e.g. the second page of an already-flagged domain). Snoozing closes the popup instead of showing that clean state.
 - **No browsing history stored** — domain detection is in-memory only, cleared on session end
 - Extension has its own simple weekly summary in the popup — does not feed into the mobile scorecard in V1
+- **Permissions are `storage`, `activeTab`, `alarms` — no `host_permissions`.** The content script's `matches` grant injection; the GitHub data file and FEC API both send `Access-Control-Allow-Origin: *`. `activeTab` is what exposes the active tab URL to the popup. Don't re-add host permissions without a new need.
+- **Store packaging:** `npm run build:ext:all` → `dist/packages/*.zip`; `npm run package:ext:source -- --verify` → AMO source archive, rebuilt and diffed. Store name/summary come from the manifest (`FCK, Financial Contribution Kit`, Clark voice). Listing copy, policy answers, and the owner checklist are in `docs/EXTENSION_STORE_LAUNCH.md`.
 
 ### Extension — FEC API key
 - **No private API key is used or stored** — the extension uses data.gov's public `DEMO_KEY` only for the rare live FEC fallback. Its conservative 10-request ceiling is enforced locally. A shared private key would pool all users against one secret/limit, which is a scaling and disclosure problem.
@@ -1056,7 +1060,7 @@ Single-word aliases (e.g. "Apple", "American", "Delta") cannot prefix-match in `
 Regression coverage lives in `extension/popup/__tests__/popupStaticCopy.test.ts`.
 
 ### service-worker.ts over 250 lines (Priority: V1 cleanup)
-`extension/background/service-worker.ts` is 389 lines — over the 250-line file limit. Pre-existing violation; was 361 lines before the API key removal session. Refactor plan: extract `handleCheckDomain`, `isBundledDataFresh`, and related data-fetch logic into `extension/background/domainCheck.ts`. The message router, tab lifecycle listeners, and alarm handler stay in `service-worker.ts`.
+`extension/background/service-worker.ts` is 466 lines — over the 250-line file limit. Pre-existing violation; was 361 lines before the API key removal session and 389 before later popup-parity work. Refactor plan: extract `handleCheckDomain`, `isBundledDataFresh`, and related data-fetch logic into `extension/background/domainCheck.ts`. The message router, tab lifecycle listeners, and alarm handler stay in `service-worker.ts`.
 
 ### URL consolidation in copy/shared.ts — ✅ Resolved (URL split); 🔄 Pending (hosted assets)
 **Landed 2026-05-07.** All site-derived URLs now build from `SITE_DOMAIN = "FCKfascists.com"` + `SITE_ORIGIN = \`https://${SITE_DOMAIN}\``. `privacyUrl`, `extensionChromeUrl`, `extensionFirefoxUrl` are template literals; `contactEmail` is `info@fckfascists.com`. The previous canonical/alias split with `fckapp.com` is gone — the domain is one constant, change once.
