@@ -13,6 +13,7 @@ import { shouldLaunchPendingScorecardDrop } from '../../features/Scorecard/utils
 import { InfoScreen } from '../../features/Info/InfoScreen';
 import { TRACKED_PLATFORMS } from '../../features/Platforms/data/platformList';
 import { useNudgeNotification } from '../../features/Platforms/hooks/useNudgeNotification';
+import { useEarlyWeekNudge } from '../../features/Platforms/hooks/useEarlyWeekNudge';
 import { useBetaMode } from '../../features/Beta/useBetaMode';
 import { BetaOverlay } from '../../features/Beta/BetaOverlay';
 import { TabBar, type Tab } from '../navigation/TabBar';
@@ -84,6 +85,7 @@ export function AppShell({ adapter, entities, people }: AppShellProps) {
   const [resetKey, setResetKey] = useState(0);
 
   useNudgeNotification();
+  useEarlyWeekNudge(adapter, avoidRefreshKey);
   useScorecardDropNotification(adapter, entities, TRACKED_PLATFORMS, avoidRefreshKey);
 
   useEffect(() => {

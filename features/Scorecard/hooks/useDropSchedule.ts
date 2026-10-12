@@ -10,10 +10,7 @@ import {
   isBetaScheduleActive,
   getBetaDropTime,
 } from '../../../core/dropSchedule/betaDropSchedule';
-import {
-  SCORECARD_QUIET_NOTIFICATION_BEFORE_HOUR,
-  SCORECARD_QUIET_NOTIFICATION_FROM_HOUR,
-} from '../../../config/constants';
+import { isQuietNotificationHour } from '../../../core/utils/quietHours';
 
 /**
  * Stable identifier for the scorecard drop notification. Scoping cancels +
@@ -132,9 +129,7 @@ export async function cancelScorecardDropNotification(): Promise<void> {
 }
 
 function isQuietNotificationTime(dropAt: number): boolean {
-  const localHour = new Date(dropAt).getHours();
-  return localHour >= SCORECARD_QUIET_NOTIFICATION_FROM_HOUR ||
-    localHour < SCORECARD_QUIET_NOTIFICATION_BEFORE_HOUR;
+  return isQuietNotificationHour(new Date(dropAt).getHours());
 }
 
 async function ensureDropNotificationChannels(): Promise<void> {

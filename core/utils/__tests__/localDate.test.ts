@@ -1,4 +1,5 @@
 import {
+  addLocalDays,
   getLocalDateString,
   getLocalWeekStart,
   getLocalWeekStartForDate,
@@ -52,5 +53,18 @@ describe('getLocalWeekStartForDate', () => {
 
   it('rolls forward on local Saturday', () => {
     expect(getLocalWeekStartForDate(new Date(2026, 3, 18, 0, 1))).toBe('2026-04-18');
+  });
+});
+
+describe('addLocalDays', () => {
+  it('adds and subtracts calendar days across month and year ends', () => {
+    expect(addLocalDays('2026-10-10', 7)).toBe('2026-10-17');
+    expect(addLocalDays('2026-12-26', 7)).toBe('2027-01-02');
+    expect(addLocalDays('2026-03-01', -1)).toBe('2026-02-28');
+  });
+
+  it('is unaffected by daylight-saving transitions', () => {
+    expect(addLocalDays('2026-03-07', 7)).toBe('2026-03-14');
+    expect(addLocalDays('2026-10-31', 7)).toBe('2026-11-07');
   });
 });

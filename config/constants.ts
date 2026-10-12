@@ -21,9 +21,10 @@ export const SCORECARD_WINDOW_DAY = DROP_WINDOW_START_DAY;
 // only prevents two weeks from feeling like the same scheduled moment.
 export const SCORECARD_DROP_MIN_SEPARATION_MINUTES = 90;
 
-// Scorecard drop notification — local quiet-hours guard.
-// If a user's local device time is at/after the evening hour or before the
-// morning hour when the card drops, schedule without sound/vibration.
+// Notification quiet hours (local device time) — read through
+// core/utils/quietHours.ts. Scorecard drop: if the card drops at/after the
+// evening hour or before the morning hour, schedule without sound/vibration.
+// Early-week nudge: never picks a slot inside these hours.
 export const SCORECARD_QUIET_NOTIFICATION_FROM_HOUR = 23; // 11pm local
 export const SCORECARD_QUIET_NOTIFICATION_BEFORE_HOUR = 9;
 
@@ -220,6 +221,19 @@ export const TAP_DEBOUNCE_MS = 500;
 // Day of week: 0=Sunday, 4=Thursday. Hour in local time (24h).
 export const NUDGE_DAY = 4;    // Thursday
 export const NUDGE_HOUR = 19;  // 7pm local time
+
+// Early-week nudge notification — one local prompt per scored week at a
+// random minute inside this window (local time). The minute and the message
+// are derived from the week itself, so every device gets the same local time
+// and rescheduling on each launch never moves it. Days: 0 = Sunday. END hour
+// is exclusive. Minutes inside the notification quiet hours are never picked.
+// See features/Platforms/utils/earlyWeekNudge.ts.
+export const EARLY_WEEK_NUDGE_DAYS: readonly number[] = [1, 2]; // Monday, Tuesday
+export const EARLY_WEEK_NUDGE_START_HOUR = 10; // 10am local (inclusive)
+export const EARLY_WEEK_NUDGE_END_HOUR = 18;   // 6pm local (exclusive)
+// true = when the user has already logged an avoid in the Sat–Fri week the
+// nudge falls in, skip that week's nudge and schedule the next week's.
+export const EARLY_WEEK_NUDGE_SKIP_IF_WEEK_ACTIVE = true;
 
 
 // ── Shared FX system ─────────────────────────────────────────────────────────

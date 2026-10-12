@@ -3,6 +3,7 @@ import * as SQLite from 'expo-sqlite';
 import * as Notifications from 'expo-notifications';
 import { TABLE_AVOID_PINS, TABLE_CACHE, TABLE_ENTITY_AVOIDS, TABLE_PLATFORM_AVOIDS } from '../../core/data';
 import { TABLE_BARCODE_LOOKUPS } from '../Map/barcode/barcodeCacheStore';
+import { cancelEarlyWeekNudge } from '../Platforms/hooks/useEarlyWeekNudge';
 
 const DB_NAME = 'fuckfascists.db';
 const NUDGE_IDENTIFIER = 'platform-nudge-thursday';
@@ -30,6 +31,7 @@ export async function resetAppStateForFreshTest(): Promise<void> {
   } catch {
     // If no nudge exists yet, ignore.
   }
+  await cancelEarlyWeekNudge();
 
   const db = await SQLite.openDatabaseAsync(DB_NAME);
   await Promise.allSettled([

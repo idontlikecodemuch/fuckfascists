@@ -278,6 +278,15 @@ export const PEOPLE_LIST_UPDATE_URL = 'https://raw.githubusercontent.com/idontli
 export const NUDGE_DAY = 4;    // Thursday (0 = Sunday)
 export const NUDGE_HOUR = 19;  // 7pm local time
 
+// Early-week nudge — one local notification per Sat–Fri week at a deterministic
+// pseudorandom minute (same local time on every device; never in quiet hours).
+// Identifier/channel 'early-week-nudge'; message pairs in platformsCopy.earlyNudges.
+// See features/Platforms/utils/earlyWeekNudge.ts + hooks/useEarlyWeekNudge.ts.
+export const EARLY_WEEK_NUDGE_DAYS = [1, 2];          // Monday, Tuesday (0 = Sunday)
+export const EARLY_WEEK_NUDGE_START_HOUR = 10;        // 10am local (inclusive)
+export const EARLY_WEEK_NUDGE_END_HOUR = 18;          // 6pm local (exclusive)
+export const EARLY_WEEK_NUDGE_SKIP_IF_WEEK_ACTIVE = true; // skip a week that already has an avoid
+
 // Default platforms pre-checked on setup screen — derived from platforms.json
 // defaultSelected: true flags. Exported from features/Platforms/data/platformList.ts,
 // NOT in constants.ts. Edit assets/data/platforms.json to change defaults.

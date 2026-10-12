@@ -63,6 +63,25 @@ export const platformsCopy = {
   nudgeBannerTitle: "SCORECARD INCOMING",
   nudgeDismissA11y: "Dismiss nudge banner",
 
+  // Early-week push notification (Mon/Tue, random daytime minute). One
+  // title/body pair is picked per week, never the same pair two weeks
+  // running. Angle: a fresh week and the first move. Leave the deadline /
+  // "scorecard incoming" angle to the Thursday nudge. Never name a weekday:
+  // the same line can land on Monday or Tuesday. With
+  // EARLY_WEEK_NUDGE_SKIP_IF_WEEK_ACTIVE on, it only fires while nothing is
+  // logged yet that week, so "first" and "clean slate" stay true.
+  earlyNudges: [
+    { title: "Insert coin", body: "New week. New card. Same suits." },
+    { title: "Round 1", body: "Who\u2019s taking the first hit this week?" },
+    { title: "New week loaded", body: "Press start." },
+    { title: "Your money. Your move.", body: "Who\u2019s not getting it this week?" },
+    { title: "The week is young", body: "Plenty of time to make them feel it." },
+    { title: "Fresh week", body: "Who are you FCKing first?" },
+    { title: "Clean slate", body: "It won\u2019t stay clean for long." },
+    { title: "Window\u2019s open", body: "New week. The files are ready when you are." },
+  ] as readonly { readonly title: string; readonly body: string }[],
+  earlyNudgeChannelName: "Early-week nudge",
+
   // Perfect week
   perfectWeekTitle: "PERFECT WEEK",
   perfectWeekBody: (name: string) => `You avoided ${name} every single day. \uD83E\uDD18\uD83C\uDFFD`,

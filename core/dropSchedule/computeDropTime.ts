@@ -39,8 +39,10 @@ const SCHEDULE_EPOCH_WEEK = 1;
  * 32-bit behavior in JavaScript, so this produces the same value on every app.
  * Unlike the old djb2 suffix hash, adjacent week indexes avalanche instead of
  * producing adjacent output values.
+ *
+ * Exported for other deterministic local schedules (the early-week nudge).
  */
-function hash32(str: string): number {
+export function hash32(str: string): number {
   let hash = 1779033703 ^ str.length;
   for (let i = 0; i < str.length; i++) {
     hash = Math.imul(hash ^ str.charCodeAt(i), 3432918353);

@@ -17,6 +17,15 @@ export function formatLocalDate(date: Date): string {
   return `${year}-${month}-${day}`;
 }
 
+/**
+ * Adds whole calendar days to a YYYY-MM-DD date string. Uses local calendar
+ * components, so the result is unaffected by daylight-saving transitions.
+ */
+export function addLocalDays(date: string, days: number): string {
+  const [year, month, day] = date.split('-').map(Number);
+  return formatLocalDate(new Date(year, month - 1, day + days));
+}
+
 /** Returns the current local date as YYYY-MM-DD. */
 export function getLocalDateString(): string {
   return formatLocalDate(new Date());
