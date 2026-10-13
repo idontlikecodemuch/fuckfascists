@@ -280,8 +280,10 @@ export const NUDGE_HOUR = 19;  // 7pm local time
 
 // Early-week nudge — one local notification per Sat–Fri week at a deterministic
 // pseudorandom minute (same local time on every device; never in quiet hours).
-// Identifier/channel 'early-week-nudge'; message pairs in platformsCopy.earlyNudges.
-// See features/Platforms/utils/earlyWeekNudge.ts + hooks/useEarlyWeekNudge.ts.
+// Identifier/channel 'early-week-nudge'. Monday and Tuesday each have their own
+// lines (platformsCopy.earlyNudges, assigned per weekday with the tab a tap
+// opens in features/Platforms/utils/earlyWeekNudgeLines.ts); taps route via
+// app/navigation/notificationRoute.ts. See utils/earlyWeekNudge.ts + hooks/useEarlyWeekNudge.ts.
 export const EARLY_WEEK_NUDGE_DAYS = [1, 2];          // Monday, Tuesday (0 = Sunday)
 export const EARLY_WEEK_NUDGE_START_HOUR = 10;        // 10am local (inclusive)
 export const EARLY_WEEK_NUDGE_END_HOUR = 18;          // 6pm local (exclusive)
@@ -1112,7 +1114,7 @@ Android currently keeps scorecard screenshot parity post-capture: `expo-screen-c
 **Landed 2026-04-18.** `useDropSchedule.ts` and `ScorecardScreen.tsx` previously both called `cancelAllScheduledNotificationsAsync()` when re-scheduling the drop or suppressing it on an empty week. That wiped every scheduled notification — including the Thursday platform nudge (`platform-nudge-thursday`). Users on a week with zero avoids lost their nudge silently. Drop notification now has a stable identifier (`scorecard-drop`); cancellation is scoped via `cancelScheduledNotificationAsync(id)` and the Thursday nudge is untouched.
 
 ### Scorecard notification routing by data.type (Priority: resolved)
-Drop notification carries `content.data = { type: 'scorecard-drop' }`. `AppShell` matches on this via the `isScorecardDrop()` helper. Title-string matching (`'Your Scorecard Is Ready'`) is retained as a legacy fallback for one release cycle so any notification already scheduled at upgrade time still routes correctly. Remove the fallback after V1.1.
+Drop notification carries `content.data = { type: 'scorecard-drop' }`. `AppShell` routes taps through `tabForNotificationResponse()` in `app/navigation/notificationRoute.ts`, which also routes the early-week nudge by its `data.opens` tab. Title-string matching (`'Your Scorecard Is Ready'`) is retained as a legacy fallback for one release cycle so any notification already scheduled at upgrade time still routes correctly. Remove the fallback after V1.1.
 
 ### Avoided-entity pin coordinate storage — privacy relaxation candidate (Priority: V1.5)
 `entity_avoid_pins` SQLite table stores coordinates for avoided entities locally (auto-purged daily). All data in `fuckfascists.db` is encrypted at rest — see "Data Encryption at Rest" in the Security section. This was added to enable map hydration on relaunch — showing today's avoided markers without re-tapping. The original privacy principle was "coordinates are never written to disk." This relaxation stores only avoided-entity coordinates, only locally, and only for the current day. **Candidate for rewrite** if the team decides any coordinate persistence is unacceptable. Revert path: remove the table, remove hydration logic in `MapScreen.tsx`, pins become session-only again.

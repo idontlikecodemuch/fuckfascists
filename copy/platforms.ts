@@ -63,23 +63,22 @@ export const platformsCopy = {
   nudgeBannerTitle: "SCORECARD INCOMING",
   nudgeDismissA11y: "Dismiss nudge banner",
 
-  // Early-week push notification (Mon/Tue, random daytime minute). One
-  // title/body pair is picked per week, never the same pair two weeks
-  // running. Angle: a fresh week and the first move. Leave the deadline /
-  // "scorecard incoming" angle to the Thursday nudge. Never name a weekday:
-  // the same line can land on Monday or Tuesday. With
-  // EARLY_WEEK_NUDGE_SKIP_IF_WEEK_ACTIVE on, it only fires while nothing is
-  // logged yet that week, so "first" and "clean slate" stay true.
-  earlyNudges: [
-    { title: "Insert coin", body: "New week. New card. Same suits." },
-    { title: "Round 1", body: "Who\u2019s taking the first hit this week?" },
-    { title: "New week loaded", body: "Press start." },
-    { title: "Your money. Your move.", body: "Who\u2019s not getting it this week?" },
-    { title: "The week is young", body: "Plenty of time to make them feel it." },
-    { title: "Fresh week", body: "Who are you FCKing first?" },
-    { title: "Clean slate", body: "It won\u2019t stay clean for long." },
-    { title: "Window\u2019s open", body: "New week. The files are ready when you are." },
-  ] as readonly { readonly title: string; readonly body: string }[],
+  // Early-week push notification (random daytime minute, Monday or Tuesday).
+  // Owner-picked 2026-10-13: friendly, about informed choices as much as
+  // logging. Monday lines only go out on Monday and Tuesday lines on Tuesday
+  // (EARLY_WEEK_NUDGE_LINES maps each to its day and the tab a tap opens).
+  // Leave the "scorecard incoming" angle to the Thursday nudge. Lines can
+  // land anywhere from 10am to 6pm, so no time-of-day words.
+  earlyNudges: {
+    mondayCure: { title: "Got a case of the Mondays?", body: "Known cure: one avoid. Side effects include feeling great." },
+    mondayAutopilot: { title: "Monday autopilot", body: "Thumb heading for the usual app? Make it an avoid." },
+    mondayFairGame: { title: "Ugh, Mondays", body: "You can\u2019t avoid Monday. Everything else is fair game." },
+    mondayNewWeek: { title: "It\u2019s a new week", body: "Don\u2019t forget to log your avoids." },
+    tuesdayYesterday: { title: "Yesterday still counts", body: "Avoided an app Monday? Tap it in. Today\u2019s wide open." },
+    tuesdayTaco: { title: "It\u2019s Taco Tuesday", body: "Tacos: mandatory. Where you get them: your call." },
+    tuesdayWhyNot: { title: "It\u2019s Tuesday. Why not?", body: "Low stakes, big energy. Log your first avoid of the week." },
+    tuesdayBite: { title: "Grabbing a bite?", body: "See if they spend money on politics before you order." },
+  },
   earlyNudgeChannelName: "Early-week nudge",
 
   // Perfect week

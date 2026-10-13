@@ -7,7 +7,6 @@ import { TrackScreen } from '../../features/Platforms/TrackScreen';
 import { NudgeBanner } from '../../features/Platforms/components/NudgeBanner';
 import { AppUpdateBanner } from '../../features/Updates/AppUpdateBanner';
 import { ScorecardScreen } from '../../features/Scorecard/ScorecardScreen';
-import { SCORECARD_DROP_NOTIFICATION_TYPE } from '../../features/Scorecard/hooks/useDropSchedule';
 import { useScorecardDropNotification } from '../../features/Scorecard/hooks/useScorecardDropNotification';
 import { shouldLaunchPendingScorecardDrop } from '../../features/Scorecard/utils/pendingDropLaunch';
 import { InfoScreen } from '../../features/Info/InfoScreen';
@@ -18,6 +17,7 @@ import { useBetaMode } from '../../features/Beta/useBetaMode';
 import { BetaOverlay } from '../../features/Beta/BetaOverlay';
 import { TabBar, type Tab } from '../navigation/TabBar';
 import { pickInitialTab } from '../navigation/initialTab';
+import { tabForNotificationResponse } from '../navigation/notificationRoute';
 import { betaCopy } from '../../copy/beta';
 import { FECClient } from '../../core/api';
 import type { StorageAdapter } from '../../core/data';
@@ -43,23 +43,6 @@ interface AppShellProps {
   adapter: StorageAdapter;
   entities: Entity[];
   people: PoliticalPerson[];
-}
-
-/**
- * Routes a notification to the Scorecard tab iff its data.type matches
- * SCORECARD_DROP_NOTIFICATION_TYPE. Falls back to title-string matching
- * for any legacy drop notifications scheduled before the data-type
- * routing shipped (one-week grace period).
- */
-function isScorecardDrop(
-  resp: Notifications.NotificationResponse | null | undefined,
-): boolean {
-  if (!resp) return false;
-  const content = resp.notification.request.content;
-  const data = content.data as { type?: string } | undefined;
-  if (data?.type === SCORECARD_DROP_NOTIFICATION_TYPE) return true;
-  // Legacy fallback — remove after one release cycle.
-  return content.title === 'Your Scorecard Is Ready';
 }
 
 /**
@@ -92,10 +75,10 @@ export function AppShell({ adapter, entities, people }: AppShellProps) {
     haptics.launchJig();
   }, []);
 
-  // Cold-start routing: if the app was launched from the scorecard drop
-  // notification, or if an unhandled drop is active, mount Scorecard directly.
-  // Matches on content.data.type (stable routing key) rather than title
-  // (human-readable copy that may change).
+  // Cold-start routing: if the app was launched from a notification with a
+  // route (scorecard drop, early-week nudge), mount that tab directly; else if
+  // an unhandled drop is active, mount Scorecard. Routes on content.data
+  // (stable keys), not titles — see tabForNotificationResponse.
   useEffect(() => {
     let cancelled = false;
 
@@ -108,8 +91,9 @@ export function AppShell({ adapter, entities, people }: AppShellProps) {
       }
 
       if (cancelled) return;
-      if (isScorecardDrop(resp)) {
-        setActiveTab('report');
+      const routedTab = tabForNotificationResponse(resp);
+      if (routedTab) {
+        setActiveTab(routedTab);
         return;
       }
 
@@ -132,13 +116,11 @@ export function AppShell({ adapter, entities, people }: AppShellProps) {
   }, []);
 
   // Warm-start routing: while the app is running, react to notification taps
-  // and route the user to Scorecard. Matches the cold-start rule above.
+  // the same way as the cold-start rule above.
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
   useEffect(() => {
-    if (!lastNotificationResponse) return;
-    if (isScorecardDrop(lastNotificationResponse)) {
-      setActiveTab('report');
-    }
+    const routedTab = tabForNotificationResponse(lastNotificationResponse);
+    if (routedTab) setActiveTab(routedTab);
   }, [lastNotificationResponse]);
 
   const handleVersionTap = useCallback(async () => {

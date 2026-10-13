@@ -6,6 +6,7 @@ import { addLocalDays, getLocalWeekStartForDate } from '../../../core/utils/loca
 import { EARLY_WEEK_NUDGE_SKIP_IF_WEEK_ACTIVE } from '../../../config/constants';
 import { platformsCopy } from '../../../copy/platforms';
 import { getNextEarlyWeekNudge } from '../utils/earlyWeekNudge';
+import { earlyWeekNudgeLinesForDay } from '../utils/earlyWeekNudgeLines';
 
 /**
  * Stable identifier. Cancels and reschedules touch only this ID, never the
@@ -99,25 +100,29 @@ export async function scheduleEarlyWeekNudge(
   nowMs: number,
   skipWeekOf: string | null = null,
 ): Promise<void> {
-  const nudges = platformsCopy.earlyNudges;
-  const next = getNextEarlyWeekNudge(nowMs, nudges.length, skipWeekOf);
+  const next = getNextEarlyWeekNudge(
+    nowMs,
+    (weekday) => earlyWeekNudgeLinesForDay(weekday).length,
+    skipWeekOf,
+  );
 
   await Notifications.setNotificationChannelAsync(EARLY_WEEK_NUDGE_CHANNEL_ID, {
     name: platformsCopy.earlyNudgeChannelName,
     importance: Notifications.AndroidImportance.DEFAULT,
   });
   await cancelEarlyWeekNudge();
-  const copy = next ? nudges[next.copyIndex] : undefined;
-  if (!next || !copy) return;
+  const line = next ? earlyWeekNudgeLinesForDay(next.at.getDay())[next.copyIndex] : undefined;
+  if (!next || !line) return;
 
-  const { title, body } = copy;
+  const { title, body, opens } = line;
   await Notifications.scheduleNotificationAsync({
     identifier: EARLY_WEEK_NUDGE_ID,
     content: {
       title,
       body,
       sound: true,
-      data: { type: EARLY_WEEK_NUDGE_TYPE },
+      // `opens` routes a tap to Track or the map (see notificationRoute.ts).
+      data: { type: EARLY_WEEK_NUDGE_TYPE, opens },
     },
     trigger: {
       type: Notifications.SchedulableTriggerInputTypes.DATE,

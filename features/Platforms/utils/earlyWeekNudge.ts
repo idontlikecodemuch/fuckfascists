@@ -53,7 +53,7 @@ export interface EarlyWeekNudgeSlot {
   weekOf: string;
   /** Absolute fire time, built from local calendar components. */
   at: Date;
-  /** Index into the early-week nudge copy list. */
+  /** Index into the message list for the weekday `at` lands on. */
   copyIndex: number;
 }
 
@@ -119,12 +119,19 @@ export function getEarlyWeekNudgeCopyIndex(weekOf: string, count: number): numbe
 }
 
 /**
+ * Number of messages to choose from: one shared count, or a per-weekday
+ * count (0 = Sunday) when each day has its own lines.
+ */
+export type EarlyWeekNudgeCopyCount = number | ((weekday: number) => number);
+
+/**
  * The nudge slot for one scored week, or null when the window has no
  * usable minutes (for example, it sits entirely inside quiet hours).
+ * `copyIndex` indexes the message list for the weekday the slot lands on.
  */
 export function getEarlyWeekNudgeForWeek(
   weekOf: string,
-  copyCount: number,
+  copyCount: EarlyWeekNudgeCopyCount,
   window: EarlyWeekNudgeWindow = DEFAULT_EARLY_WEEK_NUDGE_WINDOW,
 ): EarlyWeekNudgeSlot | null {
   const hourSlots = buildHourSlots(window);
@@ -134,11 +141,13 @@ export function getEarlyWeekNudgeForWeek(
     (hourSlots.length * MINUTES_PER_HOUR);
   const { dayOffset, hour } = hourSlots[Math.floor(minuteIndex / MINUTES_PER_HOUR)];
   const [year, month, day] = weekOf.split('-').map(Number);
+  const at = new Date(year, month - 1, day + dayOffset, hour, minuteIndex % MINUTES_PER_HOUR);
+  const count = typeof copyCount === 'function' ? copyCount(at.getDay()) : copyCount;
 
   return {
     weekOf,
-    at: new Date(year, month - 1, day + dayOffset, hour, minuteIndex % MINUTES_PER_HOUR),
-    copyIndex: getEarlyWeekNudgeCopyIndex(weekOf, copyCount),
+    at,
+    copyIndex: getEarlyWeekNudgeCopyIndex(weekOf, count),
   };
 }
 
@@ -148,7 +157,7 @@ export function getEarlyWeekNudgeForWeek(
  */
 export function getNextEarlyWeekNudge(
   nowMs: number,
-  copyCount: number,
+  copyCount: EarlyWeekNudgeCopyCount,
   skipWeekOf: string | null = null,
   window: EarlyWeekNudgeWindow = DEFAULT_EARLY_WEEK_NUDGE_WINDOW,
 ): EarlyWeekNudgeSlot | null {

@@ -24,10 +24,14 @@ import {
   scheduleEarlyWeekNudge,
 } from '../hooks/useEarlyWeekNudge';
 import { getEarlyWeekNudgeForWeek } from '../utils/earlyWeekNudge';
+import { EARLY_WEEK_NUDGE_DAYS } from '../../../config/constants';
+import { earlyWeekNudgeLinesForDay } from '../utils/earlyWeekNudgeLines';
 
 const WEEK_OF = '2026-10-10'; // Saturday
 const SATURDAY_NOON = new Date(2026, 9, 10, 12, 0).getTime();
-const COPY_COUNT = platformsCopy.earlyNudges.length;
+const COPY_COUNT = (weekday: number) => earlyWeekNudgeLinesForDay(weekday).length;
+const TITLE_MAX = 30;
+const BODY_MAX = 70;
 
 function fakeAdapter(
   entityAvoids: EntityAvoidEvent[],
@@ -48,19 +52,38 @@ describe('early-week nudge scheduling', () => {
     setNotificationChannelAsync.mockResolvedValue(null);
   });
 
-  it('ships 6–8 title/body pairs', () => {
-    expect(COPY_COUNT).toBeGreaterThanOrEqual(6);
-    expect(COPY_COUNT).toBeLessThanOrEqual(8);
-    for (const { title, body } of platformsCopy.earlyNudges) {
-      expect(title.length).toBeGreaterThan(0);
-      expect(body.length).toBeGreaterThan(0);
+  it('has lock-screen-length lines with a valid tab for every window day', () => {
+    for (const day of EARLY_WEEK_NUDGE_DAYS) {
+      const lines = earlyWeekNudgeLinesForDay(day);
+      expect(lines.length).toBeGreaterThanOrEqual(2);
+      for (const { title, body, opens } of lines) {
+        expect(title.length).toBeGreaterThan(0);
+        expect(title.length).toBeLessThanOrEqual(TITLE_MAX);
+        expect(body.length).toBeGreaterThan(0);
+        expect(body.length).toBeLessThanOrEqual(BODY_MAX);
+        expect(['platforms', 'map']).toContain(opens);
+      }
+    }
+  });
+
+  it('only sends a day its own lines, and never the same line two weeks running', async () => {
+    let previousTitle: string | null = null;
+    for (let week = 0; week < 104; week++) {
+      scheduleNotificationAsync.mockClear();
+      await scheduleEarlyWeekNudge(SATURDAY_NOON + week * 7 * 86_400_000);
+      const [request] = scheduleNotificationAsync.mock.calls[0];
+      const day = request.trigger.date.getDay();
+      const titles = earlyWeekNudgeLinesForDay(day).map((line) => line.title);
+      expect(titles).toContain(request.content.title);
+      expect(request.content.title).not.toBe(previousTitle);
+      previousTitle = request.content.title;
     }
   });
 
   it('schedules the week slot on its own identifier and Android channel', async () => {
     const slot = getEarlyWeekNudgeForWeek(WEEK_OF, COPY_COUNT);
     if (!slot) throw new Error('fixture slot missing');
-    const copy = platformsCopy.earlyNudges[slot.copyIndex];
+    const line = earlyWeekNudgeLinesForDay(slot.at.getDay())[slot.copyIndex];
 
     await scheduleEarlyWeekNudge(SATURDAY_NOON);
 
@@ -72,10 +95,10 @@ describe('early-week nudge scheduling', () => {
     expect(scheduleNotificationAsync).toHaveBeenCalledWith({
       identifier: EARLY_WEEK_NUDGE_ID,
       content: {
-        title: copy.title,
-        body: copy.body,
+        title: line.title,
+        body: line.body,
         sound: true,
-        data: { type: EARLY_WEEK_NUDGE_TYPE },
+        data: { type: EARLY_WEEK_NUDGE_TYPE, opens: line.opens },
       },
       trigger: { type: 'date', date: slot.at, channelId: 'early-week-nudge' },
     });
