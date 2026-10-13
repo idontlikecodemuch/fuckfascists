@@ -10,9 +10,13 @@ import {
   getEarlyWeekNudgeCopyIndex,
   getEarlyWeekNudgeForWeek,
   getNextEarlyWeekNudge,
+  hasEarlyWeekNudgeMinutes,
+  resolveEarlyWeekNudgeWindow,
 } from '../utils/earlyWeekNudge';
 
 const COPY_COUNT = 8;
+// Eight messages with no timing of their own: any minute of the base window.
+const MESSAGES = Array.from({ length: COPY_COUNT }, () => ({}));
 // Saturday, October 10, 2026 (local) — start of a scored week.
 const WEEK_OF = '2026-10-10';
 
@@ -22,8 +26,8 @@ function weeksFrom(start: string, count: number): string[] {
 
 describe('getEarlyWeekNudgeForWeek', () => {
   it('is deterministic for a given week', () => {
-    const a = getEarlyWeekNudgeForWeek(WEEK_OF, COPY_COUNT);
-    const b = getEarlyWeekNudgeForWeek(WEEK_OF, COPY_COUNT);
+    const a = getEarlyWeekNudgeForWeek(WEEK_OF, MESSAGES);
+    const b = getEarlyWeekNudgeForWeek(WEEK_OF, MESSAGES);
     expect(a).not.toBeNull();
     expect(a?.at.getTime()).toBe(b?.at.getTime());
     expect(a?.copyIndex).toBe(b?.copyIndex);
@@ -31,7 +35,7 @@ describe('getEarlyWeekNudgeForWeek', () => {
 
   it('lands on a window day, inside window hours, in the same scored week', () => {
     for (const weekOf of weeksFrom('2026-01-03', 156)) {
-      const slot = getEarlyWeekNudgeForWeek(weekOf, COPY_COUNT);
+      const slot = getEarlyWeekNudgeForWeek(weekOf, MESSAGES);
       expect(slot).not.toBeNull();
       if (!slot) continue;
       expect(EARLY_WEEK_NUDGE_DAYS).toContain(slot.at.getDay());
@@ -46,7 +50,7 @@ describe('getEarlyWeekNudgeForWeek', () => {
   it('spreads across the window instead of repeating one time', () => {
     const minutes = new Set(
       weeksFrom('2026-01-03', 52).map((weekOf) => {
-        const at = getEarlyWeekNudgeForWeek(weekOf, COPY_COUNT)?.at;
+        const at = getEarlyWeekNudgeForWeek(weekOf, MESSAGES)?.at;
         return at ? `${at.getDay()}-${at.getHours()}:${at.getMinutes()}` : 'none';
       }),
     );
@@ -58,8 +62,8 @@ describe('getEarlyWeekNudgeForWeek', () => {
     const morning = { days: [1], startHour: 6, endHour: 12 };
     const night = { days: [2], startHour: 20, endHour: 26 };
     for (const weekOf of weeksFrom('2026-01-03', 60)) {
-      const early = getEarlyWeekNudgeForWeek(weekOf, COPY_COUNT, morning);
-      const late = getEarlyWeekNudgeForWeek(weekOf, COPY_COUNT, night);
+      const early = getEarlyWeekNudgeForWeek(weekOf, MESSAGES, morning);
+      const late = getEarlyWeekNudgeForWeek(weekOf, MESSAGES, night);
       expect(early?.at.getHours()).toBeGreaterThanOrEqual(SCORECARD_QUIET_NOTIFICATION_BEFORE_HOUR);
       expect(early?.at.getHours()).toBeLessThan(12);
       expect(late?.at.getHours()).toBeGreaterThanOrEqual(20);
@@ -69,7 +73,33 @@ describe('getEarlyWeekNudgeForWeek', () => {
 
   it('returns null when the whole window sits inside quiet hours', () => {
     const window = { days: [1], startHour: 0, endHour: SCORECARD_QUIET_NOTIFICATION_BEFORE_HOUR };
-    expect(getEarlyWeekNudgeForWeek(WEEK_OF, COPY_COUNT, window)).toBeNull();
+    expect(getEarlyWeekNudgeForWeek(WEEK_OF, MESSAGES, window)).toBeNull();
+  });
+  it('keeps each message inside its own days and hours', () => {
+    const messages = [{ days: [1] }, { days: [2], endHour: 14 }, { startHour: 11, endHour: 14 }, {}];
+    for (const weekOf of weeksFrom('2026-01-03', 104)) {
+      const slot = getEarlyWeekNudgeForWeek(weekOf, messages);
+      if (!slot) throw new Error('slot missing');
+      const window = resolveEarlyWeekNudgeWindow(messages[slot.copyIndex]);
+      expect(window.days).toContain(slot.at.getDay());
+      expect(slot.at.getHours()).toBeGreaterThanOrEqual(window.startHour);
+      expect(slot.at.getHours()).toBeLessThan(window.endHour);
+      expect(getLocalWeekStartForDate(slot.at)).toBe(weekOf);
+    }
+  });
+
+  it('picks the message from the week alone, whatever the timings', () => {
+    const timed = [{ days: [1] }, { days: [2] }, { startHour: 11, endHour: 14 }, {}];
+    for (const weekOf of weeksFrom('2026-01-03', 52)) {
+      expect(getEarlyWeekNudgeForWeek(weekOf, timed)?.copyIndex)
+        .toBe(getEarlyWeekNudgeCopyIndex(weekOf, timed.length));
+    }
+  });
+
+  it('returns null for no messages or a message with no usable minutes', () => {
+    expect(getEarlyWeekNudgeForWeek(WEEK_OF, [])).toBeNull();
+    expect(hasEarlyWeekNudgeMinutes({ startHour: 0, endHour: SCORECARD_QUIET_NOTIFICATION_BEFORE_HOUR })).toBe(false);
+    expect(hasEarlyWeekNudgeMinutes({})).toBe(true);
   });
 });
 
@@ -98,34 +128,34 @@ describe('getEarlyWeekNudgeCopyIndex', () => {
 });
 
 describe('getNextEarlyWeekNudge', () => {
-  const thisWeek = getEarlyWeekNudgeForWeek(WEEK_OF, COPY_COUNT);
-  const nextWeek = getEarlyWeekNudgeForWeek(addLocalDays(WEEK_OF, 7), COPY_COUNT);
+  const thisWeek = getEarlyWeekNudgeForWeek(WEEK_OF, MESSAGES);
+  const nextWeek = getEarlyWeekNudgeForWeek(addLocalDays(WEEK_OF, 7), MESSAGES);
   if (!thisWeek || !nextWeek) throw new Error('fixture slots missing');
   const MINUTE_MS = 60_000;
 
   it('returns this week from the weekend before the window', () => {
     const saturdayNoon = new Date(2026, 9, 10, 12, 0).getTime();
-    expect(getNextEarlyWeekNudge(saturdayNoon, COPY_COUNT)).toEqual(thisWeek);
+    expect(getNextEarlyWeekNudge(saturdayNoon, MESSAGES)).toEqual(thisWeek);
   });
 
   it('returns this week right up to the slot', () => {
     const justBefore = thisWeek.at.getTime() - MINUTE_MS;
-    expect(getNextEarlyWeekNudge(justBefore, COPY_COUNT)).toEqual(thisWeek);
+    expect(getNextEarlyWeekNudge(justBefore, MESSAGES)).toEqual(thisWeek);
   });
 
   it('moves to next week once this week has fired', () => {
-    expect(getNextEarlyWeekNudge(thisWeek.at.getTime(), COPY_COUNT)).toEqual(nextWeek);
+    expect(getNextEarlyWeekNudge(thisWeek.at.getTime(), MESSAGES)).toEqual(nextWeek);
     const fridayNight = new Date(2026, 9, 16, 22, 0).getTime();
-    expect(getNextEarlyWeekNudge(fridayNight, COPY_COUNT)).toEqual(nextWeek);
+    expect(getNextEarlyWeekNudge(fridayNight, MESSAGES)).toEqual(nextWeek);
   });
 
   it('skips a week the user has already started', () => {
     const saturdayNoon = new Date(2026, 9, 10, 12, 0).getTime();
-    expect(getNextEarlyWeekNudge(saturdayNoon, COPY_COUNT, WEEK_OF)).toEqual(nextWeek);
+    expect(getNextEarlyWeekNudge(saturdayNoon, MESSAGES, WEEK_OF)).toEqual(nextWeek);
   });
 
   it('returns null when the window has no usable minutes', () => {
     const window = { days: [1], startHour: 0, endHour: 0 };
-    expect(getNextEarlyWeekNudge(Date.now(), COPY_COUNT, null, window)).toBeNull();
+    expect(getNextEarlyWeekNudge(Date.now(), MESSAGES, null, window)).toBeNull();
   });
 });

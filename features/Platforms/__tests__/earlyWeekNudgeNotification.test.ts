@@ -24,12 +24,12 @@ import {
   scheduleEarlyWeekNudge,
 } from '../hooks/useEarlyWeekNudge';
 import { getEarlyWeekNudgeForWeek } from '../utils/earlyWeekNudge';
-import { EARLY_WEEK_NUDGE_DAYS } from '../../../config/constants';
-import { earlyWeekNudgeLinesForDay } from '../utils/earlyWeekNudgeLines';
+import { hasEarlyWeekNudgeMinutes, resolveEarlyWeekNudgeWindow } from '../utils/earlyWeekNudge';
+import { EARLY_WEEK_NUDGE_LINES, EARLY_WEEK_NUDGE_TIMINGS } from '../utils/earlyWeekNudgeLines';
 
 const WEEK_OF = '2026-10-10'; // Saturday
 const SATURDAY_NOON = new Date(2026, 9, 10, 12, 0).getTime();
-const COPY_COUNT = (weekday: number) => earlyWeekNudgeLinesForDay(weekday).length;
+const MESSAGES = EARLY_WEEK_NUDGE_TIMINGS;
 const TITLE_MAX = 30;
 const BODY_MAX = 70;
 
@@ -52,38 +52,44 @@ describe('early-week nudge scheduling', () => {
     setNotificationChannelAsync.mockResolvedValue(null);
   });
 
-  it('has lock-screen-length lines with a valid tab for every window day', () => {
-    for (const day of EARLY_WEEK_NUDGE_DAYS) {
-      const lines = earlyWeekNudgeLinesForDay(day);
-      expect(lines.length).toBeGreaterThanOrEqual(2);
-      for (const { title, body, opens } of lines) {
-        expect(title.length).toBeGreaterThan(0);
-        expect(title.length).toBeLessThanOrEqual(TITLE_MAX);
-        expect(body.length).toBeGreaterThan(0);
-        expect(body.length).toBeLessThanOrEqual(BODY_MAX);
-        expect(['platforms', 'map']).toContain(opens);
-      }
+  it('has lock-screen-length lines, a valid tab, and usable minutes for each', () => {
+    expect(EARLY_WEEK_NUDGE_LINES.length).toBeGreaterThanOrEqual(2);
+    for (const { title, body, opens, timing } of EARLY_WEEK_NUDGE_LINES) {
+      expect(title.length).toBeGreaterThan(0);
+      expect(title.length).toBeLessThanOrEqual(TITLE_MAX);
+      expect(body.length).toBeGreaterThan(0);
+      expect(body.length).toBeLessThanOrEqual(BODY_MAX);
+      expect(['platforms', 'map']).toContain(opens);
+      expect(hasEarlyWeekNudgeMinutes(timing)).toBe(true);
     }
   });
 
-  it('only sends a day its own lines, and never the same line two weeks running', async () => {
+  it('sends each line only inside its own days and hours, never twice in a row', async () => {
     let previousTitle: string | null = null;
+    const seen = new Set<string>();
     for (let week = 0; week < 104; week++) {
       scheduleNotificationAsync.mockClear();
       await scheduleEarlyWeekNudge(SATURDAY_NOON + week * 7 * 86_400_000);
       const [request] = scheduleNotificationAsync.mock.calls[0];
-      const day = request.trigger.date.getDay();
-      const titles = earlyWeekNudgeLinesForDay(day).map((line) => line.title);
-      expect(titles).toContain(request.content.title);
+      const line = EARLY_WEEK_NUDGE_LINES.find((candidate) => candidate.title === request.content.title);
+      if (!line) throw new Error(`unknown line ${request.content.title}`);
+      const window = resolveEarlyWeekNudgeWindow(line.timing);
+      const at: Date = request.trigger.date;
+      expect(window.days).toContain(at.getDay());
+      expect(at.getHours()).toBeGreaterThanOrEqual(window.startHour);
+      expect(at.getHours()).toBeLessThan(window.endHour);
+      expect(request.content.data).toEqual({ type: EARLY_WEEK_NUDGE_TYPE, opens: line.opens });
       expect(request.content.title).not.toBe(previousTitle);
       previousTitle = request.content.title;
+      seen.add(line.title);
     }
+    expect(seen.size).toBe(EARLY_WEEK_NUDGE_LINES.length);
   });
 
   it('schedules the week slot on its own identifier and Android channel', async () => {
-    const slot = getEarlyWeekNudgeForWeek(WEEK_OF, COPY_COUNT);
+    const slot = getEarlyWeekNudgeForWeek(WEEK_OF, MESSAGES);
     if (!slot) throw new Error('fixture slot missing');
-    const line = earlyWeekNudgeLinesForDay(slot.at.getDay())[slot.copyIndex];
+    const line = EARLY_WEEK_NUDGE_LINES[slot.copyIndex];
 
     await scheduleEarlyWeekNudge(SATURDAY_NOON);
 
@@ -125,7 +131,7 @@ describe('early-week nudge scheduling', () => {
   });
 
   it('schedules next week when this week is skipped', async () => {
-    const nextWeek = getEarlyWeekNudgeForWeek(addLocalDays(WEEK_OF, 7), COPY_COUNT);
+    const nextWeek = getEarlyWeekNudgeForWeek(addLocalDays(WEEK_OF, 7), MESSAGES);
     await scheduleEarlyWeekNudge(SATURDAY_NOON, WEEK_OF);
     expect(scheduleNotificationAsync).toHaveBeenCalledWith(expect.objectContaining({
       trigger: expect.objectContaining({ date: nextWeek?.at }),

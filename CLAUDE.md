@@ -280,13 +280,19 @@ export const NUDGE_HOUR = 19;  // 7pm local time
 
 // Early-week nudge — one local notification per Sat–Fri week at a deterministic
 // pseudorandom minute (same local time on every device; never in quiet hours).
-// Identifier/channel 'early-week-nudge'. Monday and Tuesday each have their own
-// lines (platformsCopy.earlyNudges, assigned per weekday with the tab a tap
-// opens in features/Platforms/utils/earlyWeekNudgeLines.ts); taps route via
+// Identifier/channel 'early-week-nudge'. The week's line is picked first, then a
+// minute inside that line's own days/hours (e.g. Taco Tuesday on Tuesday, "Lunchtime?"
+// at lunch; EARLY_WEEK_NUDGE_COFFEE_*/LUNCH_*/EARLY_DAY_* below). Lines, timings and the
+// tab a tap opens: features/Platforms/utils/earlyWeekNudgeLines.ts; taps route via
 // app/navigation/notificationRoute.ts. See utils/earlyWeekNudge.ts + hooks/useEarlyWeekNudge.ts.
 export const EARLY_WEEK_NUDGE_DAYS = [1, 2];          // Monday, Tuesday (0 = Sunday)
 export const EARLY_WEEK_NUDGE_START_HOUR = 10;        // 10am local (inclusive)
 export const EARLY_WEEK_NUDGE_END_HOUR = 18;          // 6pm local (exclusive)
+export const EARLY_WEEK_NUDGE_COFFEE_START_HOUR = 9;  // coffee line: 9–11am
+export const EARLY_WEEK_NUDGE_COFFEE_END_HOUR = 11;
+export const EARLY_WEEK_NUDGE_LUNCH_START_HOUR = 11;  // lunch line: 11am–2pm
+export const EARLY_WEEK_NUDGE_LUNCH_END_HOUR = 14;
+export const EARLY_WEEK_NUDGE_EARLY_DAY_END_HOUR = 14; // "Today's wide open": before 2pm
 export const EARLY_WEEK_NUDGE_SKIP_IF_WEEK_ACTIVE = true; // skip a week that already has an avoid
 
 // Default platforms pre-checked on setup screen — derived from platforms.json

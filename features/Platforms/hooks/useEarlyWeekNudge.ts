@@ -6,7 +6,7 @@ import { addLocalDays, getLocalWeekStartForDate } from '../../../core/utils/loca
 import { EARLY_WEEK_NUDGE_SKIP_IF_WEEK_ACTIVE } from '../../../config/constants';
 import { platformsCopy } from '../../../copy/platforms';
 import { getNextEarlyWeekNudge } from '../utils/earlyWeekNudge';
-import { earlyWeekNudgeLinesForDay } from '../utils/earlyWeekNudgeLines';
+import { EARLY_WEEK_NUDGE_LINES, EARLY_WEEK_NUDGE_TIMINGS } from '../utils/earlyWeekNudgeLines';
 
 /**
  * Stable identifier. Cancels and reschedules touch only this ID, never the
@@ -100,18 +100,14 @@ export async function scheduleEarlyWeekNudge(
   nowMs: number,
   skipWeekOf: string | null = null,
 ): Promise<void> {
-  const next = getNextEarlyWeekNudge(
-    nowMs,
-    (weekday) => earlyWeekNudgeLinesForDay(weekday).length,
-    skipWeekOf,
-  );
+  const next = getNextEarlyWeekNudge(nowMs, EARLY_WEEK_NUDGE_TIMINGS, skipWeekOf);
 
   await Notifications.setNotificationChannelAsync(EARLY_WEEK_NUDGE_CHANNEL_ID, {
     name: platformsCopy.earlyNudgeChannelName,
     importance: Notifications.AndroidImportance.DEFAULT,
   });
   await cancelEarlyWeekNudge();
-  const line = next ? earlyWeekNudgeLinesForDay(next.at.getDay())[next.copyIndex] : undefined;
+  const line = next ? EARLY_WEEK_NUDGE_LINES[next.copyIndex] : undefined;
   if (!next || !line) return;
 
   const { title, body, opens } = line;

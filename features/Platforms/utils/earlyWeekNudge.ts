@@ -1,9 +1,10 @@
 /**
  * Deterministic schedule for the early-week nudge notification.
  *
- * One nudge per scored (Sat–Fri) week, at a pseudorandom minute inside the
- * EARLY_WEEK_NUDGE_* window in device-local time. The minute and the message
- * are derived only from the week's start date, so:
+ * One nudge per scored (Sat–Fri) week. The message is picked first, then a
+ * pseudorandom minute inside that message's window (its own days and hours,
+ * defaulting to the EARLY_WEEK_NUDGE_* window) in device-local time. Both are
+ * derived only from the week's start date, so:
  *  - every device gets the same local wall-clock time for a given week;
  *  - rescheduling on every app launch never moves an already-scheduled nudge;
  *  - nothing is stored and nothing leaves the device.
@@ -53,7 +54,7 @@ export interface EarlyWeekNudgeSlot {
   weekOf: string;
   /** Absolute fire time, built from local calendar components. */
   at: Date;
-  /** Index into the message list for the weekday `at` lands on. */
+  /** Index into the message list; `at` falls inside that message's window. */
   copyIndex: number;
 }
 
@@ -119,35 +120,61 @@ export function getEarlyWeekNudgeCopyIndex(weekOf: string, count: number): numbe
 }
 
 /**
- * Number of messages to choose from: one shared count, or a per-weekday
- * count (0 = Sunday) when each day has its own lines.
+ * When one message may go out. Unset fields fall back to the base window, so
+ * `{}` means "any usable minute of the base window" and `{ days: [2] }` means
+ * "Tuesday, base hours". Lets a line be day-specific ("Taco Tuesday") or
+ * time-specific ("Lunchtime?").
  */
-export type EarlyWeekNudgeCopyCount = number | ((weekday: number) => number);
+export interface EarlyWeekNudgeTiming {
+  days?: readonly number[];
+  startHour?: number;
+  endHour?: number;
+}
+
+export function resolveEarlyWeekNudgeWindow(
+  timing: EarlyWeekNudgeTiming,
+  base: EarlyWeekNudgeWindow = DEFAULT_EARLY_WEEK_NUDGE_WINDOW,
+): EarlyWeekNudgeWindow {
+  return {
+    days: timing.days ?? base.days,
+    startHour: timing.startHour ?? base.startHour,
+    endHour: timing.endHour ?? base.endHour,
+  };
+}
+
+/** True when the message has at least one usable minute (outside quiet hours). */
+export function hasEarlyWeekNudgeMinutes(
+  timing: EarlyWeekNudgeTiming,
+  base: EarlyWeekNudgeWindow = DEFAULT_EARLY_WEEK_NUDGE_WINDOW,
+): boolean {
+  return buildHourSlots(resolveEarlyWeekNudgeWindow(timing, base)).length > 0;
+}
 
 /**
- * The nudge slot for one scored week, or null when the window has no
- * usable minutes (for example, it sits entirely inside quiet hours).
- * `copyIndex` indexes the message list for the weekday the slot lands on.
+ * The nudge for one scored week. The week's message is chosen first (never
+ * the same message two weeks running), then a minute inside that message's
+ * window. `messages` holds one timing per message, in copy order. Null when
+ * there are no messages or the chosen one has no usable minutes.
  */
 export function getEarlyWeekNudgeForWeek(
   weekOf: string,
-  copyCount: EarlyWeekNudgeCopyCount,
-  window: EarlyWeekNudgeWindow = DEFAULT_EARLY_WEEK_NUDGE_WINDOW,
+  messages: readonly EarlyWeekNudgeTiming[],
+  base: EarlyWeekNudgeWindow = DEFAULT_EARLY_WEEK_NUDGE_WINDOW,
 ): EarlyWeekNudgeSlot | null {
-  const hourSlots = buildHourSlots(window);
+  if (messages.length === 0) return null;
+  const copyIndex = getEarlyWeekNudgeCopyIndex(weekOf, messages.length);
+  const hourSlots = buildHourSlots(resolveEarlyWeekNudgeWindow(messages[copyIndex], base));
   if (hourSlots.length === 0) return null;
 
   const minuteIndex = hash32(`${SEED_PREFIX}-time-${weekOf}`) %
     (hourSlots.length * MINUTES_PER_HOUR);
   const { dayOffset, hour } = hourSlots[Math.floor(minuteIndex / MINUTES_PER_HOUR)];
   const [year, month, day] = weekOf.split('-').map(Number);
-  const at = new Date(year, month - 1, day + dayOffset, hour, minuteIndex % MINUTES_PER_HOUR);
-  const count = typeof copyCount === 'function' ? copyCount(at.getDay()) : copyCount;
 
   return {
     weekOf,
-    at,
-    copyIndex: getEarlyWeekNudgeCopyIndex(weekOf, count),
+    at: new Date(year, month - 1, day + dayOffset, hour, minuteIndex % MINUTES_PER_HOUR),
+    copyIndex,
   };
 }
 
@@ -157,15 +184,15 @@ export function getEarlyWeekNudgeForWeek(
  */
 export function getNextEarlyWeekNudge(
   nowMs: number,
-  copyCount: EarlyWeekNudgeCopyCount,
+  messages: readonly EarlyWeekNudgeTiming[],
   skipWeekOf: string | null = null,
-  window: EarlyWeekNudgeWindow = DEFAULT_EARLY_WEEK_NUDGE_WINDOW,
+  base: EarlyWeekNudgeWindow = DEFAULT_EARLY_WEEK_NUDGE_WINDOW,
 ): EarlyWeekNudgeSlot | null {
   let weekOf = getLocalWeekStartForDate(new Date(nowMs));
 
   for (let i = 0; i < WEEKS_TO_SEARCH; i++) {
     if (weekOf !== skipWeekOf) {
-      const slot = getEarlyWeekNudgeForWeek(weekOf, copyCount, window);
+      const slot = getEarlyWeekNudgeForWeek(weekOf, messages, base);
       if (!slot) return null;
       if (slot.at.getTime() > nowMs) return slot;
     }
