@@ -1,14 +1,14 @@
 # Earned-media pitch — short blurb (Oct 13, 2026)
 
-Third person, outside voice: punchy, accurate, no side. Price is fine here (it's a product
-pitch, not organic social). "Both parties" is the neutrality signal; no party words beyond it,
+Third person, outside voice: punchy, accurate, no side. No price (creator, Oct 13 — the store
+shows it). "Both parties" is the neutrality signal; no party words beyond it,
 no "boycott", no "dark money". Swap the first line for a journalist's angle when you have one
 (privacy, indie game, one-person project, campaign finance made legible).
 
 ## One line
 
-FCK Fascists is a $1.99 iPhone game that turns public campaign-finance records into something
-you can play: tap a business, scan a barcode, pick the platforms you skip, and every avoid
+FCK Fascists (FCK, Financial Contribution Kit) is an iPhone game that turns public
+campaign-finance records into something you can play: tap a business, scan a barcode, pick the platforms you skip, and every avoid
 counts toward a weekly scorecard you can share.
 
 ## Short blurb (~100 words)
@@ -19,7 +19,7 @@ and Clark — your public records clerk — pulls the company's campaign-finance
 dollar, both parties, straight from FEC.gov. Don't want to support them? Tap avoid. Every avoid
 counts toward a pixel-art scorecard that drops at a random moment between Friday and Saturday,
 then the raw data is shredded. No accounts. No tracking. Open source. Made by one person.
-$1.99 on the App Store — FCKapp.com.
+On the App Store — FCKapp.com.
 
 ## Links to paste under it
 
