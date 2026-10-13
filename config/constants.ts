@@ -239,8 +239,12 @@ export const EARLY_WEEK_NUDGE_LUNCH_START_HOUR = 11;      // "Lunchtime?"
 export const EARLY_WEEK_NUDGE_LUNCH_END_HOUR = 14;
 export const EARLY_WEEK_NUDGE_EARLY_DAY_END_HOUR = 14;    // "Today's wide open"
 // true = when the user has already logged an avoid in the Sat–Fri week the
-// nudge falls in, skip that week's nudge and schedule the next week's.
-export const EARLY_WEEK_NUDGE_SKIP_IF_WEEK_ACTIVE = true;
+// nudge falls in, skip that week's nudge. Owner decision 2026-10-13: send it
+// anyway (false).
+export const EARLY_WEEK_NUDGE_SKIP_IF_WEEK_ACTIVE = false;
+// How many weekly nudges stay queued. Each app launch rolls the queue
+// forward; someone who stops opening the app gets this many, then none.
+export const EARLY_WEEK_NUDGE_WEEKS_AHEAD = 3;
 
 
 // ── Shared FX system ─────────────────────────────────────────────────────────

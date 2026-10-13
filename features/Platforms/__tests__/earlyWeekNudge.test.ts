@@ -10,6 +10,7 @@ import {
   getEarlyWeekNudgeCopyIndex,
   getEarlyWeekNudgeForWeek,
   getNextEarlyWeekNudge,
+  getUpcomingEarlyWeekNudges,
   hasEarlyWeekNudgeMinutes,
   resolveEarlyWeekNudgeWindow,
 } from '../utils/earlyWeekNudge';
@@ -157,5 +158,25 @@ describe('getNextEarlyWeekNudge', () => {
   it('returns null when the window has no usable minutes', () => {
     const window = { days: [1], startHour: 0, endHour: 0 };
     expect(getNextEarlyWeekNudge(Date.now(), MESSAGES, null, window)).toBeNull();
+  });
+});
+
+describe('getUpcomingEarlyWeekNudges', () => {
+  const saturdayNoon = new Date(2026, 9, 10, 12, 0).getTime();
+
+  it('returns one slot per consecutive week, soonest first', () => {
+    const slots = getUpcomingEarlyWeekNudges(saturdayNoon, MESSAGES, 3);
+    expect(slots.map((slot) => slot.weekOf)).toEqual(weeksFrom(WEEK_OF, 3));
+    for (const slot of slots) expect(slot.at.getTime()).toBeGreaterThan(saturdayNoon);
+  });
+
+  it('skips the skipped week and still fills the queue', () => {
+    const slots = getUpcomingEarlyWeekNudges(saturdayNoon, MESSAGES, 3, WEEK_OF);
+    expect(slots.map((slot) => slot.weekOf)).toEqual(weeksFrom(addLocalDays(WEEK_OF, 7), 3));
+  });
+
+  it('returns nothing for a window with no usable minutes', () => {
+    const window = { days: [1], startHour: 0, endHour: 0 };
+    expect(getUpcomingEarlyWeekNudges(saturdayNoon, MESSAGES, 3, null, window)).toEqual([]);
   });
 });

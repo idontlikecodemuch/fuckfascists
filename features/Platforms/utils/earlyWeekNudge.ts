@@ -30,9 +30,9 @@ const COPY_EPOCH_WEEK_OF = '2026-01-03';
 const MINUTES_PER_HOUR = 60;
 const DAYS_PER_WEEK = 7;
 const DAY_MS = 86_400_000;
-// Current week, then the next one or two (skipped week, or this week's slot
-// already passed).
-const WEEKS_TO_SEARCH = 3;
+// Extra weeks searched beyond the number requested: a skipped week, or this
+// week's slot already passed.
+const EXTRA_WEEKS_TO_SEARCH = 2;
 
 export interface EarlyWeekNudgeWindow {
   /** Days of week, 0 = Sunday. */
@@ -179,24 +179,37 @@ export function getEarlyWeekNudgeForWeek(
 }
 
 /**
- * The next nudge that is still in the future, skipping `skipWeekOf` (a week
- * where the user already logged an avoid). Returns null if none is found.
+ * The next `count` nudges still in the future, one per week in order,
+ * skipping `skipWeekOf` (a week where the user already logged an avoid).
+ * Stops early if a week has no usable slot.
  */
+export function getUpcomingEarlyWeekNudges(
+  nowMs: number,
+  messages: readonly EarlyWeekNudgeTiming[],
+  count: number,
+  skipWeekOf: string | null = null,
+  base: EarlyWeekNudgeWindow = DEFAULT_EARLY_WEEK_NUDGE_WINDOW,
+): EarlyWeekNudgeSlot[] {
+  const slots: EarlyWeekNudgeSlot[] = [];
+  let weekOf = getLocalWeekStartForDate(new Date(nowMs));
+
+  for (let i = 0; i < count + EXTRA_WEEKS_TO_SEARCH && slots.length < count; i++) {
+    if (weekOf !== skipWeekOf) {
+      const slot = getEarlyWeekNudgeForWeek(weekOf, messages, base);
+      if (!slot) break;
+      if (slot.at.getTime() > nowMs) slots.push(slot);
+    }
+    weekOf = addLocalDays(weekOf, DAYS_PER_WEEK);
+  }
+  return slots;
+}
+
+/** The next nudge still in the future (see getUpcomingEarlyWeekNudges). */
 export function getNextEarlyWeekNudge(
   nowMs: number,
   messages: readonly EarlyWeekNudgeTiming[],
   skipWeekOf: string | null = null,
   base: EarlyWeekNudgeWindow = DEFAULT_EARLY_WEEK_NUDGE_WINDOW,
 ): EarlyWeekNudgeSlot | null {
-  let weekOf = getLocalWeekStartForDate(new Date(nowMs));
-
-  for (let i = 0; i < WEEKS_TO_SEARCH; i++) {
-    if (weekOf !== skipWeekOf) {
-      const slot = getEarlyWeekNudgeForWeek(weekOf, messages, base);
-      if (!slot) return null;
-      if (slot.at.getTime() > nowMs) return slot;
-    }
-    weekOf = addLocalDays(weekOf, DAYS_PER_WEEK);
-  }
-  return null;
+  return getUpcomingEarlyWeekNudges(nowMs, messages, 1, skipWeekOf, base)[0] ?? null;
 }
