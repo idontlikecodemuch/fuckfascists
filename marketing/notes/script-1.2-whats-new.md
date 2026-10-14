@@ -17,7 +17,7 @@ Cold opens, as on the shorts since Oct 6: the payoff in frame 1, CRT blink, titl
 | C | Cold open | Track screen; the iOS banner drops in: **Case of the Mondays?** / Known cure: log an avoid. Side effects include feeling great. | — | 1.5 |
 | T | Title | **1.2 · NEW FILES** | — | 0.6 |
 | 02 | Files | Map pins (reuse `60_03_map_pins`) or Info → THE DATA scroll | Fresh files. Every record refreshed. 761 companies on file. | 3.0 |
-| 03 | Household | Search "Windex" → SC Johnson card (by name — never the scanner, see honesty notes) | Now on file: the stuff under your sink. Windex. Ziploc. Post-its. Reynolds Wrap. | 4.0 |
+| 03 | Household | Scan a Windex bottle → SC Johnson record → AVOID; then a Great Value item → Walmart (build 13 scans these, see honesty notes) | Now on file: the stuff under your sink. Windex. Clorox. Hefty. Great Value? That's Walmart. | 4.5 |
 | 04 | Owners | Search "Ben & Jerry's" → The Magnum Ice Cream Company card | Brands follow their owners. Ben & Jerry's? Filed under Magnum now. | 3.2 |
 | 05 | Scan | Phone: 20 oz Sprite, short barcode locks fast → Coca-Cola record | Small bottle, short barcode. I read those now. And I focus closer. | 3.7 |
 | 06 | Faces | Scorecard live preview: new sprites (Furner, Laguarta, Van de Put…) plus one red X | Forty-nine new faces on the card. Still no sprite? Red X. | 3.5 |
@@ -34,7 +34,7 @@ Seconds use the 30-cut formula (0.25 s/word + 0.7, min 2.2); the outro adds the 
 |---|---|---|---|---|
 | C | Cold open | The new card, money rain from frame 0 (new faces visible) | — | 1.5 |
 | 02 | Files | Map pins | Fresh files. 761 companies. | 2.3 |
-| 03 | Household | Windex → SC Johnson card | Windex. Post-its. On file. | 2.3 |
+| 03 | Household | Scan Windex → SC Johnson record | Windex. Clorox. On file. | 2.3 |
 | 04 | Faces | Scorecard preview, new sprites + red X | Forty-nine new faces. | 2.2 |
 | 05 | Nudge | Banner: Case of the Mondays? | Case of the Mondays? I'll check in. | 3.3 |
 | 06 | Outro | End card | Your move. 🤘🏽 | 4.3 |
@@ -44,6 +44,7 @@ Seconds use the 30-cut formula (0.25 s/word + 0.7, min 2.2); the outro adds the 
 ## Lines on the bench (swap in if a beat reads flat)
 
 - Faces, longer: "Forty-nine new faces. Nobody gets an empty slot — no sprite yet, red X."
+- Household, the search version (if the scan footage doesn't land): "Now on file: the stuff under your sink. Windex. Ziploc. Post-its. Reynolds Wrap." over a Map search.
 - Owners, alt: "Ben & Jerry's sold. The file moved with it."
 - Scan, alt: "Short barcode on a small can? Locks now. Closer, faster."
 - Files, with people: "761 companies. 1,097 donors and executives. Every record refreshed."
@@ -53,8 +54,12 @@ Seconds use the 30-cut formula (0.25 s/word + 0.7, min 2.2); the outro adds the 
 
 ## Honesty notes (what the footage may and may not show)
 
-- **Household brands by name only.** Windex, Clorox and the rest mostly return no match by
-  barcode until the 1.2.2 prefix work ships. Beat 03 is a Map search, never the scanner.
+- **Household barcodes scan on build 13.** 62 verified prefixes (88 brand rows: Windex,
+  Clorox, OxiClean, Zicam, Vicks/NyQuil, Glad, Hefty, Tampax, Scott, Seventh Generation and
+  more) ship in 1.2.1 build 13, and Walmart's Great Value and Equate now show Walmart
+  (`docs/releases/1.2.1.md`, build 13 record). Not scannable yet: Tylenol, Listerine,
+  Neutrogena, Aveeno (no match until Kenvue is added in 1.2.2). Post-its and Ziploc are on
+  file by name; don't scan them on camera unless a test scan matches.
 - **"I focus closer"** is the 1.2.1 close-focus change on Pro and dual-wide iPhones (owner
   confirmed on device Oct 14). Beat 05 must be recorded on the phone with build 13.
 - **"761 companies"** holds on release/1.2.1 (counted in `assets/data/entities.json` there,
@@ -74,8 +79,8 @@ Seconds use the 30-cut formula (0.25 s/word + 0.7, min 2.2); the outro adds the 
 
 ## Shot list — captures on build 13 (TestFlight), production tab bar
 
-Build 13 replaces 12 for submission (barcode-attribution fix in progress, release session,
-Oct 14). Record N1 on 13 so the scan result is the shipped one; N2–N4 are fine on either.
+Build 13 (TestFlight, Oct 14 18:32) replaces 12 for submission: barcode attribution fixes
+plus the household prefixes. Record N1 and N2 on 13; N3 and N4 are fine on either.
 
 Same conventions as `marketing/video/captures/CAPTURES.md`: slow, deliberate taps; hold
 two seconds on every end state; one feature per clip. Phone recordings crop the real
@@ -84,9 +89,9 @@ status bar in the edit, as R6 did.
 | Clip | Where | Steps | Feeds |
 |---|---|---|---|
 | `N1_scan_sprite-20oz` | phone, build 13 | Scan tab → OPEN SCANNER → a 20 oz Sprite (or any small can with the short 8-digit barcode) from close → lock → Coca-Cola record → AVOID → hold | 30 beat 05 |
-| `N2_map_search-windex-scjohnson` | phone or simulator | Map → search "Windex" → SC Johnson card → AVOID → dismiss; then "Post-it" → 3M card (dismiss); "Reynolds Wrap" → Reynolds card (dismiss) | 30 beat 03, 15 beat 03 |
+| `N2_scan_windex-clorox-greatvalue` | phone, build 13 | Scan tab → OPEN SCANNER → Windex bottle → SC Johnson record → AVOID → back; Clorox → Clorox record (dismiss); a Great Value item → Walmart record → AVOID (Furner's new sprite lands on the card). Hold two seconds on each record. | 30 beat 03, 15 beat 03 |
 | `N3_map_search-benjerrys-magnum` | phone or simulator | Map → search "Ben & Jerry's" → The Magnum Ice Cream Company card → hold; optional "French's" → McCormick | 30 beat 04 |
-| `N4_scorecard_new-faces-red-x` | phone or simulator | Avoid Walmart (search), Target (search), PepsiCo (scan a Pepsi or Lay's) and Mondelez (scan an Oreo), plus SC Johnson from N2 → Scorecard tab → live preview shows Furner, Fiddelke, Laguarta, Van de Put and the red X → dev Generate → reveal + rain → card | 30 beat 06, 15 cold open + beat 04 |
+| `N4_scorecard_new-faces-red-x` | phone or simulator | Avoid Target (search), PepsiCo (scan a Pepsi or Lay's) and Mondelez (scan an Oreo), plus Walmart and SC Johnson from N2 → Scorecard tab → live preview shows Furner, Fiddelke, Laguarta, Van de Put and the red X → dev Generate → reveal + rain → card | 30 beat 06, 15 cold open + beat 04 |
 | `N5` nudge | none | Composited in Remotion over the Track screen (cold open) and the Map (beat 07). If a real Monday/Tuesday banner gets screen-recorded on the phone, it replaces the composite. | 30 C + 07, 15 beat 05 |
 | reuse | existing | `60_03_map_pins` (files), `60_12_drop` (drop), Track grid from R5 if the Track line comes in | 30 beats 02, 08 |
 
@@ -113,7 +118,7 @@ the real Friday–Saturday drop on the phone; either is fine, the card is real e
   { "panel": "02", "title": "FILES", "kind": "feature", "feature": "MAP",
     "lines": [{ "id": "cnew30-02-1", "text": "Fresh files. Every record refreshed. 761 companies on file." }] },
   { "panel": "03", "title": "HOUSEHOLD", "kind": "feature", "feature": "MAP",
-    "lines": [{ "id": "cnew30-03-1", "text": "Now on file: the stuff under your sink. Windex. Ziploc. Post-its. Reynolds Wrap." }] },
+    "lines": [{ "id": "cnew30-03-1", "text": "Now on file: the stuff under your sink. Windex. Clorox. Hefty. Great Value? That's Walmart." }] },
   { "panel": "04", "title": "OWNERS", "kind": "feature", "feature": "MAP",
     "lines": [{ "id": "cnew30-04-1", "text": "Brands follow their owners. Ben & Jerry's? Filed under Magnum now." }] },
   { "panel": "05", "title": "SCAN", "kind": "feature", "feature": "SCAN",
@@ -131,7 +136,7 @@ the real Friday–Saturday drop on the phone; either is fine, the card is real e
   { "panel": "02", "title": "FILES", "kind": "feature", "feature": "MAP",
     "lines": [{ "id": "cnew15-02-1", "text": "Fresh files. 761 companies." }] },
   { "panel": "03", "title": "HOUSEHOLD", "kind": "feature", "feature": "MAP",
-    "lines": [{ "id": "cnew15-03-1", "text": "Windex. Post-its. On file." }] },
+    "lines": [{ "id": "cnew15-03-1", "text": "Windex. Clorox. On file." }] },
   { "panel": "04", "title": "FACES", "kind": "feature", "feature": "SCORECARD",
     "lines": [{ "id": "cnew15-04-1", "text": "Forty-nine new faces." }] },
   { "panel": "05", "title": "NUDGE", "kind": "feature", "feature": "TRACK",

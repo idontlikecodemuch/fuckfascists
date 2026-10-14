@@ -33,3 +33,17 @@ quiet hours, eight owner-written lines, tap routes to the Map or Track tab; Trac
 verified on the iOS 27 simulator; close-range focus via the ultra-wide switch-over on Pro and
 dual-wide iPhones (owner confirmed on a device Oct 14); FEC
 refresh dated 2026-10-12 on main. 641 characters, well under the 4,000 limit.
+
+---
+
+Proposed addition for build 13 (Oct 14 evening) — NOT in the store text above until the owner
+says so. Build 13 ships 62 verified household barcode prefixes (Windex, Clorox, OxiClean,
+Zicam, Vicks/NyQuil, Glad, Hefty and more) and moves Walmart's store brands (Great Value,
+Equate) to Walmart, which the "moved to 1.2.2" note at the top predates. If he wants it:
+
+• Scan the household stuff: Windex, Clorox, OxiClean, Glad and Hefty now match their owners by barcode, and Walmart's Great Value and Equate show Walmart.
+
+Headline option if the bullet goes in: "Fresh files. More faces. Scan the house." Tylenol,
+Listerine and Neutrogena still return no match (Kenvue lands in 1.2.2), so the bullet names
+only brands that scan.
+
