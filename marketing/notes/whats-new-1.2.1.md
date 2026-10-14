@@ -3,11 +3,13 @@
 Clark voice, corporate neutral (voice framework §App Store listing): no FCK, no emoji, no
 party claims, nothing promised that isn't in the build. Fact-checked against
 `docs/releases/1.2.1.md` on `release/1.2.1` (Oct 14). Household barcodes are NOT mentioned
-(moved to 1.2.2). The scanner line stays soft until the owner confirms close focus on device.
+(moved to 1.2.2). Close focus confirmed on device by the owner Oct 14 ("Scanner works!"), so
+the scanner bullet stays. Headline fixed the same day: the nudge lands Monday OR Tuesday, so
+not "A Monday nudge.".
 
 ---
 
-Fresh files. More faces. A Monday nudge.
+Fresh files. More faces. An early-week nudge.
 
 • FEC records refreshed October 12, 2026.
 
@@ -29,5 +31,5 @@ Facts used: 49 new sprites (192 → 241; none of them run a tracked platform, so
 shared card and live preview; early-week local notification Mon/Tue 10am–6pm local, never in
 quiet hours, eight owner-written lines, tap routes to the Map or Track tab; Track header fix
 verified on the iOS 27 simulator; close-range focus via the ultra-wide switch-over on Pro and
-dual-wide iPhones (needs the TestFlight device test — if it fails, drop that bullet); FEC
-refresh dated 2026-10-12 on main. 617 characters, well under the 4,000 limit.
+dual-wide iPhones (owner confirmed on a device Oct 14); FEC
+refresh dated 2026-10-12 on main. 641 characters, well under the 4,000 limit.
