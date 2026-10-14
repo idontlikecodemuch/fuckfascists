@@ -6,6 +6,18 @@ This is the launch packet for the Chrome Web Store (CWS), Firefox Add-ons (AMO),
 
 Nothing has been submitted. No accounts were created and nothing was paid for.
 
+## Owner decisions (October 14, 2026)
+
+| | Decision | Status |
+|---|---|---|
+| Store name | `FCK, Financial Contribution Kit` with the neutral summary in the manifest. The popup still says FCK FASCISTS. | Done on this branch |
+| D1, live FEC fallback | (a) Removed. The extension makes no FEC calls; it shows bundled data, refreshed daily from `main`. The §3.5 "no data collected" answers stand. | Done on this branch |
+| D2, data freshness | Bundled data refreshed 2026-10-12 (`docs/FEC_BULK_REFRESH_2026-10-12.md`); packages rebuilt from it. With D1 (a), staleness no longer triggers any network call. | Done |
+| D4, license | AGPL-3.0-or-later. `LICENSE` added, `package.json` and README updated. Pick "GNU Affero General Public License v3.0" on AMO. | Done on this branch |
+| D7, publisher | **App Hold Media LLC** on every store, as both the account owner and the publisher name shown. Edge: Company account (verification takes days to weeks). CWS: the trader declaration will show the LLC's name and address. | Owner, at account setup |
+| D8, Edge | Publish on Edge after Chrome and Firefox are live. | Owner, later |
+| D3, privacy page | Still open: the four edits in §5 go on the marketing branch's site. | Open |
+
 ---
 
 ## 1. Readiness audit
@@ -156,7 +168,7 @@ With D1 (b): check **Web history** on CWS and Edge, and change the Firefox manif
 - **Platforms:** Firefox desktop. Leave Android unchecked; the popup is untested there.
 - **Tags:** shopping, politics, transparency, privacy.
 - **Support email / site:** `info@fckfascists.com` / `https://github.com/idontlikecodemuch/fuckfascists/issues`
-- **License:** see D4.
+- **License:** GNU Affero General Public License v3.0 (AGPL-3.0-or-later; see `LICENSE`).
 - **Experimental:** no. **Requires payment:** no.
 - **Source code:** "Yes". Upload `fck-fascists-firefox-1.2.0-source.zip`.
 - **Notes for reviewers:**
@@ -216,7 +228,7 @@ Steps marked 🔑 need you: an account, payment, a credential, or a legal or bra
 
 ### Before any store
 
-1. 🔑 Decide **D1** (FEC fallback) and **D4** (license). If D1 is (a), land that change and rebuild.
+1. ✅ D1 (removed) and D4 (AGPL-3.0) are decided and landed on this branch; packages are rebuilt (see "Owner decisions").
 2. 🔑 Publish the privacy policy edits in §5 (D3).
 3. Merge `chore/extension-store-launch` (or the branch you're shipping) to `main`, then rebuild packages from `main` (§2) so the data file and code match what users get from GitHub.
 4. Load `dist/extension/` unpacked in Chrome and `dist/extension-firefox/manifest.json` in Firefox (`about:debugging` → This Firefox → Load Temporary Add-on). Smoke test: visit homedepot.com (amber icon), open the popup (card), go to a second page on the site (popup still shows the card), tap AVOID (weekly count goes to 1), then visit example.org (clean state).
@@ -225,7 +237,7 @@ Steps marked 🔑 need you: an account, payment, a credential, or a legal or bra
 
 1. 🔑 Use the Google account that will own the listing. Turn on **2-Step Verification** at `myaccount.google.com/security`; CWS requires it to publish.
 2. 🔑 Open `https://chrome.google.com/webstore/devconsole`, accept the developer agreement, and **pay the one-time US$5 registration fee**. Confirm the amount at checkout.
-3. 🔑 Account tab: set the **publisher name** (D7), add and **verify the contact email** (click the link CWS emails you), and complete the **trader / non-trader declaration** for the EU if prompted.
+3. 🔑 Account tab: set the **publisher name** to `App Hold Media LLC` (D7), add and **verify the contact email** (click the link CWS emails you), and complete the **trader / non-trader declaration** for the EU if prompted.
 4. Items → **New item** → upload `fck-fascists-chrome-1.2.0.zip`. The item ID appears now. Note it for step 9.
 5. **Store listing** tab: description (§3.1), category (§3.3), language, the three screenshots, the 440×280 small promo tile, the optional marquee, homepage and support URLs.
 6. **Privacy** tab: single purpose (§3.2), justifications for each permission and for host access (§3.4), remote code "No", data usage (§3.5), privacy policy URL.
@@ -235,7 +247,7 @@ Steps marked 🔑 need you: an account, payment, a credential, or a legal or bra
 
 ### Firefox Add-ons (free)
 
-1. 🔑 Create or sign in to a **Mozilla account** at `https://addons.mozilla.org/developers/`. AMO requires **two-factor authentication** (authenticator app). Save the recovery codes; Mozilla can't restore a locked account.
+1. 🔑 Create or sign in to a **Mozilla account** at `https://addons.mozilla.org/developers/`. AMO requires **two-factor authentication** (authenticator app). Save the recovery codes; Mozilla can't restore a locked account. Set the profile's **display name** to `App Hold Media LLC` (D7); AMO shows it as the author.
 2. **Submit a New Add-on** → "On this site" (listed) → upload `fck-fascists-firefox-1.2.0.zip`. The validator should pass with no warnings.
 3. Platforms: Firefox desktop.
 4. Source code: **Yes**, then upload `fck-fascists-firefox-1.2.0-source.zip`.
@@ -243,10 +255,10 @@ Steps marked 🔑 need you: an account, payment, a credential, or a legal or bra
 6. 🔑 **Submit Version**, then add the screenshots on the listing's Edit Product Page → Media. Listed versions usually go live after automated review, often within a day, and may get a human source-code review later. Expect a reviewer email if anything in the source doesn't reproduce.
 7. Store URL: `https://addons.mozilla.org/firefox/addon/fck-financial-contribution-kit/`
 
-### Microsoft Edge Add-ons (free, optional)
+### Microsoft Edge Add-ons (free; after Chrome and Firefox are live)
 
 1. 🔑 Sign in to Partner Center (`https://partner.microsoft.com/dashboard/microsoftedge/public/login`) with a personal Microsoft account (Outlook.com, or a GitHub sign-in that creates one). Turn on two-step verification for that account (recommended).
-2. 🔑 Complete the **Microsoft Edge program registration**: country, **account type** (D7; can't be changed later), publisher display name, contact info, and accept the App Developer Agreement. No fee. Individual accounts verify quickly; Company accounts take days to weeks.
+2. 🔑 Complete the **Microsoft Edge program registration**: country, **account type: Company, App Hold Media LLC** (D7; can't be changed later), publisher display name `App Hold Media LLC`, contact info, and accept the App Developer Agreement. No fee. Individual accounts verify quickly; Company accounts take days to weeks.
 3. **Create new extension** → upload `fck-fascists-edge-1.2.0.zip`.
 4. Availability: Public, all markets. Properties: category Shopping, website, support contact, mature content unchecked.
 5. Privacy: single purpose, permission justifications, remote code "No", data usage, privacy policy URL (§3.2–3.5).

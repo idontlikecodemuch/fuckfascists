@@ -86,4 +86,4 @@ Contributions, issues, and data corrections welcome.
 
 ## License
 
-Open source. See LICENSE.
+GNU Affero General Public License v3.0 or later (AGPL-3.0). See [LICENSE](LICENSE). You can use, change and share this code, and anyone who runs a changed version for others, including as a hosted service, has to share their changes under the same license.

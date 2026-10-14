@@ -2,6 +2,7 @@
   "name": "fuckfascists",
   "version": "1.2.0",
   "private": true,
+  "license": "AGPL-3.0-or-later",
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",

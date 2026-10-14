@@ -537,18 +537,13 @@ Extension data is NOT included in the scorecard (V1) — extension has its own i
 - **Permissions are `storage`, `activeTab`, `alarms` — no `host_permissions`.** The content script's `matches` grant injection; the GitHub data file and FEC API both send `Access-Control-Allow-Origin: *`. `activeTab` is what exposes the active tab URL to the popup. Don't re-add host permissions without a new need.
 - **Store packaging:** `npm run build:ext:all` → `dist/packages/*.zip`; `npm run package:ext:source -- --verify` → AMO source archive, rebuilt and diffed. Store name/summary come from the manifest (`FCK, Financial Contribution Kit`, Clark voice). Listing copy, policy answers, and the owner checklist are in `docs/EXTENSION_STORE_LAUNCH.md`.
 
-### Extension — FEC API key
-- **No private API key is used or stored** — the extension uses data.gov's public `DEMO_KEY` only for the rare live FEC fallback. Its conservative 10-request ceiling is enforced locally. A shared private key would pool all users against one secret/limit, which is a scaling and disclosure problem.
-- **No options page exists** for API key configuration — do not create one.
-- `FECClient` is constructed with `{ apiKey: '' }` to prevent `process.env` access in the browser context and select the public `DEMO_KEY` path.
+### Extension — no FEC calls, no API key
+- **The extension never calls the FEC API** (owner decision 2026-10-14, for the store launch). Any lookup would be derived from the site the user is on, which Chrome, Firefox and Edge treat as browsing data sent to a third party; with no calls, the listings can truthfully declare no data collected. Its only network request is the daily fetch of the public entity list from Git.
+- **No API key of any kind** — no options page for one; do not create one.
+- **Documented divergence (Principle 8):** the app keeps its live FEC fallback for manual search and barcodes; the extension shows bundled data only. Attribution rules, confidence labels and FEC links stay the same on both.
 
-### Extension — donation data priority order
-When a flagged domain is detected, `handleCheckDomain` resolves donation data in this order:
-1. **Fresh local extension cache** (`ext:{entityId}` in `chrome.storage.local`) — populated by previous live calls
-2. **Bundled `entity.donationSummary`** — primary path; used when present and `isBundledDataFresh()` returns true (within `ENTITY_CACHE_TTL_DAYS` of `entity.lastVerifiedDate`). No API call made.
-3. **Public DEMO_KEY live FEC call** — tightly rate-limited fallback when curated data is absent or stale; result written to local cache
-4. **Stale bundled data** — used when the live call fails and bundled data exists (even if expired)
-5. **No data** — `noBundledData: true` on `TabFlag`; popup shows "No bundled donation data." (not "temporarily unavailable")
+### Extension — donation data
+`handleCheckDomain` uses the matched entity's bundled `donationSummary` (from the extension bundle or the newer Git copy accepted by the daily refresh). When there is none, `noBundledData: true` on `TabFlag` and the popup shows "No contribution data on file." Keep the bundled data fresh by refreshing `main`; the extension picks it up within a day.
 
 ---
 

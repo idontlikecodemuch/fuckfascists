@@ -23,14 +23,11 @@ import {
   setTabFlag, getTabFlag, markTabAvoided, clearTabFlag,
   getLastFlagged, recordFlagged, setSnoozed, isSnoozed,
 } from './sessionStore';
-import { makeCacheDeps } from '../../core/data/cacheStore';
 import { parseEntityList, preferFresherEntityList } from '../../core/data/entityList';
-import { FECClient } from '../../core/api';
 import { getMondayOf, recordEntityAvoid } from '../../core/data/eventStore';
 import {
   ENTITY_LIST_UPDATE_URL,
   EXTENSION_FLAG_FREQUENCY,
-  ENTITY_CACHE_TTL_DAYS,
 } from '../../config/constants';
 
 function entityConfidence(matchScore: number | undefined): number {
@@ -40,11 +37,6 @@ function entityConfidence(matchScore: number | undefined): number {
 // ─── Globals (re-initialised after SW wake) ────────────────────────────────────
 
 const adapter = new ChromeStorageAdapter();
-const cacheDeps = makeCacheDeps(adapter);
-// No private key in the extension; empty config selects FEC's public DEMO_KEY.
-// Bundled/Git donationSummary data is the primary path; the public fallback is
-// reserved for missing/stale entries and capped at 10 requests locally.
-const apiClient = new FECClient({ apiKey: '' });
 let entities: Entity[] = [];
 let people: PoliticalPerson[] = [];
 
@@ -177,19 +169,6 @@ function shouldFlag(hostname: string): boolean {
   }
 }
 
-// ── Bundled data freshness ─────────────────────────────────────────────────────
-
-/**
- * Returns true if the entity's bundled donationSummary was verified within
- * the configured cache TTL. An absent or empty lastVerifiedDate is treated
- * as stale.
- */
-function isBundledDataFresh(entity: Entity): boolean {
-  if (!entity.lastVerifiedDate) return false;
-  const verifiedMs = new Date(entity.lastVerifiedDate + 'T00:00:00Z').getTime();
-  return Date.now() - verifiedMs < ENTITY_CACHE_TTL_DAYS * 86_400_000;
-}
-
 // ── Domain check ───────────────────────────────────────────────────────────────
 
 async function handleCheckDomain(hostname: string, tabId: number): Promise<void> {
@@ -201,61 +180,22 @@ async function handleCheckDomain(hostname: string, tabId: number): Promise<void>
   // on a matched site (e.g. the second page of a domain already flagged).
   const lightIcon = !(await isSnoozed(hostname)) && shouldFlag(hostname);
 
-  const cacheKey = `ext:${entity.id}`;
-  const CACHE_TTL_MS = ENTITY_CACHE_TTL_DAYS * 86_400_000;
-
-  let donationSummary: DonationSummary | null = null;
-  let liveLookupFailed = false;
-
   const committeeId =
     entity.fecCommitteeId && entity.fecCommitteeId !== ''
       ? entity.fecCommitteeId
       : null;
 
-  // Priority order for donation data:
-  // 1. Local extension cache — populated by previous live API calls.
-  // 2. Bundled donationSummary — the primary path; use when present and fresh.
-  // 3. Public DEMO_KEY FEC call — rare fallback when curated data is absent or stale.
-  // 4. Stale bundled data — last resort when the live call fails.
-  // 5. No data — flag is still set; popup shows "No bundled donation data."
-
-  const cached = await cacheDeps.getCache(cacheKey);
-  const activeSummaryIsNewer = !!entity.donationSummary && (
-    !cached?.donationSummary ||
-    (Date.parse(entity.donationSummary.lastUpdated) || 0) >
-      (Date.parse(cached.donationSummary.lastUpdated) || 0)
-  );
-  if (cached && Date.now() - cached.fetchedAt < CACHE_TTL_MS && !activeSummaryIsNewer) {
-    // 1. Fresh local cache hit.
-    donationSummary = cached.donationSummary;
-  } else if (entity.donationSummary && isBundledDataFresh(entity)) {
-    // 2. Bundled summary is present and within TTL — use directly, skip API call.
-    donationSummary = entity.donationSummary;
-  } else if (committeeId) {
-    // 3. Curated data absent or stale — attempt the public DEMO_KEY fallback.
-    try {
-      donationSummary = await apiClient.fetchOrgSummary(committeeId);
-      await cacheDeps.setCache({
-        key: cacheKey,
-        fecCommitteeId: committeeId,
-        donationSummary,
-        confidence: entityConfidence(undefined),
-        fetchedAt: Date.now(),
-      });
-    } catch {
-      // 4. Live call failed — use bundled data as stale fallback if available.
-      liveLookupFailed = true;
-      donationSummary = entity.donationSummary ?? null;
-    }
-  } else {
-    // 4. No committeeId to call — stale bundled data is the only option.
-    donationSummary = entity.donationSummary ?? null;
-  }
+  // Bundled data only. The extension makes no live FEC calls: a lookup is
+  // derived from the site the user is on, which the browser stores count as
+  // browsing data sent to a third party. The list refreshes daily from the
+  // public Git copy (refresh alarm), so it is as current as `main`. This is a
+  // documented divergence from the app (CLAUDE.md, "Extension — donation
+  // data"), owner decision 2026-10-14.
+  const donationSummary: DonationSummary | null = entity.donationSummary ?? null;
 
   // noBundledData: the entity was never processed through the data pipeline
-  // (no bundled donationSummary) and we have no live data either.
-  // Distinct from a transient API failure where we might retry later.
-  const noBundledData = donationSummary === null && !entity.donationSummary;
+  // (no bundled donationSummary). Popup shows "No contribution data on file."
+  const noBundledData = donationSummary === null;
 
   // Resolve linked donor-people (walks one parent-entity level for subsidiaries,
   // same as the app). Filtered to only people with a hydrated donationSummary
@@ -294,7 +234,6 @@ async function handleCheckDomain(hostname: string, tabId: number): Promise<void>
     displayFigure:         getDisplayFigure(entity),
     donationDataAvailable: donationSummary !== null,
     noBundledData,
-    liveLookupFailed,
     recentCycle:           donationSummary?.recentCycle ?? null,
     recentRepubs:          donationSummary?.recentRepubs ?? 0,
     recentDems:            donationSummary?.recentDems ?? 0,

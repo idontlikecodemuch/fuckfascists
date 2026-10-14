@@ -75,16 +75,13 @@ export function renderFlag(flag: TabFlag): void {
     return;
   }
 
-  // Banner mode — pick the reason copy. Lookup failure takes precedence over
-  // the static banner variant so users see the most actionable message.
-  const reason = flag.liveLookupFailed
-    ? extCopy.fecError
-    : mode.banner === 'dissolved'
-      ? extCopy.bannerDissolved(flag.canonicalName)
-      : mode.banner === 'no_pac'
-        ? extCopy.bannerNoPac(flag.canonicalName)
-        : mode.banner === 'lookup_failed'
-          ? extCopy.fecError
-          : extCopy.donationUnavail; // no_match shouldn't occur for matched tabs
+  // Banner mode — pick the reason copy.
+  const reason = mode.banner === 'dissolved'
+    ? extCopy.bannerDissolved(flag.canonicalName)
+    : mode.banner === 'no_pac'
+      ? extCopy.bannerNoPac(flag.canonicalName)
+      : mode.banner === 'lookup_failed'
+        ? extCopy.fecError
+        : extCopy.donationUnavail; // no_match shouldn't occur for matched tabs
   renderBanner(flag, reason);
 }

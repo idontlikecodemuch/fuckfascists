@@ -237,11 +237,9 @@ export function renderCard(flag: TabFlag): void {
     recentCycleEl.hidden  = true;
     totalSince2016.hidden = true;
     activeCyclesEl.hidden = true;
-    dataUnavailableEl.textContent = flag.liveLookupFailed
-      ? extCopy.fecError
-      : flag.noBundledData
-        ? extCopy.noBundledData
-        : extCopy.donationUnavail;
+    dataUnavailableEl.textContent = flag.noBundledData
+      ? extCopy.noBundledData
+      : extCopy.donationUnavail;
     dataUnavailableEl.hidden = false;
   }
 
