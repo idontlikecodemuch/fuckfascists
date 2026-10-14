@@ -15,6 +15,13 @@ export {
 
 export { fetchEntityList, parseEntityList, preferFresherEntityList } from './entityList';
 export { fetchPeopleList, parsePeopleList } from './personList';
+export {
+  fetchProductList,
+  parseProductList,
+  preferFresherProductList,
+  serializeProductList,
+} from './productList';
+export type { ProductList, ProductEntry, ProductProducerEntry, PrefixSpace } from './productList';
 
 export {
   recordEntityAvoid,

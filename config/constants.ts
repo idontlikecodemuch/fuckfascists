@@ -140,6 +140,9 @@ export const OPEN_FOOD_FACTS_TIMEOUT_MS = 8000;
 const RUNTIME_DATA_RAW_BASE =
   'https://raw.githubusercontent.com/idontlikecodemuch/fuckfascists/main/assets/data';
 export const ENTITY_LIST_UPDATE_URL = `${RUNTIME_DATA_RAW_BASE}/entities.json`;
+// Scanner product index (exact barcode rows + producer prefixes). An accepted
+// copy is saved on the device and used on later launches.
+export const PRODUCT_LIST_UPDATE_URL = `${RUNTIME_DATA_RAW_BASE}/products.json`;
 export const PEOPLE_LIST_UPDATE_URL = `${RUNTIME_DATA_RAW_BASE}/people.bundle.json`;
 
 // App Store update discovery. This is a soft, dismissible prompt only; failure

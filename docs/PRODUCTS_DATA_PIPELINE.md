@@ -29,7 +29,8 @@ The products pass was done under these constraints:
 - `scripts/sync-products-from-off.py`
 - `scripts/data/curated-prefixes.json` (reviewed corrections and verified prefixes, merged on every build)
 - `scripts/lib/curated_products.py` (the merge)
-- `features/Map/barcode/productIndex.ts` (runtime matcher)
+- `features/Map/barcode/productIndex.ts` (runtime matcher; reads the active copy)
+- `core/data/productList.ts` and `features/Map/barcode/productListUpdate.ts` (runtime updates from Git)
 - `tools/off-bulk/openfoodfacts-mongodbdump`
 - `tools/off-bulk/checkpoints/products-off-sync.checkpoint.json`
 - `tools/off-bulk/checkpoints/products-off-sync.partial.json`
@@ -102,6 +103,19 @@ Each entry keeps the original producer seed and adds OFF-backed evidence:
 - `dbSuggestedAliases`
 
 This layer is allowed to be broader and noisier than runtime `producers`.
+
+## Runtime Updates From Git
+
+Since 1.2.1 build 13 the app updates `products.json` the way it updates the entity list, so prefix fixes can ship without an app release.
+
+- Scans start on the bundled `assets/data/products.json`.
+- At launch `App.tsx` calls `refreshProductList()` in the background. It first loads the copy accepted on an earlier launch (`documentDirectory/runtime-data/products.json`), then fetches `PRODUCT_LIST_UPDATE_URL` (`raw.githubusercontent.com/.../main/assets/data/products.json`). No user data is sent.
+- A copy (saved or remote) is accepted only if it parses as `{ _meta, producers, products }`, has non-empty `producers` and `products` with at least 90% of the current counts, and its `_meta.generatedAt` (falling back to the date-only `_meta.lastUpdated`) is at least as fresh as the copy in use. Undated copies are rejected.
+- A strictly newer remote copy becomes active and is saved (producers and exact rows only, about 0.3 MB; `producerResearch` is dropped). An equally fresh one is not rewritten. The download itself is the full file, about 1.1 MB per launch, the same order as `entities.json`.
+- After an app update with a fresher bundled file, a stale saved copy loses to the bundled one.
+- Any network, parse or file failure keeps the current copy. It never blocks launch or scanning, and `productIndex.ts` reads whichever copy is active at scan time.
+
+Maintainer consequence: pushing a new `products.json` to `main` reaches installed apps on their next launch, so every write must come from `sync-products-from-off.py` (which stamps `_meta.generatedAt` and merges the curated layer) and pass the barcode Jest suites first.
 
 ## Seed Inputs
 

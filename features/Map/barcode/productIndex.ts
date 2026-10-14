@@ -1,37 +1,15 @@
 import bundledProductsRaw from '../../../assets/data/products.json';
 import type { Entity } from '../../../core/models';
+import { normalizeProductBarcode, parseProductList } from '../../../core/data/productList';
+import type {
+  PrefixSpace,
+  ProductEntry,
+  ProductList,
+  ProductProducerEntry,
+} from '../../../core/data/productList';
 import type { NormalizedBarcode } from './normalizeBarcode';
 
-/**
- * Which form of the scanned code a prefix is compared against.
- * - `upcA`: the 12-digit UPC-A only (US and Canada codes).
- * - `ean13`: the 13-digit EAN-13 only.
- * Rows without a space (the OFF-derived layer) use the UPC-A when the scan has
- * one and the EAN-13 otherwise. A UPC-A scan is never compared through its
- * `0` + UPC-A form: that form shifts every digit and produced false matches
- * (Barbasol 051009009341 against Campbell's `005100`).
- */
-export type PrefixSpace = 'upcA' | 'ean13';
-
-export interface ProductProducerEntry {
-  entityId: string;
-  prefixes: string[];
-  prefixSpace?: PrefixSpace;
-  observedBrands?: string[];
-}
-
-export interface ProductEntry {
-  barcode: string;
-  displayBarcode?: string;
-  productName: string;
-  brandName?: string;
-  entityId: string;
-}
-
-interface ProductsPayload {
-  producers?: ProductProducerEntry[];
-  products?: ProductEntry[];
-}
+export type { PrefixSpace, ProductEntry, ProductProducerEntry } from '../../../core/data/productList';
 
 export interface ProductProducerMatch {
   entity: Entity;
@@ -51,84 +29,29 @@ export type BundledProductMatch =
   | ({ source: 'bundled_product' } & ExactProductMatch)
   | ({ source: 'bundled_prefix' } & ProductProducerMatch);
 
-function normalizePrefix(value: string): string | null {
-  const digits = value.replace(/\D/g, '');
-  return digits.length >= 4 ? digits : null;
+const EMPTY_PRODUCT_LIST: ProductList = { generatedAt: 0, producers: [], products: [] };
+
+/** The product index compiled into the app. */
+export const bundledProductList: ProductList =
+  parseProductList(bundledProductsRaw) ?? EMPTY_PRODUCT_LIST;
+
+// The copy every scan reads: the bundled index until a fresher saved or Git copy
+// is accepted (see productListUpdate.ts). Swapping it never blocks a scan.
+let activeProductList: ProductList = bundledProductList;
+
+export function getActiveProductList(): ProductList {
+  return activeProductList;
 }
 
-function normalizeProductBarcode(value: string | undefined): string | null {
-  const digits = (value ?? '').replace(/\D/g, '');
-  if (digits.length === 12) return `0${digits}`;
-  if (digits.length === 13) return digits;
-  return null;
+export function setActiveProductList(list: ProductList): void {
+  activeProductList = list;
 }
 
-function parseProductProducers(raw: unknown): ProductProducerEntry[] {
-  const payload = raw as ProductsPayload;
-  const producers = Array.isArray(payload?.producers) ? payload.producers : [];
-  const parsed: ProductProducerEntry[] = [];
-
-  for (const producer of producers) {
-    const normalizedPrefixes = Array.isArray(producer.prefixes)
-      ? producer.prefixes
-          .map((prefix) => normalizePrefix(prefix))
-          .filter((prefix): prefix is string => !!prefix)
-      : [];
-
-    if (typeof producer.entityId !== 'string' || !producer.entityId || normalizedPrefixes.length === 0) {
-      continue;
-    }
-
-    parsed.push({
-      entityId: producer.entityId,
-      prefixes: normalizedPrefixes,
-      prefixSpace:
-        producer.prefixSpace === 'upcA' || producer.prefixSpace === 'ean13' ? producer.prefixSpace : undefined,
-      observedBrands: Array.isArray(producer.observedBrands)
-        ? producer.observedBrands.filter((brand): brand is string => typeof brand === 'string' && brand.trim().length > 0)
-        : undefined,
-    });
-  }
-
-  return parsed;
-}
-
-function parseExactProducts(raw: unknown): ProductEntry[] {
-  const payload = raw as ProductsPayload;
-  const products = Array.isArray(payload?.products) ? payload.products : [];
-  const parsed: ProductEntry[] = [];
-
-  for (const product of products) {
-    const barcode = normalizeProductBarcode(product.barcode);
-    if (
-      !barcode ||
-      typeof product.entityId !== 'string' ||
-      !product.entityId ||
-      typeof product.productName !== 'string' ||
-      !product.productName.trim()
-    ) {
-      continue;
-    }
-
-    parsed.push({
-      barcode,
-      displayBarcode: typeof product.displayBarcode === 'string' ? product.displayBarcode : undefined,
-      productName: product.productName.trim(),
-      brandName:
-        typeof product.brandName === 'string' && product.brandName.trim().length > 0
-          ? product.brandName.trim()
-          : undefined,
-      entityId: product.entityId,
-    });
-  }
-
-  return parsed;
-}
-
-const bundledProductProducers = parseProductProducers(bundledProductsRaw);
-const bundledExactProducts = parseExactProducts(bundledProductsRaw);
-
-/** The single form of the scanned code that a prefix in `space` is compared against. */
+/**
+ * The single form of the scanned code that a prefix in `space` is compared against.
+ * A UPC-A scan is never compared through its `0` + UPC-A form: that form shifts every
+ * digit and produced false matches (Barbasol 051009009341 against Campbell's `005100`).
+ */
 function prefixCandidate(barcode: NormalizedBarcode, space: PrefixSpace | undefined): string | null {
   if (space === 'upcA') return barcode.upcA;
   if (space === 'ean13') return barcode.gtin13;
@@ -216,9 +139,10 @@ export function findProducerByBarcodePrefix(
   barcode: NormalizedBarcode,
   entities: Entity[]
 ): ProductProducerMatch | null {
-  return findProducerByBarcodePrefixInProducts(barcode, entities, bundledProductProducers);
+  return findProducerByBarcodePrefixInProducts(barcode, entities, activeProductList.producers);
 }
 
+/** Looks a scan up in the active product list (bundled, saved, or the latest accepted Git copy). */
 export function findBundledProductByBarcode(
   barcode: NormalizedBarcode,
   entities: Entity[]
@@ -226,7 +150,7 @@ export function findBundledProductByBarcode(
   return findBundledProductByBarcodeInProducts(
     barcode,
     entities,
-    bundledExactProducts,
-    bundledProductProducers
+    activeProductList.products,
+    activeProductList.producers
   );
 }

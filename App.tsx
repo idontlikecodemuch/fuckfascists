@@ -17,6 +17,7 @@ import { sharedCopy } from './copy/shared';
 import { SqliteAdapter } from './app/storage/SqliteAdapter';
 import { fetchEntityList, parseEntityList, fetchPeopleList, parsePeopleList, purgeOldAvoidEvents } from './core/data';
 import { getScorecardAvoidPurgeCutoff } from './features/Scorecard/utils/avoidRetention';
+import { refreshProductList } from './features/Map/barcode/productListUpdate';
 import type { StorageAdapter } from './core/data';
 import type { Entity, PoliticalPerson } from './core/models';
 import bundledEntitiesRaw from './assets/data/entities.json';
@@ -95,6 +96,13 @@ export default function App() {
       }
     })();
     return () => { cancelled = true; };
+  }, []);
+
+  // Same local-first → Git refresh order for the scanner's product index. Scans
+  // read the bundled copy until a saved or Git copy is accepted; the accepted Git
+  // copy is saved for later launches. Never throws, never blocks launch or scanning.
+  useEffect(() => {
+    void refreshProductList();
   }, []);
 
   // Same local-first → Git refresh order for the slim people runtime bundle.

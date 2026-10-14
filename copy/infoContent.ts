@@ -136,8 +136,8 @@ export const BUNDLED_INFO_CONTENT: InfoContent = {
       q: 'How current is the data?',
       a:
         'Contribution data follows FEC reporting cycles and covers every cycle since ' +
-        '2016. The entity list ships with the app and updates automatically when ' +
-        'connected. Both are versioned and public on GitHub.',
+        '2016. The entity list and the barcode product list ship with the app and ' +
+        'update automatically when connected. All are versioned and public on GitHub.',
       category: 'data',
     },
     {
@@ -169,7 +169,7 @@ export const BUNDLED_INFO_CONTENT: InfoContent = {
         'No. Your avoids, your scorecard, your location \u2014 none of it leaves your ' +
         'phone. The app does make a few outbound calls: to FEC.gov for contribution ' +
         'lookups, to a public product database for barcode scans, and to GitHub for ' +
-        'data updates. No personal data is included in any of those calls.',
+        'entity and product list updates. No personal data is included in any of those calls.',
       category: 'privacy',
     },
 
@@ -189,7 +189,7 @@ export const BUNDLED_INFO_CONTENT: InfoContent = {
       a:
         'The app was built to work offline \u2014 bundled data ships with every install ' +
         'as a privacy measure. An internet connection may be needed for live FEC lookups, ' +
-        'barcode scanning, and entity list updates.',
+        'barcode scanning, and entity and product list updates.',
       category: 'app',
     },
     {
