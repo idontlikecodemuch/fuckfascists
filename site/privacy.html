@@ -56,7 +56,7 @@
       <li>No browsing history is stored by the extension.</li>
       <li>No &ldquo;support&rdquo; events are recorded &mdash; the app can only count the things you <em>avoid</em>.</li>
       <li>All local data is encrypted at rest using OS-native mechanisms (iOS Data Protection, Android File-Based Encryption).</li>
-      <li>The only outbound calls are to FEC.gov, Open Food Facts (barcode lookups), and GitHub (entity list updates).</li>
+      <li>The only outbound calls are to FEC.gov, Open Food Facts (barcode lookups), and GitHub (entity list updates). The browser extension makes no FEC calls; its only request is the daily public company list from GitHub.</li>
       <li>We do not run analytics. We do not sell data. We have nothing to sell.</li>
     </ul>
 
@@ -223,7 +223,7 @@
       <tbody>
         <tr>
           <td><a href="https://api.open.fec.gov" target="_blank" rel="noopener">api.open.fec.gov</a></td>
-          <td>When the bundled entity data doesn&rsquo;t cover a lookup and we need live contribution data.</td>
+          <td>App only. When the bundled entity data doesn&rsquo;t cover a lookup and we need live contribution data. The browser extension never calls the FEC.</td>
           <td>A committee name or committee ID. No identifier.</td>
         </tr>
         <tr>
@@ -233,7 +233,7 @@
         </tr>
         <tr>
           <td><a href="https://raw.githubusercontent.com" target="_blank" rel="noopener">raw.githubusercontent.com</a></td>
-          <td>When checking for an updated entity list or info content.</td>
+          <td>When checking for an updated entity list or info content. For the browser extension this is its only network request: the public company list, once a day.</td>
           <td>A standard HTTP GET for a public file. No identifier.</td>
         </tr>
         <tr>
