@@ -11,7 +11,7 @@ Fresh files. More faces. A Monday nudge.
 
 • FEC records refreshed October 12, 2026.
 
-• 49 more CEOs now have their own pixel-art sprite — on your scorecard and in the arena.
+• 49 more CEOs now have their own pixel-art sprite — on business cards and your scorecard.
 
 • Anyone still without a sprite gets a red pixel X on the card, not an empty slot.
 
@@ -25,7 +25,7 @@ No accounts. No tracking. Your activity stays on your device.
 
 ---
 
-Facts used: 49 new sprites (192 → 241); red pixel X for figures without a sprite on the
+Facts used: 49 new sprites (192 → 241; none of them run a tracked platform, so they appear on business cards and the scorecard, not the Track arena — dev session, Oct 14); red pixel X for figures without a sprite on the
 shared card and live preview; early-week local notification Mon/Tue 10am–6pm local, never in
 quiet hours, eight owner-written lines, tap routes to the Map or Track tab; Track header fix
 verified on the iOS 27 simulator; close-range focus via the ultra-wide switch-over on Pro and
