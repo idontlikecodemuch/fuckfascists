@@ -134,13 +134,13 @@ target 'FckFascists' do
           File.write(expo_camera_utils_path, content.sub(original, replacement))
           Pod::UI.puts "✅ ExpoCameraUtils.swift patched with macro-lens fallback chain"
         else
-          Pod::UI.puts "⚠️  ExpoCameraUtils.swift patch pattern not found — check expo-camera version"
+          raise "FCK macro-lens patch: ExpoCameraUtils.swift pattern not found — expo-camera changed; update the Podfile patch"
         end
       else
         Pod::UI.puts "✅ ExpoCameraUtils.swift macro-lens patch already present"
       end
     else
-      Pod::UI.puts "⚠️  ExpoCameraUtils.swift not found at #{expo_camera_utils_path} — skipping macro-lens patch"
+      raise "FCK macro-lens patch: ExpoCameraUtils.swift not found at #{expo_camera_utils_path}"
     end
 
     # ── expo-camera macro lens patch, part 2: starting zoom ─────────────
@@ -161,13 +161,37 @@ target 'FckFascists' do
           File.write(expo_camera_view_path, content.sub(original, replacement))
           Pod::UI.puts "✅ CameraView.swift patched to start at the wide-lens zoom"
         else
-          Pod::UI.puts "⚠️  CameraView.swift zoom patch pattern not found — check expo-camera version"
+          raise "FCK macro-lens patch: CameraView.swift zoom pattern not found — expo-camera changed; update the Podfile patch"
         end
       else
         Pod::UI.puts "✅ CameraView.swift macro-lens zoom patch already present"
       end
     else
-      Pod::UI.puts "⚠️  CameraView.swift not found at #{expo_camera_view_path} — skipping macro-lens zoom patch"
+      raise "FCK macro-lens patch: CameraView.swift not found at #{expo_camera_view_path}"
+    end
+
+    # ── expo-camera macro lens patch, part 3: keep the starting zoom ────
+    # Changing the session preset resets videoZoomFactor to 1.0 (the
+    # ultra-wide on virtual devices). expo-camera applies zoom when the input
+    # is added, then sets the .photo preset in startSession (and pictureSize
+    # sets presets later), which would undo part 2. Re-apply zoom after each.
+    # Fails the install if expo-camera changes shape. Idempotent.
+    content = File.read(expo_camera_view_path)
+    unless content.include?('// FCK macro-lens zoom reapply')
+      reapply = [
+        ["    session.sessionPreset = mode == .video ? pictureSize.toCapturePreset() : .photo\n    session.commitConfiguration()\n",
+         "    session.sessionPreset = mode == .video ? pictureSize.toCapturePreset() : .photo\n    session.commitConfiguration()\n    updateZoom() // FCK macro-lens zoom reapply — the preset change reset zoom\n"],
+        ["      if self.session.canSetSessionPreset(preset) {\n        self.session.sessionPreset = preset\n      }",
+         "      if self.session.canSetSessionPreset(preset) {\n        self.session.sessionPreset = preset\n        self.updateZoom() // FCK macro-lens zoom reapply\n      }"],
+      ]
+      reapply.each do |original, replacement|
+        raise "FCK macro-lens patch: CameraView.swift preset pattern not found — expo-camera changed; update the Podfile patch" unless content.include?(original)
+        content = content.sub(original, replacement)
+      end
+      File.write(expo_camera_view_path, content)
+      Pod::UI.puts "✅ CameraView.swift patched to re-apply zoom after preset changes"
+    else
+      Pod::UI.puts "✅ CameraView.swift zoom re-apply patch already present"
     end
   end
 end
