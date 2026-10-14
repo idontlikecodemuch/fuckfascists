@@ -31,18 +31,18 @@
   <main class="doc-shell">
 
     <h1>Privacy policy</h1>
-    <p class="doc-meta">Effective: April 20, 2026 &nbsp;&middot;&nbsp; Version 1.0</p>
+    <p class="doc-meta">Effective: October 14, 2026 &nbsp;&middot;&nbsp; Version 1.1</p>
 
     <p>
       This policy covers the <strong>FCK Fascists</strong> mobile app
       (iOS and Android) and the <strong>FCK Fascists</strong> browser
-      extension (Chrome and Firefox). It is written plainly because
+      extension (Chrome, Firefox, and Microsoft Edge). It is written plainly because
       the answer is short: <strong>we don&rsquo;t collect your data.</strong>
       There is no backend, no account system, and no analytics.
     </p>
 
     <p>
-      FCK Fascists is an open-source project. Everything below can be
+      FCK Fascists is an open-source project (<a href="https://github.com/idontlikecodemuch/fuckfascists/blob/main/LICENSE" target="_blank" rel="noopener">AGPL-3.0-or-later</a>). Everything below can be
       verified by reading the source code at
       <a href="https://github.com/idontlikecodemuch/fuckfascists" target="_blank" rel="noopener">github.com/idontlikecodemuch/fuckfascists</a>.
     </p>
@@ -168,9 +168,12 @@
     <ul>
       <li>Domain matching happens <strong>in memory only</strong>. The extension does not write a list of sites you&rsquo;ve visited to disk.</li>
       <li>When you tap &ldquo;avoid&rdquo; in the extension popup, it records an avoid event keyed by entity ID &mdash; not by URL or domain &mdash; in the browser&rsquo;s local extension storage.</li>
-      <li>The extension runs in anonymous mode against FEC.gov. It does not use an API key.</li>
+      <li>The extension also keeps, in local extension storage, the latest copy of the public company list it downloads once a day. That list is public records keyed by company, not by site or visit. The extension makes no other network requests.</li>
       <li>If you snooze a site for 7 days, the hostname of that site is stored in the browser&rsquo;s local extension storage for 7 days so we know not to light up the icon again. This is a known V2 item &mdash; we plan to move it to session-only storage.</li>
     </ul>
+    <p>
+      The extension&rsquo;s use of information received from Chrome and other browser APIs will adhere to the Chrome Web Store User Data Policy, including the Limited Use requirements.
+    </p>
 
     <!-- ─── 5. Permissions ────────────────────────────────────────── -->
     <h2>5. Permissions the mobile app asks for</h2>
@@ -303,8 +306,8 @@
         the app is a complete erasure.
       </li>
       <li>
-        <strong>Reset from the beta menu</strong> &mdash; triple-tap
-        the version label in the Info tab to reveal the beta tools,
+        <strong>Reset from the beta menu</strong> &mdash; tap
+        the version label in the Info tab seven times and confirm to reveal the beta tools,
         then tap &ldquo;Reset.&rdquo; Same effect as reinstalling.
       </li>
       <li>
