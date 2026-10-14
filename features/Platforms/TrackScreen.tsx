@@ -8,6 +8,7 @@ import {
   Text,
   View,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { StorageAdapter } from '../../core/data';
 import type { Entity, PoliticalPerson } from '../../core/models';
 import { fecFilingUrl } from '../../core/models';
@@ -41,6 +42,7 @@ interface TrackScreenProps {
 
 export function TrackScreen({ adapter, entities = [], people = [], onAvoidRecorded }: TrackScreenProps) {
   const { saveSelection, selectedIds } = usePlatformRoster();
+  const insets = useSafeAreaInsets();
   const [editing, setEditing] = useState(false);
   const [cardEntityId, setCardEntityId] = useState<string | null>(null);
 
@@ -123,7 +125,11 @@ export function TrackScreen({ adapter, entities = [], people = [], onAvoidRecord
 
   return (
     <TrackProvider adapter={adapter} platforms={activePlatforms} onAvoidRecorded={onAvoidRecorded}>
-      <SafeAreaView style={styles.root}>
+      {/* Explicit top inset (as MapScreen does) instead of RN's SafeAreaView:
+          on iOS 27 the core SafeAreaView mounted right after platform setup
+          rendered its first frame with no top inset, so the header sat under
+          the status bar until the next layout pass (a tab switch). */}
+      <View style={[styles.root, { paddingTop: insets.top }]}>
         <StarField seed="track" />
         <View style={styles.arenaFrame}>
           <TrackHeader onEdit={() => setEditing(true)} />
@@ -173,7 +179,7 @@ export function TrackScreen({ adapter, entities = [], people = [], onAvoidRecord
             </Animated.View>
           </>
         )}
-      </SafeAreaView>
+      </View>
     </TrackProvider>
   );
 }
