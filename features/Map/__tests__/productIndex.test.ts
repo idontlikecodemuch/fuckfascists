@@ -131,6 +131,82 @@ describe('findProducerByBarcodePrefixInProducts', () => {
   });
 });
 
+describe('prefix spaces (UPC-A vs EAN-13)', () => {
+  const campbell = makeEntity('campbell-soup', 'Campbell Soup Co', ["Campbell's"]);
+  const scJohnson = makeEntity('sc-johnson', 'S.C. Johnson & Son Inc', ['SC Johnson']);
+  const churchDwight = makeEntity('church-dwight', 'Church & Dwight Co Inc', ['Church & Dwight']);
+  const ottogi = makeEntity('ottogi', 'Ottogi Corp', ['Ottogi']);
+  const ferrero = makeEntity('ferrero', 'Ferrero Group', ['Ferrero']);
+  const procterGamble = makeEntity('procter-gamble', 'Procter & Gamble Co', ['P&G']);
+  const all = [pepsico, campbell, scJohnson, churchDwight, ottogi, ferrero, procterGamble];
+
+  it('does not match Barbasol 051009009341 to Campbell through its 0 + UPC-A form', () => {
+    const scan = normalizeBarcode('051009009341', 'upc_a');
+    const result = findProducerByBarcodePrefixInProducts(scan!, all, [
+      { entityId: 'campbell-soup', prefixes: ['005100'] },
+    ]);
+    expect(result).toBeNull();
+  });
+
+  it("does not match O'Keeffe's 722510026003 to PepsiCo through its 0 + UPC-A form", () => {
+    const scan = normalizeBarcode('722510026003', 'upc_a');
+    const result = findProducerByBarcodePrefixInProducts(scan!, all, [
+      { entityId: 'pepsico', prefixes: ['072251'] },
+    ]);
+    expect(result).toBeNull();
+  });
+
+  it('still matches a UPC-A scan against its own prefix (Windex 019800701956)', () => {
+    const scan = normalizeBarcode('019800701956', 'upc_a');
+    const result = findProducerByBarcodePrefixInProducts(scan!, all, [
+      { entityId: 'sc-johnson', prefixes: ['019800'], prefixSpace: 'upcA' },
+    ]);
+    expect(result?.entity.id).toBe('sc-johnson');
+  });
+
+  it('matches a UPC-A sent as a 13-digit EAN with a leading zero', () => {
+    const scan = normalizeBarcode('0019800701956', 'ean13');
+    const result = findProducerByBarcodePrefixInProducts(scan!, all, [
+      { entityId: 'sc-johnson', prefixes: ['019800'], prefixSpace: 'upcA' },
+    ]);
+    expect(result?.entity.id).toBe('sc-johnson');
+  });
+
+  it('still matches a real EAN-13 (Nutella 3017620422003)', () => {
+    const scan = normalizeBarcode('3017620422003', 'ean13');
+    const result = findProducerByBarcodePrefixInProducts(scan!, all, [
+      { entityId: 'ferrero', prefixes: ['301762'] },
+    ]);
+    expect(result?.entity.id).toBe('ferrero');
+  });
+
+  it('matches an EAN-13-space prefix on an EAN-13 scan (Batiste 5010724526774)', () => {
+    const scan = normalizeBarcode('5010724526774', 'ean13');
+    const result = findProducerByBarcodePrefixInProducts(scan!, all, [
+      { entityId: 'church-dwight', prefixes: ['5010724'], prefixSpace: 'ean13' },
+    ]);
+    expect(result?.entity.id).toBe('church-dwight');
+  });
+
+  it('keeps a UPC-A-space prefix away from EAN-13 scans that share its digits', () => {
+    const scan = normalizeBarcode('3004101234565', 'ean13');
+    const result = findProducerByBarcodePrefixInProducts(scan!, all, [
+      { entityId: 'procter-gamble', prefixes: ['300410'], prefixSpace: 'upcA' },
+    ]);
+    expect(result).toBeNull();
+  });
+
+  it('lets a longer prefix win inside a shared GS1 block (Touchland 850028448007)', () => {
+    const scan = normalizeBarcode('850028448007', 'upc_a');
+    const result = findProducerByBarcodePrefixInProducts(scan!, all, [
+      { entityId: 'ottogi', prefixes: ['850028'] },
+      { entityId: 'church-dwight', prefixes: ['850028448'], prefixSpace: 'upcA' },
+    ]);
+    expect(result?.entity.id).toBe('church-dwight');
+    expect(result?.prefix).toBe('850028448');
+  });
+});
+
 describe('findProductByExactBarcodeInProducts', () => {
   it('matches an exact bundled product barcode', () => {
     const result = findProductByExactBarcodeInProducts(

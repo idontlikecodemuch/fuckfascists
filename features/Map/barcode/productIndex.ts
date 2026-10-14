@@ -2,9 +2,21 @@ import bundledProductsRaw from '../../../assets/data/products.json';
 import type { Entity } from '../../../core/models';
 import type { NormalizedBarcode } from './normalizeBarcode';
 
+/**
+ * Which form of the scanned code a prefix is compared against.
+ * - `upcA`: the 12-digit UPC-A only (US and Canada codes).
+ * - `ean13`: the 13-digit EAN-13 only.
+ * Rows without a space (the OFF-derived layer) use the UPC-A when the scan has
+ * one and the EAN-13 otherwise. A UPC-A scan is never compared through its
+ * `0` + UPC-A form: that form shifts every digit and produced false matches
+ * (Barbasol 051009009341 against Campbell's `005100`).
+ */
+export type PrefixSpace = 'upcA' | 'ean13';
+
 export interface ProductProducerEntry {
   entityId: string;
   prefixes: string[];
+  prefixSpace?: PrefixSpace;
   observedBrands?: string[];
 }
 
@@ -70,6 +82,8 @@ function parseProductProducers(raw: unknown): ProductProducerEntry[] {
     parsed.push({
       entityId: producer.entityId,
       prefixes: normalizedPrefixes,
+      prefixSpace:
+        producer.prefixSpace === 'upcA' || producer.prefixSpace === 'ean13' ? producer.prefixSpace : undefined,
       observedBrands: Array.isArray(producer.observedBrands)
         ? producer.observedBrands.filter((brand): brand is string => typeof brand === 'string' && brand.trim().length > 0)
         : undefined,
@@ -114,15 +128,11 @@ function parseExactProducts(raw: unknown): ProductEntry[] {
 const bundledProductProducers = parseProductProducers(bundledProductsRaw);
 const bundledExactProducts = parseExactProducts(bundledProductsRaw);
 
-function buildBarcodeCandidates(barcode: NormalizedBarcode): string[] {
-  const seen = new Set<string>();
-  return [barcode.upcA, barcode.displayCode, barcode.gtin13]
-    .filter((value): value is string => typeof value === 'string' && value.length > 0)
-    .filter((value) => {
-      if (seen.has(value)) return false;
-      seen.add(value);
-      return true;
-    });
+/** The single form of the scanned code that a prefix in `space` is compared against. */
+function prefixCandidate(barcode: NormalizedBarcode, space: PrefixSpace | undefined): string | null {
+  if (space === 'upcA') return barcode.upcA;
+  if (space === 'ean13') return barcode.gtin13;
+  return barcode.upcA ?? barcode.gtin13;
 }
 
 export function findProductByExactBarcodeInProducts(
@@ -131,15 +141,11 @@ export function findProductByExactBarcodeInProducts(
   products: ProductEntry[]
 ): ExactProductMatch | null {
   const entityMap = new Map(entities.map((entity) => [entity.id, entity]));
-  const barcodeCandidates = new Set(
-    buildBarcodeCandidates(barcode)
-      .map((candidate) => normalizeProductBarcode(candidate))
-      .filter((candidate): candidate is string => !!candidate)
-  );
+  const scanned = normalizeProductBarcode(barcode.gtin13);
 
   for (const product of products) {
     const productBarcode = normalizeProductBarcode(product.barcode);
-    if (!productBarcode || !barcodeCandidates.has(productBarcode)) continue;
+    if (!productBarcode || productBarcode !== scanned) continue;
 
     const entity = entityMap.get(product.entityId);
     if (!entity) continue;
@@ -162,17 +168,17 @@ export function findProducerByBarcodePrefixInProducts(
   producers: ProductProducerEntry[]
 ): ProductProducerMatch | null {
   const entityMap = new Map(entities.map((entity) => [entity.id, entity]));
-  const barcodeCandidates = buildBarcodeCandidates(barcode);
 
   let bestMatch: ProductProducerMatch | null = null;
 
   for (const producer of producers) {
     const entity = entityMap.get(producer.entityId);
     if (!entity) continue;
+    const candidate = prefixCandidate(barcode, producer.prefixSpace);
+    if (!candidate) continue;
 
     for (const prefix of producer.prefixes) {
-      const matched = barcodeCandidates.some((candidate) => candidate.startsWith(prefix));
-      if (!matched) continue;
+      if (!candidate.startsWith(prefix)) continue;
 
       if (!bestMatch || prefix.length > bestMatch.prefix.length) {
         bestMatch = {

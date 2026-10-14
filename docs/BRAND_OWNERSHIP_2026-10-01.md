@@ -40,7 +40,7 @@ Each affected entity's `notes` field records the change.
 
 ## Product index changes (`products.json`)
 
-These edits are manual. `sync-products-from-off.py` does not produce them, so a `--rebuild-from-checkpoint` run will undo them (as it already undoes the beta-feedback barcode 5201156250881). Reapply them after any rebuild until the curated prefix layer planned for 1.2.1 exists. The full list of moved and removed rows is in `tools/off-bulk/research-2026-10-01/product-ownership-changes.json` (local).
+Since 2026-10-14 these edits, and the beta-feedback barcode 5201156250881, live in the reviewed curated layer `scripts/data/curated-prefixes.json` (rows with `origin: manual-ownership-2026-10-01` or `beta-feedback`). `sync-products-from-off.py` merges that file on every build, including `--rebuild-from-checkpoint`, so rebuilds no longer undo them and nothing has to be reapplied by hand. A checkpoint rebuild plus the curated layer was checked to reproduce the shipped `products.json` exactly. The original list of moved and removed rows is in `tools/off-bulk/research-2026-10-01/product-ownership-changes.json` (local).
 
 Runtime prefixes:
 
@@ -60,9 +60,22 @@ Exact product rows (2,001 to 1,977):
 - `verify-data-integrity`: live checks clean (4 declared forward refs). `audit:aliases`: 0 exact duplicates, 0 parent/child overlap; 84 single-word substring collisions (82 before; the two new ones are "ICE" inside "Magnum Ice Cream Company", harmless because one-word aliases only match exactly).
 - Typecheck clean; Jest 51 suites / 523 tests; `build:ext:all` rebuilt all four extension packages.
 
-## Known issues left for the full audit (1.2.1)
+## Follow-up 2026-10-14 (1.2.1 build 13, branch `fix/barcode-attribution`)
+
+Phase 0 of `docs/HOUSEHOLD_BARCODES_PLAN_2026-10-14.md` (branch `data/household-barcodes-plan`). Every row below is in `scripts/data/curated-prefixes.json` with its evidence, ownership check date and source.
+
+- **Walmart store brands.** `681131` (Equate, Parent's Choice, Spring Valley, Ol' Roy) moved from `maple-leaf-foods` and `078742` (Great Value, Member's Mark) from `b-g-foods` to `walmart`. FDA labels and GUDID filings name Wal-Mart Stores Inc / WALMART INC as labeler; no other company appears under either block in the local evidence (FDA, GUDID, CA WIC, Open*Facts, Kroger). The exact row 078742153865 ("Bee Proud Clover Honey" credited to P&G from a bad OFF brand field) was removed so the prefix decides it.
+- **Kenvue.** J&J has held no Kenvue stock since 2024-05-17, and there is no `kenvue` entity yet, so all ten prefixes from the OFF "Kenvue" seed were removed from `johnson-and-johnson`: `300450`, `312547`, `086800`, `070501` (US), `062600` (Aveeno), `357466` (France), `789101`, `501012`, `841210`, `890101`. Tylenol, Listerine, Neutrogena and Aveeno now return no bundled match. A junk exact row (Neutrogena "tea bags", 8712100712494) was removed too. Adding a Kenvue entity, or mapping to Kimberly-Clark once that deal closes, is a 1.2.2 decision. The entity aliases (`johnson-and-johnson` still lists Kenvue, Band-Aid, Tylenol) were not changed, so the Open Food Facts network fallback can still resolve a Kenvue brand name to J&J.
+- **Shared GS1 US blocks.** Six digits is too short in the 81, 84, 85, 86 and 19 blocks. Of the 124 runtime prefixes there, 14 have US barcodes from other companies under them and were removed: `850005` (asahi-group), `850004` and `810057` (beyond-meat), `850028` (ottogi), `810020` (brown-forman), `810022` (honest-company), `850006` (utz-brands), `850016` (diageo), `850026` and `850043` (simply-good-foods), `850027` (keurig-dr-pepper), `860002` (philip-morris-international), `860003` (pepsico), `860010` (anheuser-busch-inbev). Two verified longer prefixes were added: `850028448` Touchland to `church-dwight` and `81016080` First Aid Beauty to `procter-gamble` (23 and 15 FDA labels from the owner, 2026). Beyond Meat's own exact rows (`850004207…`) still match. The other 110 have no contrary evidence and were kept.
+- **Matcher.** `productIndex.ts` no longer compares a UPC-A scan through its `0` + UPC-A form (that caught Barbasol as Campbell and O'Keeffe's as PepsiCo). Curated prefixes carry `prefixSpace` (`upcA` or `ean13`) and are compared only against that form.
+
+## Known issues left for the full audit (1.2.2)
 
 Not changed, because the right owner is not confirmed:
+
+- Suave products with older codes in Unilever's `079400` block still resolve to Unilever (plan Decision 2). Suave Brands' own 2026 block `383711` returns no match.
+- OFF-derived six-digit prefixes in the 84 and 86 ranges that look like Spanish, Serbian or Turkish EAN-13 prefixes (`841000` Mondelez, `869063` Nestlé and others) still match US UPC-As in the same digits. No US evidence showed a wrong hit, but the checkpoint cannot tell the two spaces apart (plan Problem 6).
+- Equal-length prefixes listed under two OFF entities (146 after this change) still go to the first producer in file order.
 
 - Shared prefixes, where the app picks the first producer in file order: `041000` (Knorr, Unilever, and Lipton tea bags, now LIPTON Teas and Infusions); `040600` (I Can't Believe It's Not Butter now falls through to `lindt-sprungli`, which looks wrong); `036200` (Ragu resolves to `deoleo`, which owns Bertolli olive oil but not Ragu); `048001` (Hellmann's under Unilever and Skippy under Hormel); `012000` (PepsiCo's block, also listed under Unilever, Starbucks and Dole).
 - Lipton ready-to-drink tea rows stay under `unilever`: the Pepsi Lipton joint venture is shared by PepsiCo and Unilever, which kept its interest in it.
@@ -72,4 +85,4 @@ Not changed, because the right owner is not confirmed:
 
 ## Research files
 
-The barcode-prefix research (232 brands across 12 companies, 88 verified new prefixes, a survey of 21 barcode sources) is saved locally in `tools/off-bulk/research-2026-10-01/` (`prefix-research.json`). It feeds the curated household-prefix layer planned for 1.2.1.
+The barcode-prefix research (232 brands across 12 companies, 88 verified new prefixes, a survey of 21 barcode sources) is saved locally in `tools/off-bulk/research-2026-10-01/` (`prefix-research.json`). Its 88 `new` brand rows (62 distinct prefixes) ship in 1.2.1 build 13 through `scripts/data/curated-prefixes.json`, after a 2026-10-14 ownership re-check and a check against the 2026-10-14 evidence (`tools/off-bulk/research-2026-10-14/`, local). One changed shape: Unilever's `859581` sits in a shared 85 block, so it ships as `859581006`, the longest prefix common to all its barcodes; Batiste `5010724` ships as an EAN-13 prefix. The `conflict`, `unverified` and `divested` rows were not added.

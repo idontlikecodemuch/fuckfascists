@@ -1,14 +1,14 @@
 {
   "_meta": {
     "description": "Modular product-producer lookup index that resolves to existing entity IDs only.",
-    "lastUpdated": "2026-10-01",
+    "lastUpdated": "2026-10-14",
     "confidence": "heuristic + public research + off-bulk db aggregation",
     "researchFocus": "UPC-heavy parent producers and major shelf brands found in stores; keep brand aliases tied to parent-company candidates.",
     "researchNotes": [
       "The `producers` array is now derived from the OFF bulk DB and filtered to repeated UPC-prefix evidence for runtime use.",
       "The `producerResearch` array remains the broader reference directory and now includes DB-backed prefix and brand observations for each producer.",
       "entityIdExists reflects current `entities.json` canonical-name and alias coverage only; alias matches are not a separate legal-entity reconciliation pass.",
-      "2026-10-01 manual ownership corrections (not produced by the OFF sync; reapply after any rebuild until a curated layer exists): see docs/BRAND_OWNERSHIP_2026-10-01.md."
+      "Hand-reviewed corrections (the 2026-10-01 ownership moves, the 2026-10-14 store-brand, Kenvue and shared-block fixes, and the verified household prefixes) live in scripts/data/curated-prefixes.json and are merged on every build; see docs/PRODUCTS_DATA_PIPELINE.md."
     ],
     "researchEntryCount": 209,
     "researchSources": [
@@ -43,8 +43,8 @@
         "accessedDate": "2026-03-24"
       }
     ],
-    "producerCount": 112,
-    "producerSource": "Runtime producers come from OFF bulk DB prefix aggregation filtered to repeated UPC evidence.",
+    "producerCount": 125,
+    "producerSource": "Runtime producers come from OFF bulk DB prefix aggregation filtered to repeated UPC evidence, plus curated prefixes (with an explicit prefixSpace) from scripts/data/curated-prefixes.json.",
     "syncCheckpoint": {
       "partial": false,
       "archivePath": "/Users/christophershannon/fuckfascists/tools/off-bulk/openfoodfacts-mongodbdump",
@@ -52,8 +52,17 @@
       "documentsScanned": 4403001,
       "updatedAt": "2026-05-26T13:53:26Z"
     },
-    "productCount": 1977,
-    "productSource": "Runtime exact products come from OFF bulk DB product rows that match one existing producer seed and current entity ID, plus narrow beta-feedback exact barcode overrides."
+    "productCount": 1975,
+    "productSource": "Runtime exact products come from OFF bulk DB product rows that match one existing producer seed and current entity ID, plus curated exact rows from scripts/data/curated-prefixes.json.",
+    "curatedLayer": {
+      "path": "scripts/data/curated-prefixes.json",
+      "lastReviewed": "2026-10-14",
+      "prefixAdds": 68,
+      "prefixBlocks": 28,
+      "productAdds": 25,
+      "productBlocks": 26
+    },
+    "generatedAt": "2026-10-14T22:15:01Z"
   },
   "producers": [
     {
@@ -335,7 +344,6 @@
         "486000",
         "622300",
         "858600",
-        "860003",
         "900152",
         "002840",
         "089686",
@@ -698,22 +706,6 @@
         "Lipton"
       ],
       "source": "off-bulk"
-    },
-    {
-      "canonicalProducerName": "The Magnum Ice Cream Company",
-      "entityId": "magnum-ice-cream-company",
-      "entityMatchType": "manual-ownership-2026-10-01",
-      "matchedProductCount": 44,
-      "prefixThreshold": null,
-      "prefixes": [
-        "077567",
-        "076840"
-      ],
-      "observedBrands": [
-        "Breyers",
-        "Ben & Jerry's"
-      ],
-      "source": "manual-ownership-2026-10-01"
     },
     {
       "canonicalProducerName": "Starbucks",
@@ -1179,11 +1171,9 @@
         "637480",
         "822249",
         "506007",
-        "850043",
         "856461",
         "857335",
         "817849",
-        "850026",
         "506069",
         "124000",
         "822849",
@@ -2066,8 +2056,7 @@
         "590286",
         "643005",
         "312448",
-        "541022",
-        "850027"
+        "541022"
       ],
       "observedBrands": [
         "Dr Pepper",
@@ -2317,7 +2306,6 @@
         "539071",
         "083820",
         "509987",
-        "850016",
         "405340",
         "503245",
         "792851",
@@ -2546,7 +2534,6 @@
         "020471",
         "838948",
         "627735",
-        "681131",
         "628915",
         "222792"
       ],
@@ -2590,7 +2577,6 @@
         "490100",
         "490423",
         "075545",
-        "850005",
         "471494",
         "497133",
         "181954",
@@ -2645,8 +2631,7 @@
       "prefixThreshold": 3,
       "prefixes": [
         "041780",
-        "041497",
-        "850006"
+        "041497"
       ],
       "observedBrands": [
         "Utz",
@@ -2739,7 +2724,6 @@
       "prefixes": [
         "509987",
         "082184",
-        "810020",
         "811663",
         "013000",
         "078342",
@@ -2773,7 +2757,6 @@
       "prefixes": [
         "880104",
         "645175",
-        "850028",
         "880278",
         "942190"
       ],
@@ -2917,8 +2900,7 @@
         "062067",
         "780213",
         "380005",
-        "460072",
-        "860010"
+        "460072"
       ],
       "observedBrands": [
         "Budweiser",
@@ -2944,7 +2926,6 @@
         "047800",
         "190569",
         "070890",
-        "078742",
         "072400",
         "605021"
       ],
@@ -3051,9 +3032,7 @@
       "prefixThreshold": 2,
       "prefixes": [
         "123000",
-        "810057",
         "852629",
-        "850004",
         "840257",
         "124000",
         "871533",
@@ -3147,32 +3126,6 @@
         "Jack 'n Jill",
         "C2",
         "Great Taste"
-      ],
-      "source": "off-bulk"
-    },
-    {
-      "canonicalProducerName": "Kenvue",
-      "entityId": "johnson-and-johnson",
-      "entityMatchType": "alias",
-      "matchedProductCount": 166,
-      "prefixThreshold": 2,
-      "prefixes": [
-        "357466",
-        "300450",
-        "070501",
-        "789101",
-        "501012",
-        "062600",
-        "312547",
-        "086800",
-        "841210",
-        "890101"
-      ],
-      "observedBrands": [
-        "Tylenol",
-        "Neutrogena",
-        "Listerine",
-        "johnson-johnson"
       ],
       "source": "off-bulk"
     },
@@ -3375,8 +3328,7 @@
         "817810",
         "000201",
         "000202",
-        "010700",
-        "810022"
+        "010700"
       ],
       "observedBrands": [
         "Honest",
@@ -3606,7 +3558,6 @@
       "prefixes": [
         "609249",
         "850032",
-        "860002",
         "863003",
         "325817",
         "762210",
@@ -3730,6 +3681,358 @@
         "Merries"
       ],
       "source": "off-bulk"
+    },
+    {
+      "canonicalProducerName": "The Magnum Ice Cream Company N.V.",
+      "entityId": "magnum-ice-cream-company",
+      "entityMatchType": "curated",
+      "matchedProductCount": 0,
+      "prefixThreshold": null,
+      "prefixes": [
+        "077567",
+        "076840"
+      ],
+      "prefixSpace": "upcA",
+      "observedBrands": [
+        "Breyers",
+        "Ben & Jerry's"
+      ],
+      "source": "curated-prefixes"
+    },
+    {
+      "canonicalProducerName": "Walmart Inc",
+      "entityId": "walmart",
+      "entityMatchType": "curated",
+      "matchedProductCount": 450,
+      "prefixThreshold": null,
+      "prefixes": [
+        "681131",
+        "078742"
+      ],
+      "prefixSpace": "upcA",
+      "observedBrands": [
+        "Equate",
+        "Parent's Choice",
+        "Spring Valley",
+        "Ol' Roy",
+        "Pure Balance",
+        "Great Value",
+        "Member's Mark"
+      ],
+      "source": "curated-prefixes"
+    },
+    {
+      "canonicalProducerName": "Church & Dwight Co Inc",
+      "entityId": "church-dwight",
+      "entityMatchType": "curated",
+      "matchedProductCount": 131,
+      "prefixThreshold": null,
+      "prefixes": [
+        "850028448",
+        "033200",
+        "757037",
+        "022600",
+        "310310",
+        "697029",
+        "732216",
+        "094514",
+        "073950"
+      ],
+      "prefixSpace": "upcA",
+      "observedBrands": [
+        "Touchland",
+        "Arm & Hammer",
+        "OxiClean",
+        "Kaboom",
+        "Trojan",
+        "Nair",
+        "First Response",
+        "Orajel",
+        "TheraBreath",
+        "Zicam",
+        "Xtra Laundry Detergent",
+        "Waterpik"
+      ],
+      "source": "curated-prefixes"
+    },
+    {
+      "canonicalProducerName": "Procter & Gamble Co",
+      "entityId": "procter-gamble",
+      "entityMatchType": "curated",
+      "matchedProductCount": 95,
+      "prefixThreshold": null,
+      "prefixes": [
+        "81016080",
+        "300410",
+        "069055",
+        "075609",
+        "012044",
+        "080878",
+        "073010",
+        "323900"
+      ],
+      "prefixSpace": "upcA",
+      "observedBrands": [
+        "First Aid Beauty",
+        "Oral-B",
+        "Olay",
+        "Old Spice",
+        "Pantene",
+        "Tampax",
+        "Vicks"
+      ],
+      "source": "curated-prefixes"
+    },
+    {
+      "canonicalProducerName": "3M Co",
+      "entityId": "3m",
+      "entityMatchType": "curated",
+      "matchedProductCount": 121,
+      "prefixThreshold": null,
+      "prefixes": [
+        "051131",
+        "051141",
+        "021200",
+        "076308",
+        "638060",
+        "068060",
+        "051111",
+        "051135"
+      ],
+      "prefixSpace": "upcA",
+      "observedBrands": [
+        "Scotch-Brite",
+        "Scotch",
+        "Nexcare",
+        "Futuro",
+        "Post-it",
+        "Filtrete"
+      ],
+      "source": "curated-prefixes"
+    },
+    {
+      "canonicalProducerName": "Church & Dwight Co Inc",
+      "entityId": "church-dwight",
+      "entityMatchType": "curated",
+      "matchedProductCount": 6,
+      "prefixThreshold": null,
+      "prefixes": [
+        "5010724"
+      ],
+      "prefixSpace": "ean13",
+      "observedBrands": [
+        "Batiste"
+      ],
+      "source": "curated-prefixes"
+    },
+    {
+      "canonicalProducerName": "The Clorox Company",
+      "entityId": "clorox",
+      "entityMatchType": "curated",
+      "matchedProductCount": 91,
+      "prefixThreshold": null,
+      "prefixes": [
+        "044600",
+        "041294",
+        "060258",
+        "012587",
+        "071100",
+        "792850",
+        "074609"
+      ],
+      "prefixSpace": "upcA",
+      "observedBrands": [
+        "Clorox",
+        "Liquid-Plumr",
+        "Formula 409",
+        "Tilex",
+        "Kingsford",
+        "Fresh Step",
+        "Clorox 2",
+        "Pine-Sol",
+        "Brita",
+        "Glad",
+        "Hidden Valley",
+        "Burt's Bees",
+        "KC Masterpiece"
+      ],
+      "source": "curated-prefixes"
+    },
+    {
+      "canonicalProducerName": "Colgate-Palmolive Co",
+      "entityId": "colgate-palmolive",
+      "entityMatchType": "curated",
+      "matchedProductCount": 48,
+      "prefixThreshold": null,
+      "prefixes": [
+        "827854",
+        "077326",
+        "022200",
+        "070481",
+        "052742"
+      ],
+      "prefixSpace": "upcA",
+      "observedBrands": [
+        "Softsoap",
+        "Tom's of Maine",
+        "Suavitel",
+        "Speed Stick",
+        "Murphy Oil Soap",
+        "Hill's Pet Nutrition (Science Diet, Prescription Diet, Ideal Balance)"
+      ],
+      "source": "curated-prefixes"
+    },
+    {
+      "canonicalProducerName": "Henkel AG & Co KGaA",
+      "entityId": "henkel",
+      "entityMatchType": "curated",
+      "matchedProductCount": 55,
+      "prefixThreshold": null,
+      "prefixes": [
+        "023400",
+        "024200",
+        "072613",
+        "079340"
+      ],
+      "prefixSpace": "upcA",
+      "observedBrands": [
+        "Dial",
+        "Purex",
+        "Persil",
+        "Snuggle",
+        "All Laundry Detergent",
+        "Loctite"
+      ],
+      "source": "curated-prefixes"
+    },
+    {
+      "canonicalProducerName": "Kimberly-Clark Corp",
+      "entityId": "kimberly-clark",
+      "entityMatchType": "curated",
+      "matchedProductCount": 24,
+      "prefixThreshold": null,
+      "prefixes": [
+        "054000"
+      ],
+      "prefixSpace": "upcA",
+      "observedBrands": [
+        "Scott"
+      ],
+      "source": "curated-prefixes"
+    },
+    {
+      "canonicalProducerName": "Newell Brands Inc",
+      "entityId": "newell-brands",
+      "entityMatchType": "curated",
+      "matchedProductCount": 25,
+      "prefixThreshold": null,
+      "prefixes": [
+        "071641",
+        "071691",
+        "886860"
+      ],
+      "prefixSpace": "upcA",
+      "observedBrands": [
+        "Sharpie",
+        "Rubbermaid",
+        "Yankee Candle"
+      ],
+      "source": "curated-prefixes"
+    },
+    {
+      "canonicalProducerName": "Reckitt Benckiser Group PLC",
+      "entityId": "reckitt",
+      "entityMatchType": "curated",
+      "matchedProductCount": 48,
+      "prefixThreshold": null,
+      "prefixes": [
+        "302340",
+        "067981",
+        "839977",
+        "300875",
+        "300871",
+        "300870"
+      ],
+      "prefixSpace": "upcA",
+      "observedBrands": [
+        "Durex",
+        "Durex (second prefix)",
+        "Clearasil",
+        "Enfamil (Mead Johnson Nutrition)",
+        "Enfamil (Mead Johnson Nutrition) - second block",
+        "Enfamil (Mead Johnson Nutrition) - third block"
+      ],
+      "source": "curated-prefixes"
+    },
+    {
+      "canonicalProducerName": "Reynolds Consumer Products Inc",
+      "entityId": "reynolds-consumer-products",
+      "entityMatchType": "curated",
+      "matchedProductCount": 32,
+      "prefixThreshold": null,
+      "prefixes": [
+        "010900",
+        "013700"
+      ],
+      "prefixSpace": "upcA",
+      "observedBrands": [
+        "Reynolds Wrap",
+        "Reynolds Kitchens",
+        "Hefty"
+      ],
+      "source": "curated-prefixes"
+    },
+    {
+      "canonicalProducerName": "S.C. Johnson & Son Inc",
+      "entityId": "sc-johnson",
+      "entityMatchType": "curated",
+      "matchedProductCount": 63,
+      "prefixThreshold": null,
+      "prefixes": [
+        "019800",
+        "046500",
+        "025700",
+        "054600",
+        "808124",
+        "728997",
+        "031600"
+      ],
+      "prefixSpace": "upcA",
+      "observedBrands": [
+        "Windex",
+        "Drano",
+        "Pledge",
+        "Glade",
+        "OFF! Repellent",
+        "Scrubbing Bubbles",
+        "Ziploc",
+        "Saran Wrap",
+        "Fantastik",
+        "Mrs. Meyer's",
+        "Ecover",
+        "Kiwi Shoe Polish"
+      ],
+      "source": "curated-prefixes"
+    },
+    {
+      "canonicalProducerName": "Unilever PLC",
+      "entityId": "unilever",
+      "entityMatchType": "curated",
+      "matchedProductCount": 35,
+      "prefixThreshold": null,
+      "prefixes": [
+        "859581006",
+        "305213",
+        "732913"
+      ],
+      "prefixSpace": "upcA",
+      "observedBrands": [
+        "Knorr",
+        "Dove",
+        "Vaseline",
+        "Seventh Generation"
+      ],
+      "source": "curated-prefixes"
     }
   ],
   "producerResearch": [
@@ -12831,14 +13134,13 @@
     },
     {
       "barcode": "5201156250881",
+      "displayBarcode": "5201156250881",
       "productName": "PepsiCo product",
-      "canonicalProducerName": "Pepsico",
+      "canonicalProducerName": "PepsiCo Inc",
       "entityId": "pepsico",
-      "entityMatchType": "beta-feedback-exact",
-      "matchedProducerProductCount": 7597,
-      "source": "beta-feedback-exact",
-      "brandName": "PepsiCo",
-      "matchedTerm": "pepsico"
+      "entityMatchType": "curated",
+      "source": "curated-exact",
+      "brandName": "PepsiCo"
     },
     {
       "barcode": "0036632026330",
@@ -13732,13 +14034,11 @@
       "barcode": "0041500053165",
       "displayBarcode": "041500053165",
       "productName": "Base Barbecue Sauce",
-      "canonicalProducerName": "McCormick",
+      "canonicalProducerName": "McCormick & Co Inc",
       "entityId": "mccormick",
-      "entityMatchType": "manual-ownership-2026-10-01",
-      "matchedProducerProductCount": 189,
-      "source": "off-bulk-exact",
-      "brandName": "Cattlemen's",
-      "matchedTerm": "reckitt benckiser"
+      "entityMatchType": "curated",
+      "source": "curated-exact",
+      "brandName": "Cattlemen's"
     },
     {
       "barcode": "0071720029343",
@@ -13751,18 +14051,6 @@
       "source": "off-bulk-exact",
       "brandName": "Tootsie",
       "matchedTerm": "tootsie roll"
-    },
-    {
-      "barcode": "8712100712494",
-      "displayBarcode": "8712100712494",
-      "productName": "Tea bags",
-      "canonicalProducerName": "Kenvue",
-      "entityId": "johnson-and-johnson",
-      "entityMatchType": "alias",
-      "matchedProducerProductCount": 166,
-      "source": "off-bulk-exact",
-      "brandName": "Neutrogena",
-      "matchedTerm": "neutrogena"
     },
     {
       "barcode": "0889392080049",
@@ -14824,13 +15112,11 @@
       "barcode": "0041500058450",
       "displayBarcode": "041500058450",
       "productName": "Beef Stew Seasoning Mix",
-      "canonicalProducerName": "McCormick",
+      "canonicalProducerName": "McCormick & Co Inc",
       "entityId": "mccormick",
-      "entityMatchType": "manual-ownership-2026-10-01",
-      "matchedProducerProductCount": 189,
-      "source": "off-bulk-exact",
-      "brandName": "French's",
-      "matchedTerm": "reckitt benckiser"
+      "entityMatchType": "curated",
+      "source": "curated-exact",
+      "brandName": "French's"
     },
     {
       "barcode": "0071720048245",
@@ -15892,13 +16178,11 @@
       "barcode": "0041500058023",
       "displayBarcode": "041500058023",
       "productName": "Brown Gravy Mix",
-      "canonicalProducerName": "McCormick",
+      "canonicalProducerName": "McCormick & Co Inc",
       "entityId": "mccormick",
-      "entityMatchType": "manual-ownership-2026-10-01",
-      "matchedProducerProductCount": 189,
-      "source": "off-bulk-exact",
-      "brandName": "French's",
-      "matchedTerm": "reckitt benckiser"
+      "entityMatchType": "curated",
+      "source": "curated-exact",
+      "brandName": "French's"
     },
     {
       "barcode": "0071720007792",
@@ -15935,18 +16219,6 @@
       "source": "off-bulk-exact",
       "brandName": "Centrum",
       "matchedTerm": "centrum"
-    },
-    {
-      "barcode": "0078742153865",
-      "displayBarcode": "078742153865",
-      "productName": "Bee Proud Clover Honey",
-      "canonicalProducerName": "Procter & Gamble",
-      "entityId": "procter-gamble",
-      "entityMatchType": "alias",
-      "matchedProducerProductCount": 156,
-      "source": "off-bulk-exact",
-      "brandName": "Tide",
-      "matchedTerm": "tide"
     },
     {
       "barcode": "0070737014724",
@@ -16960,13 +17232,11 @@
       "barcode": "0041500785707",
       "displayBarcode": "041500785707",
       "productName": "Buffalo Wings Sauce",
-      "canonicalProducerName": "McCormick",
+      "canonicalProducerName": "McCormick & Co Inc",
       "entityId": "mccormick",
-      "entityMatchType": "manual-ownership-2026-10-01",
-      "matchedProducerProductCount": 189,
-      "source": "off-bulk-exact",
-      "brandName": "Frank's RedHot",
-      "matchedTerm": "reckitt benckiser"
+      "entityMatchType": "curated",
+      "source": "curated-exact",
+      "brandName": "Frank's RedHot"
     },
     {
       "barcode": "0071720358474",
@@ -18004,13 +18274,11 @@
       "barcode": "0041500220208",
       "displayBarcode": "041500220208",
       "productName": "CRISPY FRIED ONIONS",
-      "canonicalProducerName": "McCormick",
+      "canonicalProducerName": "McCormick & Co Inc",
       "entityId": "mccormick",
-      "entityMatchType": "manual-ownership-2026-10-01",
-      "matchedProducerProductCount": 189,
-      "source": "off-bulk-exact",
-      "brandName": "French's",
-      "matchedTerm": "reckitt benckiser"
+      "entityMatchType": "curated",
+      "source": "curated-exact",
+      "brandName": "French's"
     },
     {
       "barcode": "0071720049587",
@@ -18256,13 +18524,11 @@
       "barcode": "3014680041618",
       "displayBarcode": "3014680041618",
       "productName": "Café qualité filtre décaféiné",
-      "canonicalProducerName": "JDE Peet's",
+      "canonicalProducerName": "JDE Peet's NV",
       "entityId": "jde-peets",
-      "entityMatchType": "manual-ownership-2026-10-01",
-      "matchedProducerProductCount": 2373,
-      "source": "off-bulk-exact",
-      "brandName": "Maxwell House",
-      "matchedTerm": "mondelez"
+      "entityMatchType": "curated",
+      "source": "curated-exact",
+      "brandName": "Maxwell House"
     },
     {
       "barcode": "3095751394017",
@@ -19060,13 +19326,11 @@
       "barcode": "0041500785431",
       "displayBarcode": "041500785431",
       "productName": "Carolina Tangy Gold Barbecue Sauce",
-      "canonicalProducerName": "McCormick",
+      "canonicalProducerName": "McCormick & Co Inc",
       "entityId": "mccormick",
-      "entityMatchType": "manual-ownership-2026-10-01",
-      "matchedProducerProductCount": 189,
-      "source": "off-bulk-exact",
-      "brandName": "Cattlemen's",
-      "matchedTerm": "reckitt benckiser"
+      "entityMatchType": "curated",
+      "source": "curated-exact",
+      "brandName": "Cattlemen's"
     },
     {
       "barcode": "0071720006283",
@@ -20116,13 +20380,11 @@
       "barcode": "0041500805023",
       "displayBarcode": "041500805023",
       "productName": "Cayenne Pepper Sauce",
-      "canonicalProducerName": "McCormick",
+      "canonicalProducerName": "McCormick & Co Inc",
       "entityId": "mccormick",
-      "entityMatchType": "manual-ownership-2026-10-01",
-      "matchedProducerProductCount": 189,
-      "source": "off-bulk-exact",
-      "brandName": "Frank's RedHot",
-      "matchedTerm": "reckitt benckiser"
+      "entityMatchType": "curated",
+      "source": "curated-exact",
+      "brandName": "Frank's RedHot"
     },
     {
       "barcode": "0071720309315",
@@ -21172,13 +21434,11 @@
       "barcode": "0041500057118",
       "displayBarcode": "041500057118",
       "productName": "Chicken Gravy Mix",
-      "canonicalProducerName": "McCormick",
+      "canonicalProducerName": "McCormick & Co Inc",
       "entityId": "mccormick",
-      "entityMatchType": "manual-ownership-2026-10-01",
-      "matchedProducerProductCount": 189,
-      "source": "off-bulk-exact",
-      "brandName": "French's",
-      "matchedTerm": "reckitt benckiser"
+      "entityMatchType": "curated",
+      "source": "curated-exact",
+      "brandName": "French's"
     },
     {
       "barcode": "0071720002179",
@@ -22204,13 +22464,11 @@
       "barcode": "0041500058078",
       "displayBarcode": "041500058078",
       "productName": "Chili-O",
-      "canonicalProducerName": "McCormick",
+      "canonicalProducerName": "McCormick & Co Inc",
       "entityId": "mccormick",
-      "entityMatchType": "manual-ownership-2026-10-01",
-      "matchedProducerProductCount": 189,
-      "source": "off-bulk-exact",
-      "brandName": "French's",
-      "matchedTerm": "reckitt benckiser"
+      "entityMatchType": "curated",
+      "source": "curated-exact",
+      "brandName": "French's"
     },
     {
       "barcode": "0071720047507",
@@ -23236,13 +23494,11 @@
       "barcode": "0041500058290",
       "displayBarcode": "041500058290",
       "productName": "Chilio seasoning mix",
-      "canonicalProducerName": "McCormick",
+      "canonicalProducerName": "McCormick & Co Inc",
       "entityId": "mccormick",
-      "entityMatchType": "manual-ownership-2026-10-01",
-      "matchedProducerProductCount": 189,
-      "source": "off-bulk-exact",
-      "brandName": "French's",
-      "matchedTerm": "reckitt benckiser"
+      "entityMatchType": "curated",
+      "source": "curated-exact",
+      "brandName": "French's"
     },
     {
       "barcode": "0071720001875",
@@ -24256,13 +24512,11 @@
       "barcode": "0041500000251",
       "displayBarcode": "041500000251",
       "productName": "Classic Yellow Mustard",
-      "canonicalProducerName": "McCormick",
+      "canonicalProducerName": "McCormick & Co Inc",
       "entityId": "mccormick",
-      "entityMatchType": "manual-ownership-2026-10-01",
-      "matchedProducerProductCount": 189,
-      "source": "off-bulk-exact",
-      "brandName": "French's",
-      "matchedTerm": "reckitt benckiser"
+      "entityMatchType": "curated",
+      "source": "curated-exact",
+      "brandName": "French's"
     },
     {
       "barcode": "0071720007983",
@@ -25264,13 +25518,11 @@
       "barcode": "0041500000312",
       "displayBarcode": "041500000312",
       "productName": "Classic Yellow Mustard",
-      "canonicalProducerName": "McCormick",
+      "canonicalProducerName": "McCormick & Co Inc",
       "entityId": "mccormick",
-      "entityMatchType": "manual-ownership-2026-10-01",
-      "matchedProducerProductCount": 189,
-      "source": "off-bulk-exact",
-      "brandName": "French's",
-      "matchedTerm": "reckitt benckiser"
+      "entityMatchType": "curated",
+      "source": "curated-exact",
+      "brandName": "French's"
     },
     {
       "barcode": "0071720057988",
@@ -26272,13 +26524,11 @@
       "barcode": "0041500007007",
       "displayBarcode": "041500007007",
       "productName": "Classic Yellow Mustard",
-      "canonicalProducerName": "McCormick",
+      "canonicalProducerName": "McCormick & Co Inc",
       "entityId": "mccormick",
-      "entityMatchType": "manual-ownership-2026-10-01",
-      "matchedProducerProductCount": 189,
-      "source": "off-bulk-exact",
-      "brandName": "French's",
-      "matchedTerm": "reckitt benckiser"
+      "entityMatchType": "curated",
+      "source": "curated-exact",
+      "brandName": "French's"
     },
     {
       "barcode": "0071720047729",
@@ -27280,13 +27530,11 @@
       "barcode": "0041500756776",
       "displayBarcode": "041500756776",
       "productName": "Classic Yellow Mustard",
-      "canonicalProducerName": "McCormick",
+      "canonicalProducerName": "McCormick & Co Inc",
       "entityId": "mccormick",
-      "entityMatchType": "manual-ownership-2026-10-01",
-      "matchedProducerProductCount": 189,
-      "source": "off-bulk-exact",
-      "brandName": "French's",
-      "matchedTerm": "reckitt benckiser"
+      "entityMatchType": "curated",
+      "source": "curated-exact",
+      "brandName": "French's"
     },
     {
       "barcode": "0071720078563",
@@ -28288,13 +28536,11 @@
       "barcode": "0041500763675",
       "displayBarcode": "041500763675",
       "productName": "Classic Yellow Mustard",
-      "canonicalProducerName": "McCormick",
+      "canonicalProducerName": "McCormick & Co Inc",
       "entityId": "mccormick",
-      "entityMatchType": "manual-ownership-2026-10-01",
-      "matchedProducerProductCount": 189,
-      "source": "off-bulk-exact",
-      "brandName": "Reckitt Benckiser Inc",
-      "matchedTerm": "reckitt benckiser"
+      "entityMatchType": "curated",
+      "source": "curated-exact",
+      "brandName": "Reckitt Benckiser Inc"
     },
     {
       "barcode": "0071720078570",
@@ -29296,13 +29542,11 @@
       "barcode": "0041500819389",
       "displayBarcode": "041500819389",
       "productName": "Classic Yellow Mustard",
-      "canonicalProducerName": "McCormick",
+      "canonicalProducerName": "McCormick & Co Inc",
       "entityId": "mccormick",
-      "entityMatchType": "manual-ownership-2026-10-01",
-      "matchedProducerProductCount": 189,
-      "source": "off-bulk-exact",
-      "brandName": "French's",
-      "matchedTerm": "reckitt benckiser"
+      "entityMatchType": "curated",
+      "source": "curated-exact",
+      "brandName": "French's"
     },
     {
       "barcode": "0071720331194",
@@ -30292,13 +30536,11 @@
       "barcode": "0041500932088",
       "displayBarcode": "041500932088",
       "productName": "Classic Yellow Sweet Mustard With Brown Sugar",
-      "canonicalProducerName": "McCormick",
+      "canonicalProducerName": "McCormick & Co Inc",
       "entityId": "mccormick",
-      "entityMatchType": "manual-ownership-2026-10-01",
-      "matchedProducerProductCount": 189,
-      "source": "off-bulk-exact",
-      "brandName": "French's",
-      "matchedTerm": "reckitt benckiser"
+      "entityMatchType": "curated",
+      "source": "curated-exact",
+      "brandName": "French's"
     },
     {
       "barcode": "0071720085042",
@@ -31288,13 +31530,11 @@
       "barcode": "0041500002248",
       "displayBarcode": "041500002248",
       "productName": "Classic yellow mustard",
-      "canonicalProducerName": "McCormick",
+      "canonicalProducerName": "McCormick & Co Inc",
       "entityId": "mccormick",
-      "entityMatchType": "manual-ownership-2026-10-01",
-      "matchedProducerProductCount": 189,
-      "source": "off-bulk-exact",
-      "brandName": "French's",
-      "matchedTerm": "reckitt benckiser"
+      "entityMatchType": "curated",
+      "source": "curated-exact",
+      "brandName": "French's"
     },
     {
       "barcode": "0071720017289",
@@ -32284,13 +32524,11 @@
       "barcode": "0041500220062",
       "displayBarcode": "041500220062",
       "productName": "Crispy Fried Onions Original",
-      "canonicalProducerName": "McCormick",
+      "canonicalProducerName": "McCormick & Co Inc",
       "entityId": "mccormick",
-      "entityMatchType": "manual-ownership-2026-10-01",
-      "matchedProducerProductCount": 189,
-      "source": "off-bulk-exact",
-      "brandName": "French's",
-      "matchedTerm": "reckitt benckiser"
+      "entityMatchType": "curated",
+      "source": "curated-exact",
+      "brandName": "French's"
     },
     {
       "barcode": "0071720330203",
@@ -33280,13 +33518,11 @@
       "barcode": "0041500220222",
       "displayBarcode": "041500220222",
       "productName": "Crispy Fried Onions Original",
-      "canonicalProducerName": "McCormick",
+      "canonicalProducerName": "McCormick & Co Inc",
       "entityId": "mccormick",
-      "entityMatchType": "manual-ownership-2026-10-01",
-      "matchedProducerProductCount": 189,
-      "source": "off-bulk-exact",
-      "brandName": "French's",
-      "matchedTerm": "reckitt benckiser"
+      "entityMatchType": "curated",
+      "source": "curated-exact",
+      "brandName": "French's"
     },
     {
       "barcode": "0071720047750",
@@ -34288,13 +34524,11 @@
       "barcode": "0041500941462",
       "displayBarcode": "041500941462",
       "productName": "Crispy fried onions",
-      "canonicalProducerName": "McCormick",
+      "canonicalProducerName": "McCormick & Co Inc",
       "entityId": "mccormick",
-      "entityMatchType": "manual-ownership-2026-10-01",
-      "matchedProducerProductCount": 189,
-      "source": "off-bulk-exact",
-      "brandName": "French's",
-      "matchedTerm": "reckitt benckiser"
+      "entityMatchType": "curated",
+      "source": "curated-exact",
+      "brandName": "French's"
     },
     {
       "barcode": "0071720003176",
@@ -35296,13 +35530,11 @@
       "barcode": "0041500784106",
       "displayBarcode": "041500784106",
       "productName": "Deli Mustered",
-      "canonicalProducerName": "McCormick",
+      "canonicalProducerName": "McCormick & Co Inc",
       "entityId": "mccormick",
-      "entityMatchType": "manual-ownership-2026-10-01",
-      "matchedProducerProductCount": 189,
-      "source": "off-bulk-exact",
-      "brandName": "French's",
-      "matchedTerm": "reckitt benckiser"
+      "entityMatchType": "curated",
+      "source": "curated-exact",
+      "brandName": "French's"
     },
     {
       "barcode": "0071720300060",
@@ -36292,13 +36524,11 @@
       "barcode": "0041500819716",
       "displayBarcode": "041500819716",
       "productName": "Dijon Mustard",
-      "canonicalProducerName": "McCormick",
+      "canonicalProducerName": "McCormick & Co Inc",
       "entityId": "mccormick",
-      "entityMatchType": "manual-ownership-2026-10-01",
-      "matchedProducerProductCount": 189,
-      "source": "off-bulk-exact",
-      "brandName": "French's",
-      "matchedTerm": "reckitt benckiser"
+      "entityMatchType": "curated",
+      "source": "curated-exact",
+      "brandName": "French's"
     },
     {
       "barcode": "0071720036952",

@@ -16,8 +16,12 @@ from pathlib import Path
 from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(Path(__file__).resolve().parent / "lib"))
+from curated_products import apply_curated_layer, load_curated  # noqa: E402
+
 DEFAULT_PRODUCTS_PATH = REPO_ROOT / "assets/data/products.json"
 DEFAULT_ENTITIES_PATH = REPO_ROOT / "assets/data/entities.json"
+DEFAULT_CURATED_PATH = REPO_ROOT / "scripts/data/curated-prefixes.json"
 DEFAULT_ARCHIVE_PATH = REPO_ROOT / "tools/off-bulk/openfoodfacts-mongodbdump"
 DEFAULT_CHECKPOINT_DIR = REPO_ROOT / "tools/off-bulk/checkpoints"
 DEFAULT_CHECKPOINT_PATH = DEFAULT_CHECKPOINT_DIR / "products-off-sync.checkpoint.json"
@@ -1226,11 +1230,47 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Rebuild the partial/final products snapshots from the saved checkpoint results without rescanning the OFF archive.",
     )
+    parser.add_argument(
+        "--curated-path",
+        type=Path,
+        default=DEFAULT_CURATED_PATH,
+        help="Reviewed curated prefix/exact-row layer merged into every final products.json write.",
+    )
+    parser.add_argument(
+        "--apply-curated-only",
+        action="store_true",
+        help="Merge the curated layer into the existing products.json without reading the checkpoint or OFF archive.",
+    )
     return parser.parse_args()
 
 
 def load_products_payload(products_path: Path) -> dict[str, Any]:
     return json.loads(products_path.read_text(encoding="utf-8"))
+
+
+def finalize_products_payload(payload: dict[str, Any], curated_path: Path) -> dict[str, Any]:
+    """Merge the curated layer and stamp the freshness fields the app's Git update check compares."""
+    entities = json.loads(DEFAULT_ENTITIES_PATH.read_text(encoding="utf-8"))
+    entity_names = {
+        entity["id"]: entity.get("canonicalName", entity["id"])
+        for entity in (entities.get("entities") if isinstance(entities, dict) else entities)
+    }
+    merged, report = apply_curated_layer(payload, load_curated(curated_path), entity_names)
+    meta = merged.setdefault("_meta", {})
+    meta["producerSource"] = (
+        "Runtime producers come from OFF bulk DB prefix aggregation filtered to repeated UPC evidence, plus curated "
+        "prefixes (with an explicit prefixSpace) from scripts/data/curated-prefixes.json."
+    )
+    meta["productSource"] = (
+        "Runtime exact products come from OFF bulk DB product rows that match one existing producer seed and current "
+        "entity ID, plus curated exact rows from scripts/data/curated-prefixes.json."
+    )
+    meta["generatedAt"] = utc_now()
+    meta["lastUpdated"] = datetime.now().date().isoformat()
+    print(f"Curated layer: {json.dumps(report)}", file=sys.stderr)
+    if report["unknownEntities"]:
+        raise RuntimeError(f"Curated rows point at entity ids missing from entities.json: {report['unknownEntities']}")
+    return merged
 
 
 def load_checkpoint_payload(args: argparse.Namespace) -> dict[str, Any] | None:
@@ -1250,6 +1290,11 @@ def main() -> int:
         raise RuntimeError(f"Missing products file: {args.products_path}")
 
     payload = load_products_payload(args.products_path)
+    if args.apply_curated_only:
+        atomic_write_json(args.products_path, finalize_products_payload(payload, args.curated_path))
+        print(f"Applied curated layer {args.curated_path} to {args.products_path}", file=sys.stderr)
+        return 0
+
     seeds, term_to_index = build_seed_index(payload)
     checkpoint = load_checkpoint_payload(args)
     aggregates, checkpoint_offset, documents_scanned, resumed_parse_errors, exact_products = hydrate_aggregates(checkpoint, seeds)
@@ -1294,7 +1339,7 @@ def main() -> int:
                 exact_product_limit=exact_product_limit,
                 partial=False,
             )
-            atomic_write_json(args.products_path, final_payload)
+            atomic_write_json(args.products_path, finalize_products_payload(final_payload, args.curated_path))
             print(f"Rebuilt products data from checkpoint into {args.products_path}", file=sys.stderr)
 
         print(
@@ -1398,7 +1443,7 @@ def main() -> int:
             exact_product_limit=exact_product_limit,
             partial=False,
         )
-        atomic_write_json(args.products_path, final_payload)
+        atomic_write_json(args.products_path, finalize_products_payload(final_payload, args.curated_path))
         print(f"Wrote final products data to {args.products_path}", file=sys.stderr)
     else:
         print(

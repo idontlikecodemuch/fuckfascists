@@ -1,6 +1,6 @@
 # Products Data Pipeline
 
-Last updated: May 26, 2026
+Last updated: October 14, 2026
 
 ## Purpose
 
@@ -27,12 +27,17 @@ The products pass was done under these constraints:
 - `assets/data/products.json`
 - `assets/data/entities.json` (read-only input during product rebuild)
 - `scripts/sync-products-from-off.py`
+- `scripts/data/curated-prefixes.json` (reviewed corrections and verified prefixes, merged on every build)
+- `scripts/lib/curated_products.py` (the merge)
+- `features/Map/barcode/productIndex.ts` (runtime matcher)
 - `tools/off-bulk/openfoodfacts-mongodbdump`
 - `tools/off-bulk/checkpoints/products-off-sync.checkpoint.json`
 - `tools/off-bulk/checkpoints/products-off-sync.partial.json`
 - `tools/off-bulk/checkpoints/products-off-sync.results.json`
 
 ## Current `products.json` Shape
+
+October 14, 2026 update: the curated layer (see "Curated Layer" below) is merged in. Runtime producers are `125` (110 OFF-derived, 15 curated entries carrying `prefixSpace`), with `1,839` prefix rows (`1,645` distinct; `146` still listed under two OFF entities). Exact rows are `1,975`. `_meta.generatedAt` (UTC timestamp) is stamped on every write.
 
 May 26, 2026 update: the runtime exact-product layer remains `2,000` rows. A product entity-coverage batch added 15 live entity shells, added Ambev aliases to Anheuser-Busch InBev, rebuilt the OFF checkpoint, and activated 13 more prefix-backed runtime producer rows. Runtime producers are now `111`; `115` `producerResearch` rows currently map to live entities.
 
@@ -74,8 +79,9 @@ Each entry contains:
 - `matchedProductCount`
 - `prefixThreshold`
 - `prefixes`
+- `prefixSpace` (curated entries only): `upcA` or `ean13`
 - `observedBrands`
-- `source`
+- `source` (`off-bulk` or `curated-prefixes`)
 
 This layer is intentionally conservative. It only includes producers that:
 
@@ -223,6 +229,16 @@ Rules:
 
 This is a practical UPC-prefix heuristic for runtime matching, not a claim that all producer ownership is globally resolved by a fixed 6-digit GS1 prefix.
 
+The checkpoint keeps only the six-digit string, so it cannot tell a US UPC-A prefix from the start of a 13-digit EAN (`305730` is both a US NDC-style block and the start of French EANs). OFF-derived rows therefore carry no `prefixSpace`.
+
+### Runtime prefix rules (`productIndex.ts`)
+
+- Exact product rows are checked first, by the 13-digit GTIN.
+- A prefix row with `prefixSpace: "upcA"` is compared only with the scan's 12-digit UPC-A; `"ean13"` only with its 13-digit EAN-13.
+- A row without a space (the OFF layer) is compared with the UPC-A when the scan has one, and with the EAN-13 otherwise.
+- A UPC-A scan is never compared through its `0` + UPC-A form. That shifted every digit and produced false matches: Barbasol `051009009341` as Campbell's `005100`, O'Keeffe's `722510026003` as PepsiCo's `072251`.
+- The longest matching prefix wins. Equal-length ties between OFF entities still go to the first producer in file order; a curated add removes the same prefix from every OFF row at build time, so curated prefixes never tie.
+
 ## Aggregation Per Producer
 
 For each matched producer, the scan accumulates:
@@ -323,7 +339,31 @@ Behavior:
 
 That rebuild mode is what made later cleanup passes cheap.
 
-Manual edits the sync does not produce are lost on a rebuild and must be reapplied: the beta-feedback exact row 5201156250881 (PepsiCo) and the 2026-10-01 brand-ownership corrections listed in `docs/BRAND_OWNERSHIP_2026-10-01.md` (French's rows to McCormick, ice cream prefixes to The Magnum Ice Cream Company, Upfield spreads and other sold brands removed from Unilever).
+Every final write (fresh scan, resume, `--rebuild-from-checkpoint`) now merges the curated layer, so hand corrections are no longer lost on a rebuild. On 2026-10-14 a checkpoint rebuild plus the curated layer reproduced the shipped `products.json` exactly (producers, prefixes, spaces and exact rows).
+
+## Curated Layer
+
+`scripts/data/curated-prefixes.json` is the reviewed source of truth for anything the OFF scan gets wrong or cannot see, kept beside `scripts/data/people-entity-overrides.json`. `scripts/lib/curated_products.py` merges it; the merge is idempotent and also runs on its own with `--apply-curated-only`.
+
+Row types:
+
+- `prefixes[]` with `action: "add"`: ships `prefix` for `entityId` in `space` (`upcA` or `ean13`). It replaces any OFF-derived row with the same prefix, whichever entity carried it. Curated adds are grouped into producer entries with `source: "curated-prefixes"` and `prefixSpace`.
+- `prefixes[]` with `action: "block"`: removes an OFF-derived prefix from `entityId`.
+- `products[]` with `action: "add"`: sets the exact row for a barcode (in place when an OFF row exists). `action: "block"` removes one.
+
+Each row records `evidence` (sample barcodes with source URLs), `evidenceSummary`, `ownershipCheckedAt`, `ownershipSource`, `pendingOwner` and `notes`. The evidence bar is in the file's `_meta`: three or more real barcodes, two independent source families or one official source (company site, FDA label, GUDID), current ownership checked, and no other company under the prefix. In shared GS1 US blocks (81, 84, 85, 86, 19) six digits is too short; use the longer company prefix.
+
+The merge fails if a curated row names an entity id missing from `entities.json`. `features/Map/__tests__/barcodeEndToEnd.test.ts` checks that `products.json` carries every curated row and runs the plan's 20-barcode end-to-end list.
+
+Contents on 2026-10-14 (details in `docs/BRAND_OWNERSHIP_2026-10-01.md`):
+
+- the 2026-10-01 ownership corrections and the beta-feedback exact row 5201156250881;
+- Walmart store-brand blocks `681131` and `078742` moved from `maple-leaf-foods` and `b-g-foods` to `walmart`;
+- ten Kenvue prefixes removed from `johnson-and-johnson`;
+- 14 six-digit prefixes in shared GS1 US blocks removed, and Touchland `850028448` (Church & Dwight) and First Aid Beauty `81016080` (P&G) added;
+- the 62 verified household prefixes from `tools/off-bulk/research-2026-10-01/prefix-research.json` (88 `new` brand rows): 3M, Church & Dwight, Clorox, Colgate-Palmolive, Henkel, Kimberly-Clark, Newell Brands, P&G, Reckitt, Reynolds, SC Johnson and Unilever.
+
+Totals: 68 prefix adds, 28 prefix blocks, 25 exact-row adds, 26 exact-row blocks.
 
 ## Script Usage
 
@@ -355,6 +395,12 @@ Limited dry run:
 
 ```bash
 python3 scripts/sync-products-from-off.py --limit 100 --fresh --no-final-write
+```
+
+Merge the curated layer into the existing `products.json` only (no checkpoint, no OFF archive):
+
+```bash
+python3 scripts/sync-products-from-off.py --apply-curated-only
 ```
 
 ## Current Results
@@ -493,6 +539,17 @@ Result:
 - `3` barcode/product suites passed
 - `21` tests passed
 
+October 14, 2026 (curated layer):
+
+```bash
+python3 -m py_compile scripts/sync-products-from-off.py scripts/lib/curated_products.py
+python3 scripts/sync-products-from-off.py --apply-curated-only
+npm run typecheck
+npx jest
+```
+
+A checkpoint rebuild into scratch paths (`--products-path`, `--checkpoint-path`, `--snapshot-path`, `--results-path` pointed at copies) plus the curated layer matched the applied file exactly. The 20-barcode end-to-end list went from 6 right owner / 4 wrong / 10 no match to 11 / 1 / 8; the remaining wrong owner is an older Suave code in Unilever's mixed `079400` block.
+
 ## Known Caveats
 
 1. Prefixes are OFF-derived heuristics for runtime producer matching, not a global GS1-ownership truth table.
@@ -500,6 +557,7 @@ Result:
 3. Some runtime brand lists still contain borderline labels if they behave like real shelf brands in OFF, for example `Conagra` or `Hormel`.
 4. Missing entity coverage, not OFF coverage, remains the largest structural limitation after the May entity batch.
 5. The current `2,000` exact products are a conservative OFF-derived barcode set, not a verified shopping-volume ranking.
+6. OFF-derived six-digit prefixes have no recorded space. Some in the 84 and 86 ranges look like Spanish, Serbian or Turkish EAN-13 prefixes and would also catch US UPC-As with the same digits. The fix is to record the space in `prefix_from_code` on the next fresh scan (the raw OFF dump was deleted in June).
 
 ## Recommended Next Pass
 
