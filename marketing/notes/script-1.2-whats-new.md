@@ -56,7 +56,7 @@ Seconds use the 30-cut formula (0.25 s/word + 0.7, min 2.2); the outro adds the 
 - **Household brands by name only.** Windex, Clorox and the rest mostly return no match by
   barcode until the 1.2.2 prefix work ships. Beat 03 is a Map search, never the scanner.
 - **"I focus closer"** is the 1.2.1 close-focus change on Pro and dual-wide iPhones (owner
-  confirmed on device Oct 14). Beat 05 must be recorded on the phone with build 12.
+  confirmed on device Oct 14). Beat 05 must be recorded on the phone with build 13.
 - **"761 companies"** holds on release/1.2.1 (counted in `assets/data/entities.json` there,
   Oct 14; the Oct 12 refresh changed records, not the roster). Re-count if 1.2.2 lands first.
 - **Red X** appears on the scorecard (shared card and live preview), not on the business
@@ -72,7 +72,10 @@ Seconds use the 30-cut formula (0.25 s/word + 0.7, min 2.2); the outro adds the 
   beat uses), so the title and body are typed in exactly from `copy/platforms.ts`.
 - Nothing on Android, nothing on household barcodes, no count of sprites beyond "forty-nine".
 
-## Shot list — captures on build 12 (TestFlight), production tab bar
+## Shot list — captures on build 13 (TestFlight), production tab bar
+
+Build 13 replaces 12 for submission (barcode-attribution fix in progress, release session,
+Oct 14). Record N1 on 13 so the scan result is the shipped one; N2–N4 are fine on either.
 
 Same conventions as `marketing/video/captures/CAPTURES.md`: slow, deliberate taps; hold
 two seconds on every end state; one feature per clip. Phone recordings crop the real
@@ -80,7 +83,7 @@ status bar in the edit, as R6 did.
 
 | Clip | Where | Steps | Feeds |
 |---|---|---|---|
-| `N1_scan_sprite-20oz` | phone, build 12 | Scan tab → OPEN SCANNER → a 20 oz Sprite (or any small can with the short 8-digit barcode) from close → lock → Coca-Cola record → AVOID → hold | 30 beat 05 |
+| `N1_scan_sprite-20oz` | phone, build 13 | Scan tab → OPEN SCANNER → a 20 oz Sprite (or any small can with the short 8-digit barcode) from close → lock → Coca-Cola record → AVOID → hold | 30 beat 05 |
 | `N2_map_search-windex-scjohnson` | phone or simulator | Map → search "Windex" → SC Johnson card → AVOID → dismiss; then "Post-it" → 3M card (dismiss); "Reynolds Wrap" → Reynolds card (dismiss) | 30 beat 03, 15 beat 03 |
 | `N3_map_search-benjerrys-magnum` | phone or simulator | Map → search "Ben & Jerry's" → The Magnum Ice Cream Company card → hold; optional "French's" → McCormick | 30 beat 04 |
 | `N4_scorecard_new-faces-red-x` | phone or simulator | Avoid Walmart (search), Target (search), PepsiCo (scan a Pepsi or Lay's) and Mondelez (scan an Oreo), plus SC Johnson from N2 → Scorecard tab → live preview shows Furner, Fiddelke, Laguarta, Van de Put and the red X → dev Generate → reveal + rain → card | 30 beat 06, 15 cold open + beat 04 |
