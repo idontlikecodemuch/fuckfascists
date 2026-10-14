@@ -16,7 +16,7 @@ Nothing has been submitted. No accounts were created and nothing was paid for.
 | D4, license | AGPL-3.0-or-later. `LICENSE` added, `package.json` and README updated. Pick "GNU Affero General Public License v3.0" on AMO. | Done on this branch |
 | D7, publisher | **App Hold Media LLC** on every store, as both the account owner and the publisher name shown. Edge: Company account (verification takes days to weeks). CWS: the trader declaration will show the LLC's name and address. | Owner, at account setup |
 | D8, Edge | Publish on Edge after Chrome and Firefox are live. | Owner, later |
-| D3, privacy page | Still open: the four edits in §5 go on the marketing branch's site. | Open |
+| D3, privacy page | Still open: the edits in §5 go in `site/privacy.html` on the marketing branch, then upload. | Open |
 
 ---
 
@@ -210,11 +210,11 @@ CWS and Edge take 1280×800. AMO accepts any size; upload the same three. The pr
 
 ## 5. Privacy policy changes (fckfascists.com/privacy, decision D3)
 
-Make these changes before submitting to CWS. The site isn't in this repo.
+Make these changes before submitting to CWS. The page is `site/privacy.html` on the marketing branch (`claude/fckfascists-marketing-onboard-f21b1b`); the marketing session edits it there and uploads it to fckfascists.com.
 
 1. **Intro:** "the browser extension (Chrome and Firefox)" → "the browser extension (Chrome, Firefox, and Microsoft Edge)".
 2. **Section 4 (browser extension), add:**
-   > The extension also keeps, in local extension storage, the latest copy of the public company list and a cache of public FEC committee totals (up to 60 days). Both are public records keyed by company, not by site or visit.
+   > The extension also keeps, in local extension storage, the latest copy of the public company list it downloads once a day. That list is public records keyed by company, not by site or visit. The extension makes no other network requests. (It no longer contacts the FEC; D1.)
 3. **New paragraph at the end of section 4:**
    > The extension's use of information received from Chrome and other browser APIs will adhere to the Chrome Web Store User Data Policy, including the Limited Use requirements.
 4. **Section 9 (your choices), fix stale instructions:** "triple-tap the version label" → "tap the version label seven times and confirm" (current beta toggle).
