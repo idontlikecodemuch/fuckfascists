@@ -63,7 +63,7 @@
     ],
     "ios": {
       "bundleIdentifier": "com.fckapp.fck",
-      "buildNumber": "12",
+      "buildNumber": "13",
       "config": {
         "usesNonExemptEncryption": false
       },
@@ -74,7 +74,7 @@
     },
     "android": {
       "package": "com.fckapp.fck",
-      "versionCode": 12,
+      "versionCode": 13,
       "blockedPermissions": [
         "android.permission.RECORD_AUDIO",
         "android.permission.READ_MEDIA_IMAGES",
