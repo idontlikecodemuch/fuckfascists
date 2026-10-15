@@ -23,6 +23,18 @@ export const HEADER_W = 5244;
 export const HEADER_H = 2950;
 export const SAFE = { left: 410, top: 351, right: 4835, bottom: 2599 };
 export type HeaderVariant = 'space' | 'screens' | 'clark' | 'map' | 'mix-a' | 'mix-b' | 'mix-c' | 'mix-d' | 'mix-b2' | 'mix-c2';
+/**
+ * Round 5 copy options (creator: "a little more copy, secondary a little larger"). line2 is the
+ * secondary (uppercase, tracked), line3 the new third line (sentence case). Apple: no price, no
+ * URL, a short phrase; brand: no party words, "Random drop between Friday and Saturday." verbatim.
+ */
+export const COPY = {
+  c1: { line2: 'SEE WHERE THE MONEY GOES.', line3: 'Tap a business. Scan a barcode. Track the platforms you skip.' },
+  c2: { line2: 'FINANCIAL CONTRIBUTIONS, ON FILE.', line3: 'Every dollar, straight from the FEC. No accounts. No tracking.' },
+  c3: { line2: 'EVERY AVOID COUNTS.', line3: 'Tap, scan, track. Random drop between Friday and Saturday.' },
+  c4: { line2: 'NO ACCOUNTS. NO TRACKING.', line3: 'Public records on your phone. Nothing leaves it.' },
+} as const;
+export type CopyId = keyof typeof COPY;
 
 const BEZEL = 30;
 const RADIUS = 200;
@@ -80,14 +92,21 @@ const Name: React.FC<{ left: number; top: number; width: number; align?: 'left' 
  * Round 3 lockup: "more weight to Financial Contribution Kit so FCK stands out a little less".
  * FCK is the small line; the full name is the display line, on two or three rows.
  */
-const Name2: React.FC<{ left: number; top: number; width: number; align?: 'left' | 'center'; fck?: number; name?: number; rows?: 2 | 3; fckColor?: string; nameColor?: string; tagline?: boolean; plate?: boolean }> = ({ left, top, width, align = 'left', fck = 260, name = 200, rows = 2, fckColor = T.cyan, nameColor = T.gold, tagline = true, plate = false }) => (
+const Name2: React.FC<{ left: number; top: number; width: number; align?: 'left' | 'center'; fck?: number; name?: number; rows?: 2 | 3; fckColor?: string; nameColor?: string; tagline?: boolean; plate?: boolean; copy?: CopyId; line2Size?: number; line3Size?: number }> = ({ left, top, width, align = 'left', fck = 260, name = 200, rows = 2, fckColor = T.cyan, nameColor = T.gold, tagline = true, plate = false, copy, line2Size = 84, line3Size = 60 }) => (
   <div style={{ position: 'absolute', left, top, width, display: 'flex', flexDirection: 'column', alignItems: align === 'center' ? 'center' : 'flex-start', textAlign: align, gap: 24 }}>
     {plate ? <div style={{ position: 'absolute', inset: -140, background: 'radial-gradient(ellipse 60% 60% at 50% 50%, rgba(7,11,18,0.85), transparent 72%)', pointerEvents: 'none' }} /> : null}
     <div style={{ position: 'relative', fontFamily: FONT.display, fontSize: fck, lineHeight: 1, color: fckColor, letterSpacing: 8, textShadow: `0 0 30px ${fckColor === T.cyan ? 'rgba(122,242,255,0.5)' : 'rgba(255,201,60,0.4)'}, 8px 8px 0 rgba(0,0,0,0.8)` }}>FCK,</div>
     <div style={{ position: 'relative', fontFamily: FONT.display, fontSize: name, lineHeight: 1.02, color: nameColor, letterSpacing: 4, whiteSpace: 'pre-line', textShadow: `0 0 50px ${nameColor === T.gold ? 'rgba(255,201,60,0.45)' : 'rgba(232,224,208,0.3)'}, 12px 12px 0 rgba(0,0,0,0.8)` }}>
       {rows === 3 ? 'FINANCIAL\nCONTRIBUTION\nKIT' : 'FINANCIAL\nCONTRIBUTION KIT'}
     </div>
-    {tagline ? <div style={{ position: 'relative', marginTop: 20, fontFamily: FONT.body, fontWeight: 600, fontSize: 62, letterSpacing: 8, color: T.cream, textShadow: '3px 3px 0 rgba(0,0,0,0.8)' }}>FINANCIAL CONTRIBUTIONS, ON FILE.</div> : null}
+    {copy ? (
+      <>
+        <div style={{ position: 'relative', marginTop: 26, fontFamily: FONT.body, fontWeight: 600, fontSize: line2Size, lineHeight: 1.2, letterSpacing: 7, color: T.cream, textShadow: '0 0 20px rgba(232,224,208,0.25), 4px 4px 0 rgba(0,0,0,0.8)' }}>{COPY[copy].line2}</div>
+        <div style={{ position: 'relative', marginTop: 6, fontFamily: FONT.body, fontWeight: 500, fontSize: line3Size, lineHeight: 1.35, letterSpacing: 1, color: T.text, textShadow: '3px 3px 0 rgba(0,0,0,0.8)' }}>{COPY[copy].line3}</div>
+      </>
+    ) : tagline ? (
+      <div style={{ position: 'relative', marginTop: 20, fontFamily: FONT.body, fontWeight: 600, fontSize: 62, letterSpacing: 8, color: T.cream, textShadow: '3px 3px 0 rgba(0,0,0,0.8)' }}>FINANCIAL CONTRIBUTIONS, ON FILE.</div>
+    ) : null}
   </div>
 );
 
@@ -112,7 +131,7 @@ const Phone: React.FC<{ src: string; aspect: number; left: number; top: number; 
   );
 };
 
-export const StoreHeader: React.FC<{ variant: HeaderVariant }> = ({ variant }) => {
+export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId }> = ({ variant, copy }) => {
   useFonts();
   return (
     <AbsoluteFill style={{ width: HEADER_W, height: HEADER_H, backgroundColor: T.void, overflow: 'hidden' }}>
@@ -173,7 +192,7 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant }> = ({ variant }) =
           <Phone src={SCAN_COKE} aspect={1206 / 2478} cut={0.86} left={2860} top={1400} width={760} rotate={0} />
           <Phone src={TRACK} aspect={1206 / 2622} cut={0.87} left={3920} top={1520} width={760} rotate={10} />
           <Money count={10} seed="mix-b2" />
-          <Name2 left={1640} top={420} width={3195} align="center" fck={240} name={200} />
+          <Name2 left={1640} top={380} width={3195} align="center" fck={240} name={200} copy={copy} />
         </>
       ) : null}
       {variant === 'mix-c2' ? (
@@ -183,7 +202,7 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant }> = ({ variant }) =
           <Phone src={SCAN_COKE} aspect={1206 / 2478} cut={0.86} left={3650} top={520} width={800} rotate={-6} />
           <Phone src={TRACK} aspect={1206 / 2622} cut={0.87} left={4250} top={760} width={760} rotate={6} />
           <Money count={8} seed="mix-c2" />
-          <Name2 left={2150} top={760} width={1500} fck={220} name={190} rows={3} />
+          <Name2 left={2150} top={620} width={1500} fck={220} name={190} rows={3} copy={copy} line2Size={72} line3Size={54} />
         </>
       ) : null}
       {variant === 'mix-c' ? (

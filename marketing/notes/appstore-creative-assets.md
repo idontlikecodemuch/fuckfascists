@@ -98,3 +98,14 @@ shadow. Scan frame is `scan_coke` (R6 at 17.1 s, the bottle in the guide). Files
 - **mix-b2** Clark far left, name centred over a fan of map / Coke scan / Track along the bottom.
 - **mix-c2** Clark big left, name in three rows, Coke scan + Track at right, map strong behind.
 Next: the 15 s header loop from whichever he picks (21:9 3840×1646, slow drift, silent, seamless).
+
+## Round 5 (Oct 15, evening) — copy options
+
+Creator: "a little more copy, and the secondary copy can be a little larger." `COPY` in
+StoreHeader.tsx: a larger uppercase secondary line plus a sentence-case third line. Rendered as
+`*-mix-b2-c1..c4-*` and `*-mix-c2-c1|c3-*`:
+- **c1** SEE WHERE THE MONEY GOES. / Tap a business. Scan a barcode. Track the platforms you skip.
+- **c2** FINANCIAL CONTRIBUTIONS, ON FILE. / Every dollar, straight from the FEC. No accounts. No tracking.
+- **c3** EVERY AVOID COUNTS. / Tap, scan, track. Random drop between Friday and Saturday.
+- **c4** NO ACCOUNTS. NO TRACKING. / Public records on your phone. Nothing leaves it.
+Rules kept: no price, no URL, no party words, the drop line verbatim, 4+ safe.

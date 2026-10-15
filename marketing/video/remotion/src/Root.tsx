@@ -50,6 +50,11 @@ export const RemotionRoot: React.FC = () => (
     {(['space', 'screens', 'clark', 'map', 'mix-a', 'mix-b', 'mix-c', 'mix-d', 'mix-b2', 'mix-c2'] as const).map((v) => (
       <Still key={v} id={`StoreHeader-${v}`} component={StoreHeader} width={HEADER_W} height={HEADER_H} defaultProps={{ variant: v }} />
     ))}
+    {(['mix-b2', 'mix-c2'] as const).flatMap((v) =>
+      (['c1', 'c2', 'c3', 'c4'] as const).map((c) => (
+        <Still key={`${v}-${c}`} id={`StoreHeader-${v}-${c}`} component={StoreHeader} width={HEADER_W} height={HEADER_H} defaultProps={{ variant: v, copy: c }} />
+      )),
+    )}
     {/* Facebook Page cover (Meta ads identity), same look as the IG banner */}
     <Still id="PageCover" component={PageCover} width={COVER_W} height={COVER_H} />
     {/* Oct 15: the 1.2 release cut, kinetic type on the drive bed (scripts/render.sh release) */}
