@@ -73,8 +73,11 @@ case ${1:-all} in
     # App Store Connect would make: 21:9 header 3840×1646, 3:2 search 3840×2560.
     OUT121=/Users/christophershannon/fuckfascists/marketing/appstore/1.2.1/creative
     mkdir -p "$OUT121"
+    # frames the header variants use (no company record on either): the map with pins, the Scan tab
+    [ -s "$MEDIA/frames/map_pins.png" ] || ffmpeg -v error -y -ss 0.2 -i "$MEDIA/../clips/60_03_map_pins.mp4" -frames:v 1 "$MEDIA/frames/map_pins.png"
+    [ -s "$MEDIA/frames/scan_tab.png" ] || ffmpeg -v error -y -ss 0.5 -i /Users/christophershannon/fuckfascists/marketing/video/captures/R11_scan_household_phone.mp4 -frames:v 1 -vf "crop=1206:2478:0:144" "$MEDIA/frames/scan_tab.png"
     npx remotion browser ensure --log error
-    for v in file brand; do
+    for v in ${HEADER_VARIANTS:-space screens clark map}; do
       npx remotion still src/index.ts "StoreHeader-$v" "$OUT121/tmp-$v.png" --chrome-mode headless-shell --log warn
       ffmpeg -v error -y -i "$OUT121/tmp-$v.png" -pix_fmt rgb24 "$OUT121/universal-$v-5244x2950.png"
       ffmpeg -v error -y -i "$OUT121/tmp-$v.png" -vf "crop=5244:2248:0:351,scale=3840:1646:flags=lanczos" -pix_fmt rgb24 "$OUT121/header-$v-3840x1646.png"

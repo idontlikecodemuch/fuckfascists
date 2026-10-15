@@ -56,3 +56,22 @@ with the 1.2.1 submission. A header video (5–30 s, 21:9, calm, looping, silent
 separate build: the kinetic cut is the opposite of Apple's advice for this slot.
 
 Sources: developer.apple.com/news/?id=ljpl7kyn · developer.apple.com/help/app-store-connect/reference/app-information/creative-assets-specifications/ · developer.apple.com/app-store/asset-best-practices/ · developer.apple.com/wwdc26/guides/app-store/ · developer.apple.com/help/app-store-connect/manage-app-information/manage-your-app-store-assets · adapty.io/blog/app-store-asset-library/ · aso.dev/app-store-connect/placements/
+
+## Round 2 (Oct 15, afternoon) — the creator's brief
+
+"We need the name FCK, Financial Contribution Kit. Way more aesthetic — more stars or blurred
+map? Falling money? Don't target any specific company. For sure want a video. Navigating
+screenshots? Pan in space? Clark?" Four stills, each one frame of the loop it would become
+(`StoreHeader` variants, `scripts/appstore.sh header`, files `*-space|screens|clark|map-*`):
+
+- **space** — the name in deep space, bills drifting. Video: slow star parallax, bills in zero-G.
+- **screens** — three generic screens (map with pins, Scan tab, Clark's memo; no record on any)
+  fanned beside the name. Video: the screens scroll slowly, the fan drifts, stars move.
+- **clark** — Clark with the name, faint blurred map behind, money. Video: stars + money drift,
+  Clark idles (blink / folder shuffle if we cut a Veo take).
+- **map** — the NYC map blurred into the backdrop, the name over it. Video: slow pan across the
+  map, money falling.
+
+Header video constraints (Apple): 21:9 3840×1646, 5–30 s, loops, silent-first, "avoid quick
+cuts and fast-moving visuals" — so slow drift, one idea, seamless loop. Search-results video is
+3:2 and always muted; the universal still is image-only.
