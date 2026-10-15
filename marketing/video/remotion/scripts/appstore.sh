@@ -91,6 +91,15 @@ case ${1:-all} in
       rm -f "$OUT121/tmp-$v.png"
     done
     ls -la "$OUT121";;
+  headervideo)
+    # Oct 15: 15 s looping header videos (21:9 3840×1646, H.264, silent) for the finalists
+    OUT121=/Users/christophershannon/fuckfascists/marketing/appstore/1.2.1/creative
+    mkdir -p "$OUT121"
+    npx remotion browser ensure --log error
+    for v in ${HEADER_VARIANTS:-f1 f1s f2 f2s}; do
+      npx remotion render src/index.ts "HeaderVideo-$v" "$OUT121/header-video-$v-3840x1646.mp4" --chrome-mode headless-shell --codec h264 --crf 18 --color-space bt709 --log warn
+      printf '%s\t%s s\n' "$OUT121/header-video-$v-3840x1646.mp4" "$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$OUT121/header-video-$v-3840x1646.mp4")"
+    done;;
   preview) preview ;;
   all) prep; tiles; preview ;;
   *) echo "usage: $0 [prep|tiles|preview|all]" >&2; exit 2 ;;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { AbsoluteFill, Img, Sequence, random, staticFile } from 'remotion';
+import { AbsoluteFill, Freeze, Img, Sequence, random, staticFile, useCurrentFrame } from 'remotion';
 import { CLARK_FULL } from '../clips';
 import { MoneyRain } from '../components/MoneyRain';
 import { Starfield } from '../components/Starfield';
@@ -39,8 +39,9 @@ export const COPY = {
 } as const;
 export type CopyId = keyof typeof COPY;
 
-const BEZEL = 30;
-const RADIUS = 200;
+const BEZEL = 28;
+const RADIUS = 130; // round 8: "too round" at 200
+const PHONE_RATIO = 2.05; // body height / width when the phone has to show whole (round 8: "too short" when clipped at the screen)
 const MAP = staticFile('media/appstore/frames/map_pins.png'); // 1080×1926, no record up
 const SCAN_TAB = staticFile('media/appstore/frames/scan_tab.png'); // 1206×2478, R11 at 0.5 s: the Scan tab, no record, status bar cropped
 const SCAN_UPC = staticFile('media/appstore/frames/scan_upc.png'); // 1206×2478, R11 at 5.9 s: a barcode filling the scanner guide (round 3: "actually use a scanning UPC screenshot")
@@ -75,14 +76,18 @@ const Headline: React.FC<{ left: number; top: number; width: number; align?: 'le
 const Secondary: React.FC<{ left: number; top: number; width: number; align?: 'left' | 'center'; size?: number }> = ({ left, top, width, align = 'center', size = 96 }) => (
   <div style={{ position: 'absolute', left, top, width, textAlign: align, fontFamily: FONT.body, fontWeight: 600, fontSize: size, lineHeight: 1.2, letterSpacing: 7, color: T.cream, textShadow: '0 0 20px rgba(232,224,208,0.25), 4px 4px 0 rgba(0,0,0,0.8)' }}>SEE WHERE THE MONEY GOES.</div>
 );
-const SubBar: React.FC<{ target: HeaderTarget; height?: number; size?: number }> = ({ target, height = 190, size = 76 }) => {
-  const bottom = target === 'header' ? SAFE.bottom : HEADER_H;
+const SubBar: React.FC<{ target: HeaderTarget; height?: number; size?: number; overhang?: number }> = ({ target, height = 240, size = 110, overhang = 0 }) => {
+  const bottom = (target === 'header' ? SAFE.bottom : HEADER_H) + overhang; // overhang: the loop pans a little, so the bar runs past the crop edge
   return (
-    <div style={{ position: 'absolute', left: 0, top: bottom - height, width: HEADER_W, height, background: 'rgba(7,11,18,0.84)', borderTop: `4px solid ${T.cyan}`, boxShadow: `0 -2px 30px rgba(122,242,255,0.25)`, display: 'flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box' }}>
-      <div style={{ fontFamily: FONT.body, fontWeight: 600, fontSize: size, letterSpacing: 2, color: T.cream, textShadow: '3px 3px 0 rgba(0,0,0,0.8)' }}>{SUB_COPY}</div>
+    <div style={{ position: 'absolute', left: 0, top: bottom - height - overhang, width: HEADER_W, height: height + overhang, background: 'rgba(7,11,18,0.84)', borderTop: `4px solid ${T.cyan}`, boxShadow: `0 -2px 30px rgba(122,242,255,0.25)`, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', boxSizing: 'border-box', paddingTop: (height - size * 1.2) / 2 }}>
+      <div style={{ fontFamily: FONT.body, fontWeight: 600, fontSize: size, lineHeight: 1.2, letterSpacing: 2, color: T.cream, textShadow: '3px 3px 0 rgba(0,0,0,0.8)' }}>{SUB_COPY}</div>
     </div>
   );
 };
+/** F2's sub copy sits under the phones instead of on a bar (creator, round 8) */
+const SubUnder: React.FC<{ left: number; top: number; width: number; size?: number }> = ({ left, top, width, size = 100 }) => (
+  <div style={{ position: 'absolute', left, top, width, textAlign: 'center', fontFamily: FONT.body, fontWeight: 600, fontSize: size, lineHeight: 1.25, letterSpacing: 2, color: T.cream, textShadow: '0 0 20px rgba(232,224,208,0.2), 4px 4px 0 rgba(0,0,0,0.85)' }}>{SUB_COPY}</div>
+);
 
 /** the blurred map as a backdrop */
 const BlurredMap: React.FC<{ opacity?: number; blur?: number }> = ({ opacity = 0.7, blur = 30 }) => (
@@ -144,28 +149,63 @@ const Clark: React.FC<{ left: number; top: number; width: number }> = ({ left, t
  * so a rotated phone no longer swings a full-height black slab out below the crop (the "weird
  * drop shadow" on mix-c), and the shadow is a tight contact shadow.
  */
-const Phone: React.FC<{ src: string; aspect: number; left: number; top: number; width: number; rotate?: number; cut?: number }> = ({ src, aspect, left, top, width, rotate = 0, cut = 1 }) => {
+/** `bleed`: the body runs to the canvas bottom (the crop edge cuts it like a real device coming up from below); otherwise a whole phone at PHONE_RATIO with a dark chin under a clipped screen. `bob`: vertical offset for the loop. */
+const Phone: React.FC<{ src: string; aspect: number; left: number; top: number; width: number; rotate?: number; cut?: number; bleed?: boolean; bob?: number }> = ({ src, aspect, left, top, width, rotate = 0, cut = 1, bleed = false, bob = 0 }) => {
   const screenH = (width / aspect) * cut;
+  const bodyH = bleed ? HEADER_H : Math.max(screenH, width * PHONE_RATIO) + BEZEL * 2;
   return (
-    <div style={{ position: 'absolute', left: left - BEZEL, top: top - BEZEL, width: width + BEZEL * 2, height: screenH + BEZEL * 2, borderRadius: RADIUS, background: '#0B0D12', transform: `rotate(${rotate}deg)`, transformOrigin: '50% 100%', boxShadow: '0 0 0 4px #2A2D30, 0 0 0 6px rgba(0,0,0,0.6), 0 30px 70px rgba(0,0,0,0.55)' }}>
-      <div style={{ position: 'absolute', left: BEZEL, top: BEZEL, width, height: screenH, borderRadius: RADIUS - BEZEL, overflow: 'hidden', background: T.void }}>
+    <div style={{ position: 'absolute', left: left - BEZEL, top: top - BEZEL + bob, width: width + BEZEL * 2, height: bodyH, borderRadius: RADIUS, background: '#0B0D12', transform: `rotate(${rotate}deg)`, transformOrigin: '50% 100%', boxShadow: '0 0 0 4px #2A2D30, 0 0 0 6px rgba(0,0,0,0.6), 0 30px 70px rgba(0,0,0,0.55)' }}>
+      <div style={{ position: 'absolute', left: BEZEL, top: BEZEL, width, height: bleed ? bodyH : screenH, borderRadius: RADIUS - BEZEL, overflow: 'hidden', background: T.void }}>
         <Img src={src} style={{ display: 'block', width, height: width / aspect }} />
       </div>
     </div>
   );
 };
 
-export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; target?: HeaderTarget }> = ({ variant, copy, target = 'header' }) => {
+/** Money for the loops: every bill's fall, sway and spin are whole cycles of `loop` frames, so frame `loop` equals frame 0. */
+const LoopMoney: React.FC<{ count: number; seed: string; loop: number; frame: number }> = ({ count, seed, loop, frame }) => {
+  const areaW = HEADER_W / MONEY_SCALE;
+  const areaH = HEADER_H / MONEY_SCALE;
+  const u = frame / loop;
+  return (
+    <LayoutProvider layout={FULL}>
+      <div style={{ position: 'absolute', left: 0, top: 0, width: areaW, height: areaH, transform: `scale(${MONEY_SCALE})`, transformOrigin: '0 0', pointerEvents: 'none' }}>
+        {Array.from({ length: count }, (_, i) => {
+          const r = (k: string) => random(`${seed}-loop-${i}-${k}`);
+          const sc = r('s') > 0.5 ? 4 : 3;
+          const w = 24 * sc;
+          const h = 17 * sc;
+          const cycles = 1 + Math.floor(r('k') * 2); // 1 or 2 falls per loop
+          const span = areaH + h * 2;
+          const y = (((u * cycles + r('p')) % 1) * span) - h;
+          const m = 1 + Math.floor(r('m') * 3);
+          const x = r('x') * (areaW + 80) - 40 + Math.sin(2 * Math.PI * (u * m + r('q'))) * (18 + r('a') * 40);
+          const rot = (r('r') - 0.5) * 70 + Math.sin(2 * Math.PI * (u * (1 + Math.floor(r('n') * 2)) + r('o'))) * 18;
+          return <Img key={i} src={staticFile(`assets/cash_${Math.floor(r('i') * 4) % 4}.png`)} style={{ position: 'absolute', left: Math.round(x), top: Math.round(y), width: w, height: h, imageRendering: 'pixelated', transform: `rotate(${Math.round(rot)}deg)`, filter: 'drop-shadow(1px 2px 0 rgba(0,0,0,0.45))' }} />;
+        })}
+      </div>
+    </LayoutProvider>
+  );
+};
+
+/** `loop` (frames): animate for the header video — frozen base stars, drifting deep stars and map, bobbing phones, periodic money. */
+export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; target?: HeaderTarget; loop?: number }> = ({ variant, copy, target = 'header', loop }) => {
   useFonts();
+  const frame = useCurrentFrame();
+  const ph = loop ? (2 * Math.PI * frame) / loop : 0;
+  const bob = (phase: number): number => (loop ? Math.round(10 * Math.sin(ph + phase)) : 0);
+  const drift = loop ? `translate(${Math.round(22 * Math.sin(ph + 1))}px, ${Math.round(30 * Math.sin(ph))}px)` : undefined;
+  const mapDrift = loop ? `translate(${Math.round(40 * Math.sin(ph + 0.5))}px, ${Math.round(26 * Math.cos(ph))}px)` : undefined;
+  const money = (count: number, seed: string): React.ReactNode => (loop ? <LoopMoney count={count} seed={seed} loop={loop} frame={frame} /> : <Money count={count} seed={seed} />);
   return (
     <AbsoluteFill style={{ width: HEADER_W, height: HEADER_H, backgroundColor: T.void, overflow: 'hidden' }}>
-      <Starfield />
+      {loop ? <Freeze frame={0}><Starfield /></Freeze> : <Starfield />}
       {variant === 'map' ? <BlurredMap /> : null}
       {variant === 'clark' || variant === 'mix-a' ? <BlurredMap opacity={0.26} blur={44} /> : null}
       {variant === 'mix-b' || variant === 'mix-d' || variant === 'mix-b2' ? <BlurredMap opacity={0.45} blur={36} /> : null}
       {variant === 'mix-c' || variant === 'mix-c2' ? <BlurredMap opacity={0.7} blur={30} /> : null}
-      {variant === 'l1' || variant === 'l2' || variant === 'l3' || variant === 'l4' || variant === 'f1' || variant === 'f2' ? <BlurredMap opacity={0.5} blur={34} /> : null}
-      <DeepSpace count={variant === 'space' ? 1400 : variant === 'f1s' || variant === 'f2s' ? 2600 : 800} intense={variant === 'f1s' || variant === 'f2s'} />
+      {variant === 'l1' || variant === 'l2' || variant === 'l3' || variant === 'l4' || variant === 'f1' || variant === 'f2' ? <AbsoluteFill style={{ transform: mapDrift }}><BlurredMap opacity={0.5} blur={34} /></AbsoluteFill> : null}
+      <AbsoluteFill style={{ transform: drift }}><DeepSpace count={variant === 'space' ? 1400 : variant === 'f1s' || variant === 'f2s' ? 2600 : 800} intense={variant === 'f1s' || variant === 'f2s'} /></AbsoluteFill>
       {variant === 'space' ? (
         <>
           <Money count={14} seed="space" />
@@ -213,25 +253,26 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
       {variant === 'f1' || variant === 'f1s' ? (
         <>
           <Clark left={260} top={780} width={1250} />
-          <Phone src={MAP} aspect={1080 / 1926} left={1800} top={1500} width={760} rotate={-10} />
-          <Phone src={SCAN_COKE} aspect={1206 / 2478} cut={0.86} left={2860} top={1380} width={760} rotate={0} />
-          <Phone src={TRACK_GRID} aspect={1206 / 2478} cut={0.86} left={3920} top={1500} width={760} rotate={10} />
+          <Phone src={MAP} aspect={1080 / 1926} left={1800} top={1500} width={760} rotate={-10} bleed bob={bob(0)} />
+          <Phone src={SCAN_COKE} aspect={1206 / 2478} left={2860} top={1380} width={760} rotate={0} bleed bob={bob(2.1)} />
+          <Phone src={TRACK_GRID} aspect={1206 / 2478} left={3920} top={1500} width={760} rotate={10} bleed bob={bob(4.2)} />
           <Headline left={1640} top={400} width={3195} />
-          <Money count={12} seed={variant} />
+          {money(12, variant)}
           <Secondary left={1640} top={1130} width={3195} />
-          <SubBar target={target} />
+          <SubBar target={target} overhang={loop ? 80 : 0} />
         </>
       ) : null}
       {variant === 'f2' || variant === 'f2s' ? (
+        // round 8: Clark further left, bigger secondary, sub copy under the phones (no bar), whole phones at real proportions
         <>
-          <Clark left={330} top={640} width={1150} />
-          <Phone src={MAP} aspect={1080 / 1926} left={3200} top={700} width={640} rotate={-8} />
-          <Phone src={SCAN_COKE} aspect={1206 / 2478} cut={0.86} left={3860} top={600} width={640} rotate={0} />
-          <Phone src={TRACK_GRID} aspect={1206 / 2478} cut={0.86} left={4520} top={700} width={600} rotate={8} />
-          <Headline left={1560} top={480} width={1520} align="left" fck={220} name={170} rows={3} />
-          <Money count={12} seed={variant} />
-          <Secondary left={1560} top={1330} width={1700} align="left" size={84} />
-          <SubBar target={target} />
+          <Clark left={180} top={640} width={1100} />
+          <Phone src={MAP} aspect={1080 / 1926} left={3050} top={560} width={700} rotate={-8} bob={bob(0)} />
+          <Phone src={SCAN_COKE} aspect={1206 / 2478} left={3740} top={480} width={700} rotate={0} bob={bob(2.1)} />
+          <Phone src={TRACK_GRID} aspect={1206 / 2478} cut={0.87} left={4430} top={560} width={660} rotate={8} bob={bob(4.2)} />
+          <Headline left={1380} top={480} width={1600} align="left" fck={220} name={170} rows={3} />
+          {money(12, variant)}
+          <Secondary left={1380} top={1330} width={1700} align="left" size={110} />
+          <SubUnder left={3000} top={2060} width={2100} size={100} />
         </>
       ) : null}
       {/* Round 6 — copy locked to c1, third line 80 px ("the map/track copy is too small"), four layouts */}
