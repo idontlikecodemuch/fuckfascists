@@ -22,7 +22,7 @@ import { frameSrc } from './tiles';
 export const HEADER_W = 5244;
 export const HEADER_H = 2950;
 export const SAFE = { left: 410, top: 351, right: 4835, bottom: 2599 };
-export type HeaderVariant = 'space' | 'screens' | 'clark' | 'map' | 'mix-a' | 'mix-b' | 'mix-c' | 'mix-d' | 'mix-b2' | 'mix-c2';
+export type HeaderVariant = 'space' | 'screens' | 'clark' | 'map' | 'mix-a' | 'mix-b' | 'mix-c' | 'mix-d' | 'mix-b2' | 'mix-c2' | 'l1' | 'l2' | 'l3' | 'l4';
 /**
  * Round 5 copy options (creator: "a little more copy, secondary a little larger"). line2 is the
  * secondary (uppercase, tracked), line3 the new third line (sentence case). Apple: no price, no
@@ -140,6 +140,7 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId }> = 
       {variant === 'clark' || variant === 'mix-a' ? <BlurredMap opacity={0.26} blur={44} /> : null}
       {variant === 'mix-b' || variant === 'mix-d' || variant === 'mix-b2' ? <BlurredMap opacity={0.45} blur={36} /> : null}
       {variant === 'mix-c' || variant === 'mix-c2' ? <BlurredMap opacity={0.7} blur={30} /> : null}
+      {variant === 'l1' || variant === 'l2' || variant === 'l3' || variant === 'l4' ? <BlurredMap opacity={0.5} blur={34} /> : null}
       <DeepSpace count={variant === 'space' ? 1400 : 800} />
       {variant === 'space' ? (
         <>
@@ -182,6 +183,51 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId }> = 
           <Clark left={3950} top={900} width={1250} />
           <Money count={10} seed="mix-b" />
           <Name2 left={SAFE.left} top={420} width={SAFE.right - SAFE.left} align="center" fck={240} name={200} />
+        </>
+      ) : null}
+      {/* Round 6 — copy locked to c1, third line 80 px ("the map/track copy is too small"), four layouts */}
+      {variant === 'l1' ? (
+        // L1 — fan under the name (B2 refined): Clark far left, name centred, map / Coke / Track fanned along the bottom
+        <>
+          <Clark left={260} top={1100} width={1250} />
+          <Phone src={MAP} aspect={1080 / 1926} left={1800} top={1640} width={760} rotate={-10} />
+          <Phone src={SCAN_COKE} aspect={1206 / 2478} cut={0.86} left={2860} top={1520} width={760} rotate={0} />
+          <Phone src={TRACK} aspect={1206 / 2622} cut={0.87} left={3920} top={1640} width={760} rotate={10} />
+          <Money count={10} seed="l1" />
+          <Name2 left={1640} top={470} width={3195} align="center" fck={240} name={200} copy="c1" line2Size={96} line3Size={80} />
+        </>
+      ) : null}
+      {variant === 'l2' ? (
+        // L2 — name left, Clark under it, the three screens fanned at right
+        <>
+          <Name2 left={520} top={640} width={2050} fck={240} name={200} copy="c1" line2Size={92} line3Size={76} />
+          <Clark left={420} top={1760} width={1150} />
+          <Phone src={MAP} aspect={1080 / 1926} left={2760} top={780} width={720} rotate={-8} />
+          <Phone src={SCAN_COKE} aspect={1206 / 2478} cut={0.86} left={3500} top={640} width={720} rotate={0} />
+          <Phone src={TRACK} aspect={1206 / 2622} cut={0.87} left={4240} top={780} width={700} rotate={8} />
+          <Money count={10} seed="l2" />
+        </>
+      ) : null}
+      {variant === 'l3' ? (
+        // L3 — symmetric: screens on the outside, name centred, Clark centred under it
+        <>
+          <Phone src={MAP} aspect={1080 / 1926} left={500} top={900} width={760} rotate={-9} />
+          <Phone src={SCAN_COKE} aspect={1206 / 2478} cut={0.86} left={3720} top={820} width={740} rotate={4} />
+          <Phone src={TRACK} aspect={1206 / 2622} cut={0.87} left={4440} top={1040} width={700} rotate={11} />
+          <Clark left={2050} top={1560} width={1150} />
+          <Money count={10} seed="l3" />
+          <Name2 left={1300} top={420} width={2644} align="center" fck={240} name={200} copy="c1" line2Size={92} line3Size={74} />
+        </>
+      ) : null}
+      {variant === 'l4' ? (
+        // L4 — the fan at left under the name, Clark at right, bigger screens
+        <>
+          <Phone src={MAP} aspect={1080 / 1926} left={850} top={1560} width={820} rotate={-12} />
+          <Phone src={SCAN_COKE} aspect={1206 / 2478} cut={0.86} left={1860} top={1420} width={820} rotate={-3} />
+          <Phone src={TRACK} aspect={1206 / 2622} cut={0.87} left={2870} top={1560} width={820} rotate={7} />
+          <Clark left={3900} top={760} width={1300} />
+          <Money count={10} seed="l4" />
+          <Name2 left={SAFE.left} top={440} width={3500} align="center" fck={240} name={200} copy="c1" line2Size={96} line3Size={80} />
         </>
       ) : null}
       {variant === 'mix-b2' ? (

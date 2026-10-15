@@ -109,3 +109,12 @@ StoreHeader.tsx: a larger uppercase secondary line plus a sentence-case third li
 - **c3** EVERY AVOID COUNTS. / Tap, scan, track. Random drop between Friday and Saturday.
 - **c4** NO ACCOUNTS. NO TRACKING. / Public records on your phone. Nothing leaves it.
 Rules kept: no price, no URL, no party words, the drop line verbatim, 4+ safe.
+
+## Round 6 (Oct 15, night) — copy locked, four layouts
+
+Copy: **SEE WHERE THE MONEY GOES.** / Tap a business. Scan a barcode. Track the platforms you
+skip. (c1), third line 74–80 px ("the map/track copy is too small"). Layouts `*-l1..l4-*`:
+- **L1** fan under the name: Clark far left, name centred, map / Coke / Track along the bottom (B2 refined, fan lowered).
+- **L2** name left with Clark under it, the three screens fanned at right.
+- **L3** symmetric: map at far left, Coke + Track at far right, name centred, Clark centred under it.
+- **L4** fan at left under the name, bigger screens, Clark at right.
