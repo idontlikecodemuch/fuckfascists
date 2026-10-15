@@ -25,7 +25,7 @@ export const STING = 36;
 /** absolute frame of `beat` (0–3, fractions ok) in bar `bar` (bars count from 2 after the sting) */
 export const b = (bar: number, beat = 0): number => STING + (bar - 2) * BAR + Math.round(beat * BEAT);
 export const RELEASE_FRAMES = b(21); // 948 = 31.6 s
-export const MUSIC = 'media/music/fck_bed_drive_32s.mp3';
+export const MUSIC = 'media/music/fck_bed_hardcore_32s.mp3'; // Oct 15: hardcore over the same grid (compose.py --style hardcore)
 
 /** Brand product pages, captured tall in the browser (scripts/web-captures.sh): "scrolling the products on a website". */
 const WEB = webCaptures as Record<string, { file: string; w: number; h: number }>;
@@ -83,7 +83,7 @@ export const Release: React.FC = () => {
       <AbsoluteFill style={{ background: T.void }}>
         <Starfield />
         {nudgeOn ? <AbsoluteFill style={{ background: 'rgba(7,11,18,0.55)' }} /> : null}
-        <AbsoluteFill style={{ transform: `translate(${shake.x}px, ${shake.y}px)` }}>
+        <AbsoluteFill style={{ transform: `translate(${shake.x}px, ${shake.y}px) scale(${shake.zoom})`, transformOrigin: '50% 45%' }}>
           {/* OPEN — the sting */}
           <Slam at={0} until={b(2)} text="UPDATE 1.2" size={150} color={T.cyan} top={700} />
           <Slam at={14} until={b(2)} text="NEW FILES." size={200} top={870} />
@@ -156,6 +156,10 @@ export const Release: React.FC = () => {
           <Slam at={b(19, 2)} text={'NO ADS · NO TRACKING\nFCKapp.com · @fckfascists.app'} size={36} color={T.cyan} font="body" weight={500} letterSpacing={5} lineHeight={1.6} top={1130} glow={false} />
           <Slam at={b(20)} text="IT'S YOUR MOVE 🤘🏽" size={72} color="#FFFFFF" top={1300} />
         </AbsoluteFill>
+        {/* white flash frames on the heavy hits */}
+        {[0, 14, b(4, 1), b(7, 1), b(9, 2), b(10, 3), b(14), b(15, 2), b(18), b(19)].map((f) => (
+          <Flash key={`fl-${f}`} at={f} frames={3} peak={0.28} />
+        ))}
         {SECTIONS.map((f) => (
           <Sequence key={`crt-${f}`} from={f - 1} durationInFrames={3} name="CRT blink">
             <CrtBlink />

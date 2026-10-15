@@ -20,12 +20,19 @@ export const hexA = (hex: string, a: number): string => {
   return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`;
 };
 
+/**
+ * Hard slam (creator, Oct 15: less bounce, "more like a slam"): 4 frames in on a cubic
+ * ease-out, then a one-step settle (0.97 → 1 over 3 frames) instead of a spring overshoot.
+ */
 const useAt = (at: number, until?: number) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const on = frame >= at && (until == null || frame < until);
-  const s = spring({ frame: frame - at, fps, config: { damping: 13, stiffness: 260, mass: 0.7 } });
-  return { frame, fps, on, s, t: frame - at };
+  const t = frame - at;
+  const on = t >= 0 && (until == null || frame < until);
+  const s = t < 0 ? 0 : interpolate(t, [0, 4], [0, 1], { extrapolateRight: 'clamp', easing: Easing.out(Easing.cubic) });
+  const settle = t < 4 ? 1 : interpolate(t, [4, 7], [0.97, 1], { extrapolateRight: 'clamp' });
+  const fade = t < 0 ? 0 : Math.min(1, (t + 1) / 2);
+  return { frame, fps, on, s, settle, fade, t };
 };
 
 export type SlamProps = {
@@ -47,9 +54,9 @@ export type SlamProps = {
 };
 /** A line of display type that slams in (scale 1.6 → 1) and holds until `until`. */
 export const Slam: React.FC<SlamProps> = ({ at, until, text, size, color = T.gold, top, left = 60, width = W - 120, align = 'center', font = 'display', weight = 400, letterSpacing = 2, rotate = 0, lineHeight = 1.0, glow = true }) => {
-  const { on, s } = useAt(at, until);
+  const { on, s, settle, fade } = useAt(at, until);
   if (!on) return null;
-  const scale = 1.6 - 0.6 * s;
+  const scale = (1.7 - 0.7 * s) * settle;
   return (
     <div
       style={{
@@ -68,7 +75,7 @@ export const Slam: React.FC<SlamProps> = ({ at, until, text, size, color = T.gol
         textShadow: glow ? `0 0 24px ${hexA(color, 0.55)}, 0 0 70px ${hexA(color, 0.25)}, 6px 6px 0 rgba(0,0,0,0.85)` : '5px 5px 0 rgba(0,0,0,0.85)',
         transform: `rotate(${rotate}deg) scale(${scale})`,
         transformOrigin: '50% 50%',
-        opacity: Math.min(1, s * 2),
+        opacity: fade,
       }}
     >
       {text}
@@ -82,7 +89,7 @@ export const CountUp: React.FC<{ at: number; until?: number; to: number; frames:
   if (!on) return null;
   const v = Math.round(interpolate(t, [0, frames], [0, to], { extrapolateRight: 'clamp', easing: Easing.out(Easing.cubic) }));
   const land = spring({ frame: frame - (at + frames), fps, config: { damping: 10, stiffness: 300, mass: 0.6 } });
-  const scale = t < frames ? 1.15 - 0.15 * (t / frames) : 1 + 0.12 * (1 - land);
+  const scale = t < frames ? 1.15 - 0.15 * (t / frames) : 1 + 0.06 * (1 - land);
   return (
     <div
       style={{
@@ -116,12 +123,11 @@ export const Strike: React.FC<{ at: number; until?: number; top: number; left: n
 
 /** Rubber stamp: bordered word, slams down from 2.4× with a tilt. */
 export const Stamp: React.FC<{ at: number; until?: number; text: string; top: number; left?: number; width?: number; color?: string; size?: number; rotate?: number }> = ({ at, until, text, top, left = 120, width = W - 240, color = RED, size = 110, rotate = -9 }) => {
-  const { frame, fps, on } = useAt(at, until);
+  const { on, s, settle, fade } = useAt(at, until);
   if (!on) return null;
-  const s = spring({ frame: frame - at, fps, config: { damping: 11, stiffness: 320, mass: 0.6 } });
-  const scale = 2.4 - 1.4 * s;
+  const scale = (2.6 - 1.6 * s) * settle;
   return (
-    <div style={{ position: 'absolute', top, left, width, display: 'flex', justifyContent: 'center', transform: `rotate(${rotate}deg) scale(${scale})`, opacity: Math.min(1, s * 2.5) }}>
+    <div style={{ position: 'absolute', top, left, width, display: 'flex', justifyContent: 'center', transform: `rotate(${rotate - 6 * (1 - s)}deg) scale(${scale})`, opacity: fade }}>
       <div
         style={{
           border: `10px solid ${color}`,
@@ -188,10 +194,9 @@ export const Barcode: React.FC<{ at: number; until?: number; top: number; left?:
 
 /** One CEO sprite, neutral frame, cropped to a bust in a gold-framed tile; pops in with a tilt. */
 export const SpriteBust: React.FC<{ at: number; until?: number; id: string; label?: string; left: number; top: number; size: number; crop?: number }> = ({ at, until, id, label, left, top, size, crop = 0.62 }) => {
-  const { frame, fps, on } = useAt(at, until);
+  const { on, s, settle, fade } = useAt(at, until);
   const sheet = SHEETS[id];
   if (!on || !sheet) return null;
-  const s = spring({ frame: frame - at, fps, config: { damping: 12, stiffness: 300, mass: 0.6 } });
   const f = sheet.frames.varA_neutral ?? { col: 0, row: 0 };
   const sc = size / (sheet.frameHeight * crop);
   const sheetW = sheet.grid.cols * sheet.frameWidth * sc;
@@ -199,7 +204,7 @@ export const SpriteBust: React.FC<{ at: number; until?: number; id: string; labe
   const offX = (size - sheet.frameWidth * sc) / 2 - f.col * sheet.frameWidth * sc;
   const offY = -f.row * sheet.frameHeight * sc;
   return (
-    <div style={{ position: 'absolute', left, top, width: size, transform: `scale(${1.5 - 0.5 * s}) rotate(${(1 - s) * 8}deg)`, opacity: Math.min(1, s * 2) }}>
+    <div style={{ position: 'absolute', left, top, width: size, transform: `scale(${(1.6 - 0.6 * s) * settle}) rotate(${(1 - s) * 10}deg)`, opacity: fade }}>
       <div style={{ width: size, height: size, boxSizing: 'border-box', overflow: 'hidden', border: `4px solid ${T.gold}`, background: T.panel, boxShadow: `0 0 18px ${hexA(T.gold, 0.35)}`, position: 'relative' }}>
         <Img src={staticFile(`assets/sprites/${sheet.file}`)} style={{ position: 'absolute', left: offX, top: offY, width: sheetW, height: sheetH, imageRendering: 'pixelated' }} />
       </div>
@@ -212,17 +217,16 @@ export const SpriteBust: React.FC<{ at: number; until?: number; id: string; labe
 
 /** The app's red "no sprite" X (assets/pixel/scorecard/no_sprite_x.png), huge, slamming in with a red flash. */
 export const BigX: React.FC<{ at: number; until?: number; size: number; top: number }> = ({ at, until, size, top }) => {
-  const { frame, fps, on, t } = useAt(at, until);
+  const { on, s, settle, fade, t } = useAt(at, until);
   if (!on) return null;
-  const s = spring({ frame: frame - at, fps, config: { damping: 9, stiffness: 380, mass: 0.7 } });
-  const scale = 3.2 - 2.2 * s;
-  const flash = interpolate(t, [0, 12], [0.75, 0], { extrapolateRight: 'clamp' });
+  const scale = (3.4 - 2.4 * s) * settle;
+  const flash = interpolate(t, [0, 12], [0.8, 0], { extrapolateRight: 'clamp' });
   return (
     <>
       <AbsoluteFill style={{ background: `radial-gradient(circle at 50% ${((top + size / 2) / H) * 100}%, ${hexA(RED, 0.9)}, transparent 60%)`, opacity: flash }} />
       <Img
         src={staticFile('assets/no_sprite_x.png')}
-        style={{ position: 'absolute', left: (W - size) / 2, top, width: size, height: size, imageRendering: 'pixelated', transform: `scale(${scale})`, opacity: Math.min(1, s * 3), filter: `drop-shadow(0 0 40px ${hexA(RED, 0.7)})` }}
+        style={{ position: 'absolute', left: (W - size) / 2, top, width: size, height: size, imageRendering: 'pixelated', transform: `scale(${scale})`, opacity: fade, filter: `drop-shadow(0 0 40px ${hexA(RED, 0.7)})` }}
       />
     </>
   );
@@ -253,20 +257,23 @@ export const RecordFan: React.FC<{ at: number; until?: number; files: string[]; 
   );
 };
 
-/** Screen shake summed over a list of [frame, px] hits (9-frame decay each). */
-export const useHits = (hits: Array<[frame: number, px: number]>, dur = 9): { x: number; y: number } => {
+/** Screen shake + punch zoom summed over a list of [frame, px] hits (8-frame decay each; the zoom caps at 5 %). */
+export const useHits = (hits: Array<[frame: number, px: number]>, dur = 8): { x: number; y: number; zoom: number } => {
   const frame = useCurrentFrame();
   let x = 0;
   let y = 0;
+  let zoom = 1;
   for (const [h, px] of hits) {
     const d = frame - h;
     if (d >= 0 && d < dur) {
-      const amp = px * (1 - d / dur);
+      const k = 1 - d / dur;
+      const amp = px * 1.3 * k;
       x += (random(`hx-${h}-${frame}`) - 0.5) * 2 * amp;
       y += (random(`hy-${h}-${frame}`) - 0.5) * 2 * amp;
+      zoom = Math.max(zoom, 1 + Math.min(0.05, px / 500) * k);
     }
   }
-  return { x: Math.round(x), y: Math.round(y) };
+  return { x: Math.round(x), y: Math.round(y), zoom };
 };
 
 /** Full-frame colour flash decaying over `frames`. */
@@ -285,7 +292,7 @@ export const Flash: React.FC<{ at: number; color?: string; frames?: number; peak
 export const WebScroll: React.FC<{ at: number; until: number; file: string; w: number; h: number; top: number; frameW: number; frameH: number; rotate?: number; left?: number }> = ({ at, until, file, w, h, top, frameW, frameH, rotate = -6, left }) => {
   const { frame, fps, on, t } = useAt(at, until);
   if (!on) return null;
-  const s = spring({ frame: frame - at, fps, config: { damping: 14, stiffness: 180, mass: 0.9 } });
+  const s = spring({ frame: frame - at, fps, config: { damping: 20, stiffness: 180, mass: 0.9 } });
   const scale = frameW / w;
   const imgH = h * scale;
   const travel = Math.max(0, imgH - frameH);
