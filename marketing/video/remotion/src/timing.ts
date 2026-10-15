@@ -100,7 +100,7 @@ export const FULL_OVERRIDES_S: Record<string, number> = {
   'c30-03-1': 4.4, // tap, file up at 0.95 s, stamp at 2.75 s
   'c30-05-1': 3.7, // camera, file up at 1.4 s
   'c30-04-1': 3.7, // keeps the 30 under thirty seconds
-  'cnew30-05-1': 3.4, // stand-in clip is 3.5 s (real N1 capture lifts this)
+  'cnew30-05-1': 4.4, // R11 scan_pg is 4.6 s: bottle, lookup, record, AVOID at 3.3 s
   'cnew30-07-1': 4.0, // stand-in map clip is 4.0 s
 };
 /** with VO the words land with the voice: typing spans the audio minus this tail */

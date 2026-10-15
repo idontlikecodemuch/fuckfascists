@@ -1,21 +1,26 @@
-# App Store — What's New, 1.2.1 (build 12)
+# App Store — What's New, 1.2.1 (build 13)
 
 Clark voice, corporate neutral (voice framework §App Store listing): no FCK, no emoji, no
 party claims, nothing promised that isn't in the build. Fact-checked against
-`docs/releases/1.2.1.md` on `release/1.2.1` (Oct 14). Household barcodes are NOT mentioned
+`docs/releases/1.2.1.md` on `release/1.2.1` (Oct 14). Household barcodes were NOT mentioned on Oct 14
 (moved to 1.2.2). Close focus confirmed on device by the owner Oct 14 ("Scanner works!"), so
 the scanner bullet stays. Headline fixed the same day: the nudge lands Monday OR Tuesday, so
 not "A Monday nudge.".
+Oct 15 (build 13): the household-barcodes bullet is folded in (recommended to the owner via the
+release session; build 13 ships 62 verified prefixes and the Walmart store brands), headline
+"Scan the house." Order mirrors the headline: files, faces, the house.
 
 ---
 
-Fresh files. More faces. An early-week nudge.
+Fresh files. More faces. Scan the house.
 
 • FEC records refreshed October 12, 2026.
 
 • 49 more CEOs now have their own pixel-art sprite — on business cards and your scorecard.
 
 • Anyone still without a sprite gets a red pixel X on the card, not an empty slot.
+
+• Scan the household stuff: Windex, Clorox, OxiClean, Glad and Hefty now match their owners by barcode, and Walmart's Great Value and Equate show Walmart.
 
 • A new early-week nudge lands Monday or Tuesday — "Case of the Mondays?", "It's Taco Tuesday" — and opens the tab it's talking about. Never during quiet hours.
 
@@ -27,23 +32,12 @@ No accounts. No tracking. Your activity stays on your device.
 
 ---
 
+
 Facts used: 49 new sprites (192 → 241; none of them run a tracked platform, so they appear on business cards and the scorecard, not the Track arena — dev session, Oct 14); red pixel X for figures without a sprite on the
 shared card and live preview; early-week local notification Mon/Tue 10am–6pm local, never in
 quiet hours, eight owner-written lines, tap routes to the Map or Track tab; Track header fix
 verified on the iOS 27 simulator; close-range focus via the ultra-wide switch-over on Pro and
 dual-wide iPhones (owner confirmed on a device Oct 14); FEC
 refresh dated 2026-10-12 on main. 641 characters, well under the 4,000 limit.
-
----
-
-Proposed addition for build 13 (Oct 14 evening) — NOT in the store text above until the owner
-says so. Build 13 ships 62 verified household barcode prefixes (Windex, Clorox, OxiClean,
-Zicam, Vicks/NyQuil, Glad, Hefty and more) and moves Walmart's store brands (Great Value,
-Equate) to Walmart, which the "moved to 1.2.2" note at the top predates. If he wants it:
-
-• Scan the household stuff: Windex, Clorox, OxiClean, Glad and Hefty now match their owners by barcode, and Walmart's Great Value and Equate show Walmart.
-
-Headline option if the bullet goes in: "Fresh files. More faces. Scan the house." Tylenol,
-Listerine and Neutrogena still return no match (Kenvue lands in 1.2.2), so the bullet names
-only brands that scan.
-
+Oct 15: 792 characters with the household bullet. Promotional text proposed for 1.2.1
+(154 chars, pitches the whole app per the owner's rule): "Fresh FEC files, household barcodes, random Friday–Saturday drops. Tap a business, scan a barcode, track the platforms you skip. No accounts. No tracking."

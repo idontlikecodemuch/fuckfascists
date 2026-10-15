@@ -91,7 +91,7 @@ export const Release: React.FC = () => {
         {nudgeOn ? <AbsoluteFill style={{ background: 'rgba(7,11,18,0.55)' }} /> : null}
         <AbsoluteFill style={{ transform: `translate(${shake.x}px, ${shake.y}px) scale(${shake.zoom})`, transformOrigin: '50% 45%' }}>
           {/* OPEN — branding + hook in the first 2.8 s: logo slam with money, the line; then UPDATE 1.2 */}
-          <MoneyRain burst count={44} seed="open" startFrame={0} />
+          <MoneyRain burst count={22} seed="open" startFrame={0} />
           <Logo at={0} until={UPDATE} top={430} width={820} />
           <Slam at={12} until={UPDATE} text={'SEE WHERE\nTHE MONEY GOES.'} size={104} top={1120} />
           <Slam at={UPDATE} until={b(2)} text="UPDATE 1.2" size={150} color={T.cyan} top={700} />
@@ -112,7 +112,7 @@ export const Release: React.FC = () => {
           <WebScroll at={b(4, 1)} until={b(6)} file={WEB.windex.file} w={WEB.windex.w} h={WEB.windex.h} top={1240} frameW={640} frameH={760} rotate={-6} />
           <WebScroll at={b(6)} until={b(8)} file={WEB.clorox.file} w={WEB.clorox.w} h={WEB.clorox.h} top={1240} frameW={640} frameH={760} rotate={5} />
           <Stamp at={b(7, 1)} until={b(8)} text="ON FILE" top={1560} />
-          <MoneyRain burst count={26} seed="stamp" startFrame={b(7, 1)} />
+          <MoneyRain burst count={14} seed="stamp" startFrame={b(7, 1)} />
 
           {/* OWNERS — bars 8–9 */}
           <Slam at={b(8)} until={b(10)} text={'BRANDS FOLLOW\nTHEIR OWNERS.'} size={88} color={T.cream} top={420} />
@@ -120,10 +120,10 @@ export const Release: React.FC = () => {
           <Strike at={b(9)} until={b(10)} top={812} left={110} width={860} rotate={-2} />
           <Slam at={b(9, 1)} until={b(10)} text="FILED UNDER" size={48} color={T.cyan} font="body" weight={600} letterSpacing={6} top={920} glow={false} />
           <Slam at={b(9, 2)} until={b(10)} text="MAGNUM" size={190} top={990} />
-          <MoneyRain burst count={26} seed="magnum" startFrame={b(9, 2)} />
+          <MoneyRain burst count={14} seed="magnum" startFrame={b(9, 2)} />
 
           {/* SCAN — bars 10–11 (mixed media: the real barcode lock for the last two beats) */}
-          <ClipBurst at={b(11, 2)} until={b(12)} file="30_05_scan" startFrom={0.7} align="bottom" dim={0.5} />
+          <ClipBurst at={b(11)} until={b(12)} file="scan_clorox" startFrom={1.0} align="bottom" dim={0.45} />
           <Barcode at={b(10)} until={b(12)} top={520} sweepAt={b(10, 1)} lockAt={b(10, 3)} />
           <Slam at={b(10, 3)} until={b(12)} text="SHORT BARCODES." size={90} top={940} />
           <Slam at={b(11, 1)} until={b(12)} text="CLOSER FOCUS." size={100} color={T.cyan} top={1080} />
@@ -134,14 +134,14 @@ export const Release: React.FC = () => {
             <SpriteBust key={id} at={b(12) + i * 5} until={b(15)} id={id} label={label} left={110 + (i % 3) * 300} top={300 + Math.floor(i / 3) * 330} size={260} />
           ))}
           <Slam at={b(14)} until={b(15)} text="49 NEW FACES." size={120} top={1610} />
-          <MoneyRain burst count={30} seed="faces" startFrame={b(14)} />
+          <MoneyRain burst count={16} seed="faces" startFrame={b(14)} />
 
           {/* THE X — bar 15 */}
           <Slam at={b(15)} until={b(16)} text="STILL NO SPRITE?" size={110} color={T.cream} top={460} />
           <BigX at={b(15, 2)} until={b(16)} size={760} top={700} />
           <Flash at={b(15, 2)} color={RED} frames={5} peak={0.5} />
           <Slam at={b(15, 3)} until={b(16)} text="RED X." size={170} color={RED} top={1560} />
-          <MoneyRain burst count={34} seed="x" startFrame={b(15, 2)} />
+          <MoneyRain burst count={18} seed="x" startFrame={b(15, 2)} />
 
           {/* NUDGE — bars 16–17 */}
           {nudgeOn ? (
@@ -157,9 +157,9 @@ export const Release: React.FC = () => {
           <Slam at={b(17)} until={b(18)} text={'A NUDGE LANDS\nMONDAY OR TUESDAY.'} size={78} top={880} />
           <Slam at={b(17, 2)} until={b(18)} text="TAP IT. THE RIGHT TAB OPENS." size={46} color={T.cyan} font="body" weight={600} letterSpacing={4} top={1110} glow={false} />
 
-          {/* DROP — bar 18 (the real reveal behind the type) */}
+          {/* DROP — bar 18 (the real reveal behind the type). Money counts halved Oct 15: "a little less falling money" */}
           <ClipBurst at={b(18)} until={b(19)} file="60_12_drop" startFrom={0.9} align="top" dim={0.45} />
-          {frame >= b(18) ? <MoneyRain count={40} seed="release-drop" startFrame={b(18)} /> : null}
+          {frame >= b(18) ? <MoneyRain count={22} seed="release-drop" startFrame={b(18)} /> : null}
           <Slam at={b(18)} until={b(19)} text="RANDOM DROP" size={115} top={600} />
           <Slam at={b(18, 1.5)} until={b(19)} text={'BETWEEN FRIDAY\nAND SATURDAY.'} size={88} color={T.cream} top={760} />
 

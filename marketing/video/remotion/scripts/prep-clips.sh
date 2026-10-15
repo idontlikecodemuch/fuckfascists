@@ -14,6 +14,7 @@ R12=$SRC/R1-R2_onboarding_welcome-clark-memo-permissions-launch.mp4
 R5C=$SRC/R5c_track_backtaps-then-today-defeat.mp4
 R6=$SRC/R6_scan_phone.mp4
 R8=$SRC/R8_scorecard_preview-generate-reveal-moneyrain-share.mp4
+R11=$SRC/R11_scan_household_phone.mp4   # Oct 15: build 13 on the creator's phone — household scans
 
 filt() { # <mode>
   case $1 in
@@ -48,6 +49,12 @@ still() {
   echo "$1"
 }
 
+# ---- 1.2.1 (R11, Oct 15) — ONLY=121 cuts just these ------------------------
+# Clorox spray: barcode in frame → lock (+1.9 s) → CLOROX record; Dawn: bottle → barcode → lookup → P&G record (new Jejurikar sprite) → AVOID tap (+3.3 s) → AVOIDED
+mk scan_clorox         phone 1   "$R11" 4.6 1.9     "$R11" 6.5 2.5 &
+mk scan_pg             phone 1   "$R11" 36.0 1.4    "$R11" 37.4 3.2 &
+wait
+[ "${ONLY:-}" = 121 ] && { echo R11_CLIPS_DONE; exit 0; }
 # ---- shared ----------------------------------------------------------------
 mk hook_card_rain      full  1   "$R8" 95.4 2.2 &
 still map_still.png      phone    "$R3" 45.0 &
