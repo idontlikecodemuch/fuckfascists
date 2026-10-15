@@ -4,6 +4,7 @@ import { Explainer, type ExplainerProps } from './Explainer';
 import { PREVIEW_FRAMES, PREVIEW_H, PREVIEW_W, Preview } from './appstore/Preview';
 import { Tile } from './appstore/Tile';
 import { COVER_H, COVER_W, PageCover } from './brand/PageCover';
+import { HEADER_H, HEADER_W, StoreHeader } from './appstore/StoreHeader';
 import { RELEASE_FRAMES, Release } from './release/Release';
 import { TILES, TILE_H, TILE_W } from './appstore/tiles';
 import type { LayoutMode } from './LayoutContext';
@@ -45,6 +46,9 @@ export const RemotionRoot: React.FC = () => (
       <Still key={tile.id} id={`Tile-${String(i + 1).padStart(2, '0')}-${tile.id}`} component={Tile} width={TILE_W} height={TILE_H} defaultProps={tile} />
     ))}
     <Composition id="AppPreview" component={Preview} width={PREVIEW_W} height={PREVIEW_H} fps={FPS} durationInFrames={PREVIEW_FRAMES} />
+    {/* App Store creative assets (iOS 27 header + search results): universal 16:9, cropped by scripts/appstore.sh header */}
+    <Still id="StoreHeader-file" component={StoreHeader} width={HEADER_W} height={HEADER_H} defaultProps={{ variant: 'file' as const }} />
+    <Still id="StoreHeader-brand" component={StoreHeader} width={HEADER_W} height={HEADER_H} defaultProps={{ variant: 'brand' as const }} />
     {/* Facebook Page cover (Meta ads identity), same look as the IG banner */}
     <Still id="PageCover" component={PageCover} width={COVER_W} height={COVER_H} />
     {/* Oct 15: the 1.2 release cut, kinetic type on the drive bed (scripts/render.sh release) */}

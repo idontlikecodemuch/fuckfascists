@@ -68,6 +68,20 @@ preview() {
 case ${1:-all} in
   prep) prep ;;
   tiles) tiles ;;
+  header)
+    # Oct 15: iOS 27 creative assets. Universal 16:9 PNG (no alpha) + the two centre crops
+    # App Store Connect would make: 21:9 header 3840×1646, 3:2 search 3840×2560.
+    OUT121=/Users/christophershannon/fuckfascists/marketing/appstore/1.2.1/creative
+    mkdir -p "$OUT121"
+    npx remotion browser ensure --log error
+    for v in file brand; do
+      npx remotion still src/index.ts "StoreHeader-$v" "$OUT121/tmp-$v.png" --chrome-mode headless-shell --log warn
+      ffmpeg -v error -y -i "$OUT121/tmp-$v.png" -pix_fmt rgb24 "$OUT121/universal-$v-5244x2950.png"
+      ffmpeg -v error -y -i "$OUT121/tmp-$v.png" -vf "crop=5244:2248:0:351,scale=3840:1646:flags=lanczos" -pix_fmt rgb24 "$OUT121/header-$v-3840x1646.png"
+      ffmpeg -v error -y -i "$OUT121/tmp-$v.png" -vf "crop=4424:2950:410:0,scale=3840:2560:flags=lanczos" -pix_fmt rgb24 "$OUT121/search-$v-3840x2560.png"
+      rm -f "$OUT121/tmp-$v.png"
+    done
+    ls -la "$OUT121";;
   preview) preview ;;
   all) prep; tiles; preview ;;
   *) echo "usage: $0 [prep|tiles|preview|all]" >&2; exit 2 ;;
