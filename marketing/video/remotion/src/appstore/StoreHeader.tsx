@@ -271,7 +271,7 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
           <Phone src={TRACK_GRID} aspect={1206 / 2478} cut={0.87} left={4430} top={560} width={660} rotate={8} bob={bob(4.2)} />
           <Headline left={1380} top={480} width={1600} align="left" fck={220} name={170} rows={3} />
           {money(12, variant)}
-          <Secondary left={1380} top={1330} width={1700} align="left" size={110} />
+          <Secondary left={1380} top={1330} width={1700} align="left" size={100} />
           <SubUnder left={3000} top={2060} width={2100} size={100} />
         </>
       ) : null}
