@@ -200,8 +200,8 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId }> = 
       {variant === 'l2' ? (
         // L2 — name left, Clark under it, the three screens fanned at right
         <>
-          <Name2 left={520} top={640} width={2050} fck={240} name={200} copy="c1" line2Size={92} line3Size={76} />
-          <Clark left={420} top={1760} width={1150} />
+          <Name2 left={520} top={540} width={2150} fck={240} name={200} copy="c1" line2Size={92} line3Size={74} />
+          <Clark left={1300} top={1900} width={1100} />
           <Phone src={MAP} aspect={1080 / 1926} left={2760} top={780} width={720} rotate={-8} />
           <Phone src={SCAN_COKE} aspect={1206 / 2478} cut={0.86} left={3500} top={640} width={720} rotate={0} />
           <Phone src={TRACK} aspect={1206 / 2622} cut={0.87} left={4240} top={780} width={700} rotate={8} />
