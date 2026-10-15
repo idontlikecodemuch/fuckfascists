@@ -82,7 +82,7 @@ export const CLIPS: Record<string, ClipSpec> = {
   // Oct 14: the 1.2 "what's new" cuts. `placeholder` = stand-in footage until captures N1–N4
   // on build 13 land (marketing/notes/script-1.2-whats-new.md); the tag renders on screen.
   'new30-02': { file: '60_03_map_pins', kind: 'phone', full: MAP_TAP },
-  'new30-03': { file: '30_05_scan', kind: 'phone', full: { align: 'bottom', reportAt: 1.4 }, placeholder: 'N2 · Windex scan → SC Johnson' }, // camera, file up at 1.4 s
+  'new30-03': { file: '30_05_scan', kind: 'phone', full: { align: 'bottom', reportAt: 1.7 }, placeholder: 'N2 · Windex scan → SC Johnson' }, // file up at 1.4 s in the stand-in; 1.7 lets the first sentence finish typing
   'new30-04': { file: '60_04_map_card', kind: 'phone', full: MAP_FILE, placeholder: 'N3 · Ben & Jerry\u2019s → Magnum' },
   'new30-05': { file: '60_10_scan_card', kind: 'phone', shakeAt: 2.15, full: { align: 'bottom', report: true }, placeholder: 'N1 · 20 oz Sprite, close focus' }, // 3.5 s clip: beat capped in FULL_OVERRIDES_S
   'new30-06': { file: '60_11_scorecard_preview', kind: 'phonedev', full: CARD_PREVIEW, placeholder: 'N4 · new faces + red X' },
@@ -91,7 +91,7 @@ export const CLIPS: Record<string, ClipSpec> = {
   'new15-02': { file: '60_03_map_pins', kind: 'phone', full: MAP_TAP },
   'new15-03': { file: '60_10_scan_card', kind: 'phone', shakeAt: 2.15, full: SCAN_FILE, placeholder: 'N2 · Windex scan' },
   'new15-04': { file: '60_11_scorecard_preview', kind: 'phonedev', full: CARD_PREVIEW, placeholder: 'N4 · new faces + red X' },
-  'new15-05': { file: '60_03_map_pins', kind: 'phone', notificationAt: 0.12, notification: NUDGE.monday, full: { align: 'bottom' } },
+  'new15-05': { file: '60_07_track_week', kind: 'phone', notificationAt: 0.12, notification: NUDGE.monday, full: TRACK }, // "log an avoid" opens Track, so the banner lands there
 };
 
 /**
@@ -116,7 +116,7 @@ export const COLD_OPEN: Partial<Record<Cut, ColdOpen>> = {
   track: { file: '60_08_track_defeat', startFrom: 0.2, align: 'top', shakeAt: 0.5 }, // today's tap → Musk defeated at 0.5 s
   scan: { file: '30_05_scan', startFrom: 0.7, align: 'bottom' }, // barcode lock → Coca-Cola record at 0.7 s
   card: { file: '60_12_drop', startFrom: 0.9, align: 'top', rain: true }, // the card, our rain from frame 0, the app's at 0.4 s
-  new30: { file: '60_06_track_grid', startFrom: 0.3, align: 'top', notification: NUDGE.monday }, // the early-week nudge lands on Track
+  new30: { file: '60_07_track_week', startFrom: 0, align: 'top', notification: NUDGE.monday }, // the early-week nudge lands on the Track roster
   new15: { file: '60_12_drop', startFrom: 0.9, align: 'top', rain: true, placeholder: 'N4 · the card with new faces' },
 };
 export const clipSrc = (file: string): string => staticFile(`media/clips/${file}.mp4`);
