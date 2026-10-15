@@ -66,10 +66,10 @@ const DeepSpace: React.FC<{ count?: number; seed?: string; intense?: boolean }> 
 );
 
 /** Round 7 pieces: the headline (money may cover it), the secondary line and the bottom bar (money may not) */
-const Headline: React.FC<{ left: number; top: number; width: number; align?: 'left' | 'center'; fck?: number; name?: number }> = ({ left, top, width, align = 'center', fck = 240, name = 200 }) => (
+const Headline: React.FC<{ left: number; top: number; width: number; align?: 'left' | 'center'; fck?: number; name?: number; rows?: 2 | 3 }> = ({ left, top, width, align = 'center', fck = 240, name = 200, rows = 2 }) => (
   <div style={{ position: 'absolute', left, top, width, display: 'flex', flexDirection: 'column', alignItems: align === 'center' ? 'center' : 'flex-start', textAlign: align, gap: 24 }}>
     <div style={{ fontFamily: FONT.display, fontSize: fck, lineHeight: 1, color: T.cyan, letterSpacing: 8, textShadow: '0 0 30px rgba(122,242,255,0.5), 8px 8px 0 rgba(0,0,0,0.8)' }}>FCK,</div>
-    <div style={{ fontFamily: FONT.display, fontSize: name, lineHeight: 1.02, color: T.gold, letterSpacing: 4, whiteSpace: 'pre-line', textShadow: '0 0 50px rgba(255,201,60,0.45), 12px 12px 0 rgba(0,0,0,0.8)' }}>{'FINANCIAL\nCONTRIBUTION KIT'}</div>
+    <div style={{ fontFamily: FONT.display, fontSize: name, lineHeight: 1.02, color: T.gold, letterSpacing: 4, whiteSpace: 'pre-line', textShadow: '0 0 50px rgba(255,201,60,0.45), 12px 12px 0 rgba(0,0,0,0.8)' }}>{rows === 3 ? 'FINANCIAL\nCONTRIBUTION\nKIT' : 'FINANCIAL\nCONTRIBUTION KIT'}</div>
   </div>
 );
 const Secondary: React.FC<{ left: number; top: number; width: number; align?: 'left' | 'center'; size?: number }> = ({ left, top, width, align = 'center', size = 96 }) => (
@@ -228,9 +228,9 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
           <Phone src={MAP} aspect={1080 / 1926} left={3200} top={700} width={640} rotate={-8} />
           <Phone src={SCAN_COKE} aspect={1206 / 2478} cut={0.86} left={3860} top={600} width={640} rotate={0} />
           <Phone src={TRACK_GRID} aspect={1206 / 2478} cut={0.86} left={4520} top={700} width={600} rotate={8} />
-          <Headline left={1560} top={560} width={1520} align="left" fck={220} name={170} />
+          <Headline left={1560} top={480} width={1520} align="left" fck={220} name={170} rows={3} />
           <Money count={12} seed={variant} />
-          <Secondary left={1560} top={1210} width={1520} align="left" size={84} />
+          <Secondary left={1560} top={1330} width={1700} align="left" size={84} />
           <SubBar target={target} />
         </>
       ) : null}
