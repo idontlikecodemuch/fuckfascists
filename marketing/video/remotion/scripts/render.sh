@@ -14,6 +14,7 @@
 #   scripts/render.sh preview    → half-scale 60 + contact sheet
 #   scripts/render.sh 60|30|15
 #   scripts/render.sh shorts     → one per tab: fck-short-{map,track,scan,card}-9x16.mp4
+#   scripts/render.sh release    → 1.2 release cut, kinetic type: fck-release-1.2-30-9x16.mp4
 #   scripts/render.sh new        → 1.2 what's-new cuts: fck-whatsnew-1.2-{30,15}-9x16.mp4 (new30|new15 for one)
 #   scripts/render.sh check      → re-run the frame check on the existing renders
 set -euo pipefail
@@ -56,6 +57,7 @@ case $what in
     render Cut30    "$OUT/fck-explainer-30-9x16.mp4"
     render Cut15    "$OUT/fck-explainer-15-9x16.mp4";;
   card) render ShortCard "$OUT/fck-short-card-9x16.mp4";;
+  release) render Release30 "$OUT/fck-release-1.2-30-9x16.mp4";;
   new30) render New30 "$OUT/fck-whatsnew-1.2-30-9x16.mp4";;
   new15) render New15 "$OUT/fck-whatsnew-1.2-15-9x16.mp4";;
   new)
@@ -63,5 +65,5 @@ case $what in
     render New15 "$OUT/fck-whatsnew-1.2-15-9x16.mp4";;
   check)
     python3 scripts/framecheck.py "$OUT"/fck-explainer-*.mp4 "$OUT"/fck-short-*.mp4;;
-  *) echo "usage: $0 [all|wide|shorts|preview|60|30|15|card|new|new30|new15|check]" >&2; exit 1;;
+  *) echo "usage: $0 [all|wide|shorts|preview|60|30|15|card|release|new|new30|new15|check]" >&2; exit 1;;
 esac

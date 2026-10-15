@@ -4,6 +4,7 @@ import { Explainer, type ExplainerProps } from './Explainer';
 import { PREVIEW_FRAMES, PREVIEW_H, PREVIEW_W, Preview } from './appstore/Preview';
 import { Tile } from './appstore/Tile';
 import { COVER_H, COVER_W, PageCover } from './brand/PageCover';
+import { RELEASE_FRAMES, Release } from './release/Release';
 import { TILES, TILE_H, TILE_W } from './appstore/tiles';
 import type { LayoutMode } from './LayoutContext';
 import { FPS, buildTimeline, lineIds, type Cut, type HookStyle } from './timing';
@@ -46,6 +47,8 @@ export const RemotionRoot: React.FC = () => (
     <Composition id="AppPreview" component={Preview} width={PREVIEW_W} height={PREVIEW_H} fps={FPS} durationInFrames={PREVIEW_FRAMES} />
     {/* Facebook Page cover (Meta ads identity), same look as the IG banner */}
     <Still id="PageCover" component={PageCover} width={COVER_W} height={COVER_H} />
+    {/* Oct 15: the 1.2 release cut, kinetic type on the drive bed (scripts/render.sh release) */}
+    <Composition id="Release30" component={Release} width={1080} height={1920} fps={FPS} durationInFrames={RELEASE_FRAMES} />
     {CUTS.map(({ id, cut, layout, width, height, hook }) => (
       <Composition
         key={id}

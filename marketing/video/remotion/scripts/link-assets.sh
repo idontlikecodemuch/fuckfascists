@@ -14,3 +14,6 @@ put assets/pixel/starbg/star_field_base.png public/assets/star_field_base.png
 for i in 0 1 2 3; do put assets/pixel/ui/cash_$i.png public/assets/cash_$i.png; done
 for f in Bungee-Regular IBMPlexSans-Regular IBMPlexSans-Medium IBMPlexSans-SemiBold; do put assets/fonts/$f.ttf public/fonts/$f.ttf; done
 # Ionicons.ttf is tracked here (it comes from node_modules/@expo/vector-icons at the repo root)
+
+# Oct 15: the 1.2.1 CEO sprites + the red X, straight from the release branch (see link-sprites.sh)
+bash scripts/link-sprites.sh
