@@ -118,3 +118,14 @@ skip. (c1), third line 74–80 px ("the map/track copy is too small"). Layouts `
 - **L2** name left with Clark under it, the three screens fanned at right.
 - **L3** symmetric: map at far left, Coke + Track at far right, name centred, Clark centred under it.
 - **L4** fan at left under the name, bigger screens, Clark at right.
+
+## Round 7 (Oct 15, night) — F1/F2, map and intense stars
+
+Creator: keep 1 and 2; Clark higher (F1) and much higher + left of the copy (F2); sub copy
+"Tap a business. Scan a product. Track the platforms you use." separated on a bottom bar; the
+Track screen with every sprite in the grid (R5 at 2.0 s, "NOTHING AVOIDED YET"); money may
+cover the headline but not the subheads (layer order headline → money → secondary → bar); a
+starfield-only twin of each. The Coke lookup never shows the bottle and the folder in one frame
+(the camera closes first), so the scan phone stays the bottle-in-the-guide. The search card is
+now its own render (`StoreHeader-<v>-search`, `HEADER_SEARCH_TARGET=1`) so the bar sits at the
+3:2 bottom. Files `*-f1|f1s|f2|f2s-*`.

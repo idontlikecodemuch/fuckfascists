@@ -81,7 +81,13 @@ case ${1:-all} in
       npx remotion still src/index.ts "StoreHeader-$v" "$OUT121/tmp-$v.png" --chrome-mode headless-shell --log warn
       ffmpeg -v error -y -i "$OUT121/tmp-$v.png" -pix_fmt rgb24 "$OUT121/universal-$v-5244x2950.png"
       ffmpeg -v error -y -i "$OUT121/tmp-$v.png" -vf "crop=5244:2248:0:351,scale=3840:1646:flags=lanczos" -pix_fmt rgb24 "$OUT121/header-$v-3840x1646.png"
-      ffmpeg -v error -y -i "$OUT121/tmp-$v.png" -vf "crop=4424:2950:410:0,scale=3840:2560:flags=lanczos" -pix_fmt rgb24 "$OUT121/search-$v-3840x2560.png"
+      if [ "${HEADER_SEARCH_TARGET:-}" = 1 ]; then   # round 7: a second still with the bar pinned to the 3:2 bottom
+        npx remotion still src/index.ts "StoreHeader-$v-search" "$OUT121/tmp-$v-search.png" --chrome-mode headless-shell --log warn
+        ffmpeg -v error -y -i "$OUT121/tmp-$v-search.png" -vf "crop=4424:2950:410:0,scale=3840:2560:flags=lanczos" -pix_fmt rgb24 "$OUT121/search-$v-3840x2560.png"
+        rm -f "$OUT121/tmp-$v-search.png"
+      else
+        ffmpeg -v error -y -i "$OUT121/tmp-$v.png" -vf "crop=4424:2950:410:0,scale=3840:2560:flags=lanczos" -pix_fmt rgb24 "$OUT121/search-$v-3840x2560.png"
+      fi
       rm -f "$OUT121/tmp-$v.png"
     done
     ls -la "$OUT121";;

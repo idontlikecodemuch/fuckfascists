@@ -47,8 +47,12 @@ export const RemotionRoot: React.FC = () => (
     ))}
     <Composition id="AppPreview" component={Preview} width={PREVIEW_W} height={PREVIEW_H} fps={FPS} durationInFrames={PREVIEW_FRAMES} />
     {/* App Store creative assets (iOS 27 header + search results): universal 16:9, cropped by scripts/appstore.sh header */}
-    {(['space', 'screens', 'clark', 'map', 'mix-a', 'mix-b', 'mix-c', 'mix-d', 'mix-b2', 'mix-c2', 'l1', 'l2', 'l3', 'l4'] as const).map((v) => (
+    {(['space', 'screens', 'clark', 'map', 'mix-a', 'mix-b', 'mix-c', 'mix-d', 'mix-b2', 'mix-c2', 'l1', 'l2', 'l3', 'l4', 'f1', 'f1s', 'f2', 'f2s'] as const).map((v) => (
       <Still key={v} id={`StoreHeader-${v}`} component={StoreHeader} width={HEADER_W} height={HEADER_H} defaultProps={{ variant: v }} />
+    ))}
+    {/* round 7: the search card gets its own render so the bottom bar sits at the 3:2 bottom */}
+    {(['f1', 'f1s', 'f2', 'f2s'] as const).map((v) => (
+      <Still key={`${v}-search`} id={`StoreHeader-${v}-search`} component={StoreHeader} width={HEADER_W} height={HEADER_H} defaultProps={{ variant: v, target: 'search' as const }} />
     ))}
     {(['mix-b2', 'mix-c2'] as const).flatMap((v) =>
       (['c1', 'c2', 'c3', 'c4'] as const).map((c) => (
