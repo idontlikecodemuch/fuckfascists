@@ -8,3 +8,5 @@ public/media
 public/assets/*.png
 public/fonts/*.ttf
 !public/fonts/Ionicons.ttf
+public/assets/sprites/
+public/assets/*.json

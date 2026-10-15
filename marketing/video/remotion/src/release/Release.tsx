@@ -91,8 +91,7 @@ export const Release: React.FC = () => {
           {/* FILES — bars 2–3 */}
           <CountUp at={b(2)} until={b(4)} to={761} frames={30} size={420} top={520} />
           <Slam at={b(3)} until={b(4)} text={'COMPANIES\nON FILE.'} size={120} color={T.cream} top={980} />
-          <Slam at={b(3, 2)} until={b(4)} text="1,097 DONORS & EXECUTIVES" size={48} color={T.cyan} font="body" weight={600} letterSpacing={4} top={1300} glow={false} />
-          <Slam at={b(3, 3)} until={b(4)} text="EVERY RECORD REFRESHED OCT 12" size={48} color={T.cyan} font="body" weight={600} letterSpacing={4} top={1380} glow={false} />
+          <Slam at={b(3, 1)} until={b(4)} text={'1,097 DONORS & EXECUTIVES\nEVERY RECORD REFRESHED OCT 12'} size={44} color={T.cyan} font="body" weight={600} letterSpacing={4} lineHeight={1.5} top={1290} glow={false} />
 
           {/* HOUSEHOLD — bars 4–7 */}
           <Slam at={b(4)} until={b(8)} text="NOW ON FILE:" size={54} color={T.cyan} font="body" weight={600} letterSpacing={6} top={300} glow={false} />
@@ -106,18 +105,18 @@ export const Release: React.FC = () => {
           <Stamp at={b(7, 1)} until={b(8)} text="ON FILE" top={1560} />
 
           {/* OWNERS — bars 8–9 */}
-          <Slam at={b(8)} until={b(10)} text={'BRANDS FOLLOW\nTHEIR OWNERS.'} size={120} color={T.cream} top={480} />
-          <Slam at={b(8, 2)} until={b(10)} text="BEN & JERRY'S" size={120} top={900} />
-          <Strike at={b(9)} until={b(10)} top={966} left={110} width={860} rotate={-2} />
-          <Slam at={b(9, 1)} until={b(10)} text="FILED UNDER" size={48} color={T.cyan} font="body" weight={600} letterSpacing={6} top={1100} glow={false} />
-          <Slam at={b(9, 2)} until={b(10)} text="MAGNUM" size={190} top={1170} />
+          <Slam at={b(8)} until={b(10)} text={'BRANDS FOLLOW\nTHEIR OWNERS.'} size={88} color={T.cream} top={420} />
+          <Slam at={b(8, 2)} until={b(10)} text="BEN & JERRY'S" size={96} top={760} />
+          <Strike at={b(9)} until={b(10)} top={812} left={110} width={860} rotate={-2} />
+          <Slam at={b(9, 1)} until={b(10)} text="FILED UNDER" size={48} color={T.cyan} font="body" weight={600} letterSpacing={6} top={920} glow={false} />
+          <Slam at={b(9, 2)} until={b(10)} text="MAGNUM" size={190} top={990} />
 
           {/* SCAN — bars 10–11 (mixed media: the real barcode lock for the last two beats) */}
-          <ClipBurst at={b(11, 2)} until={b(12)} file="30_05_scan" startFrom={0.7} align="bottom" />
+          <ClipBurst at={b(11, 2)} until={b(12)} file="30_05_scan" startFrom={0.7} align="bottom" dim={0.5} />
           <Barcode at={b(10)} until={b(12)} top={520} sweepAt={b(10, 1)} lockAt={b(10, 3)} />
-          <Slam at={b(10, 3)} until={b(12)} text="SHORT BARCODES." size={110} top={940} />
-          <Slam at={b(11, 1)} until={b(12)} text="CLOSER FOCUS." size={110} color={T.cyan} top={1090} />
-          <Slam at={b(11, 3)} until={b(12)} text="SMALL LABELS LOCK FASTER." size={46} color={T.cream} font="body" weight={600} letterSpacing={4} top={1260} glow={false} />
+          <Slam at={b(10, 3)} until={b(12)} text="SHORT BARCODES." size={90} top={940} />
+          <Slam at={b(11, 1)} until={b(12)} text="CLOSER FOCUS." size={100} color={T.cyan} top={1080} />
+          <Slam at={b(11, 3)} until={b(12)} text="SMALL LABELS LOCK FASTER." size={46} color={T.cream} font="body" weight={600} letterSpacing={4} top={1240} glow={false} />
 
           {/* FACES — bars 12–14 */}
           {FACES.map(([id, label], i) => (
@@ -142,14 +141,14 @@ export const Release: React.FC = () => {
               </div>
             </>
           ) : null}
-          <Slam at={b(17)} until={b(18)} text={'A NUDGE LANDS\nMONDAY OR TUESDAY.'} size={100} top={880} />
-          <Slam at={b(17, 2)} until={b(18)} text="TAP IT. THE RIGHT TAB OPENS." size={46} color={T.cyan} font="body" weight={600} letterSpacing={4} top={1150} glow={false} />
+          <Slam at={b(17)} until={b(18)} text={'A NUDGE LANDS\nMONDAY OR TUESDAY.'} size={78} top={880} />
+          <Slam at={b(17, 2)} until={b(18)} text="TAP IT. THE RIGHT TAB OPENS." size={46} color={T.cyan} font="body" weight={600} letterSpacing={4} top={1110} glow={false} />
 
           {/* DROP — bar 18 (the real reveal behind the type) */}
           <ClipBurst at={b(18)} until={b(19)} file="60_12_drop" startFrom={0.9} align="top" dim={0.45} />
           {frame >= b(18) ? <MoneyRain count={40} seed="release-drop" startFrame={b(18)} /> : null}
-          <Slam at={b(18)} until={b(19)} text="RANDOM DROP" size={150} top={600} />
-          <Slam at={b(18, 1.5)} until={b(19)} text={'BETWEEN FRIDAY\nAND SATURDAY.'} size={100} color={T.cream} top={800} />
+          <Slam at={b(18)} until={b(19)} text="RANDOM DROP" size={115} top={600} />
+          <Slam at={b(18, 1.5)} until={b(19)} text={'BETWEEN FRIDAY\nAND SATURDAY.'} size={88} color={T.cream} top={760} />
 
           {/* END — bars 19–20 */}
           <Logo at={b(19)} />

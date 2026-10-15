@@ -28,6 +28,29 @@ Measured Sep 28 on the hook: local Chrome 12 corrupt frames in 300, the shell 0 
 every output and fails on a flagged frame. Do not start Remotion Studio for
 renders; `scripts/render.sh` is the path.
 
+## Oct 15: the 1.2 release cut, kinetic type (`Release30` → `scripts/render.sh release`)
+
+Creator, Oct 14: a different style from the explainer — type-led, different music, the new
+sprites, a big X, the household products, mixed media, more dynamic. `src/release/Release.tsx`
+is one flat timeline (no Sequences for type, no Clark) on the beat grid of a new bed:
+`music-gen/score_drive.py`, 150 bpm = 12 frames a beat, 48 a bar, 3-beat sting, rendered
+with `python3 compose.py --style drive` → `music/fck_bed_drive_32s.mp3` (31.6 s). `b(bar, beat)`
+in Release.tsx is the grid; every slam, shake and CRT blink sits on it.
+
+Blocks in `src/release/kinetic.tsx`: `Slam` (type slams in, holds to `until`), `CountUp`
+(761), `Strike`, `Stamp` (ON FILE), `Barcode` (draws, cyan sweep, green lock), `SpriteBust`
+(one neutral frame off a sprite sheet), `BigX` (the app's no_sprite_x.png, 8-bit, red flash),
+`WebScroll` (a tall page screenshot panned in a tilted frame), `useHits` (shake), `Flash`.
+Mixed media: two `ClipBurst`s of real footage (the barcode lock, the card reveal).
+
+Assets outside this branch: `scripts/link-sprites.sh` pulls the 241 sprite sheets, the
+manifest and the X out of `origin/release/1.2.1` (switch `SPRITE_REF` to main after the
+merge) into `public/assets/sprites/` (gitignored) and copies the manifest to
+`src/data/spriteManifest.json`; `src/data/newSprites.json` maps the 49 new ids to companies.
+Product pages: tall screenshots from the browser pane (430×2600 viewport, cookie banners
+hidden, lazy images forced) in `marketing/video/captures/1.2.1/web-<key>.jpg`;
+`scripts/web-captures.sh` writes their sizes to `src/data/webCaptures.json`.
+
 ## Oct 14: the 1.2 "what's new" cuts (`New30`, `New15` → `scripts/render.sh new`)
 
 Script cuts `new30` / `new15` in `script.json` (lines in `marketing/notes/script-1.2-whats-new.md`;
