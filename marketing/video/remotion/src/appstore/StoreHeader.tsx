@@ -22,7 +22,7 @@ import { frameSrc } from './tiles';
 export const HEADER_W = 5244;
 export const HEADER_H = 2950;
 export const SAFE = { left: 410, top: 351, right: 4835, bottom: 2599 };
-export type HeaderVariant = 'space' | 'screens' | 'clark' | 'map' | 'mix-a' | 'mix-b' | 'mix-c' | 'mix-d';
+export type HeaderVariant = 'space' | 'screens' | 'clark' | 'map' | 'mix-a' | 'mix-b' | 'mix-c' | 'mix-d' | 'mix-b2' | 'mix-c2';
 
 const BEZEL = 30;
 const RADIUS = 200;
@@ -30,6 +30,7 @@ const MAP = staticFile('media/appstore/frames/map_pins.png'); // 1080×1926, no 
 const SCAN_TAB = staticFile('media/appstore/frames/scan_tab.png'); // 1206×2478, R11 at 0.5 s: the Scan tab, no record, status bar cropped
 const SCAN_UPC = staticFile('media/appstore/frames/scan_upc.png'); // 1206×2478, R11 at 5.9 s: a barcode filling the scanner guide (round 3: "actually use a scanning UPC screenshot")
 const TRACK = frameSrc('track'); // the Track tab (arena + platform list)
+const SCAN_COKE = staticFile('media/appstore/frames/scan_coke.png'); // 1206×2478, R6 at 17.1 s: the Coke bottle in the scanner guide (creator's pick, round 4)
 const MONEY_SCALE = 2.6; // the 24 px bills are specks at 5244 wide
 
 /** denser pixel stars on top of the shared starfield ("way more aesthetic — def more stars") */
@@ -94,14 +95,22 @@ const Clark: React.FC<{ left: number; top: number; width: number }> = ({ left, t
   <Img src={CLARK_FULL} style={{ position: 'absolute', left, top, width, filter: 'drop-shadow(0 30px 60px rgba(0,0,0,0.6))' }} />
 );
 
-/** `cut` = fraction of the screenshot shown from the top (the Debug build's tab bar with its DEV tab sits in the bottom ~13 %); the bezel runs on below it to the canvas edge */
-const Phone: React.FC<{ src: string; aspect: number; left: number; top: number; width: number; rotate?: number; cut?: number }> = ({ src, aspect, left, top, width, rotate = 0, cut = 1 }) => (
-  <div style={{ position: 'absolute', left: left - BEZEL, top: top - BEZEL, width: width + BEZEL * 2, height: HEADER_H, borderRadius: RADIUS, background: '#0B0D12', transform: `rotate(${rotate}deg)`, transformOrigin: '50% 100%', boxShadow: '0 0 0 4px #2A2D30, 0 0 0 6px rgba(0,0,0,0.6), 0 -10px 120px rgba(0,0,0,0.75), 0 0 160px rgba(122,242,255,0.10)' }}>
-    <div style={{ position: 'absolute', left: BEZEL, top: BEZEL, width, height: (width / aspect) * cut, borderRadius: RADIUS - BEZEL, overflow: 'hidden', background: T.void }}>
-      <Img src={src} style={{ display: 'block', width, height: width / aspect }} />
+/**
+ * `cut` = fraction of the screenshot shown from the top (the Debug build's tab bar with its DEV
+ * tab sits in the bottom ~13 %). Round 4: the body is only as tall as the screen plus the bezel,
+ * so a rotated phone no longer swings a full-height black slab out below the crop (the "weird
+ * drop shadow" on mix-c), and the shadow is a tight contact shadow.
+ */
+const Phone: React.FC<{ src: string; aspect: number; left: number; top: number; width: number; rotate?: number; cut?: number }> = ({ src, aspect, left, top, width, rotate = 0, cut = 1 }) => {
+  const screenH = (width / aspect) * cut;
+  return (
+    <div style={{ position: 'absolute', left: left - BEZEL, top: top - BEZEL, width: width + BEZEL * 2, height: screenH + BEZEL * 2, borderRadius: RADIUS, background: '#0B0D12', transform: `rotate(${rotate}deg)`, transformOrigin: '50% 100%', boxShadow: '0 0 0 4px #2A2D30, 0 0 0 6px rgba(0,0,0,0.6), 0 30px 70px rgba(0,0,0,0.55)' }}>
+      <div style={{ position: 'absolute', left: BEZEL, top: BEZEL, width, height: screenH, borderRadius: RADIUS - BEZEL, overflow: 'hidden', background: T.void }}>
+        <Img src={src} style={{ display: 'block', width, height: width / aspect }} />
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export const StoreHeader: React.FC<{ variant: HeaderVariant }> = ({ variant }) => {
   useFonts();
@@ -110,8 +119,8 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant }> = ({ variant }) =
       <Starfield />
       {variant === 'map' ? <BlurredMap /> : null}
       {variant === 'clark' || variant === 'mix-a' ? <BlurredMap opacity={0.26} blur={44} /> : null}
-      {variant === 'mix-b' || variant === 'mix-d' ? <BlurredMap opacity={0.45} blur={36} /> : null}
-      {variant === 'mix-c' ? <BlurredMap opacity={0.7} blur={30} /> : null}
+      {variant === 'mix-b' || variant === 'mix-d' || variant === 'mix-b2' ? <BlurredMap opacity={0.45} blur={36} /> : null}
+      {variant === 'mix-c' || variant === 'mix-c2' ? <BlurredMap opacity={0.7} blur={30} /> : null}
       <DeepSpace count={variant === 'space' ? 1400 : 800} />
       {variant === 'space' ? (
         <>
@@ -154,6 +163,27 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant }> = ({ variant }) =
           <Clark left={3950} top={900} width={1250} />
           <Money count={10} seed="mix-b" />
           <Name2 left={SAFE.left} top={420} width={SAFE.right - SAFE.left} align="center" fck={240} name={200} />
+        </>
+      ) : null}
+      {variant === 'mix-b2' ? (
+        // B2 — Clark clear of the screens: Clark at the far left, the name centred over the fan, map / Coke scan / Track fanned along the bottom
+        <>
+          <Clark left={260} top={1060} width={1250} />
+          <Phone src={MAP} aspect={1080 / 1926} left={1800} top={1520} width={760} rotate={-10} />
+          <Phone src={SCAN_COKE} aspect={1206 / 2478} cut={0.86} left={2860} top={1400} width={760} rotate={0} />
+          <Phone src={TRACK} aspect={1206 / 2622} cut={0.87} left={3920} top={1520} width={760} rotate={10} />
+          <Money count={10} seed="mix-b2" />
+          <Name2 left={1640} top={420} width={3195} align="center" fck={240} name={200} />
+        </>
+      ) : null}
+      {variant === 'mix-c2' ? (
+        // C2 — Clark presents, no slab: Clark big at left, the name in three rows, the Coke scan + Track at right, bodies sized to the screens
+        <>
+          <Clark left={300} top={560} width={1750} />
+          <Phone src={SCAN_COKE} aspect={1206 / 2478} cut={0.86} left={3650} top={520} width={800} rotate={-6} />
+          <Phone src={TRACK} aspect={1206 / 2622} cut={0.87} left={4250} top={760} width={760} rotate={6} />
+          <Money count={8} seed="mix-c2" />
+          <Name2 left={2150} top={760} width={1500} fck={220} name={190} rows={3} />
         </>
       ) : null}
       {variant === 'mix-c' ? (

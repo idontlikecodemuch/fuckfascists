@@ -47,7 +47,7 @@ export const RemotionRoot: React.FC = () => (
     ))}
     <Composition id="AppPreview" component={Preview} width={PREVIEW_W} height={PREVIEW_H} fps={FPS} durationInFrames={PREVIEW_FRAMES} />
     {/* App Store creative assets (iOS 27 header + search results): universal 16:9, cropped by scripts/appstore.sh header */}
-    {(['space', 'screens', 'clark', 'map', 'mix-a', 'mix-b', 'mix-c', 'mix-d'] as const).map((v) => (
+    {(['space', 'screens', 'clark', 'map', 'mix-a', 'mix-b', 'mix-c', 'mix-d', 'mix-b2', 'mix-c2'] as const).map((v) => (
       <Still key={v} id={`StoreHeader-${v}`} component={StoreHeader} width={HEADER_W} height={HEADER_H} defaultProps={{ variant: v }} />
     ))}
     {/* Facebook Page cover (Meta ads identity), same look as the IG banner */}

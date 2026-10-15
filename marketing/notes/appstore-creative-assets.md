@@ -88,3 +88,13 @@ Debug tab bar (`cut`). Files `*-mix-a|b|c|d-*`:
 - **mix-b** name over the fan — name centred up top, map / UPC / Track fanned along the bottom, Clark looking in from the right.
 - **mix-c** Clark presents — Clark big at left, the name in three rows, UPC scan + Track at right, map strong behind.
 - **mix-d** wide fan — memo / map / UPC / Track fanned across the width, darkened, name centred over them, Clark low left.
+
+## Round 4 (Oct 15, evening) — B2 and C2
+
+Creator liked B and C: "use the Coke scan, don't let Clark overlap the screenshots, weird drop
+shadow on C at right." The shadow was each phone's full-height black body (so it could bleed off
+the bottom) swinging out when rotated; `Phone` is now sized to its screen with a tight contact
+shadow. Scan frame is `scan_coke` (R6 at 17.1 s, the bottle in the guide). Files `*-mix-b2|c2-*`:
+- **mix-b2** Clark far left, name centred over a fan of map / Coke scan / Track along the bottom.
+- **mix-c2** Clark big left, name in three rows, Coke scan + Track at right, map strong behind.
+Next: the 15 s header loop from whichever he picks (21:9 3840×1646, slow drift, silent, seamless).
