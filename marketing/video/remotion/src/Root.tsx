@@ -30,6 +30,9 @@ const CUTS: Array<{ id: string; cut: Cut; layout: LayoutMode; width: number; hei
   { id: 'ShortTrack', cut: 'track', layout: 'full', width: 1080, height: 1920 },
   { id: 'ShortScan', cut: 'scan', layout: 'full', width: 1080, height: 1920 },
   { id: 'ShortCard', cut: 'card', layout: 'full', width: 1080, height: 1920 },
+  // Oct 14: 1.2 "what's new" — a 30 for Reels/Shorts/TikTok and a 15 for Stories and the ad slot
+  { id: 'New30', cut: 'new30', layout: 'full', width: 1080, height: 1920 },
+  { id: 'New15', cut: 'new15', layout: 'full', width: 1080, height: 1920 },
   // legacy: the device-frame vertical with the rain open (reference only, not in render.sh)
   { id: 'Phone60', cut: '60', layout: 'vertical', width: 1080, height: 1920, hook: 'rain' },
 ];

@@ -28,6 +28,22 @@ Measured Sep 28 on the hook: local Chrome 12 corrupt frames in 300, the shell 0 
 every output and fails on a flagged frame. Do not start Remotion Studio for
 renders; `scripts/render.sh` is the path.
 
+## Oct 14: the 1.2 "what's new" cuts (`New30`, `New15` → `scripts/render.sh new`)
+
+Script cuts `new30` / `new15` in `script.json` (lines in `marketing/notes/script-1.2-whats-new.md`;
+not yet in the storyboard db). Paced like the 30 and the 15 (`FORMULAS`), cold open like the
+shorts (`COLD_OPEN.new30` = the early-week nudge banner landing on Track; `new15` = the card
+with rain), then ONE title card for the cut (`RELEASE_TITLE` in timing.ts: cyan eyebrow
+"UPDATE 1.2" over "NEW FILES", no icon) instead of per-feature titles. The iOS banner
+(`components/Notification.tsx`) now takes `title`/`body`; `NUDGE` in clips.ts carries the two
+owner-written nudge lines verbatim. End card reads UPDATE OUT NOW (no price).
+
+**First pass = stand-ins.** Beats whose capture (N1–N4 on build 13) hasn't landed play a
+stand-in clip and draw a red STAND-IN tag (`components/StandIn.tsx`, driven by `placeholder`
+on the clip spec). Cut the real clips in with `prep-clips.sh`, point the specs at them, delete
+the `placeholder` fields, and the tags vanish. Two beats are capped in `FULL_OVERRIDES_S`
+because their stand-ins are short; lift the caps with the real footage.
+
 ## Oct 6: cold opens on the shorts
 
 Each per-tab short opens on its own payoff for 1.5 s before the icon title card (creator,

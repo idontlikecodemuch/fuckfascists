@@ -1,9 +1,11 @@
 import scriptJson from './data/script.json';
 
 export const FPS = 30;
-export type Cut = '60' | '30' | '15' | 'map' | 'track' | 'scan' | 'card';
+export type Cut = '60' | '30' | '15' | 'map' | 'track' | 'scan' | 'card' | 'new30' | 'new15';
 /** One tab each, vertical, ≤ 15 s: title card → 2–3 beats → outro. */
 export const SHORTS: Cut[] = ['map', 'track', 'scan', 'card'];
+/** Oct 14: the 1.2 "what's new" cuts — paced like the 30 and the 15, cold open like the shorts, one release title card. */
+export const RELEASE: Cut[] = ['new30', 'new15'];
 export type PanelKind = 'cold' | 'hook' | 'clark' | 'title' | 'feature' | 'drop' | 'share' | 'outro';
 export type Feature = 'MAP' | 'TRACK' | 'SCAN' | 'SCORECARD';
 
@@ -13,6 +15,8 @@ export type ScriptPanel = {
   title: string;
   kind: PanelKind;
   feature?: Feature;
+  /** release title card only: the small line above the title ("UPDATE 1.2") */
+  eyebrow?: string;
   lines: ScriptLine[];
 };
 
@@ -53,6 +57,8 @@ export const FORMULAS: Record<Cut, Formula> = {
   track: { perWord: 0.3, base: 0.8, min: 2.2 },
   scan: { perWord: 0.3, base: 0.8, min: 2.2 },
   card: { perWord: 0.3, base: 0.8, min: 2.2 },
+  new30: { perWord: 0.25, base: 0.7, min: 2.2 },
+  new15: { perWord: 0.34, base: 0.9, min: 2.2 },
 };
 /** The 15 is paced by the storyboard's own panel times, not by word count. */
 export const BOX_OVERRIDES_S: Record<string, number> = {
@@ -70,14 +76,17 @@ export const BOX_OVERRIDES_S: Record<string, number> = {
   'ctrack-05-1': 0.9,
   'cscan-04-1': 0.9,
   'ccard-05-1': 0.9,
+  'cnew30-08-1': 3.0, // the drop: reveal at 0.72 s, rain at 1.3 s need the room
+  'cnew30-09-1': 1.9, // end card, as the 30
+  'cnew15-06-1': 0.9,
 };
-export const HOOK_S: Record<Cut, number> = { '60': 2.0, '30': 2.0, '15': 1.5, map: 0, track: 0, scan: 0, card: 0 };
+export const HOOK_S: Record<Cut, number> = { '60': 2.0, '30': 2.0, '15': 1.5, map: 0, track: 0, scan: 0, card: 0, new30: 0, new15: 0 };
 /** Outcome-first cold open before the title card (shorts only; creator, Oct 6: each short opens differently). */
-export const COLD_OPEN_S: Record<Cut, number> = { '60': 0, '30': 0, '15': 0, map: 1.5, track: 1.5, scan: 1.5, card: 1.5 };
+export const COLD_OPEN_S: Record<Cut, number> = { '60': 0, '30': 0, '15': 0, map: 1.5, track: 1.5, scan: 1.5, card: 1.5, new30: 1.5, new15: 1.5 };
 /** Hook variants: 'rain' = card already up, money falling; 'slam' = the card slams onto the screen first, then the caption. */
 export type HookStyle = 'rain' | 'slam';
 /** extra hook time the slam needs before the caption; the 30 and 15 have no slack to give */
-export const SLAM_EXTRA_S: Record<Cut, number> = { '60': 0.8, '30': 0, '15': 0, map: 0, track: 0, scan: 0, card: 0 };
+export const SLAM_EXTRA_S: Record<Cut, number> = { '60': 0.8, '30': 0, '15': 0, map: 0, track: 0, scan: 0, card: 0, new30: 0, new15: 0 };
 /** Full-bleed staging: beats without a dialogue box are paced by the footage, not the word count. */
 export const FULL_OVERRIDES_S: Record<string, number> = {
   'c60-03-1': 3.2, // zoom + tap (clip starts 0.8 s in)
@@ -91,11 +100,17 @@ export const FULL_OVERRIDES_S: Record<string, number> = {
   'c30-03-1': 4.4, // tap, file up at 0.95 s, stamp at 2.75 s
   'c30-05-1': 3.7, // camera, file up at 1.4 s
   'c30-04-1': 3.7, // keeps the 30 under thirty seconds
+  'cnew30-05-1': 3.4, // stand-in clip is 3.5 s (real N1 capture lifts this)
+  'cnew30-07-1': 4.0, // stand-in map clip is 4.0 s
 };
 /** with VO the words land with the voice: typing spans the audio minus this tail */
 export const VO_TYPE_TAIL_S = 0.5;
 /** Section title card (icon + word) before each feature group; 0 = none for that cut. */
-export const TITLE_S: Record<Cut, number> = { '60': 0.8, '30': 0.6, '15': 0, map: 0.7, track: 0.7, scan: 0.7, card: 0.7 };
+export const TITLE_S: Record<Cut, number> = { '60': 0.8, '30': 0.6, '15': 0, map: 0.7, track: 0.7, scan: 0.7, card: 0.7, new30: 0, new15: 0 };
+/** One title card for the whole cut, right after the cold open (release cuts: no per-feature titles). */
+export const RELEASE_TITLE: Partial<Record<Cut, { eyebrow: string; text: string; seconds: number }>> = {
+  new30: { eyebrow: 'UPDATE 1.2', text: 'NEW FILES', seconds: 0.8 },
+};
 
 // ---- helpers ---------------------------------------------------------------
 type ScriptFile = { cuts: Record<Cut, ScriptPanel[]> };
@@ -129,6 +144,14 @@ export const buildTimeline = (cut: Cut, vo: Record<string, { seconds: number; sr
     out.push({ key: `${cut}-C`, panel: cold, from: cursor, duration: d, boxes: [], transitionIn: 'none' });
     cursor += d;
     prevKind = 'cold';
+  }
+  const rt = RELEASE_TITLE[cut];
+  if (rt) {
+    const title: ScriptPanel = { panel: 'T', title: rt.text, eyebrow: rt.eyebrow, kind: 'title', lines: [] };
+    const d = sec(rt.seconds);
+    out.push({ key: `${cut}-T`, panel: title, from: cursor, duration: d, boxes: [], transitionIn: 'crt' });
+    cursor += d;
+    prevKind = 'title';
   }
 
   panels.forEach((p, i) => {
@@ -170,7 +193,7 @@ export const buildTimeline = (cut: Cut, vo: Record<string, { seconds: number; sr
     }
 
     let transitionIn: Transition = 'none';
-    if ((i > 0 || prevKind === 'cold') && (prevKind === 'cold' || prevKind === 'hook' || prevKind === 'title' || p.kind === 'outro')) transitionIn = 'crt';
+    if ((i > 0 || prevKind === 'cold' || prevKind === 'title') && (prevKind === 'cold' || prevKind === 'hook' || prevKind === 'title' || p.kind === 'outro')) transitionIn = 'crt';
 
     out.push({ key: `${cut}-${p.panel}`, panel: p, from: cursor, duration, boxes, transitionIn });
     cursor += duration;

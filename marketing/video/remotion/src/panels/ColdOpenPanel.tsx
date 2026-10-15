@@ -4,6 +4,8 @@ import { useLayout } from '../LayoutContext';
 import { COLD_OPEN, clipSrc } from '../clips';
 import clipDims from '../data/clipDims.json';
 import { MoneyRain } from '../components/MoneyRain';
+import { Notification } from '../components/Notification';
+import { StandIn } from '../components/StandIn';
 import { CAPTURE } from '../layout';
 import type { Cut } from '../timing';
 import { sec } from '../timing';
@@ -42,6 +44,13 @@ export const ColdOpenPanel: React.FC<{ cut: Cut }> = ({ cut }) => {
         />
       </AbsoluteFill>
       {spec.rain ? <MoneyRain count={28} seed={`cold-${cut}`} startFrame={0} /> : null}
+      {spec.notification ? (
+        // the banner is the payoff: it drops in over the app at 0.15 s and sits there
+        <div style={{ position: 'absolute', top: 24, left: 24, width: L.w - 48 }}>
+          <Notification width={L.w - 48} scale={1} startFrame={sec(0.15)} title={spec.notification.title} body={spec.notification.body} />
+        </div>
+      ) : null}
+      {spec.placeholder ? <StandIn label={spec.placeholder} /> : null}
     </AbsoluteFill>
   );
 };

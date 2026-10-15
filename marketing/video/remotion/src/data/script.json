@@ -1,5 +1,5 @@
 {
-  "source": "storyboard artifact db script/lines v3, exported 2026-09-27",
+  "source": "storyboard artifact db script/lines v3, exported 2026-09-27; new30/new15 added Oct 14, 2026 (marketing/notes/script-1.2-whats-new.md), not yet in the storyboard db",
   "cuts": {
     "60": [
       {
@@ -487,6 +487,165 @@
         "lines": [
           {
             "id": "ccard-05-1",
+            "text": "Your move.",
+            "horns": true
+          }
+        ]
+      }
+    ],
+    "new30": [
+      {
+        "panel": "02",
+        "title": "FILES",
+        "kind": "feature",
+        "feature": "MAP",
+        "lines": [
+          {
+            "id": "cnew30-02-1",
+            "text": "Fresh files. Every record refreshed. 761 companies on file."
+          }
+        ]
+      },
+      {
+        "panel": "03",
+        "title": "HOUSEHOLD",
+        "kind": "feature",
+        "feature": "SCAN",
+        "lines": [
+          {
+            "id": "cnew30-03-1",
+            "text": "Now on file: the stuff under your sink. Windex. Clorox. Hefty. Great Value? That's Walmart."
+          }
+        ]
+      },
+      {
+        "panel": "04",
+        "title": "OWNERS",
+        "kind": "feature",
+        "feature": "MAP",
+        "lines": [
+          {
+            "id": "cnew30-04-1",
+            "text": "Brands follow their owners. Ben & Jerry's? Filed under Magnum now."
+          }
+        ]
+      },
+      {
+        "panel": "05",
+        "title": "SCAN",
+        "kind": "feature",
+        "feature": "SCAN",
+        "lines": [
+          {
+            "id": "cnew30-05-1",
+            "text": "Small bottle, short barcode. I read those now. And I focus closer."
+          }
+        ]
+      },
+      {
+        "panel": "06",
+        "title": "FACES",
+        "kind": "feature",
+        "feature": "SCORECARD",
+        "lines": [
+          {
+            "id": "cnew30-06-1",
+            "text": "Forty-nine new faces on the card. Still no sprite? Red X."
+          }
+        ]
+      },
+      {
+        "panel": "07",
+        "title": "NUDGE",
+        "kind": "feature",
+        "feature": "TRACK",
+        "lines": [
+          {
+            "id": "cnew30-07-1",
+            "text": "I check in Monday or Tuesday. Tacos: mandatory. Where you get them: your call."
+          }
+        ]
+      },
+      {
+        "panel": "08",
+        "title": "THE DROP",
+        "kind": "drop",
+        "lines": [
+          {
+            "id": "cnew30-08-1",
+            "text": "Random drop between Friday and Saturday."
+          }
+        ]
+      },
+      {
+        "panel": "09",
+        "title": "OUTRO",
+        "kind": "outro",
+        "lines": [
+          {
+            "id": "cnew30-09-1",
+            "text": "The update's out. Your move.",
+            "horns": true
+          }
+        ]
+      }
+    ],
+    "new15": [
+      {
+        "panel": "02",
+        "title": "FILES",
+        "kind": "feature",
+        "feature": "MAP",
+        "lines": [
+          {
+            "id": "cnew15-02-1",
+            "text": "Fresh files. 761 companies."
+          }
+        ]
+      },
+      {
+        "panel": "03",
+        "title": "HOUSEHOLD",
+        "kind": "feature",
+        "feature": "SCAN",
+        "lines": [
+          {
+            "id": "cnew15-03-1",
+            "text": "Windex. Clorox. On file."
+          }
+        ]
+      },
+      {
+        "panel": "04",
+        "title": "FACES",
+        "kind": "feature",
+        "feature": "SCORECARD",
+        "lines": [
+          {
+            "id": "cnew15-04-1",
+            "text": "Forty-nine new faces."
+          }
+        ]
+      },
+      {
+        "panel": "05",
+        "title": "NUDGE",
+        "kind": "feature",
+        "feature": "TRACK",
+        "lines": [
+          {
+            "id": "cnew15-05-1",
+            "text": "Case of the Mondays? I'll check in."
+          }
+        ]
+      },
+      {
+        "panel": "06",
+        "title": "OUTRO",
+        "kind": "outro",
+        "lines": [
+          {
+            "id": "cnew15-06-1",
             "text": "Your move.",
             "horns": true
           }

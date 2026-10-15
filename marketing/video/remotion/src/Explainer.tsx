@@ -38,7 +38,7 @@ const renderPanel = (p: PanelTL, cut: Cut, veo: VeoMap, scene: SceneMap, hook: H
     case 'clark':
       return <ClarkIntroPanel p={p} veo={veo} scene={scene} />;
     case 'title':
-      return <TitleCard feature={p.panel.feature ?? 'MAP'} />;
+      return p.panel.feature ? <TitleCard feature={p.panel.feature} /> : <TitleCard eyebrow={p.panel.eyebrow} text={p.panel.title} />;
     case 'feature':
       return <FeaturePanel p={p} veo={veo} clarkWasOn={clarkOnAtEnd(prev)} />;
     case 'drop':

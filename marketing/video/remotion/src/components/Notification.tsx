@@ -3,10 +3,10 @@ import { Img, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { APP_ICON } from '../clips';
 import { FONT, T } from '../tokens';
 
-type Props = { width: number; startFrame: number; scale?: number };
+type Props = { width: number; startFrame: number; scale?: number; title?: string; body?: string };
 
 /** Mocked iOS banner, rendered inside the phone frame. */
-export const Notification: React.FC<Props> = ({ width, startFrame, scale = 1 }) => {
+export const Notification: React.FC<Props> = ({ width, startFrame, scale = 1, title = 'Your Scorecard Is Ready.', body = "Tap to see who you FCK'd this week." }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   if (frame < startFrame) return null;
@@ -37,10 +37,10 @@ export const Notification: React.FC<Props> = ({ width, startFrame, scale = 1 }) 
       <Img src={APP_ICON} style={{ width: 84, height: 84, borderRadius: 20, background: T.gold, flex: '0 0 auto' }} />
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-          <div style={{ fontWeight: 600, fontSize: 29, lineHeight: 1.2 }}>Your Scorecard Is Ready.</div>
+          <div style={{ fontWeight: 600, fontSize: 29, lineHeight: 1.2 }}>{title}</div>
           <div style={{ fontSize: 22, color: '#8A8A8E', marginLeft: 10 }}>now</div>
         </div>
-        <div style={{ fontSize: 27, lineHeight: 1.25, color: '#333', marginTop: 2 }}>Tap to see who you FCK'd this week.</div>
+        <div style={{ fontSize: 27, lineHeight: 1.25, color: '#333', marginTop: 2 }}>{body}</div>
       </div>
     </div>
   );

@@ -5,6 +5,7 @@ import { CLIPS, clipSrc } from '../clips';
 import clipDims from '../data/clipDims.json';
 import { Notification } from '../components/Notification';
 import { PhoneFrame, coverTop } from '../components/PhoneFrame';
+import { StandIn } from '../components/StandIn';
 import { Starfield } from '../components/Starfield';
 import { CAPTURE, PHONE } from '../layout';
 import { TYPE_CPS, sec, typingFrames, type Box, type PanelTL } from '../timing';
@@ -113,9 +114,10 @@ export const FeaturePanel: React.FC<{ p: PanelTL; veo: VeoMap; clarkWasOn?: bool
           ) : null}
           {clip?.notificationAt != null ? (
             <div style={{ position: 'absolute', top: 24, left: 24, width: L.w - 48 }}>
-              <Notification width={L.w - 48} scale={1} startFrame={Math.round(p.duration * clip.notificationAt)} />
+              <Notification width={L.w - 48} scale={1} startFrame={Math.round(p.duration * clip.notificationAt)} title={clip.notification?.title} body={clip.notification?.body} />
             </div>
           ) : null}
+          {clip?.placeholder ? <StandIn label={clip.placeholder} /> : null}
           {cfg.report ? (
             // the file is up for the whole beat: Clark leaves once, and stays gone
             <>
@@ -166,6 +168,8 @@ export const FeaturePanel: React.FC<{ p: PanelTL; veo: VeoMap; clarkWasOn?: bool
               width={L.phone.width - PHONE.border * 2}
               scale={L.phone.width / PHONE.width}
               startFrame={Math.round(p.duration * clip.notificationAt)}
+              title={clip.notification?.title}
+              body={clip.notification?.body}
             />
           ) : null}
         </PhoneFrame>

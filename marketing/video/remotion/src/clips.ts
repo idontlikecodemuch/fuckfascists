@@ -10,6 +10,8 @@ import type { Cut } from './timing';
  *  - notificationAt: fraction of the panel when the iOS banner drops in
  */
 export type ClipKind = 'phone' | 'phonedev' | 'full';
+/** iOS banner copy (components/Notification.tsx); default is the scorecard drop. */
+export type Banner = { title: string; body: string };
 export type ClipSpec = {
   file: string;
   kind: ClipKind;
@@ -18,6 +20,9 @@ export type ClipSpec = {
   revealAt?: number;
   rainAt?: number;
   notificationAt?: number;
+  notification?: Banner;
+  /** first pass only: the beat plays a stand-in clip; the label names the capture it waits for */
+  placeholder?: string;
   /**
    * Full-bleed staging. align: which edge keeps the 5% aspect sliver. report: the file is
    * up for the whole beat (no box, no Clark; he glitches out if he was on screen before).
@@ -35,6 +40,11 @@ const TRACK = { align: 'top', clarkOpacity: 0 } as const;
 const SCAN_CAM = { align: 'bottom' } as const;
 const SCAN_FILE = { align: 'bottom', report: true, startFrom: 0.4 } as const;
 const CARD_PREVIEW = { align: 'top' } as const;
+/** Early-week nudge lines, verbatim from copy/platforms.ts (owner-written, Oct 13). */
+export const NUDGE: Record<'monday' | 'taco', Banner> = {
+  monday: { title: 'Case of the Mondays?', body: 'Known cure: log an avoid. Side effects include feeling great.' },
+  taco: { title: 'It\u2019s Taco Tuesday \u{1F32E}', body: 'Tacos: mandatory. Where you get them: your call.' },
+};
 
 export const CLIPS: Record<string, ClipSpec> = {
   // one alignment per feature so the footage never moves between beats
@@ -69,6 +79,19 @@ export const CLIPS: Record<string, ClipSpec> = {
   'card-02': { file: '60_11_scorecard_preview', kind: 'phonedev', notificationAt: 0.6, full: CARD_PREVIEW },
   'card-03': { file: '60_12_drop', kind: 'full', revealAt: 0.72, rainAt: 1.3 },
   'card-04': { file: '60_13_share', kind: 'full', anchor: 'bottom' },
+  // Oct 14: the 1.2 "what's new" cuts. `placeholder` = stand-in footage until captures N1–N4
+  // on build 13 land (marketing/notes/script-1.2-whats-new.md); the tag renders on screen.
+  'new30-02': { file: '60_03_map_pins', kind: 'phone', full: MAP_TAP },
+  'new30-03': { file: '30_05_scan', kind: 'phone', full: { align: 'bottom', reportAt: 1.4 }, placeholder: 'N2 · Windex scan → SC Johnson' }, // camera, file up at 1.4 s
+  'new30-04': { file: '60_04_map_card', kind: 'phone', full: MAP_FILE, placeholder: 'N3 · Ben & Jerry\u2019s → Magnum' },
+  'new30-05': { file: '60_10_scan_card', kind: 'phone', shakeAt: 2.15, full: { align: 'bottom', report: true }, placeholder: 'N1 · 20 oz Sprite, close focus' }, // 3.5 s clip: beat capped in FULL_OVERRIDES_S
+  'new30-06': { file: '60_11_scorecard_preview', kind: 'phonedev', full: CARD_PREVIEW, placeholder: 'N4 · new faces + red X' },
+  'new30-07': { file: '60_03_map_pins', kind: 'phone', notificationAt: 0.12, notification: NUDGE.taco, full: { align: 'bottom' } },
+  'new30-08': { file: '60_12_drop', kind: 'full', revealAt: 0.72, rainAt: 1.3 },
+  'new15-02': { file: '60_03_map_pins', kind: 'phone', full: MAP_TAP },
+  'new15-03': { file: '60_10_scan_card', kind: 'phone', shakeAt: 2.15, full: SCAN_FILE, placeholder: 'N2 · Windex scan' },
+  'new15-04': { file: '60_11_scorecard_preview', kind: 'phonedev', full: CARD_PREVIEW, placeholder: 'N4 · new faces + red X' },
+  'new15-05': { file: '60_03_map_pins', kind: 'phone', notificationAt: 0.12, notification: NUDGE.monday, full: { align: 'bottom' } },
 };
 
 /**
@@ -87,12 +110,14 @@ export const HOOK_CLIP = 'hook_card_rain';
  * Cold opens for the per-tab shorts (ColdOpenPanel): the payoff moment, ~1.5 s, before
  * the title card. startFrom/shakeAt in seconds; shakeAt is relative to the open's start.
  */
-export type ColdOpen = { file: string; startFrom: number; align: 'top' | 'center' | 'bottom'; shakeAt?: number; rain?: boolean };
+export type ColdOpen = { file: string; startFrom: number; align: 'top' | 'center' | 'bottom'; shakeAt?: number; rain?: boolean; notification?: Banner; placeholder?: string };
 export const COLD_OPEN: Partial<Record<Cut, ColdOpen>> = {
   map: { file: '60_05_map_avoid', startFrom: 0.3, align: 'bottom', shakeAt: 0.55 }, // file up → AVOID stamp at 0.55 s
   track: { file: '60_08_track_defeat', startFrom: 0.2, align: 'top', shakeAt: 0.5 }, // today's tap → Musk defeated at 0.5 s
   scan: { file: '30_05_scan', startFrom: 0.7, align: 'bottom' }, // barcode lock → Coca-Cola record at 0.7 s
   card: { file: '60_12_drop', startFrom: 0.9, align: 'top', rain: true }, // the card, our rain from frame 0, the app's at 0.4 s
+  new30: { file: '60_06_track_grid', startFrom: 0.3, align: 'top', notification: NUDGE.monday }, // the early-week nudge lands on Track
+  new15: { file: '60_12_drop', startFrom: 0.9, align: 'top', rain: true, placeholder: 'N4 · the card with new faces' },
 };
 export const clipSrc = (file: string): string => staticFile(`media/clips/${file}.mp4`);
 export const MAP_STILL = staticFile('media/clips/map_still.png');
@@ -105,7 +130,7 @@ export const clarkSceneFrame = (id: string, index: number): string =>
   staticFile(`media/clips/clark/scene/${id}/${String(index + 1).padStart(4, '0')}.jpg`);
 /** Music bed per cut: the punk bed (64 s) and its 30 s / 15 s edits (hopeful files kept beside them); shorts use the 15. */
 export const musicSrc = (cut: Cut): string =>
-  staticFile(cut === '60' ? 'media/music/fck_bed_punk_64s.mp3' : cut === '30' ? 'media/music/fck_bed_punk_30s.mp3' : 'media/music/fck_bed_punk_15s.mp3');
+  staticFile(cut === '60' ? 'media/music/fck_bed_punk_64s.mp3' : cut === '30' || cut === 'new30' ? 'media/music/fck_bed_punk_30s.mp3' : 'media/music/fck_bed_punk_15s.mp3');
 export const STARFIELD = staticFile('assets/star_field_base.png');
 export const LOGO = staticFile('assets/FF_logo.png');
 export const APP_ICON = staticFile('assets/icon.png');

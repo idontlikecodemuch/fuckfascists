@@ -21,6 +21,9 @@ const COPY: Record<Cut, { tagline: string; sub: string }> = {
   track: SHORT_COPY,
   scan: SHORT_COPY,
   card: SHORT_COPY,
+  // Oct 14: the 1.2 release cuts say it's an update
+  new30: { tagline: 'UPDATE OUT NOW', sub: SHORT_COPY.sub },
+  new15: { tagline: 'UPDATE OUT NOW', sub: SHORT_COPY.sub },
 };
 
 /** Brand card on the starfield: lockup + "IT'S YOUR MOVE", Clark under it with the pile; 🤘🏽 lands last. No dialogue box on any layout. */
