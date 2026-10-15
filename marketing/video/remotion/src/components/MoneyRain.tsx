@@ -14,10 +14,12 @@ type Props = {
   /** stop spawning after this frame — existing bills keep falling out */
   width?: number;
   height?: number;
+  /** one wave: bills fall through once and never re-spawn (release cut: money on the big slams) */
+  burst?: boolean;
 };
 
 /** Falling cash sprites (the app's MoneyRainfall look, re-created so bills can land on Clark). */
-export const MoneyRain: React.FC<Props> = ({ count = 26, seed = 'rain', startFrame = 0, width, height }) => {
+export const MoneyRain: React.FC<Props> = ({ count = 26, seed = 'rain', startFrame = 0, width, height, burst = false }) => {
   const L = useLayout();
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -32,10 +34,10 @@ export const MoneyRain: React.FC<Props> = ({ count = 26, seed = 'rain', startFra
     const w = SPRITE_W * scale;
     const h = SPRITE_H * scale;
     const speed = 420 + r('v') * 360; // px/s
-    const delay = r('d') * 1.4; // stagger the first wave
+    const delay = r('d') * (burst ? 0.35 : 1.4); // stagger the first wave (tight for a burst)
     const span = areaH + h * 2;
     const yRaw = Math.max(0, t - delay) * speed - h;
-    const y = t < delay ? -h * 2 : ((yRaw + h) % span) - h;
+    const y = t < delay ? -h * 2 : burst ? yRaw : ((yRaw + h) % span) - h;
     const sway = 18 + r('a') * 40;
     const x = r('x') * (areaW + 80) - 40 + Math.sin(t * (1.4 + r('f') * 1.6) + r('p') * 6.28) * sway;
     const rot = (r('r') - 0.5) * 70 + Math.sin(t * 2.2 + r('q') * 6) * 18;

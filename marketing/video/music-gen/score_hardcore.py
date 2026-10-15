@@ -1,22 +1,27 @@
 """
-score_hardcore.py - "hardcore" style for the 1.2 release cut (creator, Oct 15: "a little more
-hardcore, more intense"). Same grid as score_drive.py (150 bpm, 12 frames a beat, 48 a bar,
-3-beat sting) so Release.tsx's b(bar, beat) still lands; the sound is the change: skank-beat
-drums, driven palm-muted power chords, distorted bass, gang shouts on section starts, a
-half-time chug under the nudges, a blast beat for the drop. Lead is sparse octave stabs.
+score_hardcore.py - "hardcore" style for the 1.2 release cut (creator, Oct 15: "more
+hardcore", "more intense"). Grid as score_drive.py (150 bpm, 12 frames a beat, 48 a bar,
+3-beat sting) so Release.tsx's b(bar, beat) lands; Oct 15 evening: one HOOK bar after the
+sting (logo + hook line), so the sections start a bar later (Release.tsx HOOK_BARS = 1).
+
+Sound: d-beat / skank drums with sixteenth hats, driven palm-muted power chords, distorted
+bass, gang shouts every other bar, a half-time chug under the nudges, blast beats for the
+faces and the drop. Lead = sparse octave stabs, low in the mix.
 
   bar  section (video)                         frames
-   1   sting + shout: UPDATE 1.2 / NEW FILES        0
-   2-3 FILES  (Am G, muted chug)                   36
-   4-7 HOUSEHOLD (Am G F G, open chords, shout)   132
-   8-9 OWNERS (Dm Em)                             324
-  10-11 SCAN (F G, fill into the faces)           420
-  12-14 FACES (Am C F|G, wide lead, shout)        516
-  15   THE X: shout + crash on beat 3 (step 8)    660
-  16-17 NUDGE: half-time chug                     708
-  18   count + riser                              804
-  19   drop: blast beat, wide lead                852
-  20   end hit, tail                              900  (948 = 31.6 s)
+   1   sting: logo slam + money                      0
+   2   HOOK: "SEE WHERE THE MONEY GOES."            36
+   3   UPDATE 1.2 / NEW FILES                       84
+   4-5 FILES                                       132
+   6-9 HOUSEHOLD                                   228
+  10-11 OWNERS                                     420
+  12-13 SCAN                                       516
+  14-16 FACES (blast on 16)                        612
+  17   THE X: shout + crash on beat 3              756
+  18-19 NUDGE: half-time chug                      804
+  20   count + riser                               900
+  21   drop: blast                                 948
+  22   end hit under the tagline, tail             996  (1044 = 34.8 s)
 """
 from theory import parse_line
 
@@ -26,23 +31,23 @@ STEP = BEAT / 4.0
 BAR = BEAT * 4.0                 # 48 frames
 
 VOICE = {
-    'lead': dict(attack=0.001, decay=0.08, sustain=0.5, duty_attack=0.5, vib=14.0),
-    'snare': dict(length=0.34, body=0.25, crunch=1.0, crunch_tau=0.14, sizzle=0.85, sizzle_tau=0.10),
+    'lead': dict(attack=0.001, decay=0.06, sustain=0.45, duty_attack=0.5, vib=16.0),
+    'snare': dict(length=0.32, body=0.22, crunch=1.0, crunch_tau=0.13, sizzle=0.9, sizzle_tau=0.09),
 }
 # track: (gain, pan, sidechain depth, reverb send, drive)
 MIX = {
-    'lead': (0.17, 0.0, 0.08, 0.06, 0.75), 'harm': (0.08, -0.20, 0.10, 0.08, 0.7),
-    'p2': (0.08, -0.30, 0.10, 0.08, 0.6), 'bass': (0.23, 0.0, 0.10, 0.0, 0.4),
-    'kick': (0.44, 0.0, 0.0, 0.0, 0), 'snare': (0.25, 0.05, 0.0, 0.10, 0.2),
-    'hat': (0.075, 0.25, 0.0, 0.0, 0), 'ohat': (0.08, 0.25, 0.0, 0.0, 0),
-    'tom': (0.24, -0.10, 0.0, 0.08, 0), 'riser': (0.06, 0.0, 0.0, 0.0, 0),
-    'shout': (0.36, 0.0, 0.0, 0.16, 0.2),
+    'lead': (0.13, 0.0, 0.08, 0.05, 0.85), 'harm': (0.07, -0.20, 0.10, 0.06, 0.8),
+    'p2': (0.07, -0.30, 0.10, 0.06, 0.7), 'bass': (0.25, 0.0, 0.08, 0.0, 0.6),
+    'kick': (0.46, 0.0, 0.0, 0.0, 0.1), 'snare': (0.30, 0.05, 0.0, 0.08, 0.4),
+    'hat': (0.085, 0.25, 0.0, 0.0, 0), 'ohat': (0.09, 0.25, 0.0, 0.0, 0),
+    'tom': (0.26, -0.10, 0.0, 0.06, 0.1), 'riser': (0.07, 0.0, 0.0, 0.0, 0),
+    'shout': (0.40, 0.0, 0.0, 0.14, 0.35),
 }
 # stereo pairs name_l/name_r: (gain, sidechain depth, reverb send, drive)
-STEREO = {'gtr': (0.19, 0.12, 0.04, 0.95), 'crash': (0.10, 0.0, 0.0, 0),
-          'spark': (0.0, 0.20, 0.25, 0), 'wide': (0.22, 0.10, 0.10, 0.7)}
-FX = dict(echo=[(0.10, -0.5), (0.05, 0.5)], p3_echo=0.0, reverb=0.09,
-          low_shelf_db=-3.0, low_shelf_hz=150.0, tp=-1.0)
+STEREO = {'gtr': (0.22, 0.10, 0.03, 1.0), 'crash': (0.11, 0.0, 0.0, 0),
+          'spark': (0.0, 0.20, 0.25, 0), 'wide': (0.20, 0.10, 0.08, 0.85)}
+FX = dict(echo=[(0.08, -0.5), (0.04, 0.5)], p3_echo=0.0, reverb=0.06,
+          low_shelf_db=-2.0, low_shelf_hz=140.0, tp=-1.0)
 
 
 def _bar(ch, drums, gtr, key='C', bass='root8', **kw):
@@ -50,43 +55,41 @@ def _bar(ch, drums, gtr, key='C', bass='root8', **kw):
     return dict(ch=chords, key=key, drums=drums, bass=bass, gtr=gtr, **kw)
 
 
-MUTE, OPEN, CHUG = ('mute8', 1.0), ('open8', 1.0), ('mute8', 1.0)
-BARS = {
-    1: _bar('Am', 'sting', ('sting', 1.0), bass='sting', beats=3, crash=True),
-    2: _bar('Am', 'skankX', MUTE, bass='root8', crash=True), 3: _bar('G', 'skank', MUTE, bass='root8'),
-    4: _bar('Am', 'skankX', OPEN, bass='root8', crash=True), 5: _bar('G', 'skank', OPEN, bass='root8'),
-    6: _bar('F', 'skank', OPEN, bass='root8'), 7: _bar('G', 'skankfill', OPEN, bass='root8'),
-    8: _bar('Dm', 'skankX', OPEN, bass='root8', crash=True), 9: _bar('Em', 'skank', OPEN, bass='root8'),
-    10: _bar('F', 'skank', OPEN, bass='root8', crash=True), 11: _bar('G', 'skankfill', OPEN, bass='root8'),
-    12: _bar('Am', 'skankX', OPEN, bass='root8', wide=True, crash=True),
-    13: _bar('C', 'skank', OPEN, bass='root8', wide=True),
-    14: _bar('F|G', 'skankfill', OPEN, bass='root8', wide=True),
-    15: _bar('Am', 'xbar', ('count', 1.0), bass='count', crash=True),
-    16: _bar('F', 'chug', CHUG, bass='half', crash=True),
-    17: _bar('G', 'chug2', CHUG, bass='half'),
-    18: _bar('G|G7', 'count', ('count', 1.0), bass='count', riser=True),
-    19: _bar('Am', 'blast', OPEN, bass='root8', wide=True, crash=True),
-    20: _bar('Am', 'end1', ('hit', 1.0), bass='hit', crash=True),
-}
-
-# sparse octave stabs; the guitars carry the bars
-LEAD = {
-    1: 'A5:0.5 A6:7.5',
-    2: 'A5:2 r:2 A5:2 r:2 A5:2 r:2 G5:2 r:2', 3: 'G5:2 r:2 G5:2 r:2 G5:2 r:2 A5:2 r:2',
-    4: 'A6:2 r:6 A6:2 r:6', 5: 'G6:2 r:6 G6:2 r:6', 6: 'F6:2 r:6 F6:2 r:6', 7: 'G6:2 r:2 G6:2 r:2 A6:2 r:2 B6:2 r:2',
-    8: 'D6:2 r:6 D6:2 r:6', 9: 'E6:2 r:6 E6:2 r:6',
-    10: 'F6:2 r:2 F6:2 r:2 F6:2 r:2 F6:2 r:2', 11: 'G6:2 r:2 G6:2 r:2 A6:2 r:2 B6:2 r:2',
-    12: 'A5:3 C6:3 E6:6 D6:2 C6:2', 13: 'G5:3 C6:3 E6:6 G6:2 E6:2', 14: 'F5:4 A5:4 G5:4 B5:4',
-    15: 'A5:4 r:4 A6:8',
-    16: 'r:16', 17: 'r:16',
-    18: 'D6:8 E6:8', 19: 'A6:4 G6:4 E6:4 A6:4', 20: 'A6:16',
-}
+MUTE, OPEN = ('mute8', 1.0), ('open8', 1.0)
+# (chords, drums, guitar, bass, lead line, extra) in order; bar numbers come from the position
+SEQ = [
+    ('Am', 'sting', ('sting', 1.0), 'sting', 'A5:0.5 A6:7.5', dict(beats=3, crash=True)),
+    ('Am', 'dbeatX', OPEN, 'root16', 'A6:2 r:2 A6:2 r:2 G6:2 r:2 A6:2 r:2', dict(crash=True)),          # hook
+    ('Am', 'dbeat', MUTE, 'root16', 'A5:2 r:2 A5:2 r:2 A5:2 r:2 G5:2 r:2', dict(crash=True)),            # update 1.2
+    ('Am', 'skankX', MUTE, 'root16', 'A5:2 r:2 A5:2 r:2 A5:2 r:2 G5:2 r:2', dict(crash=True)),           # files
+    ('G', 'skankfill', MUTE, 'root16', 'G5:2 r:2 G5:2 r:2 G5:2 r:2 A5:2 r:2', {}),
+    ('Am', 'dbeatX', OPEN, 'root16', 'A6:2 r:6 A6:2 r:6', dict(crash=True)),                             # household
+    ('G', 'dbeat', OPEN, 'root16', 'G6:2 r:6 G6:2 r:6', {}),
+    ('F', 'skankX', OPEN, 'root16', 'F6:2 r:6 F6:2 r:6', {}),
+    ('G', 'skankfill', OPEN, 'root16', 'G6:2 r:2 G6:2 r:2 A6:2 r:2 B6:2 r:2', {}),
+    ('Dm', 'dbeatX', OPEN, 'root16', 'D6:2 r:6 D6:2 r:6', dict(crash=True)),                             # owners
+    ('Em', 'dbeat', OPEN, 'root16', 'E6:2 r:6 E6:2 r:6', {}),
+    ('F', 'skankX', OPEN, 'root16', 'F6:2 r:2 F6:2 r:2 F6:2 r:2 F6:2 r:2', dict(crash=True)),            # scan
+    ('G', 'skankfill', OPEN, 'root16', 'G6:2 r:2 G6:2 r:2 A6:2 r:2 B6:2 r:2', {}),
+    ('Am', 'dbeatX', OPEN, 'root16', 'A5:3 C6:3 E6:6 D6:2 C6:2', dict(wide=True, crash=True)),           # faces
+    ('C', 'dbeat', OPEN, 'root16', 'G5:3 C6:3 E6:6 G6:2 E6:2', dict(wide=True)),
+    ('F|G', 'blast', OPEN, 'root16', 'F5:4 A5:4 G5:4 B5:4', dict(wide=True)),
+    ('Am', 'xbar', ('count', 1.0), 'count', 'A5:4 r:4 A6:8', dict(crash=True)),                          # the X
+    ('F', 'chug', MUTE, 'half', 'r:16', dict(crash=True)),                                               # nudge
+    ('G', 'chug2', MUTE, 'half', 'r:16', {}),
+    ('G|G7', 'count', ('count', 1.0), 'count', 'D6:8 E6:8', dict(riser=True)),                           # count
+    ('Am', 'blast', OPEN, 'root16', 'A6:4 G6:4 E6:4 A6:4', dict(wide=True, crash=True)),                 # drop
+    ('Am', 'end1', ('hit', 1.0), 'hit', 'A6:16', dict(crash=True)),                                      # tagline hit
+]
+BARS = {i + 1: _bar(ch, dr, gtr, bass=bass, **kw) for i, (ch, dr, gtr, bass, _, kw) in enumerate(SEQ)}
+LEAD = {i + 1: line for i, (_, _, _, _, line, _) in enumerate(SEQ)}
 COUNTER = {}
 PATTERNS = {}
 
 BASS = {
     'sting': [(0, 8, 'R-12')],
     'root8': [(i * 2, 2, 'R') for i in range(8)],
+    'root16': [(i, 1, 'R') for i in range(16)],
     'half': [(0, 8, 'R'), (8, 8, 'R')],
     'count': [(0, 2, 'R'), (4, 2, 'R'), (8, 2, 'R'), (12, 2, 'R')],
     'hit': [(0, 30, 'R-12')],
@@ -94,23 +97,25 @@ BASS = {
 
 DRUMS = {
     'sting':     dict(K='9...........', C='9...........', X='9...........'),
-    # skank beat: kick every 8th, snare on the off 8ths, hats riding
-    'skank':     dict(K='9.9.9.9.9.9.9.9.', S='..9...9...9...9.', H='8.8.8.8.8.8.8.8.'),
-    'skankX':    dict(K='9.9.9.9.9.9.9.9.', S='..9...9...9...9.', H='8.8.8.8.8.8.8.8.', X='9...............'),
-    'skankfill': dict(K='9.9.9.9.9.9.9...', S='..9...9...9.6789', H='8.8.8.8.8.8.....', T='............9.8.'),
-    'xbar':      dict(K='9...9...9...9...', S='....9.......9...', X='9.......9.......', C='........9.......', H='8.8.8.8.........'),
-    'chug':      dict(K='9.....9...9.....', S='....9.......9...', O='7...7...7...7...'),
+    # d-beat: kick 1 and the and-of-2 / 3 and the and-of-4; snare on 2 and 4 plus the pushes
+    'dbeat':     dict(K='9...9.9...9.9...', S='..9...9...9...9.', H='8686868686868686'),
+    'dbeatX':    dict(K='9...9.9...9.9...', S='..9...9...9...9.', H='8686868686868686', X='9...............'),
+    # skank: kick every 8th, snare on the off 8ths
+    'skankX':    dict(K='9.9.9.9.9.9.9.9.', S='..9...9...9...9.', H='8686868686868686', X='9.......9.......'),
+    'skankfill': dict(K='9.9.9.9.9.9.9...', S='..9...9...9.6789', H='8686868686868...', T='............9.8.'),
+    'xbar':      dict(K='9...9...9...9...', S='....9.......9...', X='9.......9.......', C='........9.......', H='86868686........'),
+    'chug':      dict(K='9.....9...9.....', S='....9.......9...', O='7...7...7...7...', X='9...............'),
     'chug2':     dict(K='9.....9...9.....', S='....9.......9.78', O='7...7...7...7...'),
     'count':     dict(K='9...9...9...9...', X='6...7...8...9...', S='............6789'),
-    'blast':     dict(K='9.9.9.9.9.9.9.9.', S='.9.9.9.9.9.9.9.9', H='8.8.8.8.8.8.8.8.'),
-    'end1':      dict(K='9...............', S='9...............', X='9...............'),
+    'blast':     dict(K='9.9.9.9.9.9.9.9.', S='.9.9.9.9.9.9.9.9', H='8686868686868686'),
+    'end1':      dict(K='9...............', S='9...............', X='9...............', C='9...............'),
 }
 
 # Arrangements: (bar list, output seconds, fade-out seconds)
 ARRANGEMENTS = {
-    '32s': (list(range(1, 21)), 31.6, 1.2),
+    '35s': (list(range(1, len(SEQ) + 1)), 34.8, 1.4),
 }
-LOOP_A = list(range(4, 8))
+LOOP_A = list(range(6, 10))
 
 LEAD_NOTES = {b: parse_line(s) for b, s in LEAD.items()}
 COUNTER_NOTES = {b: parse_line(s) for b, s in COUNTER.items()}

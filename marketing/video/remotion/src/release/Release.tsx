@@ -1,5 +1,5 @@
 import React from 'react';
-import { AbsoluteFill, Audio, Img, OffthreadVideo, Sequence, spring, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
+import { AbsoluteFill, Audio, Easing, Img, OffthreadVideo, Sequence, interpolate, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
 import { FULL, LayoutProvider } from '../LayoutContext';
 import { LOGO, NUDGE, clipSrc } from '../clips';
 import clipDims from '../data/clipDims.json';
@@ -22,10 +22,14 @@ import { Barcode, BigX, CountUp, Flash, H, RED, Slam, SpriteBust, Stamp, Strike,
 export const BEAT = 12;
 export const BAR = 48;
 export const STING = 36;
-/** absolute frame of `beat` (0–3, fractions ok) in bar `bar` (bars count from 2 after the sting) */
-export const b = (bar: number, beat = 0): number => STING + (bar - 2) * BAR + Math.round(beat * BEAT);
-export const RELEASE_FRAMES = b(21); // 948 = 31.6 s
-export const MUSIC = 'media/music/fck_bed_hardcore_32s.mp3'; // Oct 15: hardcore over the same grid (compose.py --style hardcore)
+/** Oct 15 evening: two bars of opening after the sting — the hook (logo + line) and UPDATE 1.2 — before the sections. */
+export const HOOK_BARS = 2;
+/** absolute frame of `beat` (0–3, fractions ok) in bar `bar` (section bars count from 2, after the sting and the opening bars) */
+export const b = (bar: number, beat = 0): number => STING + HOOK_BARS * BAR + (bar - 2) * BAR + Math.round(beat * BEAT);
+export const RELEASE_FRAMES = b(21); // 1044 = 34.8 s
+export const MUSIC = 'media/music/fck_bed_hardcore_35s.mp3'; // compose.py --style hardcore: sting, hook, update, sections, end hit
+const HOOK = STING; // the hook bar
+const UPDATE = STING + BAR; // the UPDATE 1.2 bar
 
 /** Brand product pages, captured tall in the browser (scripts/web-captures.sh): "scrolling the products on a website". */
 const WEB = webCaptures as Record<string, { file: string; w: number; h: number }>;
@@ -52,25 +56,27 @@ const FACES: Array<[id: string, label: string]> = [
   ['josh-damaro', 'Disney'], ['srini-gopalan', 'T-Mobile'], ['enrique-lores', 'PayPal'],
   ['mike-motz', 'Walgreens'], ['kirk-tanner', 'Hershey'], ['jeff-harmening', 'General Mills'],
 ];
-const SECTIONS = [b(2), b(4), b(8), b(10), b(12), b(15), b(16), b(18), b(19)];
+const SECTIONS = [UPDATE, b(2), b(4), b(8), b(10), b(12), b(15), b(16), b(18), b(19)];
 const HITS: Array<[number, number]> = [
-  [0, 22], [14, 22],
+  [0, 30], [12, 18], [UPDATE, 22], [UPDATE + 14, 22],
   [b(2), 12], [b(3), 16], [b(3, 2), 10],
   [b(4, 1), 14], [b(4, 3), 14], [b(5, 1), 14], [b(5, 3), 14], [b(6, 1), 18], [b(7, 1), 24],
   [b(8), 12], [b(9), 14], [b(9, 2), 18],
   [b(10, 3), 16], [b(11, 1), 12],
   [b(14), 16], [b(15), 12], [b(15, 2), 34],
   [b(16), 10], [b(16, 2), 10],
-  [b(18), 18], [b(19), 16],
+  [b(18), 18], [b(19), 16], [b(20), 30],
 ];
 const BED_GAIN = 0.42;
 
-const Logo: React.FC<{ at: number }> = ({ at }) => {
+/** The stacked logo slamming in (same hard curve as the type). */
+const Logo: React.FC<{ at: number; until?: number; top: number; width: number }> = ({ at, until, top, width }) => {
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  if (frame < at) return null;
-  const s = spring({ frame: frame - at, fps, config: { damping: 12, stiffness: 220, mass: 0.8 } });
-  return <Img src={LOGO} style={{ position: 'absolute', left: (W - 720) / 2, top: 380, width: 720, imageRendering: 'pixelated', transform: `scale(${0.5 + 0.5 * s})`, opacity: Math.min(1, s * 1.6), filter: 'drop-shadow(0 0 30px rgba(95,174,255,0.35))' }} />;
+  const t = frame - at;
+  if (t < 0 || (until != null && frame >= until)) return null;
+  const s = interpolate(t, [0, 4], [0, 1], { extrapolateRight: 'clamp', easing: Easing.out(Easing.cubic) });
+  const settle = t < 4 ? 1 : interpolate(t, [4, 7], [0.97, 1], { extrapolateRight: 'clamp' });
+  return <Img src={LOGO} style={{ position: 'absolute', left: (W - width) / 2, top, width, imageRendering: 'pixelated', transform: `scale(${(1.8 - 0.8 * s) * settle})`, opacity: Math.min(1, (t + 1) / 2), filter: 'drop-shadow(0 0 30px rgba(95,174,255,0.35))' }} />;
 };
 
 export const Release: React.FC = () => {
@@ -84,9 +90,12 @@ export const Release: React.FC = () => {
         <Starfield />
         {nudgeOn ? <AbsoluteFill style={{ background: 'rgba(7,11,18,0.55)' }} /> : null}
         <AbsoluteFill style={{ transform: `translate(${shake.x}px, ${shake.y}px) scale(${shake.zoom})`, transformOrigin: '50% 45%' }}>
-          {/* OPEN — the sting */}
-          <Slam at={0} until={b(2)} text="UPDATE 1.2" size={150} color={T.cyan} top={700} />
-          <Slam at={14} until={b(2)} text="NEW FILES." size={200} top={870} />
+          {/* OPEN — branding + hook in the first 2.8 s: logo slam with money, the line; then UPDATE 1.2 */}
+          <MoneyRain burst count={44} seed="open" startFrame={0} />
+          <Logo at={0} until={UPDATE} top={430} width={820} />
+          <Slam at={12} until={UPDATE} text={'SEE WHERE\nTHE MONEY GOES.'} size={104} top={1120} />
+          <Slam at={UPDATE} until={b(2)} text="UPDATE 1.2" size={150} color={T.cyan} top={700} />
+          <Slam at={UPDATE + 14} until={b(2)} text="NEW FILES." size={200} top={870} />
 
           {/* FILES — bars 2–3 */}
           <CountUp at={b(2)} until={b(4)} to={761} frames={30} size={420} top={520} />
@@ -103,6 +112,7 @@ export const Release: React.FC = () => {
           <WebScroll at={b(4, 1)} until={b(6)} file={WEB.windex.file} w={WEB.windex.w} h={WEB.windex.h} top={1240} frameW={640} frameH={760} rotate={-6} />
           <WebScroll at={b(6)} until={b(8)} file={WEB.clorox.file} w={WEB.clorox.w} h={WEB.clorox.h} top={1240} frameW={640} frameH={760} rotate={5} />
           <Stamp at={b(7, 1)} until={b(8)} text="ON FILE" top={1560} />
+          <MoneyRain burst count={26} seed="stamp" startFrame={b(7, 1)} />
 
           {/* OWNERS — bars 8–9 */}
           <Slam at={b(8)} until={b(10)} text={'BRANDS FOLLOW\nTHEIR OWNERS.'} size={88} color={T.cream} top={420} />
@@ -110,6 +120,7 @@ export const Release: React.FC = () => {
           <Strike at={b(9)} until={b(10)} top={812} left={110} width={860} rotate={-2} />
           <Slam at={b(9, 1)} until={b(10)} text="FILED UNDER" size={48} color={T.cyan} font="body" weight={600} letterSpacing={6} top={920} glow={false} />
           <Slam at={b(9, 2)} until={b(10)} text="MAGNUM" size={190} top={990} />
+          <MoneyRain burst count={26} seed="magnum" startFrame={b(9, 2)} />
 
           {/* SCAN — bars 10–11 (mixed media: the real barcode lock for the last two beats) */}
           <ClipBurst at={b(11, 2)} until={b(12)} file="30_05_scan" startFrom={0.7} align="bottom" dim={0.5} />
@@ -123,12 +134,14 @@ export const Release: React.FC = () => {
             <SpriteBust key={id} at={b(12) + i * 5} until={b(15)} id={id} label={label} left={110 + (i % 3) * 300} top={300 + Math.floor(i / 3) * 330} size={260} />
           ))}
           <Slam at={b(14)} until={b(15)} text="49 NEW FACES." size={120} top={1610} />
+          <MoneyRain burst count={30} seed="faces" startFrame={b(14)} />
 
           {/* THE X — bar 15 */}
           <Slam at={b(15)} until={b(16)} text="STILL NO SPRITE?" size={110} color={T.cream} top={460} />
           <BigX at={b(15, 2)} until={b(16)} size={760} top={700} />
           <Flash at={b(15, 2)} color={RED} frames={5} peak={0.5} />
           <Slam at={b(15, 3)} until={b(16)} text="RED X." size={170} color={RED} top={1560} />
+          <MoneyRain burst count={34} seed="x" startFrame={b(15, 2)} />
 
           {/* NUDGE — bars 16–17 */}
           {nudgeOn ? (
@@ -150,14 +163,15 @@ export const Release: React.FC = () => {
           <Slam at={b(18)} until={b(19)} text="RANDOM DROP" size={115} top={600} />
           <Slam at={b(18, 1.5)} until={b(19)} text={'BETWEEN FRIDAY\nAND SATURDAY.'} size={88} color={T.cream} top={760} />
 
-          {/* END — bars 19–20 */}
-          <Logo at={b(19)} />
-          <Slam at={b(19, 1)} text="UPDATE OUT NOW" size={96} top={990} />
-          <Slam at={b(19, 2)} text={'NO ADS · NO TRACKING\nFCKapp.com · @fckfascists.app'} size={36} color={T.cyan} font="body" weight={500} letterSpacing={5} lineHeight={1.6} top={1130} glow={false} />
-          <Slam at={b(20)} text="IT'S YOUR MOVE 🤘🏽" size={72} color="#FFFFFF" top={1300} />
+          {/* END — bars 19–20: logo, the update line, then the tagline on the final hit */}
+          <Logo at={b(19)} top={300} width={640} />
+          <Slam at={b(19, 1)} text="UPDATE OUT NOW" size={80} top={860} />
+          <Slam at={b(19, 2)} text={'NO ADS · NO TRACKING\nFCKapp.com · @fckfascists.app'} size={34} color={T.cyan} font="body" weight={500} letterSpacing={5} lineHeight={1.6} top={980} glow={false} />
+          <Slam at={b(20)} text={"THE FASCISTS WON'T\nFCK THEMSELVES."} size={76} top={1220} />
+          <Slam at={b(20, 2)} text="🤘🏽" size={120} top={1430} glow={false} />
         </AbsoluteFill>
         {/* white flash frames on the heavy hits */}
-        {[0, 14, b(4, 1), b(7, 1), b(9, 2), b(10, 3), b(14), b(15, 2), b(18), b(19)].map((f) => (
+        {[0, 12, UPDATE, UPDATE + 14, b(4, 1), b(7, 1), b(9, 2), b(10, 3), b(14), b(15, 2), b(18), b(19), b(20)].map((f) => (
           <Flash key={`fl-${f}`} at={f} frames={3} peak={0.28} />
         ))}
         {SECTIONS.map((f) => (
