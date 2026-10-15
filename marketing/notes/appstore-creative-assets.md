@@ -75,3 +75,16 @@ screenshots? Pan in space? Clark?" Four stills, each one frame of the loop it wo
 Header video constraints (Apple): 21:9 3840×1646, 5–30 s, loops, silent-first, "avoid quick
 cuts and fast-moving visuals" — so slow drift, one idea, seamless loop. Search-results video is
 3:2 and always muted; the universal still is image-only.
+
+## Round 3 (Oct 15, 4 pm) — mixes of screens + Clark + map, name re-weighted
+
+Creator: "I like 2, 3, and 4… use a scanning UPC screenshot… add a track screenshot… more
+weight to Financial Contribution Kit so FCK stands out a little less." Lockup is now `Name2`:
+FCK small (cyan or gold), FINANCIAL CONTRIBUTION KIT as the display line. New frames: `scan_upc`
+(R11 at 5.9 s, a barcode filling the guide) and the Track tab (`track`). Screens clip above the
+Debug tab bar (`cut`). Files `*-mix-a|b|c|d-*`:
+
+- **mix-a** Clark at the desk — name left, Clark centre-right in front of the map, UPC scan + Track beside him.
+- **mix-b** name over the fan — name centred up top, map / UPC / Track fanned along the bottom, Clark looking in from the right.
+- **mix-c** Clark presents — Clark big at left, the name in three rows, UPC scan + Track at right, map strong behind.
+- **mix-d** wide fan — memo / map / UPC / Track fanned across the width, darkened, name centred over them, Clark low left.

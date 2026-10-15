@@ -22,12 +22,14 @@ import { frameSrc } from './tiles';
 export const HEADER_W = 5244;
 export const HEADER_H = 2950;
 export const SAFE = { left: 410, top: 351, right: 4835, bottom: 2599 };
-export type HeaderVariant = 'space' | 'screens' | 'clark' | 'map';
+export type HeaderVariant = 'space' | 'screens' | 'clark' | 'map' | 'mix-a' | 'mix-b' | 'mix-c' | 'mix-d';
 
 const BEZEL = 30;
 const RADIUS = 200;
 const MAP = staticFile('media/appstore/frames/map_pins.png'); // 1080×1926, no record up
 const SCAN_TAB = staticFile('media/appstore/frames/scan_tab.png'); // 1206×2478, R11 at 0.5 s: the Scan tab, no record, status bar cropped
+const SCAN_UPC = staticFile('media/appstore/frames/scan_upc.png'); // 1206×2478, R11 at 5.9 s: a barcode filling the scanner guide (round 3: "actually use a scanning UPC screenshot")
+const TRACK = frameSrc('track'); // the Track tab (arena + platform list)
 const MONEY_SCALE = 2.6; // the 24 px bills are specks at 5244 wide
 
 /** denser pixel stars on top of the shared starfield ("way more aesthetic — def more stars") */
@@ -73,9 +75,29 @@ const Name: React.FC<{ left: number; top: number; width: number; align?: 'left' 
   </div>
 );
 
-const Phone: React.FC<{ src: string; aspect: number; left: number; top: number; width: number; rotate?: number }> = ({ src, aspect, left, top, width, rotate = 0 }) => (
+/**
+ * Round 3 lockup: "more weight to Financial Contribution Kit so FCK stands out a little less".
+ * FCK is the small line; the full name is the display line, on two or three rows.
+ */
+const Name2: React.FC<{ left: number; top: number; width: number; align?: 'left' | 'center'; fck?: number; name?: number; rows?: 2 | 3; fckColor?: string; nameColor?: string; tagline?: boolean; plate?: boolean }> = ({ left, top, width, align = 'left', fck = 260, name = 200, rows = 2, fckColor = T.cyan, nameColor = T.gold, tagline = true, plate = false }) => (
+  <div style={{ position: 'absolute', left, top, width, display: 'flex', flexDirection: 'column', alignItems: align === 'center' ? 'center' : 'flex-start', textAlign: align, gap: 24 }}>
+    {plate ? <div style={{ position: 'absolute', inset: -140, background: 'radial-gradient(ellipse 60% 60% at 50% 50%, rgba(7,11,18,0.85), transparent 72%)', pointerEvents: 'none' }} /> : null}
+    <div style={{ position: 'relative', fontFamily: FONT.display, fontSize: fck, lineHeight: 1, color: fckColor, letterSpacing: 8, textShadow: `0 0 30px ${fckColor === T.cyan ? 'rgba(122,242,255,0.5)' : 'rgba(255,201,60,0.4)'}, 8px 8px 0 rgba(0,0,0,0.8)` }}>FCK,</div>
+    <div style={{ position: 'relative', fontFamily: FONT.display, fontSize: name, lineHeight: 1.02, color: nameColor, letterSpacing: 4, whiteSpace: 'pre-line', textShadow: `0 0 50px ${nameColor === T.gold ? 'rgba(255,201,60,0.45)' : 'rgba(232,224,208,0.3)'}, 12px 12px 0 rgba(0,0,0,0.8)` }}>
+      {rows === 3 ? 'FINANCIAL\nCONTRIBUTION\nKIT' : 'FINANCIAL\nCONTRIBUTION KIT'}
+    </div>
+    {tagline ? <div style={{ position: 'relative', marginTop: 20, fontFamily: FONT.body, fontWeight: 600, fontSize: 62, letterSpacing: 8, color: T.cream, textShadow: '3px 3px 0 rgba(0,0,0,0.8)' }}>FINANCIAL CONTRIBUTIONS, ON FILE.</div> : null}
+  </div>
+);
+
+const Clark: React.FC<{ left: number; top: number; width: number }> = ({ left, top, width }) => (
+  <Img src={CLARK_FULL} style={{ position: 'absolute', left, top, width, filter: 'drop-shadow(0 30px 60px rgba(0,0,0,0.6))' }} />
+);
+
+/** `cut` = fraction of the screenshot shown from the top (the Debug build's tab bar with its DEV tab sits in the bottom ~13 %); the bezel runs on below it to the canvas edge */
+const Phone: React.FC<{ src: string; aspect: number; left: number; top: number; width: number; rotate?: number; cut?: number }> = ({ src, aspect, left, top, width, rotate = 0, cut = 1 }) => (
   <div style={{ position: 'absolute', left: left - BEZEL, top: top - BEZEL, width: width + BEZEL * 2, height: HEADER_H, borderRadius: RADIUS, background: '#0B0D12', transform: `rotate(${rotate}deg)`, transformOrigin: '50% 100%', boxShadow: '0 0 0 4px #2A2D30, 0 0 0 6px rgba(0,0,0,0.6), 0 -10px 120px rgba(0,0,0,0.75), 0 0 160px rgba(122,242,255,0.10)' }}>
-    <div style={{ position: 'absolute', left: BEZEL, top: BEZEL, width, height: HEADER_H, borderRadius: RADIUS - BEZEL, overflow: 'hidden', background: T.void }}>
+    <div style={{ position: 'absolute', left: BEZEL, top: BEZEL, width, height: (width / aspect) * cut, borderRadius: RADIUS - BEZEL, overflow: 'hidden', background: T.void }}>
       <Img src={src} style={{ display: 'block', width, height: width / aspect }} />
     </div>
   </div>
@@ -87,7 +109,9 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant }> = ({ variant }) =
     <AbsoluteFill style={{ width: HEADER_W, height: HEADER_H, backgroundColor: T.void, overflow: 'hidden' }}>
       <Starfield />
       {variant === 'map' ? <BlurredMap /> : null}
-      {variant === 'clark' ? <BlurredMap opacity={0.26} blur={44} /> : null}
+      {variant === 'clark' || variant === 'mix-a' ? <BlurredMap opacity={0.26} blur={44} /> : null}
+      {variant === 'mix-b' || variant === 'mix-d' ? <BlurredMap opacity={0.45} blur={36} /> : null}
+      {variant === 'mix-c' ? <BlurredMap opacity={0.7} blur={30} /> : null}
       <DeepSpace count={variant === 'space' ? 1400 : 800} />
       {variant === 'space' ? (
         <>
@@ -105,9 +129,54 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant }> = ({ variant }) =
         <>
           <Name left={520} top={1120} width={2000} align="left" scale={0.6} />
           <Phone src={MAP} aspect={1080 / 1926} left={2700} top={560} width={780} rotate={-7} />
-          <Phone src={SCAN_TAB} aspect={1206 / 2478} left={3440} top={760} width={780} rotate={0} />
+          <Phone src={SCAN_TAB} aspect={1206 / 2478} cut={0.86} left={3440} top={760} width={780} rotate={0} />
           <Phone src={frameSrc('memo')} aspect={1206 / 2622} left={4180} top={560} width={780} rotate={7} />
           <Money count={8} seed="screens" />
+        </>
+      ) : null}
+      {variant === 'mix-a' ? (
+        // A — Clark at the desk: name left, Clark centre-right in front of the map screen, the UPC scan and Track beside him
+        <>
+          <Phone src={MAP} aspect={1080 / 1926} left={2250} top={520} width={720} rotate={-8} />
+          <Clark left={2450} top={700} width={1500} />
+          <Phone src={SCAN_UPC} aspect={1206 / 2478} cut={0.86} left={3500} top={600} width={760} rotate={-5} />
+          <Phone src={TRACK} aspect={1206 / 2622} cut={0.87} left={4150} top={760} width={760} rotate={6} />
+          <Money count={10} seed="mix-a" />
+          <Name2 left={520} top={1020} width={1900} fck={260} name={200} />
+        </>
+      ) : null}
+      {variant === 'mix-b' ? (
+        // B — name over the fan: the name up top, three screens fanned along the bottom, Clark looking in from the right
+        <>
+          <Phone src={MAP} aspect={1080 / 1926} left={1150} top={1500} width={760} rotate={-10} />
+          <Phone src={SCAN_UPC} aspect={1206 / 2478} cut={0.86} left={2240} top={1380} width={760} rotate={0} />
+          <Phone src={TRACK} aspect={1206 / 2622} cut={0.87} left={3330} top={1500} width={760} rotate={10} />
+          <Clark left={3950} top={900} width={1250} />
+          <Money count={10} seed="mix-b" />
+          <Name2 left={SAFE.left} top={420} width={SAFE.right - SAFE.left} align="center" fck={240} name={200} />
+        </>
+      ) : null}
+      {variant === 'mix-c' ? (
+        // C — Clark presents: Clark big at left, the name in three rows, the UPC scan and Track at right, the map strong behind
+        <>
+          <Clark left={300} top={560} width={1750} />
+          <Phone src={SCAN_UPC} aspect={1206 / 2478} cut={0.86} left={3650} top={520} width={800} rotate={-6} />
+          <Phone src={TRACK} aspect={1206 / 2622} cut={0.87} left={4250} top={760} width={760} rotate={6} />
+          <Money count={8} seed="mix-c" />
+          <Name2 left={2150} top={760} width={1500} fck={220} name={190} rows={3} />
+        </>
+      ) : null}
+      {variant === 'mix-d' ? (
+        // D — wide fan: four screens fanned across the whole width, darkened, the name centred over them, Clark low left
+        <>
+          <Phone src={frameSrc('memo')} aspect={1206 / 2622} left={700} top={900} width={820} rotate={-14} />
+          <Phone src={MAP} aspect={1080 / 1926} left={1700} top={700} width={820} rotate={-5} />
+          <Phone src={SCAN_UPC} aspect={1206 / 2478} cut={0.86} left={2750} top={700} width={820} rotate={5} />
+          <Phone src={TRACK} aspect={1206 / 2622} cut={0.87} left={3750} top={900} width={820} rotate={14} />
+          <AbsoluteFill style={{ background: 'rgba(7,11,18,0.42)' }} />
+          <Clark left={250} top={1850} width={950} />
+          <Money count={8} seed="mix-d" />
+          <Name2 left={SAFE.left} top={980} width={SAFE.right - SAFE.left} align="center" fck={300} name={220} fckColor={T.gold} nameColor={T.cream} plate />
         </>
       ) : null}
       {variant === 'clark' ? (
