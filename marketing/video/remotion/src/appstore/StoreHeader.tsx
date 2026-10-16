@@ -22,7 +22,7 @@ import { frameSrc } from './tiles';
 export const HEADER_W = 5244;
 export const HEADER_H = 2950;
 export const SAFE = { left: 410, top: 351, right: 4835, bottom: 2599 };
-export type HeaderVariant = 'space' | 'screens' | 'clark' | 'map' | 'mix-a' | 'mix-b' | 'mix-c' | 'mix-d' | 'mix-b2' | 'mix-c2' | 'l1' | 'l2' | 'l3' | 'l4' | 'f1' | 'f1s' | 'f2' | 'f2s' | 'g1' | 'g2' | 'g1s' | 'g1m' | 's1' | 's2';
+export type HeaderVariant = 'space' | 'screens' | 'clark' | 'map' | 'mix-a' | 'mix-b' | 'mix-c' | 'mix-d' | 'mix-b2' | 'mix-c2' | 'l1' | 'l2' | 'l3' | 'l4' | 'f1' | 'f1s' | 'f2' | 'f2s' | 'g1' | 'g2' | 'g1s' | 'g1m' | 's1' | 's2' | 's3a' | 's3b' | 's3c';
 /**
  * Device-safe box (Oct 16, measured from App Store Connect's Preview): iPhone shows the centre
  * ~66 % of the header's width at full height (status bar + island over the top sixth, back/share
@@ -158,6 +158,20 @@ const StillMoney: React.FC<{ count: number; seed: string; avoid?: Box[]; at?: nu
   );
 };
 
+/** Round 17: the name as a small two-line unit ("FCK," over "FINANCIAL CONTRIBUTION KIT"), and the hero line as the display type */
+const NameSmall: React.FC<{ left: number; top: number; width: number; size?: number; align?: 'left' | 'center' }> = ({ left, top, width, size = 96, align = 'center' }) => (
+  <div style={{ position: 'absolute', left, top, width, textAlign: align, fontFamily: FONT.display, fontSize: size, lineHeight: 1.12, letterSpacing: 6, whiteSpace: 'pre-line', textShadow: '0 0 22px rgba(122,242,255,0.45), 6px 6px 0 rgba(0,0,0,0.8)' }}>
+    <span style={{ color: T.cyan, textShadow: '0 0 24px rgba(122,242,255,0.9), 0 0 60px rgba(122,242,255,0.5), 6px 6px 0 rgba(0,0,0,0.8)' }}>FCK,</span>
+    {'\n'}
+    <span style={{ color: T.cream }}>FINANCIAL CONTRIBUTION KIT</span>
+  </div>
+);
+const Hero: React.FC<{ left: number; top: number; width: number; size: number; font?: 'display' | 'body'; twoLines?: boolean; color?: string }> = ({ left, top, width, size, font = 'display', twoLines = false, color = T.gold }) => (
+  <div style={{ position: 'absolute', left, top, width, textAlign: 'center', fontFamily: font === 'display' ? FONT.display : FONT.body, fontWeight: font === 'display' ? 400 : 600, fontSize: size, lineHeight: 1.02, letterSpacing: font === 'display' ? 4 : 7, color, whiteSpace: 'pre-line', textShadow: color === T.gold ? '0 0 50px rgba(255,201,60,0.45), 12px 12px 0 rgba(0,0,0,0.8)' : '0 0 24px rgba(232,224,208,0.3), 10px 10px 0 rgba(0,0,0,0.8)' }}>
+    {twoLines ? 'SEE WHERE\nTHE MONEY GOES.' : 'SEE WHERE THE MONEY GOES.'}
+  </div>
+);
+
 /** FCK, Financial Contribution Kit — the store name as the lockup, optional line under it */
 const Name: React.FC<{ left: number; top: number; width: number; align?: 'left' | 'center'; scale?: number; tagline?: boolean }> = ({ left, top, width, align = 'center', scale = 1, tagline = true }) => (
   <div style={{ position: 'absolute', left, top, width, display: 'flex', flexDirection: 'column', alignItems: align === 'center' ? 'center' : 'flex-start', textAlign: align, gap: 30 * scale }}>
@@ -267,9 +281,9 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
       {variant === 'mix-c' || variant === 'mix-c2' ? <BlurredMap opacity={0.7} blur={30} /> : null}
       {variant === 'l1' || variant === 'l2' || variant === 'l3' || variant === 'l4' || variant === 'f1' || variant === 'f2' ? <AbsoluteFill style={{ transform: mapDrift }}><BlurredMap opacity={0.5} blur={34} /></AbsoluteFill> : null}
       {variant === 'g1' || variant === 'g2' ? <AbsoluteFill style={{ transform: mapDrift }}><BlurredMap opacity={0.62} blur={34} lowerLit /></AbsoluteFill> : null}
-      {variant === 'g1m' || variant === 's1' || variant === 's2' ? <AbsoluteFill style={{ transform: loop ? `translate(${Math.round(150 * Math.sin(ph + 0.5))}px, ${Math.round(60 * Math.cos(ph))}px) scale(1.08)` : 'scale(1.08)' }}><BlurredMap opacity={0.66} blur={34} lowerLit /></AbsoluteFill> : null}
+      {variant === 'g1m' || variant === 's1' || variant === 's2' || variant.startsWith('s3') ? <AbsoluteFill style={{ transform: loop ? `translate(${Math.round(150 * Math.sin(ph + 0.5))}px, ${Math.round(60 * Math.cos(ph))}px) scale(1.08)` : 'scale(1.08)' }}><BlurredMap opacity={0.66} blur={34} lowerLit /></AbsoluteFill> : null}
       <AbsoluteFill style={{ transform: variant === 'g1s' && loop ? `translate(${Math.round(70 * Math.sin(ph + 1))}px, ${Math.round(40 * Math.sin(ph))}px) scale(1.04)` : variant === 'g1s' ? 'scale(1.04)' : drift }}>
-        <DeepSpace count={variant === 'space' ? 1400 : variant === 'f1s' || variant === 'f2s' || variant === 'g1' || variant === 'g2' || variant === 'g1s' || variant === 'g1m' || variant === 's1' || variant === 's2' ? 2600 : 800} intense={variant === 'f1s' || variant === 'f2s' || variant === 'g1' || variant === 'g2' || variant === 'g1s' || variant === 'g1m' || variant === 's1' || variant === 's2'} twinkle={loop && (variant === 'g1s' || variant === 'g1m' || variant === 's1' || variant === 's2') ? frame / loop : undefined} />
+        <DeepSpace count={variant === 'space' ? 1400 : variant === 'f1s' || variant === 'f2s' || variant === 'g1' || variant === 'g2' || variant === 'g1s' || variant === 'g1m' || variant === 's1' || variant === 's2' || variant.startsWith('s3') ? 2600 : 800} intense={variant === 'f1s' || variant === 'f2s' || variant === 'g1' || variant === 'g2' || variant === 'g1s' || variant === 'g1m' || variant === 's1' || variant === 's2' || variant.startsWith('s3')} twinkle={loop && (variant === 'g1s' || variant === 'g1m' || variant === 's1' || variant === 's2' || variant.startsWith('s3')) ? frame / loop : undefined} />
       </AbsoluteFill>
       {variant === 'space' ? (
         <>
@@ -315,6 +329,39 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
         </>
       ) : null}
       {/* Round 9 — G1/G2: map + intense stars together; every phone rises from the bottom edge (one mask, tab bars hidden); G1 fan tighter; G2 copy as a left column clear of the phones */}
+      {variant === 's3a' || variant === 's3b' || variant === 's3c' ? (
+        // round 17 comps: small two-line name under the iPad pill, the hero line big; a = Bungee hero one line, b = Bungee hero two lines (biggest), c = Plex hero one line
+        <>
+          <Clark left={870} top={1230} width={700} />
+          <Phone src={MAP} aspect={1080 / 1926} left={2220} top={2000 + dy} width={520} rotate={-7} bleed bob={bob(0)} />
+          <Phone src={SCAN_COKE2} aspect={1206 / 2322} left={2930} top={1960 + dy} width={520} rotate={0} bleed bob={bob(2.1)} />
+          <Phone src={TRACK_GRID} aspect={1206 / 2478} left={3640} top={2000 + dy} width={520} rotate={7} bleed bob={bob(4.2)} />
+          {variant === 's3a' ? (
+            <>
+              <NameSmall left={DEVICE_SAFE.left} top={1150} width={DEVICE_SAFE.right - DEVICE_SAFE.left} size={96} />
+              <Hero left={DEVICE_SAFE.left} top={1420} width={DEVICE_SAFE.right - DEVICE_SAFE.left} size={176} />
+              <SubUnder left={1672} top={1660} width={1900} size={80} />
+            </>
+          ) : variant === 's3b' ? (
+            <>
+              <NameSmall left={DEVICE_SAFE.left} top={1120} width={DEVICE_SAFE.right - DEVICE_SAFE.left} size={88} />
+              <Hero left={DEVICE_SAFE.left} top={1340} width={DEVICE_SAFE.right - DEVICE_SAFE.left} size={224} twoLines />
+              <SubUnder left={1580} top={1830} width={2084} size={66} />
+            </>
+          ) : (
+            <>
+              <NameSmall left={DEVICE_SAFE.left} top={1150} width={DEVICE_SAFE.right - DEVICE_SAFE.left} size={96} />
+              <Hero left={DEVICE_SAFE.left} top={1420} width={DEVICE_SAFE.right - DEVICE_SAFE.left} size={150} font="body" color={T.cream} />
+              <SubUnder left={1672} top={1640} width={1900} size={80} />
+            </>
+          )}
+          {loop ? (
+            <LoopMoney count={20} seed={`${variant}-b`} loop={loop} frame={frame} avoid={[{ left: 1200, top: 1100, width: 2850, height: 850 }, { left: 2150, top: 1900, width: 2080, height: 1050 }]} />
+          ) : (
+            <StillMoney count={20} seed={`${variant}-b`} avoid={[{ left: 1200, top: 1100, width: 2850, height: 850 }, { left: 2150, top: 1900, width: 2080, height: 1050 }]} />
+          )}
+        </>
+      ) : null}
       {variant === 's2' ? (
         // round 16 (outside review applied): stack lowered under the iPad pill (y ≥ 1060), FCK and name equal, third line 80 on two lines, Clark below the iPhone back button and clear of the lines, fan moved left and tilted less so Track survives the iPhone crop, screenshots bleed past the crop, bills never on the lower lines or the screens
         <>
