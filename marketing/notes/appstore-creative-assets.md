@@ -129,3 +129,20 @@ starfield-only twin of each. The Coke lookup never shows the bottle and the fold
 (the camera closes first), so the scan phone stays the bottle-in-the-guide. The search card is
 now its own render (`StoreHeader-<v>-search`, `HEADER_SEARCH_TARGET=1`) so the bar sits at the
 3:2 bottom. Files `*-f1|f1s|f2|f2s-*`.
+
+## Round 10 (Oct 16) — review agent + fixes, G1/G2 over map + intense stars
+
+A separate reviewer (Opus) read both headers at full size and at 390 px wide. Its verdict: G1
+stronger for a first-time visitor (reads in one pass, all three screens whole, survives the 3:2
+crop); G2's column is the more elegant third-line treatment but had structural errors. Applied:
+- G1: bar opaque (phone UI and bills no longer show under the copy), bar copy on the headline's
+  axis, "FCK," 240 → 170, secondary 96 → 124, Coke screenshot lifted 200 px, phone rims lighter
+  with a faint cyan glow, Clark inside the 3:2 crop (x 420), map readable behind the phones
+  (dark gradient at the top, lit at the bottom), a keep-out so no bill lands on the name in the
+  poster frame.
+- G2: fan sunk (no tab bar, no DEV) and scaled so Track sits inside the 3:2 edge, column moved
+  down and off Clark with a dark radial scrim, secondary as "SEE WHERE / THE MONEY GOES.", rule
+  spaced, third line as three short lines at 92 px, keep-out over the name.
+Review flags for App Review: none for price/URL; the in-app "FCK★FASCISTS" header art, named
+executives on the Track screen and the Coke mark are the only things a reviewer might weigh —
+all already in the approved screenshots.

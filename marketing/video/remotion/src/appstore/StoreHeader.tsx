@@ -73,22 +73,23 @@ const Headline: React.FC<{ left: number; top: number; width: number; align?: 'le
     <div style={{ fontFamily: FONT.display, fontSize: name, lineHeight: 1.02, color: T.gold, letterSpacing: 4, whiteSpace: 'pre-line', textShadow: '0 0 50px rgba(255,201,60,0.45), 12px 12px 0 rgba(0,0,0,0.8)' }}>{rows === 3 ? 'FINANCIAL\nCONTRIBUTION\nKIT' : 'FINANCIAL\nCONTRIBUTION KIT'}</div>
   </div>
 );
-const Secondary: React.FC<{ left: number; top: number; width: number; align?: 'left' | 'center'; size?: number }> = ({ left, top, width, align = 'center', size = 96 }) => (
-  <div style={{ position: 'absolute', left, top, width, textAlign: align, fontFamily: FONT.body, fontWeight: 600, fontSize: size, lineHeight: 1.2, letterSpacing: 7, color: T.cream, textShadow: '0 0 20px rgba(232,224,208,0.25), 4px 4px 0 rgba(0,0,0,0.8)' }}>SEE WHERE THE MONEY GOES.</div>
+const Secondary: React.FC<{ left: number; top: number; width: number; align?: 'left' | 'center'; size?: number; twoLines?: boolean }> = ({ left, top, width, align = 'center', size = 96, twoLines = false }) => (
+  <div style={{ position: 'absolute', left, top, width, textAlign: align, fontFamily: FONT.body, fontWeight: 600, fontSize: size, lineHeight: 1.2, letterSpacing: 7, color: T.cream, whiteSpace: 'pre-line', textShadow: '0 0 20px rgba(232,224,208,0.25), 4px 4px 0 rgba(0,0,0,0.8)' }}>{twoLines ? 'SEE WHERE\nTHE MONEY GOES.' : 'SEE WHERE THE MONEY GOES.'}</div>
 );
-const SubBar: React.FC<{ target: HeaderTarget; height?: number; size?: number; overhang?: number }> = ({ target, height = 240, size = 110, overhang = 0 }) => {
+const SubBar: React.FC<{ target: HeaderTarget; height?: number; size?: number; overhang?: number; textLeft?: number; textWidth?: number }> = ({ target, height = 240, size = 110, overhang = 0, textLeft = 0, textWidth = HEADER_W }) => {
   const bottom = (target === 'header' ? SAFE.bottom : HEADER_H) + overhang; // overhang: the loop pans a little, so the bar runs past the crop edge
+  // round 10 (review): opaque, so no phone UI or bill shows through under the copy; the copy sits on the headline's axis
   return (
-    <div style={{ position: 'absolute', left: 0, top: bottom - height - overhang, width: HEADER_W, height: height + overhang, background: 'rgba(7,11,18,0.84)', borderTop: `4px solid ${T.cyan}`, boxShadow: `0 -2px 30px rgba(122,242,255,0.25)`, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', boxSizing: 'border-box', paddingTop: (height - size * 1.2) / 2 }}>
-      <div style={{ fontFamily: FONT.body, fontWeight: 600, fontSize: size, lineHeight: 1.2, letterSpacing: 2, color: T.cream, textShadow: '3px 3px 0 rgba(0,0,0,0.8)' }}>{SUB_COPY}</div>
+    <div style={{ position: 'absolute', left: 0, top: bottom - height - overhang, width: HEADER_W, height: height + overhang, background: 'rgba(7,11,18,0.97)', borderTop: `4px solid ${T.cyan}`, boxShadow: `0 -2px 30px rgba(122,242,255,0.25)`, boxSizing: 'border-box' }}>
+      <div style={{ position: 'absolute', left: textLeft, top: (height - size * 1.2) / 2, width: textWidth, textAlign: 'center', fontFamily: FONT.body, fontWeight: 600, fontSize: size, lineHeight: 1.2, letterSpacing: 2, color: T.cream, textShadow: '3px 3px 0 rgba(0,0,0,0.8)' }}>{SUB_COPY}</div>
     </div>
   );
 };
 /** Round 9 (G2): the three verbs as the third line of the left column, under a thin rule — clear of the phones */
 const SubColumn: React.FC<{ left: number; top: number; width: number; size?: number }> = ({ left, top, width, size = 76 }) => (
   <div style={{ position: 'absolute', left, top, width }}>
-    <div style={{ width: 520, height: 6, background: `linear-gradient(to right, ${T.cyan}, transparent)`, boxShadow: `0 0 14px rgba(122,242,255,0.5)`, marginBottom: 34 }} />
-    <div style={{ fontFamily: FONT.body, fontWeight: 500, fontSize: size, lineHeight: 1.3, letterSpacing: 1, color: T.text, textShadow: '3px 3px 0 rgba(0,0,0,0.85)', whiteSpace: 'pre-line' }}>{'Tap a business. Scan a product.\nTrack the platforms you use.'}</div>
+    <div style={{ width: 520, height: 6, background: `linear-gradient(to right, ${T.cyan}, transparent)`, boxShadow: `0 0 14px rgba(122,242,255,0.5)`, marginBottom: 64 }} />
+    <div style={{ fontFamily: FONT.body, fontWeight: 500, fontSize: size, lineHeight: 1.3, letterSpacing: 1, color: T.text, textShadow: '3px 3px 0 rgba(0,0,0,0.85)', whiteSpace: 'pre-line' }}>{'Tap a business.\nScan a product.\nTrack the platforms you use.'}</div>
   </div>
 );
 /** F2's sub copy sits under the phones instead of on a bar (creator, round 8) */
@@ -97,20 +98,24 @@ const SubUnder: React.FC<{ left: number; top: number; width: number; size?: numb
 );
 
 /** the blurred map as a backdrop */
-const BlurredMap: React.FC<{ opacity?: number; blur?: number }> = ({ opacity = 0.7, blur = 30 }) => (
+const BlurredMap: React.FC<{ opacity?: number; blur?: number; lowerLit?: boolean }> = ({ opacity = 0.7, blur = 30, lowerLit = false }) => (
   <AbsoluteFill style={{ overflow: 'hidden' }}>
     <Img src={MAP} style={{ position: 'absolute', left: -200, top: -1400, width: HEADER_W + 400, height: ((HEADER_W + 400) * 1926) / 1080, filter: `blur(${blur}px) saturate(1.2)`, opacity }} />
-    <AbsoluteFill style={{ background: 'linear-gradient(to bottom, rgba(7,11,18,0.35), rgba(7,11,18,0.75))' }} />
+    {/* lowerLit (round 10): dark behind the type up top, the map readable behind the phones below */}
+    <AbsoluteFill style={{ background: lowerLit ? 'linear-gradient(to bottom, rgba(7,11,18,0.72), rgba(7,11,18,0.3))' : 'linear-gradient(to bottom, rgba(7,11,18,0.35), rgba(7,11,18,0.75))' }} />
   </AbsoluteFill>
 );
 
 /** falling money, frozen mid-fall for the still (the video just lets it run) */
-const Money: React.FC<{ count?: number; seed?: string }> = ({ count = 18, seed = 'hdr' }) => (
+const Money: React.FC<{ count?: number; seed?: string; keepOut?: { left: number; top: number; width: number; height: number } }> = ({ count = 18, seed = 'hdr', keepOut }) => (
   <LayoutProvider layout={FULL}>
-    <div style={{ position: 'absolute', left: 0, top: 0, width: HEADER_W / MONEY_SCALE, height: HEADER_H / MONEY_SCALE, transform: `scale(${MONEY_SCALE})`, transformOrigin: '0 0' }}>
-      <Sequence from={-70} durationInFrames={400} name="money">
-        <MoneyRain count={count} seed={seed} width={HEADER_W / MONEY_SCALE} height={HEADER_H / MONEY_SCALE} />
-      </Sequence>
+    {/* round 10: the poster frame keeps the name clean — a hole punched over the headline with clip-path (the loop still lets bills cross it) */}
+    <div style={{ position: 'absolute', left: 0, top: 0, width: HEADER_W, height: HEADER_H, clipPath: keepOut ? `polygon(0 0, ${HEADER_W}px 0, ${HEADER_W}px ${HEADER_H}px, 0 ${HEADER_H}px, 0 ${keepOut.top}px, ${keepOut.left}px ${keepOut.top}px, ${keepOut.left}px ${keepOut.top + keepOut.height}px, ${keepOut.left + keepOut.width}px ${keepOut.top + keepOut.height}px, ${keepOut.left + keepOut.width}px ${keepOut.top}px, 0 ${keepOut.top}px)` : undefined }}>
+      <div style={{ position: 'absolute', left: 0, top: 0, width: HEADER_W / MONEY_SCALE, height: HEADER_H / MONEY_SCALE, transform: `scale(${MONEY_SCALE})`, transformOrigin: '0 0' }}>
+        <Sequence from={-70} durationInFrames={400} name="money">
+          <MoneyRain count={count} seed={seed} width={HEADER_W / MONEY_SCALE} height={HEADER_H / MONEY_SCALE} />
+        </Sequence>
+      </div>
     </div>
   </LayoutProvider>
 );
@@ -157,13 +162,13 @@ const Clark: React.FC<{ left: number; top: number; width: number }> = ({ left, t
  * drop shadow" on mix-c), and the shadow is a tight contact shadow.
  */
 /** `bleed`: the body runs to the canvas bottom (the crop edge cuts it like a real device coming up from below); otherwise a whole phone at PHONE_RATIO with a dark chin under a clipped screen. `bob`: vertical offset for the loop. */
-const Phone: React.FC<{ src: string; aspect: number; left: number; top: number; width: number; rotate?: number; cut?: number; bleed?: boolean; bob?: number }> = ({ src, aspect, left, top, width, rotate = 0, cut = 1, bleed = false, bob = 0 }) => {
+const Phone: React.FC<{ src: string; aspect: number; left: number; top: number; width: number; rotate?: number; cut?: number; bleed?: boolean; bob?: number; shiftY?: number }> = ({ src, aspect, left, top, width, rotate = 0, cut = 1, bleed = false, bob = 0, shiftY = 0 }) => {
   const screenH = (width / aspect) * cut;
   const bodyH = bleed ? HEADER_H : Math.max(screenH, width * PHONE_RATIO) + BEZEL * 2;
   return (
-    <div style={{ position: 'absolute', left: left - BEZEL, top: top - BEZEL + bob, width: width + BEZEL * 2, height: bodyH, borderRadius: RADIUS, background: '#0B0D12', transform: `rotate(${rotate}deg)`, transformOrigin: '50% 100%', boxShadow: '0 0 0 4px #2A2D30, 0 0 0 6px rgba(0,0,0,0.6), 0 30px 70px rgba(0,0,0,0.55)' }}>
+    <div style={{ position: 'absolute', left: left - BEZEL, top: top - BEZEL + bob, width: width + BEZEL * 2, height: bodyH, borderRadius: RADIUS, background: '#0B0D12', transform: `rotate(${rotate}deg)`, transformOrigin: '50% 100%', boxShadow: '0 0 0 4px #3A4A66, 0 0 0 6px rgba(0,0,0,0.6), 0 0 44px rgba(122,242,255,0.18), 0 30px 70px rgba(0,0,0,0.55)' }}>
       <div style={{ position: 'absolute', left: BEZEL, top: BEZEL, width, height: bleed ? bodyH : screenH, borderRadius: RADIUS - BEZEL, overflow: 'hidden', background: T.void }}>
-        <Img src={src} style={{ display: 'block', width, height: width / aspect }} />
+        <Img src={src} style={{ display: 'block', width, height: width / aspect, transform: `translateY(${shiftY}px)` }} />
       </div>
     </div>
   );
@@ -203,7 +208,7 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
   const bob = (phase: number): number => (loop ? Math.round(10 * Math.sin(ph + phase)) : 0);
   const drift = loop ? `translate(${Math.round(22 * Math.sin(ph + 1))}px, ${Math.round(30 * Math.sin(ph))}px)` : undefined;
   const mapDrift = loop ? `translate(${Math.round(40 * Math.sin(ph + 0.5))}px, ${Math.round(26 * Math.cos(ph))}px)` : undefined;
-  const money = (count: number, seed: string): React.ReactNode => (loop ? <LoopMoney count={count} seed={seed} loop={loop} frame={frame} /> : <Money count={count} seed={seed} />);
+  const money = (count: number, seed: string, keepOut?: { left: number; top: number; width: number; height: number }): React.ReactNode => (loop ? <LoopMoney count={count} seed={seed} loop={loop} frame={frame} /> : <Money count={count} seed={seed} keepOut={keepOut} />);
   return (
     <AbsoluteFill style={{ width: HEADER_W, height: HEADER_H, backgroundColor: T.void, overflow: 'hidden' }}>
       {loop ? <Freeze frame={0}><Starfield /></Freeze> : <Starfield />}
@@ -212,7 +217,7 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
       {variant === 'mix-b' || variant === 'mix-d' || variant === 'mix-b2' ? <BlurredMap opacity={0.45} blur={36} /> : null}
       {variant === 'mix-c' || variant === 'mix-c2' ? <BlurredMap opacity={0.7} blur={30} /> : null}
       {variant === 'l1' || variant === 'l2' || variant === 'l3' || variant === 'l4' || variant === 'f1' || variant === 'f2' ? <AbsoluteFill style={{ transform: mapDrift }}><BlurredMap opacity={0.5} blur={34} /></AbsoluteFill> : null}
-      {variant === 'g1' || variant === 'g2' ? <AbsoluteFill style={{ transform: mapDrift }}><BlurredMap opacity={0.42} blur={34} /></AbsoluteFill> : null}
+      {variant === 'g1' || variant === 'g2' ? <AbsoluteFill style={{ transform: mapDrift }}><BlurredMap opacity={0.62} blur={34} lowerLit /></AbsoluteFill> : null}
       <AbsoluteFill style={{ transform: drift }}><DeepSpace count={variant === 'space' ? 1400 : variant === 'f1s' || variant === 'f2s' || variant === 'g1' || variant === 'g2' ? 2600 : 800} intense={variant === 'f1s' || variant === 'f2s' || variant === 'g1' || variant === 'g2'} /></AbsoluteFill>
       {variant === 'space' ? (
         <>
@@ -259,27 +264,30 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
       ) : null}
       {/* Round 9 — G1/G2: map + intense stars together; every phone rises from the bottom edge (one mask, tab bars hidden); G1 fan tighter; G2 copy as a left column clear of the phones */}
       {variant === 'g1' ? (
+        // round 10 (review): Clark inside the 3:2 crop, "FCK," smaller, secondary larger, Coke screenshot lifted, bar opaque with its copy on the headline's axis
         <>
-          <Clark left={260} top={780} width={1250} />
+          <Clark left={420} top={780} width={1250} />
           <Phone src={MAP} aspect={1080 / 1926} left={2150} top={1500} width={760} rotate={-9} bleed bob={bob(0)} />
-          <Phone src={SCAN_COKE} aspect={1206 / 2478} left={2860} top={1380} width={760} rotate={0} bleed bob={bob(2.1)} />
+          <Phone src={SCAN_COKE} aspect={1206 / 2478} left={2860} top={1380} width={760} rotate={0} bleed bob={bob(2.1)} shiftY={-200} />
           <Phone src={TRACK_GRID} aspect={1206 / 2478} left={3570} top={1500} width={760} rotate={9} bleed bob={bob(4.2)} />
-          <Headline left={1640} top={400} width={3195} />
-          {money(12, variant)}
-          <Secondary left={1640} top={1130} width={3195} />
-          <SubBar target={target} overhang={loop ? 80 : 0} />
+          <Headline left={1640} top={420} width={3195} fck={170} />
+          {money(12, `${variant}-b`, { left: 1640, top: 380, width: 3195, height: 760 })}
+          <Secondary left={1640} top={1100} width={3195} size={124} />
+          <SubBar target={target} overhang={loop ? 80 : 0} textLeft={1640} textWidth={3195} />
         </>
       ) : null}
       {variant === 'g2' ? (
+        // round 10 (review): fan sunk and scaled (no tab bar, Track inside the crop), column lower and off Clark, secondary on two lines, rule spaced, third line +50 %, scrim behind the column
         <>
-          <Clark left={180} top={700} width={1100} />
-          <Phone src={MAP} aspect={1080 / 1926} left={3080} top={1200} width={700} rotate={-8} bleed bob={bob(0)} />
-          <Phone src={SCAN_COKE} aspect={1206 / 2478} left={3760} top={1080} width={700} rotate={0} bleed bob={bob(2.1)} />
-          <Phone src={TRACK_GRID} aspect={1206 / 2478} left={4440} top={1200} width={680} rotate={8} bleed bob={bob(4.2)} />
-          <Headline left={1380} top={430} width={1600} align="left" fck={220} name={170} rows={3} />
-          {money(12, variant)}
-          <Secondary left={1380} top={1270} width={1560} align="left" size={100} />
-          <SubColumn left={1380} top={1450} width={1560} size={76} />
+          <Clark left={420} top={700} width={1050} />
+          <div style={{ position: 'absolute', left: 1200, top: 300, width: 2000, height: 2000, background: 'radial-gradient(ellipse 50% 50% at 50% 50%, rgba(7,11,18,0.55), transparent 70%)' }} />
+          <Phone src={MAP} aspect={1080 / 1926} left={2990} top={1450} width={680} rotate={-8} bleed bob={bob(0)} />
+          <Phone src={SCAN_COKE} aspect={1206 / 2478} left={3560} top={1400} width={680} rotate={0} bleed bob={bob(2.1)} />
+          <Phone src={TRACK_GRID} aspect={1206 / 2478} left={4130} top={1450} width={680} rotate={8} bleed bob={bob(4.2)} />
+          <Headline left={1560} top={560} width={1380} align="left" fck={200} name={170} rows={3} />
+          {money(12, `${variant}-b`, { left: 1520, top: 520, width: 1460, height: 760 })}
+          <Secondary left={1560} top={1360} width={1380} align="left" size={100} twoLines />
+          <SubColumn left={1560} top={1660} width={1380} size={92} />
         </>
       ) : null}
       {/* Round 7 — F1/F2 (L1/L2 reworked): Clark higher, sub copy on a bottom bar, full sprite grid for Track; `s` = intense stars instead of the map. Order = headline, money, secondary, bar: money may cover the headline, never the subheads. */}
