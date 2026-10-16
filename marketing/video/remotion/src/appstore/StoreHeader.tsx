@@ -69,9 +69,10 @@ const DeepSpace: React.FC<{ count?: number; seed?: string; intense?: boolean; tw
 );
 
 /** Round 7 pieces: the headline (money may cover it), the secondary line and the bottom bar (money may not) */
-const Headline: React.FC<{ left: number; top: number; width: number; align?: 'left' | 'center'; fck?: number; name?: number; rows?: 2 | 3 }> = ({ left, top, width, align = 'center', fck = 240, name = 200, rows = 2 }) => (
+/** `fckGlow` (round 14): a stronger cyan halo on "FCK," */
+const Headline: React.FC<{ left: number; top: number; width: number; align?: 'left' | 'center'; fck?: number; name?: number; rows?: 2 | 3; fckGlow?: boolean }> = ({ left, top, width, align = 'center', fck = 240, name = 200, rows = 2, fckGlow = false }) => (
   <div style={{ position: 'absolute', left, top, width, display: 'flex', flexDirection: 'column', alignItems: align === 'center' ? 'center' : 'flex-start', textAlign: align, gap: 24 }}>
-    <div style={{ fontFamily: FONT.display, fontSize: fck, lineHeight: 1, color: T.cyan, letterSpacing: 8, textShadow: '0 0 30px rgba(122,242,255,0.5), 8px 8px 0 rgba(0,0,0,0.8)' }}>FCK,</div>
+    <div style={{ fontFamily: FONT.display, fontSize: fck, lineHeight: 1, color: T.cyan, letterSpacing: 8, textShadow: fckGlow ? '0 0 26px rgba(122,242,255,0.95), 0 0 70px rgba(122,242,255,0.6), 0 0 160px rgba(122,242,255,0.3), 8px 8px 0 rgba(0,0,0,0.8)' : '0 0 30px rgba(122,242,255,0.5), 8px 8px 0 rgba(0,0,0,0.8)' }}>FCK,</div>
     <div style={{ fontFamily: FONT.display, fontSize: name, lineHeight: 1.02, color: T.gold, letterSpacing: 4, whiteSpace: 'pre-line', textShadow: '0 0 50px rgba(255,201,60,0.45), 12px 12px 0 rgba(0,0,0,0.8)' }}>{rows === 3 ? 'FINANCIAL\nCONTRIBUTION\nKIT' : 'FINANCIAL\nCONTRIBUTION KIT'}</div>
   </div>
 );
@@ -282,8 +283,8 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
           <Phone src={MAP} aspect={1080 / 1926} left={2150} top={1500 + dy} width={760} rotate={-9} bleed bob={bob(0)} />
           <Phone src={SCAN_COKE} aspect={1206 / 2478} left={2860} top={1380 + dy} width={760} rotate={0} bleed bob={bob(2.1)} shiftY={-200} />
           <Phone src={TRACK_GRID} aspect={1206 / 2478} left={3570} top={1500 + dy} width={760} rotate={9} bleed bob={bob(4.2)} />
-          <Headline left={1640} top={420} width={3195} fck={170} />
-          {money(20, `${variant}-c`, { left: 1640, top: 380, width: 3195, height: 760 })}
+          <Headline left={1640} top={400} width={3195} fck={200} fckGlow />
+          {money(20, `${variant}-c`, { left: 1640, top: 360, width: 3195, height: 800 })}
           <Secondary left={1640} top={1100} width={3195} size={124} />
           <SubBar target={target} overhang={loop ? 80 : 0} textLeft={1640} textWidth={3195} />
         </>
