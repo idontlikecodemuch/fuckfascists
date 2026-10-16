@@ -183,3 +183,12 @@ loop, wider sway; still never over the subheads. Phones back to screenshots. Fil
 `header-video-g1s|g1m-3840x1646.mp4`, `search-video-g1s|g1m-3840x2560.mp4`, stills
 `header-g1s|g1m-*.png`, review copies in `creative/review/`. Seam SSIM 0.937–0.949 vs 0.951–0.962
 adjacent (the busier money and twinkle lower both numbers together; no visible jump).
+
+## Round 14 (Oct 16) — lockup final
+
+Creator: "FCK's font size is smaller than the full name. They should be equal. And add a little
+glow to FCK." `Headline` fck 170 → 200 (= the name's 200) with a three-stop cyan halo
+(`fckGlow`). Stills and all four loops re-rendered: `header-video-g1s|g1m-3840x1646.mp4`,
+`search-video-g1s|g1m-3840x2560.mp4`; review copies in `creative/review/`. Seam SSIM 0.938–0.950
+vs 0.951–0.962 adjacent. These are the deliverables; the creator picks stars or map (or runs both
+as a product-page optimization test).
