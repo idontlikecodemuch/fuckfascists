@@ -213,3 +213,5 @@ in the loop they fade across those boxes); loop pans in whole pixels, ±8 vertic
 Second outside review (Opus) drove most of round 16; its crops are in `scratchpad/review2/`.
 Trade-off accepted: on iPad the phones show only their tops. Still delivered for ASC Preview
 before the loop is re-rendered.
+
+**Loop (Oct 16):** `header-video-s2-3840x1646.mp4`, 15.0 s, 33 MB; seam SSIM 0.940 vs 0.945 for the last ordinary frame step (end-of-GOP encoding, not a jump); review copy `review/header-video-s2-review-1920.mp4`. Search card stays `search-video-g1m`.
