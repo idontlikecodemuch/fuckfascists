@@ -194,3 +194,22 @@ vs 0.951–0.962 adjacent. These are the deliverables; the creator picks stars o
 as a product-page optimization test).
 
 **Chosen (Oct 16):** the map + stars version, `g1m`. Header: `header-video-g1m-3840x1646.mp4` (poster `header-g1m-3840x1646.png`); search card: `search-video-g1m-3840x2560.mp4` (poster `search-g1m-3840x2560.png`). The stars-only `g1s` set stays on disk as the alternate for a product-page optimization test.
+
+## Rounds 15–16 (Oct 16) — device safe zones, from ASC Preview
+
+ASC Preview showed the header is three different crops: iPhone = the centre ~66 % of the width
+at full height (status bar + island over the top sixth, back/share at the upper corners, play
+button centre); iPad = full width but only y 16–77 % of the height (the Today/Games/Apps pill
+over the top centre); Duo ≈ all of it (camera cutout top right). Coded as `DEVICE_SAFE`
+(x 891–4353 × y 724–2087 of the universal canvas) and `PLAY_BUTTON`. Only the header is
+redesigned; the search card stays the uploaded g1m video.
+
+`s2` = the stacked safe layout: FCK and the name equal (150), "SEE WHERE THE MONEY GOES." 90,
+the three verbs 80 on two lines, all centred in the box below the iPad pill; Clark at the left
+under the iPhone back button; the fan of three low and level (±7°) so Track survives the iPhone
+crop and every screenshot bleeds past the crop (scan frame re-cropped without its dark strip:
+`scan_coke2`); bills never on the two lower lines or the screens (dropped whole, not sliced;
+in the loop they fade across those boxes); loop pans in whole pixels, ±8 vertically.
+Second outside review (Opus) drove most of round 16; its crops are in `scratchpad/review2/`.
+Trade-off accepted: on iPad the phones show only their tops. Still delivered for ASC Preview
+before the loop is re-rendered.
