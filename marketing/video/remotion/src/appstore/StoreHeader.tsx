@@ -22,7 +22,7 @@ import { frameSrc } from './tiles';
 export const HEADER_W = 5244;
 export const HEADER_H = 2950;
 export const SAFE = { left: 410, top: 351, right: 4835, bottom: 2599 };
-export type HeaderVariant = 'space' | 'screens' | 'clark' | 'map' | 'mix-a' | 'mix-b' | 'mix-c' | 'mix-d' | 'mix-b2' | 'mix-c2' | 'l1' | 'l2' | 'l3' | 'l4' | 'f1' | 'f1s' | 'f2' | 'f2s' | 'g1' | 'g2' | 'g1s' | 'g1m' | 's1' | 's2' | 's3a' | 's3b' | 's3c';
+export type HeaderVariant = 'space' | 'screens' | 'clark' | 'map' | 'mix-a' | 'mix-b' | 'mix-c' | 'mix-d' | 'mix-b2' | 'mix-c2' | 'l1' | 'l2' | 'l3' | 'l4' | 'f1' | 'f1s' | 'f2' | 'f2s' | 'g1' | 'g2' | 'g1s' | 'g1m' | 's1' | 's2' | 's3a' | 's3b' | 's3c' | 's3d';
 /**
  * Device-safe box (Oct 16, measured from App Store Connect's Preview): iPhone shows the centre
  * ~66 % of the header's width at full height (status bar + island over the top sixth, back/share
@@ -329,7 +329,7 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
         </>
       ) : null}
       {/* Round 9 — G1/G2: map + intense stars together; every phone rises from the bottom edge (one mask, tab bars hidden); G1 fan tighter; G2 copy as a left column clear of the phones */}
-      {variant === 's3a' || variant === 's3b' || variant === 's3c' ? (
+      {variant === 's3a' || variant === 's3b' || variant === 's3c' || variant === 's3d' ? (
         // round 17 comps: small two-line name under the iPad pill, the hero line big; a = Bungee hero one line, b = Bungee hero two lines (biggest), c = Plex hero one line
         <>
           <Clark left={870} top={1230} width={700} />
@@ -350,6 +350,13 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
               <Hero left={1650} top={1330} width={2650} size={224} twoLines />
               <SubUnder left={1933} top={1820} width={2084} size={66} />
             </>
+          ) : variant === 's3d' ? (
+            <>
+              {/* s3d comp: s3b with the copy centred on the canvas (x 2622, also the iPhone band centre) instead of on the column right of Clark; hero 216 so "THE MONEY GOES." clears Clark's ink (right edge 1515 at that height) */}
+              <NameSmall left={1297} top={1180} width={2650} size={84} oneLine />
+              <Hero left={1297} top={1330} width={2650} size={216} twoLines />
+              <SubUnder left={1580} top={1820} width={2084} size={66} />
+            </>
           ) : (
             <>
               <NameSmall left={1650} top={1150} width={2650} size={96} />
@@ -358,9 +365,9 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
             </>
           )}
           {loop ? (
-            <LoopMoney count={20} seed={`${variant}-b`} loop={loop} frame={frame} avoid={[{ left: 1200, top: 1100, width: 2850, height: 850 }, { left: 2150, top: 1900, width: 2080, height: 1050 }]} />
+            <LoopMoney count={20} seed={`${variant}-b`} loop={loop} frame={frame} avoid={[{ left: variant === 's3d' ? 1100 : 1200, top: 1100, width: 2850, height: 850 }, { left: 2150, top: 1900, width: 2080, height: 1050 }]} />
           ) : (
-            <StillMoney count={20} seed={`${variant}-b`} avoid={[{ left: 1200, top: 1100, width: 2850, height: 850 }, { left: 2150, top: 1900, width: 2080, height: 1050 }]} />
+            <StillMoney count={20} seed={`${variant}-b`} avoid={[{ left: variant === 's3d' ? 1100 : 1200, top: 1100, width: 2850, height: 850 }, { left: 2150, top: 1900, width: 2080, height: 1050 }]} />
           )}
         </>
       ) : null}

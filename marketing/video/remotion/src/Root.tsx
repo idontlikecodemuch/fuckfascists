@@ -48,18 +48,18 @@ export const RemotionRoot: React.FC = () => (
     ))}
     <Composition id="AppPreview" component={Preview} width={PREVIEW_W} height={PREVIEW_H} fps={FPS} durationInFrames={PREVIEW_FRAMES} />
     {/* App Store creative assets (iOS 27 header + search results): universal 16:9, cropped by scripts/appstore.sh header */}
-    {(['space', 'screens', 'clark', 'map', 'mix-a', 'mix-b', 'mix-c', 'mix-d', 'mix-b2', 'mix-c2', 'l1', 'l2', 'l3', 'l4', 'f1', 'f1s', 'f2', 'f2s', 'g1', 'g2', 'g1s', 'g1m', 's1', 's2', 's3a', 's3b', 's3c'] as const).map((v) => (
+    {(['space', 'screens', 'clark', 'map', 'mix-a', 'mix-b', 'mix-c', 'mix-d', 'mix-b2', 'mix-c2', 'l1', 'l2', 'l3', 'l4', 'f1', 'f1s', 'f2', 'f2s', 'g1', 'g2', 'g1s', 'g1m', 's1', 's2', 's3a', 's3b', 's3c', 's3d'] as const).map((v) => (
       <Still key={v} id={`StoreHeader-${v}`} component={StoreHeader} width={HEADER_W} height={HEADER_H} defaultProps={{ variant: v }} />
     ))}
     {/* round 8: the header video, one 15 s loop per finalist (scripts/appstore.sh headervideo) */}
-    {(['f1', 'f1s', 'f2', 'f2s', 'g1', 'g2', 'g1s', 'g1m', 's1', 's2', 's3a', 's3b', 's3c'] as const).map((v) => (
+    {(['f1', 'f1s', 'f2', 'f2s', 'g1', 'g2', 'g1s', 'g1m', 's1', 's2', 's3a', 's3b', 's3c', 's3d'] as const).map((v) => (
       <Composition key={`video-${v}`} id={`HeaderVideo-${v}`} component={HeaderVideo} width={VIDEO_W} height={VIDEO_H} fps={FPS} durationInFrames={LOOP} defaultProps={{ variant: v }} />
     ))}
-    {(['g1', 'g2', 'g1s', 'g1m', 's1', 's2', 's3a', 's3b', 's3c'] as const).map((v) => (
+    {(['g1', 'g2', 'g1s', 'g1m', 's1', 's2', 's3a', 's3b', 's3c', 's3d'] as const).map((v) => (
       <Composition key={`svideo-${v}`} id={`SearchVideo-${v}`} component={SearchVideo} width={SEARCH_W} height={SEARCH_H} fps={FPS} durationInFrames={LOOP} defaultProps={{ variant: v }} />
     ))}
     {/* round 7: the search card gets its own render so the bottom bar sits at the 3:2 bottom */}
-    {(['f1', 'f1s', 'f2', 'f2s', 'g1', 'g2', 'g1s', 'g1m', 's1', 's2', 's3a', 's3b', 's3c'] as const).map((v) => (
+    {(['f1', 'f1s', 'f2', 'f2s', 'g1', 'g2', 'g1s', 'g1m', 's1', 's2', 's3a', 's3b', 's3c', 's3d'] as const).map((v) => (
       <Still key={`${v}-search`} id={`StoreHeader-${v}-search`} component={StoreHeader} width={HEADER_W} height={HEADER_H} defaultProps={{ variant: v, target: 'search' as const }} />
     ))}
     {(['mix-b2', 'mix-c2'] as const).flatMap((v) =>
