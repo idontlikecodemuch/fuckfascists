@@ -293,10 +293,11 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
           <Phone src={MAP} aspect={1080 / 1926} left={2920} top={1740 + dy} width={520} rotate={-9} bleed bob={bob(0)} />
           <Phone src={SCAN_COKE} aspect={1206 / 2478} left={3360} top={1690 + dy} width={520} rotate={0} bleed bob={bob(2.1)} />
           <Phone src={TRACK_GRID} aspect={1206 / 2478} left={3800} top={1740 + dy} width={520} rotate={9} bleed bob={bob(4.2)} />
-          <Headline left={DEVICE_SAFE.left} top={760} width={DEVICE_SAFE.right - DEVICE_SAFE.left} fck={110} name={170} fckGlow />
-          {money(16, `${variant}-a`, { left: DEVICE_SAFE.left, top: 730, width: DEVICE_SAFE.right - DEVICE_SAFE.left, height: 540 })}
-          <Secondary left={DEVICE_SAFE.left} top={1290} width={DEVICE_SAFE.right - DEVICE_SAFE.left} size={100} />
-          <SubUnder left={DEVICE_SAFE.left} top={1425} width={DEVICE_SAFE.right - DEVICE_SAFE.left} size={66} />
+          {/* FCK at the name's size (locked Oct 15); the block grows 60 px, so the two lines below shift down with it */}
+          <Headline left={DEVICE_SAFE.left} top={740} width={DEVICE_SAFE.right - DEVICE_SAFE.left} fck={170} name={170} fckGlow />
+          {money(16, `${variant}-a`, { left: DEVICE_SAFE.left, top: 710, width: DEVICE_SAFE.right - DEVICE_SAFE.left, height: 620 })}
+          <Secondary left={DEVICE_SAFE.left} top={1330} width={DEVICE_SAFE.right - DEVICE_SAFE.left} size={100} />
+          <SubUnder left={DEVICE_SAFE.left} top={1465} width={DEVICE_SAFE.right - DEVICE_SAFE.left} size={66} />
         </>
       ) : null}
       {variant === 's1' ? (
