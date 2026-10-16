@@ -215,3 +215,5 @@ Trade-off accepted: on iPad the phones show only their tops. Still delivered for
 before the loop is re-rendered.
 
 **Loop (Oct 16):** `header-video-s2-3840x1646.mp4`, 15.0 s, 33 MB; seam SSIM 0.940 vs 0.945 for the last ordinary frame step (end-of-GOP encoding, not a jump); review copy `review/header-video-s2-review-1920.mp4`. Search card stays `search-video-g1m`.
+
+**Chosen (Oct 16, round 17): `s3b`** — name small on ONE line ("FCK, FINANCIAL CONTRIBUTION KIT", 84, FCK cyan + glow, name cream) below the iPad pill; hero "SEE WHERE / THE MONEY GOES." Bungee 224 on two lines centred on the free width right of Clark (x 1650–4300); verbs 66 one line; Clark left; fan low and level. Still `header-s3b-3840x1646.png`; loop `header-video-s3b-3840x1646.mp4`. Search card stays `search-video-g1m`.
