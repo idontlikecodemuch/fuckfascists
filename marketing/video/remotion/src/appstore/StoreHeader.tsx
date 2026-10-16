@@ -289,9 +289,10 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
         // round 15 (stacked): the copy centred across the whole safe box at legible sizes, Clark and the fan flanking below it; only the play-button overlay (autoplay off) can touch the lower lines
         <>
           <Clark left={870} top={1310} width={880} />
-          <Phone src={MAP} aspect={1080 / 1926} left={3000} top={1720 + dy} width={400} rotate={-9} bleed bob={bob(0)} />
-          <Phone src={SCAN_COKE} aspect={1206 / 2478} left={3400} top={1680 + dy} width={400} rotate={0} bleed bob={bob(2.1)} shiftY={-100} />
-          <Phone src={TRACK_GRID} aspect={1206 / 2478} left={3800} top={1720 + dy} width={400} rotate={9} bleed bob={bob(4.2)} />
+          {/* phones sized so every screenshot runs past the crop's bottom edge (y 2599, plus the loop's bob): no tab bar, no black band under a short map */}
+          <Phone src={MAP} aspect={1080 / 1926} left={2920} top={1740 + dy} width={520} rotate={-9} bleed bob={bob(0)} />
+          <Phone src={SCAN_COKE} aspect={1206 / 2478} left={3360} top={1690 + dy} width={520} rotate={0} bleed bob={bob(2.1)} />
+          <Phone src={TRACK_GRID} aspect={1206 / 2478} left={3800} top={1740 + dy} width={520} rotate={9} bleed bob={bob(4.2)} />
           <Headline left={DEVICE_SAFE.left} top={760} width={DEVICE_SAFE.right - DEVICE_SAFE.left} fck={110} name={170} fckGlow />
           {money(16, `${variant}-a`, { left: DEVICE_SAFE.left, top: 730, width: DEVICE_SAFE.right - DEVICE_SAFE.left, height: 540 })}
           <Secondary left={DEVICE_SAFE.left} top={1290} width={DEVICE_SAFE.right - DEVICE_SAFE.left} size={100} />
