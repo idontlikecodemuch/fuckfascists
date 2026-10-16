@@ -12,6 +12,14 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: October 12–16, 2026 ET — 1.2.1 build 13 staged for App Store
+
+**1.2.1 (`release/1.2.1`, build 13):** FEC refresh of October 12, 49 sprites, the red X, the early-week nudge, the closer-focus scanner, the iOS 27 Track header fix, and corrected barcode attributions (a curated prefix layer with Walmart store brands and 62 household prefixes; `products.json` now updates from Git). On TestFlight, then attached to the 1.2.1 App Store version with the owner-approved What's New and promotional text (`docs/releases/1.2.1.md`). The owner uploaded iOS 27 header and search-results videos to the version; the owner submits.
+
+**Kenvue:** independent since J&J sold its last shares on 2024-05-17; Kimberly-Clark's acquisition is pending China's review (Q4 2026 target). Neither has a PAC (Kimberly-Clark's 1978 PAC terminated after 1992). Adding a `kenvue` entity awaits the owner.
+
+**Next (1.2.2):** Larger Text: `allowFontScaling={false}` is set in 65 places (tab bar, map search, match chooser, scanner sheet, Track avoid button, onboarding), against the Dynamic Type requirement. Accessibility labels in App Store Connect stay an unpublished draft until a simulator pass (VoiceOver, largest text sizes) gives a true set. Household barcode expansion per `docs/HOUSEHOLD_BARCODES_PLAN_2026-10-14.md` (branch `data/household-barcodes-plan`). Screenshots for the iPhone Duo are required for every submission from April 2027.
+
 ### Session: October 12, 2026 ET — Browser extension store readiness (Chrome, Firefox, Edge)
 
 **Branch:** `chore/extension-store-launch`, merged to `main` 2026-10-14 with the owner's decisions (no FEC calls in the extension, AGPL-3.0, App Hold Media LLC). Full packet: `docs/EXTENSION_STORE_LAUNCH.md`.
