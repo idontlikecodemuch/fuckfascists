@@ -159,10 +159,10 @@ const StillMoney: React.FC<{ count: number; seed: string; avoid?: Box[]; at?: nu
 };
 
 /** Round 17: the name as a small two-line unit ("FCK," over "FINANCIAL CONTRIBUTION KIT"), and the hero line as the display type */
-const NameSmall: React.FC<{ left: number; top: number; width: number; size?: number; align?: 'left' | 'center' }> = ({ left, top, width, size = 96, align = 'center' }) => (
-  <div style={{ position: 'absolute', left, top, width, textAlign: align, fontFamily: FONT.display, fontSize: size, lineHeight: 1.12, letterSpacing: 6, whiteSpace: 'pre-line', textShadow: '0 0 22px rgba(122,242,255,0.45), 6px 6px 0 rgba(0,0,0,0.8)' }}>
+const NameSmall: React.FC<{ left: number; top: number; width: number; size?: number; align?: 'left' | 'center'; oneLine?: boolean }> = ({ left, top, width, size = 96, align = 'center', oneLine = false }) => (
+  <div style={{ position: 'absolute', left, top, width, textAlign: align, fontFamily: FONT.display, fontSize: size, lineHeight: 1.12, letterSpacing: 6, whiteSpace: oneLine ? 'nowrap' : 'pre-line', textShadow: '0 0 22px rgba(122,242,255,0.45), 6px 6px 0 rgba(0,0,0,0.8)' }}>
     <span style={{ color: T.cyan, textShadow: '0 0 24px rgba(122,242,255,0.9), 0 0 60px rgba(122,242,255,0.5), 6px 6px 0 rgba(0,0,0,0.8)' }}>FCK,</span>
-    {'\n'}
+    {oneLine ? ' ' : '\n'}
     <span style={{ color: T.cream }}>FINANCIAL CONTRIBUTION KIT</span>
   </div>
 );
@@ -345,7 +345,8 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
             </>
           ) : variant === 's3b' ? (
             <>
-              <NameSmall left={1650} top={1110} width={2650} size={88} />
+              {/* chosen Oct 16: s3b with the name on one line */}
+              <NameSmall left={1650} top={1180} width={2650} size={84} oneLine />
               <Hero left={1650} top={1330} width={2650} size={224} twoLines />
               <SubUnder left={1933} top={1820} width={2084} size={66} />
             </>
