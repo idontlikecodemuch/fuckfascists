@@ -5,7 +5,7 @@ import { PREVIEW_FRAMES, PREVIEW_H, PREVIEW_W, Preview } from './appstore/Previe
 import { Tile } from './appstore/Tile';
 import { COVER_H, COVER_W, PageCover } from './brand/PageCover';
 import { HEADER_H, HEADER_W, StoreHeader } from './appstore/StoreHeader';
-import { HeaderVideo, LOOP, VIDEO_H, VIDEO_W } from './appstore/HeaderVideo';
+import { HeaderVideo, LOOP, SEARCH_H, SEARCH_W, SearchVideo, VIDEO_H, VIDEO_W } from './appstore/HeaderVideo';
 import { RELEASE_FRAMES, Release } from './release/Release';
 import { TILES, TILE_H, TILE_W } from './appstore/tiles';
 import type { LayoutMode } from './LayoutContext';
@@ -54,6 +54,9 @@ export const RemotionRoot: React.FC = () => (
     {/* round 8: the header video, one 15 s loop per finalist (scripts/appstore.sh headervideo) */}
     {(['f1', 'f1s', 'f2', 'f2s', 'g1', 'g2'] as const).map((v) => (
       <Composition key={`video-${v}`} id={`HeaderVideo-${v}`} component={HeaderVideo} width={VIDEO_W} height={VIDEO_H} fps={FPS} durationInFrames={LOOP} defaultProps={{ variant: v }} />
+    ))}
+    {(['g1', 'g2'] as const).map((v) => (
+      <Composition key={`svideo-${v}`} id={`SearchVideo-${v}`} component={SearchVideo} width={SEARCH_W} height={SEARCH_H} fps={FPS} durationInFrames={LOOP} defaultProps={{ variant: v }} />
     ))}
     {/* round 7: the search card gets its own render so the bottom bar sits at the 3:2 bottom */}
     {(['f1', 'f1s', 'f2', 'f2s', 'g1', 'g2'] as const).map((v) => (

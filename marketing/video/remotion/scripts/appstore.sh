@@ -99,6 +99,10 @@ case ${1:-all} in
     for v in ${HEADER_VARIANTS:-f1 f1s f2 f2s}; do
       npx remotion render src/index.ts "HeaderVideo-$v" "$OUT121/header-video-$v-3840x1646.mp4" --chrome-mode headless-shell --codec h264 --crf 18 --color-space bt709 --log warn
       printf '%s\t%s s\n' "$OUT121/header-video-$v-3840x1646.mp4" "$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$OUT121/header-video-$v-3840x1646.mp4")"
+      if [ "${SEARCH_VIDEO:-}" = 1 ]; then   # the 3:2 search-results loop from the same scene
+        npx remotion render src/index.ts "SearchVideo-$v" "$OUT121/search-video-$v-3840x2560.mp4" --chrome-mode headless-shell --codec h264 --crf 18 --color-space bt709 --log warn
+        printf '%s\t%s s\n' "$OUT121/search-video-$v-3840x2560.mp4" "$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$OUT121/search-video-$v-3840x2560.mp4")"
+      fi
     done;;
   preview) preview ;;
   all) prep; tiles; preview ;;

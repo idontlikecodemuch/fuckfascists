@@ -28,3 +28,21 @@ export const HeaderVideo: React.FC<{ variant: HeaderVariant }> = ({ variant }) =
     </AbsoluteFill>
   );
 };
+
+/** The 3:2 search-results VIDEO (3840×2560, 15 s, loops, always muted): the search-target scene (bar at the 3:2 bottom, phones sunk) scaled into the 3:2 crop with the same pan. */
+export const SEARCH_W = 3840;
+export const SEARCH_H = 2560;
+const S2 = SEARCH_W / (SAFE.right - SAFE.left); // 4425 px wide crop → 0.868
+export const SearchVideo: React.FC<{ variant: HeaderVariant }> = ({ variant }) => {
+  const frame = useCurrentFrame();
+  const ph = (2 * Math.PI * frame) / LOOP;
+  const panX = 30 * Math.sin(ph);
+  const panY = 16 * Math.sin(ph + 2.2);
+  return (
+    <AbsoluteFill style={{ background: T.void, overflow: 'hidden' }}>
+      <div style={{ position: 'absolute', left: 0, top: 0, width: HEADER_W, height: HEADER_H, transform: `scale(${S2}) translate(${-SAFE.left - panX}px, ${-panY}px)`, transformOrigin: '0 0' }}>
+        <StoreHeader variant={variant} target="search" loop={LOOP} />
+      </div>
+    </AbsoluteFill>
+  );
+};
