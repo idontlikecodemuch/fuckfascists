@@ -208,6 +208,8 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
   const bob = (phase: number): number => (loop ? Math.round(10 * Math.sin(ph + phase)) : 0);
   const drift = loop ? `translate(${Math.round(22 * Math.sin(ph + 1))}px, ${Math.round(30 * Math.sin(ph))}px)` : undefined;
   const mapDrift = loop ? `translate(${Math.round(40 * Math.sin(ph + 0.5))}px, ${Math.round(26 * Math.cos(ph))}px)` : undefined;
+  // the 3:2 search render keeps the header's bottom geometry: phones sit 351 px lower so their tab bars stay below the edge / behind the bar
+  const dy = target === 'search' ? HEADER_H - SAFE.bottom : 0;
   const money = (count: number, seed: string, keepOut?: { left: number; top: number; width: number; height: number }): React.ReactNode => (loop ? <LoopMoney count={count} seed={seed} loop={loop} frame={frame} /> : <Money count={count} seed={seed} keepOut={keepOut} />);
   return (
     <AbsoluteFill style={{ width: HEADER_W, height: HEADER_H, backgroundColor: T.void, overflow: 'hidden' }}>
@@ -267,9 +269,9 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
         // round 10 (review): Clark inside the 3:2 crop, "FCK," smaller, secondary larger, Coke screenshot lifted, bar opaque with its copy on the headline's axis
         <>
           <Clark left={420} top={780} width={1250} />
-          <Phone src={MAP} aspect={1080 / 1926} left={2150} top={1500} width={760} rotate={-9} bleed bob={bob(0)} />
-          <Phone src={SCAN_COKE} aspect={1206 / 2478} left={2860} top={1380} width={760} rotate={0} bleed bob={bob(2.1)} shiftY={-200} />
-          <Phone src={TRACK_GRID} aspect={1206 / 2478} left={3570} top={1500} width={760} rotate={9} bleed bob={bob(4.2)} />
+          <Phone src={MAP} aspect={1080 / 1926} left={2150} top={1500 + dy} width={760} rotate={-9} bleed bob={bob(0)} />
+          <Phone src={SCAN_COKE} aspect={1206 / 2478} left={2860} top={1380 + dy} width={760} rotate={0} bleed bob={bob(2.1)} shiftY={-200} />
+          <Phone src={TRACK_GRID} aspect={1206 / 2478} left={3570} top={1500 + dy} width={760} rotate={9} bleed bob={bob(4.2)} />
           <Headline left={1640} top={420} width={3195} fck={170} />
           {money(12, `${variant}-b`, { left: 1640, top: 380, width: 3195, height: 760 })}
           <Secondary left={1640} top={1100} width={3195} size={124} />
@@ -281,9 +283,9 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
         <>
           <Clark left={420} top={700} width={1050} />
           <div style={{ position: 'absolute', left: 1200, top: 300, width: 2000, height: 2000, background: 'radial-gradient(ellipse 50% 50% at 50% 50%, rgba(7,11,18,0.55), transparent 70%)' }} />
-          <Phone src={MAP} aspect={1080 / 1926} left={2990} top={1450} width={680} rotate={-8} bleed bob={bob(0)} />
-          <Phone src={SCAN_COKE} aspect={1206 / 2478} left={3560} top={1400} width={680} rotate={0} bleed bob={bob(2.1)} />
-          <Phone src={TRACK_GRID} aspect={1206 / 2478} left={4130} top={1450} width={680} rotate={8} bleed bob={bob(4.2)} />
+          <Phone src={MAP} aspect={1080 / 1926} left={2990} top={1450 + dy} width={680} rotate={-8} bleed bob={bob(0)} />
+          <Phone src={SCAN_COKE} aspect={1206 / 2478} left={3560} top={1400 + dy} width={680} rotate={0} bleed bob={bob(2.1)} />
+          <Phone src={TRACK_GRID} aspect={1206 / 2478} left={4130} top={1450 + dy} width={680} rotate={8} bleed bob={bob(4.2)} />
           <Headline left={1560} top={560} width={1380} align="left" fck={200} name={170} rows={3} />
           {money(12, `${variant}-b`, { left: 1520, top: 520, width: 1460, height: 760 })}
           <Secondary left={1560} top={1360} width={1380} align="left" size={100} twoLines />
