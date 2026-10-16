@@ -161,3 +161,13 @@ Poster frame = the matching still (`header-g1|g2-3840x1646.png`, `search-*`).
 Upload: App Store Connect → iOS 1.2.1 → Product Page Information → Header and Search Results:
 drop the header video into Header and the search video into Search Results (or the stills),
 Preview, then submit standalone from the Asset Library or with the 1.2.1 submission.
+
+## Round 12 (Oct 16) — footage in the phones
+
+Creator: "either place the Coke scan in the starfield area where the scan section starts, or use
+short slow video clips for the screenshots in the video." Took the second: in loop mode the map
+phone plays `clips/loop_map.mp4` (the pins zoom-and-tap at ~0.5×) and the scan phone plays
+`clips/loop_scan.mp4` (the Coke bottle drifting into the guide at ~0.2×), both 450 frames,
+forward then reversed so they close on themselves (`scripts/prep-header-loops.sh`). Track keeps
+the sprite-grid still. Stills unchanged. Seam SSIM last→first 0.953–0.959 vs 0.966–0.969 for a
+one-frame step. Review copies (1920 wide, 4–6 MB) in `creative/review/`.
