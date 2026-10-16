@@ -146,3 +146,18 @@ crop); G2's column is the more elegant third-line treatment but had structural e
 Review flags for App Review: none for price/URL; the in-app "FCK★FASCISTS" header art, named
 executives on the Track screen and the Coke mark are the only things a reviewer might weigh —
 all already in the approved screenshots.
+
+## Round 11 (Oct 16) — the loops
+
+Creator picked G1 and G2 and asked for both animated. Rendered with `SEARCH_VIDEO=1
+HEADER_VARIANTS="g1 g2" scripts/appstore.sh headervideo` → in `marketing/appstore/1.2.1/creative/`:
+`header-video-g1|g2-3840x1646.mp4` (21:9 header, 35–36 MB) and `search-video-g1|g2-3840x2560.mp4`
+(3:2 search card, 48–50 MB). 15.0 s, 30 fps, H.264, bt709, no audio. Motion: a slow periodic
+pan (±34 px, ±16 px), phones bobbing ±10 px on three phases, deep stars and the map drifting over
+a frozen base starfield, money falling on whole cycles. Seam check: SSIM last→first frame
+0.953–0.958 against 0.966–0.968 for a normal one-frame step, so the loop closes without a jump.
+Poster frame = the matching still (`header-g1|g2-3840x1646.png`, `search-*`).
+
+Upload: App Store Connect → iOS 1.2.1 → Product Page Information → Header and Search Results:
+drop the header video into Header and the search video into Search Results (or the stills),
+Preview, then submit standalone from the Asset Library or with the 1.2.1 submission.
