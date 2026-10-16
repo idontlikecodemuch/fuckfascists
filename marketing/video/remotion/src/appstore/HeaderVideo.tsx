@@ -18,8 +18,9 @@ const CROP_TOP = SAFE.top; // the 21:9 band of the universal canvas
 export const HeaderVideo: React.FC<{ variant: HeaderVariant }> = ({ variant }) => {
   const frame = useCurrentFrame();
   const ph = (2 * Math.PI * frame) / LOOP;
-  const panX = 34 * Math.sin(ph); // universal px; both whole cycles, so the loop closes
-  const panY = 16 * Math.sin(ph + 2.2);
+  // whole universal px (round 16: fractional offsets shimmer the small type); vertical pan kept small so the island never crowds "FCK,"
+  const panX = Math.round(34 * Math.sin(ph));
+  const panY = Math.round(8 * Math.sin(ph + 2.2));
   return (
     <AbsoluteFill style={{ background: T.void, overflow: 'hidden' }}>
       <div style={{ position: 'absolute', left: 0, top: 0, width: HEADER_W, height: HEADER_H, transform: `scale(${S}) translate(${-panX}px, ${-CROP_TOP - panY}px)`, transformOrigin: '0 0' }}>
@@ -36,8 +37,8 @@ const S2 = SEARCH_W / (SAFE.right - SAFE.left); // 4425 px wide crop → 0.868
 export const SearchVideo: React.FC<{ variant: HeaderVariant }> = ({ variant }) => {
   const frame = useCurrentFrame();
   const ph = (2 * Math.PI * frame) / LOOP;
-  const panX = 30 * Math.sin(ph);
-  const panY = 16 * Math.sin(ph + 2.2);
+  const panX = Math.round(30 * Math.sin(ph));
+  const panY = Math.round(8 * Math.sin(ph + 2.2));
   return (
     <AbsoluteFill style={{ background: T.void, overflow: 'hidden' }}>
       <div style={{ position: 'absolute', left: 0, top: 0, width: HEADER_W, height: HEADER_H, transform: `scale(${S2}) translate(${-SAFE.left - panX}px, ${-panY}px)`, transformOrigin: '0 0' }}>

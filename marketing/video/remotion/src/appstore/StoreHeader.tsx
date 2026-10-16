@@ -55,6 +55,7 @@ const MAP = staticFile('media/appstore/frames/map_pins.png'); // 1080×1926, no 
 const SCAN_TAB = staticFile('media/appstore/frames/scan_tab.png'); // 1206×2478, R11 at 0.5 s: the Scan tab, no record, status bar cropped
 const SCAN_UPC = staticFile('media/appstore/frames/scan_upc.png'); // 1206×2478, R11 at 5.9 s: a barcode filling the scanner guide (round 3: "actually use a scanning UPC screenshot")
 const TRACK = frameSrc('track'); // the Track tab (arena + platform list)
+const SCAN_COKE2 = staticFile('media/appstore/frames/scan_coke2.png'); // 1206×2322, same frame cropped at y 300: no status bar, no dark SCAN BARCODE strip (review, round 16)
 const SCAN_COKE = staticFile('media/appstore/frames/scan_coke.png'); // 1206×2478, R6 at 17.1 s: the Coke bottle in the scanner guide (creator's pick, round 4)
 const TRACK_GRID = staticFile('media/appstore/frames/track_grid.png'); // 1206×2478, R5 at 2.0 s: the Track roster with every sprite in the grid, nothing avoided yet (round 7: "all the sprites, not Musk")
 const MONEY_SCALE = 2.6; // the 24 px bills are specks at 5244 wide
@@ -79,9 +80,9 @@ const DeepSpace: React.FC<{ count?: number; seed?: string; intense?: boolean; tw
 
 /** Round 7 pieces: the headline (money may cover it), the secondary line and the bottom bar (money may not) */
 /** `fckGlow` (round 14): a stronger cyan halo on "FCK," */
-const Headline: React.FC<{ left: number; top: number; width: number; align?: 'left' | 'center'; fck?: number; name?: number; rows?: 2 | 3; fckGlow?: boolean }> = ({ left, top, width, align = 'center', fck = 240, name = 200, rows = 2, fckGlow = false }) => (
+const Headline: React.FC<{ left: number; top: number; width: number; align?: 'left' | 'center'; fck?: number; name?: number; rows?: 2 | 3; fckGlow?: boolean; fckNudge?: number }> = ({ left, top, width, align = 'center', fck = 240, name = 200, rows = 2, fckGlow = false, fckNudge = 0 }) => (
   <div style={{ position: 'absolute', left, top, width, display: 'flex', flexDirection: 'column', alignItems: align === 'center' ? 'center' : 'flex-start', textAlign: align, gap: 24 }}>
-    <div style={{ fontFamily: FONT.display, fontSize: fck, lineHeight: 1, color: T.cyan, letterSpacing: 8, textShadow: fckGlow ? '0 0 26px rgba(122,242,255,0.95), 0 0 70px rgba(122,242,255,0.6), 0 0 160px rgba(122,242,255,0.3), 8px 8px 0 rgba(0,0,0,0.8)' : '0 0 30px rgba(122,242,255,0.5), 8px 8px 0 rgba(0,0,0,0.8)' }}>FCK,</div>
+    <div style={{ marginLeft: fckNudge, fontFamily: FONT.display, fontSize: fck, lineHeight: 1, color: T.cyan, letterSpacing: 8, textShadow: fckGlow ? '0 0 26px rgba(122,242,255,0.95), 0 0 70px rgba(122,242,255,0.6), 0 0 160px rgba(122,242,255,0.3), 8px 8px 0 rgba(0,0,0,0.8)' : '0 0 30px rgba(122,242,255,0.5), 8px 8px 0 rgba(0,0,0,0.8)' }}>FCK,</div>
     <div style={{ fontFamily: FONT.display, fontSize: name, lineHeight: 1.02, color: T.gold, letterSpacing: 4, whiteSpace: 'pre-line', textShadow: '0 0 50px rgba(255,201,60,0.45), 12px 12px 0 rgba(0,0,0,0.8)' }}>{rows === 3 ? 'FINANCIAL\nCONTRIBUTION\nKIT' : 'FINANCIAL\nCONTRIBUTION KIT'}</div>
   </div>
 );
@@ -131,6 +132,31 @@ const Money: React.FC<{ count?: number; seed?: string; keepOut?: { left: number;
     </div>
   </LayoutProvider>
 );
+
+/** Poster-frame money (round 16): the loop's bills frozen at one moment; any bill touching an `avoid` box is dropped whole, never clipped */
+const StillMoney: React.FC<{ count: number; seed: string; avoid?: Box[]; at?: number }> = ({ count, seed, avoid = [], at = 0.37 }) => {
+  const areaW = HEADER_W / MONEY_SCALE;
+  const areaH = HEADER_H / MONEY_SCALE;
+  const u = at;
+  return (
+    <div style={{ position: 'absolute', left: 0, top: 0, width: areaW, height: areaH, transform: `scale(${MONEY_SCALE})`, transformOrigin: '0 0', pointerEvents: 'none' }}>
+      {Array.from({ length: count }, (_, i) => {
+        const r = (k: string) => random(`${seed}-loop-${i}-${k}`);
+        const sc = r('s') > 0.5 ? 4 : 3;
+        const w = 24 * sc;
+        const h = 17 * sc;
+        const cycles = 2 + Math.floor(r('k') * 2);
+        const span = areaH + h * 2;
+        const y = (((u * cycles + r('p')) % 1) * span) - h;
+        const m = 1 + Math.floor(r('m') * 3);
+        const x = r('x') * (areaW + 80) - 40 + Math.sin(2 * Math.PI * (u * m + r('q'))) * (26 + r('a') * 56);
+        const rot = (r('r') - 0.5) * 70 + Math.sin(2 * Math.PI * (u * (1 + Math.floor(r('n') * 2)) + r('o'))) * 18;
+        if (hits(x * MONEY_SCALE, y * MONEY_SCALE, w * MONEY_SCALE, h * MONEY_SCALE, avoid)) return null;
+        return <Img key={i} src={staticFile(`assets/cash_${Math.floor(r('i') * 4) % 4}.png`)} style={{ position: 'absolute', left: Math.round(x), top: Math.round(y), width: w, height: h, imageRendering: 'pixelated', transform: `rotate(${Math.round(rot)}deg)`, filter: 'drop-shadow(1px 2px 0 rgba(0,0,0,0.45))' }} />;
+      })}
+    </div>
+  );
+};
 
 /** FCK, Financial Contribution Kit — the store name as the lockup, optional line under it */
 const Name: React.FC<{ left: number; top: number; width: number; align?: 'left' | 'center'; scale?: number; tagline?: boolean }> = ({ left, top, width, align = 'center', scale = 1, tagline = true }) => (
@@ -192,7 +218,10 @@ const Phone: React.FC<{ src: string; aspect: number; left: number; top: number; 
 };
 
 /** Money for the loops: every bill's fall, sway and spin are whole cycles of `loop` frames, so frame `loop` equals frame 0. */
-const LoopMoney: React.FC<{ count: number; seed: string; loop: number; frame: number }> = ({ count, seed, loop, frame }) => {
+type Box = { left: number; top: number; width: number; height: number };
+const hits = (x: number, y: number, w: number, h: number, boxes: Box[]): boolean => boxes.some((b) => x < b.left + b.width && x + w > b.left && y < b.top + b.height && y + h > b.top);
+/** `avoid` (round 16): bills fade out while they cross these boxes (the two lower lines, the screens) */
+const LoopMoney: React.FC<{ count: number; seed: string; loop: number; frame: number; avoid?: Box[] }> = ({ count, seed, loop, frame, avoid = [] }) => {
   const areaW = HEADER_W / MONEY_SCALE;
   const areaH = HEADER_H / MONEY_SCALE;
   const u = frame / loop;
@@ -210,7 +239,8 @@ const LoopMoney: React.FC<{ count: number; seed: string; loop: number; frame: nu
           const m = 1 + Math.floor(r('m') * 3);
           const x = r('x') * (areaW + 80) - 40 + Math.sin(2 * Math.PI * (u * m + r('q'))) * (26 + r('a') * 56);
           const rot = (r('r') - 0.5) * 70 + Math.sin(2 * Math.PI * (u * (1 + Math.floor(r('n') * 2)) + r('o'))) * 18;
-          return <Img key={i} src={staticFile(`assets/cash_${Math.floor(r('i') * 4) % 4}.png`)} style={{ position: 'absolute', left: Math.round(x), top: Math.round(y), width: w, height: h, imageRendering: 'pixelated', transform: `rotate(${Math.round(rot)}deg)`, filter: 'drop-shadow(1px 2px 0 rgba(0,0,0,0.45))' }} />;
+          const inBox = hits(x * MONEY_SCALE, y * MONEY_SCALE, w * MONEY_SCALE, h * MONEY_SCALE, avoid);
+          return <Img key={i} src={staticFile(`assets/cash_${Math.floor(r('i') * 4) % 4}.png`)} style={{ position: 'absolute', left: Math.round(x), top: Math.round(y), width: w, height: h, imageRendering: 'pixelated', opacity: inBox ? 0 : 1, transition: 'none', transform: `rotate(${Math.round(rot)}deg)`, filter: 'drop-shadow(1px 2px 0 rgba(0,0,0,0.45))' }} />;
         })}
       </div>
     </LayoutProvider>
@@ -286,18 +316,20 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
       ) : null}
       {/* Round 9 — G1/G2: map + intense stars together; every phone rises from the bottom edge (one mask, tab bars hidden); G1 fan tighter; G2 copy as a left column clear of the phones */}
       {variant === 's2' ? (
-        // round 15 (stacked): the copy centred across the whole safe box at legible sizes, Clark and the fan flanking below it; only the play-button overlay (autoplay off) can touch the lower lines
+        // round 16 (outside review applied): stack lowered under the iPad pill (y ≥ 1060), FCK and name equal, third line 80 on two lines, Clark below the iPhone back button and clear of the lines, fan moved left and tilted less so Track survives the iPhone crop, screenshots bleed past the crop, bills never on the lower lines or the screens
         <>
-          <Clark left={870} top={1310} width={880} />
-          {/* phones sized so every screenshot runs past the crop's bottom edge (y 2599, plus the loop's bob): no tab bar, no black band under a short map */}
-          <Phone src={MAP} aspect={1080 / 1926} left={2920} top={1740 + dy} width={520} rotate={-9} bleed bob={bob(0)} />
-          <Phone src={SCAN_COKE} aspect={1206 / 2478} left={3360} top={1690 + dy} width={520} rotate={0} bleed bob={bob(2.1)} />
-          <Phone src={TRACK_GRID} aspect={1206 / 2478} left={3800} top={1740 + dy} width={520} rotate={9} bleed bob={bob(4.2)} />
-          {/* FCK at the name's size (locked Oct 15); the block grows 60 px, so the two lines below shift down with it */}
-          <Headline left={DEVICE_SAFE.left} top={740} width={DEVICE_SAFE.right - DEVICE_SAFE.left} fck={170} name={170} fckGlow />
-          {money(16, `${variant}-a`, { left: DEVICE_SAFE.left, top: 710, width: DEVICE_SAFE.right - DEVICE_SAFE.left, height: 620 })}
-          <Secondary left={DEVICE_SAFE.left} top={1330} width={DEVICE_SAFE.right - DEVICE_SAFE.left} size={100} />
-          <SubUnder left={DEVICE_SAFE.left} top={1465} width={DEVICE_SAFE.right - DEVICE_SAFE.left} size={66} />
+          <Clark left={870} top={1230} width={700} />
+          <Phone src={MAP} aspect={1080 / 1926} left={2220} top={2000 + dy} width={520} rotate={-7} bleed bob={bob(0)} />
+          <Phone src={SCAN_COKE2} aspect={1206 / 2322} left={2930} top={1960 + dy} width={520} rotate={0} bleed bob={bob(2.1)} />
+          <Phone src={TRACK_GRID} aspect={1206 / 2478} left={3640} top={2000 + dy} width={520} rotate={7} bleed bob={bob(4.2)} />
+          <Headline left={DEVICE_SAFE.left} top={1060} width={DEVICE_SAFE.right - DEVICE_SAFE.left} fck={150} name={150} fckGlow fckNudge={38} />
+          {loop ? (
+            <LoopMoney count={20} seed={`${variant}-b`} loop={loop} frame={frame} avoid={[{ left: 1560, top: 1560, width: 2130, height: 380 }, { left: 2150, top: 1900, width: 2080, height: 1050 }]} />
+          ) : (
+            <StillMoney count={20} seed={`${variant}-b`} avoid={[{ left: 1560, top: 1560, width: 2130, height: 380 }, { left: 2150, top: 1900, width: 2080, height: 1050 }]} />
+          )}
+          <Secondary left={DEVICE_SAFE.left} top={1580} width={DEVICE_SAFE.right - DEVICE_SAFE.left} size={90} />
+          <SubUnder left={1672} top={1720} width={1900} size={80} />
         </>
       ) : null}
       {variant === 's1' ? (
