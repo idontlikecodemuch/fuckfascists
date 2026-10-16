@@ -171,3 +171,15 @@ phone plays `clips/loop_map.mp4` (the pins zoom-and-tap at ~0.5×) and the scan 
 forward then reversed so they close on themselves (`scripts/prep-header-loops.sh`). Track keeps
 the sprite-grid still. Stills unchanged. Seam SSIM last→first 0.953–0.959 vs 0.966–0.969 for a
 one-frame step. Review copies (1920 wide, 4–6 MB) in `creative/review/`.
+
+## Round 13 (Oct 16) — G1 base, two moving backgrounds
+
+Creator: "Better without [footage in the phones]. Use G1 as the base. Clark up a bit and bigger.
+More movement in the money. Backgrounds need movement — one version slowly panning or twinkling
+stars, one panning map." Variants `g1s` (stars only: each deep star breathes on its own
+whole-cycle rate, the layer pans ±70/±40 px) and `g1m` (blurred map pans ±150/±60 px at 1.08×
+under the same stars). Clark 1250 → 1420 wide, top 780 → 600. Money 12 → 20 bills, 2–3 falls per
+loop, wider sway; still never over the subheads. Phones back to screenshots. Files
+`header-video-g1s|g1m-3840x1646.mp4`, `search-video-g1s|g1m-3840x2560.mp4`, stills
+`header-g1s|g1m-*.png`, review copies in `creative/review/`. Seam SSIM 0.937–0.949 vs 0.951–0.962
+adjacent (the busier money and twinkle lower both numbers together; no visible jump).
