@@ -1,6 +1,6 @@
 import React from 'react';
-import { AbsoluteFill, Freeze, Img, Sequence, random, staticFile, useCurrentFrame } from 'remotion';
-import { CLARK_FULL } from '../clips';
+import { AbsoluteFill, Freeze, Img, OffthreadVideo, Sequence, random, staticFile, useCurrentFrame } from 'remotion';
+import { CLARK_FULL, clipSrc } from '../clips';
 import { MoneyRain } from '../components/MoneyRain';
 import { Starfield } from '../components/Starfield';
 import { useFonts } from '../fonts';
@@ -162,13 +162,18 @@ const Clark: React.FC<{ left: number; top: number; width: number }> = ({ left, t
  * drop shadow" on mix-c), and the shadow is a tight contact shadow.
  */
 /** `bleed`: the body runs to the canvas bottom (the crop edge cuts it like a real device coming up from below); otherwise a whole phone at PHONE_RATIO with a dark chin under a clipped screen. `bob`: vertical offset for the loop. */
-const Phone: React.FC<{ src: string; aspect: number; left: number; top: number; width: number; rotate?: number; cut?: number; bleed?: boolean; bob?: number; shiftY?: number }> = ({ src, aspect, left, top, width, rotate = 0, cut = 1, bleed = false, bob = 0, shiftY = 0 }) => {
+/** `video` (round 12): in loop mode the screen plays a slow 15 s ping-pong clip (scripts/prep-header-loops.sh, 1080×1926) instead of the screenshot */
+const Phone: React.FC<{ src: string; aspect: number; left: number; top: number; width: number; rotate?: number; cut?: number; bleed?: boolean; bob?: number; shiftY?: number; video?: string }> = ({ src, aspect, left, top, width, rotate = 0, cut = 1, bleed = false, bob = 0, shiftY = 0, video }) => {
   const screenH = (width / aspect) * cut;
   const bodyH = bleed ? HEADER_H : Math.max(screenH, width * PHONE_RATIO) + BEZEL * 2;
   return (
     <div style={{ position: 'absolute', left: left - BEZEL, top: top - BEZEL + bob, width: width + BEZEL * 2, height: bodyH, borderRadius: RADIUS, background: '#0B0D12', transform: `rotate(${rotate}deg)`, transformOrigin: '50% 100%', boxShadow: '0 0 0 4px #3A4A66, 0 0 0 6px rgba(0,0,0,0.6), 0 0 44px rgba(122,242,255,0.18), 0 30px 70px rgba(0,0,0,0.55)' }}>
       <div style={{ position: 'absolute', left: BEZEL, top: BEZEL, width, height: bleed ? bodyH : screenH, borderRadius: RADIUS - BEZEL, overflow: 'hidden', background: T.void }}>
-        <Img src={src} style={{ display: 'block', width, height: width / aspect, transform: `translateY(${shiftY}px)` }} />
+        {video ? (
+          <OffthreadVideo src={clipSrc(video)} muted style={{ display: 'block', width, height: (width * 1926) / 1080, transform: `translateY(${shiftY}px)` }} />
+        ) : (
+          <Img src={src} style={{ display: 'block', width, height: width / aspect, transform: `translateY(${shiftY}px)` }} />
+        )}
       </div>
     </div>
   );
@@ -269,8 +274,8 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
         // round 10 (review): Clark inside the 3:2 crop, "FCK," smaller, secondary larger, Coke screenshot lifted, bar opaque with its copy on the headline's axis
         <>
           <Clark left={420} top={780} width={1250} />
-          <Phone src={MAP} aspect={1080 / 1926} left={2150} top={1500 + dy} width={760} rotate={-9} bleed bob={bob(0)} />
-          <Phone src={SCAN_COKE} aspect={1206 / 2478} left={2860} top={1380 + dy} width={760} rotate={0} bleed bob={bob(2.1)} shiftY={-200} />
+          <Phone src={MAP} aspect={1080 / 1926} left={2150} top={1500 + dy} width={760} rotate={-9} bleed bob={bob(0)} video={loop ? 'loop_map' : undefined} />
+          <Phone src={SCAN_COKE} aspect={1206 / 2478} left={2860} top={1380 + dy} width={760} rotate={0} bleed bob={bob(2.1)} shiftY={loop ? 0 : -200} video={loop ? 'loop_scan' : undefined} />
           <Phone src={TRACK_GRID} aspect={1206 / 2478} left={3570} top={1500 + dy} width={760} rotate={9} bleed bob={bob(4.2)} />
           <Headline left={1640} top={420} width={3195} fck={170} />
           {money(12, `${variant}-b`, { left: 1640, top: 380, width: 3195, height: 760 })}
@@ -283,8 +288,8 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
         <>
           <Clark left={420} top={700} width={1050} />
           <div style={{ position: 'absolute', left: 1200, top: 300, width: 2000, height: 2000, background: 'radial-gradient(ellipse 50% 50% at 50% 50%, rgba(7,11,18,0.55), transparent 70%)' }} />
-          <Phone src={MAP} aspect={1080 / 1926} left={2990} top={1450 + dy} width={680} rotate={-8} bleed bob={bob(0)} />
-          <Phone src={SCAN_COKE} aspect={1206 / 2478} left={3560} top={1400 + dy} width={680} rotate={0} bleed bob={bob(2.1)} />
+          <Phone src={MAP} aspect={1080 / 1926} left={2990} top={1450 + dy} width={680} rotate={-8} bleed bob={bob(0)} video={loop ? 'loop_map' : undefined} />
+          <Phone src={SCAN_COKE} aspect={1206 / 2478} left={3560} top={1400 + dy} width={680} rotate={0} bleed bob={bob(2.1)} video={loop ? 'loop_scan' : undefined} />
           <Phone src={TRACK_GRID} aspect={1206 / 2478} left={4130} top={1450 + dy} width={680} rotate={8} bleed bob={bob(4.2)} />
           <Headline left={1560} top={560} width={1380} align="left" fck={200} name={170} rows={3} />
           {money(12, `${variant}-b`, { left: 1520, top: 520, width: 1460, height: 760 })}
