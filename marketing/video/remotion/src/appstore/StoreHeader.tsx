@@ -22,7 +22,16 @@ import { frameSrc } from './tiles';
 export const HEADER_W = 5244;
 export const HEADER_H = 2950;
 export const SAFE = { left: 410, top: 351, right: 4835, bottom: 2599 };
-export type HeaderVariant = 'space' | 'screens' | 'clark' | 'map' | 'mix-a' | 'mix-b' | 'mix-c' | 'mix-d' | 'mix-b2' | 'mix-c2' | 'l1' | 'l2' | 'l3' | 'l4' | 'f1' | 'f1s' | 'f2' | 'f2s' | 'g1' | 'g2' | 'g1s' | 'g1m';
+export type HeaderVariant = 'space' | 'screens' | 'clark' | 'map' | 'mix-a' | 'mix-b' | 'mix-c' | 'mix-d' | 'mix-b2' | 'mix-c2' | 'l1' | 'l2' | 'l3' | 'l4' | 'f1' | 'f1s' | 'f2' | 'f2s' | 'g1' | 'g2' | 'g1s' | 'g1m' | 's1';
+/**
+ * Device-safe box (Oct 16, measured from App Store Connect's Preview): iPhone shows the centre
+ * ~66 % of the header's width at full height (status bar + island over the top sixth, back/share
+ * at the upper corners); iPad shows the full width but only y 16–77 % of the height (the
+ * Today/Games/Apps pill over the top centre); iPhone Duo shows nearly all of it (camera cutout top
+ * right). A video also puts a play button dead centre. Essentials live inside the intersection.
+ */
+export const DEVICE_SAFE = { left: 891, top: 724, right: 4353, bottom: 2087 };
+export const PLAY_BUTTON = { cx: 2622, cy: 1475, r: 240 };
 /** which crop the bottom bar is pinned to: the 21:9 header (y 2599) or the 3:2 search card (y 2950) */
 export type HeaderTarget = 'header' | 'search';
 export const SUB_COPY = 'Tap a business. Scan a product. Track the platforms you use.'; // creator, Oct 15 (round 7)
@@ -228,9 +237,9 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
       {variant === 'mix-c' || variant === 'mix-c2' ? <BlurredMap opacity={0.7} blur={30} /> : null}
       {variant === 'l1' || variant === 'l2' || variant === 'l3' || variant === 'l4' || variant === 'f1' || variant === 'f2' ? <AbsoluteFill style={{ transform: mapDrift }}><BlurredMap opacity={0.5} blur={34} /></AbsoluteFill> : null}
       {variant === 'g1' || variant === 'g2' ? <AbsoluteFill style={{ transform: mapDrift }}><BlurredMap opacity={0.62} blur={34} lowerLit /></AbsoluteFill> : null}
-      {variant === 'g1m' ? <AbsoluteFill style={{ transform: loop ? `translate(${Math.round(150 * Math.sin(ph + 0.5))}px, ${Math.round(60 * Math.cos(ph))}px) scale(1.08)` : 'scale(1.08)' }}><BlurredMap opacity={0.66} blur={34} lowerLit /></AbsoluteFill> : null}
+      {variant === 'g1m' || variant === 's1' ? <AbsoluteFill style={{ transform: loop ? `translate(${Math.round(150 * Math.sin(ph + 0.5))}px, ${Math.round(60 * Math.cos(ph))}px) scale(1.08)` : 'scale(1.08)' }}><BlurredMap opacity={0.66} blur={34} lowerLit /></AbsoluteFill> : null}
       <AbsoluteFill style={{ transform: variant === 'g1s' && loop ? `translate(${Math.round(70 * Math.sin(ph + 1))}px, ${Math.round(40 * Math.sin(ph))}px) scale(1.04)` : variant === 'g1s' ? 'scale(1.04)' : drift }}>
-        <DeepSpace count={variant === 'space' ? 1400 : variant === 'f1s' || variant === 'f2s' || variant === 'g1' || variant === 'g2' || variant === 'g1s' || variant === 'g1m' ? 2600 : 800} intense={variant === 'f1s' || variant === 'f2s' || variant === 'g1' || variant === 'g2' || variant === 'g1s' || variant === 'g1m'} twinkle={loop && (variant === 'g1s' || variant === 'g1m') ? frame / loop : undefined} />
+        <DeepSpace count={variant === 'space' ? 1400 : variant === 'f1s' || variant === 'f2s' || variant === 'g1' || variant === 'g2' || variant === 'g1s' || variant === 'g1m' || variant === 's1' ? 2600 : 800} intense={variant === 'f1s' || variant === 'f2s' || variant === 'g1' || variant === 'g2' || variant === 'g1s' || variant === 'g1m' || variant === 's1'} twinkle={loop && (variant === 'g1s' || variant === 'g1m' || variant === 's1') ? frame / loop : undefined} />
       </AbsoluteFill>
       {variant === 'space' ? (
         <>
@@ -276,6 +285,19 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
         </>
       ) : null}
       {/* Round 9 — G1/G2: map + intense stars together; every phone rises from the bottom edge (one mask, tab bars hidden); G1 fan tighter; G2 copy as a left column clear of the phones */}
+      {variant === 's1' ? (
+        // round 15: everything that matters inside DEVICE_SAFE and clear of the play button — Clark's bust left, the copy as a right column, the fan below it, no bar
+        <>
+          <Clark left={920} top={740} width={900} />
+          <Phone src={MAP} aspect={1080 / 1926} left={1400} top={1760 + dy} width={470} rotate={-9} bleed bob={bob(0)} />
+          <Phone src={SCAN_COKE} aspect={1206 / 2478} left={1880} top={1700 + dy} width={470} rotate={0} bleed bob={bob(2.1)} shiftY={-120} />
+          <Phone src={TRACK_GRID} aspect={1206 / 2478} left={2360} top={1760 + dy} width={470} rotate={9} bleed bob={bob(4.2)} />
+          <Headline left={2950} top={790} width={1400} align="left" fck={130} name={130} rows={3} fckGlow />
+          {money(16, `${variant}-a`, { left: 2900, top: 740, width: 1460, height: 640 })}
+          <Secondary left={2950} top={1390} width={1400} align="left" size={72} twoLines />
+          <SubColumn left={2950} top={1610} width={1400} size={54} />
+        </>
+      ) : null}
       {variant === 'g1s' || variant === 'g1m' ? (
         // round 13: G1 as the base — Clark bigger and higher, screenshots in the phones, busier money, moving background (stars twinkle + pan, or the map pans)
         <>
