@@ -192,3 +192,5 @@ glow to FCK." `Headline` fck 170 → 200 (= the name's 200) with a three-stop cy
 `search-video-g1s|g1m-3840x2560.mp4`; review copies in `creative/review/`. Seam SSIM 0.938–0.950
 vs 0.951–0.962 adjacent. These are the deliverables; the creator picks stars or map (or runs both
 as a product-page optimization test).
+
+**Chosen (Oct 16):** the map + stars version, `g1m`. Header: `header-video-g1m-3840x1646.mp4` (poster `header-g1m-3840x1646.png`); search card: `search-video-g1m-3840x2560.mp4` (poster `search-g1m-3840x2560.png`). The stars-only `g1s` set stays on disk as the alternate for a product-page optimization test.
