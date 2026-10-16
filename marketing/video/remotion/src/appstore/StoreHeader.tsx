@@ -288,7 +288,7 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
       {variant === 's2' ? (
         // round 15 (stacked): the copy centred across the whole safe box at legible sizes, Clark and the fan flanking below it; only the play-button overlay (autoplay off) can touch the lower lines
         <>
-          <Clark left={950} top={1250} width={900} />
+          <Clark left={870} top={1310} width={880} />
           <Phone src={MAP} aspect={1080 / 1926} left={3000} top={1720 + dy} width={400} rotate={-9} bleed bob={bob(0)} />
           <Phone src={SCAN_COKE} aspect={1206 / 2478} left={3400} top={1680 + dy} width={400} rotate={0} bleed bob={bob(2.1)} shiftY={-100} />
           <Phone src={TRACK_GRID} aspect={1206 / 2478} left={3800} top={1720 + dy} width={400} rotate={9} bleed bob={bob(4.2)} />
