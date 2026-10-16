@@ -22,7 +22,7 @@ import { frameSrc } from './tiles';
 export const HEADER_W = 5244;
 export const HEADER_H = 2950;
 export const SAFE = { left: 410, top: 351, right: 4835, bottom: 2599 };
-export type HeaderVariant = 'space' | 'screens' | 'clark' | 'map' | 'mix-a' | 'mix-b' | 'mix-c' | 'mix-d' | 'mix-b2' | 'mix-c2' | 'l1' | 'l2' | 'l3' | 'l4' | 'f1' | 'f1s' | 'f2' | 'f2s' | 'g1' | 'g2';
+export type HeaderVariant = 'space' | 'screens' | 'clark' | 'map' | 'mix-a' | 'mix-b' | 'mix-c' | 'mix-d' | 'mix-b2' | 'mix-c2' | 'l1' | 'l2' | 'l3' | 'l4' | 'f1' | 'f1s' | 'f2' | 'f2s' | 'g1' | 'g2' | 'g1s' | 'g1m';
 /** which crop the bottom bar is pinned to: the 21:9 header (y 2599) or the 3:2 search card (y 2950) */
 export type HeaderTarget = 'header' | 'search';
 export const SUB_COPY = 'Tap a business. Scan a product. Track the platforms you use.'; // creator, Oct 15 (round 7)
@@ -51,13 +51,15 @@ const TRACK_GRID = staticFile('media/appstore/frames/track_grid.png'); // 1206×
 const MONEY_SCALE = 2.6; // the 24 px bills are specks at 5244 wide
 
 /** denser pixel stars on top of the shared starfield ("way more aesthetic — def more stars"); `intense` = a milky band, bigger glows, far more of them */
-const DeepSpace: React.FC<{ count?: number; seed?: string; intense?: boolean }> = ({ count = 900, seed = 'deep', intense = false }) => (
+/** `twinkle` (round 13): 0–1 position in the loop; each star's brightness breathes on its own whole-cycle rate, so frame 450 == frame 0 */
+const DeepSpace: React.FC<{ count?: number; seed?: string; intense?: boolean; twinkle?: number }> = ({ count = 900, seed = 'deep', intense = false, twinkle }) => (
   <AbsoluteFill style={{ pointerEvents: 'none' }}>
     {intense ? <AbsoluteFill style={{ background: 'linear-gradient(112deg, transparent 30%, rgba(122,242,255,0.12) 46%, rgba(220,231,246,0.16) 52%, rgba(122,242,255,0.10) 58%, transparent 74%)' }} /> : null}
     {Array.from({ length: count }, (_, i) => {
       const r = (k: string) => random(`${seed}-${i}-${k}`);
       const s = intense ? (r('s') < 0.7 ? 3 : r('s') < 0.92 ? 6 : 11) : r('s') < 0.82 ? 3 : r('s') < 0.96 ? 5 : 8;
-      const a = (intense ? 0.35 : 0.25) + r('a') * 0.65;
+      const a0 = (intense ? 0.35 : 0.25) + r('a') * 0.65;
+      const a = twinkle == null ? a0 : a0 * (0.55 + 0.45 * Math.sin(2 * Math.PI * (twinkle * (2 + Math.floor(r('tw') * 4)) + r('tp'))));
       const warm = r('c') < 0.12;
       return <div key={i} style={{ position: 'absolute', left: r('x') * HEADER_W, top: r('y') * HEADER_H, width: s, height: s, background: warm ? T.gold : r('c') < 0.3 ? T.cyan : '#FFFFFF', opacity: a, boxShadow: s >= 5 ? `0 0 ${s * (intense ? 3 : 2)}px rgba(255,255,255,${a * 0.6})` : undefined }} />;
     })}
@@ -192,11 +194,11 @@ const LoopMoney: React.FC<{ count: number; seed: string; loop: number; frame: nu
           const sc = r('s') > 0.5 ? 4 : 3;
           const w = 24 * sc;
           const h = 17 * sc;
-          const cycles = 1 + Math.floor(r('k') * 2); // 1 or 2 falls per loop
+          const cycles = 2 + Math.floor(r('k') * 2); // round 13 ("more movement"): 2 or 3 falls per loop
           const span = areaH + h * 2;
           const y = (((u * cycles + r('p')) % 1) * span) - h;
           const m = 1 + Math.floor(r('m') * 3);
-          const x = r('x') * (areaW + 80) - 40 + Math.sin(2 * Math.PI * (u * m + r('q'))) * (18 + r('a') * 40);
+          const x = r('x') * (areaW + 80) - 40 + Math.sin(2 * Math.PI * (u * m + r('q'))) * (26 + r('a') * 56);
           const rot = (r('r') - 0.5) * 70 + Math.sin(2 * Math.PI * (u * (1 + Math.floor(r('n') * 2)) + r('o'))) * 18;
           return <Img key={i} src={staticFile(`assets/cash_${Math.floor(r('i') * 4) % 4}.png`)} style={{ position: 'absolute', left: Math.round(x), top: Math.round(y), width: w, height: h, imageRendering: 'pixelated', transform: `rotate(${Math.round(rot)}deg)`, filter: 'drop-shadow(1px 2px 0 rgba(0,0,0,0.45))' }} />;
         })}
@@ -225,7 +227,10 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
       {variant === 'mix-c' || variant === 'mix-c2' ? <BlurredMap opacity={0.7} blur={30} /> : null}
       {variant === 'l1' || variant === 'l2' || variant === 'l3' || variant === 'l4' || variant === 'f1' || variant === 'f2' ? <AbsoluteFill style={{ transform: mapDrift }}><BlurredMap opacity={0.5} blur={34} /></AbsoluteFill> : null}
       {variant === 'g1' || variant === 'g2' ? <AbsoluteFill style={{ transform: mapDrift }}><BlurredMap opacity={0.62} blur={34} lowerLit /></AbsoluteFill> : null}
-      <AbsoluteFill style={{ transform: drift }}><DeepSpace count={variant === 'space' ? 1400 : variant === 'f1s' || variant === 'f2s' || variant === 'g1' || variant === 'g2' ? 2600 : 800} intense={variant === 'f1s' || variant === 'f2s' || variant === 'g1' || variant === 'g2'} /></AbsoluteFill>
+      {variant === 'g1m' ? <AbsoluteFill style={{ transform: loop ? `translate(${Math.round(150 * Math.sin(ph + 0.5))}px, ${Math.round(60 * Math.cos(ph))}px) scale(1.08)` : 'scale(1.08)' }}><BlurredMap opacity={0.66} blur={34} lowerLit /></AbsoluteFill> : null}
+      <AbsoluteFill style={{ transform: variant === 'g1s' && loop ? `translate(${Math.round(70 * Math.sin(ph + 1))}px, ${Math.round(40 * Math.sin(ph))}px) scale(1.04)` : variant === 'g1s' ? 'scale(1.04)' : drift }}>
+        <DeepSpace count={variant === 'space' ? 1400 : variant === 'f1s' || variant === 'f2s' || variant === 'g1' || variant === 'g2' || variant === 'g1s' || variant === 'g1m' ? 2600 : 800} intense={variant === 'f1s' || variant === 'f2s' || variant === 'g1' || variant === 'g2' || variant === 'g1s' || variant === 'g1m'} twinkle={loop && (variant === 'g1s' || variant === 'g1m') ? frame / loop : undefined} />
+      </AbsoluteFill>
       {variant === 'space' ? (
         <>
           <Money count={14} seed="space" />
@@ -270,6 +275,19 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
         </>
       ) : null}
       {/* Round 9 — G1/G2: map + intense stars together; every phone rises from the bottom edge (one mask, tab bars hidden); G1 fan tighter; G2 copy as a left column clear of the phones */}
+      {variant === 'g1s' || variant === 'g1m' ? (
+        // round 13: G1 as the base — Clark bigger and higher, screenshots in the phones, busier money, moving background (stars twinkle + pan, or the map pans)
+        <>
+          <Clark left={380} top={600} width={1420} />
+          <Phone src={MAP} aspect={1080 / 1926} left={2150} top={1500 + dy} width={760} rotate={-9} bleed bob={bob(0)} />
+          <Phone src={SCAN_COKE} aspect={1206 / 2478} left={2860} top={1380 + dy} width={760} rotate={0} bleed bob={bob(2.1)} shiftY={-200} />
+          <Phone src={TRACK_GRID} aspect={1206 / 2478} left={3570} top={1500 + dy} width={760} rotate={9} bleed bob={bob(4.2)} />
+          <Headline left={1640} top={420} width={3195} fck={170} />
+          {money(20, `${variant}-c`, { left: 1640, top: 380, width: 3195, height: 760 })}
+          <Secondary left={1640} top={1100} width={3195} size={124} />
+          <SubBar target={target} overhang={loop ? 80 : 0} textLeft={1640} textWidth={3195} />
+        </>
+      ) : null}
       {variant === 'g1' ? (
         // round 10 (review): Clark inside the 3:2 crop, "FCK," smaller, secondary larger, Coke screenshot lifted, bar opaque with its copy on the headline's axis
         <>
