@@ -336,23 +336,24 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
           <Phone src={MAP} aspect={1080 / 1926} left={2220} top={2000 + dy} width={520} rotate={-7} bleed bob={bob(0)} />
           <Phone src={SCAN_COKE2} aspect={1206 / 2322} left={2930} top={1960 + dy} width={520} rotate={0} bleed bob={bob(2.1)} />
           <Phone src={TRACK_GRID} aspect={1206 / 2478} left={3640} top={2000 + dy} width={520} rotate={7} bleed bob={bob(4.2)} />
+          {/* copy centred on the free width right of Clark (x 1650–4300), so the hero line never crosses him */}
           {variant === 's3a' ? (
             <>
-              <NameSmall left={DEVICE_SAFE.left} top={1150} width={DEVICE_SAFE.right - DEVICE_SAFE.left} size={96} />
-              <Hero left={DEVICE_SAFE.left} top={1420} width={DEVICE_SAFE.right - DEVICE_SAFE.left} size={176} />
-              <SubUnder left={1672} top={1660} width={1900} size={80} />
+              <NameSmall left={1650} top={1150} width={2650} size={96} />
+              <Hero left={1650} top={1410} width={2650} size={140} />
+              <SubUnder left={2025} top={1600} width={1900} size={80} />
             </>
           ) : variant === 's3b' ? (
             <>
-              <NameSmall left={DEVICE_SAFE.left} top={1120} width={DEVICE_SAFE.right - DEVICE_SAFE.left} size={88} />
-              <Hero left={DEVICE_SAFE.left} top={1340} width={DEVICE_SAFE.right - DEVICE_SAFE.left} size={224} twoLines />
-              <SubUnder left={1580} top={1830} width={2084} size={66} />
+              <NameSmall left={1650} top={1110} width={2650} size={88} />
+              <Hero left={1650} top={1330} width={2650} size={224} twoLines />
+              <SubUnder left={1933} top={1820} width={2084} size={66} />
             </>
           ) : (
             <>
-              <NameSmall left={DEVICE_SAFE.left} top={1150} width={DEVICE_SAFE.right - DEVICE_SAFE.left} size={96} />
-              <Hero left={DEVICE_SAFE.left} top={1420} width={DEVICE_SAFE.right - DEVICE_SAFE.left} size={150} font="body" color={T.cream} />
-              <SubUnder left={1672} top={1640} width={1900} size={80} />
+              <NameSmall left={1650} top={1150} width={2650} size={96} />
+              <Hero left={1650} top={1410} width={2650} size={130} font="body" color={T.cream} />
+              <SubUnder left={2025} top={1600} width={1900} size={80} />
             </>
           )}
           {loop ? (
