@@ -22,7 +22,7 @@ import { frameSrc } from './tiles';
 export const HEADER_W = 5244;
 export const HEADER_H = 2950;
 export const SAFE = { left: 410, top: 351, right: 4835, bottom: 2599 };
-export type HeaderVariant = 'space' | 'screens' | 'clark' | 'map' | 'mix-a' | 'mix-b' | 'mix-c' | 'mix-d' | 'mix-b2' | 'mix-c2' | 'l1' | 'l2' | 'l3' | 'l4' | 'f1' | 'f1s' | 'f2' | 'f2s';
+export type HeaderVariant = 'space' | 'screens' | 'clark' | 'map' | 'mix-a' | 'mix-b' | 'mix-c' | 'mix-d' | 'mix-b2' | 'mix-c2' | 'l1' | 'l2' | 'l3' | 'l4' | 'f1' | 'f1s' | 'f2' | 'f2s' | 'g1' | 'g2';
 /** which crop the bottom bar is pinned to: the 21:9 header (y 2599) or the 3:2 search card (y 2950) */
 export type HeaderTarget = 'header' | 'search';
 export const SUB_COPY = 'Tap a business. Scan a product. Track the platforms you use.'; // creator, Oct 15 (round 7)
@@ -84,6 +84,13 @@ const SubBar: React.FC<{ target: HeaderTarget; height?: number; size?: number; o
     </div>
   );
 };
+/** Round 9 (G2): the three verbs as the third line of the left column, under a thin rule — clear of the phones */
+const SubColumn: React.FC<{ left: number; top: number; width: number; size?: number }> = ({ left, top, width, size = 76 }) => (
+  <div style={{ position: 'absolute', left, top, width }}>
+    <div style={{ width: 520, height: 6, background: `linear-gradient(to right, ${T.cyan}, transparent)`, boxShadow: `0 0 14px rgba(122,242,255,0.5)`, marginBottom: 34 }} />
+    <div style={{ fontFamily: FONT.body, fontWeight: 500, fontSize: size, lineHeight: 1.3, letterSpacing: 1, color: T.text, textShadow: '3px 3px 0 rgba(0,0,0,0.85)', whiteSpace: 'pre-line' }}>{'Tap a business. Scan a product.\nTrack the platforms you use.'}</div>
+  </div>
+);
 /** F2's sub copy sits under the phones instead of on a bar (creator, round 8) */
 const SubUnder: React.FC<{ left: number; top: number; width: number; size?: number }> = ({ left, top, width, size = 100 }) => (
   <div style={{ position: 'absolute', left, top, width, textAlign: 'center', fontFamily: FONT.body, fontWeight: 600, fontSize: size, lineHeight: 1.25, letterSpacing: 2, color: T.cream, textShadow: '0 0 20px rgba(232,224,208,0.2), 4px 4px 0 rgba(0,0,0,0.85)' }}>{SUB_COPY}</div>
@@ -205,7 +212,8 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
       {variant === 'mix-b' || variant === 'mix-d' || variant === 'mix-b2' ? <BlurredMap opacity={0.45} blur={36} /> : null}
       {variant === 'mix-c' || variant === 'mix-c2' ? <BlurredMap opacity={0.7} blur={30} /> : null}
       {variant === 'l1' || variant === 'l2' || variant === 'l3' || variant === 'l4' || variant === 'f1' || variant === 'f2' ? <AbsoluteFill style={{ transform: mapDrift }}><BlurredMap opacity={0.5} blur={34} /></AbsoluteFill> : null}
-      <AbsoluteFill style={{ transform: drift }}><DeepSpace count={variant === 'space' ? 1400 : variant === 'f1s' || variant === 'f2s' ? 2600 : 800} intense={variant === 'f1s' || variant === 'f2s'} /></AbsoluteFill>
+      {variant === 'g1' || variant === 'g2' ? <AbsoluteFill style={{ transform: mapDrift }}><BlurredMap opacity={0.42} blur={34} /></AbsoluteFill> : null}
+      <AbsoluteFill style={{ transform: drift }}><DeepSpace count={variant === 'space' ? 1400 : variant === 'f1s' || variant === 'f2s' || variant === 'g1' || variant === 'g2' ? 2600 : 800} intense={variant === 'f1s' || variant === 'f2s' || variant === 'g1' || variant === 'g2'} /></AbsoluteFill>
       {variant === 'space' ? (
         <>
           <Money count={14} seed="space" />
@@ -247,6 +255,31 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
           <Clark left={3950} top={900} width={1250} />
           <Money count={10} seed="mix-b" />
           <Name2 left={SAFE.left} top={420} width={SAFE.right - SAFE.left} align="center" fck={240} name={200} />
+        </>
+      ) : null}
+      {/* Round 9 — G1/G2: map + intense stars together; every phone rises from the bottom edge (one mask, tab bars hidden); G1 fan tighter; G2 copy as a left column clear of the phones */}
+      {variant === 'g1' ? (
+        <>
+          <Clark left={260} top={780} width={1250} />
+          <Phone src={MAP} aspect={1080 / 1926} left={2150} top={1500} width={760} rotate={-9} bleed bob={bob(0)} />
+          <Phone src={SCAN_COKE} aspect={1206 / 2478} left={2860} top={1380} width={760} rotate={0} bleed bob={bob(2.1)} />
+          <Phone src={TRACK_GRID} aspect={1206 / 2478} left={3570} top={1500} width={760} rotate={9} bleed bob={bob(4.2)} />
+          <Headline left={1640} top={400} width={3195} />
+          {money(12, variant)}
+          <Secondary left={1640} top={1130} width={3195} />
+          <SubBar target={target} overhang={loop ? 80 : 0} />
+        </>
+      ) : null}
+      {variant === 'g2' ? (
+        <>
+          <Clark left={180} top={700} width={1100} />
+          <Phone src={MAP} aspect={1080 / 1926} left={3080} top={1200} width={700} rotate={-8} bleed bob={bob(0)} />
+          <Phone src={SCAN_COKE} aspect={1206 / 2478} left={3760} top={1080} width={700} rotate={0} bleed bob={bob(2.1)} />
+          <Phone src={TRACK_GRID} aspect={1206 / 2478} left={4440} top={1200} width={680} rotate={8} bleed bob={bob(4.2)} />
+          <Headline left={1380} top={430} width={1600} align="left" fck={220} name={170} rows={3} />
+          {money(12, variant)}
+          <Secondary left={1380} top={1270} width={1560} align="left" size={100} />
+          <SubColumn left={1380} top={1450} width={1560} size={76} />
         </>
       ) : null}
       {/* Round 7 — F1/F2 (L1/L2 reworked): Clark higher, sub copy on a bottom bar, full sprite grid for Track; `s` = intense stars instead of the map. Order = headline, money, secondary, bar: money may cover the headline, never the subheads. */}
