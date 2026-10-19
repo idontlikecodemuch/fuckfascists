@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   FlatList,
-  Image,
   Pressable,
   SafeAreaView,
   StyleSheet,
@@ -13,14 +12,11 @@ import { useAndroidBackHandler } from '../../../core/ui/useAndroidBackHandler';
 import { theme } from '../../../design/tokens';
 import { useCardArchive } from '../hooks/useCardArchive';
 import { CardPresentation } from './CardPresentation';
-import type { ArchivedCard } from '../data/cardArchive';
-import { formatCardLabel } from '../utils/formatters';
+import { CardArchiveRow } from './CardArchiveRow';
+import { compareCardsNewestFirst, type ArchivedCard } from '../data/cardArchive';
 import { haptics } from '../../../core/fx/haptics';
 
-const THUMB_ASPECT = 1920 / 1080;
 const LIST_PADDING = theme.space.md;
-const ROW_THUMB_HEIGHT = 56;
-const ROW_THUMB_WIDTH = Math.round(ROW_THUMB_HEIGHT / THUMB_ASPECT);
 const TAB_BAR_CLEARANCE = 124;
 
 type SortOrder = 'newest' | 'oldest';
@@ -43,9 +39,7 @@ export function CardArchive({ onDismiss, onPresentationActiveChange }: CardArchi
   const archiveCountLabel = cards.length === 1 ? '1 saved card' : `${cards.length} saved cards`;
   const sortedCards = useMemo(
     () => [...cards].sort((a, b) =>
-      sortOrder === 'newest'
-        ? b.modificationTime - a.modificationTime
-        : a.modificationTime - b.modificationTime,
+      sortOrder === 'newest' ? compareCardsNewestFirst(a, b) : compareCardsNewestFirst(b, a),
     ),
     [cards, sortOrder],
   );
@@ -64,35 +58,9 @@ export function CardArchive({ onDismiss, onPresentationActiveChange }: CardArchi
     setSortOrder(next);
   }, [sortOrder]);
 
-  const renderRow = useCallback(({ item }: { item: ArchivedCard }) => {
-    const label = formatCardLabel(item.filename);
-    const isLatest = item.filename === latestFilename;
-    return (
-      <Pressable
-        style={styles.row}
-        onPress={() => { haptics.tap(); setSelected(item); }}
-        accessibilityRole="button"
-        accessibilityLabel={`Scorecard, week of ${label}`}
-      >
-        <Image source={{ uri: item.uri }} style={styles.rowImage} resizeMode="cover" />
-        <View style={styles.rowText}>
-          <View style={styles.rowMeta}>
-            <Text
-              style={[styles.rowTag, isLatest && styles.rowTagLatest]}
-              allowFontScaling={false}
-            >
-              {isLatest ? 'LATEST' : 'SCORECARD'}
-            </Text>
-          </View>
-          <Text style={styles.rowTitle} allowFontScaling={false}>
-            Week of {label}
-          </Text>
-          <Text style={styles.rowHint} allowFontScaling={false}>Tap to view and share</Text>
-        </View>
-        <Text style={styles.chevron} allowFontScaling={false}>{'\u203a'}</Text>
-      </Pressable>
-    );
-  }, [latestFilename]);
+  const renderRow = useCallback(({ item }: { item: ArchivedCard }) => (
+    <CardArchiveRow card={item} isLatest={item.filename === latestFilename} onPress={setSelected} />
+  ), [latestFilename]);
 
   if (selected) {
     return (
@@ -247,55 +215,6 @@ const styles = StyleSheet.create({
   },
   sortTextActive: {
     color: theme.colors.rewardYellow,
-  },
-  row: {
-    minHeight: 76,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: theme.space.md,
-    padding: theme.space.sm,
-    borderWidth: 1,
-    borderColor: theme.colors.panelBorder,
-    backgroundColor: theme.colors.panelOuter,
-  },
-  rowImage: {
-    width: ROW_THUMB_WIDTH,
-    height: ROW_THUMB_HEIGHT,
-    borderWidth: 1,
-    borderColor: theme.colors.panelBorder,
-  },
-  rowText: {
-    flex: 1,
-    minWidth: 0,
-  },
-  rowMeta: {
-    minHeight: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: theme.space.sm,
-  },
-  rowTag: {
-    fontFamily: theme.fonts.headline,
-    fontSize: 8,
-    color: theme.colors.textSecondary,
-    letterSpacing: 1.5,
-  },
-  rowTagLatest: {
-    color: theme.colors.rewardYellow,
-  },
-  rowTitle: {
-    ...theme.type.uiLabel,
-    color: theme.colors.textPrimary,
-  },
-  rowHint: {
-    ...theme.type.caption,
-    marginTop: 1,
-    color: theme.colors.textSecondary,
-  },
-  chevron: {
-    fontFamily: theme.fonts.bodySemiBold,
-    fontSize: 24,
-    color: theme.colors.highlightBlue,
   },
   separator: {
     height: theme.space.sm,

@@ -28,6 +28,13 @@ This document is updated continuously. New instances should read this first — 
 - Upgrade leftovers: a `scorecard-drop` still pending after the drop and its own notification time is cancelled; Android deletes the old `scorecard-drop-quiet` channel at startup.
 - A failed capture no longer blocks later weeks; a week still failing `SCORECARD_CAPTURE_GIVE_UP_DAYS` (28) after its drop is purged without a card.
 
+**Review round 2:**
+- Give-up needs all three: drop ≥ 28 days old, failing ≥ 7 days since the first failure (`SCORECARD_CAPTURE_GIVE_UP_MIN_FAILING_DAYS`), and ≥ 3 failed attempts (`SCORECARD_CAPTURE_GIVE_UP_MIN_ATTEMPTS`). Failures are recorded per week in SecureStore (`scorecard_capture_failures`, week date → first-failure time and attempt count), cleared on success or purge. Captures only run while the app is active; a run stops without counting a failure if the app is not active or leaves the foreground mid-capture, and continues once it is active again. Fixes the case where a user back after five weeks switches apps and every old week is deleted after one failed background capture.
+- Scorecard user navigation (dismissed, archive) is scoped to the scored week, so leaving the tab open on a dismissed card no longer hides the next drop.
+- Only background → active counts as a resume; system dialogs, Notification Center and Control Center no longer reroute to Scorecard.
+- Past scorecards and `pruneArchive` order by the week in the filename (`parseCardWeekOf`, current, `.png` and the early `YYYY-MM-DD.png` names); mtime only for names that do not parse.
+- **Accepted:** if the in-window capture or the revealed-marker write keeps failing, every resume reroutes to Scorecard. Bounded by the 48h window, and rarer now that only background → active counts.
+
 **Accepted, not fixed:** the 90-minute adjacent-week separation is measured in ET wall-clock time, so across a DST change it can be 55 real minutes. Installs at UTC+5 and east may have legacy cards filed one week late under the old one-day anchor.
 
 **Flag, not changed:** `scorecardCopy.dropsLabel` "DROPS THIS FRIDAY" is wrong for weeks whose drop lands on Saturday (about 46% under v3).

@@ -11,14 +11,13 @@ jest.mock('expo-secure-store', () => ({
 }));
 jest.mock('expo-notifications', () => ({}));
 
-import { SCORECARD_CAPTURE_GIVE_UP_DAYS, SCORECARD_PRESENTATION_WINDOW_MS } from '../../../../config/constants';
+import { SCORECARD_PRESENTATION_WINDOW_MS } from '../../../../config/constants';
 import { listAvoidEventWeeks, resolveDropAtForWeek } from '../pendingCaptures';
 import {
   FAILING_WEEK,
   HOUR_MS,
   LIVE_WEEK,
   SKIPPED_WEEK,
-  failingDrop,
   makeAdapter,
   setup,
   skippedDrop,
@@ -55,7 +54,9 @@ describe('capturePendingScorecards', () => {
 
     expect(nowMs - skippedDrop).toBeGreaterThanOrEqual(SCORECARD_PRESENTATION_WINDOW_MS);
     expect(deps.captureWeek).toHaveBeenCalledWith(SKIPPED_WEEK, expect.objectContaining({ grandTotal: 3 }));
-    expect(result).toEqual({ captured: [SKIPPED_WEEK], purged: [SKIPPED_WEEK], failed: [], abandoned: [] });
+    expect(result).toEqual({
+      captured: [SKIPPED_WEEK], purged: [SKIPPED_WEEK], failed: [], abandoned: [], interrupted: false,
+    });
     expect(deps.markLateCard).toHaveBeenCalledWith(SKIPPED_WEEK);
     expect(store.entity).toEqual([{ entityId: 'meta', date: '2026-10-12', count: 1 }]);
   });
@@ -75,7 +76,7 @@ describe('capturePendingScorecards', () => {
     const result = await run(skippedDrop - 60_000);
 
     expect(deps.captureWeek).not.toHaveBeenCalled();
-    expect(result).toEqual({ captured: [], purged: [], failed: [], abandoned: [] });
+    expect(result).toEqual({ captured: [], purged: [], failed: [], abandoned: [], interrupted: false });
     expect(store.entity).toHaveLength(1);
   });
 
@@ -93,28 +94,9 @@ describe('capturePendingScorecards', () => {
 
     expect(captureWeek.mock.calls.map(([weekOf]) => weekOf)).toEqual([FAILING_WEEK, SKIPPED_WEEK]);
     expect(result).toEqual({
-      captured: [SKIPPED_WEEK], purged: [SKIPPED_WEEK], failed: [FAILING_WEEK], abandoned: [],
+      captured: [SKIPPED_WEEK], purged: [SKIPPED_WEEK], failed: [FAILING_WEEK], abandoned: [], interrupted: false,
     });
     expect(store.entity).toEqual([{ entityId: 'meta', date: '2026-09-28', count: 1 }]);
     expect(deps.markLateCard).toHaveBeenCalledTimes(1);
-  });
-
-  it('purges a week still failing SCORECARD_CAPTURE_GIVE_UP_DAYS after its drop, without a card', async () => {
-    const events = [{ entityId: 'meta', date: '2026-09-28', count: 1 }];
-    const giveUpMs = SCORECARD_CAPTURE_GIVE_UP_DAYS * 24 * HOUR_MS;
-    const failing = { captureWeek: jest.fn(async () => false) };
-
-    const before = setup(events, failing);
-    const kept = await before.run(failingDrop + giveUpMs - HOUR_MS);
-    expect(kept).toEqual({ captured: [], purged: [], failed: [FAILING_WEEK], abandoned: [] });
-    expect(before.store.entity).toHaveLength(1);
-
-    const after = setup(events, failing);
-    const abandoned = await after.run(failingDrop + giveUpMs + HOUR_MS);
-    expect(abandoned).toEqual({
-      captured: [], purged: [FAILING_WEEK], failed: [FAILING_WEEK], abandoned: [FAILING_WEEK],
-    });
-    expect(after.store.entity).toHaveLength(0);
-    expect(after.archived.size).toBe(0);
   });
 });

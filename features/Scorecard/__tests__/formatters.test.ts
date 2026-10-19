@@ -1,4 +1,4 @@
-import { formatCount, formatWeekRange } from '../utils/formatters';
+import { buildCardFilename, formatCount, formatWeekRange, parseCardWeekOf } from '../utils/formatters';
 
 describe('formatCount', () => {
   it('appends the × character', () => {
@@ -35,5 +35,25 @@ describe('formatWeekRange', () => {
 
   it('returns uppercase month names', () => {
     expect(formatWeekRange('2024-01-01')).toMatch(/^JAN/);
+  });
+});
+
+describe('parseCardWeekOf', () => {
+  it('reads the scored week back from current and legacy card filenames', () => {
+    expect(parseCardWeekOf('Those-I-FCKd-April-11-26.jpg')).toBe('2026-04-11');
+    expect(parseCardWeekOf('Those-I-FCKd-April-11-26.png')).toBe('2026-04-11');
+    expect(parseCardWeekOf('Those-I-FCKd-January-03-26.jpg')).toBe('2026-01-03');
+    expect(parseCardWeekOf('2026-04-11.png')).toBe('2026-04-11');
+  });
+
+  it('round-trips buildCardFilename', () => {
+    for (const weekOf of ['2026-01-03', '2026-04-11', '2026-10-31', '2027-12-25']) {
+      expect(parseCardWeekOf(buildCardFilename(weekOf))).toBe(weekOf);
+    }
+  });
+
+  it('returns null for names it cannot read', () => {
+    expect(parseCardWeekOf('Those-I-FCKd-Smarch-11-26.jpg')).toBeNull();
+    expect(parseCardWeekOf('my-card.jpg')).toBeNull();
   });
 });

@@ -8,7 +8,7 @@ import React, {
   useState,
 } from 'react';
 import type { ReactNode } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { AppState, StyleSheet, View } from 'react-native';
 import type { Entity } from '../../../core/models';
 import type { StorageAdapter } from '../../../core/data';
 import type { Platform } from '../../Platforms/types';
@@ -74,6 +74,9 @@ export function ScorecardCaptureProvider({
   const runRef = useRef<Promise<void> | null>(null);
   const rerunRef = useRef(false);
   const startedRef = useRef(false);
+  const interruptedRef = useRef(false);
+  // Changes whenever the app leaves the foreground (see foregroundSession).
+  const foregroundSessionRef = useRef(0);
 
   // Sync refs: these are read only inside async work, never rendered.
   const entitiesRef = useRef(entities);
@@ -92,6 +95,11 @@ export function ScorecardCaptureProvider({
       setTarget(null);
     }
   }, [captureView]);
+
+  const foregroundSession = useCallback(
+    () => (AppState.currentState === 'active' ? foregroundSessionRef.current : null),
+    [],
+  );
 
   const runPendingCaptures = useCallback((): Promise<void> => {
     startedRef.current = true;
@@ -112,8 +120,10 @@ export function ScorecardCaptureProvider({
             entities: entitiesRef.current,
             platforms: platformsRef.current,
             captureWeek: async (weekOf, data) => (await captureCard(weekOf, data)) !== null,
+            foregroundSession,
             ...(dropAtRef.current ? { dropAtForWeek: dropAtRef.current } : {}),
           });
+          interruptedRef.current = result.interrupted;
           if (result.captured.length > 0 || result.purged.length > 0) {
             setCardsVersion((version) => version + 1);
           }
@@ -127,7 +137,20 @@ export function ScorecardCaptureProvider({
     })();
     runRef.current = run;
     return run;
-  }, [adapter, captureCard]);
+  }, [adapter, captureCard, foregroundSession]);
+
+  // Track foreground sessions. A run the app interrupted by leaving the
+  // foreground (even briefly, e.g. Control Center) resumes once it is active.
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', (next) => {
+      if (next !== 'active') {
+        foregroundSessionRef.current += 1;
+        return;
+      }
+      if (interruptedRef.current && startedRef.current) void runPendingCaptures();
+    });
+    return () => subscription.remove();
+  }, [runPendingCaptures]);
 
   // A drop that passes while the app stays open. Waits until the shell has
   // started the cycle so cold-start routing is decided before any capture.

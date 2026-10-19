@@ -5,6 +5,7 @@ import { TABLE_AVOID_PINS, TABLE_CACHE, TABLE_ENTITY_AVOIDS, TABLE_PLATFORM_AVOI
 import { TABLE_BARCODE_LOOKUPS } from '../Map/barcode/barcodeCacheStore';
 import { cancelEarlyWeekNudge } from '../Platforms/hooks/useEarlyWeekNudge';
 import { lateCardMarker, revealedWeekMarker } from '../Scorecard/data/weekMarkers';
+import { CAPTURE_FAILURES_KEY } from '../Scorecard/data/captureFailures';
 
 const DB_NAME = 'fuckfascists.db';
 const NUDGE_IDENTIFIER = 'platform-nudge-thursday';
@@ -18,6 +19,7 @@ const RESET_SECURE_STORE_KEYS = [
   'scorecard_presentation_hints_seen',
   lateCardMarker.key,
   revealedWeekMarker.key,
+  CAPTURE_FAILURES_KEY,
 ];
 
 /**

@@ -76,6 +76,25 @@ const MONTH_NAMES = [
 ];
 
 /**
+ * Recovers the scored week (YYYY-MM-DD) from a card filename, for ordering
+ * and pruning the archive by week rather than file mtime.
+ * e.g. "Those-I-FCKd-April-11-26.jpg" → "2026-04-11"
+ *
+ * Accepts the inscription format (.jpg, legacy .png) and the earliest dev
+ * format "2026-04-11.png". Returns null for anything else.
+ */
+export function parseCardWeekOf(filename: string): string | null {
+  const stem = filename.replace(/\.(jpg|jpeg|png)$/i, '');
+  if (/^\d{4}-\d{2}-\d{2}$/.test(stem)) return stem;
+
+  const match = stem.match(/^Those-I-FCKd-([A-Za-z]+)-(\d{1,2})-(\d{2})$/);
+  const monthIndex = match ? MONTH_NAMES.indexOf(match[1]) : -1;
+  if (!match || monthIndex < 0) return null;
+  const month = String(monthIndex + 1).padStart(2, '0');
+  return `20${match[3]}-${month}-${match[2].padStart(2, '0')}`;
+}
+
+/**
  * Formats a filename (or stem) back to a human-readable archive label.
  * e.g. "Those-I-FCKd-April-11-26.jpg" → "April 11, 2026"
  *

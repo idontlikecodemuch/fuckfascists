@@ -2,6 +2,21 @@ export type EffectiveScorecardState = 'preview' | 'loading' | 'presentation' | '
 
 export type ScorecardUserNav = 'auto' | 'archive' | 'dismissed' | 'present';
 
+/** A user navigation choice and the scored week it was made for. */
+export interface WeekUserNav {
+  weekOf: string;
+  nav: ScorecardUserNav;
+}
+
+/**
+ * Navigation only applies to the scored week it was made for. A new scored
+ * week starts at 'auto', so dismissing last week's card (or leaving the
+ * archive open) cannot hide the next drop's presentation.
+ */
+export function userNavForWeek(state: WeekUserNav, scoredWeekOf: string): ScorecardUserNav {
+  return state.weekOf === scoredWeekOf ? state.nav : 'auto';
+}
+
 interface DeriveScorecardScreenStateInput {
   userNav: ScorecardUserNav;
   capturing: boolean;

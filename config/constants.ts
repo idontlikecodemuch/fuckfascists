@@ -76,10 +76,14 @@ export const SCORECARD_PRESENTATION_WINDOW_MS = 48 * 60 * 60 * 1000; // 48 hours
 export const SCORECARD_CAPTURE_TIMEOUT_MS = 10 * 1000;
 
 // Scorecard — retention bound for a week whose card keeps failing to capture.
-// Failed weeks are retried on every launch/resume; once a week's capture is
-// still failing this many days after its drop, its raw events get a scoped
-// purge without a card so they are not kept forever.
+// Failed weeks are retried on every launch/resume. A week's raw events get a
+// scoped purge without a card only when all three hold: its drop is at least
+// GIVE_UP_DAYS old, it has been failing for at least MIN_FAILING_DAYS since
+// its first failure, and at least MIN_ATTEMPTS captures have failed. Captures
+// interrupted by the app leaving the foreground never count as failures.
 export const SCORECARD_CAPTURE_GIVE_UP_DAYS = 28;
+export const SCORECARD_CAPTURE_GIVE_UP_MIN_FAILING_DAYS = 7;
+export const SCORECARD_CAPTURE_GIVE_UP_MIN_ATTEMPTS = 3;
 
 // Scorecard — share-experience reveal + runway tuning. The reveal sequence
 // is: card appears → particles + glow burst → after REVEAL_DELAY the runway

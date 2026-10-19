@@ -1,4 +1,5 @@
 import type * as Notifications from 'expo-notifications';
+import type { AppStateStatus } from 'react-native';
 import type { Tab } from './TabBar';
 import { pickInitialTab } from './initialTab';
 import { tabForNotificationResponse } from './notificationRoute';
@@ -22,6 +23,20 @@ export async function resolveLaunchTab(
   } catch {
     return pickTab();
   }
+}
+
+/**
+ * Resume detection: only a return from 'background' counts. inactive→active
+ * (system dialogs such as a permission prompt, Notification Center, Control
+ * Center) is not a resume, so it never reroutes or re-runs the capture.
+ */
+export function nextResumeState(
+  inBackground: boolean,
+  next: AppStateStatus,
+): { resumed: boolean; inBackground: boolean } {
+  if (next === 'background') return { resumed: false, inBackground: true };
+  if (next === 'active') return { resumed: inBackground, inBackground: false };
+  return { resumed: false, inBackground };
 }
 
 /**

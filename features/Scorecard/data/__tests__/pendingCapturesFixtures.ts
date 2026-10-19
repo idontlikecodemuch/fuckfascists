@@ -7,6 +7,7 @@ import type { Entity, EntityAvoidEvent, PlatformAvoidEvent } from '../../../../c
 import type { Platform } from '../../../Platforms/types';
 import { getDropAtForScoredWeek } from '../../utils/scoredWeek';
 import { capturePendingScorecards, type CapturePendingInput } from '../pendingCaptures';
+import type { CaptureFailures } from '../captureFailures';
 
 export const HOUR_MS = 60 * 60 * 1000;
 
@@ -43,29 +44,36 @@ export function makeAdapter(entityEvents: EntityAvoidEvent[], platformEvents: Pl
   return { adapter, store };
 }
 
-export function setup(
-  events: EntityAvoidEvent[],
-  overrides: Partial<CapturePendingInput> & { archived?: string[] } = {},
-) {
+interface SetupOverrides extends Partial<CapturePendingInput> {
+  archived?: string[];
+  failures?: CaptureFailures;
+}
+
+export function setup(events: EntityAvoidEvent[], overrides: SetupOverrides = {}) {
   const { adapter, store } = makeAdapter(events);
   const archived = new Set(overrides.archived ?? []);
+  // Persisted failure records, shared across runs of this setup.
+  const failureStore: { value: CaptureFailures } = { value: { ...overrides.failures } };
   const captureWeek = jest.fn(async (weekOf: string) => {
     archived.add(weekOf);
     return true;
   });
   const deps = {
     captureWeek,
+    foregroundSession: jest.fn((): number | null => 1),
     findCard: jest.fn(async (weekOf: string) =>
       archived.has(weekOf) ? { filename: `${weekOf}.jpg`, uri: `file://${weekOf}.jpg`, modificationTime: 1 } : null),
     markLateCard: jest.fn(async () => undefined),
     cancelDropNotification: jest.fn(async () => undefined),
+    loadFailures: jest.fn(async () => ({ ...failureStore.value })),
+    saveFailures: jest.fn(async (next: CaptureFailures) => { failureStore.value = { ...next }; }),
     windowWeek: null,
     ...overrides,
   };
   const run = (nowMs: number) => capturePendingScorecards({
     adapter, entities: [meta], platforms: [instagram], nowMs, ...deps,
   });
-  return { adapter, store, archived, deps, run };
+  return { adapter, store, archived, failureStore, deps, run };
 }
 
 export const SKIPPED_WEEK = '2026-10-03'; // Sat Oct 3 – Fri Oct 9 2026

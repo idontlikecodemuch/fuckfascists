@@ -86,7 +86,7 @@ describe('capturePendingScorecards purges', () => {
     expect(store.entity).toHaveLength(1);
 
     const sameEvening = await run(fridayDrop + HOUR_MS);
-    expect(sameEvening).toEqual({ captured: [], purged: [], failed: [], abandoned: [] });
+    expect(sameEvening).toEqual({ captured: [], purged: [], failed: [], abandoned: [], interrupted: false });
 
     const afterMidnight = await run(SATURDAY_AFTER_FRIDAY_DROP);
     expect(afterMidnight.purged).toEqual([FRIDAY_DROP_WEEK]);
@@ -101,7 +101,7 @@ describe('capturePendingScorecards purges', () => {
 
     const result = await run(fridayDrop + 30 * 60_000);
 
-    expect(result).toEqual({ captured: [], purged: [], failed: [], abandoned: [] });
+    expect(result).toEqual({ captured: [], purged: [], failed: [], abandoned: [], interrupted: false });
     expect(store.entity).toHaveLength(1);
   });
 });

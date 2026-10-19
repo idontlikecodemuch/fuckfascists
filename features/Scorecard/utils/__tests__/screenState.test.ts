@@ -2,6 +2,7 @@ import {
   deriveScorecardScreenState,
   shouldShowPendingPreviousScorecard,
   shouldShowPreviewStamp,
+  userNavForWeek,
 } from '../screenState';
 
 const base = {
@@ -99,5 +100,25 @@ describe('shouldShowPendingPreviousScorecard', () => {
       ...pendingBase,
       hasDropped: true,
     })).toBe(false);
+  });
+});
+
+describe('userNavForWeek', () => {
+  it('keeps a choice for the scored week it was made for', () => {
+    expect(userNavForWeek({ weekOf: '2026-10-03', nav: 'dismissed' }, '2026-10-03')).toBe('dismissed');
+    expect(userNavForWeek({ weekOf: '2026-10-03', nav: 'archive' }, '2026-10-03')).toBe('archive');
+  });
+
+  it('starts a new scored week at auto, so the next drop presents', () => {
+    const dismissedLastWeek = { weekOf: '2026-10-03', nav: 'dismissed' as const };
+    expect(userNavForWeek(dismissedLastWeek, '2026-10-10')).toBe('auto');
+    expect(deriveScorecardScreenState({
+      ...base,
+      userNav: userNavForWeek(dismissedLastWeek, '2026-10-10'),
+      cardUri: 'file://scorecards/this-week.jpg',
+      inPresentationWindow: true,
+      liveGrandTotal: 2,
+      hasDropped: true,
+    })).toBe('presentation');
   });
 });

@@ -9,6 +9,7 @@ import { useDropSchedule } from './hooks/useDropSchedule';
 import { useScorecard } from './hooks/useScorecard';
 import { useScoredWeekCard } from './hooks/useScoredWeekCard';
 import { useLateCardNotice } from './hooks/useLateCardNotice';
+import { useScorecardUserNav } from './hooks/useScorecardUserNav';
 import { useScorecardCapture } from './context/ScorecardCaptureContext';
 import { revealedWeekMarker } from './data/weekMarkers';
 import { LivePreview } from './components/LivePreview';
@@ -23,7 +24,6 @@ import {
   deriveScorecardScreenState,
   shouldShowPendingPreviousScorecard,
   shouldShowPreviewStamp,
-  type ScorecardUserNav,
 } from './utils/screenState';
 import { StarField } from '../Info/components/InfoDecorations';
 import {
@@ -62,7 +62,6 @@ export function ScorecardScreen({
   devNowMsOverride,
 }: ScorecardScreenProps) {
   const capture = useScorecardCapture();
-  const [userNav, setUserNav] = useState<ScorecardUserNav>('auto');
   const [devCardUri, setDevCardUri] = useState<string | null>(null);
   const [lookupKey, setLookupKey] = useState(0);
   const insets = useSafeAreaInsets();
@@ -77,6 +76,7 @@ export function ScorecardScreen({
     ? scheduleNowMs >= schedule.dropAt
     : liveDropSchedule.hasDropped;
   const scoredWeekOf = getScoredWeekOfDrop(schedule.dropAt);
+  const [userNav, setUserNav] = useScorecardUserNav(scoredWeekOf);
   const inPresentationWindow =
     hasDropped && scheduleNowMs - schedule.dropAt < SCORECARD_PRESENTATION_WINDOW_MS;
 
@@ -108,13 +108,13 @@ export function ScorecardScreen({
       setDevCardUri(result.uri);
       setUserNav('present');
     }
-  }, [liveData, capture.captureCard, schedule.weekOf]);
+  }, [liveData, capture.captureCard, schedule.weekOf, setUserNav]);
 
   const handleResetCard = useCallback(() => {
     setDevCardUri(null);
     setUserNav('auto');
     setLookupKey((key) => key + 1);
-  }, []);
+  }, [setUserNav]);
 
   // Seen or dismissed: launch/resume routing stops opening Scorecard for it.
   const markRevealed = useCallback(() => {
@@ -123,8 +123,8 @@ export function ScorecardScreen({
   const handleDismiss = useCallback(() => {
     markRevealed();
     setUserNav('dismissed');
-  }, [markRevealed]);
-  const handleOpenArchive = useCallback(() => setUserNav('archive'), []);
+  }, [markRevealed, setUserNav]);
+  const handleOpenArchive = useCallback(() => setUserNav('archive'), [setUserNav]);
 
   const liveGrandTotal = liveData?.grandTotal ?? null;
   const effectiveState = deriveScorecardScreenState({

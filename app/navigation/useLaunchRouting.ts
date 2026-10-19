@@ -7,7 +7,7 @@ import type { Platform } from '../../features/Platforms/types';
 import { shouldLaunchPendingScorecardDrop } from '../../features/Scorecard/utils/pendingDropLaunch';
 import type { Tab } from './TabBar';
 import { pickInitialTab } from './initialTab';
-import { resolveLaunchTab, resolveResumeTab } from './launchRoute';
+import { nextResumeState, resolveLaunchTab, resolveResumeTab } from './launchRoute';
 import { tabForNotificationResponse } from './notificationRoute';
 
 interface LaunchRoutingInput {
@@ -24,8 +24,9 @@ interface LaunchRoutingInput {
  * - cold start: notification route, else Scorecard for an unrevealed drop in
  *   its window, else the random launch tab (see resolveLaunchTab);
  * - warm notification taps: the notification's tab;
- * - resume to 'active': Scorecard for an unrevealed drop, unless a
- *   notification tap routed since the app left the foreground (the tap wins).
+ * - resume (background → active only, see nextResumeState): Scorecard for an
+ *   unrevealed drop, unless a notification tap routed since the app left the
+ *   foreground (the tap wins).
  * onRouted fires only after the route is set, so the shell's card capture can
  * never decide the route.
  */
@@ -70,11 +71,13 @@ export function useLaunchRouting(input: LaunchRoutingInput): void {
 
   useEffect(() => {
     let previous: AppStateStatus = AppState.currentState;
+    let inBackground = previous === 'background';
     const subscription = AppState.addEventListener('change', (next) => {
       if (previous === 'active' && next !== 'active') leftForegroundAt.current = Date.now();
-      const resumed = next === 'active' && previous !== 'active';
       previous = next;
-      if (!resumed || !coldStartDone.current) return;
+      const step = nextResumeState(inBackground, next);
+      inBackground = step.inBackground;
+      if (!step.resumed || !coldStartDone.current) return;
       void (async () => {
         const pending = await hasPendingDrop().catch(() => false);
         // A tap that lands after this check routes later and still wins.

@@ -4,7 +4,7 @@ jest.mock('expo-notifications', () => ({
 }));
 
 import type * as Notifications from 'expo-notifications';
-import { resolveLaunchTab, resolveResumeTab } from '../launchRoute';
+import { nextResumeState, resolveLaunchTab, resolveResumeTab } from '../launchRoute';
 
 function response(data: Record<string, unknown>): Notifications.NotificationResponse {
   return {
@@ -54,5 +54,22 @@ describe('resolveResumeTab', () => {
 
   it('keeps the current tab when nothing is pending', () => {
     expect(resolveResumeTab(false, 0, leftForegroundAt)).toBeNull();
+  });
+});
+
+describe('nextResumeState', () => {
+  it('counts only a return from the background as a resume', () => {
+    let state = nextResumeState(false, 'inactive');
+    expect(state).toEqual({ resumed: false, inBackground: false });
+    state = nextResumeState(state.inBackground, 'background');
+    expect(state).toEqual({ resumed: false, inBackground: true });
+    state = nextResumeState(state.inBackground, 'inactive');
+    expect(state.resumed).toBe(false);
+    expect(nextResumeState(state.inBackground, 'active')).toEqual({ resumed: true, inBackground: false });
+  });
+
+  it('ignores system dialogs, Notification Center and Control Center (inactive → active)', () => {
+    const afterDialog = nextResumeState(nextResumeState(false, 'inactive').inBackground, 'active');
+    expect(afterDialog).toEqual({ resumed: false, inBackground: false });
   });
 });

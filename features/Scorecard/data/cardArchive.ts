@@ -1,6 +1,6 @@
 import * as FileSystem from 'expo-file-system';
 import { SCORECARD_ARCHIVE_MAX } from '../../../config/constants';
-import { buildCardFilename } from '../utils/formatters';
+import { buildCardFilename, parseCardWeekOf } from '../utils/formatters';
 
 const ARCHIVE_DIR = `${FileSystem.documentDirectory}scorecards/`;
 
@@ -11,14 +11,26 @@ export interface ArchivedCard {
 }
 
 /**
- * Lists all archived scorecard images, sorted newest-first by file mtime.
- * Accepts both `.jpg` (current format, JPEG q=0.88, ~6× smaller than PNG)
- * and `.png` (legacy lossless captures from before 2026-04-30) so users
- * who upgrade keep their archive intact.
- *
- * Sorting by mtime (vs. filename) is robust to the human-readable filename
- * format where "April" would lexically precede "May" correctly but
- * "November" would precede "October" incorrectly.
+ * Archive sort key in seconds: the scored week parsed from the filename, or
+ * the file mtime for a name that does not parse. The week, not the mtime,
+ * drives order because the shell can capture an older week after a newer
+ * one (a failed week succeeds on a later retry).
+ */
+function cardSortKey(card: ArchivedCard): number {
+  const weekOf = parseCardWeekOf(card.filename);
+  return weekOf ? Date.parse(`${weekOf}T00:00:00Z`) / 1000 : card.modificationTime;
+}
+
+/** Newest scored week first; ties fall back to the filename for a stable order. */
+export function compareCardsNewestFirst(a: ArchivedCard, b: ArchivedCard): number {
+  return cardSortKey(b) - cardSortKey(a) || b.filename.localeCompare(a.filename);
+}
+
+/**
+ * Lists all archived scorecard images, newest scored week first
+ * (compareCardsNewestFirst). Accepts both `.jpg` (current format, JPEG
+ * q=0.88, ~6× smaller than PNG) and `.png` (legacy lossless captures from
+ * before 2026-04-30) so users who upgrade keep their archive intact.
  */
 export async function listArchivedCards(): Promise<ArchivedCard[]> {
   try {
@@ -40,7 +52,7 @@ export async function listArchivedCards(): Promise<ArchivedCard[]> {
       }),
     );
 
-    return withTime.sort((a, b) => b.modificationTime - a.modificationTime);
+    return withTime.sort(compareCardsNewestFirst);
   } catch {
     return [];
   }
@@ -71,7 +83,7 @@ export async function findCardForWeek(weekOf: string): Promise<ArchivedCard | nu
   ) ?? null;
 }
 
-/** Prunes oldest cards when the archive exceeds SCORECARD_ARCHIVE_MAX. */
+/** Prunes the oldest scored weeks when the archive exceeds SCORECARD_ARCHIVE_MAX. */
 export async function pruneArchive(): Promise<void> {
   const cards = await listArchivedCards();
   if (cards.length <= SCORECARD_ARCHIVE_MAX) return;
