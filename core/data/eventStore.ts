@@ -64,26 +64,10 @@ export async function purgeOldAvoidPins(
 }
 
 /**
- * Purges entity and platform avoid events older than `beforeDate`.
- * Call on app launch. By default only the current Sat-Fri week's data is
- * retained, but callers may pass an earlier cutoff while a just-finished
- * scorecard week is still pending capture.
- */
-export async function purgeOldAvoidEvents(
-  adapter: StorageAdapter,
-  beforeDate: string = getLocalWeekStart(),
-): Promise<void> {
-  await Promise.all([
-    adapter.clearOldEntityAvoids(beforeDate),
-    adapter.clearOldPlatformAvoids(beforeDate),
-  ]);
-}
-
-/**
- * Purges the avoid events that produced a scored-week scorecard.
- * Called by the capture-then-purge flow after the PNG is successfully
- * written to disk: the rendered card survives, the raw events that
- * produced it do not.
+ * Purges the avoid events of one scored week. This is the only way raw avoid
+ * events are deleted: the app-shell capture flow calls it after the week's
+ * card is written to disk (the rendered card survives, the raw events that
+ * produced it do not), or when the week is too small for a card.
  *
  * Scoped strictly to [weekOf, weekOf+7) so the purge cannot touch events
  * belonging to the live week still in progress.

@@ -29,7 +29,7 @@ export interface CardCaptureResult {
 /**
  * Races a promise against a timeout. On timeout, rejects with a
  * `capture-timeout` error which the caller translates into the
- * retain-on-failure code path (raw events preserved, next visit retries).
+ * retain-on-failure code path (raw events preserved, next launch or resume retries).
  */
 function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
   return new Promise<T>((resolve, reject) => {
@@ -111,16 +111,14 @@ async function preloadScorecardImageAssets(data: ScorecardViewData): Promise<voi
  * card content), and JPEG is ~6× smaller than PNG. At 52 cards/year and a
  * 104-card archive cap, that's ~30 MB/year vs. ~180 MB/year on PNG.
  *
- * Usage:
- *   const { captureCard, capturing } = useCardCapture();
- *   const imageRef = useRef<View>(null);
- *   // Mount <ScorecardImage ref={imageRef} ... /> off-screen
+ * Used only by the app-shell ScorecardCaptureProvider, which mounts the
+ * off-screen <ScorecardImage ref={imageRef} ... /> and calls
  *   const result = await captureCard(imageRef, weekOf, scorecardData);
  *
  * Failure semantics: any error (including a capture timeout) returns null
- * and leaves the raw avoid events intact. The ScorecardScreen post-drop
- * effect treats null as "try again next visit" — never runs the scoped
- * purge when capture hasn't succeeded.
+ * and leaves the raw avoid events intact. The shell capture run treats null
+ * as "stop and retry on the next launch or resume" — it never runs the
+ * scoped purge when capture hasn't succeeded.
  *
  * Capture size: native size — no `width`/`height` options on captureRef.
  * The ScorecardImage canvas is styled at SCORECARD_IMAGE_WIDTH/PixelRatio
@@ -142,8 +140,8 @@ export function useCardCapture() {
 
       try {
         // The ref may briefly be null right after the ScorecardImage mounts.
-        // Wait up to 1s for it; any longer than that and the post-drop
-        // effect treats it as a capture failure and retries next visit.
+        // Wait up to 1s for it; any longer than that is a capture failure
+        // and the shell run retries on the next launch or resume.
         const node = await waitForRef(viewRef, 1000);
         if (!node) {
           setCapturing(false);

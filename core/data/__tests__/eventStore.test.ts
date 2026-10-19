@@ -5,7 +5,6 @@ import {
   removePlatformAvoidForDate,
   getAllEntityAvoids,
   getPlatformAvoidsForWeek,
-  purgeOldAvoidEvents,
   toDateString,
   getMondayOf,
 } from '../eventStore';
@@ -121,19 +120,6 @@ describe('getAllEntityAvoids', () => {
     const result = await getAllEntityAvoids(adapter);
     expect(result).toEqual(events);
     expect(adapter.getEntityAvoids).toHaveBeenCalledWith(); // no filter
-  });
-});
-
-// ─── purgeOldAvoidEvents ─────────────────────────────────────────────────────
-
-describe('purgeOldAvoidEvents', () => {
-  it('uses the supplied cutoff date for startup retention', async () => {
-    const adapter = makeAdapter();
-
-    await purgeOldAvoidEvents(adapter, '2026-05-23');
-
-    expect(adapter.clearOldEntityAvoids).toHaveBeenCalledWith('2026-05-23');
-    expect(adapter.clearOldPlatformAvoids).toHaveBeenCalledWith('2026-05-23');
   });
 });
 

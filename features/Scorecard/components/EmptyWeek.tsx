@@ -1,11 +1,14 @@
 import React from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { scorecardCopy } from '../../../copy/scorecard';
 import { theme } from '../../../design/tokens';
+import { PastScorecardsLink } from './PastScorecardsLink';
 
 interface EmptyWeekProps {
   onSwitchTab?: (tab: string) => void;
   onOpenArchive?: () => void;
+  /** Week of a card saved after its drop window (one-line notice). */
+  lateWeek?: string | null;
 }
 
 /**
@@ -15,7 +18,7 @@ interface EmptyWeekProps {
  * Token rendering matches LivePreview's EmptyHint so the same copy string
  * (scorecardCopy.emptyState) renders identically in both surfaces.
  */
-export function EmptyWeek({ onSwitchTab, onOpenArchive }: EmptyWeekProps) {
+export function EmptyWeek({ onSwitchTab, onOpenArchive, lateWeek }: EmptyWeekProps) {
   return (
     <View style={styles.container}>
       <Text style={styles.text} allowFontScaling={false}>
@@ -40,13 +43,11 @@ export function EmptyWeek({ onSwitchTab, onOpenArchive }: EmptyWeekProps) {
         })}
       </Text>
       {onOpenArchive && (
-        <Pressable
+        <PastScorecardsLink
           style={styles.archiveLink}
           onPress={onOpenArchive}
-          accessibilityRole="link"
-        >
-          <Text style={styles.archiveLinkText}>{scorecardCopy.pastCardsLabel}</Text>
-        </Pressable>
+          lateWeek={lateWeek}
+        />
       )}
     </View>
   );
@@ -73,14 +74,5 @@ const styles = StyleSheet.create({
   },
   archiveLink: {
     marginTop: theme.space.xl,
-    paddingVertical: theme.space.md,
-    paddingHorizontal: theme.space.lg,
-  },
-  archiveLinkText: {
-    fontFamily: theme.fonts.bodySemiBold,
-    fontSize: 12,
-    color: theme.colors.textSecondary,
-    letterSpacing: 1,
-    textDecorationLine: 'underline',
   },
 });

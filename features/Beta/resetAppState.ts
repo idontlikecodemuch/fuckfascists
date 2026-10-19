@@ -4,6 +4,7 @@ import * as Notifications from 'expo-notifications';
 import { TABLE_AVOID_PINS, TABLE_CACHE, TABLE_ENTITY_AVOIDS, TABLE_PLATFORM_AVOIDS } from '../../core/data';
 import { TABLE_BARCODE_LOOKUPS } from '../Map/barcode/barcodeCacheStore';
 import { cancelEarlyWeekNudge } from '../Platforms/hooks/useEarlyWeekNudge';
+import { LATE_CARD_WEEK_KEY } from '../Scorecard/data/lateCardNotice';
 
 const DB_NAME = 'fuckfascists.db';
 const NUDGE_IDENTIFIER = 'platform-nudge-thursday';
@@ -15,6 +16,7 @@ const RESET_SECURE_STORE_KEYS = [
   'track_daily_open_last_visit',
   'map_hints_dismissed',
   'scorecard_presentation_hints_seen',
+  LATE_CARD_WEEK_KEY,
 ] as const;
 
 /**

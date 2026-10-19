@@ -8,6 +8,10 @@ import type { Entity } from '../../core/models';
 import { SqliteAdapter } from '../../app/storage/SqliteAdapter';
 import { TRACKED_PLATFORMS } from '../Platforms/data/platformList';
 import { ScorecardScreen } from '../Scorecard/ScorecardScreen';
+import {
+  ScorecardCaptureProvider,
+  useScorecardCapture,
+} from '../Scorecard/context/ScorecardCaptureContext';
 import { findCardForWeek } from '../Scorecard/data/cardArchive';
 import { buildCardFilename } from '../Scorecard/utils/formatters';
 import { getScoredWeekOfDrop } from '../Scorecard/utils/scoredWeek';
@@ -36,10 +40,15 @@ interface ReadyState {
 const QA_DIR = `${FileSystem.documentDirectory}release-qa/`;
 const QA_DB = 'release-qa.db';
 const delay = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
+const QA_STATE_BASE = {
+  userNav: 'auto' as const, capturing: false, liveDataLoading: false,
+  dropDataLoading: false, cardUri: null, minAvoids: 1,
+};
 
 /**
  * DEV-only native scorecard release QA. Uses an isolated SQLite database but
- * the real ScorecardScreen capture/purge/archive/notification implementations.
+ * the real shell capture/purge provider, ScorecardScreen, archive and
+ * notification implementations. The QA week's drop is pinned to one minute ago.
  */
 export function ReleaseQAHarness({ entities }: ReleaseQAHarnessProps) {
   const [ready, setReady] = useState<ReadyState | null>(null);
@@ -145,26 +154,10 @@ export function ReleaseQAHarness({ entities }: ReleaseQAHarnessProps) {
         },
         triggerDerivations: {
           emptyPostDrop: deriveScorecardScreenState({
-            userNav: 'auto',
-            capturing: false,
-            liveDataLoading: false,
-            dropDataLoading: false,
-            cardUri: null,
-            inPresentationWindow: true,
-            liveGrandTotal: 0,
-            hasDropped: true,
-            minAvoids: 1,
+            ...QA_STATE_BASE, inPresentationWindow: true, liveGrandTotal: 0, hasDropped: true,
           }) === 'empty',
           populatedPreview: deriveScorecardScreenState({
-            userNav: 'auto',
-            capturing: false,
-            liveDataLoading: false,
-            dropDataLoading: false,
-            cardUri: null,
-            inPresentationWindow: false,
-            liveGrandTotal: 2,
-            hasDropped: false,
-            minAvoids: 1,
+            ...QA_STATE_BASE, inPresentationWindow: false, liveGrandTotal: 2, hasDropped: false,
           }) === 'preview',
           saturdayRolloverBridge: shouldShowPendingPreviousScorecard({
             hasDropped: false,
@@ -193,32 +186,41 @@ export function ReleaseQAHarness({ entities }: ReleaseQAHarnessProps) {
     return () => { cancelled = true; };
   }, [ready]);
 
-  if (error) {
+  if (error || !ready) {
     return (
-      <SafeAreaView style={styles.error}>
-        <Text style={styles.errorText}>RELEASE QA FAILED{`\n`}{error}</Text>
-      </SafeAreaView>
-    );
-  }
-
-  if (!ready) {
-    return (
-      <SafeAreaView style={styles.loading}>
-        <Text style={styles.loadingText}>PREPARING RELEASE QA…</Text>
+      <SafeAreaView style={error ? styles.error : styles.loading}>
+        {error
+          ? <Text style={styles.errorText}>RELEASE QA FAILED{`\n`}{error}</Text>
+          : <Text style={styles.loadingText}>PREPARING RELEASE QA…</Text>}
       </SafeAreaView>
     );
   }
 
   return (
-    <ScorecardScreen
+    <ScorecardCaptureProvider
       adapter={ready.adapter}
       entities={entities}
       platforms={TRACKED_PLATFORMS}
-      devScheduleOverride={{ dropAt: ready.dropAt, weekOf: ready.weekOf }}
-      devNowMsOverride={ready.nowMs}
-      onPresentationActiveChange={(active) => { presentationActive.current = active; }}
-    />
+      devDropAtForWeek={(weekOf) => (weekOf === ready.weekOf ? ready.dropAt : Number.POSITIVE_INFINITY)}
+    >
+      <QACaptureTrigger />
+      <ScorecardScreen
+        adapter={ready.adapter}
+        entities={entities}
+        platforms={TRACKED_PLATFORMS}
+        devScheduleOverride={{ dropAt: ready.dropAt, weekOf: ready.weekOf }}
+        devNowMsOverride={ready.nowMs}
+        onPresentationActiveChange={(active) => { presentationActive.current = active; }}
+      />
+    </ScorecardCaptureProvider>
   );
+}
+
+/** Starts the shell capture run, as AppShell does after launch routing. */
+function QACaptureTrigger() {
+  const { runPendingCaptures } = useScorecardCapture();
+  useEffect(() => { void runPendingCaptures(); }, [runPendingCaptures]);
+  return null;
 }
 
 const styles = StyleSheet.create({

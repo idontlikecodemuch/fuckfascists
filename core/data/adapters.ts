@@ -66,9 +66,10 @@ export interface StorageAdapter {
   /** Deletes avoid pins older than the given date. */
   clearOldAvoidPins(beforeDate: string): Promise<void>;
 
-  // ── Privacy purge (weekly) ──────────────────────────────────────────────
-  // Avoid events older than the current week are purged on launch.
-  // Only the current Sat–Fri week's data is retained.
+  // ── Bulk delete by date ─────────────────────────────────────────────────
+  // Not used for privacy retention: the app no longer purges by a date cutoff
+  // on launch (an uncaptured week would be lost). Raw events are deleted per
+  // week by the scoped purge below. Kept for dev harness resets.
 
   /** Deletes entity avoid events with date before the given date. */
   clearOldEntityAvoids(beforeDate: string): Promise<void>;
@@ -77,10 +78,10 @@ export interface StorageAdapter {
   clearOldPlatformAvoids(beforeDate: string): Promise<void>;
 
   // ── Privacy purge (scoped) ──────────────────────────────────────────────
-  // Used by the scorecard capture-then-purge flow: once a drop's PNG is
-  // saved to disk, the raw events that produced it are deleted — only the
-  // rendered card survives. Scoped to the [start, end) window so the purge
-  // cannot touch events belonging to the live week still in progress.
+  // Used by the scorecard capture-then-purge flow: once a week's card is
+  // saved to disk (or the week is too small for a card), the raw events of
+  // that week are deleted — only the rendered card survives. Scoped to the
+  // [start, end) window so the purge cannot touch any other week.
 
   /** Deletes entity avoid events whose date falls within [start, end). */
   clearEntityAvoidsInRange(start: string, end: string): Promise<void>;

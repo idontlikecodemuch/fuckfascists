@@ -3,12 +3,11 @@ import type { Entity } from '../../../core/models';
 import type { StorageAdapter } from '../../../core/data';
 import type { Platform } from '../../Platforms/types';
 import type { ScorecardViewData } from '../types';
-import { aggregateScorecard } from '../data/aggregateScorecard';
-import { computePowerTier } from '../data/computePowerTier';
+import { loadScorecardViewData } from '../data/scorecardViewData';
 
 /**
  * Aggregates the week's avoidance events into person-grouped scorecard data.
- * Re-runs whenever weekOf changes.
+ * Re-runs whenever weekOf or refreshKey changes.
  */
 export function useScorecard(
   adapter: StorageAdapter,
@@ -38,11 +37,11 @@ export function useScorecard(
 
     (async () => {
       try {
-        const persons = await aggregateScorecard(adapter, entitiesRef.current, platformsRef.current, weekOf);
+        const next = await loadScorecardViewData(
+          adapter, entitiesRef.current, platformsRef.current, weekOf,
+        );
         if (cancelled) return;
-        const grandTotal = persons.reduce((sum, p) => sum + p.totalCount, 0);
-        const powerTier = computePowerTier(grandTotal);
-        setData({ weekOf, persons, grandTotal, powerTier });
+        setData(next);
         setLoading(false);
       } catch (err) {
         if (cancelled) return;

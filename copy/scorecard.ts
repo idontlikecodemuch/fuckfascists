@@ -44,6 +44,10 @@ export const scorecardCopy = {
 
   // Archive
   pastCardsLabel: "Past scorecards",
+  // One-time line after a card was saved more than 48h after its drop (the
+  // app wasn't opened in time). Clark voice: plain, no wink. `week` is a
+  // readable date, e.g. "October 3, 2026". Pending owner review.
+  lateCardNotice: (week: string) => `Your card for the week of ${week} is filed in Past scorecards.`,
 
   // Empty state — `{map}` and `{track}` tokens are rendered as tappable
   // cross-tab links by LivePreview's EmptyHint. Do not remove the tokens;

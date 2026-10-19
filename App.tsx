@@ -15,8 +15,7 @@ import { LaunchGate } from './app/gates/LaunchGate';
 import { AppShell } from './app/gates/AppShell';
 import { sharedCopy } from './copy/shared';
 import { SqliteAdapter } from './app/storage/SqliteAdapter';
-import { fetchEntityList, parseEntityList, fetchPeopleList, parsePeopleList, purgeOldAvoidEvents } from './core/data';
-import { getScorecardAvoidPurgeCutoff } from './features/Scorecard/utils/avoidRetention';
+import { fetchEntityList, parseEntityList, fetchPeopleList, parsePeopleList } from './core/data';
 import { refreshProductList } from './features/Map/barcode/productListUpdate';
 import type { StorageAdapter } from './core/data';
 import type { Entity, PoliticalPerson } from './core/models';
@@ -67,14 +66,15 @@ export default function App() {
     parsePeopleList(bundledPeopleRaw)
   );
 
-  // Open SQLite, run migrations, and purge old avoid events. The cutoff keeps
-  // the just-finished scorecard week available until capture can save it.
+  // Open SQLite and run migrations. Raw avoid events are never purged by date
+  // here: the app-shell scorecard capture deletes each week only after its card
+  // is saved (or when the week is too small for a card). See
+  // features/Scorecard/data/pendingCaptures.ts.
   useEffect(() => {
     let cancelled = false;
     (async () => {
       try {
         const a = await SqliteAdapter.open();
-        await purgeOldAvoidEvents(a, getScorecardAvoidPurgeCutoff());
         if (!cancelled) setAdapter(a);
       } catch (err) {
         console.error('[App] Failed to open SQLite:', err);
