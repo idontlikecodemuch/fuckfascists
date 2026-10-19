@@ -12,6 +12,20 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: October 19, 2026 ET — Scorecard drop timing and lost-card fix
+
+**Branch:** `fix/scorecard-drop-timing` from `release/1.2.1` (`a072741`); not pushed.
+
+**Drop schedule v3 (`ff-drop-v3`):** one deterministic minute in Fri 4:00–10:59pm or Sat 12:00–5:59pm ET (`SCORECARD_DROP_SEGMENTS`, replacing `DROP_WINDOW_*` / `SCORECARD_WINDOW_*`); about 45% of v2 drops were overnight. Tests cover every week 2026–2040 against quiet hours in New York, Chicago, Denver, Phoenix and Los Angeles, and the 90-minute adjacent-week gap. The drop notification is always audible (`active`); a quiet-hours drop elsewhere fires at the next local 9am. `getScoredWeekOfDrop` now anchors two days before the drop (correct in every timezone) and `getDropAtForScoredWeek` is its inverse.
+
+**Lost cards:** the owner skipped a weekend, opened on Monday and lost the week, because the card was captured only on the Scorecard tab within 48h while `App.tsx` purged by a date cutoff on every launch. Now one capture path lives in the app shell (`ScorecardCaptureProvider` + `capturePendingScorecards`): after launch routing, on every resume and when a drop passes in-app, every week with raw events whose drop has passed and no card is captured then scoped-purged, oldest first; failure stops and retries later. The date-cutoff purge (`purgeOldAvoidEvents`, `avoidRetention.ts`) is gone. Late cards go to Past scorecards with a one-time line (`scorecardCopy.lateCardNotice`, **owner review needed**). `ScorecardScreen` is display-only.
+
+**Flag, not changed:** `scorecardCopy.dropsLabel` "DROPS THIS FRIDAY" is wrong for weeks whose drop lands on Saturday (about 46% under v3).
+
+**Pre-existing failure:** `core/matching/__tests__/pipeline.test.ts` "does not let an older lookup cache shadow fresher Git or bundled data" fails from 2026-10-19 on because its fixture `lastVerifiedDate: '2026-08-20'` is now 60 days old (date-dependent fixture, unrelated to this branch).
+
+**Next:** owner review of the late-card line and of the `dropsLabel` flag; device test on a physical phone: skip a drop, reopen after 48h, confirm the card lands in Past scorecards with the notice; open during the window and confirm the reveal.
+
 ### Session: October 12–16, 2026 ET — 1.2.1 build 13 staged for App Store
 
 **1.2.1 (`release/1.2.1`, build 13):** FEC refresh of October 12, 49 sprites, the red X, the early-week nudge, the closer-focus scanner, the iOS 27 Track header fix, and corrected barcode attributions (a curated prefix layer with Walmart store brands and 62 household prefixes; `products.json` now updates from Git). On TestFlight, then attached to the 1.2.1 App Store version with the owner-approved What's New and promotional text (`docs/releases/1.2.1.md`). The owner uploaded iOS 27 header and search-results videos to the version; the owner submits.
