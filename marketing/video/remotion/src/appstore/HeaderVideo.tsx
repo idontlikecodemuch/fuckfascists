@@ -1,7 +1,7 @@
 import React from 'react';
 import { AbsoluteFill, useCurrentFrame } from 'remotion';
 import { T } from '../tokens';
-import { HEADER_H, HEADER_W, SAFE, StoreHeader, type HeaderVariant } from './StoreHeader';
+import { HEADER_H, HEADER_W, SAFE, StoreHeader, hasTilt, type HeaderVariant } from './StoreHeader';
 
 /**
  * App Store product-page header VIDEO (21:9, 3840×1646, 15 s, loops): the universal still
@@ -19,8 +19,9 @@ export const HeaderVideo: React.FC<{ variant: HeaderVariant }> = ({ variant }) =
   const frame = useCurrentFrame();
   const ph = (2 * Math.PI * frame) / LOOP;
   // whole universal px (round 16: fractional offsets shimmer the small type); vertical pan kept small so the island never crowds "FCK,"
-  const panX = Math.round(34 * Math.sin(ph));
-  const panY = Math.round(8 * Math.sin(ph + 2.2));
+  // round 18: tilt variants move every layer by depth inside the scene instead (a whole-frame pan leaves a void strip at the edge)
+  const panX = hasTilt(variant) ? 0 : Math.round(34 * Math.sin(ph));
+  const panY = hasTilt(variant) ? 0 : Math.round(8 * Math.sin(ph + 2.2));
   return (
     <AbsoluteFill style={{ background: T.void, overflow: 'hidden' }}>
       <div style={{ position: 'absolute', left: 0, top: 0, width: HEADER_W, height: HEADER_H, transform: `scale(${S}) translate(${-panX}px, ${-CROP_TOP - panY}px)`, transformOrigin: '0 0' }}>
@@ -37,8 +38,8 @@ const S2 = SEARCH_W / (SAFE.right - SAFE.left); // 4425 px wide crop → 0.868
 export const SearchVideo: React.FC<{ variant: HeaderVariant }> = ({ variant }) => {
   const frame = useCurrentFrame();
   const ph = (2 * Math.PI * frame) / LOOP;
-  const panX = Math.round(30 * Math.sin(ph));
-  const panY = Math.round(8 * Math.sin(ph + 2.2));
+  const panX = hasTilt(variant) ? 0 : Math.round(30 * Math.sin(ph));
+  const panY = hasTilt(variant) ? 0 : Math.round(8 * Math.sin(ph + 2.2));
   return (
     <AbsoluteFill style={{ background: T.void, overflow: 'hidden' }}>
       <div style={{ position: 'absolute', left: 0, top: 0, width: HEADER_W, height: HEADER_H, transform: `scale(${S2}) translate(${-SAFE.left - panX}px, ${-panY}px)`, transformOrigin: '0 0' }}>

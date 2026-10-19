@@ -34,6 +34,12 @@ export const DEVICE_SAFE = { left: 891, top: 724, right: 4353, bottom: 2087 };
 export const PLAY_BUTTON = { cx: 2622, cy: 1475, r: 240 };
 /** which crop the bottom bar is pinned to: the 21:9 header (y 2599) or the 3:2 search card (y 2950) */
 export type HeaderTarget = 'header' | 'search';
+/** Round 18 (Oct 19, "parallax, like a tilt"): the loop tilts the scene as if the device were being turned — far layers slide one way, near layers the other, the phone fan turns a few degrees in perspective. Amplitudes in universal px; everything is whole cycles of the loop. */
+export const hasTilt = (variant: HeaderVariant): boolean => variant === 'g1m' || variant.startsWith('s3');
+const TILT_X = 80; // near-layer horizontal travel at z = 1
+const TILT_Y = 14;
+const TILT_ROT_Y = 5; // degrees, phone fan
+const TILT_ROT_X = 1.2;
 export const SUB_COPY = 'Tap a business. Scan a product. Track the platforms you use.'; // creator, Oct 15 (round 7)
 /**
  * Round 5 copy options (creator: "a little more copy, secondary a little larger"). line2 is the
@@ -267,6 +273,16 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
   const frame = useCurrentFrame();
   const ph = loop ? (2 * Math.PI * frame) / loop : 0;
   const bob = (phase: number): number => (loop ? Math.round(10 * Math.sin(ph + phase)) : 0);
+  const tiltOn = !!loop && hasTilt(variant);
+  const tx = tiltOn ? Math.sin(ph + 0.6) : 0;
+  const ty = tiltOn ? Math.sin(2 * ph + 1.4) : 0; // double rate: a slow figure-eight, still one whole loop
+  const par = (z: number): string => (tiltOn ? `translate(${Math.round(TILT_X * z * tx)}px, ${Math.round(TILT_Y * z * ty)}px)` : 'none');
+  /** depth wrapper: children keep their canvas coordinates, the layer slides by its depth `z` (-1 far … 1 near) */
+  const Par: React.FC<{ z: number; children: React.ReactNode }> = ({ z, children }) => <div style={{ position: 'absolute', left: 0, top: 0, width: HEADER_W, height: HEADER_H, transform: par(z) }}>{children}</div>;
+  /** the phone fan: nearest layer, slides at z = 1 and turns a few degrees in perspective around the fan's centre (`cx`, `cy`) */
+  const Fan: React.FC<{ cx: number; cy: number; children: React.ReactNode }> = ({ cx, cy, children }) => (
+    <div style={{ position: 'absolute', left: 0, top: 0, width: HEADER_W, height: HEADER_H, transformOrigin: `${cx}px ${cy}px`, transform: tiltOn ? `perspective(6000px) translate(${Math.round(TILT_X * tx)}px, 0) rotateY(${(-TILT_ROT_Y * tx).toFixed(3)}deg) rotateX(${(TILT_ROT_X * ty).toFixed(3)}deg)` : 'none' }}>{children}</div>
+  );
   const drift = loop ? `translate(${Math.round(22 * Math.sin(ph + 1))}px, ${Math.round(30 * Math.sin(ph))}px)` : undefined;
   const mapDrift = loop ? `translate(${Math.round(40 * Math.sin(ph + 0.5))}px, ${Math.round(26 * Math.cos(ph))}px)` : undefined;
   // the 3:2 search render keeps the header's bottom geometry: phones sit 351 px lower so their tab bars stay below the edge / behind the bar
@@ -281,8 +297,8 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
       {variant === 'mix-c' || variant === 'mix-c2' ? <BlurredMap opacity={0.7} blur={30} /> : null}
       {variant === 'l1' || variant === 'l2' || variant === 'l3' || variant === 'l4' || variant === 'f1' || variant === 'f2' ? <AbsoluteFill style={{ transform: mapDrift }}><BlurredMap opacity={0.5} blur={34} /></AbsoluteFill> : null}
       {variant === 'g1' || variant === 'g2' ? <AbsoluteFill style={{ transform: mapDrift }}><BlurredMap opacity={0.62} blur={34} lowerLit /></AbsoluteFill> : null}
-      {variant === 'g1m' || variant === 's1' || variant === 's2' || variant.startsWith('s3') ? <AbsoluteFill style={{ transform: loop ? `translate(${Math.round(150 * Math.sin(ph + 0.5))}px, ${Math.round(60 * Math.cos(ph))}px) scale(1.08)` : 'scale(1.08)' }}><BlurredMap opacity={0.66} blur={34} lowerLit /></AbsoluteFill> : null}
-      <AbsoluteFill style={{ transform: variant === 'g1s' && loop ? `translate(${Math.round(70 * Math.sin(ph + 1))}px, ${Math.round(40 * Math.sin(ph))}px) scale(1.04)` : variant === 'g1s' ? 'scale(1.04)' : drift }}>
+      {variant === 'g1m' || variant === 's1' || variant === 's2' || variant.startsWith('s3') ? <AbsoluteFill style={{ transform: tiltOn ? `${par(-0.55)} translate(${Math.round(70 * Math.sin(ph + 0.5))}px, ${Math.round(30 * Math.cos(ph))}px) scale(1.08)` : loop ? `translate(${Math.round(150 * Math.sin(ph + 0.5))}px, ${Math.round(60 * Math.cos(ph))}px) scale(1.08)` : 'scale(1.08)' }}><BlurredMap opacity={0.66} blur={34} lowerLit /></AbsoluteFill> : null}
+      <AbsoluteFill style={{ transform: tiltOn ? `${par(-1)} scale(1.04)` : variant === 'g1s' && loop ? `translate(${Math.round(70 * Math.sin(ph + 1))}px, ${Math.round(40 * Math.sin(ph))}px) scale(1.04)` : variant === 'g1s' ? 'scale(1.04)' : drift }}>
         <DeepSpace count={variant === 'space' ? 1400 : variant === 'f1s' || variant === 'f2s' || variant === 'g1' || variant === 'g2' || variant === 'g1s' || variant === 'g1m' || variant === 's1' || variant === 's2' || variant.startsWith('s3') ? 2600 : 800} intense={variant === 'f1s' || variant === 'f2s' || variant === 'g1' || variant === 'g2' || variant === 'g1s' || variant === 'g1m' || variant === 's1' || variant === 's2' || variant.startsWith('s3')} twinkle={loop && (variant === 'g1s' || variant === 'g1m' || variant === 's1' || variant === 's2' || variant.startsWith('s3')) ? frame / loop : undefined} />
       </AbsoluteFill>
       {variant === 'space' ? (
@@ -332,11 +348,14 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
       {variant === 's3a' || variant === 's3b' || variant === 's3c' || variant === 's3d' ? (
         // round 17 comps: small two-line name under the iPad pill, the hero line big; a = Bungee hero one line, b = Bungee hero two lines (biggest), c = Plex hero one line
         <>
-          <Clark left={870} top={1230} width={700} />
-          <Phone src={MAP} aspect={1080 / 1926} left={2220} top={2000 + dy} width={520} rotate={-7} bleed bob={bob(0)} />
-          <Phone src={SCAN_COKE2} aspect={1206 / 2322} left={2930} top={1960 + dy} width={520} rotate={0} bleed bob={bob(2.1)} />
-          <Phone src={TRACK_GRID} aspect={1206 / 2478} left={3640} top={2000 + dy} width={520} rotate={7} bleed bob={bob(4.2)} />
+          <Par z={0.35}><Clark left={870} top={1230} width={700} /></Par>
+          <Fan cx={3190} cy={2400 + dy}>
+            <Phone src={MAP} aspect={1080 / 1926} left={2220} top={2000 + dy} width={520} rotate={-7} bleed bob={bob(0)} />
+            <Phone src={SCAN_COKE2} aspect={1206 / 2322} left={2930} top={1960 + dy} width={520} rotate={0} bleed bob={bob(2.1)} />
+            <Phone src={TRACK_GRID} aspect={1206 / 2478} left={3640} top={2000 + dy} width={520} rotate={7} bleed bob={bob(4.2)} />
+          </Fan>
           {/* copy centred on the free width right of Clark (x 1650–4300), so the hero line never crosses him */}
+          <Par z={0.3}>
           {variant === 's3a' ? (
             <>
               <NameSmall left={1650} top={1150} width={2650} size={96} />
@@ -364,10 +383,11 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
               <SubUnder left={2025} top={1600} width={1900} size={80} />
             </>
           )}
+          </Par>
           {loop ? (
-            <LoopMoney count={20} seed={`${variant}-b`} loop={loop} frame={frame} avoid={[{ left: variant === 's3d' ? 1100 : 1200, top: 1100, width: 2850, height: 850 }, { left: 2150, top: 1900, width: 2080, height: 1050 }]} />
+            <LoopMoney count={20} seed={`${variant}-b`} loop={loop} frame={frame} avoid={[{ left: variant === 's3d' ? 1080 : 1180, top: 1095, width: 2890, height: 860 }, { left: 2150, top: 1900, width: 2080, height: 1050 }]} />
           ) : (
-            <StillMoney count={20} seed={`${variant}-b`} avoid={[{ left: variant === 's3d' ? 1100 : 1200, top: 1100, width: 2850, height: 850 }, { left: 2150, top: 1900, width: 2080, height: 1050 }]} />
+            <StillMoney count={20} seed={`${variant}-b`} avoid={[{ left: variant === 's3d' ? 1080 : 1180, top: 1095, width: 2890, height: 860 }, { left: 2150, top: 1900, width: 2080, height: 1050 }]} />
           )}
         </>
       ) : null}
@@ -404,13 +424,15 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
       {variant === 'g1s' || variant === 'g1m' ? (
         // round 13: G1 as the base — Clark bigger and higher, screenshots in the phones, busier money, moving background (stars twinkle + pan, or the map pans)
         <>
-          <Clark left={380} top={600} width={1420} />
-          <Phone src={MAP} aspect={1080 / 1926} left={2150} top={1500 + dy} width={760} rotate={-9} bleed bob={bob(0)} />
-          <Phone src={SCAN_COKE} aspect={1206 / 2478} left={2860} top={1380 + dy} width={760} rotate={0} bleed bob={bob(2.1)} shiftY={-200} />
-          <Phone src={TRACK_GRID} aspect={1206 / 2478} left={3570} top={1500 + dy} width={760} rotate={9} bleed bob={bob(4.2)} />
-          <Headline left={1640} top={400} width={3195} fck={200} fckGlow />
+          <Par z={0.35}><Clark left={380} top={600} width={1420} /></Par>
+          <Fan cx={3240} cy={2200 + dy}>
+            <Phone src={MAP} aspect={1080 / 1926} left={2150} top={1500 + dy} width={760} rotate={-9} bleed bob={bob(0)} />
+            <Phone src={SCAN_COKE} aspect={1206 / 2478} left={2860} top={1380 + dy} width={760} rotate={0} bleed bob={bob(2.1)} shiftY={-200} />
+            <Phone src={TRACK_GRID} aspect={1206 / 2478} left={3570} top={1500 + dy} width={760} rotate={9} bleed bob={bob(4.2)} />
+          </Fan>
+          <Par z={0.3}><Headline left={1640} top={400} width={3195} fck={200} fckGlow /></Par>
           {money(20, `${variant}-c`, { left: 1640, top: 360, width: 3195, height: 800 })}
-          <Secondary left={1640} top={1100} width={3195} size={124} />
+          <Par z={0.3}><Secondary left={1640} top={1100} width={3195} size={124} /></Par>
           <SubBar target={target} overhang={loop ? 80 : 0} textLeft={1640} textWidth={3195} />
         </>
       ) : null}
