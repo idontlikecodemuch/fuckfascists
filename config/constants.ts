@@ -75,6 +75,12 @@ export const SCORECARD_PRESENTATION_WINDOW_MS = 48 * 60 * 60 * 1000; // 48 hours
 // result → retain-on-failure path → raw events preserved for retry.
 export const SCORECARD_CAPTURE_TIMEOUT_MS = 10 * 1000;
 
+// Scorecard — retention bound for a week whose card keeps failing to capture.
+// Failed weeks are retried on every launch/resume; once a week's capture is
+// still failing this many days after its drop, its raw events get a scoped
+// purge without a card so they are not kept forever.
+export const SCORECARD_CAPTURE_GIVE_UP_DAYS = 28;
+
 // Scorecard — share-experience reveal + runway tuning. The reveal sequence
 // is: card appears → particles + glow burst → after REVEAL_DELAY the runway
 // (chevrons + SHARE button) fades in.

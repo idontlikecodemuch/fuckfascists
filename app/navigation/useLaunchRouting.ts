@@ -7,7 +7,7 @@ import type { Platform } from '../../features/Platforms/types';
 import { shouldLaunchPendingScorecardDrop } from '../../features/Scorecard/utils/pendingDropLaunch';
 import type { Tab } from './TabBar';
 import { pickInitialTab } from './initialTab';
-import { resolveLaunchTab } from './launchRoute';
+import { resolveLaunchTab, resolveResumeTab } from './launchRoute';
 import { tabForNotificationResponse } from './notificationRoute';
 
 interface LaunchRoutingInput {
@@ -21,10 +21,11 @@ interface LaunchRoutingInput {
 
 /**
  * App-shell routing:
- * - cold start: notification route, else Scorecard for a pending drop, else
- *   the random launch tab (see resolveLaunchTab);
+ * - cold start: notification route, else Scorecard for an unrevealed drop in
+ *   its window, else the random launch tab (see resolveLaunchTab);
  * - warm notification taps: the notification's tab;
- * - resume to 'active': Scorecard for a pending drop.
+ * - resume to 'active': Scorecard for an unrevealed drop, unless a
+ *   notification tap routed since the app left the foreground (the tap wins).
  * onRouted fires only after the route is set, so the shell's card capture can
  * never decide the route.
  */
@@ -32,6 +33,8 @@ export function useLaunchRouting(input: LaunchRoutingInput): void {
   const latest = useRef(input);
   latest.current = input;
   const coldStartDone = useRef(false);
+  const notificationRoutedAt = useRef(0);
+  const leftForegroundAt = useRef(0);
 
   const hasPendingDrop = (): Promise<boolean> => {
     const { adapter, entities, platforms } = latest.current;
@@ -60,17 +63,23 @@ export function useLaunchRouting(input: LaunchRoutingInput): void {
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
   useEffect(() => {
     const routedTab = tabForNotificationResponse(lastNotificationResponse);
-    if (routedTab) latest.current.setActiveTab(routedTab);
+    if (!routedTab) return;
+    notificationRoutedAt.current = Date.now();
+    latest.current.setActiveTab(routedTab);
   }, [lastNotificationResponse]);
 
   useEffect(() => {
     let previous: AppStateStatus = AppState.currentState;
     const subscription = AppState.addEventListener('change', (next) => {
+      if (previous === 'active' && next !== 'active') leftForegroundAt.current = Date.now();
       const resumed = next === 'active' && previous !== 'active';
       previous = next;
       if (!resumed || !coldStartDone.current) return;
       void (async () => {
-        if (await hasPendingDrop().catch(() => false)) latest.current.setActiveTab('report');
+        const pending = await hasPendingDrop().catch(() => false);
+        // A tap that lands after this check routes later and still wins.
+        const tab = resolveResumeTab(pending, notificationRoutedAt.current, leftForegroundAt.current);
+        if (tab) latest.current.setActiveTab(tab);
         latest.current.onRouted();
       })();
     });

@@ -13,6 +13,11 @@ jest.mock('expo-file-system', () => ({
   readDirectoryAsync: jest.fn(),
   deleteAsync: jest.fn(),
 }));
+jest.mock('expo-secure-store', () => ({
+  getItemAsync: jest.fn(),
+  setItemAsync: jest.fn(),
+  deleteItemAsync: jest.fn(),
+}));
 
 const adapter = {} as StorageAdapter;
 const dropAt = computeDropTime(2026, 22).getTime();
@@ -34,6 +39,12 @@ describe('shouldLaunchPendingScorecardDrop', () => {
     entities: [],
     platforms: [],
     nowMs: dropAt + 60_000,
+    readRevealedWeek: jest.fn().mockResolvedValue(null),
+  };
+  const archivedCard = {
+    filename: 'card.jpg',
+    uri: 'file://card.jpg',
+    modificationTime: 1,
   };
 
   it('launches Scorecard when the drop has data and no archived card yet', async () => {
@@ -44,15 +55,39 @@ describe('shouldLaunchPendingScorecardDrop', () => {
     })).resolves.toBe(true);
   });
 
-  it('does not launch when this scored-week card is already archived', async () => {
+  it('launches when the shell already captured the card but it has not been revealed', async () => {
+    const aggregate = jest.fn().mockResolvedValue([]);
     await expect(shouldLaunchPendingScorecardDrop({
       ...base,
+      aggregate,
+      findArchivedCard: jest.fn().mockResolvedValue(archivedCard),
+    })).resolves.toBe(true);
+    expect(aggregate).not.toHaveBeenCalled();
+  });
+
+  it('does not launch once this drop has been revealed', async () => {
+    await expect(shouldLaunchPendingScorecardDrop({
+      ...base,
+      readRevealedWeek: jest.fn().mockResolvedValue(scoredWeekOf),
       aggregate: jest.fn().mockResolvedValue([{ totalCount: 2 }]),
-      findArchivedCard: jest.fn().mockResolvedValue({
-        filename: 'card.jpg',
-        uri: 'file://card.jpg',
-        modificationTime: 1,
-      }),
+      findArchivedCard: jest.fn().mockResolvedValue(archivedCard),
+    })).resolves.toBe(false);
+  });
+
+  it('still launches when an older week was the last one revealed', async () => {
+    await expect(shouldLaunchPendingScorecardDrop({
+      ...base,
+      readRevealedWeek: jest.fn().mockResolvedValue('2020-01-04'),
+      aggregate: jest.fn().mockResolvedValue([{ totalCount: 2 }]),
+      findArchivedCard: jest.fn().mockResolvedValue(null),
+    })).resolves.toBe(true);
+  });
+
+  it('does not launch outside the presentation window', async () => {
+    await expect(shouldLaunchPendingScorecardDrop({
+      ...base,
+      nowMs: dropAt + SCORECARD_PRESENTATION_WINDOW_MS,
+      findArchivedCard: jest.fn().mockResolvedValue(archivedCard),
     })).resolves.toBe(false);
   });
 

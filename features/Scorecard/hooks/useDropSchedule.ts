@@ -93,6 +93,16 @@ export function getDropNotificationTime(dropAt: number): number {
   return morning.getTime();
 }
 
+/**
+ * True once a drop and its own notification time (the drop, or the deferred
+ * 9am) have both passed. Any 'scorecard-drop' still pending then is stale —
+ * e.g. one scheduled for the v2 schedule before an upgrade — and is cancelled.
+ * A deferred 9am notification that is still in the future is never stale.
+ */
+export function isDropNotificationStale(dropAt: number, nowMs: number): boolean {
+  return dropAt <= nowMs && getDropNotificationTime(dropAt) <= nowMs;
+}
+
 export async function scheduleDropNotification(dropAt: number): Promise<void> {
   await Notifications.setNotificationChannelAsync(SCORECARD_DROP_CHANNEL_ID, {
     name: 'Scorecard drops',

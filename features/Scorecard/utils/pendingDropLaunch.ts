@@ -3,6 +3,7 @@ import type { StorageAdapter } from '../../../core/data';
 import type { Platform } from '../../Platforms/types';
 import { aggregateScorecard } from '../data/aggregateScorecard';
 import { findCardForWeek, type ArchivedCard } from '../data/cardArchive';
+import { revealedWeekMarker } from '../data/weekMarkers';
 import { getScoredWeekOfDrop } from './scoredWeek';
 import { getScorecardDropTimeForTimestamp } from './dropTime';
 import {
@@ -16,6 +17,7 @@ import {
 
 type AggregateScorecardFn = typeof aggregateScorecard;
 type FindArchivedCardFn = (weekOf: string) => Promise<ArchivedCard | null>;
+type ReadRevealedWeekFn = () => Promise<string | null>;
 
 interface PendingDropLaunchInput {
   adapter: StorageAdapter;
@@ -25,6 +27,7 @@ interface PendingDropLaunchInput {
   minAvoids?: number;
   aggregate?: AggregateScorecardFn;
   findArchivedCard?: FindArchivedCardFn;
+  readRevealedWeek?: ReadRevealedWeekFn;
 }
 
 function getDropAtForTimestamp(nowMs: number): number {
@@ -45,6 +48,12 @@ export function getPendingScorecardDropWeek(nowMs = Date.now()): string | null {
   return getScoredWeekOfDrop(dropAt);
 }
 
+/**
+ * Whether launch or resume should open Scorecard: a drop inside its 48h
+ * window that the user has not seen yet (revealedWeekMarker), whose week has
+ * a card or enough avoids for one. The shell may have captured the card from
+ * another tab already, so an existing card still routes until it is revealed.
+ */
 export async function shouldLaunchPendingScorecardDrop({
   adapter,
   entities,
@@ -53,13 +62,14 @@ export async function shouldLaunchPendingScorecardDrop({
   minAvoids = MIN_AVOIDS_FOR_DROP,
   aggregate = aggregateScorecard,
   findArchivedCard = findCardForWeek,
+  readRevealedWeek = revealedWeekMarker.read,
 }: PendingDropLaunchInput): Promise<boolean> {
   const scoredWeekOf = getPendingScorecardDropWeek(nowMs);
   if (!scoredWeekOf) return false;
 
   try {
-    const existing = await findArchivedCard(scoredWeekOf);
-    if (existing) return false;
+    if ((await readRevealedWeek()) === scoredWeekOf) return false;
+    if (await findArchivedCard(scoredWeekOf)) return true;
 
     const persons = await aggregate(adapter, entities, platforms, scoredWeekOf);
     const grandTotal = persons.reduce((sum, person) => sum + person.totalCount, 0);

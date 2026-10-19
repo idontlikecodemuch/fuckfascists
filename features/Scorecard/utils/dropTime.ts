@@ -1,41 +1,38 @@
 import { SCORECARD_PRESENTATION_WINDOW_MS } from '../../../config/constants';
 import { computeDropTime, getISOWeek } from '../../../core/dropSchedule/computeDropTime';
 
-function isoWeeksInYear(year: number): number {
-  const jan1Day = new Date(Date.UTC(year, 0, 1)).getUTCDay();
-  const isLeap = (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
-  if (jan1Day === 4) return 53;
-  if (jan1Day === 3 && isLeap) return 53;
-  return 52;
-}
+const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 
-function previousISOWeek(year: number, week: number): { year: number; week: number } {
-  if (week > 1) return { year, week: week - 1 };
-  return { year: year - 1, week: isoWeeksInYear(year - 1) };
+function dropForISOWeekContaining(ms: number): number {
+  const { year, week } = getISOWeek(ms);
+  return computeDropTime(year, week).getTime();
 }
 
 /**
- * Returns the drop that should drive scorecard display for `nowMs`.
+ * Returns the drop that should drive scorecard display for `nowMs`: the latest
+ * drop at or before now while it is inside its presentation window, otherwise
+ * the next drop after now.
  *
- * Usually this is the current ISO week's drop. The exception is early in a new
- * ISO week, when the previous week's drop may still be inside the presentation
- * window. Without that exception a Monday open after a late Saturday drop can
- * skip the still-active card.
+ * This does not depend on which ISO week `nowMs` falls in. Drops come once per
+ * ISO week, so the previous, current and next weeks' drops always contain both
+ * candidates. (Keying on the current ISO week left a stale, already-expired
+ * drop in place when the window closed before the Monday 00:00 UTC rollover,
+ * e.g. Sunday evening ET, and the refresh timer then found no next boundary.)
  */
 export function getScorecardDropTimeForTimestamp(nowMs: number): Date {
-  const currentWeek = getISOWeek(nowMs);
-  const currentDrop = computeDropTime(currentWeek.year, currentWeek.week);
-  if (nowMs >= currentDrop.getTime()) return currentDrop;
-
-  const previousWeek = previousISOWeek(currentWeek.year, currentWeek.week);
-  const previousDrop = computeDropTime(previousWeek.year, previousWeek.week);
-  if (nowMs - previousDrop.getTime() < SCORECARD_PRESENTATION_WINDOW_MS) {
-    return previousDrop;
+  const drops = [nowMs - WEEK_MS, nowMs, nowMs + WEEK_MS].map(dropForISOWeekContaining);
+  const latestPassed = Math.max(...drops.filter((dropAt) => dropAt <= nowMs));
+  if (Number.isFinite(latestPassed) && nowMs - latestPassed < SCORECARD_PRESENTATION_WINDOW_MS) {
+    return new Date(latestPassed);
   }
-
-  return currentDrop;
+  return new Date(Math.min(...drops.filter((dropAt) => dropAt > nowMs)));
 }
 
+/**
+ * Delay until the display drop next changes: the drop moment itself, or the
+ * end of its presentation window. Always non-null for a drop returned by
+ * getScorecardDropTimeForTimestamp; null only for an already-expired drop.
+ */
 export function getScorecardDropRefreshDelayMs(nowMs: number, dropAtMs: number): number | null {
   const nextBoundaryMs = nowMs < dropAtMs
     ? dropAtMs

@@ -16,6 +16,7 @@ import {
   SCORECARD_DROP_NOTIFICATION_TYPE,
   cancelScorecardDropNotification,
   getDropNotificationTime,
+  isDropNotificationStale,
   scheduleDropNotification,
 } from '../useDropSchedule';
 
@@ -39,6 +40,20 @@ describe('getDropNotificationTime', () => {
   it('moves an early-morning drop to 9:00 the same morning', () => {
     expect(getDropNotificationTime(local(0, 30, 1))).toBe(local(9, 0, 1));
     expect(getDropNotificationTime(local(8, 59, 1))).toBe(local(9, 0, 1));
+  });
+});
+
+describe('isDropNotificationStale', () => {
+  it('is stale once the drop and its notification time have both passed', () => {
+    expect(isDropNotificationStale(local(16, 0), local(16, 1))).toBe(true);
+    // Quiet-hours drop: stale only after the deferred 9am.
+    expect(isDropNotificationStale(local(23, 30), local(9, 0, 1))).toBe(true);
+  });
+
+  it('never treats a future drop or a pending deferred 9am as stale', () => {
+    expect(isDropNotificationStale(local(16, 0), local(15, 59))).toBe(false);
+    expect(isDropNotificationStale(local(23, 30), local(23, 45))).toBe(false);
+    expect(isDropNotificationStale(local(23, 30), local(8, 59, 1))).toBe(false);
   });
 });
 

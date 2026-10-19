@@ -23,3 +23,17 @@ export async function resolveLaunchTab(
     return pickTab();
   }
 }
+
+/**
+ * Resume tab: Scorecard for a pending drop, unless a notification tap has
+ * already routed since the app left the foreground. The tap wins on resume,
+ * as it does on cold start (e.g. an early-week nudge that opens Track).
+ */
+export function resolveResumeTab(
+  hasPendingDrop: boolean,
+  notificationRoutedAt: number,
+  leftForegroundAt: number,
+): Tab | null {
+  if (notificationRoutedAt >= leftForegroundAt) return null;
+  return hasPendingDrop ? 'report' : null;
+}

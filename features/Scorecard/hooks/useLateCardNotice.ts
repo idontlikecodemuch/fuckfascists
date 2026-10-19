@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { clearLateCardWeek, readLateCardWeek } from '../data/lateCardNotice';
+import { lateCardMarker } from '../data/weekMarkers';
 
 /**
  * Week of a card that was captured after its presentation window and has not
@@ -13,14 +13,14 @@ export function useLateCardNotice(visible: boolean, refreshKey: number): string 
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      const weekOf = await readLateCardWeek();
+      const weekOf = await lateCardMarker.read();
       if (!cancelled && weekOf) setLateWeek(weekOf);
     })();
     return () => { cancelled = true; };
   }, [refreshKey]);
 
   useEffect(() => {
-    if (lateWeek && visible) void clearLateCardWeek();
+    if (lateWeek && visible) void lateCardMarker.clear();
   }, [lateWeek, visible]);
 
   return lateWeek;

@@ -17,6 +17,7 @@ import { sharedCopy } from './copy/shared';
 import { SqliteAdapter } from './app/storage/SqliteAdapter';
 import { fetchEntityList, parseEntityList, fetchPeopleList, parsePeopleList } from './core/data';
 import { refreshProductList } from './features/Map/barcode/productListUpdate';
+import { setUpScorecardDropNotifications } from './features/Scorecard/utils/dropNotificationSetup';
 import type { StorageAdapter } from './core/data';
 import type { Entity, PoliticalPerson } from './core/models';
 import bundledEntitiesRaw from './assets/data/entities.json';
@@ -96,6 +97,11 @@ export default function App() {
       }
     })();
     return () => { cancelled = true; };
+  }, []);
+
+  // Foreground banner for the scorecard drop; retire the v2 quiet channel.
+  useEffect(() => {
+    void setUpScorecardDropNotifications();
   }, []);
 
   // Same local-first → Git refresh order for the scanner's product index. Scans

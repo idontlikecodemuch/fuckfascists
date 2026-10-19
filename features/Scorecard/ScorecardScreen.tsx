@@ -10,6 +10,7 @@ import { useScorecard } from './hooks/useScorecard';
 import { useScoredWeekCard } from './hooks/useScoredWeekCard';
 import { useLateCardNotice } from './hooks/useLateCardNotice';
 import { useScorecardCapture } from './context/ScorecardCaptureContext';
+import { revealedWeekMarker } from './data/weekMarkers';
 import { LivePreview } from './components/LivePreview';
 import { ScorecardLoader } from './components/ScorecardLoader';
 import { CardPresentation } from './components/CardPresentation';
@@ -44,17 +45,12 @@ interface ScorecardScreenProps {
 }
 
 /**
- * Scorecard screen — the weekly synchronized reveal.
- *
- * Display only. Cards are captured (and raw events purged) by the app-shell
- * ScorecardCaptureProvider; this screen reads the archived card for the
- * scored week and derives what to show:
- *   - inside the 48h window with a card → full-screen presentation;
- *   - while the shell is still capturing this drop → the loader
- *     ("Locking in my card. Shredding the data.");
- *   - otherwise the live preview (or the empty-drop state), plus a one-line
- *     notice when a card was saved after its window and went straight to
- *     Past scorecards.
+ * Scorecard screen — the weekly synchronized reveal. Display only: the
+ * app-shell ScorecardCaptureProvider captures cards and purges raw events.
+ * Inside the 48h window with a card → full-screen presentation (which marks
+ * the drop revealed for launch routing); while the shell still captures this
+ * drop → the loader; otherwise the live preview or empty-drop state, plus a
+ * one-line notice for a card saved after its window.
  */
 export function ScorecardScreen({
   adapter,
@@ -120,7 +116,14 @@ export function ScorecardScreen({
     setLookupKey((key) => key + 1);
   }, []);
 
-  const handleDismiss = useCallback(() => setUserNav('dismissed'), []);
+  // Seen or dismissed: launch/resume routing stops opening Scorecard for it.
+  const markRevealed = useCallback(() => {
+    if (!devCardUri && !qaOverrideActive) void revealedWeekMarker.mark(scoredWeekOf);
+  }, [devCardUri, qaOverrideActive, scoredWeekOf]);
+  const handleDismiss = useCallback(() => {
+    markRevealed();
+    setUserNav('dismissed');
+  }, [markRevealed]);
   const handleOpenArchive = useCallback(() => setUserNav('archive'), []);
 
   const liveGrandTotal = liveData?.grandTotal ?? null;
@@ -146,6 +149,10 @@ export function ScorecardScreen({
     onPresentationActiveChange?.(presentationActive);
     return () => onPresentationActiveChange?.(false);
   }, [onPresentationActiveChange, presentationActive]);
+
+  React.useEffect(() => {
+    if (presentationActive) markRevealed();
+  }, [presentationActive, markRevealed]);
 
   // PREVIEW stamp is a fixed viewport overlay in the in-app preview
   // states — must persist while the user scrolls LivePreview so any

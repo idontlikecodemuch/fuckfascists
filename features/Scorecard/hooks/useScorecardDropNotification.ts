@@ -8,6 +8,7 @@ import { getScoredWeekOfDrop } from '../utils/scoredWeek';
 import { useScorecard } from './useScorecard';
 import {
   cancelScorecardDropNotification,
+  isDropNotificationStale,
   scheduleDropNotification,
   useDropSchedule,
 } from './useDropSchedule';
@@ -35,9 +36,15 @@ export function useScorecardDropNotification(
   useEffect(() => {
     if (loading) return;
 
-    // Production drops do not schedule the next week until the ISO week rolls
-    // forward. Beta mode handles current-period drops via getNextBetaDropTime().
-    if (targetMs <= Date.now()) return;
+    // A passed drop: the next week's notification is scheduled once the
+    // presentation window closes and the schedule moves to the next drop.
+    // Beta mode handles current-period drops via getNextBetaDropTime().
+    if (targetMs <= Date.now()) {
+      if (isDropNotificationStale(targetMs, Date.now())) {
+        cancelScorecardDropNotification().catch(() => {});
+      }
+      return;
+    }
 
     if (!data || data.grandTotal < MIN_AVOIDS_FOR_DROP) {
       cancelScorecardDropNotification().catch(() => {});

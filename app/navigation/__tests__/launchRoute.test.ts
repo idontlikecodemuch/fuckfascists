@@ -4,7 +4,7 @@ jest.mock('expo-notifications', () => ({
 }));
 
 import type * as Notifications from 'expo-notifications';
-import { resolveLaunchTab } from '../launchRoute';
+import { resolveLaunchTab, resolveResumeTab } from '../launchRoute';
 
 function response(data: Record<string, unknown>): Notifications.NotificationResponse {
   return {
@@ -27,7 +27,7 @@ describe('resolveLaunchTab', () => {
     expect(hasPendingDrop).not.toHaveBeenCalled();
   });
 
-  it('opens Scorecard while a drop in its window still waits for its card', async () => {
+  it('opens Scorecard while a drop in its window has not been revealed', async () => {
     await expect(resolveLaunchTab(null, async () => true, pickTab)).resolves.toBe('report');
   });
 
@@ -36,5 +36,23 @@ describe('resolveLaunchTab', () => {
     await expect(resolveLaunchTab(
       null, () => Promise.reject(new Error('db')), pickTab,
     )).resolves.toBe('map');
+  });
+});
+
+describe('resolveResumeTab', () => {
+  const leftForegroundAt = 1_000;
+
+  it('opens Scorecard for an unrevealed drop when no notification was tapped', () => {
+    expect(resolveResumeTab(true, 0, leftForegroundAt)).toBe('report');
+    // A tap from an earlier foreground session does not count.
+    expect(resolveResumeTab(true, 500, leftForegroundAt)).toBe('report');
+  });
+
+  it('lets a notification tap since leaving the foreground win', () => {
+    expect(resolveResumeTab(true, 1_500, leftForegroundAt)).toBeNull();
+  });
+
+  it('keeps the current tab when nothing is pending', () => {
+    expect(resolveResumeTab(false, 0, leftForegroundAt)).toBeNull();
   });
 });
