@@ -4,27 +4,26 @@ import { theme } from '../design/tokens';
 export const WEEK_START_DAY = 6;               // Saturday (0 = Sunday)
 export const WEEK_START_HOUR = 0;              // 12:00am local time
 
-// Scorecard drop window. Times are interpreted in America/New_York so the
-// synchronized global moment follows Eastern daylight-saving transitions.
-export const DROP_WINDOW_START_DAY = 5;        // Friday (0 = Sunday)
-export const DROP_WINDOW_START_HOUR = 18;      // 6pm ET
-export const DROP_WINDOW_END_DAY = 6;          // Saturday (0 = Sunday)
-export const DROP_WINDOW_END_HOUR = 16;        // 4pm ET (exclusive)
+// Scorecard drop segments. Each week's drop is one uniformly chosen minute
+// across these America/New_York wall-clock segments (DST-correct), so every
+// install shares one global moment. The hours between segments are never
+// used. `day` is 0 = Sunday; `startHour` inclusive, `endHour` exclusive.
+export const SCORECARD_DROP_SEGMENTS = [
+  { day: 5, startHour: 16, endHour: 23 }, // Friday 4:00pm–10:59pm ET
+  { day: 6, startHour: 12, endHour: 18 }, // Saturday 12:00pm–5:59pm ET
+] as const;
 
-// Legacy aliases — computeDropTime.ts reads these. Keep until migrated.
-export const SCORECARD_WINDOW_START_HOUR = DROP_WINDOW_START_HOUR;
-export const SCORECARD_WINDOW_END_HOUR = DROP_WINDOW_END_HOUR;
-export const SCORECARD_WINDOW_DAY = DROP_WINDOW_START_DAY;
-
-// Adjacent weekly drops are kept at least this far apart inside the window.
-// The sequence remains deterministic and uniform to the minute; this guard
-// only prevents two weeks from feeling like the same scheduled moment.
+// Adjacent weekly drops are kept at least this many wall-clock minutes apart
+// (time of week, ET). The sequence remains deterministic and uniform to the
+// minute; this guard only prevents two weeks from feeling like the same
+// scheduled moment.
 export const SCORECARD_DROP_MIN_SEPARATION_MINUTES = 90;
 
 // Notification quiet hours (local device time) — read through
-// core/utils/quietHours.ts. Scorecard drop: if the card drops at/after the
-// evening hour or before the morning hour, schedule without sound/vibration.
-// Early-week nudge: never picks a slot inside these hours.
+// core/utils/quietHours.ts. Scorecard drop: a drop at/after the evening hour
+// or before the morning hour is announced at the next local morning hour
+// instead, with normal sound. Early-week nudge: never picks a slot inside
+// these hours.
 export const SCORECARD_QUIET_NOTIFICATION_FROM_HOUR = 23; // 11pm local
 export const SCORECARD_QUIET_NOTIFICATION_BEFORE_HOUR = 9;
 

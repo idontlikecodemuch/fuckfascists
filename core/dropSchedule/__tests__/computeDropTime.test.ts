@@ -1,18 +1,30 @@
 import { computeDropTime, getISOWeek, getCurrentDropTime } from '../computeDropTime';
-import { SCORECARD_DROP_MIN_SEPARATION_MINUTES } from '../../../config/constants';
+import {
+  SCORECARD_DROP_MIN_SEPARATION_MINUTES,
+  SCORECARD_DROP_SEGMENTS,
+} from '../../../config/constants';
+import { isQuietNotificationHour } from '../../utils/quietHours';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
-const easternFormatter = new Intl.DateTimeFormat('en-US', {
-  timeZone: 'America/New_York',
-  weekday: 'short',
-  hour: 'numeric',
-  minute: '2-digit',
-  hourCycle: 'h23',
-});
+const formatters = new Map<string, Intl.DateTimeFormat>();
 
-function getEasternParts(drop: Date): { weekday: string; hour: number; minute: number } {
-  const parts = easternFormatter.formatToParts(drop);
+function getZoneParts(
+  drop: Date,
+  timeZone = 'America/New_York',
+): { weekday: string; hour: number; minute: number } {
+  let formatter = formatters.get(timeZone);
+  if (!formatter) {
+    formatter = new Intl.DateTimeFormat('en-US', {
+      timeZone,
+      weekday: 'short',
+      hour: 'numeric',
+      minute: '2-digit',
+      hourCycle: 'h23',
+    });
+    formatters.set(timeZone, formatter);
+  }
+  const parts = formatter.formatToParts(drop);
   const value = (type: Intl.DateTimeFormatPartTypes): string =>
     parts.find((part) => part.type === type)?.value ?? '';
 
@@ -23,12 +35,25 @@ function getEasternParts(drop: Date): { weekday: string; hour: number; minute: n
   };
 }
 
-/** Minute offset inside Friday 6pm–Saturday 4pm ET. */
-function getWindowMinuteOffset(drop: Date): number {
-  const { weekday, hour, minute } = getEasternParts(drop);
-  if (weekday === 'Fri') return (hour - 18) * 60 + minute;
-  if (weekday === 'Sat') return 6 * 60 + hour * 60 + minute;
-  throw new Error(`drop fell outside Friday/Saturday ET: ${drop.toISOString()}`);
+const WEEKDAY_INDEX: Record<string, number> = { Fri: 5, Sat: 6 };
+
+/** Slot index across both segments (0 … total-1), from the ET wall clock. */
+function getSlot(drop: Date): number {
+  const { weekday, hour, minute } = getZoneParts(drop);
+  let offset = 0;
+  for (const segment of SCORECARD_DROP_SEGMENTS) {
+    if (WEEKDAY_INDEX[weekday] === segment.day && hour >= segment.startHour && hour < segment.endHour) {
+      return offset + (hour - segment.startHour) * 60 + minute;
+    }
+    offset += (segment.endHour - segment.startHour) * 60;
+  }
+  throw new Error(`drop fell outside the ET segments: ${drop.toISOString()}`);
+}
+
+/** ET wall-clock minutes since Friday 00:00 — the "real" time-of-week position. */
+function getWallClockMinuteOfWeek(drop: Date): number {
+  const { weekday, hour, minute } = getZoneParts(drop);
+  return (WEEKDAY_INDEX[weekday] - 5) * 1440 + hour * 60 + minute;
 }
 
 function isoWeeksInYear(year: number): number {
@@ -47,6 +72,11 @@ function weekPairs(startYear: number, endYear: number): Array<{ year: number; we
   return result;
 }
 
+const TOTAL_SLOTS = SCORECARD_DROP_SEGMENTS.reduce(
+  (sum, segment) => sum + (segment.endHour - segment.startHour) * 60,
+  0,
+);
+
 // ── computeDropTime ───────────────────────────────────────────────────────────
 
 describe('computeDropTime', () => {
@@ -63,61 +93,91 @@ describe('computeDropTime', () => {
       expect(hawaii).toBe(tokyo);
       expect(tokyo).toBe(london);
     } finally {
-      process.env.TZ = originalTimezone;
+      if (originalTimezone === undefined) delete process.env.TZ;
+      else process.env.TZ = originalTimezone;
     }
   });
 
-  it('keeps versioned winter and daylight-time fixtures stable', () => {
-    expect(computeDropTime(2026, 1).toISOString()).toBe('2026-01-03T09:47:00.000Z');
-    expect(computeDropTime(2026, 32).toISOString()).toBe('2026-08-07T22:20:00.000Z');
+  it('keeps versioned winter, daylight-time and Saturday fixtures stable', () => {
+    // Fri Jan 2 2026 10:49pm EST, Fri Aug 7 2026 10:09pm EDT, Sat Mar 14 2026 1:36pm EDT.
+    expect(computeDropTime(2026, 1).toISOString()).toBe('2026-01-03T03:49:00.000Z');
+    expect(computeDropTime(2026, 32).toISOString()).toBe('2026-08-08T02:09:00.000Z');
+    expect(computeDropTime(2026, 11).toISOString()).toBe('2026-03-14T17:36:00.000Z');
   });
 
-  it('keeps every drop inside Friday 6pm–Saturday 4pm America/New_York', () => {
+  it('keeps every drop inside Fri 4:00–10:59pm or Sat 12:00–5:59pm America/New_York', () => {
     for (const { year, week } of weekPairs(2020, 2040)) {
-      const { weekday, hour } = getEasternParts(computeDropTime(year, week));
-      expect(['Fri', 'Sat']).toContain(weekday);
-      if (weekday === 'Fri') expect(hour).toBeGreaterThanOrEqual(18);
-      if (weekday === 'Sat') expect(hour).toBeLessThan(16);
+      const drop = computeDropTime(year, week);
+      const { weekday, hour } = getZoneParts(drop);
+      if (weekday === 'Fri') {
+        expect(hour).toBeGreaterThanOrEqual(16);
+        expect(hour).toBeLessThanOrEqual(22);
+      } else {
+        expect(weekday).toBe('Sat');
+        expect(hour).toBeGreaterThanOrEqual(12);
+        expect(hour).toBeLessThanOrEqual(17);
+      }
     }
   });
 
-  it('uses minute-level times across the full window instead of on-the-hour slots', () => {
-    const offsets = weekPairs(2020, 2040).map(({ year, week }) =>
-      getWindowMinuteOffset(computeDropTime(year, week)),
+  it.each([
+    'America/New_York',
+    'America/Chicago',
+    'America/Denver',
+    'America/Phoenix',
+    'America/Los_Angeles',
+  ])('never lands in local quiet hours in %s (every week 2026–2040)', (timeZone) => {
+    for (const { year, week } of weekPairs(2026, 2040)) {
+      const drop = computeDropTime(year, week);
+      const { hour } = getZoneParts(drop, timeZone);
+      if (isQuietNotificationHour(hour)) {
+        throw new Error(`${year}-W${week} drops at local hour ${hour} in ${timeZone}`);
+      }
+    }
+  });
+
+  it('uses minute-level times spread across both segments', () => {
+    const slots = weekPairs(2020, 2040).map(({ year, week }) =>
+      getSlot(computeDropTime(year, week)),
     );
-    const nonHourlyDrops = offsets.filter((offset) => offset % 60 !== 0).length;
+    const nonHourlyDrops = slots.filter((slot) => slot % 60 !== 0).length;
+    const quarter = TOTAL_SLOTS / 4;
     const quartileCounts = [0, 0, 0, 0];
-    for (const offset of offsets) {
-      quartileCounts[Math.min(Math.floor(offset / 330), 3)]++;
+    for (const slot of slots) {
+      quartileCounts[Math.min(Math.floor(slot / quarter), 3)]++;
     }
+    const fridayShare = slots.filter((slot) => slot < 420).length / slots.length;
 
-    expect(nonHourlyDrops / offsets.length).toBeGreaterThan(0.9);
-    expect(new Set(offsets).size).toBeGreaterThan(650);
+    expect(nonHourlyDrops / slots.length).toBeGreaterThan(0.9);
+    expect(new Set(slots).size).toBeGreaterThan(500);
     for (const count of quartileCounts) expect(count).toBeGreaterThan(200);
+    // 420 of 780 slots are on Friday.
+    expect(fridayShare).toBeGreaterThan(0.48);
+    expect(fridayShare).toBeLessThan(0.6);
   });
 
-  it('separates every pair of adjacent drops across years', () => {
-    let previousOffset: number | null = null;
+  it('separates every pair of adjacent drops by the minimum wall-clock minutes, across years', () => {
+    let previous: number | null = null;
     for (const { year, week } of weekPairs(2020, 2040)) {
-      const offset = getWindowMinuteOffset(computeDropTime(year, week));
-      if (previousOffset !== null) {
-        expect(Math.abs(offset - previousOffset))
+      const minuteOfWeek = getWallClockMinuteOfWeek(computeDropTime(year, week));
+      if (previous !== null) {
+        expect(Math.abs(minuteOfWeek - previous))
           .toBeGreaterThanOrEqual(SCORECARD_DROP_MIN_SEPARATION_MINUTES);
       }
-      previousOffset = offset;
+      previous = minuteOfWeek;
     }
   });
 
-  it('does not reproduce the 2026 late-window one-hour countdown', () => {
-    const offsets = Array.from({ length: 9 }, (_, index) =>
-      getWindowMinuteOffset(computeDropTime(2026, 32 + index)),
+  it('does not repeat a slot or step back exactly one hour across consecutive weeks', () => {
+    const slots = Array.from({ length: 9 }, (_, index) =>
+      getSlot(computeDropTime(2026, 32 + index)),
     );
-    const oneHourEarlierSteps = offsets.slice(1).filter(
-      (offset, index) => offset === offsets[index] - 60,
+    const oneHourEarlierSteps = slots.slice(1).filter(
+      (slot, index) => slot === slots[index] - 60,
     );
 
     expect(oneHourEarlierSteps).toHaveLength(0);
-    expect(new Set(offsets).size).toBe(offsets.length);
+    expect(new Set(slots).size).toBe(slots.length);
   });
 
   it('handles week 1 and 52/53-week year boundaries', () => {
@@ -171,7 +231,7 @@ describe('getCurrentDropTime', () => {
     const nowMs = Date.now();
     const drop = getCurrentDropTime();
 
-    expect(['Fri', 'Sat']).toContain(getEasternParts(drop).weekday);
+    expect(['Fri', 'Sat']).toContain(getZoneParts(drop).weekday);
     expect(Math.abs(drop.getTime() - nowMs)).toBeLessThan(8 * 86_400_000);
   });
 });

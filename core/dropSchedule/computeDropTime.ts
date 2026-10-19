@@ -3,28 +3,32 @@
  *
  * Every install computes the same drop time for any given ISO week — no network
  * calls, no server dependency, and no per-device random state. The algorithm is
- * versioned through the "ff-drop-v2" seed prefix.
+ * versioned through the "ff-drop-v3" seed prefix.
  *
  * Algorithm:
  *  1. Use a strongly mixed 32-bit hash to build one shared pseudorandom sequence.
- *  2. Select uniformly from every minute in the Friday 6pm–Saturday 4pm ET window.
+ *  2. Select uniformly from every minute slot in SCORECARD_DROP_SEGMENTS
+ *     (Friday 4:00–10:59pm and Saturday 12:00–5:59pm ET). The hours between
+ *     segments are never used.
  *  3. Advance through the sequence by a pseudorandom distance that guarantees
  *     adjacent weeks are separated by at least the configured minimum.
- *  4. Convert the Eastern wall-clock window to one UTC instant, accounting for
+ *  4. Convert the Eastern wall-clock slot to one UTC instant, accounting for
  *     US daylight-saving time. Every timezone therefore receives one global drop.
  */
 
 import {
   SCORECARD_DROP_MIN_SEPARATION_MINUTES,
-  SCORECARD_WINDOW_START_HOUR,
-  SCORECARD_WINDOW_END_HOUR,
+  SCORECARD_DROP_SEGMENTS,
 } from '../../config/constants';
 
 const MINUTE_MS = 60_000;
-const WEEK_MS = 7 * 86_400_000;
-const WINDOW_MINUTES =
-  (24 - SCORECARD_WINDOW_START_HOUR + SCORECARD_WINDOW_END_HOUR) * 60;
-const DROP_SEED_PREFIX = 'ff-drop-v2';
+const DAY_MS = 86_400_000;
+const WEEK_MS = 7 * DAY_MS;
+const SEGMENT_MINUTES = SCORECARD_DROP_SEGMENTS.map(
+  (segment) => (segment.endHour - segment.startHour) * 60,
+);
+const WINDOW_MINUTES = SEGMENT_MINUTES.reduce((sum, minutes) => sum + minutes, 0);
+const DROP_SEED_PREFIX = 'ff-drop-v3';
 
 // The sequence is anchored at ISO 2026-W1. Earlier and later weeks walk the
 // same deterministic sequence backward or forward, so year boundaries do not
@@ -37,8 +41,7 @@ const SCHEDULE_EPOCH_WEEK = 1;
 /**
  * xmur3-style 32-bit hash finalizer. Math.imul and bitwise shifts have defined
  * 32-bit behavior in JavaScript, so this produces the same value on every app.
- * Unlike the old djb2 suffix hash, adjacent week indexes avalanche instead of
- * producing adjacent output values.
+ * Adjacent week indexes avalanche instead of producing adjacent output values.
  *
  * Exported for other deterministic local schedules (the early-week nudge).
  */
@@ -59,8 +62,11 @@ function positiveModulo(value: number, modulus: number): number {
 
 /**
  * Pseudorandom transition between adjacent weeks. Keeping the circular step
- * between MIN and WINDOW-MIN guarantees the ordinary (linear) distance between
- * the two selected minute slots is also at least MIN, including after wrapping.
+ * between MIN and WINDOW-MIN guarantees the ordinary (linear) slot distance
+ * between the two selected slots is also at least MIN, including after
+ * wrapping. Slots are consecutive minutes inside a segment and the gap between
+ * segments only adds wall-clock time, so wall-clock separation is at least the
+ * slot distance.
  */
 function stepForWeekIndex(index: number): number {
   const allowedStepCount = WINDOW_MINUTES - 2 * SCORECARD_DROP_MIN_SEPARATION_MINUTES + 1;
@@ -80,8 +86,8 @@ function mondayOfISOWeek(year: number, week: number): Date {
   const jan4Day = jan4.getUTCDay(); // 0=Sun, 1=Mon, ..., 6=Sat
   // Sunday (0) is treated as day 7 for ISO purposes.
   const daysToMonday1 = jan4Day === 0 ? -6 : 1 - jan4Day;
-  const monday1Ms = jan4.getTime() + daysToMonday1 * 86_400_000;
-  return new Date(monday1Ms + (week - 1) * 7 * 86_400_000);
+  const monday1Ms = jan4.getTime() + daysToMonday1 * DAY_MS;
+  return new Date(monday1Ms + (week - 1) * WEEK_MS);
 }
 
 function nthSundayOfMonth(year: number, month: number, occurrence: number): number {
@@ -93,7 +99,7 @@ function nthSundayOfMonth(year: number, month: number, occurrence: number): numb
 /**
  * UTC offset magnitude for America/New_York on a Friday/Saturday drop date.
  * US DST begins on the second Sunday in March and ends on the first Sunday in
- * November. The drop window never crosses Sunday, so date precision is enough.
+ * November. The drop segments never cross Sunday, so date precision is enough.
  */
 function easternUtcOffsetHours(year: number, month: number, day: number): 4 | 5 {
   if (month < 2 || month > 10) return 5;
@@ -106,7 +112,7 @@ function easternUtcOffsetHours(year: number, month: number, day: number): 4 | 5 
   return day < nthSundayOfMonth(year, 10, 1) ? 4 : 5;
 }
 
-/** Returns the shared minute slot for an ISO week. */
+/** Returns the shared minute slot (0 … WINDOW_MINUTES-1) for an ISO week. */
 function minuteOffsetForWeek(isoWeekYear: number, isoWeekNumber: number): number {
   const epochMondayMs = mondayOfISOWeek(SCHEDULE_EPOCH_YEAR, SCHEDULE_EPOCH_WEEK).getTime();
   const targetMondayMs = mondayOfISOWeek(isoWeekYear, isoWeekNumber).getTime();
@@ -126,6 +132,25 @@ function minuteOffsetForWeek(isoWeekYear: number, isoWeekNumber: number): number
   return minuteOffset;
 }
 
+/**
+ * Maps a slot to its ET wall-clock position: days after the ISO Monday and
+ * minutes after local midnight on that day.
+ */
+function wallClockForSlot(slot: number): { daysAfterMonday: number; minuteOfDay: number } {
+  let remaining = slot;
+  for (let index = 0; index < SCORECARD_DROP_SEGMENTS.length; index++) {
+    const segment = SCORECARD_DROP_SEGMENTS[index];
+    if (remaining < SEGMENT_MINUTES[index]) {
+      return {
+        daysAfterMonday: (segment.day + 6) % 7,
+        minuteOfDay: segment.startHour * 60 + remaining,
+      };
+    }
+    remaining -= SEGMENT_MINUTES[index];
+  }
+  throw new Error(`drop slot ${slot} is outside the configured segments`);
+}
+
 // ── Public API ────────────────────────────────────────────────────────────────
 
 /**
@@ -135,25 +160,21 @@ function minuteOffsetForWeek(isoWeekYear: number, isoWeekNumber: number): number
  * @param isoWeekYear   ISO week-numbering year (may differ from calendar year
  *                      in early January / late December).
  * @param isoWeekNumber ISO week number (1–52 or 1–53).
- * @returns UTC Date for the shared drop moment, within the Friday 6:00pm
- *          (inclusive) – Saturday 4:00pm (exclusive) America/New_York window.
+ * @returns UTC Date for the shared drop moment, inside one of the
+ *          SCORECARD_DROP_SEGMENTS (America/New_York wall clock).
  */
 export function computeDropTime(isoWeekYear: number, isoWeekNumber: number): Date {
-  // Friday of the ISO week = Monday + 4 days.
   const mondayMs = mondayOfISOWeek(isoWeekYear, isoWeekNumber).getTime();
-  const friday = new Date(mondayMs + 4 * 86_400_000);
-  const year = friday.getUTCFullYear();
-  const month = friday.getUTCMonth();
-  const day = friday.getUTCDate();
-  const easternOffsetHours = easternUtcOffsetHours(year, month, day);
-  const windowStartUtcMs = Date.UTC(
-    year,
-    month,
-    day,
-    SCORECARD_WINDOW_START_HOUR + easternOffsetHours,
+  const { daysAfterMonday, minuteOfDay } = wallClockForSlot(
+    minuteOffsetForWeek(isoWeekYear, isoWeekNumber),
   );
+  const dropDay = new Date(mondayMs + daysAfterMonday * DAY_MS);
+  const year = dropDay.getUTCFullYear();
+  const month = dropDay.getUTCMonth();
+  const day = dropDay.getUTCDate();
+  const easternOffsetMinutes = easternUtcOffsetHours(year, month, day) * 60;
 
-  return new Date(windowStartUtcMs + minuteOffsetForWeek(isoWeekYear, isoWeekNumber) * MINUTE_MS);
+  return new Date(Date.UTC(year, month, day) + (minuteOfDay + easternOffsetMinutes) * MINUTE_MS);
 }
 
 /**
@@ -164,12 +185,12 @@ export function computeDropTime(isoWeekYear: number, isoWeekNumber: number): Dat
 export function getISOWeek(nowMs: number): { year: number; week: number } {
   const dayOfWeek = new Date(nowMs).getUTCDay(); // 0=Sun ... 6=Sat
   // Thursday of the same ISO week (Sun treated as 7):
-  const thursdayMs = nowMs + (4 - (dayOfWeek === 0 ? 7 : dayOfWeek)) * 86_400_000;
+  const thursdayMs = nowMs + (4 - (dayOfWeek === 0 ? 7 : dayOfWeek)) * DAY_MS;
   const thursday = new Date(thursdayMs);
   const year = thursday.getUTCFullYear();
 
   const yearStartMs = new Date(Date.UTC(year, 0, 1)).getTime();
-  const dayOfYear = Math.floor((thursdayMs - yearStartMs) / 86_400_000);
+  const dayOfYear = Math.floor((thursdayMs - yearStartMs) / DAY_MS);
   const week = Math.ceil((dayOfYear + 1) / 7);
 
   return { year, week };

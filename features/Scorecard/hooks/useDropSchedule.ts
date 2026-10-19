@@ -11,6 +11,7 @@ import {
   getBetaDropTime,
 } from '../../../core/dropSchedule/betaDropSchedule';
 import { isQuietNotificationHour } from '../../../core/utils/quietHours';
+import { SCORECARD_QUIET_NOTIFICATION_BEFORE_HOUR } from '../../../config/constants';
 
 /**
  * Stable identifier for the scorecard drop notification. Scoping cancels +
@@ -20,7 +21,6 @@ import { isQuietNotificationHour } from '../../../core/utils/quietHours';
  */
 export const SCORECARD_DROP_NOTIFICATION_ID = 'scorecard-drop';
 const SCORECARD_DROP_CHANNEL_ID = 'scorecard-drop';
-const SCORECARD_DROP_QUIET_CHANNEL_ID = 'scorecard-drop-quiet';
 
 /**
  * Routing key carried in the notification's content.data. AppShell matches on
@@ -76,45 +76,51 @@ export function useDropSchedule(): DropScheduleState {
   return { schedule, loading: false, hasDropped };
 }
 
+/**
+ * When the drop notification should fire for a drop at `dropAt`, in device
+ * local time: at the drop itself, or — when the drop falls in local quiet
+ * hours — at the next local SCORECARD_QUIET_NOTIFICATION_BEFORE_HOUR (9am).
+ * The weekly schedule keeps continental-US drops out of quiet hours; this
+ * covers other timezones and the beta cadence.
+ */
+export function getDropNotificationTime(dropAt: number): number {
+  const drop = new Date(dropAt);
+  if (!isQuietNotificationHour(drop.getHours())) return dropAt;
+
+  const morning = new Date(dropAt);
+  morning.setHours(SCORECARD_QUIET_NOTIFICATION_BEFORE_HOUR, 0, 0, 0);
+  if (morning.getTime() <= dropAt) morning.setDate(morning.getDate() + 1);
+  return morning.getTime();
+}
+
 export async function scheduleDropNotification(dropAt: number): Promise<void> {
-  const quiet = isQuietNotificationTime(dropAt);
-  await ensureDropNotificationChannels();
+  await Notifications.setNotificationChannelAsync(SCORECARD_DROP_CHANNEL_ID, {
+    name: 'Scorecard drops',
+    importance: Notifications.AndroidImportance.DEFAULT,
+  });
 
   // Scoped cancel + schedule by identifier. Previously called
   // cancelAllScheduledNotificationsAsync, which silently wiped the Thursday
   // platform nudge ('platform-nudge-thursday') every time the drop was
   // re-scheduled. Cancel only our own identifier here.
-  try {
-    await Notifications.cancelScheduledNotificationAsync(SCORECARD_DROP_NOTIFICATION_ID);
-  } catch {
-    // If no prior drop is scheduled, the cancel is a no-op in most builds
-    // but some runtimes throw — ignore.
-  }
+  await cancelScorecardDropNotification();
 
   await Notifications.scheduleNotificationAsync({
     identifier: SCORECARD_DROP_NOTIFICATION_ID,
     content: {
       title: 'Your Scorecard Is Ready',
       body: 'Tap to see how you did this week.',
-      sound: quiet ? false : true,
-      ...(quiet
-        ? {
-            interruptionLevel: 'passive' as const,
-            priority: Notifications.AndroidNotificationPriority.LOW,
-            vibrate: [],
-          }
-        : {
-            interruptionLevel: 'active' as const,
-            priority: Notifications.AndroidNotificationPriority.DEFAULT,
-          }),
+      sound: true,
+      interruptionLevel: 'active',
+      priority: Notifications.AndroidNotificationPriority.DEFAULT,
       // Routing key — AppShell reads data.type to route to Scorecard,
       // independent of the human-readable title.
       data: { type: SCORECARD_DROP_NOTIFICATION_TYPE },
     },
     trigger: {
       type: Notifications.SchedulableTriggerInputTypes.DATE,
-      date: new Date(dropAt),
-      channelId: quiet ? SCORECARD_DROP_QUIET_CHANNEL_ID : SCORECARD_DROP_CHANNEL_ID,
+      date: new Date(getDropNotificationTime(dropAt)),
+      channelId: SCORECARD_DROP_CHANNEL_ID,
     } as Notifications.DateTriggerInput,
   });
 }
@@ -126,23 +132,4 @@ export async function cancelScorecardDropNotification(): Promise<void> {
     // If no prior drop is scheduled, the cancel is a no-op in most builds
     // but some runtimes throw — ignore.
   }
-}
-
-function isQuietNotificationTime(dropAt: number): boolean {
-  return isQuietNotificationHour(new Date(dropAt).getHours());
-}
-
-async function ensureDropNotificationChannels(): Promise<void> {
-  await Promise.all([
-    Notifications.setNotificationChannelAsync(SCORECARD_DROP_CHANNEL_ID, {
-      name: 'Scorecard drops',
-      importance: Notifications.AndroidImportance.DEFAULT,
-    }),
-    Notifications.setNotificationChannelAsync(SCORECARD_DROP_QUIET_CHANNEL_ID, {
-      name: 'Quiet scorecard drops',
-      importance: Notifications.AndroidImportance.LOW,
-      sound: null,
-      enableVibrate: false,
-    }),
-  ]);
 }
