@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { AppState } from 'react-native';
 import { findCardForWeek } from '../data/cardArchive';
 import { lateCardMarker } from '../data/weekMarkers';
 
@@ -51,13 +52,17 @@ export function useLateCardReveal(refreshKey: number, newerCardInWindow: boolean
     void lateCardMarker.clear();
   }, [newerCardInWindow]);
 
+  // Only counts while the app is on screen; dismissing also clears it, so a
+  // reveal that first mounted in the background is still seen exactly once.
   const markShown = useCallback(() => {
+    if (AppState.currentState !== 'active') return;
     shownRef.current = true;
     void lateCardMarker.clear();
   }, []);
   const dismiss = useCallback(() => {
     shownRef.current = false;
     setUri(null);
+    void lateCardMarker.clear();
   }, []);
   return useMemo(() => ({ uri, markShown, dismiss }), [uri, markShown, dismiss]);
 }

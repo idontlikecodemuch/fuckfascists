@@ -130,7 +130,10 @@ export function ScorecardCaptureProvider({
           if (result.captured.length > 0 || result.purged.length > 0) {
             setCardsVersion((version) => version + 1);
           }
-          if (result.lateReveal) setLateRevealVersion((version) => version + 1);
+          // Switch tabs only while on screen; otherwise the marker routes on the next resume.
+          if (result.lateReveal && AppState.currentState === 'active') {
+            setLateRevealVersion((version) => version + 1);
+          }
         } catch {
           // Reading events failed. Nothing was deleted; the next launch or resume retries.
         }
