@@ -41,3 +41,5 @@ dual-wide iPhones (owner confirmed on a device Oct 14); FEC
 refresh dated 2026-10-12 on main. 641 characters, well under the 4,000 limit.
 Oct 15: 792 characters with the household bullet. Promotional text proposed for 1.2.1
 (154 chars, pitches the whole app per the owner's rule): "Fresh FEC files, household barcodes, random Friday–Saturday drops. Tap a business, scan a barcode, track the platforms you skip. No accounts. No tracking."
+
+Oct 19 (owner via the dev lead): in-app label is now "DROPS THIS WEEKEND"; marketing never says the card drops "Friday" alone. A new window (random minute Fri 4–11pm ET or Sat noon–6pm ET, never overnight; a missed drop is filed on next open) ships with the next build, likely 1.2.1 build 14, and stays unpublished until live. Proposed What's New line for that build (210 chars; body would be 1,004 chars, after the household bullet): "• The weekly scorecard now drops at a random moment between Friday afternoon and Saturday evening, never overnight. Miss it, and your card is made the next time you open the app and filed under Past scorecards." Pending the dev lead's word on build 14.
