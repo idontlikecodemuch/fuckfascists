@@ -3,7 +3,7 @@ import type { StorageAdapter } from '../../../core/data';
 import type { Platform } from '../../Platforms/types';
 import { aggregateScorecard } from '../data/aggregateScorecard';
 import { findCardForWeek, type ArchivedCard } from '../data/cardArchive';
-import { revealedWeekMarker } from '../data/weekMarkers';
+import { lateCardMarker, revealedWeekMarker } from '../data/weekMarkers';
 import { getScoredWeekOfDrop } from './scoredWeek';
 import { getScorecardDropTimeForTimestamp } from './dropTime';
 import {
@@ -28,6 +28,7 @@ interface PendingDropLaunchInput {
   aggregate?: AggregateScorecardFn;
   findArchivedCard?: FindArchivedCardFn;
   readRevealedWeek?: ReadRevealedWeekFn;
+  readLateWeek?: ReadRevealedWeekFn;
 }
 
 function getDropAtForTimestamp(nowMs: number): number {
@@ -49,7 +50,8 @@ export function getPendingScorecardDropWeek(nowMs = Date.now()): string | null {
 }
 
 /**
- * Whether launch or resume should open Scorecard: a drop inside its 48h
+ * Whether launch or resume should open Scorecard: a missed drop's card still
+ * waiting for its late reveal (lateCardMarker), or a drop inside its 48h
  * window that the user has not seen yet (revealedWeekMarker), whose week has
  * a card or enough avoids for one. The shell may have captured the card from
  * another tab already, so an existing card still routes until it is revealed.
@@ -63,11 +65,14 @@ export async function shouldLaunchPendingScorecardDrop({
   aggregate = aggregateScorecard,
   findArchivedCard = findCardForWeek,
   readRevealedWeek = revealedWeekMarker.read,
+  readLateWeek = lateCardMarker.read,
 }: PendingDropLaunchInput): Promise<boolean> {
-  const scoredWeekOf = getPendingScorecardDropWeek(nowMs);
-  if (!scoredWeekOf) return false;
-
   try {
+    const lateWeek = await readLateWeek();
+    if (lateWeek && await findArchivedCard(lateWeek)) return true;
+
+    const scoredWeekOf = getPendingScorecardDropWeek(nowMs);
+    if (!scoredWeekOf) return false;
     if ((await readRevealedWeek()) === scoredWeekOf) return false;
     if (await findArchivedCard(scoredWeekOf)) return true;
 

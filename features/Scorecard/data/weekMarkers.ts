@@ -5,7 +5,7 @@ const WEEK_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 /**
  * A best-effort SecureStore marker that holds one week date (YYYY-MM-DD) and
  * nothing else. Storage errors are swallowed: a lost marker only means a
- * notice or a reveal route shows again (or not), never lost data.
+ * reveal shows again (or not), never lost data.
  */
 export interface WeekMarker {
   key: string;
@@ -43,8 +43,10 @@ function createWeekMarker(key: string): WeekMarker {
 }
 
 /**
- * Card captured more than the presentation window after its drop that has not
- * been announced yet. The Scorecard tab shows a one-line notice once.
+ * Card captured more than the presentation window after its drop (a missed
+ * drop) that has not been revealed yet. The next app open routes to Scorecard
+ * and shows it with the full presentation once. The capture runner goes
+ * oldest first, so after several missed weeks this holds the most recent.
  */
 export const lateCardMarker = createWeekMarker('scorecard_late_card_week');
 

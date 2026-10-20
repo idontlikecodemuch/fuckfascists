@@ -40,6 +40,7 @@ describe('shouldLaunchPendingScorecardDrop', () => {
     platforms: [],
     nowMs: dropAt + 60_000,
     readRevealedWeek: jest.fn().mockResolvedValue(null),
+    readLateWeek: jest.fn().mockResolvedValue(null),
   };
   const archivedCard = {
     filename: 'card.jpg',
@@ -88,6 +89,27 @@ describe('shouldLaunchPendingScorecardDrop', () => {
       ...base,
       nowMs: dropAt + SCORECARD_PRESENTATION_WINDOW_MS,
       findArchivedCard: jest.fn().mockResolvedValue(archivedCard),
+    })).resolves.toBe(false);
+  });
+
+  it('launches outside the window for a missed drop card awaiting its late reveal', async () => {
+    const lateWeek = '2026-05-09';
+    const findArchivedCard = jest.fn().mockResolvedValue(archivedCard);
+    await expect(shouldLaunchPendingScorecardDrop({
+      ...base,
+      nowMs: dropAt + SCORECARD_PRESENTATION_WINDOW_MS,
+      readLateWeek: jest.fn().mockResolvedValue(lateWeek),
+      findArchivedCard,
+    })).resolves.toBe(true);
+    expect(findArchivedCard).toHaveBeenCalledWith(lateWeek);
+  });
+
+  it('ignores a late marker whose card no longer exists', async () => {
+    await expect(shouldLaunchPendingScorecardDrop({
+      ...base,
+      nowMs: dropAt + SCORECARD_PRESENTATION_WINDOW_MS,
+      readLateWeek: jest.fn().mockResolvedValue('2026-05-09'),
+      findArchivedCard: jest.fn().mockResolvedValue(null),
     })).resolves.toBe(false);
   });
 

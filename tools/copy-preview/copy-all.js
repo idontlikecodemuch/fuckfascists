@@ -198,7 +198,6 @@ var COPY_ALL_DATA = {
     "dismissLabel": "Done",
     "loaderText": "Locking in my card.\nShredding the data.",
     "pastCardsLabel": "Past scorecards",
-    "lateCardNotice": "Your card for the week of {week} is filed in Past scorecards.",
     "emptyState": "Hit the {map}. Hit {track}.\nMake them feel it.",
     "tagline": "The fascists won't FCK themselves.",
     "cta": "FCKfascists.com",

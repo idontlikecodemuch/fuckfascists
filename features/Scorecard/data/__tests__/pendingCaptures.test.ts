@@ -43,7 +43,7 @@ describe('resolveDropAtForWeek', () => {
 });
 
 describe('capturePendingScorecards', () => {
-  it('captures a skipped weekend late, purges only that week, and marks the notice', async () => {
+  it('captures a skipped weekend late, purges only that week, and marks it for the late reveal', async () => {
     const { store, deps, run } = setup([
       { entityId: 'meta', date: '2026-10-05', count: 3 },
       { entityId: 'meta', date: '2026-10-12', count: 1 },
@@ -56,17 +56,19 @@ describe('capturePendingScorecards', () => {
     expect(deps.captureWeek).toHaveBeenCalledWith(SKIPPED_WEEK, expect.objectContaining({ grandTotal: 3 }));
     expect(result).toEqual({
       captured: [SKIPPED_WEEK], purged: [SKIPPED_WEEK], failed: [], abandoned: [], interrupted: false,
+      late: [SKIPPED_WEEK],
     });
     expect(deps.markLateCard).toHaveBeenCalledWith(SKIPPED_WEEK);
     expect(store.entity).toEqual([{ entityId: 'meta', date: '2026-10-12', count: 1 }]);
   });
 
-  it('captures inside the presentation window without the late notice', async () => {
+  it('captures inside the presentation window without a late reveal', async () => {
     const { deps, run } = setup([{ entityId: 'meta', date: '2026-10-05', count: 1 }]);
 
     const result = await run(skippedDrop + HOUR_MS);
 
     expect(result.captured).toEqual([SKIPPED_WEEK]);
+    expect(result.late).toEqual([]);
     expect(deps.markLateCard).not.toHaveBeenCalled();
   });
 
@@ -76,7 +78,7 @@ describe('capturePendingScorecards', () => {
     const result = await run(skippedDrop - 60_000);
 
     expect(deps.captureWeek).not.toHaveBeenCalled();
-    expect(result).toEqual({ captured: [], purged: [], failed: [], abandoned: [], interrupted: false });
+    expect(result).toEqual({ captured: [], purged: [], failed: [], abandoned: [], interrupted: false, late: [] });
     expect(store.entity).toHaveLength(1);
   });
 
@@ -95,6 +97,7 @@ describe('capturePendingScorecards', () => {
     expect(captureWeek.mock.calls.map(([weekOf]) => weekOf)).toEqual([FAILING_WEEK, SKIPPED_WEEK]);
     expect(result).toEqual({
       captured: [SKIPPED_WEEK], purged: [SKIPPED_WEEK], failed: [FAILING_WEEK], abandoned: [], interrupted: false,
+      late: [SKIPPED_WEEK],
     });
     expect(store.entity).toEqual([{ entityId: 'meta', date: '2026-09-28', count: 1 }]);
     expect(deps.markLateCard).toHaveBeenCalledTimes(1);

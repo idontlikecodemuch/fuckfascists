@@ -96,6 +96,8 @@ export interface CapturePendingResult {
   abandoned: string[];
   /** The app left the foreground; the run stopped without counting a failure. */
   interrupted: boolean;
+  /** Weeks captured after their presentation window (a missed drop); oldest first. */
+  late: string[];
 }
 
 /**
@@ -105,7 +107,7 @@ export interface CapturePendingResult {
  *   - card already archived → scoped purge of the leftovers;
  *   - fewer than minAvoids → scoped purge, no card is coming;
  *   - otherwise capture, then scoped purge. A capture more than the
- *     presentation window after its drop is marked for the late-card notice.
+ *     presentation window after its drop is marked for its late reveal.
  * A week is never purged while it is still the live local week (a Friday
  * drop): its purge happens on the first run after local midnight, so Track
  * and the live preview keep the week until it ends.
@@ -136,7 +138,7 @@ export async function capturePendingScorecards({
   saveFailures = writeCaptureFailures,
 }: CapturePendingInput): Promise<CapturePendingResult> {
   const result: CapturePendingResult = {
-    captured: [], purged: [], failed: [], abandoned: [], interrupted: false,
+    captured: [], purged: [], failed: [], abandoned: [], interrupted: false, late: [],
   };
   const liveWeekOf = getLocalWeekStartForDate(new Date(nowMs));
   const eventWeeks = await listAvoidEventWeeks(adapter);
@@ -206,6 +208,7 @@ export async function capturePendingScorecards({
     delete failures[weekOf];
     result.captured.push(weekOf);
     if (nowMs - dropAt >= SCORECARD_PRESENTATION_WINDOW_MS) {
+      result.late.push(weekOf);
       await markLateCard(weekOf).catch(() => undefined);
     }
     await purge(weekOf);

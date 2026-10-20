@@ -27,6 +27,8 @@ export interface ScorecardCaptureContextValue {
   lastRunStartedAt: number | null;
   /** Increments after a run captures or purges, so screens re-read cards and data. */
   cardsVersion: number;
+  /** Increments after a run captures a missed drop's card; the shell opens Scorecard for its reveal. */
+  lateRevealVersion: number;
   /** Captures (then purges) every pending week. A call during a run queues one more pass. */
   runPendingCaptures: () => Promise<void>;
   /** Renders and saves one card without purging. Used by dev "Generate now". */
@@ -71,6 +73,7 @@ export function ScorecardCaptureProvider({
   const [running, setRunning] = useState(false);
   const [lastRunStartedAt, setLastRunStartedAt] = useState<number | null>(null);
   const [cardsVersion, setCardsVersion] = useState(0);
+  const [lateRevealVersion, setLateRevealVersion] = useState(0);
   const runRef = useRef<Promise<void> | null>(null);
   const rerunRef = useRef(false);
   const startedRef = useRef(false);
@@ -127,6 +130,7 @@ export function ScorecardCaptureProvider({
           if (result.captured.length > 0 || result.purged.length > 0) {
             setCardsVersion((version) => version + 1);
           }
+          if (result.late.length > 0) setLateRevealVersion((version) => version + 1);
         } catch {
           // Reading events failed. Nothing was deleted; the next launch or resume retries.
         }
@@ -164,9 +168,10 @@ export function ScorecardCaptureProvider({
     running,
     lastRunStartedAt,
     cardsVersion,
+    lateRevealVersion,
     runPendingCaptures,
     captureCard,
-  }), [capturing, running, lastRunStartedAt, cardsVersion, runPendingCaptures, captureCard]);
+  }), [capturing, running, lastRunStartedAt, cardsVersion, lateRevealVersion, runPendingCaptures, captureCard]);
 
   return (
     <ScorecardCaptureCtx.Provider value={value}>

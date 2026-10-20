@@ -82,7 +82,7 @@ function AppShellContent({ adapter, entities, people }: AppShellProps) {
   // Incrementing key forces screen remount after beta reset, clearing all
   // in-memory state (map pins, tap results, etc.).
   const [resetKey, setResetKey] = useState(0);
-  const { runPendingCaptures } = useScorecardCapture();
+  const { runPendingCaptures, lateRevealVersion } = useScorecardCapture();
 
   useNudgeNotification();
   useEarlyWeekNudge(adapter, avoidRefreshKey);
@@ -98,6 +98,9 @@ function AppShellContent({ adapter, entities, people }: AppShellProps) {
   useLaunchRouting({
     adapter, entities, platforms: TRACKED_PLATFORMS, setActiveTab, onRouted: handleRouted,
   });
+
+  // A missed drop's card was just captured: open Scorecard for its one reveal.
+  useEffect(() => { if (lateRevealVersion > 0) setActiveTab('report'); }, [lateRevealVersion]);
 
   const handleVersionTap = useBetaVersionTap(betaMode);
 

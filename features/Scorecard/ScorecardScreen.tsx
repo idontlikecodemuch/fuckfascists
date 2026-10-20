@@ -8,7 +8,7 @@ import type { DropSchedule } from './types';
 import { useDropSchedule } from './hooks/useDropSchedule';
 import { useScorecard } from './hooks/useScorecard';
 import { useScoredWeekCard } from './hooks/useScoredWeekCard';
-import { useLateCardNotice } from './hooks/useLateCardNotice';
+import { useLateCardReveal } from './hooks/useLateCardReveal';
 import { useScorecardUserNav } from './hooks/useScorecardUserNav';
 import { useScorecardCapture } from './context/ScorecardCaptureContext';
 import { revealedWeekMarker } from './data/weekMarkers';
@@ -49,8 +49,8 @@ interface ScorecardScreenProps {
  * app-shell ScorecardCaptureProvider captures cards and purges raw events.
  * Inside the 48h window with a card → full-screen presentation (which marks
  * the drop revealed for launch routing); while the shell still captures this
- * drop → the loader; otherwise the live preview or empty-drop state, plus a
- * one-line notice for a card saved after its window.
+ * drop → the loader; a missed drop's card → its one late reveal; otherwise
+ * the live preview or empty-drop state.
  */
 export function ScorecardScreen({
   adapter,
@@ -140,19 +140,20 @@ export function ScorecardScreen({
   });
 
   const presentationActive = effectiveState === 'presentation' && Boolean(cardUri);
-  const lateWeek = useLateCardNotice(
-    effectiveState === 'preview' || effectiveState === 'empty',
-    capture.cardsVersion,
-  );
+  const newerCardInWindow = Boolean(cardUri) && inPresentationWindow;
+  const late = useLateCardReveal(capture.cardsVersion, newerCardInWindow);
+  const lateActive = Boolean(late.uri) && !newerCardInWindow && !presentationActive &&
+    effectiveState !== 'archive' && effectiveState !== 'loading';
 
   React.useEffect(() => {
-    onPresentationActiveChange?.(presentationActive);
+    onPresentationActiveChange?.(presentationActive || lateActive);
     return () => onPresentationActiveChange?.(false);
-  }, [onPresentationActiveChange, presentationActive]);
+  }, [onPresentationActiveChange, presentationActive, lateActive]);
 
   React.useEffect(() => {
     if (presentationActive) markRevealed();
-  }, [presentationActive, markRevealed]);
+    if (lateActive) late.markShown();
+  }, [presentationActive, markRevealed, lateActive, late.markShown]);
 
   // PREVIEW stamp is a fixed viewport overlay in the in-app preview
   // states — must persist while the user scrolls LivePreview so any
@@ -177,26 +178,26 @@ export function ScorecardScreen({
       <StarField seed="scorecard" />
 
       {effectiveState === 'loading' && <ScorecardLoader />}
-      {effectiveState === 'empty' && (
+      {effectiveState === 'empty' && !lateActive && (
         <EmptyWeek
           onSwitchTab={onSwitchTab}
           onOpenArchive={handleOpenArchive}
-          lateWeek={lateWeek}
         />
       )}
-      {effectiveState === 'preview' && liveData && (
+      {effectiveState === 'preview' && liveData && !lateActive && (
         <>
           <LivePreview
             data={liveData}
             showPendingPreviousCard={showPendingPreviousCard}
             onSwitchTab={onSwitchTab}
           />
-          <PastScorecardsLink onPress={handleOpenArchive} lateWeek={lateWeek} />
+          <PastScorecardsLink onPress={handleOpenArchive} />
         </>
       )}
       {presentationActive && cardUri && (
         <CardPresentation pngUri={cardUri} onDismiss={handleDismiss} />
       )}
+      {lateActive && late.uri && <CardPresentation pngUri={late.uri} onDismiss={late.dismiss} />}
       {effectiveState === 'archive' && (
         <CardArchive
           onDismiss={() => setUserNav('auto')}
@@ -205,7 +206,7 @@ export function ScorecardScreen({
       )}
 
       {/* Dev tools — __DEV__ only, preview state only */}
-      {__DEV__ && liveData && effectiveState === 'preview' && (
+      {__DEV__ && liveData && effectiveState === 'preview' && !lateActive && (
         <DevToolsPanel
           onGenerateNow={handleGenerateCard}
           onResetCard={handleResetCard}
@@ -215,7 +216,7 @@ export function ScorecardScreen({
 
       {/* Fixed PREVIEW stamp — outside ScrollView so screenshots always
           capture it. Positioned top-right under the safe-area inset. */}
-      {showPreviewStamp && (
+      {showPreviewStamp && !lateActive && (
         <View style={[styles.previewStampHost, { top: insets.top }]} pointerEvents="none">
           <PreviewStamp />
         </View>

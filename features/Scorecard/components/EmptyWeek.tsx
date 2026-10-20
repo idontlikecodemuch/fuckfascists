@@ -7,8 +7,6 @@ import { PastScorecardsLink } from './PastScorecardsLink';
 interface EmptyWeekProps {
   onSwitchTab?: (tab: string) => void;
   onOpenArchive?: () => void;
-  /** Week of a card saved after its drop window (one-line notice). */
-  lateWeek?: string | null;
 }
 
 /**
@@ -18,7 +16,7 @@ interface EmptyWeekProps {
  * Token rendering matches LivePreview's EmptyHint so the same copy string
  * (scorecardCopy.emptyState) renders identically in both surfaces.
  */
-export function EmptyWeek({ onSwitchTab, onOpenArchive, lateWeek }: EmptyWeekProps) {
+export function EmptyWeek({ onSwitchTab, onOpenArchive }: EmptyWeekProps) {
   return (
     <View style={styles.container}>
       <Text style={styles.text} allowFontScaling={false}>
@@ -46,7 +44,6 @@ export function EmptyWeek({ onSwitchTab, onOpenArchive, lateWeek }: EmptyWeekPro
         <PastScorecardsLink
           style={styles.archiveLink}
           onPress={onOpenArchive}
-          lateWeek={lateWeek}
         />
       )}
     </View>
