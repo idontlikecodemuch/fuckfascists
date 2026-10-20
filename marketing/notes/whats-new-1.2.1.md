@@ -1,4 +1,4 @@
-# App Store — What's New, 1.2.1 (build 13)
+# App Store — What's New, 1.2.1 (build 14)
 
 Clark voice, corporate neutral (voice framework §App Store listing): no FCK, no emoji, no
 party claims, nothing promised that isn't in the build. Fact-checked against
@@ -9,6 +9,11 @@ not "A Monday nudge.".
 Oct 15 (build 13): the household-barcodes bullet is folded in (recommended to the owner via the
 release session; build 13 ships 62 verified prefixes and the Walmart store brands), headline
 "Scan the house." Order mirrors the headline: files, faces, the house.
+Oct 19 (build 14): the owner's final call. One bullet added after the household bullet, before the
+early-week nudge: the missed-drop recovery (a missed card is revealed full-screen on next open, only the
+most recent if two weeks were missed, and saved in Past scorecards). No drop-time bullet: the new window
+(never earlier than about 6am local anywhere in the US) stays unpublished. Headline and everything else
+unchanged. 901 characters. The dev lead sets it in App Store Connect from this text.
 
 ---
 
@@ -21,6 +26,8 @@ Fresh files. More faces. Scan the house.
 • Anyone still without a sprite gets a red pixel X on the card, not an empty slot.
 
 • Scan the household stuff: Windex, Clorox, OxiClean, Glad and Hefty now match their owners by barcode, and Walmart's Great Value and Equate show Walmart.
+
+• Miss the drop? No problem. Your card is made the next time you open the app and filed in Past scorecards.
 
 • A new early-week nudge lands Monday or Tuesday — "Case of the Mondays?", "It's Taco Tuesday" — and opens the tab it's talking about. Never during quiet hours.
 
