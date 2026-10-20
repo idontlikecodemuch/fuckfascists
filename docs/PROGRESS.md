@@ -37,7 +37,7 @@ This document is updated continuously. New instances should read this first — 
 
 **Accepted, not fixed:** the 90-minute adjacent-week separation is measured in ET wall-clock time, so across a DST change it can be 55 real minutes. Installs at UTC+5 and east may have legacy cards filed one week late under the old one-day anchor.
 
-**Flag, not changed:** `scorecardCopy.dropsLabel` "DROPS THIS FRIDAY" is wrong for weeks whose drop lands on Saturday (about 46% under v3).
+**Resolved (owner, 2026-10-19):** `scorecardCopy.dropsLabel` is now "DROPS THIS WEEKEND" (it said "DROPS THIS FRIDAY", wrong for Saturday drops, about 46% under v3). The same wording goes into marketing and Info materials.
 
 **Pre-existing failure:** `core/matching/__tests__/pipeline.test.ts` "does not let an older lookup cache shadow fresher Git or bundled data" fails from 2026-10-19 on because its fixture `lastVerifiedDate: '2026-08-20'` is now 60 days old (date-dependent fixture, unrelated to this branch).
 

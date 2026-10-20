@@ -4,7 +4,7 @@ export const scorecardCopy = {
   // Tab + header
   tabLabel: "SCORECARD",
   title: "SCORECARD",
-  dropsLabel: "DROPS THIS FRIDAY",
+  dropsLabel: "DROPS THIS WEEKEND",
   pendingPreviousTitle: "LAST WEEK'S SCORECARD",
   pendingPreviousStatus: "DROPPING SOON",
   currentWeekLabel: "NEW WEEK",

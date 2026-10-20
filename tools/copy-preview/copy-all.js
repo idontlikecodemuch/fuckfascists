@@ -183,7 +183,7 @@ var COPY_ALL_DATA = {
   "scorecard": {
     "tabLabel": "SCORECARD",
     "title": "SCORECARD",
-    "dropsLabel": "DROPS THIS FRIDAY",
+    "dropsLabel": "DROPS THIS WEEKEND",
     "previewStamp": "PREVIEW",
     "previewA11y": "Preview — this is not the official weekly drop",
     "dateRange": "{start} — {end}",

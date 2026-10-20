@@ -45,7 +45,7 @@ export const MIN_AVOIDS_FOR_DROP = 1;         // suppress card + notification be
 - Drop notification schedules only when the scored week has enough avoids to render a card
 - From 11pm through 8:59am local device time, the drop notification is quiet
 - Drop time is NOT displayed to the user — no countdown, no specific time shown. The randomness is the point (BeReal model).
-- Header reads: **"DROPS THIS FRIDAY"**
+- Header reads: **"DROPS THIS WEEKEND"**
 
 ---
 
@@ -55,7 +55,7 @@ export const MIN_AVOIDS_FOR_DROP = 1;         // suppress card + notification be
 
 The preview is a scrollable, interactive breakdown of the user's week across **all surfaces** — Map, Track, and Scan. It is the only unified view of total weekly impact. This is the reason to visit the tab mid-week.
 
-**Header:** "SCORECARD" with "DROPS THIS FRIDAY" subtext and "PREVIEW" stamp.
+**Header:** "SCORECARD" with "DROPS THIS WEEKEND" subtext and "PREVIEW" stamp.
 
 **Background:** StarBackground component (same as Info, Onboarding, Scan).
 
@@ -367,7 +367,7 @@ export const scorecardCopy = {
   tabLabel: "SCORECARD",
   title: "SCORECARD",
   dateRange: (start: string, end: string) => `${start} — ${end}`,
-  dropsLabel: "DROPS THIS FRIDAY",
+  dropsLabel: "DROPS THIS WEEKEND",
   heroLabel: "avoids",
   heroWeek: "THIS WEEK",
   previewStamp: "PREVIEW",
