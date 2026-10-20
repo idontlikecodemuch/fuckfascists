@@ -11,7 +11,7 @@ import { HEADER_H, HEADER_W, SAFE, StoreHeader, hasTilt, type HeaderVariant } fr
  */
 export const VIDEO_W = 3840;
 export const VIDEO_H = 1646;
-export const LOOP = 450; // 15 s @ 30 fps
+export const LOOP = 360; // 12 s @ 30 fps (round 19: 15 → 12 s, the tilt a little faster; every motion is whole cycles of LOOP)
 const S = VIDEO_W / HEADER_W; // 0.7323
 const CROP_TOP = SAFE.top; // the 21:9 band of the universal canvas
 

@@ -349,6 +349,12 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
         // round 17 comps: small two-line name under the iPad pill, the hero line big; a = Bungee hero one line, b = Bungee hero two lines (biggest), c = Plex hero one line
         <>
           <Par z={0.35}><Clark left={870} top={1230} width={700} /></Par>
+          {/* round 19: the loop's bills fall BEHIND the phones and the copy (layer order) instead of blinking out inside keep-out boxes; the poster frame still drops whole bills off the copy */}
+          {loop ? (
+            <LoopMoney count={20} seed={`${variant}-b`} loop={loop} frame={frame} />
+          ) : (
+            <StillMoney count={20} seed={`${variant}-b`} avoid={[{ left: variant === 's3d' ? 1080 : 1180, top: 1095, width: 2890, height: 860 }, { left: 2150, top: 1900, width: 2080, height: 1050 }]} />
+          )}
           <Fan cx={3190} cy={2400 + dy}>
             <Phone src={MAP} aspect={1080 / 1926} left={2220} top={2000 + dy} width={520} rotate={-7} bleed bob={bob(0)} />
             <Phone src={SCAN_COKE2} aspect={1206 / 2322} left={2930} top={1960 + dy} width={520} rotate={0} bleed bob={bob(2.1)} />
@@ -384,11 +390,6 @@ export const StoreHeader: React.FC<{ variant: HeaderVariant; copy?: CopyId; targ
             </>
           )}
           </Par>
-          {loop ? (
-            <LoopMoney count={20} seed={`${variant}-b`} loop={loop} frame={frame} avoid={[{ left: variant === 's3d' ? 1080 : 1180, top: 1095, width: 2890, height: 860 }, { left: 2150, top: 1900, width: 2080, height: 1050 }]} />
-          ) : (
-            <StillMoney count={20} seed={`${variant}-b`} avoid={[{ left: variant === 's3d' ? 1080 : 1180, top: 1095, width: 2890, height: 860 }, { left: 2150, top: 1900, width: 2080, height: 1050 }]} />
-          )}
         </>
       ) : null}
       {variant === 's2' ? (
