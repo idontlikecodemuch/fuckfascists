@@ -56,7 +56,7 @@ describe('capturePendingScorecards', () => {
     expect(deps.captureWeek).toHaveBeenCalledWith(SKIPPED_WEEK, expect.objectContaining({ grandTotal: 3 }));
     expect(result).toEqual({
       captured: [SKIPPED_WEEK], purged: [SKIPPED_WEEK], failed: [], abandoned: [], interrupted: false,
-      late: [SKIPPED_WEEK],
+      late: [SKIPPED_WEEK], lateReveal: SKIPPED_WEEK,
     });
     expect(deps.markLateCard).toHaveBeenCalledWith(SKIPPED_WEEK);
     expect(store.entity).toEqual([{ entityId: 'meta', date: '2026-10-12', count: 1 }]);
@@ -78,7 +78,7 @@ describe('capturePendingScorecards', () => {
     const result = await run(skippedDrop - 60_000);
 
     expect(deps.captureWeek).not.toHaveBeenCalled();
-    expect(result).toEqual({ captured: [], purged: [], failed: [], abandoned: [], interrupted: false, late: [] });
+    expect(result).toEqual({ captured: [], purged: [], failed: [], abandoned: [], interrupted: false, late: [], lateReveal: null });
     expect(store.entity).toHaveLength(1);
   });
 
@@ -89,7 +89,7 @@ describe('capturePendingScorecards', () => {
         { entityId: 'meta', date: '2026-10-05', count: 1 },
         { entityId: 'meta', date: '2026-09-28', count: 1 },
       ],
-      { captureWeek },
+      { captureWeek, findNewestCardWeek: jest.fn(async () => SKIPPED_WEEK) },
     );
 
     const result = await run(skippedDrop + 3 * 24 * HOUR_MS);
@@ -97,9 +97,53 @@ describe('capturePendingScorecards', () => {
     expect(captureWeek.mock.calls.map(([weekOf]) => weekOf)).toEqual([FAILING_WEEK, SKIPPED_WEEK]);
     expect(result).toEqual({
       captured: [SKIPPED_WEEK], purged: [SKIPPED_WEEK], failed: [FAILING_WEEK], abandoned: [], interrupted: false,
-      late: [SKIPPED_WEEK],
+      late: [SKIPPED_WEEK], lateReveal: SKIPPED_WEEK,
     });
     expect(store.entity).toEqual([{ entityId: 'meta', date: '2026-09-28', count: 1 }]);
     expect(deps.markLateCard).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('capturePendingScorecards late reveal', () => {
+  const twoMissedWeeks = [
+    { entityId: 'meta', date: '2026-09-28', count: 1 },
+    { entityId: 'meta', date: '2026-10-05', count: 1 },
+  ];
+  const later = skippedDrop + 3 * 24 * HOUR_MS;
+
+  it('marks only the newest of several missed weeks', async () => {
+    const { deps, run } = setup(twoMissedWeeks);
+
+    const result = await run(later);
+
+    expect(result.late).toEqual([FAILING_WEEK, SKIPPED_WEEK]);
+    expect(result.lateReveal).toBe(SKIPPED_WEEK);
+    expect(deps.markLateCard).toHaveBeenCalledTimes(1);
+    expect(deps.markLateCard).toHaveBeenCalledWith(SKIPPED_WEEK);
+  });
+
+  it('marks nothing when the run was interrupted', async () => {
+    // Active for the older week, then the app leaves the foreground.
+    const foregroundSession = jest.fn<number | null, []>().mockReturnValueOnce(1).mockReturnValue(null);
+    const { deps, run } = setup(twoMissedWeeks, { foregroundSession });
+
+    const result = await run(later);
+
+    expect(result.interrupted).toBe(true);
+    expect(result.lateReveal).toBeNull();
+    expect(deps.markLateCard).not.toHaveBeenCalled();
+  });
+
+  it('never marks an older week that captured after a newer card exists', async () => {
+    const { deps, run } = setup(
+      [{ entityId: 'meta', date: '2026-09-28', count: 1 }],
+      { archived: [SKIPPED_WEEK] },
+    );
+
+    const result = await run(later);
+
+    expect(result.late).toEqual([FAILING_WEEK]);
+    expect(result.lateReveal).toBeNull();
+    expect(deps.markLateCard).not.toHaveBeenCalled();
   });
 });

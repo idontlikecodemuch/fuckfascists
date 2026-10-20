@@ -16,7 +16,8 @@ import type { ScorecardViewData } from '../types';
 import { cancelScorecardDropNotification } from '../hooks/useDropSchedule';
 import { getDropAtForScoredWeek, getScoredWeekOfDrop } from '../utils/scoredWeek';
 import { getPendingScorecardDropWeek } from '../utils/pendingDropLaunch';
-import { findCardForWeek, type ArchivedCard } from './cardArchive';
+import { findCardForWeek, findLatestCard, type ArchivedCard } from './cardArchive';
+import { parseCardWeekOf } from '../utils/formatters';
 import { loadScorecardViewData } from './scorecardViewData';
 import { lateCardMarker } from './weekMarkers';
 import {
@@ -82,6 +83,8 @@ export interface CapturePendingInput {
   loadData?: typeof loadScorecardViewData;
   purgeWeek?: (adapter: StorageAdapter, weekOf: string) => Promise<void>;
   markLateCard?: (weekOf: string) => Promise<void>;
+  /** Week of the newest card on file, or null. */
+  findNewestCardWeek?: () => Promise<string | null>;
   cancelDropNotification?: () => Promise<void>;
   loadFailures?: () => Promise<CaptureFailures>;
   saveFailures?: (failures: CaptureFailures) => Promise<void>;
@@ -98,6 +101,13 @@ export interface CapturePendingResult {
   interrupted: boolean;
   /** Weeks captured after their presentation window (a missed drop); oldest first. */
   late: string[];
+  /** The missed drop marked for its one late reveal this run, or null. */
+  lateReveal: string | null;
+}
+
+async function newestArchivedCardWeek(): Promise<string | null> {
+  const card = await findLatestCard();
+  return card ? parseCardWeekOf(card.filename) : null;
 }
 
 /**
@@ -107,7 +117,7 @@ export interface CapturePendingResult {
  *   - card already archived → scoped purge of the leftovers;
  *   - fewer than minAvoids → scoped purge, no card is coming;
  *   - otherwise capture, then scoped purge. A capture more than the
- *     presentation window after its drop is marked for its late reveal.
+ *     presentation window after its drop is late; the newest late card is marked for its one reveal.
  * A week is never purged while it is still the live local week (a Friday
  * drop): its purge happens on the first run after local midnight, so Track
  * and the live preview keep the week until it ends.
@@ -133,12 +143,13 @@ export async function capturePendingScorecards({
   loadData = loadScorecardViewData,
   purgeWeek = purgeScoredWeekAvoidEvents,
   markLateCard = lateCardMarker.mark,
+  findNewestCardWeek = newestArchivedCardWeek,
   cancelDropNotification = cancelScorecardDropNotification,
   loadFailures = readCaptureFailures,
   saveFailures = writeCaptureFailures,
 }: CapturePendingInput): Promise<CapturePendingResult> {
   const result: CapturePendingResult = {
-    captured: [], purged: [], failed: [], abandoned: [], interrupted: false, late: [],
+    captured: [], purged: [], failed: [], abandoned: [], interrupted: false, late: [], lateReveal: null,
   };
   const liveWeekOf = getLocalWeekStartForDate(new Date(nowMs));
   const eventWeeks = await listAvoidEventWeeks(adapter);
@@ -207,11 +218,19 @@ export async function capturePendingScorecards({
 
     delete failures[weekOf];
     result.captured.push(weekOf);
-    if (nowMs - dropAt >= SCORECARD_PRESENTATION_WINDOW_MS) {
-      result.late.push(weekOf);
-      await markLateCard(weekOf).catch(() => undefined);
-    }
+    if (nowMs - dropAt >= SCORECARD_PRESENTATION_WINDOW_MS) result.late.push(weekOf);
     await purge(weekOf);
+  }
+
+  // Missed drops get one reveal: the newest late card, marked only once the
+  // run has finished and only while it is the newest card on file, so an
+  // interrupted run, an in-window newer card, or an older week that finally
+  // captured after a newer one never takes the reveal.
+  const newestLate = result.late[result.late.length - 1];
+  if (newestLate && !result.interrupted &&
+    (await findNewestCardWeek().catch(() => null)) === newestLate) {
+    await markLateCard(newestLate).catch(() => undefined);
+    result.lateReveal = newestLate;
   }
 
   if (JSON.stringify(failures) !== failuresBefore) await saveFailures(failures);

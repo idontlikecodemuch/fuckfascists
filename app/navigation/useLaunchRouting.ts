@@ -17,6 +17,8 @@ interface LaunchRoutingInput {
   setActiveTab: (tab: Tab) => void;
   /** Runs after each routing decision: once at cold start, then on every resume. */
   onRouted: () => void;
+  /** Bumped when a capture run marked a missed drop's card for its late reveal. */
+  lateRevealVersion: number;
 }
 
 /**
@@ -27,6 +29,9 @@ interface LaunchRoutingInput {
  * - resume (background → active only, see nextResumeState): Scorecard for an
  *   unrevealed drop, unless a notification tap routed since the app left the
  *   foreground (the tap wins).
+ * - a missed drop's card just captured: Scorecard for its one late reveal,
+ *   unless a notification tap routed in this foreground session (the tap wins;
+ *   the late marker stays set, so the next launch or resume reveals it).
  * onRouted fires only after the route is set, so the shell's card capture can
  * never decide the route.
  */
@@ -68,6 +73,12 @@ export function useLaunchRouting(input: LaunchRoutingInput): void {
     notificationRoutedAt.current = Date.now();
     latest.current.setActiveTab(routedTab);
   }, [lastNotificationResponse]);
+
+  useEffect(() => {
+    if (input.lateRevealVersion === 0) return;
+    if (notificationRoutedAt.current > leftForegroundAt.current) return;
+    latest.current.setActiveTab('report');
+  }, [input.lateRevealVersion]);
 
   useEffect(() => {
     let previous: AppStateStatus = AppState.currentState;

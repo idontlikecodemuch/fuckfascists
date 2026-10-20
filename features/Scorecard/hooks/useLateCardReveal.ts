@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { findCardForWeek } from '../data/cardArchive';
 import { lateCardMarker } from '../data/weekMarkers';
 
@@ -20,27 +20,44 @@ export interface LateCardReveal {
  */
 export function useLateCardReveal(refreshKey: number, newerCardInWindow: boolean): LateCardReveal {
   const [uri, setUri] = useState<string | null>(null);
+  // Sync ref: read after the async marker lookup, so a newer in-window card
+  // that appeared meanwhile still wins.
+  const newerRef = useRef(newerCardInWindow);
+  newerRef.current = newerCardInWindow;
+  // Once on screen, the reveal stays until dismissed, even if a later re-read
+  // (its marker is already cleared) finds nothing.
+  const shownRef = useRef(false);
 
   useEffect(() => {
     let cancelled = false;
     (async () => {
       const weekOf = await lateCardMarker.read();
-      if (!weekOf || cancelled) return;
-      const card = await findCardForWeek(weekOf).catch(() => null);
-      if (cancelled) return;
-      if (card) setUri(card.uri);
-      else await lateCardMarker.clear();
+      const card = weekOf ? await findCardForWeek(weekOf).catch(() => null) : null;
+      if (cancelled || shownRef.current) return;
+      if (card && !newerRef.current) {
+        setUri(card.uri);
+        return;
+      }
+      setUri(null);
+      if (weekOf) await lateCardMarker.clear();
     })();
     return () => { cancelled = true; };
   }, [refreshKey]);
 
   useEffect(() => {
     if (!newerCardInWindow) return;
+    shownRef.current = false;
     setUri(null);
     void lateCardMarker.clear();
   }, [newerCardInWindow]);
 
-  const markShown = useCallback(() => { void lateCardMarker.clear(); }, []);
-  const dismiss = useCallback(() => setUri(null), []);
+  const markShown = useCallback(() => {
+    shownRef.current = true;
+    void lateCardMarker.clear();
+  }, []);
+  const dismiss = useCallback(() => {
+    shownRef.current = false;
+    setUri(null);
+  }, []);
   return useMemo(() => ({ uri, markShown, dismiss }), [uri, markShown, dismiss]);
 }

@@ -153,7 +153,7 @@ export function ScorecardScreen({
   React.useEffect(() => {
     if (presentationActive) markRevealed();
     if (lateActive) late.markShown();
-  }, [presentationActive, markRevealed, lateActive, late.markShown]);
+  }, [presentationActive, markRevealed, lateActive, late.uri, late.markShown]);
 
   // PREVIEW stamp is a fixed viewport overlay in the in-app preview
   // states — must persist while the user scrolls LivePreview so any
@@ -197,7 +197,7 @@ export function ScorecardScreen({
       {presentationActive && cardUri && (
         <CardPresentation pngUri={cardUri} onDismiss={handleDismiss} />
       )}
-      {lateActive && late.uri && <CardPresentation pngUri={late.uri} onDismiss={late.dismiss} />}
+      {lateActive && late.uri && <CardPresentation key={late.uri} pngUri={late.uri} onDismiss={late.dismiss} />}
       {effectiveState === 'archive' && (
         <CardArchive
           onDismiss={() => setUserNav('auto')}

@@ -96,11 +96,8 @@ function AppShellContent({ adapter, entities, people }: AppShellProps) {
   // drop), then capture any pending scorecards.
   const handleRouted = useCallback(() => { void runPendingCaptures(); }, [runPendingCaptures]);
   useLaunchRouting({
-    adapter, entities, platforms: TRACKED_PLATFORMS, setActiveTab, onRouted: handleRouted,
+    adapter, entities, platforms: TRACKED_PLATFORMS, setActiveTab, onRouted: handleRouted, lateRevealVersion,
   });
-
-  // A missed drop's card was just captured: open Scorecard for its one reveal.
-  useEffect(() => { if (lateRevealVersion > 0) setActiveTab('report'); }, [lateRevealVersion]);
 
   const handleVersionTap = useBetaVersionTap(betaMode);
 

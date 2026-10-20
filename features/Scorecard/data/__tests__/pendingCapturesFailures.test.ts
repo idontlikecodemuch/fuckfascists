@@ -40,7 +40,7 @@ describe('capturePendingScorecards — app not in the foreground', () => {
     const result = await run(failingDrop + 40 * DAY_MS);
 
     expect(deps.captureWeek).not.toHaveBeenCalled();
-    expect(result).toEqual({ captured: [], purged: [], failed: [], abandoned: [], interrupted: true, late: [] });
+    expect(result).toEqual({ captured: [], purged: [], failed: [], abandoned: [], interrupted: true, late: [], lateReveal: null });
     expect(failureStore.value).toEqual({});
     expect(store.entity).toHaveLength(1);
   });
@@ -55,7 +55,7 @@ describe('capturePendingScorecards — app not in the foreground', () => {
     const result = await run(skippedDrop + 40 * DAY_MS);
 
     expect(deps.captureWeek).toHaveBeenCalledTimes(1);
-    expect(result).toEqual({ captured: [], purged: [], failed: [], abandoned: [], interrupted: true, late: [] });
+    expect(result).toEqual({ captured: [], purged: [], failed: [], abandoned: [], interrupted: true, late: [], lateReveal: null });
     expect(failureStore.value).toEqual({});
     expect(store.entity).toHaveLength(2);
   });
@@ -119,7 +119,7 @@ describe('capturePendingScorecards — give-up rule', () => {
     const result = await run(oldDrop);
 
     expect(result).toEqual({
-      captured: [], purged: [FAILING_WEEK], failed: [FAILING_WEEK], abandoned: [FAILING_WEEK], interrupted: false, late: [],
+      captured: [], purged: [FAILING_WEEK], failed: [FAILING_WEEK], abandoned: [FAILING_WEEK], interrupted: false, late: [], lateReveal: null,
     });
     expect(store.entity).toHaveLength(0);
     expect(archived.size).toBe(0);
