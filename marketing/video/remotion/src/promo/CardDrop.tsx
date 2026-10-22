@@ -18,7 +18,7 @@ import { Flash, Slam, useHits } from '../release/kinetic';
 export const CARD_DROP_FRAMES = 387; // 12.9 s @ 30 fps
 const W = 1080;
 const H = 1920;
-const HOOK = 36;
+const HOOK = 0; // social, Oct 22: the hook lands on frame 0 (the sting), the first second is never empty
 const SLAM = 84; // card in
 const BLAST = 228; // money bar
 const RISER = 276; // end card lines
@@ -27,7 +27,7 @@ const MUSIC = 'media/music/fck_bed_free_12s.mp3';
 const BED_GAIN = 0.42;
 const CARD_W = 820;
 const CARD_H = Math.round((CARD_W * 1920) / 1080);
-const HITS: Array<[number, number]> = [[0, 24], [HOOK, 14], [HOOK + 24, 14], [SLAM, 34], [BLAST, 18], [RISER, 14], [END, 30]];
+const HITS: Array<[number, number]> = [[HOOK, 30], [HOOK + 24, 14], [36, 12], [SLAM, 34], [BLAST, 18], [RISER, 14], [END, 30]];
 
 const Card: React.FC<{ src: string }> = ({ src }) => {
   const frame = useCurrentFrame();
@@ -65,7 +65,8 @@ export const CardDrop: React.FC<CardDropProps> = ({ card, free, hook1 = 'YOUR WE
           <MoneyRain burst count={28} seed="card-slam" startFrame={SLAM} />
           <MoneyRain burst count={20} seed="card-blast" startFrame={BLAST} />
           <Card src={src} />
-          {/* END CARD — riser: the drop line, the handle, the free line; the tagline on the hit */}
+          {/* END CARD — riser: the drop line, the handle, the free line; the tagline on the hit (the end money falls behind the type) */}
+          <MoneyRain burst count={16} seed="card-end" startFrame={END} />
           {freeLead && free ? (
             <>
               <Slam at={RISER} text={'FREE THROUGH\nNOV 3.'} size={104} top={400} left={40} width={1000} />
@@ -81,7 +82,6 @@ export const CardDrop: React.FC<CardDropProps> = ({ card, free, hook1 = 'YOUR WE
           )}
           <Slam at={END} text={"THE FASCISTS WON'T\nFCK THEMSELVES."} size={76} top={1190} />
           <Slam at={END + 12} text="🤘🏽" size={120} top={1400} glow={false} />
-          <MoneyRain burst count={16} seed="card-end" startFrame={END} />
         </AbsoluteFill>
         <Flash at={0} frames={3} peak={0.28} />
         <Flash at={SLAM} frames={4} peak={0.5} />
