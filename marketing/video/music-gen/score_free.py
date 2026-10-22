@@ -80,6 +80,10 @@ DRUMS = {
 # Arrangements: (bar list, output seconds, fade-out seconds). 3-beat sting + 8 bars = 420 frames = 14.0 s, plus the hit's ring.
 ARRANGEMENTS = {
     '15s': (list(range(1, len(SEQ) + 1)), 14.6, 1.0),
+    # motion stills: sting, hook, the FREE hit, end hit = 180 frames = 6.0 s, held to 7 s
+    '7s': ([1, 2, 3, 9], 7.0, 0.8),
+    # scorecard drop template: sting, hook, tap/scan/track bars, money bar, riser, end hit = 372 frames = 12.4 s
+    '12s': ([1, 2, 4, 5, 6, 7, 8, 9], 12.9, 1.0),
 }
 LOOP_A = list(range(4, 8))
 

@@ -4,6 +4,8 @@ import { Explainer, type ExplainerProps } from './Explainer';
 import { PREVIEW_FRAMES, PREVIEW_H, PREVIEW_W, Preview } from './appstore/Preview';
 import { Tile } from './appstore/Tile';
 import { FEED_H, FEED_W, FreeStill, STORY_H, STORY_W } from './promo/FreeStill';
+import { FREE_MOTION_FRAMES, FreeMotion } from './promo/FreeMotion';
+import { CARD_DROP_FRAMES, CardDrop } from './promo/CardDrop';
 import { FREE_FRAMES, Free15 } from './release/Free15';
 import { COVER_H, COVER_W, PageCover } from './brand/PageCover';
 import { HEADER_H, HEADER_W, StoreHeader } from './appstore/StoreHeader';
@@ -74,6 +76,10 @@ export const RemotionRoot: React.FC = () => (
     {/* Oct 15: the 1.2 release cut, kinetic type on the drive bed (scripts/render.sh release) */}
     <Composition id="Release30" component={Release} width={1080} height={1920} fps={FPS} durationInFrames={RELEASE_FRAMES} />
     <Composition id="Free15" component={Free15} width={1080} height={1920} fps={FPS} durationInFrames={FREE_FRAMES} />
+    {(['free', 'weekend', 'lastdays'] as const).map((v) => (
+      <Composition key={`freemotion-${v}`} id={`FreeMotion-${v}`} component={FreeMotion} width={1080} height={1920} fps={FPS} durationInFrames={FREE_MOTION_FRAMES} defaultProps={{ variant: v }} />
+    ))}
+    <Composition id="CardDrop" component={CardDrop} width={1080} height={1920} fps={FPS} durationInFrames={CARD_DROP_FRAMES} defaultProps={{ card: 'Those-I-FCKd-July-04-26.jpg', free: true }} />
     {(['free', 'weekend', 'lastdays'] as const).map((v) => (
       <Still key={`freefeed-${v}`} id={`FreeFeed-${v}`} component={FreeStill} width={FEED_W} height={FEED_H} defaultProps={{ variant: v, format: 'feed' as const }} />
     ))}
