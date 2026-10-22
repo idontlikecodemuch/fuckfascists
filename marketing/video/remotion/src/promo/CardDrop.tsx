@@ -47,7 +47,8 @@ const Card: React.FC<{ src: string }> = ({ src }) => {
   );
 };
 
-export const CardDrop: React.FC<{ card: string; free: boolean }> = ({ card, free }) => {
+export type CardDropProps = { card: string; free: boolean; /** the two hook slams before the card */ hook1?: string; hook2?: string; /** end card led by the free line (the window's drop posts) instead of the drop line */ freeLead?: boolean };
+export const CardDrop: React.FC<CardDropProps> = ({ card, free, hook1 = 'YOUR WEEK.', hook2 = 'ONE CARD.', freeLead = false }) => {
   useFonts();
   const shake = useHits(HITS);
   const src = staticFile(`media/scorecards/${card}`);
@@ -58,16 +59,26 @@ export const CardDrop: React.FC<{ card: string; free: boolean }> = ({ card, free
         <AbsoluteFill style={{ transform: `translate(${shake.x}px, ${shake.y}px) scale(${shake.zoom})`, transformOrigin: '50% 45%' }}>
           <MoneyRain burst count={18} seed="card-open" startFrame={0} />
           {/* HOOK — bar 1 */}
-          <Slam at={HOOK} until={SLAM} text="YOUR WEEK." size={120} top={700} />
-          <Slam at={HOOK + 24} until={SLAM} text="ONE CARD." size={120} top={850} color={T.cream} />
+          <Slam at={HOOK} until={SLAM} text={hook1} size={hook1.length > 12 ? 78 : 120} top={720} left={40} width={1000} />
+          <Slam at={HOOK + 24} until={SLAM} text={hook2} size={hook2.length > 12 ? 78 : 120} top={860} color={T.cream} left={40} width={1000} />
           {/* THE CARD — slams in, money, the push */}
           <MoneyRain burst count={28} seed="card-slam" startFrame={SLAM} />
           <MoneyRain burst count={20} seed="card-blast" startFrame={BLAST} />
           <Card src={src} />
           {/* END CARD — riser: the drop line, the handle, the free line; the tagline on the hit */}
-          <Slam at={RISER} text={'RANDOM DROP\nBETWEEN FRIDAY\nAND SATURDAY.'} size={86} top={420} />
-          <Slam at={RISER + 12} text="@fckfascists.app" size={34} color={T.cyan} font="body" weight={600} letterSpacing={5} top={760} glow={false} />
-          {free ? <Slam at={RISER + 24} text="FREE THROUGH NOV 3" size={64} color={T.cream} top={860} /> : null}
+          {freeLead && free ? (
+            <>
+              <Slam at={RISER} text={'FREE THROUGH\nNOV 3.'} size={104} top={400} left={40} width={1000} />
+              <Slam at={RISER + 12} text="@fckfascists.app" size={34} color={T.cyan} font="body" weight={600} letterSpacing={5} top={690} glow={false} />
+              <Slam at={RISER + 24} text="Random drop between Friday and Saturday." size={40} color={T.cream} font="body" weight={600} letterSpacing={1} top={780} glow={false} />
+            </>
+          ) : (
+            <>
+              <Slam at={RISER} text={'RANDOM DROP\nBETWEEN FRIDAY\nAND SATURDAY.'} size={86} top={420} />
+              <Slam at={RISER + 12} text="@fckfascists.app" size={34} color={T.cyan} font="body" weight={600} letterSpacing={5} top={760} glow={false} />
+              {free ? <Slam at={RISER + 24} text="FREE THROUGH NOV 3" size={64} color={T.cream} top={860} /> : null}
+            </>
+          )}
           <Slam at={END} text={"THE FASCISTS WON'T\nFCK THEMSELVES."} size={76} top={1190} />
           <Slam at={END + 12} text="🤘🏽" size={120} top={1400} glow={false} />
           <MoneyRain burst count={16} seed="card-end" startFrame={END} />

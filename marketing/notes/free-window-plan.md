@@ -52,3 +52,7 @@ promo video and the 1.2.1 release content. Nothing here spends money.
 - Rendered: the 15 s cut and the six stills (table above). Social has the paths and stages wave 1 for the owner's approval.
 - Social's wave 1: Fri Oct 23 noon IG feed (A) + 12:30 story (C) + 1pm Bluesky (D); Sat Oct 24 11am story; Sun Oct 25 noon Reel (B), 1pm Short (E), 7:30pm Bluesky video. Wave 2 scheduled Mon Oct 26.
 - Open with the owner: press text + quote (then upload /free and the homepage line); the Nov 2–4 pause; Oct 27/29 content (a new card from his phone, or social's recap carousel of the four throwbacks); Nov 4 takedown from his phone (archive A, B, G on IG; unlist or edit the YT Short; reset the bio link if it pointed at /free).
+
+## Status, Oct 22 (evening): social went video-only (owner)
+- The 3:4 stills are retired. Rendered instead: three 7 s motion versions (`src/promo/FreeMotion.tsx`, `marketing/social/free-window/motion/free-motion-{free,weekend,lastdays}-9x16.mp4`) and the scorecard drop template (`src/promo/CardDrop.tsx`, any card JPG in `marketing/video/scorecards/` → `marketing/social/scorecards/card-drop-*.mp4`, props: card, free, hook1, hook2, freeLead). Music: `fck_bed_free_7s.mp3` and `_12s.mp3` (score_free.py arrangements).
+- Card plan: July 4 card video = Sat Oct 24 drop post (hook INDEPENDENCE DAY. → ELECTION DAY., free-led end card); July 11 = Tue Oct 27; the owner's new card after Saturday's drop. His Oct 3 and Oct 10 cards are gone (known pre-build-14 bug: a drop not opened within 48 h lost the week; build 14 fixes it).
