@@ -22,9 +22,9 @@ promo video and the 1.2.1 release content. Nothing here spends money.
 | 1 | Press release (markdown) `marketing/press/2026-10-22-free-until-election-day.md` | marketing | drafted, needs the owner's OK (quote attributed to him) |
 | 2 | Standalone page `site/free.html` → https://fckfascists.com/free | marketing | built, not uploaded until the text is approved |
 | 3 | Homepage line: hero pitch gains "Free until Election Day." and the App Store button's top label reads FREE UNTIL NOV 3 | marketing | proposed, do with #2 |
-| 4 | 15 s "FREE UNTIL ELECTION DAY" kinetic cut, 9:16 (logo slam → FREE slam → tap/scan/track → see where the money goes → tagline), hardcore bed, money on the slams | marketing | proposed; renders from `src/release/` |
-| 5 | Static promo tile 1080×1350 + story 1080×1920: Clark + "FREE UNTIL ELECTION DAY" + the three verbs, starfield | marketing | proposed; renders from the appstore Still pipeline |
-| 6 | Social copy set (announce, Reel caption, story text, Bluesky, YouTube) `marketing/notes/free-window-social.md` | marketing drafts, social manager finalises and schedules | drafted |
+| 4 | 15 s "FREE UNTIL ELECTION DAY" kinetic cut, 9:16 (logo slam → FREE slam → tap/scan/track → see where the money goes → tagline), own 14.6 s bed (`compose.py --style free`), money on the slams | marketing | rendered Oct 22: `marketing/video/renders/fck-free-election-15-9x16.mp4` (`src/release/Free15.tsx`) |
+| 5 | Stills: feed 1080×1440 (3:4, per social) + story 1080×1920 in three variants (free / last weekend / last days): Clark + headline + THROUGH NOV 3 + the three verbs, starfield | marketing | rendered Oct 22: `marketing/social/free-window/` (`src/promo/FreeStill.tsx`, Stills `FreeFeed-*` / `FreeStory-*`) |
+| 6 | Social copy set (announce, Reel caption, story text, Bluesky, YouTube) `marketing/notes/free-window-social.md` | marketing drafts, social manager finalises and schedules | social's final captions + slots in their POSTS.md (Oct 22); their edits: no "nothing leaves your phone", no "zero dollars", "through Nov 3" on every post, #Election2026 on A/B/E only |
 | 7 | App Store promo text B | dev lead | live |
 | 8 | 1.2.1 release video: a dated variant with a 2-bar "FREE UNTIL ELECTION DAY" insert after the hook, for the window only; evergreen cut unchanged | marketing | proposed, renders once 1.2.1 is approved |
 | 9 | Earned media: the owner sends the release to his own list; price-drop trackers pick up the free change on their own | owner | from Oct 22 |
@@ -46,3 +46,9 @@ promo video and the 1.2.1 release content. Nothing here spends money.
   square/4:5 cut of the video is needed for any slot.
 - Dev lead: nothing on the listing; a heads-up when 1.2.1 is approved so the release video goes
   out, and a read-back that the App Store shows the app as free.
+
+## Status, Oct 22 (afternoon)
+- Store shows the app as Free (Apple lookup, 8:33am ET); 1.2.1 build 14 still Waiting for Review.
+- Rendered: the 15 s cut and the six stills (table above). Social has the paths and stages wave 1 for the owner's approval.
+- Social's wave 1: Fri Oct 23 noon IG feed (A) + 12:30 story (C) + 1pm Bluesky (D); Sat Oct 24 11am story; Sun Oct 25 noon Reel (B), 1pm Short (E), 7:30pm Bluesky video. Wave 2 scheduled Mon Oct 26.
+- Open with the owner: press text + quote (then upload /free and the homepage line); the Nov 2–4 pause; Oct 27/29 content (a new card from his phone, or social's recap carousel of the four throwbacks); Nov 4 takedown from his phone (archive A, B, G on IG; unlist or edit the YT Short; reset the bio link if it pointed at /free).
