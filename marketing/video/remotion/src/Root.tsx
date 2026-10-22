@@ -3,6 +3,8 @@ import { CalculateMetadataFunction, Composition, Still } from 'remotion';
 import { Explainer, type ExplainerProps } from './Explainer';
 import { PREVIEW_FRAMES, PREVIEW_H, PREVIEW_W, Preview } from './appstore/Preview';
 import { Tile } from './appstore/Tile';
+import { FEED_H, FEED_W, FreeStill, STORY_H, STORY_W } from './promo/FreeStill';
+import { FREE_FRAMES, Free15 } from './release/Free15';
 import { COVER_H, COVER_W, PageCover } from './brand/PageCover';
 import { HEADER_H, HEADER_W, StoreHeader } from './appstore/StoreHeader';
 import { HeaderVideo, LOOP, SEARCH_H, SEARCH_W, SearchVideo, VIDEO_H, VIDEO_W } from './appstore/HeaderVideo';
@@ -71,6 +73,13 @@ export const RemotionRoot: React.FC = () => (
     <Still id="PageCover" component={PageCover} width={COVER_W} height={COVER_H} />
     {/* Oct 15: the 1.2 release cut, kinetic type on the drive bed (scripts/render.sh release) */}
     <Composition id="Release30" component={Release} width={1080} height={1920} fps={FPS} durationInFrames={RELEASE_FRAMES} />
+    <Composition id="Free15" component={Free15} width={1080} height={1920} fps={FPS} durationInFrames={FREE_FRAMES} />
+    {(['free', 'weekend', 'lastdays'] as const).map((v) => (
+      <Still key={`freefeed-${v}`} id={`FreeFeed-${v}`} component={FreeStill} width={FEED_W} height={FEED_H} defaultProps={{ variant: v, format: 'feed' as const }} />
+    ))}
+    {(['free', 'weekend', 'lastdays'] as const).map((v) => (
+      <Still key={`freestory-${v}`} id={`FreeStory-${v}`} component={FreeStill} width={STORY_W} height={STORY_H} defaultProps={{ variant: v, format: 'story' as const }} />
+    ))}
     {CUTS.map(({ id, cut, layout, width, height, hook }) => (
       <Composition
         key={id}

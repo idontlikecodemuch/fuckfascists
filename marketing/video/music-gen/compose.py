@@ -31,7 +31,7 @@ from render import SR
 
 TARGET_LUFS = -16.0
 DEFAULT_OUT = Path('/Users/christophershannon/fuckfascists/marketing/video/music')
-STYLES = {'hopeful': 'score', 'punk': 'score_punk', 'drive': 'score_drive', 'hardcore': 'score_hardcore'}
+STYLES = {'hopeful': 'score', 'punk': 'score_punk', 'drive': 'score_drive', 'hardcore': 'score_hardcore', 'free': 'score_free'}
 
 
 def loudness(x):
