@@ -23,7 +23,7 @@ App Hold Media LLC today made FCK, Financial Contribution Kit, free on the App S
 
 **Why the price is zero.** The idea behind FCK is that people already hold real power and use it every day without noticing. Every purchase is a decision. The app makes the information behind that decision easy to see, and makes the decision itself worth sharing: a weekly scorecard, dropped at a random moment between Friday and Saturday, that users can post with a single tap. Election Day is when attention on money in politics peaks. Making the app free until then puts the records in more hands when more people are looking.
 
-**Built to be trusted.** FCK has no accounts, no sign-in, no tracking and no servers of its own. All data stays on the device. The source code and the company, people and product lists are public and open source under the AGPL, so anyone can check the work.
+**Built to be trusted.** FCK has no accounts, no sign-in, no tracking and no servers of its own. A user's choices stay on their phone; the app's only outbound requests are public lookups to FEC.gov, Open Food Facts and GitHub. The source code and the company, people and product lists are public and open source under the AGPL, so anyone can check the work.
 
 FCK, Financial Contribution Kit, is free on the App Store for iPhone through November 3, 2026, and returns to $1.99 on November 4. More at fckfascists.com.
 
