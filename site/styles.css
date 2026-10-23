@@ -241,6 +241,11 @@ p { margin: 0 0 var(--space-md); }
   color: var(--text-primary);
   text-shadow: 0 1px 0 rgba(0,0,0,0.6);
 }
+/* free-until-Election-Day line (Oct 2026): gold lead-in, cyan link */
+.hero-free strong { color: var(--reward-yellow); font-weight: 600; }
+.hero-free a { color: var(--glow-cyan); text-decoration: none; }
+.hero-free a:hover { text-decoration: underline; }
+
 
 /* ── Download row ─────────────────────────────────────────────────────── */
 .download-row {
