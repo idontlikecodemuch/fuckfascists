@@ -1,10 +1,9 @@
 # FCK is free until Election Day — the note
 
-Draft v3 for the owner's approval, October 22, 2026. Format follows the "social media press release"
-idea (modular and scannable: the news, the facts a reporter needs, one quotable line, links, contact;
-no narrative) in the creator's first-person voice per the voice framework. The app and the reason are
-separate blocks, as asked. Rules kept: no party words, "avoid" not "boycott", no drop hours, nothing
-claimed about Android or the extensions. Page: https://fckfascists.com/free (site/free.html).
+v4, October 22, 2026: the owner's own words (his message to the marketing session, typos fixed:
+"cane" → "care", "finding" → "funding"). The closing line is abbreviated per the voice framework's
+website rule (FCK, never spelled out) — "FCK YEAH!"; the owner can override. The facts block below
+his note is kept for reporters (dates, price, links, contact). Page: https://fckfascists.com/free.
 
 ---
 
@@ -12,16 +11,22 @@ October 22, 2026
 
 # FCK is free until Election Day.
 
-**The app.** FCK shows the political contributions on file for the companies behind what you buy. Tap a business, scan a barcode, or pick the platforms you use. Public FEC records, every number linked to the filing. It shows every side and doesn't tell you what to think. I built it on my own.
+This is an app I built to help people make informed decisions about where they spend their money.
 
-**Why it's free.** More people pay attention to money in politics in the two weeks before an election than at any other time. I think people have more power than they use, and the price shouldn't be the reason someone doesn't look. So it's free through November 3. On November 4 it's $1.99 again.
+And I'm making it free till Election Day.
 
-**The facts.**
+I made it a game because I wanted it to be fun, so more people would use it. And now that's more important than ever.
+
+I don't care who you vote for. But I care that you know who is funding them.
+
+America. FCK YEAH!
+
+— Christopher Shannon
+
+**The facts**
 - Free on the App Store through Tuesday, November 3, 2026. $1.99 from November 4.
 - iPhone: apps.apple.com/us/app/fck-financialcontributionkit/id6761508241
 - Data: public FEC records. No accounts, no tracking, no servers.
 - Open source: github.com/idontlikecodemuch/fuckfascists
 - Made by one person. Published by App Hold Media LLC.
 - Contact: info@fckfascists.com
-
-— Christopher Shannon
