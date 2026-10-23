@@ -24,7 +24,7 @@ America. FCK YEAH!
 — C
 
 **The facts**
-- Free on the App Store through Tuesday, November 3, 2026. $1.99 from November 4.
+- Free on the App Store through Tuesday, November 3, 2026.
 - iPhone: apps.apple.com/us/app/fck-financialcontributionkit/id6761508241
 - Data: Federal Election Commission (FEC) filings, state legislator records from Open States (for PAC money to state and local candidates), and Open Food Facts product data. No accounts, no tracking, no servers. Ever.
 - Open source: github.com/idontlikecodemuch/fuckfascists

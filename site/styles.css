@@ -241,10 +241,24 @@ p { margin: 0 0 var(--space-md); }
   color: var(--text-primary);
   text-shadow: 0 1px 0 rgba(0,0,0,0.6);
 }
-/* free-until-Election-Day line (Oct 2026): gold lead-in, cyan link */
-.hero-free strong { color: var(--reward-yellow); font-weight: 600; }
-.hero-free a { color: var(--glow-cyan); text-decoration: none; }
+/* free-until-Election-Day callout (Oct 2026): bigger, display face, pulsing gold glow; cyan link */
+.hero-free { margin-top: 0.75rem; font-size: clamp(1.2rem, 2.8vw, 1.6rem); }
+.hero-free strong {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--reward-yellow);
+  text-shadow: 0 0 8px rgba(255, 201, 60, 0.55), 0 0 18px rgba(255, 201, 60, 0.3);
+  animation: free-pulse 2.4s ease-in-out infinite;
+}
+.hero-free a { color: var(--glow-cyan); text-decoration: none; white-space: nowrap; }
 .hero-free a:hover { text-decoration: underline; }
+@keyframes free-pulse {
+  0%, 100% { text-shadow: 0 0 6px rgba(255, 201, 60, 0.45), 0 0 14px rgba(255, 201, 60, 0.25); }
+  50% { text-shadow: 0 0 14px rgba(255, 201, 60, 0.95), 0 0 34px rgba(255, 201, 60, 0.6), 0 0 56px rgba(255, 201, 60, 0.3); }
+}
+@media (prefers-reduced-motion: reduce) { .hero-free strong { animation: none; } }
 
 
 /* ── Download row ─────────────────────────────────────────────────────── */
