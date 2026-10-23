@@ -56,3 +56,5 @@ promo video and the 1.2.1 release content. Nothing here spends money.
 ## Status, Oct 22 (evening): social went video-only (owner)
 - The 3:4 stills are retired. Rendered instead: three 7 s motion versions (`src/promo/FreeMotion.tsx`, `marketing/social/free-window/motion/free-motion-{free,weekend,lastdays}-9x16.mp4`) and the scorecard drop template (`src/promo/CardDrop.tsx`, any card JPG in `marketing/video/scorecards/` → `marketing/social/scorecards/card-drop-*.mp4`, props: card, free, hook1, hook2, freeLead). Music: `fck_bed_free_7s.mp3` and `_12s.mp3` (score_free.py arrangements).
 - Card plan: July 4 card video = Sat Oct 24 drop post (hook INDEPENDENCE DAY. → ELECTION DAY., free-led end card); July 11 = Tue Oct 27; the owner's new card after Saturday's drop. His Oct 3 and Oct 10 cards are gone (known pre-build-14 bug: a drop not opened within 48 h lost the week; build 14 fixes it).
+
+- Oct 22, 9:20pm: owner: "We don't need to call out the July 4th part so much. It is an Easter egg." The July 4 card video now uses the standard hook (YOUR WEEK. → ONE CARD.); the card's own date line is the only July 4 reference. Caption drops July 4 too.
