@@ -22,14 +22,17 @@ export const FreeShare: React.FC = () => {
         </Sequence>
         <Img src={CLARK_BUST} style={{ position: 'absolute', left: 760, top: 150, width: 520, imageRendering: 'pixelated', filter: 'drop-shadow(0 16px 32px rgba(0,0,0,0.6))' }} />
         <Img src={LOGO_H} style={{ position: 'absolute', left: 70, top: 60, width: 380, imageRendering: 'pixelated', filter: 'drop-shadow(0 0 18px rgba(95,174,255,0.35))' }} />
-        <div style={{ position: 'absolute', left: 70, top: 200, width: 700, fontFamily: FONT.display, fontSize: 92, lineHeight: 1.0, letterSpacing: 2, color: T.gold, whiteSpace: 'pre-line', textShadow: '0 0 30px rgba(255,201,60,0.45), 7px 7px 0 rgba(0,0,0,0.8)' }}>
-          {'FREE UNTIL\nELECTION DAY.'}
-        </div>
-        <div style={{ position: 'absolute', left: 72, top: 410, fontFamily: FONT.body, fontWeight: 600, fontSize: 32, letterSpacing: 6, color: T.cyan, textShadow: '0 0 16px rgba(122,242,255,0.6), 3px 3px 0 rgba(0,0,0,0.85)' }}>
-          THROUGH NOV 3
-        </div>
-        <div style={{ position: 'absolute', left: 72, top: 470, width: 660, fontFamily: FONT.body, fontWeight: 600, fontSize: 30, lineHeight: 1.35, color: T.cream, whiteSpace: 'pre-line', textShadow: '3px 3px 0 rgba(0,0,0,0.85)' }}>
-          {'Tap a business. Scan a product.\nTrack the platforms you use.'}
+        {/* one flowing column so the detail line and the verbs always sit under the headline; 74 px keeps "ELECTION DAY." on one line */}
+        <div style={{ position: 'absolute', left: 70, top: 190, width: 720, display: 'flex', flexDirection: 'column', gap: 22 }}>
+          <div style={{ fontFamily: FONT.display, fontSize: 74, lineHeight: 1.0, letterSpacing: 2, color: T.gold, whiteSpace: 'pre-line', textShadow: '0 0 30px rgba(255,201,60,0.45), 6px 6px 0 rgba(0,0,0,0.8)' }}>
+            {'FREE UNTIL\nELECTION DAY.'}
+          </div>
+          <div style={{ fontFamily: FONT.body, fontWeight: 600, fontSize: 30, letterSpacing: 6, color: T.cyan, textShadow: '0 0 16px rgba(122,242,255,0.6), 3px 3px 0 rgba(0,0,0,0.85)' }}>
+            THROUGH NOV 3
+          </div>
+          <div style={{ fontFamily: FONT.body, fontWeight: 600, fontSize: 29, lineHeight: 1.35, color: T.cream, whiteSpace: 'pre-line', textShadow: '3px 3px 0 rgba(0,0,0,0.85)' }}>
+            {'Tap a business. Scan a product.\nTrack the platforms you use.'}
+          </div>
         </div>
         <div style={{ position: 'absolute', left: 72, bottom: 34, fontFamily: FONT.body, fontWeight: 600, fontSize: 24, letterSpacing: 4, color: T.cyan, textShadow: '2px 2px 0 rgba(0,0,0,0.85)' }}>
           FCKfascists.com/free
