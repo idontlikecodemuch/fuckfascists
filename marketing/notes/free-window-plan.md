@@ -58,3 +58,6 @@ promo video and the 1.2.1 release content. Nothing here spends money.
 - Card plan: July 4 card video = Sat Oct 24 drop post (hook INDEPENDENCE DAY. → ELECTION DAY., free-led end card); July 11 = Tue Oct 27; the owner's new card after Saturday's drop. His Oct 3 and Oct 10 cards are gone (known pre-build-14 bug: a drop not opened within 48 h lost the week; build 14 fixes it).
 
 - Oct 22, 9:20pm: owner: "We don't need to call out the July 4th part so much. It is an Easter egg." The July 4 card video now uses the standard hook (YOUR WEEK. → ONE CARD.); the card's own date line is the only July 4 reference. Caption drops July 4 too.
+
+## Live, Oct 23 (morning)
+- https://fckfascists.com/free is live: the owner's own note (v5), signed "— Christopher", "America. FCK YEAH!", facts block with the data line confirmed by the dev lead (FEC filings, Open States state legislators, Open Food Facts). Homepage: hero line "Free until Election Day. Here's why →", App Store button label FREE UNTIL NOV 3, price line "Free until Nov 3, then $1.99", footer link, share previews updated. Nov 4: revert the homepage (button OUT NOW, price line, previews) and keep /free up as the record.
