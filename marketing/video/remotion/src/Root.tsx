@@ -6,6 +6,7 @@ import { Tile } from './appstore/Tile';
 import { FEED_H, FEED_W, FreeStill, STORY_H, STORY_W } from './promo/FreeStill';
 import { FREE_MOTION_FRAMES, FreeMotion } from './promo/FreeMotion';
 import { CARD_DROP_FRAMES, CardDrop } from './promo/CardDrop';
+import { FreeShare, SHARE_H, SHARE_W } from './promo/FreeShare';
 import { FREE_FRAMES, Free15 } from './release/Free15';
 import { COVER_H, COVER_W, PageCover } from './brand/PageCover';
 import { HEADER_H, HEADER_W, StoreHeader } from './appstore/StoreHeader';
@@ -73,6 +74,7 @@ export const RemotionRoot: React.FC = () => (
     )}
     {/* Facebook Page cover (Meta ads identity), same look as the IG banner */}
     <Still id="PageCover" component={PageCover} width={COVER_W} height={COVER_H} />
+    <Still id="FreeShare" component={FreeShare} width={SHARE_W} height={SHARE_H} />
     {/* Oct 15: the 1.2 release cut, kinetic type on the drive bed (scripts/render.sh release) */}
     <Composition id="Release30" component={Release} width={1080} height={1920} fps={FPS} durationInFrames={RELEASE_FRAMES} />
     <Composition id="Free15" component={Free15} width={1080} height={1920} fps={FPS} durationInFrames={FREE_FRAMES} />
