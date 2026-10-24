@@ -61,3 +61,5 @@ promo video and the 1.2.1 release content. Nothing here spends money.
 
 ## Live, Oct 23 (morning)
 - https://fckfascists.com/free is live: the owner's own note (v5), signed "— Christopher", "America. FCK YEAH!", facts block with the data line confirmed by the dev lead (FEC filings, Open States state legislators, Open Food Facts). Homepage: hero line "Free until Election Day. Here's why →", App Store button label FREE UNTIL NOV 3, price line "Free until Nov 3, then $1.99", footer link, share previews updated. Nov 4: revert the homepage (button OUT NOW, price line, previews) and keep /free up as the record.
+
+- Oct 24: social retimed the drop posts to after the later of the two builds' drops (1.2.0 live schedule vs 1.2.1 on TestFlight) until 1.2.1 is public; today's wave runs from 5:00pm ET. No times in copy. Tell social when 1.2.1 is approved so they switch to its schedule alone.
