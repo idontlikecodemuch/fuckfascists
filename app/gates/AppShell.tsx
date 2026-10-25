@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { View, StyleSheet, type ViewStyle } from 'react-native';
+import { SafeAreaInsetsContext, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MapScreen } from '../../features/Map/MapScreen';
 import { ScanScreen } from '../../features/Scan/ScanScreen';
 import { TrackScreen } from '../../features/Platforms/TrackScreen';
@@ -179,6 +180,13 @@ function AppShellContent({ adapter, entities, people }: AppShellProps) {
 
   const showShellChrome = !scorecardPresentationActive;
   const contentTopOffset = showShellChrome ? bannerOffset : 0;
+  // A top banner already covers the status bar, so screens under it must not
+  // add the top inset again (Track and Map did: a double gap under banners).
+  const insets = useSafeAreaInsets();
+  const contentInsets = useMemo(
+    () => (contentTopOffset > 0 ? { ...insets, top: 0 } : insets),
+    [contentTopOffset, insets],
+  );
 
   // Screenshot harness takes over the full screen when open (beta mode only)
   if (betaEnabled && harnessOpen) {
@@ -195,12 +203,14 @@ function AppShellContent({ adapter, entities, people }: AppShellProps) {
 
   return (
     <View style={styles.root}>
-      <View
-        key={resetKey}
-        style={[styles.content, contentTopOffset > 0 && { paddingTop: contentTopOffset }]}
-      >
-        {renderScreen()}
-      </View>
+      <SafeAreaInsetsContext.Provider value={contentInsets}>
+        <View
+          key={resetKey}
+          style={[styles.content, contentTopOffset > 0 && { paddingTop: contentTopOffset }]}
+        >
+          {renderScreen()}
+        </View>
+      </SafeAreaInsetsContext.Provider>
       <ShellBanners
         suppressed={!showShellChrome}
         adapter={adapter}

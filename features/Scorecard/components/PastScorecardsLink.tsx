@@ -24,6 +24,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   link: {
+    minHeight: theme.a11y.minTapTarget,
+    justifyContent: 'center',
     paddingVertical: theme.space.md,
     paddingHorizontal: theme.space.lg,
   },

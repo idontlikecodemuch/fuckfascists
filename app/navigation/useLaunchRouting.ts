@@ -56,6 +56,8 @@ export function useLaunchRouting(input: LaunchRoutingInput): void {
       } catch {
         // Fall through to the pending-drop check and the random launch tab.
       }
+      // A launch tap counts as this session's notification route (the tap wins).
+      if (tabForNotificationResponse(response)) notificationRoutedAt.current = Date.now();
       // Never leave the shell blank: any failure falls back to the random tab.
       const tab = await resolveLaunchTab(response, hasPendingDrop).catch(() => pickInitialTab());
       if (cancelled) return;
@@ -66,13 +68,18 @@ export function useLaunchRouting(input: LaunchRoutingInput): void {
     return () => { cancelled = true; };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps — cold start runs once
 
-  const lastNotificationResponse = Notifications.useLastNotificationResponse();
+  // Warm taps. A listener, not useLastNotificationResponse: that hook drops a
+  // response whose identifier matches the previous one, and the drop alert
+  // ('scorecard-drop') and the soonest early-week nudge reuse theirs weekly.
   useEffect(() => {
-    const routedTab = tabForNotificationResponse(lastNotificationResponse);
-    if (!routedTab) return;
-    notificationRoutedAt.current = Date.now();
-    latest.current.setActiveTab(routedTab);
-  }, [lastNotificationResponse]);
+    const subscription = Notifications.addNotificationResponseReceivedListener((response) => {
+      const routedTab = tabForNotificationResponse(response);
+      if (!routedTab) return;
+      notificationRoutedAt.current = Date.now();
+      latest.current.setActiveTab(routedTab);
+    });
+    return () => subscription.remove();
+  }, []);
 
   useEffect(() => {
     if (input.lateRevealVersion === 0) return;

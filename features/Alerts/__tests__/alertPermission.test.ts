@@ -1,9 +1,11 @@
 const getPermissionsAsync = jest.fn();
 const requestPermissionsAsync = jest.fn();
 const openSettings = jest.fn();
+const openURL = jest.fn();
+const platform = { OS: 'ios' };
 
 jest.mock('expo-notifications', () => ({ getPermissionsAsync, requestPermissionsAsync }));
-jest.mock('react-native', () => ({ Linking: { openSettings } }));
+jest.mock('react-native', () => ({ Linking: { openSettings, openURL }, Platform: platform }));
 
 import { openAlertsControl, readAlertsPermission, toAlertsPermission } from '../alertPermission';
 
@@ -44,11 +46,27 @@ describe('openAlertsControl', () => {
     expect(openSettings).not.toHaveBeenCalled();
   });
 
-  it('opens Settings when the prompt can no longer show, or to turn alerts off', async () => {
+  it('opens the app\'s notification settings when the prompt can no longer show, or to turn alerts off', async () => {
     await expect(openAlertsControl({ status: 'settings', neverAsked: false })).resolves.toBeNull();
     await expect(openAlertsControl({ status: 'on', neverAsked: false })).resolves.toBeNull();
-    expect(openSettings).toHaveBeenCalledTimes(2);
+    expect(openURL).toHaveBeenCalledTimes(2);
+    expect(openURL).toHaveBeenCalledWith('app-settings:notifications');
+    expect(openSettings).not.toHaveBeenCalled();
     expect(requestPermissionsAsync).not.toHaveBeenCalled();
+  });
+
+  it('falls back to the app\'s settings page if the notification link fails', async () => {
+    openURL.mockRejectedValueOnce(new Error('unsupported'));
+    await openAlertsControl({ status: 'settings', neverAsked: false });
+    expect(openSettings).toHaveBeenCalledTimes(1);
+  });
+
+  it('opens the app settings page on Android', async () => {
+    platform.OS = 'android';
+    await openAlertsControl({ status: 'settings', neverAsked: false });
+    expect(openURL).not.toHaveBeenCalled();
+    expect(openSettings).toHaveBeenCalledTimes(1);
+    platform.OS = 'ios';
   });
 
   it('reads the current permission', async () => {

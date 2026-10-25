@@ -1,4 +1,4 @@
-import { Linking } from 'react-native';
+import { Linking, Platform } from 'react-native';
 import * as Notifications from 'expo-notifications';
 
 /**
@@ -39,13 +39,29 @@ export async function requestAlertsPermission(): Promise<AlertsPermission> {
   return toAlertsPermission(await Notifications.requestPermissionsAsync());
 }
 
+// UIApplication.openNotificationSettingsURLString (iOS 16+): the app's own
+// Notifications page. The plain settings URL can land on Settings → Apps.
+const IOS_NOTIFICATION_SETTINGS_URL = 'app-settings:notifications';
+
+async function openNotificationSettings(): Promise<void> {
+  if (Platform.OS === 'ios') {
+    try {
+      await Linking.openURL(IOS_NOTIFICATION_SETTINGS_URL);
+      return;
+    } catch {
+      // Fall back to the app's settings page.
+    }
+  }
+  await Linking.openSettings();
+}
+
 /**
  * Turns alerts on the only way the platform allows: the system prompt while
- * it can still be shown, otherwise the app's page in Settings. Also used to
- * turn alerts off (Settings), since an app cannot revoke its own permission.
+ * it can still be shown, otherwise the app's notification settings. Also used
+ * to turn alerts off (Settings), since an app cannot revoke its own permission.
  */
 export async function openAlertsControl(current: AlertsPermission): Promise<AlertsPermission | null> {
   if (current.status === 'ask') return requestAlertsPermission();
-  await Linking.openSettings();
+  await openNotificationSettings();
   return null;
 }
