@@ -69,3 +69,5 @@ promo video and the 1.2.1 release content. Nothing here spends money.
 ## 1.2.1 live, Oct 25
 - Build 14 Ready for Distribution; What's New 901 chars and promo B live; free through Nov 3. Drops for 1.2.1 users: random minute Fri 4–11pm / Sat noon–6pm ET (next: Fri Oct 30 7:53pm ET); 1.2.0 users keep the old schedule. Social switches to the 1.2.1 schedule; no times in copy still. Release video cleared to post (proposed Mon Oct 26 or Wed Oct 28 extra slot).
 - NOT PUBLIC: users who skipped the notification prompt never got alerts; fix in 1.2.2 build 15 (internal TestFlight). No 1.2.2 or alerts marketing until the dev lead clears it. Alerts copy review pending before 1.2.2 submission (feedback sent: "NOT NOW" over "NO THANKS").
+
+- Oct 25 evening: release video free variant rendered (`Release30-free`, end card "UPDATE OUT NOW. / FREE THROUGH NOV 3."): `marketing/video/renders/fck-release-1.2-30-free-9x16.mp4`. Social posts it Mon Oct 26 noon ET (Reel, Story share, Short, Bluesky). Week: Oct 17 card Tue 7pm, July 11 Thu 7pm, last-weekend Story Fri noon, drop Story Fri ~8pm, last-days Sun Nov 1.

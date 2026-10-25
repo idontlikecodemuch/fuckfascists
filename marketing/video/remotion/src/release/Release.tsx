@@ -79,7 +79,8 @@ const Logo: React.FC<{ at: number; until?: number; top: number; width: number }>
   return <Img src={LOGO} style={{ position: 'absolute', left: (W - width) / 2, top, width, imageRendering: 'pixelated', transform: `scale(${(1.8 - 0.8 * s) * settle})`, opacity: Math.min(1, (t + 1) / 2), filter: 'drop-shadow(0 0 30px rgba(95,174,255,0.35))' }} />;
 };
 
-export const Release: React.FC = () => {
+/** `free` (Oct 25): the dated variant for the free-until-Election-Day window — the end card carries FREE THROUGH NOV 3 under UPDATE OUT NOW; everything else, music included, is unchanged. */
+export const Release: React.FC<{ free?: boolean }> = ({ free = false }) => {
   useFonts();
   const frame = useCurrentFrame(); // one hook call, unconditionally (React #310 otherwise)
   const shake = useHits(HITS);
@@ -165,8 +166,8 @@ export const Release: React.FC = () => {
 
           {/* END — bars 19–20: logo, the update line, then the tagline on the final hit */}
           <Logo at={b(19)} top={300} width={640} />
-          <Slam at={b(19, 1)} text="UPDATE OUT NOW" size={80} top={860} />
-          <Slam at={b(19, 2)} text={'NO ADS · NO TRACKING\nFCKapp.com · @fckfascists.app'} size={34} color={T.cyan} font="body" weight={500} letterSpacing={5} lineHeight={1.6} top={980} glow={false} />
+          <Slam at={b(19, 1)} text={free ? 'UPDATE OUT NOW.\nFREE THROUGH NOV 3.' : 'UPDATE OUT NOW'} size={free ? 64 : 80} top={free ? 830 : 860} />
+          <Slam at={b(19, 2)} text={'NO ADS · NO TRACKING\nFCKapp.com · @fckfascists.app'} size={34} color={T.cyan} font="body" weight={500} letterSpacing={5} lineHeight={1.6} top={free ? 1010 : 980} glow={false} />
           <Slam at={b(20)} text={"THE FASCISTS WON'T\nFCK THEMSELVES."} size={76} top={1220} />
           <Slam at={b(20, 2)} text="🤘🏽" size={120} top={1430} glow={false} />
         </AbsoluteFill>

@@ -77,6 +77,7 @@ export const RemotionRoot: React.FC = () => (
     <Still id="FreeShare" component={FreeShare} width={SHARE_W} height={SHARE_H} />
     {/* Oct 15: the 1.2 release cut, kinetic type on the drive bed (scripts/render.sh release) */}
     <Composition id="Release30" component={Release} width={1080} height={1920} fps={FPS} durationInFrames={RELEASE_FRAMES} />
+    <Composition id="Release30-free" component={Release} width={1080} height={1920} fps={FPS} durationInFrames={RELEASE_FRAMES} defaultProps={{ free: true }} />
     <Composition id="Free15" component={Free15} width={1080} height={1920} fps={FPS} durationInFrames={FREE_FRAMES} />
     {(['free', 'weekend', 'lastdays'] as const).map((v) => (
       <Composition key={`freemotion-${v}`} id={`FreeMotion-${v}`} component={FreeMotion} width={1080} height={1920} fps={FPS} durationInFrames={FREE_MOTION_FRAMES} defaultProps={{ variant: v }} />
