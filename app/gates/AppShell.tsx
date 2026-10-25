@@ -1,9 +1,10 @@
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { View, StyleSheet, type ViewStyle } from 'react-native';
 import { SafeAreaInsetsContext, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MapScreen } from '../../features/Map/MapScreen';
 import { ScanScreen } from '../../features/Scan/ScanScreen';
 import { TrackScreen } from '../../features/Platforms/TrackScreen';
+import type { AvoidChange } from '../../features/Platforms/context/TrackContext';
 import { ShellBanners } from './ShellBanners';
 import { AlertsProvider, useAlerts } from '../../features/Alerts/AlertsContext';
 import { ScorecardScreen } from '../../features/Scorecard/ScorecardScreen';
@@ -115,9 +116,11 @@ function AppShellContent({ adapter, entities, people }: AppShellProps) {
   const fetchOrgs = fecClient ? fecClient.fetchOrgs.bind(fecClient) : async () => [];
   const fetchOrgSummary = fecClient ? fecClient.fetchOrgSummary.bind(fecClient) : async () => null;
 
-  const handleAvoidRecorded = useCallback(() => {
+  const presentationActiveRef = useRef(false);
+  presentationActiveRef.current = scorecardPresentationActive;
+  const handleAvoidRecorded = useCallback((change?: AvoidChange) => {
     setAvoidRefreshKey((key) => key + 1);
-    promptAfterAvoid();
+    if (change !== 'removed') promptAfterAvoid(() => presentationActiveRef.current);
   }, [promptAfterAvoid]);
 
   const renderScreen = () => {

@@ -63,14 +63,15 @@ export function SlidingAlertBanner({
   const dragY = useRef(new Animated.Value(0)).current;
   const hidingRef = useRef(false);
 
+  // Height comes from onLayout only: an estimate could land after the real
+  // value and leave content under a taller banner.
   useEffect(() => {
     onVisibleChange?.(true);
-    onHeightChange?.(Math.ceil(insets.top + theme.a11y.minTapTarget + theme.space.sm * 2));
     return () => {
       onVisibleChange?.(false);
       onHeightChange?.(0);
     };
-  }, [insets.top, onHeightChange, onVisibleChange]);
+  }, [onHeightChange, onVisibleChange]);
 
   useEffect(() => {
     let cancelled = false;

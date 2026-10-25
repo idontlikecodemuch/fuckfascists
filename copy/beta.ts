@@ -13,7 +13,7 @@ const SURFACE_LABELS: Record<Tab, string> = {
 export const betaCopy = {
   indicator: "BETA",
   indicatorLabel: "Beta testing mode is active",
-  indicatorHint: "Shows alert permission and queued alerts",
+  bugButtonHint: "Long press for alert permission and queued alerts",
   alertsTitle: "Alerts",
   alertsPermission: (status: string) => `Permission: ${status}`,
   alertsQueued: (ids: string) => `Queued: ${ids}`,

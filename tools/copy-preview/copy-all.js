@@ -334,7 +334,6 @@ var COPY_ALL_DATA = {
   "beta": {
     "indicator": "BETA",
     "indicatorLabel": "Beta testing mode is active",
-    "indicatorHint": "Shows alert permission and queued alerts",
     "alertsTitle": "Alerts",
     "alertsPermission": "Permission: {status}",
     "alertsQueued": "Queued: {ids}",
@@ -343,6 +342,7 @@ var COPY_ALL_DATA = {
     "alertsReadFailed": "Could not read alerts.",
     "bugButton": "BUG",
     "bugButtonLabel": "Report a bug — captures screenshot",
+    "bugButtonHint": "Long press for alert permission and queued alerts",
     "resetButton": "RESET",
     "resetButtonLabel": "Reset app state for a fresh-install style test",
     "screenshotSaved": "Screenshot saved: {surface}",
@@ -360,7 +360,7 @@ var COPY_ALL_DATA = {
   "alerts": {
     "bannerTitle": "ALERTS ARE OFF",
     "bannerBody": "Tap to get a ping when your card drops.",
-    "bannerA11y": "Alerts are off. Double tap to turn on alerts for your scorecard drop.",
+    "bannerA11y": "Alerts are off. Get a ping when your card drops.",
     "noThanks": "NO THANKS",
     "noThanksA11y": "No thanks. Don't ask about alerts again.",
     "dismissA11y": "Hide for now"

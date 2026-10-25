@@ -1,5 +1,5 @@
 import React, { useRef, useCallback } from 'react';
-import { Text, Pressable, StyleSheet, Alert } from 'react-native';
+import { View, Text, Pressable, StyleSheet, Alert } from 'react-native';
 import { betaCopy } from '../../copy/beta';
 import { harnessCopy } from '../../copy/harness';
 import { theme } from '../../design/tokens';
@@ -32,10 +32,10 @@ interface BetaOverlayProps {
 
 /**
  * Floating beta overlay — shown when beta mode is active.
- * - "BETA" indicator badge in top-left — tap for the alerts readout
+ * - "BETA" indicator badge in top-left
  * - "SHOTS" button — opens screenshot harness (dev only)
  * - "RESET" button — clears app state
- * - "BUG" button — captures single screenshot
+ * - "BUG" button — captures single screenshot; long press for the alerts readout
  */
 export function BetaOverlay({ activeTab, onOpenHarness, onReset }: BetaOverlayProps) {
   const capturing = useRef(false);
@@ -89,17 +89,12 @@ export function BetaOverlay({ activeTab, onOpenHarness, onReset }: BetaOverlayPr
 
   return (
     <>
-      {/* Beta indicator — tap for the alerts readout */}
-      <Pressable
-        style={styles.badge}
-        onPress={handleAlertsReadout}
-        accessibilityRole="button"
-        accessibilityLabel={betaCopy.indicatorLabel}
-        accessibilityHint={betaCopy.indicatorHint}
-        hitSlop={FLOATING_BUTTON_HIT_SLOP}
-      >
-        <Text style={styles.badgeText}>{betaCopy.indicator}</Text>
-      </Pressable>
+      {/* Beta indicator */}
+      <View style={styles.badge} pointerEvents="none">
+        <Text style={styles.badgeText} accessibilityLabel={betaCopy.indicatorLabel}>
+          {betaCopy.indicator}
+        </Text>
+      </View>
 
       {/* Screenshot harness button — dev only */}
       {onOpenHarness && (
@@ -129,8 +124,10 @@ export function BetaOverlay({ activeTab, onOpenHarness, onReset }: BetaOverlayPr
       <Pressable
         style={styles.bugButton}
         onPress={handleBugReport}
+        onLongPress={handleAlertsReadout}
         accessibilityRole="button"
         accessibilityLabel={betaCopy.bugButtonLabel}
+        accessibilityHint={betaCopy.bugButtonHint}
         hitSlop={FLOATING_BUTTON_HIT_SLOP}
       >
         <Text style={styles.bugText}>{betaCopy.bugButton}</Text>

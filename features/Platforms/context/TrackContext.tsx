@@ -64,10 +64,12 @@ export function useTrack(): TrackContextValue {
 
 // ── Provider ─────────────────────────────────────────────────────────────────
 
+export type AvoidChange = 'added' | 'removed';
 interface TrackProviderProps {
   adapter: StorageAdapter;
   platforms: Platform[];
-  onAvoidRecorded?: () => void;
+  /** After any avoid write; 'removed' when a day was un-marked. */
+  onAvoidRecorded?: (change?: AvoidChange) => void;
   children: ReactNode;
 }
 
@@ -165,7 +167,7 @@ export function TrackProvider({ adapter, platforms, onAvoidRecorded, children }:
 
   const unavoidForDate = useCallback(async (platformId: string, date: string) => {
     const removed = await avoidance.unavoidForDate(platformId, date);
-    if (removed) onAvoidRecorded?.();
+    if (removed) onAvoidRecorded?.('removed');
     return removed;
   }, [avoidance, onAvoidRecorded]);
 

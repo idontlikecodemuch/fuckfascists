@@ -25,7 +25,7 @@ import { useCardOverlayAnimation } from '../../core/ui/useCardOverlayAnimation';
 import { StarField } from '../Info/components/InfoDecorations';
 import { BusinessCard } from '../Map/components/BusinessCard';
 import type { ScanResult } from '../Map/types';
-import { TrackProvider } from './context/TrackContext';
+import { TrackProvider, type AvoidChange } from './context/TrackContext';
 import { TRACKED_PLATFORMS } from './data/platformList';
 import { GameArena } from './components/GameArena';
 import { PlatformSetupScreen } from './components/PlatformSetupScreen';
@@ -37,7 +37,7 @@ interface TrackScreenProps {
   adapter: StorageAdapter;
   entities?: Entity[];
   people?: PoliticalPerson[];
-  onAvoidRecorded?: () => void;
+  onAvoidRecorded?: (change?: AvoidChange) => void;
 }
 
 export function TrackScreen({ adapter, entities = [], people = [], onAvoidRecorded }: TrackScreenProps) {

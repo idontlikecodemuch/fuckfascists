@@ -266,6 +266,13 @@ export const ALERTS_PROMPT_AFTER_AVOID_DELAY_MS = 2500;
 // every Nth drop, at most MAX times; "No thanks" stops it for good.
 export const ALERTS_ASK_EVERY_N_DROPS = 2;
 export const ALERTS_ASK_MAX_SHOWS = 3;
+// A show counts once the banner has been on screen this long (or is tapped),
+// so a banner replaced at once (update banner, card reveal) is not used up.
+export const ALERTS_ASK_COUNT_AFTER_MS = 2000;
+// After a drop, its own alert may still be pending (Android delivers alarms up
+// to about an hour late; a quiet-hours drop waits for 9am), so an empty next
+// week does not cancel 'scorecard-drop' until this long after that alert.
+export const SCORECARD_DROP_ALERT_GRACE_MS = 60 * 60 * 1000;
 
 
 // ── Shared FX system ─────────────────────────────────────────────────────────

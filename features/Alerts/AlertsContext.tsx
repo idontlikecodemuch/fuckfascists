@@ -16,8 +16,11 @@ interface AlertsContextValue {
   checkVersion: number;
   /** The system prompt while it can still show, otherwise the app's Settings page. */
   openControl: () => Promise<void>;
-  /** After an avoid: the system prompt, once, for someone who was never asked. */
-  promptAfterAvoid: () => void;
+  /**
+   * After an avoid: the system prompt, once, for someone who was never asked.
+   * Skipped while `isBlocked()` is true when it is due (a card reveal on screen).
+   */
+  promptAfterAvoid: (isBlocked?: () => boolean) => void;
 }
 
 const AlertsContext = createContext<AlertsContextValue>({
@@ -36,12 +39,15 @@ const AlertsContext = createContext<AlertsContextValue>({
 export function AlertsProvider({ children }: { children: React.ReactNode }) {
   const [permission, setPermission] = useState<AlertsPermission | null>(null);
   const [checkVersion, setCheckVersion] = useState(0);
+  // The permission could not be read yet: schedulers still try (as before 1.2.2).
+  const [readFailed, setReadFailed] = useState(false);
   const permissionRef = useRef<AlertsPermission | null>(null);
   const promptTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const apply = useCallback((next: AlertsPermission) => {
     permissionRef.current = next;
     setPermission(next);
+    setReadFailed(false);
     setCheckVersion((version) => version + 1);
   }, []);
 
@@ -50,6 +56,7 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
       apply(await readAlertsPermission());
     } catch {
       // Keep the last known permission.
+      if (!permissionRef.current) setReadFailed(true);
     }
   }, [apply]);
 
@@ -74,12 +81,12 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
     }
   }, [apply]);
 
-  const promptAfterAvoid = useCallback(() => {
+  const promptAfterAvoid = useCallback((isBlocked?: () => boolean) => {
     if (!permissionRef.current?.neverAsked || promptTimerRef.current) return;
     promptTimerRef.current = setTimeout(async () => {
       promptTimerRef.current = null;
-      // Backgrounded meanwhile: try again after the next avoid.
-      if (AppState.currentState !== 'active') return;
+      // Backgrounded or a card reveal meanwhile: try again after the next avoid.
+      if (AppState.currentState !== 'active' || isBlocked?.()) return;
       try {
         apply(await requestAlertsPermission());
       } catch {
@@ -90,11 +97,11 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
 
   const value = useMemo<AlertsContextValue>(() => ({
     permission,
-    alertsOn: permission?.status === 'on',
+    alertsOn: permission ? permission.status === 'on' : readFailed,
     checkVersion,
     openControl,
     promptAfterAvoid,
-  }), [checkVersion, openControl, permission, promptAfterAvoid]);
+  }), [checkVersion, openControl, permission, promptAfterAvoid, readFailed]);
 
   return <AlertsContext.Provider value={value}>{children}</AlertsContext.Provider>;
 }

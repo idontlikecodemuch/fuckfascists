@@ -3,12 +3,13 @@ import type { Entity } from '../../../core/models';
 import type { StorageAdapter } from '../../../core/data';
 import type { Platform } from '../../Platforms/types';
 import { getNextBetaDropTime, isBetaScheduleActive } from '../../../core/dropSchedule/betaDropSchedule';
-import { MIN_AVOIDS_FOR_DROP } from '../../../config/constants';
+import { MIN_AVOIDS_FOR_DROP, SCORECARD_DROP_ALERT_GRACE_MS } from '../../../config/constants';
 import { getScoredWeekOfDrop } from '../utils/scoredWeek';
 import { getNextScorecardDropAfter } from '../utils/dropTime';
 import { useScorecard } from './useScorecard';
 import {
   cancelScorecardDropNotification,
+  getDropNotificationTime,
   scheduleDropNotification,
   useDropSchedule,
 } from './useDropSchedule';
@@ -34,6 +35,8 @@ export function useScorecardDropNotification(
   // Re-renders at the drop and when its window closes.
   const { schedule, hasDropped } = useDropSchedule();
   let targetMs = schedule.dropAt;
+  // The drop that just passed (inside its window): its own alert time.
+  const passedAlertAt = hasDropped ? getDropNotificationTime(schedule.dropAt) : null;
   if (hasDropped) {
     targetMs = isBetaScheduleActive()
       ? getNextBetaDropTime().getTime()
@@ -49,6 +52,8 @@ export function useScorecardDropNotification(
     if (data && data.weekOf !== scoredWeekOf) return;
 
     if (!data || data.grandTotal < MIN_AVOIDS_FOR_DROP) {
+      // Leave a just-passed drop's alert alone while it may still be pending.
+      if (passedAlertAt !== null && Date.now() < passedAlertAt + SCORECARD_DROP_ALERT_GRACE_MS) return;
       cancelScorecardDropNotification().catch(() => {});
       return;
     }
@@ -56,5 +61,5 @@ export function useScorecardDropNotification(
     scheduleDropNotification(targetMs).catch(() => {
       // Scheduling failed — retried on the next launch or avoid.
     });
-  }, [data?.grandTotal, data?.weekOf, enabled, loading, scoredWeekOf, targetMs]);
+  }, [data?.grandTotal, data?.weekOf, enabled, loading, passedAlertAt, scoredWeekOf, targetMs]);
 }

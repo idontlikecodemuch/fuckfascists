@@ -28,9 +28,9 @@ export function DropAlertsRow() {
     <Pressable
       onPress={handlePress}
       style={styles.row}
-      accessibilityRole="switch"
-      accessibilityState={{ checked: alertsOn }}
+      accessibilityRole="button"
       accessibilityLabel={infoCopy.alertsLabel}
+      accessibilityValue={{ text: alertsOn ? infoCopy.alertsOn : infoCopy.alertsOff }}
       accessibilityHint={hint}
     >
       <View style={styles.text}>

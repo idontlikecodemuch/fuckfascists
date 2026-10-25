@@ -60,9 +60,7 @@ export function PermissionsScreen({ stepIndex, onNext }: PermissionsScreenProps)
 
   async function handleNotifications() {
     if (requesting) return;
-    // Asks iOS for real even in beta mode: a faked Allow left testers with no
-    // notification permission and no alerts (found 2026-10-25). The system
-    // prompt shows once; later taps resolve immediately.
+    // Asks iOS for real even in beta mode (a faked Allow left testers without alerts).
     setRequesting(true);
     try {
       const { granted } = await Notifications.requestPermissionsAsync();

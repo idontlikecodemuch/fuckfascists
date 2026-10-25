@@ -4,7 +4,7 @@
 export const alertsCopy = {
   bannerTitle: "ALERTS ARE OFF",
   bannerBody: "Tap to get a ping when your card drops.",
-  bannerA11y: "Alerts are off. Double tap to turn on alerts for your scorecard drop.",
+  bannerA11y: "Alerts are off. Get a ping when your card drops.",
   noThanks: "NO THANKS",
   noThanksA11y: "No thanks. Don't ask about alerts again.",
   dismissA11y: "Hide for now",
