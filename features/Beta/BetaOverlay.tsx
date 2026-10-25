@@ -1,10 +1,11 @@
 import React, { useRef, useCallback } from 'react';
-import { View, Text, Pressable, StyleSheet, Alert } from 'react-native';
+import { Text, Pressable, StyleSheet, Alert } from 'react-native';
 import { betaCopy } from '../../copy/beta';
 import { harnessCopy } from '../../copy/harness';
 import { theme } from '../../design/tokens';
 import { resetAppStateForFreshTest } from './resetAppState';
 import { captureBetaScreenshot } from './betaScreenshot';
+import { buildAlertsReadout } from '../Alerts/alertsReadout';
 import type { Tab } from '../../app/navigation/TabBar';
 import {
   BETA_FLOATING_BUTTON_BOTTOM,
@@ -31,7 +32,7 @@ interface BetaOverlayProps {
 
 /**
  * Floating beta overlay — shown when beta mode is active.
- * - "BETA" indicator badge in top-left
+ * - "BETA" indicator badge in top-left — tap for the alerts readout
  * - "SHOTS" button — opens screenshot harness (dev only)
  * - "RESET" button — clears app state
  * - "BUG" button — captures single screenshot
@@ -75,17 +76,30 @@ export function BetaOverlay({ activeTab, onOpenHarness, onReset }: BetaOverlayPr
     );
   }, []);
 
+  const handleAlertsReadout = useCallback(async () => {
+    try {
+      Alert.alert(betaCopy.alertsTitle, await buildAlertsReadout());
+    } catch {
+      Alert.alert(betaCopy.alertsReadFailed);
+    }
+  }, []);
+
   const resetBottom = BETA_FLOATING_BUTTON_BOTTOM + BETA_FLOATING_BUTTON_SIZE + BETA_RESET_BUTTON_GAP;
   const shotsBottom = resetBottom + BETA_RESET_BUTTON_HEIGHT + BETA_RESET_BUTTON_GAP;
 
   return (
     <>
-      {/* Beta indicator */}
-      <View style={styles.badge} pointerEvents="none">
-        <Text style={styles.badgeText} accessibilityLabel={betaCopy.indicatorLabel}>
-          {betaCopy.indicator}
-        </Text>
-      </View>
+      {/* Beta indicator — tap for the alerts readout */}
+      <Pressable
+        style={styles.badge}
+        onPress={handleAlertsReadout}
+        accessibilityRole="button"
+        accessibilityLabel={betaCopy.indicatorLabel}
+        accessibilityHint={betaCopy.indicatorHint}
+        hitSlop={FLOATING_BUTTON_HIT_SLOP}
+      >
+        <Text style={styles.badgeText}>{betaCopy.indicator}</Text>
+      </Pressable>
 
       {/* Screenshot harness button — dev only */}
       {onOpenHarness && (

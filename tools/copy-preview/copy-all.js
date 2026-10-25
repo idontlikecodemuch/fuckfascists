@@ -255,7 +255,15 @@ var COPY_ALL_DATA = {
     "chevronOpen": "▲",
     "chevronClosed": "▼",
     "transparencyToggleLabel": "Data transparency details",
-    "versionLabel": "App version"
+    "versionLabel": "App version",
+    "alertsSection": "ALERTS",
+    "alertsLabel": "Drop alerts",
+    "alertsDetail": "A ping when your scorecard drops, plus a nudge or two a week.",
+    "alertsOn": "ON",
+    "alertsOff": "OFF",
+    "alertsHintOn": "Opens Settings, where you can turn alerts off",
+    "alertsHintAsk": "Asks to turn on alerts",
+    "alertsHintSettings": "Opens Settings, where you can turn alerts on"
   },
   "infoContent": {
     "version": "1.0.0",
@@ -326,6 +334,13 @@ var COPY_ALL_DATA = {
   "beta": {
     "indicator": "BETA",
     "indicatorLabel": "Beta testing mode is active",
+    "indicatorHint": "Shows alert permission and queued alerts",
+    "alertsTitle": "Alerts",
+    "alertsPermission": "Permission: {status}",
+    "alertsQueued": "Queued: {ids}",
+    "alertsQueuedNone": "Queued: none",
+    "alertsNextDrop": "Next drop alert, if the week has avoids: {when}",
+    "alertsReadFailed": "Could not read alerts.",
     "bugButton": "BUG",
     "bugButtonLabel": "Report a bug — captures screenshot",
     "resetButton": "RESET",
@@ -341,6 +356,14 @@ var COPY_ALL_DATA = {
     "activated": "Beta mode ON",
     "deactivated": "Beta mode OFF",
     "surfaceLabel": "{tab}"
+  },
+  "alerts": {
+    "bannerTitle": "ALERTS ARE OFF",
+    "bannerBody": "Tap to get a ping when your card drops.",
+    "bannerA11y": "Alerts are off. Double tap to turn on alerts for your scorecard drop.",
+    "noThanks": "NO THANKS",
+    "noThanksA11y": "No thanks. Don't ask about alerts again.",
+    "dismissA11y": "Hide for now"
   },
   "scan": {
     "tabLabel": "SCAN BETA",

@@ -1,6 +1,7 @@
 import { SCORECARD_PRESENTATION_WINDOW_MS } from '../../../../config/constants';
 import { computeDropTime } from '../../../../core/dropSchedule/computeDropTime';
 import {
+  getNextScorecardDropAfter,
   getScorecardDropRefreshDelayMs,
   getScorecardDropTimeForTimestamp,
 } from '../dropTime';
@@ -51,6 +52,33 @@ describe('getScorecardDropTimeForTimestamp', () => {
       const delay = getScorecardDropRefreshDelayMs(nowMs, dropAt);
       if (delay === null || delay <= 0) {
         throw new Error(`no refresh boundary at ${new Date(nowMs).toISOString()}`);
+      }
+    }
+  });
+});
+
+describe('getNextScorecardDropAfter', () => {
+  it('is next week\'s drop inside this week\'s 48h window', () => {
+    const w43 = computeDropTime(2026, 43).getTime(); // Sat Oct 24 2026, 4:51pm EDT
+    const sundayMorning = Date.parse('2026-10-25T10:00:00-04:00');
+    expect(getScorecardDropTimeForTimestamp(sundayMorning).getTime()).toBe(w43);
+    expect(getNextScorecardDropAfter(sundayMorning).getTime()).toBe(computeDropTime(2026, 44).getTime());
+    expect(getNextScorecardDropAfter(w43).getTime()).toBe(computeDropTime(2026, 44).getTime());
+  });
+
+  it('is this week\'s drop before it lands', () => {
+    const w43 = computeDropTime(2026, 43).getTime();
+    expect(getNextScorecardDropAfter(w43 - 1).getTime()).toBe(w43);
+  });
+
+  it('is always the first drop strictly after now, 2026–2030', () => {
+    for (let year = 2026; year <= 2030; year += 1) {
+      for (let week = 1; week <= 52; week += 1) {
+        const dropAt = computeDropTime(year, week).getTime();
+        const next = getNextScorecardDropAfter(dropAt).getTime();
+        expect(next).toBeGreaterThan(dropAt);
+        expect(getNextScorecardDropAfter(next - 1).getTime()).toBe(next);
+        expect(next - dropAt).toBeLessThan(9 * 24 * HOUR_MS);
       }
     }
   });

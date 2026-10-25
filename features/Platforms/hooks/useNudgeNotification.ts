@@ -14,14 +14,15 @@ const NUDGE_CHANNEL_ID = 'platform-nudge';
  * to remind the user to log remaining avoids before Friday's scorecard drop.
  *
  * Safe to call on every mount — cancels any existing nudge before re-scheduling.
- * If notification permission is not granted, silently skips.
+ * Runs only while alerts are allowed (`enabled`); turning them on re-runs it.
  */
-export function useNudgeNotification(): void {
+export function useNudgeNotification(enabled = true): void {
   useEffect(() => {
+    if (!enabled) return;
     scheduleNudge().catch(() => {
-      // Permission denied or scheduling failed — silently skip
+      // Scheduling failed — retried on the next launch
     });
-  }, []);
+  }, [enabled]);
 }
 
 async function scheduleNudge(): Promise<void> {

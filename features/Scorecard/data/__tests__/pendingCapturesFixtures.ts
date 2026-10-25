@@ -65,10 +65,8 @@ export function setup(events: EntityAvoidEvent[], overrides: SetupOverrides = {}
       archived.has(weekOf) ? { filename: `${weekOf}.jpg`, uri: `file://${weekOf}.jpg`, modificationTime: 1 } : null),
     markLateCard: jest.fn(async () => undefined),
     findNewestCardWeek: jest.fn(async () => [...archived].sort().pop() ?? null),
-    cancelDropNotification: jest.fn(async () => undefined),
     loadFailures: jest.fn(async () => ({ ...failureStore.value })),
     saveFailures: jest.fn(async (next: CaptureFailures) => { failureStore.value = { ...next }; }),
-    windowWeek: null,
     ...overrides,
   };
   const run = (nowMs: number) => capturePendingScorecards({

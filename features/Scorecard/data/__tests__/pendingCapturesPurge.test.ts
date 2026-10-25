@@ -25,10 +25,10 @@ import {
 useNewYorkTimeZone();
 
 describe('capturePendingScorecards purges', () => {
-  it('purges a week too small for a card and cancels an empty in-window drop', async () => {
+  it('purges a week too small for a card', async () => {
     const { store, deps, run } = setup(
       [{ entityId: 'meta', date: '2026-10-05', count: 2 }],
-      { windowWeek: SKIPPED_WEEK, minAvoids: 3 },
+      { minAvoids: 3 },
     );
 
     const result = await run(skippedDrop + HOUR_MS);
@@ -36,19 +36,6 @@ describe('capturePendingScorecards purges', () => {
     expect(deps.captureWeek).not.toHaveBeenCalled();
     expect(result.purged).toEqual([SKIPPED_WEEK]);
     expect(store.entity).toHaveLength(0);
-    expect(deps.cancelDropNotification).toHaveBeenCalledTimes(1);
-  });
-
-  it('cancels the drop notification for an in-window week with no events and no card', async () => {
-    const { deps, run } = setup([], { windowWeek: SKIPPED_WEEK });
-    await run(skippedDrop + HOUR_MS);
-    expect(deps.cancelDropNotification).toHaveBeenCalledTimes(1);
-  });
-
-  it('keeps the drop notification once the in-window card exists', async () => {
-    const { deps, run } = setup([], { windowWeek: SKIPPED_WEEK, archived: [SKIPPED_WEEK] });
-    await run(skippedDrop + HOUR_MS);
-    expect(deps.cancelDropNotification).not.toHaveBeenCalled();
   });
 
   it('purges leftovers of an archived week once it is no longer the live week', async () => {

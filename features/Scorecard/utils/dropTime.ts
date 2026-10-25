@@ -25,6 +25,15 @@ export function getScorecardDropTimeForTimestamp(nowMs: number): Date {
   if (Number.isFinite(latestPassed) && nowMs - latestPassed < SCORECARD_PRESENTATION_WINDOW_MS) {
     return new Date(latestPassed);
   }
+  return getNextScorecardDropAfter(nowMs);
+}
+
+/**
+ * The first weekly drop strictly after `nowMs`. Drops come once per ISO week,
+ * so the current and next ISO weeks always contain it.
+ */
+export function getNextScorecardDropAfter(nowMs: number): Date {
+  const drops = [nowMs, nowMs + WEEK_MS].map(dropForISOWeekContaining);
   return new Date(Math.min(...drops.filter((dropAt) => dropAt > nowMs)));
 }
 

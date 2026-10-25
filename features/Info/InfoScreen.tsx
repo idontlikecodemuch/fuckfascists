@@ -6,6 +6,7 @@ import { useInfoContent } from './hooks/useInfoContent';
 import { InfoSection } from './components/InfoSection';
 import { FaqItem } from './components/FaqItem';
 import { LinkRow } from './components/LinkRow';
+import { DropAlertsRow } from './components/DropAlertsRow';
 import { StarField, CornerBrackets, NeonRule } from './components/InfoDecorations';
 import { infoCopy } from '../../copy/info';
 import { sharedCopy } from '../../copy/shared';
@@ -100,6 +101,11 @@ export function InfoScreen({ onVersionTap }: InfoScreenProps) {
             );
           })}
         </View>
+
+        {/* ── Alerts toggle ── */}
+        <InfoSection title={infoCopy.alertsSection}>
+          <DropAlertsRow />
+        </InfoSection>
 
         {/* ── Links & Source ── */}
         <InfoSection title={infoCopy.links}>

@@ -18,6 +18,10 @@ interface AlertBannerProps {
   bodyA11yLabel?: string;
   /** A11y label for the × dismiss button. */
   dismissA11yLabel?: string;
+  /** Optional compact text button between the body and the ×. */
+  secondaryLabel?: string;
+  secondaryA11yLabel?: string;
+  onSecondaryPress?: () => void;
   /** Positioning style applied by the parent. */
   style?: StyleProp<ViewStyle>;
   /** Panel style applied by the parent for safe-area/full-bleed variants. */
@@ -41,6 +45,9 @@ export function AlertBanner({
   onDismiss,
   bodyA11yLabel,
   dismissA11yLabel,
+  secondaryLabel,
+  secondaryA11yLabel,
+  onSecondaryPress,
   style,
   panelStyle,
   showSparkles = false,
@@ -76,6 +83,19 @@ export function AlertBanner({
           </Pressable>
         ) : (
           <View style={styles.bodyPress}>{content}</View>
+        )}
+
+        {secondaryLabel && onSecondaryPress && (
+          <Pressable
+            onPress={onSecondaryPress}
+            style={styles.secondary}
+            accessibilityRole="button"
+            accessibilityLabel={secondaryA11yLabel ?? secondaryLabel}
+          >
+            <Text style={styles.secondaryText} allowFontScaling numberOfLines={2}>
+              {secondaryLabel}
+            </Text>
+          </Pressable>
         )}
 
         {onDismiss && (
@@ -155,6 +175,19 @@ const styles = StyleSheet.create({
   bodyText: {
     ...theme.type.bodyS,
     color: theme.colors.textPrimary,
+  },
+  secondary: {
+    minHeight: theme.a11y.minTapTarget,
+    justifyContent: 'center',
+    marginLeft: theme.space.sm,
+    paddingHorizontal: theme.space.xs,
+  },
+  secondaryText: {
+    ...theme.type.caption,
+    fontFamily: theme.fonts.headline,
+    color: theme.colors.textPrimary,
+    letterSpacing: 1,
+    textDecorationLine: 'underline',
   },
   dismiss: {
     minWidth: theme.a11y.minTapTarget,

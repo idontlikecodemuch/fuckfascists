@@ -3,8 +3,8 @@ import { View, StyleSheet, type ViewStyle } from 'react-native';
 import { MapScreen } from '../../features/Map/MapScreen';
 import { ScanScreen } from '../../features/Scan/ScanScreen';
 import { TrackScreen } from '../../features/Platforms/TrackScreen';
-import { NudgeBanner } from '../../features/Platforms/components/NudgeBanner';
-import { AppUpdateBanner } from '../../features/Updates/AppUpdateBanner';
+import { ShellBanners } from './ShellBanners';
+import { AlertsProvider, useAlerts } from '../../features/Alerts/AlertsContext';
 import { ScorecardScreen } from '../../features/Scorecard/ScorecardScreen';
 import {
   ScorecardCaptureProvider,
@@ -50,7 +50,8 @@ interface AppShellProps {
  * Main app shell — tab navigation, screen rendering, beta overlay.
  * Rendered only after onboarding and launch gates have passed. Hosts the one
  * scorecard capture path (ScorecardCaptureProvider), which runs after launch
- * routing and on every resume.
+ * routing and on every resume, and the notification permission
+ * (AlertsProvider), which the alert schedulers and the alerts banner read.
  */
 export function AppShell(props: AppShellProps) {
   return (
@@ -59,7 +60,9 @@ export function AppShell(props: AppShellProps) {
       entities={props.entities}
       platforms={TRACKED_PLATFORMS}
     >
-      <AppShellContent {...props} />
+      <AlertsProvider>
+        <AppShellContent {...props} />
+      </AlertsProvider>
     </ScorecardCaptureProvider>
   );
 }
@@ -74,19 +77,17 @@ function AppShellContent({ adapter, entities, people }: AppShellProps) {
   const [activeTab, setActiveTab] = useState<Tab | null>(null);
   const [harnessOpen, setHarnessOpen] = useState(false);
   const [scorecardPresentationActive, setScorecardPresentationActive] = useState(false);
-  const [nudgeVisible, setNudgeVisible] = useState(false);
-  const [nudgeHeight, setNudgeHeight] = useState(0);
-  const [appUpdateVisible, setAppUpdateVisible] = useState(false);
-  const [appUpdateHeight, setAppUpdateHeight] = useState(0);
+  const [bannerOffset, setBannerOffset] = useState(0);
   const [avoidRefreshKey, setAvoidRefreshKey] = useState(0);
   // Incrementing key forces screen remount after beta reset, clearing all
   // in-memory state (map pins, tap results, etc.).
   const [resetKey, setResetKey] = useState(0);
   const { runPendingCaptures, lateRevealVersion } = useScorecardCapture();
+  const { alertsOn, promptAfterAvoid } = useAlerts();
 
-  useNudgeNotification();
-  useEarlyWeekNudge(adapter, avoidRefreshKey);
-  useScorecardDropNotification(adapter, entities, TRACKED_PLATFORMS, avoidRefreshKey);
+  useNudgeNotification(alertsOn);
+  useEarlyWeekNudge(adapter, avoidRefreshKey, alertsOn);
+  useScorecardDropNotification(adapter, entities, TRACKED_PLATFORMS, avoidRefreshKey, alertsOn);
 
   useEffect(() => {
     haptics.launchJig();
@@ -113,7 +114,10 @@ function AppShellContent({ adapter, entities, people }: AppShellProps) {
   const fetchOrgs = fecClient ? fecClient.fetchOrgs.bind(fecClient) : async () => [];
   const fetchOrgSummary = fecClient ? fecClient.fetchOrgSummary.bind(fecClient) : async () => null;
 
-  const handleAvoidRecorded = useCallback(() => setAvoidRefreshKey((key) => key + 1), []);
+  const handleAvoidRecorded = useCallback(() => {
+    setAvoidRefreshKey((key) => key + 1);
+    promptAfterAvoid();
+  }, [promptAfterAvoid]);
 
   const renderScreen = () => {
     switch (activeTab) {
@@ -169,23 +173,12 @@ function AppShellContent({ adapter, entities, people }: AppShellProps) {
 
   const handleNudgePress = useCallback(() => setActiveTab('report'), []);
 
-  const handleNudgeVisibleChange = useCallback((visible: boolean) => {
-    setNudgeVisible(visible);
-    if (!visible) setNudgeHeight(0);
-  }, []);
-
   const handleOpenHarness = useCallback(() => setHarnessOpen(true), []);
   const handleCloseHarness = useCallback(() => setHarnessOpen(false), []);
   const handleBetaReset = useCallback(() => setResetKey((k) => k + 1), []);
 
   const showShellChrome = !scorecardPresentationActive;
-  const contentTopOffset = showShellChrome
-    ? appUpdateVisible
-      ? appUpdateHeight
-      : nudgeVisible
-        ? nudgeHeight
-        : 0
-    : 0;
+  const contentTopOffset = showShellChrome ? bannerOffset : 0;
 
   // Screenshot harness takes over the full screen when open (beta mode only)
   if (betaEnabled && harnessOpen) {
@@ -208,17 +201,13 @@ function AppShellContent({ adapter, entities, people }: AppShellProps) {
       >
         {renderScreen()}
       </View>
-      {showShellChrome && !appUpdateVisible && (
-        <NudgeBanner
-          onPress={handleNudgePress}
-          onVisibleChange={handleNudgeVisibleChange}
-          onHeightChange={setNudgeHeight}
-        />
-      )}
-      <AppUpdateBanner
+      <ShellBanners
         suppressed={!showShellChrome}
-        onVisibleChange={setAppUpdateVisible}
-        onHeightChange={setAppUpdateHeight}
+        adapter={adapter}
+        entities={entities}
+        platforms={TRACKED_PLATFORMS}
+        onNudgePress={handleNudgePress}
+        onTopOffsetChange={setBannerOffset}
       />
       {showShellChrome && <TabBar activeTab={activeTab} onSelect={setActiveTab} />}
       {betaEnabled && showShellChrome && (

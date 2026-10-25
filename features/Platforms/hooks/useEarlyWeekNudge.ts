@@ -40,15 +40,17 @@ const EARLY_WEEK_NUDGE_CHANNEL_ID = 'early-week-nudge';
  *
  * Runs at app-shell startup and again after avoid writes (refreshKey); with
  * EARLY_WEEK_NUDGE_SKIP_IF_WEEK_ACTIVE on, a week the user has already
- * started is skipped. Local only: stores nothing, makes no network calls. If
- * notification permission is missing or scheduling fails, it does nothing.
+ * started is skipped. Local only: stores nothing, makes no network calls.
+ * Runs only while alerts are allowed (`enabled`); turning them on re-runs it.
+ * If scheduling fails, it does nothing until the next run.
  */
-export function useEarlyWeekNudge(adapter: StorageAdapter, refreshKey = 0): void {
+export function useEarlyWeekNudge(adapter: StorageAdapter, refreshKey = 0, enabled = true): void {
   // Sync-ref: adapter is only read inside async work, not a render input.
   const adapterRef = useRef(adapter);
   adapterRef.current = adapter;
 
   useEffect(() => {
+    if (!enabled) return undefined;
     let cancelled = false;
 
     const run = async () => {
@@ -65,7 +67,7 @@ export function useEarlyWeekNudge(adapter: StorageAdapter, refreshKey = 0): void
     void run();
 
     return () => { cancelled = true; };
-  }, [refreshKey]);
+  }, [enabled, refreshKey]);
 }
 
 /**

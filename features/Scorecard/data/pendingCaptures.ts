@@ -13,9 +13,7 @@ import {
 } from '../../../config/constants';
 import type { Platform } from '../../Platforms/types';
 import type { ScorecardViewData } from '../types';
-import { cancelScorecardDropNotification } from '../hooks/useDropSchedule';
 import { getDropAtForScoredWeek, getScoredWeekOfDrop } from '../utils/scoredWeek';
-import { getPendingScorecardDropWeek } from '../utils/pendingDropLaunch';
 import { findCardForWeek, findLatestCard, type ArchivedCard } from './cardArchive';
 import { parseCardWeekOf } from '../utils/formatters';
 import { loadScorecardViewData } from './scorecardViewData';
@@ -77,15 +75,12 @@ export interface CapturePendingInput {
   nowMs?: number;
   minAvoids?: number;
   dropAtForWeek?: DropAtForWeek;
-  /** The week whose drop is inside the presentation window, if any. */
-  windowWeek?: string | null;
   findCard?: (weekOf: string) => Promise<ArchivedCard | null>;
   loadData?: typeof loadScorecardViewData;
   purgeWeek?: (adapter: StorageAdapter, weekOf: string) => Promise<void>;
   markLateCard?: (weekOf: string) => Promise<void>;
   /** Week of the newest card on file, or null. */
   findNewestCardWeek?: () => Promise<string | null>;
-  cancelDropNotification?: () => Promise<void>;
   loadFailures?: () => Promise<CaptureFailures>;
   saveFailures?: (failures: CaptureFailures) => Promise<void>;
 }
@@ -138,13 +133,11 @@ export async function capturePendingScorecards({
   nowMs = Date.now(),
   minAvoids = MIN_AVOIDS_FOR_DROP,
   dropAtForWeek = resolveDropAtForWeek,
-  windowWeek = getPendingScorecardDropWeek(nowMs),
   findCard = findCardForWeek,
   loadData = loadScorecardViewData,
   purgeWeek = purgeScoredWeekAvoidEvents,
   markLateCard = lateCardMarker.mark,
   findNewestCardWeek = newestArchivedCardWeek,
-  cancelDropNotification = cancelScorecardDropNotification,
   loadFailures = readCaptureFailures,
   saveFailures = writeCaptureFailures,
 }: CapturePendingInput): Promise<CapturePendingResult> {
@@ -153,7 +146,6 @@ export async function capturePendingScorecards({
   };
   const liveWeekOf = getLocalWeekStartForDate(new Date(nowMs));
   const eventWeeks = await listAvoidEventWeeks(adapter);
-  const belowMinimum = new Set<string>();
   const failures = await loadFailures();
   const failuresBefore = JSON.stringify(failures);
   // A week whose events are gone has nothing left to retry.
@@ -193,7 +185,6 @@ export async function capturePendingScorecards({
 
       const data = await loadData(adapter, entities, platforms, weekOf);
       if (data.grandTotal < minAvoids) {
-        belowMinimum.add(weekOf);
         await purge(weekOf);
         continue;
       }
@@ -234,14 +225,6 @@ export async function capturePendingScorecards({
   }
 
   if (JSON.stringify(failures) !== failuresBefore) await saveFailures(failures);
-
-  // Empty in-window drop: no card is coming, so cancel only the scorecard
-  // notification (a quiet-hours drop may still be waiting for 9am). The
-  // Thursday platform nudge has its own identifier and is untouched.
-  if (windowWeek && (belowMinimum.has(windowWeek) || !eventWeeks.includes(windowWeek))) {
-    const card = await findCard(windowWeek).catch(() => null);
-    if (!card) await cancelDropNotification().catch(() => undefined);
-  }
 
   return result;
 }

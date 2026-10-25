@@ -258,6 +258,15 @@ export const EARLY_WEEK_NUDGE_SKIP_IF_WEEK_ACTIVE = false;
 // forward; someone who stops opening the app gets this many, then none.
 export const EARLY_WEEK_NUDGE_WEEKS_AHEAD = 3;
 
+// Alerts permission (owner decision 2026-10-25). iOS shows its Allow prompt
+// once per install, so people who skipped it in onboarding are asked again
+// after an avoid, once the avoid celebration has played (this delay).
+export const ALERTS_PROMPT_AFTER_AVOID_DELAY_MS = 2500;
+// In-app "alerts are off" banner: the first open inside a drop's 48h window,
+// every Nth drop, at most MAX times; "No thanks" stops it for good.
+export const ALERTS_ASK_EVERY_N_DROPS = 2;
+export const ALERTS_ASK_MAX_SHOWS = 3;
+
 
 // ── Shared FX system ─────────────────────────────────────────────────────────
 // Duration an avoid celebration effect stays on screen (ms).
