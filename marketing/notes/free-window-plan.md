@@ -65,3 +65,7 @@ promo video and the 1.2.1 release content. Nothing here spends money.
 - Oct 24: social retimed the drop posts to after the later of the two builds' drops (1.2.0 live schedule vs 1.2.1 on TestFlight) until 1.2.1 is public; today's wave runs from 5:00pm ET. No times in copy. Tell social when 1.2.1 is approved so they switch to its schedule alone.
 
 - Oct 25: the owner's Oct 17–23 card (I FCK'D 16×) arrived as a 1206×2622 phone screenshot; cropped to the frame (y 330–2430, 9:16) and rescaled to 1080×1920, rendered `card-drop-october-17-free-9x16.mp4` (standard hook, free end card). Queue: Tue Oct 27 7pm; July 11 moves to Thu Oct 29.
+
+## 1.2.1 live, Oct 25
+- Build 14 Ready for Distribution; What's New 901 chars and promo B live; free through Nov 3. Drops for 1.2.1 users: random minute Fri 4–11pm / Sat noon–6pm ET (next: Fri Oct 30 7:53pm ET); 1.2.0 users keep the old schedule. Social switches to the 1.2.1 schedule; no times in copy still. Release video cleared to post (proposed Mon Oct 26 or Wed Oct 28 extra slot).
+- NOT PUBLIC: users who skipped the notification prompt never got alerts; fix in 1.2.2 build 15 (internal TestFlight). No 1.2.2 or alerts marketing until the dev lead clears it. Alerts copy review pending before 1.2.2 submission (feedback sent: "NOT NOW" over "NO THANKS").
