@@ -12,6 +12,20 @@ This document is updated continuously. New instances should read this first — 
 
 ## Recent Sessions (most recent first)
 
+### Session: October 25, 2026 ET — Drop alerts never reached the owner (1.2.2)
+
+**Cause:** FCK was not in Settings → Notifications on the owner's iPhone (iOS 26.6.2, build 14): the app had never asked iOS. The only request was onboarding's; beta mode faked its Allow, Skip/Done never asked, a reinstall skips onboarding (the keychain keeps `onboarding_complete`; confirmed in the simulator), and every scheduling error was swallowed. A code audit and web research found no other cause.
+
+**Fix (branch `feat/drop-alerts-permission` from `release/1.2.1`, 1.2.2 build 15):** after an avoid, never-asked users get the iOS prompt; an "ALERTS ARE OFF" banner on option C (owner); a Drop alerts toggle in Info; beta mode asks for real; schedulers run only while alerts are on; the drop alert now always targets the next drop, so in-window opens schedule next week's. Details: `docs/releases/1.2.2.md`, CLAUDE.md "Notification permission (1.2.2…)".
+
+**Hardening review of build 14 (Opus agent):** fixed here — warm notification taps with a repeated identifier were ignored (expo's `useLastNotificationResponse`), double top gap under top banners on Track and Map, the Past scorecards link under 44pt. **Open, owner decisions:**
+- **2026-12-11:** every bundled donation summary (`lastVerifiedDate` 2026-10-12) passes the 60-day freshness rule, and Map POI taps start live FEC calls on DEMO_KEY. Push refreshed data before then, or decouple bundled freshness from the cache TTL. The failing `pipeline.test.ts` case is the same clock.
+- `products.json` over-the-air: a far-future `_meta.generatedAt` would pin every install to that copy for good; removals over 10% are blocked by the 90% rule.
+- Capture before images finish loading can purge a week behind a card missing sprites (preload timeout is swallowed).
+- Low: an interrupted capture can wait for the next real resume; a data change restarts an open presentation; Android resume and timer issues (not shipping).
+
+**Simulator (iOS 26.5, Release 1.2.2):** reinstall skipped onboarding; the banner showed on the first open in this weekend's window; its tap showed the iOS prompt; after Don't Allow it did not return; the Info toggle read OFF and opened Settings (now the app's Notifications page).
+
 ### Session: October 19, 2026 ET — Scorecard drop timing and lost-card fix
 
 **Branch:** `fix/scorecard-drop-timing` from `release/1.2.1` (`a072741`); not pushed.
