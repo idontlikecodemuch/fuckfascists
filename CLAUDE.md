@@ -604,7 +604,7 @@ Extension data is NOT included in the scorecard (V1) — extension has its own i
 ### Soft app updates
 
 - `AppUpdateBanner` checks Apple's public lookup endpoint for a newer iOS version. It never blocks launch, account access, local data, or any app screen.
-- Copy is intentionally data-led: `NEW FILES ON DECK / A newer build has the latest FEC records. Tap to update.` Tapping opens the App Store; dismissing is remembered for that offered version.
+- Copy (owner 2026-10-26, voice-reviewed; the banner a user sees comes from the version they have installed): `NEW VERSION ON DECK / A newer version has the latest FEC records and app fixes. Tap to update.` The FEC claim holds only when a release ships refreshed bundled data; check before each release. Tapping opens the App Store; dismissing is remembered for that offered version.
 - Store/network failure returns no banner. This is a durable offline-first app: bundled data and normal functionality must survive if an app store, Git host, or update service disappears.
 - Never turn this into a mandatory gate. Data-shape incompatibility must preserve the last compatible local bundle rather than bricking an old install.
 
