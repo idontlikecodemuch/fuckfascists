@@ -16,7 +16,8 @@ jest.mock('expo-notifications', () => ({
 
 import type { StorageAdapter } from '../../../core/data';
 import type { EntityAvoidEvent, PlatformAvoidEvent } from '../../../core/models';
-import { addLocalDays } from '../../../core/utils/localDate';
+import { addLocalDays, getLocalWeekStartForDate } from '../../../core/utils/localDate';
+import { isElectionWeek } from '../../Election/electionDays';
 import { platformsCopy } from '../../../copy/platforms';
 import {
   EARLY_WEEK_NUDGE_SKIP_IF_WEEK_ACTIVE,
@@ -144,6 +145,11 @@ describe('early-week nudge scheduling', () => {
     let previousTitle: string | null = null;
     const seen = new Set<string>();
     for (let week = 0; week < 104; week++) {
+      // Election weeks have no nudge; the weeks either side may repeat a line.
+      if (isElectionWeek(getLocalWeekStartForDate(new Date(SATURDAY_NOON + week * WEEK_MS)))) {
+        previousTitle = null;
+        continue;
+      }
       scheduleNotificationAsync.mockClear();
       await scheduleEarlyWeekNudge(SATURDAY_NOON + week * WEEK_MS);
       const [request] = scheduledRequests();

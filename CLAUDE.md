@@ -130,6 +130,7 @@ All tables in `fuckfascists.db` share the same database file and receive identic
 │   ├── Beta/                        ← beta testing mode (seven-tap + confirm, device-only BetaOverlay)
 │   ├── Launch/                      ← daily launch screen (once per calendar day)
 │   ├── Alerts/                      ← notification permission: AlertsProvider, after-avoid prompt, alerts-off banner, beta readout
+│   ├── Election/                    ← Election Day reminders: local notifications, banner, VOTE411 link
 │   └── Dev/                         ← dev-only catalog screen
 ├── core/
 │   ├── matching/                    ← entity matching + confidence scoring (SHARED)
@@ -158,7 +159,8 @@ All tables in `fuckfascists.db` share the same database file and receive identic
 │   ├── beta.ts                      ← Beta mode copy (indicator, alerts, screenshot feedback)
 │   ├── launch.ts                    ← Daily launch screen copy (rotating messages, tap label)
 │   ├── scan.ts                      ← Scan tab copy (CTA, status, barcode result labels)
-│   └── alerts.ts                    ← Alerts-off banner copy (notification permission re-ask)
+│   ├── alerts.ts                    ← Alerts-off banner copy (notification permission re-ask)
+│   └── election.ts                  ← Election Day reminder copy (notifications + banner)
 ├── design/
 │   ├── tokens.ts                    ← theme object: colors, type, spacing, borders, a11y
 │   ├── component-rules.md           ← per-component token usage spec
@@ -317,6 +319,13 @@ export const ALERTS_ASK_EVERY_N_DROPS = 2;              // alerts-off banner: ev
 export const ALERTS_ASK_MAX_SHOWS = 3;                  // …at most 3 times; "No thanks" stops it
 export const ALERTS_ASK_COUNT_AFTER_MS = 2000;          // a show counts after 2s on screen (or a tap)
 export const SCORECARD_DROP_ALERT_GRACE_MS = 60 * 60 * 1000; // a passed drop's alert is not cancelled within this
+
+// Election Day reminders (owner 2026-10-26). Local calendar dates.
+export const ELECTION_DAYS = ['2026-11-03', '2028-11-07'];
+export const ELECTION_PLAN_REMINDER_DAYS_BEFORE = 2;    // Sunday…
+export const ELECTION_PLAN_REMINDER_HOUR = 18;          // …6pm local
+export const ELECTION_DAY_REMINDER_HOUR = 8;            // Election Day 8am local (before 9am on purpose)
+export const ELECTION_BANNER_DAYS_BEFORE = 2;           // in-app banner from Sunday through the day
 
 // Default platforms pre-checked on setup screen — derived from platforms.json
 // defaultSelected: true flags. Exported from features/Platforms/data/platformList.ts,
@@ -529,6 +538,7 @@ The weekly scorecard is a synchronized global event. Every user with the same ap
 - No network fetch for the schedule — `useDropSchedule` computes the display drop synchronously with `getScorecardDropTimeForTimestamp()`, no loading state. The display drop is the latest drop at or before now while it is inside its 48h window, otherwise the next drop after now — independent of the ISO week, so the refresh timer always has a next boundary (the drop, or the end of its window). Keying on the ISO week used to leave an expired drop in place when the window closed before Monday 00:00 UTC (Sunday evening ET).
 - Push notification is scheduled from `AppShell` via `useScorecardDropNotification`, not from the Scorecard tab. It runs on app startup, after avoid writes, and when alerts are turned on (it does nothing while they are off), so users do not need to open Scorecard first. It always targets the next drop that has not happened yet: inside a drop's 48h window that is next week's drop (`getNextScorecardDropAfter`), so someone who only opens the app on drop weekends still gets the next alert (before 1.2.2 it waited for the window to close). It only schedules when that drop's scored week has at least `MIN_AVOIDS_FOR_DROP`; empty weeks cancel the `scorecard-drop` notification. Identifier is `SCORECARD_DROP_NOTIFICATION_ID = 'scorecard-drop'` — scoped cancel-and-reschedule preserves the Thursday nudge (`platform-nudge-thursday`). The notification always uses normal sound and the `active` interruption level on the `scorecard-drop` Android channel. If the drop lands at/after `SCORECARD_QUIET_NOTIFICATION_FROM_HOUR` or before `SCORECARD_QUIET_NOTIFICATION_BEFORE_HOUR` in the user's local device time (outside the continental US, or the beta cadence), it fires at the next local `SCORECARD_QUIET_NOTIFICATION_BEFORE_HOUR` (9am) instead (`getDropNotificationTime`). There is no silent/passive path. Because every run schedules or cancels the same identifier for the next drop, a stale pending `scorecard-drop` (e.g. from the v2 schedule before an upgrade) is always replaced; a deferred 9am alert for a drop that already passed is replaced too once the app is opened in its window, since the card is then shown in the app. At startup (`setUpScorecardDropNotifications`, `features/Scorecard/utils/dropNotificationSetup.ts`) Android deletes the retired `scorecard-drop-quiet` channel, and a foreground handler shows the drop banner with sound while the app is open; every other notification keeps the expo default of not showing in the foreground.
 - **Notification permission (1.2.2, owner decision 2026-10-25).** iOS shows its Allow prompt once per install, and nothing used to ask after onboarding, so anyone who skipped it (or ran onboarding in beta mode, which faked the Allow) never got an alert and had no FCK entry in Settings. `AlertsProvider` (`features/Alerts/AlertsContext.tsx`, in `AppShell`) reads the permission on launch and every time the app becomes active; the drop, Thursday and early-week schedulers run only while it is on. Never-asked users get the iOS prompt `ALERTS_PROMPT_AFTER_AVOID_DELAY_MS` after an avoid (not after un-marking a day, and not while a card reveal is on screen). On Android 13+ expo reports a never-asked permission as denied, so the after-avoid prompt does not fire there; the banner and the Info toggle still ask. While alerts are off, the "NOTIFICATIONS OFF" banner (`AlertsOffBanner`, top banner slot after the app update and Thursday banners) shows on the first open inside a drop's 48h window, after that drop's reveal, every other drop, at most three times; a show counts after `ALERTS_ASK_COUNT_AFTER_MS` on screen with the app active, or a tap, so a banner replaced at once is offered again. × hides it for that drop and "No thanks" stops it (SecureStore `alerts_ask_record`). Its tap, and the two Info controls (owner 2026-10-26, design option A + E: a pixel bell + On/Off readout at the top right of the header, and a "Notifications ····· On >" menu line above THE DATA; `features/Info/components/NotificationsControls.tsx`, pixel art via `core/ui/PixelArt.tsx`; above Dynamic Type scale `INFO_NOTIFICATIONS_COMPACT_MAX_FONT_SCALE` the bell moves under the title and the line stacks), show the iOS prompt while it can still appear and otherwise open the app's Settings page. Onboarding's notification Allow asks iOS for real even in beta mode. If the permission cannot be read, the schedulers still run, as before. Inside a drop's window an empty next week does not cancel `scorecard-drop` until `SCORECARD_DROP_ALERT_GRACE_MS` after that drop's own alert (Android alarms can be late; a quiet-hours drop waits for 9am). Beta mode: long-press BUG for the permission, the queued alert identifiers and the next drop alert time.
+- **Election Day reminders (1.2.2, owner decision 2026-10-26).** `useElectionReminders` (`features/Election/`, run from `useShellNotifications` while notifications are on) queues `election-reminder-plan` (Sunday 6pm local, two days ahead) and `election-reminder-day` (Election Day 8am local) for the next date in `ELECTION_DAYS`; a tap opens VOTE411 (`sharedCopy.voteInfoUrl`, League of Women Voters Education Fund, nonpartisan) via `openElectionLinkOnce` in `useLaunchRouting`. `ElectionBanner` shows from Sunday through Election Day for everyone who opens the app and wins over the other top banners; a tap opens VOTE411 and a tap or × hides it for that day (SecureStore `election_banner_dismissed`). The early-week nudge skips election weeks. Copy is nonpartisan (`copy/election.ts`, marketing lead); it names no date, so a new `ELECTION_DAYS` entry is all a future general election needs.
 - Notification carries `content.data = { type: 'scorecard-drop' }`. `AppShell` routes on `data.type`, not the human-readable title, so copy edits don't break cold-start or warm-start routing.
 
 ### Post-drop flow (route → capture → purge → present)
@@ -716,7 +726,7 @@ Run this checklist before uploading any App Store, TestFlight, public APK, exten
 
 All user-facing strings live in `copy/` (mobile) or `extension/copy.ts` (extension). Components import from these files. Never hardcode a user-facing string in a component.
 
-- **copy/ structure:** alerts.ts, beta.ts, info.ts, infoContent.ts, launch.ts, map.ts, onboard.ts, platforms.ts, scan.ts, scorecard.ts, shared.ts
+- **copy/ structure:** alerts.ts, beta.ts, election.ts, info.ts, infoContent.ts, launch.ts, map.ts, onboard.ts, platforms.ts, scan.ts, scorecard.ts, shared.ts
 - **Extension:** extension/copy.ts (separate — vanilla JS cannot import from RN copy files)
 - **Naming:** two-level max (area.element). No `a11y` prefix — use `Label` or `Hint` suffix only when paired with a visible string. Abbreviate: onboarding→onboard.
 - **Dynamic strings** are arrow functions: `heading: (n: number) => \`${n} MATCHES\``

@@ -12,11 +12,9 @@ import {
   ScorecardCaptureProvider,
   useScorecardCapture,
 } from '../../features/Scorecard/context/ScorecardCaptureContext';
-import { useScorecardDropNotification } from '../../features/Scorecard/hooks/useScorecardDropNotification';
 import { InfoScreen } from '../../features/Info/InfoScreen';
 import { TRACKED_PLATFORMS } from '../../features/Platforms/data/platformList';
-import { useNudgeNotification } from '../../features/Platforms/hooks/useNudgeNotification';
-import { useEarlyWeekNudge } from '../../features/Platforms/hooks/useEarlyWeekNudge';
+import { useShellNotifications } from './useShellNotifications';
 import { useBetaMode } from '../../features/Beta/useBetaMode';
 import { useBetaVersionTap } from '../../features/Beta/useBetaVersionTap';
 import { BetaOverlay } from '../../features/Beta/BetaOverlay';
@@ -87,9 +85,7 @@ function AppShellContent({ adapter, entities, people }: AppShellProps) {
   const { runPendingCaptures, lateRevealVersion } = useScorecardCapture();
   const { alertsOn, promptAfterAvoid } = useAlerts();
 
-  useNudgeNotification(alertsOn);
-  useEarlyWeekNudge(adapter, avoidRefreshKey, alertsOn);
-  useScorecardDropNotification(adapter, entities, TRACKED_PLATFORMS, avoidRefreshKey, alertsOn);
+  useShellNotifications(adapter, entities, avoidRefreshKey, alertsOn);
 
   useEffect(() => {
     haptics.launchJig();

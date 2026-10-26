@@ -16,6 +16,7 @@
 import { hash32 } from '../../../core/dropSchedule/computeDropTime';
 import { addLocalDays, getLocalWeekStartForDate } from '../../../core/utils/localDate';
 import { isQuietNotificationHour } from '../../../core/utils/quietHours';
+import { isElectionWeek } from '../../Election/electionDays';
 import {
   EARLY_WEEK_NUDGE_DAYS,
   EARLY_WEEK_NUDGE_END_HOUR,
@@ -180,7 +181,8 @@ export function getEarlyWeekNudgeForWeek(
 
 /**
  * The next `count` nudges still in the future, one per week in order,
- * skipping `skipWeekOf` (a week where the user already logged an avoid).
+ * skipping `skipWeekOf` (a week where the user already logged an avoid) and
+ * election weeks, which get the Election Day reminders instead.
  * Stops early if a week has no usable slot.
  */
 export function getUpcomingEarlyWeekNudges(
@@ -194,7 +196,7 @@ export function getUpcomingEarlyWeekNudges(
   let weekOf = getLocalWeekStartForDate(new Date(nowMs));
 
   for (let i = 0; i < count + EXTRA_WEEKS_TO_SEARCH && slots.length < count; i++) {
-    if (weekOf !== skipWeekOf) {
+    if (weekOf !== skipWeekOf && !isElectionWeek(weekOf)) {
       const slot = getEarlyWeekNudgeForWeek(weekOf, messages, base);
       if (!slot) break;
       if (slot.at.getTime() > nowMs) slots.push(slot);

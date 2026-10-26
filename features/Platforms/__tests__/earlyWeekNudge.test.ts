@@ -172,7 +172,8 @@ describe('getUpcomingEarlyWeekNudges', () => {
 
   it('skips the skipped week and still fills the queue', () => {
     const slots = getUpcomingEarlyWeekNudges(saturdayNoon, MESSAGES, 3, WEEK_OF);
-    expect(slots.map((slot) => slot.weekOf)).toEqual(weeksFrom(addLocalDays(WEEK_OF, 7), 3));
+    // 2026-10-31 is Election Day week: no nudge (the election reminders run instead).
+    expect(slots.map((slot) => slot.weekOf)).toEqual(['2026-10-17', '2026-10-24', '2026-11-07']);
   });
 
   it('returns nothing for a window with no usable minutes', () => {

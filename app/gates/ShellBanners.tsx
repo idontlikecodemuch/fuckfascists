@@ -5,6 +5,7 @@ import type { Platform } from '../../features/Platforms/types';
 import { NudgeBanner } from '../../features/Platforms/components/NudgeBanner';
 import { AlertsOffBanner } from '../../features/Alerts/AlertsOffBanner';
 import { AppUpdateBanner } from '../../features/Updates/AppUpdateBanner';
+import { ElectionBanner } from '../../features/Election/ElectionBanner';
 
 interface ShellBannersProps {
   /** True while the scorecard presentation owns the screen. */
@@ -18,8 +19,9 @@ interface ShellBannersProps {
 }
 
 /**
- * The shell's top banners, one at a time: the app update banner wins, then
- * the Thursday nudge, then the alerts-off banner.
+ * The shell's top banners, one at a time: the Election Day banner wins (it
+ * only runs three days), then the app update banner, the Thursday nudge, and
+ * the alerts-off banner.
  */
 export function ShellBanners({
   suppressed,
@@ -35,6 +37,8 @@ export function ShellBanners({
   const [alertsHeight, setAlertsHeight] = useState(0);
   const [updateVisible, setUpdateVisible] = useState(false);
   const [updateHeight, setUpdateHeight] = useState(0);
+  const [electionVisible, setElectionVisible] = useState(false);
+  const [electionHeight, setElectionHeight] = useState(0);
 
   const handleNudgeVisibleChange = useCallback((visible: boolean) => {
     setNudgeVisible(visible);
@@ -46,15 +50,23 @@ export function ShellBanners({
     if (!visible) setAlertsHeight(0);
   }, []);
 
+  const handleElectionVisibleChange = useCallback((visible: boolean) => {
+    setElectionVisible(visible);
+    if (!visible) setElectionHeight(0);
+  }, []);
+
+  const otherBannerVisible = electionVisible || updateVisible;
   const offset = suppressed
     ? 0
-    : updateVisible
-      ? updateHeight
-      : nudgeVisible
-        ? nudgeHeight
-        : alertsVisible
-          ? alertsHeight
-          : 0;
+    : electionVisible
+      ? electionHeight
+      : updateVisible
+        ? updateHeight
+        : nudgeVisible
+          ? nudgeHeight
+          : alertsVisible
+            ? alertsHeight
+            : 0;
 
   useEffect(() => {
     onTopOffsetChange(offset);
@@ -62,14 +74,20 @@ export function ShellBanners({
 
   return (
     <>
-      {!suppressed && !updateVisible && (
+      {!suppressed && (
+        <ElectionBanner
+          onVisibleChange={handleElectionVisibleChange}
+          onHeightChange={setElectionHeight}
+        />
+      )}
+      {!suppressed && !otherBannerVisible && (
         <NudgeBanner
           onPress={onNudgePress}
           onVisibleChange={handleNudgeVisibleChange}
           onHeightChange={setNudgeHeight}
         />
       )}
-      {!suppressed && !updateVisible && !nudgeVisible && (
+      {!suppressed && !otherBannerVisible && !nudgeVisible && (
         <AlertsOffBanner
           adapter={adapter}
           entities={entities}
@@ -79,7 +97,7 @@ export function ShellBanners({
         />
       )}
       <AppUpdateBanner
-        suppressed={suppressed}
+        suppressed={suppressed || electionVisible}
         onVisibleChange={setUpdateVisible}
         onHeightChange={setUpdateHeight}
       />

@@ -25,6 +25,9 @@ export const sharedCopy = {
   contactEmail: "info@fckfascists.com",
   extensionChromeUrl: `${SITE_ORIGIN}/extension/chrome`,
   extensionFirefoxUrl: `${SITE_ORIGIN}/extension/firefox`,
+  // Election reminders: VOTE411 (League of Women Voters Education Fund,
+  // nonpartisan) finds a polling place by address. Opens in the browser.
+  voteInfoUrl: "https://www.vote411.org/",
   /** Close/cancel glyph (\u2715). Standardized across the app after the
    *  BusinessCard manila-folder reskin (#102/#105). Use for the visible
    *  control; dismissLabel stays as the spoken a11y label. */

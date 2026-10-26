@@ -9,6 +9,7 @@ import type { Tab } from './TabBar';
 import { pickInitialTab } from './initialTab';
 import { nextResumeState, resolveLaunchTab, resolveResumeTab } from './launchRoute';
 import { tabForNotificationResponse } from './notificationRoute';
+import { openElectionLinkOnce } from '../../features/Election/useElectionReminders';
 
 interface LaunchRoutingInput {
   adapter: StorageAdapter;
@@ -58,6 +59,7 @@ export function useLaunchRouting(input: LaunchRoutingInput): void {
       }
       // A launch tap counts as this session's notification route (the tap wins).
       if (tabForNotificationResponse(response)) notificationRoutedAt.current = Date.now();
+      openElectionLinkOnce(response); // Election reminder: opens VOTE411.
       // Never leave the shell blank: any failure falls back to the random tab.
       const tab = await resolveLaunchTab(response, hasPendingDrop).catch(() => pickInitialTab());
       if (cancelled) return;
@@ -73,6 +75,7 @@ export function useLaunchRouting(input: LaunchRoutingInput): void {
   // ('scorecard-drop') and the soonest early-week nudge reuse theirs weekly.
   useEffect(() => {
     const subscription = Notifications.addNotificationResponseReceivedListener((response) => {
+      if (openElectionLinkOnce(response)) return;
       const routedTab = tabForNotificationResponse(response);
       if (!routedTab) return;
       notificationRoutedAt.current = Date.now();

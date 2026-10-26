@@ -269,6 +269,17 @@ export const ALERTS_ASK_MAX_SHOWS = 3;
 // A show counts once the banner has been on screen this long (or is tapped),
 // so a banner replaced at once (update banner, card reveal) is not used up.
 export const ALERTS_ASK_COUNT_AFTER_MS = 2000;
+// Election Day reminders (owner 2026-10-26). US general election days as local
+// calendar dates. A "make a plan" notification goes out PLAN days before at
+// PLAN_HOUR, another on the day at DAY_HOUR (before the usual 9am quiet-hours
+// end on purpose: polls open 6–7am). The in-app banner runs from BANNER days
+// before through the day. The early-week nudge is skipped in election week.
+export const ELECTION_DAYS: readonly string[] = ['2026-11-03', '2028-11-07'];
+export const ELECTION_PLAN_REMINDER_DAYS_BEFORE = 2; // Sunday
+export const ELECTION_PLAN_REMINDER_HOUR = 18;       // 6pm local
+export const ELECTION_DAY_REMINDER_HOUR = 8;         // 8am local
+export const ELECTION_BANNER_DAYS_BEFORE = 2;        // banner from Sunday
+
 // Info notifications controls: up to this Dynamic Type font scale the header
 // bell sits beside the INFO title and the menu line stays on one row; above it
 // the bell moves under the title and the line stacks (AX2 and up on iOS).

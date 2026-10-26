@@ -28,7 +28,8 @@ var COPY_ALL_DATA = {
     "activeCycles": "Active cycles: {cycles}",
     "confidenceA11y": "Confidence: {label}",
     "totalSince2016": "TOTAL SINCE 2016",
-    "recentCycleShort": "Recent ({cycle}): R: {rAmt} · D: {dAmt}"
+    "recentCycleShort": "Recent ({cycle}): R: {rAmt} · D: {dAmt}",
+    "voteInfoUrl": "https://www.vote411.org/"
   },
   "map": {
     "tabLabel": "MAP",
@@ -363,6 +364,20 @@ var COPY_ALL_DATA = {
     "noThanks": "NO THANKS",
     "noThanksA11y": "No thanks. Don't ask about notifications again.",
     "dismissA11y": "Hide for now"
+  },
+  "election": {
+    "planTitle": "Election Day is Tuesday.",
+    "planBody": "Make a plan. Find your polling place and hours on VOTE411. Tap to look it up.",
+    "dayTitle": "It's Election Day.",
+    "dayBody": "Polls are open today. Find your polling place and hours on VOTE411. Tap to look it up.",
+    "channelName": "Election Day",
+    "bannerBeforeTitle": "ELECTION DAY IS TUESDAY",
+    "bannerBeforeBody": "Make a plan. Find your polling place and hours on VOTE411. Tap to look it up.",
+    "bannerBeforeA11y": "Election Day is Tuesday. Make a plan: find your polling place and hours on VOTE411. Opens in your browser.",
+    "bannerDayTitle": "IT'S ELECTION DAY",
+    "bannerDayBody": "Polls are open today. Find your polling place and hours on VOTE411. Tap to look it up.",
+    "bannerDayA11y": "It's Election Day. Polls are open today. Find your polling place and hours on VOTE411. Opens in your browser.",
+    "dismissA11y": "Hide for today."
   },
   "scan": {
     "tabLabel": "SCAN BETA",
