@@ -6,7 +6,7 @@ import { useInfoContent } from './hooks/useInfoContent';
 import { InfoSection } from './components/InfoSection';
 import { FaqItem } from './components/FaqItem';
 import { LinkRow } from './components/LinkRow';
-import { NotificationsToggle } from './components/NotificationsToggle';
+import { NotificationsHud, NotificationsMenuLine } from './components/NotificationsControls';
 import { StarField, CornerBrackets, NeonRule } from './components/InfoDecorations';
 import { infoCopy } from '../../copy/info';
 import { sharedCopy } from '../../copy/shared';
@@ -14,7 +14,7 @@ import { theme } from '../../design/tokens';
 import { bevelAmberPlaque, bevelInset } from '../../design/bevel';
 import { SparkleDecoration } from '../../core/fx/SparkleDecoration';
 import type { ReferenceCategory } from './types';
-import { INFO_HEADER_TOGGLE_INLINE_FONT_SCALE } from '../../config/constants';
+import { INFO_NOTIFICATIONS_COMPACT_MAX_FONT_SCALE } from '../../config/constants';
 
 const CATEGORY_LABELS: Record<ReferenceCategory, string> = {
   data: infoCopy.categoryData,
@@ -31,7 +31,7 @@ export function InfoScreen({ onVersionTap }: InfoScreenProps) {
   const appVersion = Constants.expoConfig?.version ?? content.version;
   const { about, reference, links } = content;
   const scrollY = useSharedValue(0);
-  const toggleInline = useWindowDimensions().fontScale > INFO_HEADER_TOGGLE_INLINE_FONT_SCALE;
+  const toggleInline = useWindowDimensions().fontScale > INFO_NOTIFICATIONS_COMPACT_MAX_FONT_SCALE;
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (event) => { scrollY.value = event.contentOffset.y; },
   });
@@ -53,7 +53,7 @@ export function InfoScreen({ onVersionTap }: InfoScreenProps) {
             {infoCopy.title}
           </Text>
           <View style={toggleInline ? styles.headerControlInline : styles.headerControl}>
-            <NotificationsToggle />
+            <NotificationsHud />
           </View>
           <View style={styles.headerBottomGlow} pointerEvents="none" />
         </View>
@@ -90,6 +90,7 @@ export function InfoScreen({ onVersionTap }: InfoScreenProps) {
         ) : null}
 
         {/* ── Reference accordion (merged THE DATA + PRIVACY + THE APP) ── */}
+        <NotificationsMenuLine />
         <View style={styles.referenceSection}>
           {reference.map((entry) => {
             const showLabel = entry.category !== lastCategory;
@@ -146,7 +147,7 @@ const styles = StyleSheet.create({
   },
   pageTitle: { ...theme.type.displayM, color: theme.colors.textPrimary, letterSpacing: 3 },
   // Notifications switch, top right, level with the centered title.
-  headerControl: { position: 'absolute', top: 0, bottom: 0, right: theme.space.lg, justifyContent: 'center' },
+  headerControl: { position: 'absolute', top: 0, bottom: 0, right: theme.space.lg - theme.space.sm, justifyContent: 'center' },
   headerControlInline: { alignSelf: 'flex-end', marginTop: theme.space.sm },
   // Mirrors `topGlow` on app/navigation/TabBar.tsx — same brand-yellow line +
   // three-stop boxShadow halo, anchored at the bottom of the Info header so

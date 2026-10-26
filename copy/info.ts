@@ -11,10 +11,11 @@ export const infoCopy = {
   categoryData: "THE DATA",
   categoryPrivacy: "PRIVACY",
   categoryApp: "THE APP",
-  // Notifications switch, top right of the Info header (owner decisions
-  // 2026-10-25/26). It shows the system permission; a tap asks iOS while it
-  // can, otherwise opens the app's notification settings.
-  notificationsLabel: "NOTIFICATIONS",
+  // Info notifications controls (owner decisions 2026-10-25/26): a bell + On/Off
+  // readout at the top right of the header and a menu line above THE DATA. Both
+  // show the system permission; a tap asks iOS while it can, otherwise opens
+  // the app's notification settings.
+  notificationsLabel: "Notifications",
   notificationsA11y: "Notifications: your scorecard drop and a nudge or two a week",
   notificationsOn: "On",
   notificationsOff: "Off",

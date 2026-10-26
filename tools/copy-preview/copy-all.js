@@ -256,7 +256,7 @@ var COPY_ALL_DATA = {
     "chevronClosed": "▼",
     "transparencyToggleLabel": "Data transparency details",
     "versionLabel": "App version",
-    "notificationsLabel": "NOTIFICATIONS",
+    "notificationsLabel": "Notifications",
     "notificationsA11y": "Notifications: your scorecard drop and a nudge or two a week",
     "notificationsOn": "On",
     "notificationsOff": "Off",

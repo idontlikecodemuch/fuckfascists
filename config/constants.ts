@@ -269,9 +269,10 @@ export const ALERTS_ASK_MAX_SHOWS = 3;
 // A show counts once the banner has been on screen this long (or is tapped),
 // so a banner replaced at once (update banner, card reveal) is not used up.
 export const ALERTS_ASK_COUNT_AFTER_MS = 2000;
-// Info header: above this text size (Dynamic Type font scale) the
-// Notifications switch moves under the INFO title so the two can't overlap.
-export const INFO_HEADER_TOGGLE_INLINE_FONT_SCALE = 1.2;
+// Info notifications controls: up to this Dynamic Type font scale the header
+// bell sits beside the INFO title and the menu line stays on one row; above it
+// the bell moves under the title and the line stacks (AX2 and up on iOS).
+export const INFO_NOTIFICATIONS_COMPACT_MAX_FONT_SCALE = 2;
 // After a drop, its own alert may still be pending (Android delivers alarms up
 // to about an hour late; a quiet-hours drop waits for 9am), so an empty next
 // week does not cancel 'scorecard-drop' until this long after that alert.
