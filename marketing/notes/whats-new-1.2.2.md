@@ -16,7 +16,7 @@ Notifications, fixed.
 
 • Info now shows whether notifications are on: a bell at the top, and a Notifications line above The Data. Tap either to turn them on, or to open the app's notification settings.
 
-• Election week: a reminder Monday evening and Tuesday morning, with a link to find your polling place and hours on VOTE411, the League of Women Voters' nonpartisan voter guide.
+• Election week: a reminder Sunday evening and Tuesday morning, with a link to find your polling place and hours on VOTE411, the League of Women Voters' nonpartisan voter guide.
 
 • Tapping a notification while the app is open now always lands on the right tab.
 
@@ -31,7 +31,7 @@ No accounts. No tracking. Your activity stays on your device.
 Not mentioned on purpose: the beta-mode change, the code review, Android.
 
 Election Day reminders (owner request Oct 26, into 1.2.2): VOTE411 link (League of Women Voters
-Education Fund, nonpartisan), notifications Mon Nov 2 6pm local and Tue Nov 3 8am local, banner Sun
+Education Fund, nonpartisan), notifications Sun Nov 1 6pm local ("Election Day is Tuesday.") and Tue Nov 3 8am local, banner Sun
 Nov 1–Mon Nov 2 ("ELECTION DAY IS TUESDAY") and Tue Nov 3 ("IT'S ELECTION DAY"), × hides for the day,
 the Mon/Tue nudge is skipped in election week. Copy sent to the dev lead Oct 26 (Clark, nonpartisan,
 names VOTE411 before the tap, "Polls are open today"). Not marketed until the owner says so.
