@@ -7,7 +7,7 @@ import { cancelEarlyWeekNudge } from '../Platforms/hooks/useEarlyWeekNudge';
 import { lateCardMarker, revealedWeekMarker } from '../Scorecard/data/weekMarkers';
 import { CAPTURE_FAILURES_KEY } from '../Scorecard/data/captureFailures';
 import { ALERTS_ASK_RECORD_KEY } from '../Alerts/alertsAskRecord';
-import { ELECTION_BANNER_DISMISSED_KEY } from '../Election/ElectionBanner';
+import { ELECTION_BANNER_DISMISSED_KEY } from '../Election/electionBannerDismissal';
 
 const DB_NAME = 'fuckfascists.db';
 const NUDGE_IDENTIFIER = 'platform-nudge-thursday';

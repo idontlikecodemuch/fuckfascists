@@ -279,6 +279,9 @@ export const ELECTION_PLAN_REMINDER_DAYS_BEFORE = 2; // Sunday
 export const ELECTION_PLAN_REMINDER_HOUR = 18;       // 6pm local
 export const ELECTION_DAY_REMINDER_HOUR = 8;         // 8am local
 export const ELECTION_BANNER_DAYS_BEFORE = 2;        // banner from Sunday
+// Reminders are queued only this close to the election, so a phone that stops
+// opening the app is not left holding reminders for an election years away.
+export const ELECTION_REMINDER_LEAD_DAYS = 30;
 
 // Info notifications controls: up to this Dynamic Type font scale the header
 // bell sits beside the INFO title and the menu line stays on one row; above it

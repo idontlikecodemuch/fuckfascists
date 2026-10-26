@@ -1,14 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { AppState, Linking } from 'react-native';
-import * as SecureStore from 'expo-secure-store';
 import { SlidingAlertBanner } from '../../core/ui/SlidingAlertBanner';
-import { formatLocalDate } from '../../core/utils/localDate';
 import { electionCopy } from '../../copy/election';
 import { sharedCopy } from '../../copy/shared';
 import { getElectionBannerPhase, type ElectionBannerPhase } from './electionDays';
-
-/** SecureStore key: the local date the banner was last hidden (one day at a time). */
-export const ELECTION_BANNER_DISMISSED_KEY = 'election_banner_dismissed';
+import { hideElectionBannerForToday, isElectionBannerHiddenToday } from './electionBannerDismissal';
 
 interface ElectionBannerProps {
   onVisibleChange?: (visible: boolean) => void;
@@ -31,13 +27,7 @@ export function ElectionBanner({ onVisibleChange, onHeightChange }: ElectionBann
       setPhase(null);
       return;
     }
-    let dismissedOn: string | null = null;
-    try {
-      dismissedOn = await SecureStore.getItemAsync(ELECTION_BANNER_DISMISSED_KEY);
-    } catch {
-      // Unreadable: show it; at worst it shows again today.
-    }
-    setPhase(dismissedOn === formatLocalDate(new Date(now)) ? null : next);
+    setPhase((await isElectionBannerHiddenToday(now)) ? null : next);
   }, []);
 
   useEffect(() => {
@@ -50,7 +40,7 @@ export function ElectionBanner({ onVisibleChange, onHeightChange }: ElectionBann
 
   const hideForToday = useCallback(() => {
     setPhase(null);
-    SecureStore.setItemAsync(ELECTION_BANNER_DISMISSED_KEY, formatLocalDate(new Date())).catch(() => undefined);
+    void hideElectionBannerForToday();
   }, []);
   const handlePress = useCallback(() => {
     Linking.openURL(sharedCopy.voteInfoUrl).catch(() => undefined);

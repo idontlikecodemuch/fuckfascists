@@ -28,6 +28,12 @@ describe('election days', () => {
     expect(new Date(nov(1, 18)).getDay()).toBe(0); // Sunday
   });
 
+  it('queues nothing until the election is within 30 days', () => {
+    expect(getUpcomingElectionReminders(new Date(2026, 9, 3, 9).getTime(), DAYS)).toEqual([]);
+    expect(getUpcomingElectionReminders(nov(4, 9), DAYS)).toEqual([]); // 2028 is years away
+    expect(getUpcomingElectionReminders(new Date(2026, 9, 5, 9).getTime(), DAYS)).toHaveLength(2);
+  });
+
   it('drops reminders whose time has passed', () => {
     expect(getUpcomingElectionReminders(nov(1, 18, 1), DAYS).map((r) => r.kind)).toEqual(['day']);
     expect(getUpcomingElectionReminders(nov(3, 8, 1), DAYS)).toEqual([]);

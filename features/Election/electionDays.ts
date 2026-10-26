@@ -4,6 +4,7 @@ import {
   ELECTION_DAY_REMINDER_HOUR,
   ELECTION_PLAN_REMINDER_DAYS_BEFORE,
   ELECTION_PLAN_REMINDER_HOUR,
+  ELECTION_REMINDER_LEAD_DAYS,
 } from '../../config/constants';
 import { addLocalDays, formatLocalDate } from '../../core/utils/localDate';
 
@@ -29,13 +30,16 @@ export function getUpcomingElectionDay(
   return [...days].sort().find((day) => day >= today) ?? null;
 }
 
-/** The reminders for the upcoming election that are still in the future. */
+/**
+ * The reminders for the upcoming election that are still in the future, once
+ * it is within ELECTION_REMINDER_LEAD_DAYS.
+ */
 export function getUpcomingElectionReminders(
   nowMs: number,
   days: readonly string[] = ELECTION_DAYS,
 ): ElectionReminder[] {
   const day = getUpcomingElectionDay(nowMs, days);
-  if (!day) return [];
+  if (!day || day > addLocalDays(formatLocalDate(new Date(nowMs)), ELECTION_REMINDER_LEAD_DAYS)) return [];
   const reminders: ElectionReminder[] = [
     { kind: 'plan', at: localDateAt(addLocalDays(day, -ELECTION_PLAN_REMINDER_DAYS_BEFORE), ELECTION_PLAN_REMINDER_HOUR) },
     { kind: 'day', at: localDateAt(day, ELECTION_DAY_REMINDER_HOUR) },

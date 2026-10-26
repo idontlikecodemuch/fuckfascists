@@ -146,14 +146,16 @@ describe('cache hit', () => {
       confidence: 1.0,
       fetchedAt: Date.now(),
     };
+    // Within the 60-day freshness window whenever the test runs.
+    const recentDate = new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
     const freshSummary: DonationSummary = {
       ...mockDonationSummary,
       recentRepubs: 4_000_000,
-      lastUpdated: '2026-08-20',
+      lastUpdated: recentDate,
     };
     const freshEntity: Entity = {
       ...walmartEntity,
-      lastVerifiedDate: '2026-08-20',
+      lastVerifiedDate: recentDate,
       donationSummary: freshSummary,
     };
     const deps = makeDeps({

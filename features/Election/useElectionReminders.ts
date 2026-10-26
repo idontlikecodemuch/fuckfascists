@@ -4,6 +4,7 @@ import * as Notifications from 'expo-notifications';
 import { electionCopy } from '../../copy/election';
 import { sharedCopy } from '../../copy/shared';
 import { getUpcomingElectionReminders } from './electionDays';
+import { hideElectionBannerForToday } from './electionBannerDismissal';
 
 /** Routing key in content.data; a tap opens VOTE411 (see openElectionLinkOnce). */
 export const ELECTION_REMINDER_TYPE = 'election-reminder';
@@ -67,7 +68,11 @@ export function useElectionReminders(enabled = true): void {
 // response listener opens the link once.
 let openedResponseKey: string | null = null;
 
-/** Opens VOTE411 for a tapped election reminder. Returns true if it was one. */
+/**
+ * Opens VOTE411 for a tapped election reminder and hides the election banner
+ * for the rest of the day (it would offer the same link). Returns true if it
+ * was an election reminder.
+ */
 export function openElectionLinkOnce(
   response: Notifications.NotificationResponse | null | undefined,
 ): boolean {
@@ -77,6 +82,7 @@ export function openElectionLinkOnce(
   if (key !== openedResponseKey) {
     openedResponseKey = key;
     Linking.openURL(sharedCopy.voteInfoUrl).catch(() => undefined);
+    void hideElectionBannerForToday();
   }
   return true;
 }
