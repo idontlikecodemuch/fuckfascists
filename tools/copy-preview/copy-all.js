@@ -256,14 +256,13 @@ var COPY_ALL_DATA = {
     "chevronClosed": "▼",
     "transparencyToggleLabel": "Data transparency details",
     "versionLabel": "App version",
-    "alertsSection": "ALERTS",
-    "alertsLabel": "Drop alerts",
-    "alertsDetail": "A ping when your scorecard drops, plus a nudge or two a week.",
-    "alertsOn": "ON",
-    "alertsOff": "OFF",
-    "alertsHintOn": "Opens Settings, where you can turn alerts off",
-    "alertsHintAsk": "Asks to turn on alerts",
-    "alertsHintSettings": "Opens Settings, where you can turn alerts on"
+    "notificationsLabel": "NOTIFICATIONS",
+    "notificationsA11y": "Notifications: your scorecard drop and a nudge or two a week",
+    "notificationsOn": "On",
+    "notificationsOff": "Off",
+    "notificationsHintOn": "Opens Settings, where you can turn notifications off",
+    "notificationsHintAsk": "Asks to turn on notifications",
+    "notificationsHintSettings": "Opens Settings, where you can turn notifications on"
   },
   "infoContent": {
     "version": "1.0.0",
@@ -358,11 +357,11 @@ var COPY_ALL_DATA = {
     "surfaceLabel": "{tab}"
   },
   "alerts": {
-    "bannerTitle": "ALERTS ARE OFF",
+    "bannerTitle": "NOTIFICATIONS OFF",
     "bannerBody": "Tap to get a ping when your card drops.",
-    "bannerA11y": "Alerts are off. Get a ping when your card drops.",
+    "bannerA11y": "Notifications are off. Get a ping when your card drops.",
     "noThanks": "NO THANKS",
-    "noThanksA11y": "No thanks. Don't ask about alerts again.",
+    "noThanksA11y": "No thanks. Don't ask about notifications again.",
     "dismissA11y": "Hide for now"
   },
   "scan": {

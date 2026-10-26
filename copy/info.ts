@@ -11,14 +11,14 @@ export const infoCopy = {
   categoryData: "THE DATA",
   categoryPrivacy: "PRIVACY",
   categoryApp: "THE APP",
-  // Alerts toggle (owner decision 2026-10-25). It reflects the system
-  // permission; a tap asks iOS while it can, otherwise opens Settings.
-  alertsSection: "ALERTS",
-  alertsLabel: "Drop alerts",
-  alertsDetail: "A ping when your scorecard drops, plus a nudge or two a week.",
-  alertsOn: "ON",
-  alertsOff: "OFF",
-  alertsHintOn: "Opens Settings, where you can turn alerts off",
-  alertsHintAsk: "Asks to turn on alerts",
-  alertsHintSettings: "Opens Settings, where you can turn alerts on",
+  // Notifications switch, top right of the Info header (owner decisions
+  // 2026-10-25/26). It shows the system permission; a tap asks iOS while it
+  // can, otherwise opens the app's notification settings.
+  notificationsLabel: "NOTIFICATIONS",
+  notificationsA11y: "Notifications: your scorecard drop and a nudge or two a week",
+  notificationsOn: "On",
+  notificationsOff: "Off",
+  notificationsHintOn: "Opens Settings, where you can turn notifications off",
+  notificationsHintAsk: "Asks to turn on notifications",
+  notificationsHintSettings: "Opens Settings, where you can turn notifications on",
 } as const;

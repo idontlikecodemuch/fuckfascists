@@ -1,12 +1,12 @@
 import React from 'react';
-import { View, Text, Pressable, StyleSheet, SafeAreaView, Linking } from 'react-native';
+import { View, Text, Pressable, StyleSheet, SafeAreaView, Linking, useWindowDimensions } from 'react-native';
 import Animated, { useSharedValue, useAnimatedScrollHandler } from 'react-native-reanimated';
 import Constants from 'expo-constants';
 import { useInfoContent } from './hooks/useInfoContent';
 import { InfoSection } from './components/InfoSection';
 import { FaqItem } from './components/FaqItem';
 import { LinkRow } from './components/LinkRow';
-import { DropAlertsRow } from './components/DropAlertsRow';
+import { NotificationsToggle } from './components/NotificationsToggle';
 import { StarField, CornerBrackets, NeonRule } from './components/InfoDecorations';
 import { infoCopy } from '../../copy/info';
 import { sharedCopy } from '../../copy/shared';
@@ -14,6 +14,7 @@ import { theme } from '../../design/tokens';
 import { bevelAmberPlaque, bevelInset } from '../../design/bevel';
 import { SparkleDecoration } from '../../core/fx/SparkleDecoration';
 import type { ReferenceCategory } from './types';
+import { INFO_HEADER_TOGGLE_INLINE_FONT_SCALE } from '../../config/constants';
 
 const CATEGORY_LABELS: Record<ReferenceCategory, string> = {
   data: infoCopy.categoryData,
@@ -30,6 +31,7 @@ export function InfoScreen({ onVersionTap }: InfoScreenProps) {
   const appVersion = Constants.expoConfig?.version ?? content.version;
   const { about, reference, links } = content;
   const scrollY = useSharedValue(0);
+  const toggleInline = useWindowDimensions().fontScale > INFO_HEADER_TOGGLE_INLINE_FONT_SCALE;
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (event) => { scrollY.value = event.contentOffset.y; },
   });
@@ -50,6 +52,9 @@ export function InfoScreen({ onVersionTap }: InfoScreenProps) {
           <Text style={styles.pageTitle} accessibilityRole="header" allowFontScaling>
             {infoCopy.title}
           </Text>
+          <View style={toggleInline ? styles.headerControlInline : styles.headerControl}>
+            <NotificationsToggle />
+          </View>
           <View style={styles.headerBottomGlow} pointerEvents="none" />
         </View>
 
@@ -102,11 +107,6 @@ export function InfoScreen({ onVersionTap }: InfoScreenProps) {
           })}
         </View>
 
-        {/* ── Alerts toggle ── */}
-        <InfoSection title={infoCopy.alertsSection}>
-          <DropAlertsRow />
-        </InfoSection>
-
         {/* ── Links & Source ── */}
         <InfoSection title={infoCopy.links}>
           {links.map((entry) => (
@@ -145,6 +145,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   pageTitle: { ...theme.type.displayM, color: theme.colors.textPrimary, letterSpacing: 3 },
+  // Notifications switch, top right, level with the centered title.
+  headerControl: { position: 'absolute', top: 0, bottom: 0, right: theme.space.lg, justifyContent: 'center' },
+  headerControlInline: { alignSelf: 'flex-end', marginTop: theme.space.sm },
   // Mirrors `topGlow` on app/navigation/TabBar.tsx — same brand-yellow line +
   // three-stop boxShadow halo, anchored at the bottom of the Info header so
   // the top + bottom bars read as the same treatment (#128).

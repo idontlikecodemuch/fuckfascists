@@ -55,7 +55,7 @@ export function AlertBanner({
   const content = (
     <View style={styles.content}>
       {title && (
-        <Text style={styles.title} allowFontScaling numberOfLines={1}>
+        <Text style={styles.title} allowFontScaling numberOfLines={2}>
           {title}
         </Text>
       )}
